@@ -1,0 +1,43 @@
+{
+  "status": "complete",
+  "completedAt": "2026-06-13T12:26:43Z",
+  "files": [
+    "/home/antonioborgerees/coding/agentwrap/opencode/process_linux.go",
+    "/home/antonioborgerees/coding/agentwrap/opencode/process_unix.go",
+    "/home/antonioborgerees/coding/agentwrap/opencode/process_unix_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/go.mod",
+    "/home/antonioborgerees/coding/ultraplan-go/go.sum",
+    "/home/antonioborgerees/coding/ultraplan-go/README.md",
+    "/home/antonioborgerees/coding/ultraplan-go/docs/user-guide.md",
+    "/home/antonioborgerees/coding/ultraplan-go/docs/cli-reference.md",
+    "/home/antonioborgerees/coding/ultraplan-go/docs/configuration.md",
+    "/home/antonioborgerees/coding/ultraplan-go/docs/recovery.md",
+    "/home/antonioborgerees/coding/ultraplan-go/docs/opencode-smoke.md",
+    "/home/antonioborgerees/coding/ultraplan-go/docs/release-checklist.md",
+    "/home/antonioborgerees/coding/ultraplan-go/dist/ultraplan-linux-amd64",
+    "/home/antonioborgerees/coding/ultraplan-go/dist/ultraplan-linux-arm64",
+    "/home/antonioborgerees/coding/ultraplan-go/dist/ultraplan-darwin-amd64",
+    "/home/antonioborgerees/coding/ultraplan-go/dist/ultraplan-darwin-arm64",
+    "/home/antonioborgerees/coding/ultraplan-go/dist/checksums.txt",
+    "/home/antonioborgerees/coding/ultraplan-go/dist/smoke-evidence.md",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/15-documentation-and-packaging/plan.md",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/15-documentation-and-packaging/.run-state.json"
+  ],
+  "testsRun": [
+    "PASS: cd /home/antonioborgerees/coding/agentwrap && go test ./...",
+    "PASS: cd /home/antonioborgerees/coding/agentwrap && GOOS=darwin GOARCH=amd64 go test -c -o /tmp/agentwrap-opencode-darwin-amd64.test ./opencode",
+    "PASS: cd /home/antonioborgerees/coding/agentwrap && GOOS=darwin GOARCH=arm64 go test -c -o /tmp/agentwrap-opencode-darwin-arm64.test ./opencode",
+    "PUSHED: cd /home/antonioborgerees/coding/agentwrap && git commit -m \"fix darwin opencode process build\" && git push origin main (bc655a2)",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && go mod tidy after upgrading github.com/Antonio7098/agentwrap to v0.0.0-20260613122459-bc655a256a5f with no local replace",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && go test ./...",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && go test -race ./...",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && go build ./cmd/ultraplan",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && GOOS=linux GOARCH=amd64 go build -o dist/ultraplan-linux-amd64 ./cmd/ultraplan",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && GOOS=linux GOARCH=arm64 go build -o dist/ultraplan-linux-arm64 ./cmd/ultraplan",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && GOOS=darwin GOARCH=amd64 go build -o dist/ultraplan-darwin-amd64 ./cmd/ultraplan",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && GOOS=darwin GOARCH=arm64 go build -o dist/ultraplan-darwin-arm64 ./cmd/ultraplan",
+    "PASS: cd /home/antonioborgerees/coding/ultraplan-go && sha256sum dist/ultraplan-linux-amd64 dist/ultraplan-linux-arm64 dist/ultraplan-darwin-amd64 dist/ultraplan-darwin-arm64 > dist/checksums.txt",
+    "REVIEWED: existing smoke harness evidence in /home/antonioborgerees/coding/ultraplan-go-smoke; latest full run 212/218 and Sprint 14 run 28/28"
+  ],
+  "blockers": []
+}

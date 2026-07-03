@@ -1,0 +1,102 @@
+{
+  "contract": "Persistence And Migrations",
+  "project": "ultraplan-go",
+  "sprint": "08-run-state-persistence",
+  "requirements_reviewed": [
+    {
+      "requirement_id": "PERSIST-SCHEMA-001",
+      "title": "Durable Schema Must Have Clear Ownership And Meaning",
+      "applicability": "direct",
+      "scope_reason": "The sprint adds a new durable schema (run state JSON at studies/<study>/.ultraplan/run-state.json) with clear ownership by the internal/study package. The RunState, TaskState, ConfigSummary, and related types are defined in internal/study/domain.go and owned entirely by the study module.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/domain.go:166-176 (RunState struct), internal/study/state.go:44-91 (SaveRunState), internal/study/state.go:25-42 (LoadRunState)",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-MIG-001",
+      "title": "Migrations And Compatibility Changes Must Be Safe, Ordered, And Reviewable",
+      "applicability": "direct",
+      "scope_reason": "The sprint introduces schema versioning (RunStateSchemaVersion = 1) with explicit unsupported-version rejection in ValidateRunState. No actual migrations or format compatibility files are needed because only schema v1 exists. The rejection behavior satisfies the 'include migration files or explicit compatibility/rejection behavior' requirement.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/domain.go:12-16 (RunStateSchemaVersion), internal/study/state.go:93-132 (ValidateRunState rejecting unsupported schema_version at line 97-99)",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-ATOMIC-001",
+      "title": "Atomic Write Or Transaction Boundaries Must Be Explicit",
+      "applicability": "direct",
+      "scope_reason": "The sprint implements atomic writes as the core persistence mechanism. SaveRunState uses same-directory temp file creation, flush/sync, close, then rename over the prior run-state.json. Failed writes preserve the previous valid state. The write boundary is explicit and owned by the study module.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/state.go:44-91 (SaveRunState with temp file, Sync, Close, Rename), internal/study/state_test.go:100-124 (test proving prior state preserved on rename failure)",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-INTEGRITY-001",
+      "title": "Integrity Rules Must Be Enforced At The Right Layer",
+      "applicability": "direct",
+      "scope_reason": "Schema validation is enforced at the load layer (ValidateRunState checks schema_version, required fields, valid task statuses, duplicate task IDs). Business rules for applicability filtering and status transitions are enforced in domain logic (NewRunState, ResumeValidateRunState). No integrity is enforced only at the app/CLI layer.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/state.go:93-132 (ValidateRunState at load layer), internal/study/run_state.go:24-113 (NewRunState domain logic), internal/study/run_state.go:157-214 (ResumeValidateRunState with status transition rules)",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-READ-001",
+      "title": "Read And Query Behaviour Must Be Bounded And Observable",
+      "applicability": "direct",
+      "scope_reason": "All reads go through LoadRunState which reads a single file (run-state.json). No unbounded directory scans, collection queries, or in-memory loading of entire study directories. Status loading is bounded to the single state file.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/state.go:25-42 (LoadRunState reads single file), internal/app/study_commands.go:125-138 (runStudyStatus calls LoadRunState only, no directory scans or runtime initialization)",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-DERIVED-001",
+      "title": "Derived Stores Must Declare Source Of Truth And Staleness",
+      "applicability": "not_triggered",
+      "scope_reason": "The sprint does not introduce any caches, search indexes, vector stores, materialized views, or separate derived read models. The run state is the authoritative source of truth for task state. StatusSummary is computed on-demand from the authoritative state (not persisted), and ValidationSummary is recorded as part of the authoritative task record with a clear source (report validation result).",
+      "status": "not_applicable",
+      "severity": "info",
+      "evidence": "No derived stores exist in the implementation. All state is authoritative in run-state.json.",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-FIXTURE-001",
+      "title": "Fixture, Seed, And Test Data Must Not Leak Into Production",
+      "applicability": "direct",
+      "scope_reason": "Tests use t.TempDir() for isolated temporary directories. No production credentials, real data, or environment-gated seed commands exist. Test data is entirely scoped to test files.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/state_test.go:168-176 (testStudyRoot uses t.TempDir), internal/app/study_status_commands_test.go (uses initializedWorkspace, local fixtures only)",
+      "issue": "",
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "PERSIST-RECOVERY-001",
+      "title": "Risky Data Changes Need Rollback Or Recovery Strategy",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint introduces only new durable state (schema v1). No destructive migrations, data backfills, irreversible column/field deletions, or schema changes to existing production state are performed. The atomic write strategy preserves prior state on failure as a general safety measure, but no high-risk or destructive changes exist that would require a rollback/recovery plan.",
+      "status": "not_applicable",
+      "severity": "info",
+      "evidence": "No destructive changes in scope. The only state mutation is creation of new run-state.json. Prior state preservation is tested in internal/study/state_test.go:100-124.",
+      "issue": "",
+      "recommended_action": "none"
+    }
+  ],
+  "overall_status": "pass",
+  "issues": [],
+  "recommendations": [
+    "When schema version 2 is introduced, ensure PERSIST-MIG-001 migration files are added alongside the version bump",
+    "Cross-platform atomic rename semantics (especially Windows) should be validated before multi-platform release"
+  ],
+  "findings_summary": "All applicable Persistence And Migrations contract requirements are satisfied. The implementation in internal/study provides clear schema ownership (PERSIST-SCHEMA-001), explicit rejection of unsupported schema versions (PERSIST-MIG-001), atomic writes with same-directory temp files and prior-state preservation (PERSIST-ATOMIC-001), validation at the correct storage and domain layers (PERSIST-INTEGRITY-001), bounded single-file reads (PERSIST-READ-001), and isolated test fixtures (PERSIST-FIXTURE-001). Requirements PERSIST-DERIVED-001 and PERSIST-RECOVERY-001 are not triggered by this sprint's scope."
+}

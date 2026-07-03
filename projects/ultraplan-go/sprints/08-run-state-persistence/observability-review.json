@@ -1,0 +1,103 @@
+{
+  "contract": "Observability",
+  "project": "ultraplan-go",
+  "sprint": "08-run-state-persistence",
+  "requirements_reviewed": [
+    {
+      "requirement_id": "OBS-CORE-001",
+      "title": "Failures Must Produce Structured Operational Signals",
+      "applicability": "partial",
+      "scope_reason": "This sprint introduces persistence failure paths (missing/malformed/unsupported state, write failures, resume validation failures). Runtime execution and structured logging infrastructure are explicitly deferred per sprint non-goals, limiting the scope of operational signal emission to error returns and CLI stderr output.",
+      "status": "satisfied",
+      "severity": "low",
+      "evidence": "internal/study/state.go:25-42, internal/study/state.go:44-91, internal/study/run_state.go:157-214, internal/study/domain.go:215-219",
+      "issue": "Failures produce structured errors (sentinel errors, TaskError codes, wrapped context) visible through stderr and persisted task state, but are not emitted as structured log events because logging infrastructure integration is deferred per sprint non-goals. This is an acceptable gap within the sprint's explicit scope constraints.",
+      "recommended_action": "Connect failure paths to structured log emission when logging infrastructure is fully implemented in a later sprint."
+    },
+    {
+      "requirement_id": "OBS-CORR-001",
+      "title": "Correlation Identifiers Must Survive Subsystem Boundaries",
+      "applicability": "partial",
+      "scope_reason": "This sprint does not cross subsystem boundaries (no runtime execution, no provider calls, no subprocesses). RunID and stable task IDs are introduced as correlation identifiers within study scope.",
+      "status": "satisfied",
+      "severity": "low",
+      "evidence": "internal/study/run_state.go:29-31, internal/study/domain.go:166-176, internal/study/run_state.go:119-155, internal/study/domain.go:193-213",
+      "issue": "RunID is assigned at state construction and surfaces in status output. Task IDs are deterministic across process runs. No cross-subsystem trace propagation exists because no subsystem boundaries are crossed in this sprint. LLM prompt references are deferred per sprint non-goals.",
+      "recommended_action": "None within sprint scope. Ensure RunID and task IDs propagate into log/event context when logging infrastructure and runtime execution are added in later sprints."
+    },
+    {
+      "requirement_id": "OBS-HEALTH-001",
+      "title": "Health And Preflight Surfaces Must Reflect Operational Truth",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint does not add or modify health commands, health endpoints, preflight checks, dependency checks, or startup validation semantics. Runtime health gates are an explicit sprint non-goal.",
+      "status": "not_applicable",
+      "severity": "info",
+      "evidence": "N/A",
+      "issue": null,
+      "recommended_action": "None."
+    },
+    {
+      "requirement_id": "OBS-DIAG-001",
+      "title": "Diagnostics Surfaces Must Expose Operator-Relevant State",
+      "applicability": "direct",
+      "scope_reason": "This sprint adds the `ultraplan study <study> status` diagnostics command and persists operator-relevant run-state JSON. Both are diagnostic surfaces for inspecting current workflow state.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/app/study_commands.go:125-138, internal/app/study_commands.go:153-165, internal/study/run_state.go:119-155, internal/study/domain.go:166-176",
+      "issue": null,
+      "recommended_action": "None."
+    },
+    {
+      "requirement_id": "OBS-DEBUG-001",
+      "title": "Debug And Verbosity Controls Must Be Explicit And Safe",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint does not add or modify debug modes, verbosity controls, trace output, or any logging configuration changes. The existing logging package (text/json format, debug/info/warn/error levels) was not integrated into study or command code in this sprint.",
+      "status": "not_applicable",
+      "severity": "info",
+      "evidence": "N/A",
+      "issue": null,
+      "recommended_action": "None."
+    },
+    {
+      "requirement_id": "OBS-TASK-001",
+      "title": "Owned Work Must Have Visible Terminal State",
+      "applicability": "direct",
+      "scope_reason": "This sprint introduces the task state infrastructure (RunState, TaskState, TaskStatus) including identity, purpose metadata, status transitions, failure codes, and status summaries. While actual task execution runtime is deferred, the persistence and diagnostics framework for task lifecycle visibility is implemented.",
+      "status": "satisfied",
+      "severity": "low",
+      "evidence": "internal/study/domain.go:145-213, internal/study/run_state.go:119-155, internal/study/run_state.go:157-214, internal/study/state_test.go:126-147",
+      "issue": "Task state model supports explicit terminal states (completed, failed, cancelled, skipped) and captures failure detail with stable codes. Cancel/reconcile on shutdown is deferred. Actual lifecycle transitions will be exercised when runtime execution is added.",
+      "recommended_action": "Connect task lifecycle transitions to structured logs/events when runtime execution is implemented in a later sprint."
+    },
+    {
+      "requirement_id": "OBS-ALERT-001",
+      "title": "High-Severity Signals Must Be Machine-Usable For Alerting",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint does not implement operational event emission, metrics integration, alert routing, or high-severity code registries. TaskError codes (e.g., 'validation.reference', 'validation.report') exist as stable identifiers but no alerting infrastructure consumes them.",
+      "status": "not_applicable",
+      "severity": "info",
+      "evidence": "internal/study/domain.go:215-219",
+      "issue": null,
+      "recommended_action": "Register stable TaskError codes in an alerting catalog when alert/event infrastructure is added in a later sprint."
+    },
+    {
+      "requirement_id": "OBS-PII-001",
+      "title": "Logs, Traces, Metrics, And Events Must Not Expose Secrets, Credentials, Or Unnecessary User Content",
+      "applicability": "direct",
+      "scope_reason": "This sprint persists ConfigSummary to run-state JSON and prints status output to stdout/stderr. Both are observability outputs that must avoid secrets and unnecessary user content.",
+      "status": "satisfied",
+      "severity": "info",
+      "evidence": "internal/study/domain.go:183-191, internal/platform/logging/logging.go:39-48, internal/platform/config/redaction.go",
+      "issue": null,
+      "recommended_action": "None."
+    }
+  ],
+  "overall_status": "pass",
+  "issues": [],
+  "recommendations": [
+    "Integrate persistence and validation failure paths with structured log emission when the logging infrastructure is fully operational in a later sprint (related to OBS-CORE-001).",
+    "Ensure RunID and task IDs are propagated as span/log attributes when trace or execution context infrastructure is added (related to OBS-CORR-001).",
+    "Register TaskError codes in a machine-readable catalog when alerting infrastructure is introduced (related to OBS-ALERT-001)."
+  ],
+  "findings_summary": "The implementation satisfies applicable observability requirements within the sprint's explicit scope constraints (no runtime execution, no agentwrap/OpenCode integration, no event sinks, no structured logging infrastructure). The diagnostic surface (`ultraplan study <study> status`) exposes operator-relevant state deterministically. Failure paths produce structured errors with stable codes, paths, and context visible through immediate (stderr) and durable (persisted TaskState.last_error) channels. RunID and task IDs provide correlation identifiers. ConfigSummary is narrow and secret-free. The only gaps are pre-committed deferrals: structured log emission, trace propagation, and alerting infrastructure are not yet connected to the new failure paths, consistent with the sprint's non-goals."
+}

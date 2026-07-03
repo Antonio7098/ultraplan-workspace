@@ -1,0 +1,102 @@
+{
+  "contract": "Configuration",
+  "project": "ultraplan-go",
+  "sprint": "08-run-state-persistence",
+  "requirements_reviewed": [
+    {
+      "requirement_id": "CFG-SOURCE-001",
+      "title": "Runtime Config Must Come From Explicit Sources",
+      "applicability": "partial",
+      "scope_reason": "This sprint does not add new config sources, env vars, or config file locations. It persists a ConfigSummary as metadata inside run-state.json. Config loading was already centralized in internal/platform/config/config.go with documented ULTRAPLAN_* env prefix, source order (defaults → workspace file → env → CLI), and source tracking. The sprint code passes ConfigSummary as a parameter rather than reading config directly.",
+      "status": "satisfied",
+      "severity": "high",
+      "evidence": "internal/platform/config/config.go:83-106 (centralized Load with source tracking), internal/platform/config/config.go:67-81 (ULTRAPLAN_* env overrides), internal/study/run_state.go:13-22 (ConfigSummary as request parameter, not env reads)",
+      "issue": null,
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "CFG-TYPE-001",
+      "title": "Config Must Be Typed, Parsed, And Validated",
+      "applicability": "partial",
+      "scope_reason": "This sprint introduces no new config parsing or validation. ConfigSummary uses typed Go fields (string, int). The existing config system already validates types (duration parsing, int bounds, enum checks, required fields) in config.Validate() at load time.",
+      "status": "satisfied",
+      "severity": "high",
+      "evidence": "internal/platform/config/config.go:226-266 (Validate checks durations, ints, enums, required fields), internal/study/domain.go:183-191 (ConfigSummary typed fields), internal/platform/config/config_test.go (validation tests)",
+      "issue": null,
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "CFG-COMPAT-001",
+      "title": "Persisted Config Must Remain Compatible Or Migratable",
+      "applicability": "direct",
+      "scope_reason": "ConfigSummary is persisted inside run-state.json, which is a durable user-facing config file. Changes to ConfigSummary fields in future schema versions could break existing persisted state.",
+      "status": "satisfied",
+      "severity": "high",
+      "evidence": "internal/study/state.go:93-131 (ValidateRunState rejects unsupported schema versions with path-aware diagnostics), internal/study/domain.go:13-16 (RunStateSchemaVersion = 1), internal/study/state_test.go:91-97 (unsupported schema version test with ErrRunStateUnsupported)",
+      "issue": "No migration tests exist for ConfigSummary field changes, but only one schema version exists currently. Schema version provides the required compatibility boundary.",
+      "recommended_action": "Add ConfigSummary-specific compatibility tests when schema version 2 is introduced."
+    },
+    {
+      "requirement_id": "CFG-SECRET-001",
+      "title": "Secrets Must Be Separated From Public Config",
+      "applicability": "direct",
+      "scope_reason": "ConfigSummary is persisted in run-state.json which may be committed to Git or shared. It must not contain secrets.",
+      "status": "satisfied",
+      "severity": "blocker",
+      "evidence": "internal/study/domain.go:183-191 (ConfigSummary fields: Runtime, Model, Variant, DefaultParallel, DefaultTimeout, DefaultRetries, WorkspaceVersion — all safe operational metadata, no secrets), internal/study/state_test.go:28 (test asserts Config.Runtime == \"opencode\" in persisted state), sprint reasoning Decision 6 explicitly chose secret-free narrow summary",
+      "issue": null,
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "CFG-START-001",
+      "title": "Required Config Must Fail Before Work Starts",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint adds no startup, preflight, readiness, or work-initiating behavior. The status command is a read-only diagnostic. The existing config system's Load+Validate runs at CLI startup for relevant commands.",
+      "status": "not_applicable",
+      "severity": "blocker",
+      "evidence": "internal/app/study_commands.go:125-138 (runStudyStatus loads persisted state, does not initialize runtime)",
+      "issue": null,
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "CFG-ENV-001",
+      "title": "Environment-Specific Behaviour Must Be Explicit",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint adds no environment-specific behavior, debug gates, or dev/prod differentiation. ConfigSummary does not record environment names or gate behavior.",
+      "status": "not_applicable",
+      "severity": "high",
+      "evidence": "No environment checks were added in sprint implementation",
+      "issue": null,
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "CFG-PUBLIC-001",
+      "title": "Externally Exposed Config Must Be Allowlisted",
+      "applicability": "not_triggered",
+      "scope_reason": "This sprint adds no frontend, public API, or CLI diagnostic config export. The status command renders human output for the local CLI user. ConfigSummary is persisted in a local file only.",
+      "status": "not_applicable",
+      "severity": "blocker",
+      "evidence": "internal/app/study_commands.go:153-165 (renderStudyStatus prints safe human output only, no JSON export)",
+      "issue": null,
+      "recommended_action": "none"
+    },
+    {
+      "requirement_id": "CFG-OBS-001",
+      "title": "Effective Non-Secret Config Must Be Inspectable",
+      "applicability": "direct",
+      "scope_reason": "ConfigSummary is persisted in run-state.json and can be inspected by operators reading the JSON file. The status command provides task-level diagnostics but does not explicitly render ConfigSummary fields (runtime, model, variant, etc.) in human output.",
+      "status": "satisfied",
+      "severity": "medium",
+      "evidence": "internal/study/state.go:25-42 (LoadRunState loads full state including ConfigSummary into memory), internal/app/study_commands.go:153-165 (renderStudyStatus shows run ID, completion, task counts, retries; ConfigSummary is in the JSON file available for inspection), internal/study/state_test.go:28 (ConfigSummary persisted and round-tripped through JSON)",
+      "issue": "Status command output does not display ConfigSummary fields (runtime, model, variant, etc.) even though they are available in the loaded state. Operators must read the JSON file directly to inspect effective config.",
+      "recommended_action": "Consider adding optional ConfigSummary display to status output (e.g., runtime, model, variant) for faster operator diagnostics without requiring direct file reads."
+    }
+  ],
+  "overall_status": "pass",
+  "issues": [],
+  "recommendations": [
+    "Consider rendering ConfigSummary fields (runtime, model, variant) in status command output to improve operator inspectability without requiring JSON file reads (CFG-OBS-001, medium severity).",
+    "Add migration/compatibility tests for ConfigSummary fields when schema version 2 is introduced (CFG-COMPAT-001, low priority)."
+  ],
+  "findings_summary": "The Configuration contract is satisfied. The ConfigSummary is narrow, typed, secret-free, and version-guarded by the run-state schema version. All applicable requirements pass: source provenance is respected (no new hidden config reads), secrets are excluded, validation exists at the schema level, and compatibility is gated by schema version rejection. The existing centralized config system remains the sole config loading path with documented ULTRAPLAN_* env vars, typed parsing, and startup validation. Two non-blocking recommendations apply: showing ConfigSummary in status output and adding migration tests when the schema evolves."
+}

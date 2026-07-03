@@ -1,0 +1,27 @@
+{
+  "status": "complete",
+  "completedAt": "2026-06-15T16:41:17Z",
+  "files": [
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/sprint_commands.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/sprint_commands_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/flow.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/handbook.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/prompts.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/reasoning.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/reasoning_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/service.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/sprint/store_fs.go",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/20-reason-stage/plan.md",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/20-reason-stage/review.md",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/20-reason-stage/.run-state.json"
+  ],
+  "testsRun": [
+    "go test ./internal/sprint ./internal/app: passed",
+    "go test ./...: passed",
+    "go test -race ./...: passed",
+    "go build ./cmd/ultraplan: passed",
+    "rg \"internal/study|os/exec|exec\\\\.Command|git |opencode|agentwrap\" internal/sprint -n: no disallowed direct calls/imports found beyond existing package doc text",
+    "rg \"internal/(sprint|project|study|app)\" internal/platform -n: no product imports from platform"
+  ],
+  "blockers": []
+}
