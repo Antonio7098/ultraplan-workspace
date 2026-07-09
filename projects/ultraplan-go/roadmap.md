@@ -759,6 +759,8 @@ TUI action  -> app use case -> terminal model/view update
 
 Do not integrate the TUI by shelling out to `ultraplan` or parsing CLI stdout. Shared use cases should cover workspace discovery, config loading, runtime setup, project status, sprint status/validation/flow, study listing/status/validation/run-loop, code extraction, and execute status/actions as needed.
 
+External terminal UI dependencies belong at the first sprint that exposes `ultraplan tui` as an actual interactive terminal experience. Because Sprint 24 ships that command as a user-facing TUI, it introduces Bubble Tea inside `internal/tui` for the full-screen event loop and Glamour for Markdown preview rendering while keeping terminal-library and renderer types out of `internal/app` and product packages. Later TUI sprints may add richer widgets, split-pane resizing, async refresh commands, loading overlays, and guarded workflow dialogs on top of those contained dependencies.
+
 ## TUI Contract Gate
 
 Required for TUI sprints:
@@ -787,22 +789,29 @@ Not required for TUI sprints:
 **Build:**
 
 - `ultraplan tui`
-- `internal/tui` package and terminal UI dependency selection
+- `internal/tui` package, deterministic model/update/render foundation, Bubble Tea event loop, and contained Markdown preview rendering
 - app-layer use-case extraction for read-only operations
-- workspace selector/startup state
-- project list and project status view
-- study list, study detail, and study status view
-- sprint list and sprint flow status view
+- workspace startup state
+- top-level Projects and Studies tabs with focus movement between tab bar and content
+- project list, project status summary, and project detail navigation
+- project-scoped sprint list plus sprint artifact navigation
+- study list, study detail navigation, dimensions, sources, and run-state preview
+- selection-follow viewport behavior for lists and preview-scroll behavior for artifact previews
 - validation finding panes for project, study, and sprint artifacts where existing validators support it
-- artifact path/detail preview for key Markdown/JSON files
+- name-only navigation with bounded Markdown/JSON previews for key artifacts
+
+**Dependency note:** Sprint 24 introduces Bubble Tea because `ultraplan tui` is a real interactive terminal command, not a text dump. It also introduces Glamour for terminal Markdown rendering. Both dependencies remain contained inside `internal/tui`; `internal/app` and product packages continue to exchange plain Go result types.
 
 **Acceptance:**
 
 - TUI does not call CLI command handlers or parse stdout.
 - TUI can start from inside a workspace or with `--workspace`.
 - Dashboard works without runtime credentials.
+- Projects and Studies are top-level tabs; sprints are navigated through the selected project rather than a top-level tab.
+- Artifact navigation shows names rather than paths, with paths retained as internal preview metadata.
+- Markdown previews render headings, tables, inline code, and lists as terminal Markdown rather than raw Markdown text.
 - Read-only actions do not mutate flow state except where existing status operations intentionally refresh deterministic status files; any such mutation is documented in the TUI action label.
-- Unit tests cover navigation/model updates and use fake app use cases.
+- Unit tests cover tab focus, route navigation, selection-follow scrolling, preview scrolling, Markdown rendering, model updates, and fake app use cases.
 
 ### Sprint 25: Operational TUI Controls
 
@@ -827,6 +836,7 @@ Not required for TUI sprints:
 - Cancellation leaves durable state inspectable from both TUI and CLI.
 - Normal tests use fake runtimes; gated smoke may cover real runtime operation when available.
 - CLI command behavior remains unchanged.
+- External terminal-library types remain contained inside `internal/tui`; app and product result types stay plain Go data.
 
 ### Sprint 26: Full Workflow Cockpit and TUI Release
 
@@ -880,7 +890,7 @@ Before first release:
 Before TUI foundation starts:
 
 - [ ] App-layer read-only use cases are separated from CLI renderers.
-- [ ] TUI dependency choice is reviewed.
+- [ ] TUI dependency choice is reviewed and contained inside `internal/tui`.
 - [ ] Terminal test strategy is documented.
 
 Before operational TUI starts:
