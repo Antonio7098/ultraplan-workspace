@@ -18,10 +18,10 @@ Final study reports were not opened directly because `technical-handbook.md` and
 
 ## Sprint Status
 
-- **Status:** `in progress`
+- **Status:** `complete`
 - **Owner:** `implementation agent`
 - **Start Date:** `2026-07-09`
-- **Completion Date:** `pending`
+- **Completion Date:** `2026-07-09`
 
 ## Decisions To Execute
 
@@ -79,73 +79,73 @@ Final study reports were not opened directly because `technical-handbook.md` and
   - [x] Ensure execute prompts and runtime permission/request metadata state the approved target and explicitly exclude smoke, review automation, issue tracking, scheduling, and Git mutation.
   - [x] Add target containment, path escape, workspace-relative diagnostic, permission mapping, and forbidden Git mutation regression tests.
 
-- [ ] **Task 4: Implement Stage Model Resolution For Execute**
+- [x] **Task 4: Implement Stage Model Resolution For Execute**
   > Executes: `Decision 7`, `Configuration`, `Observability`, `Security`, `REQ-23-41`
   - [x] Extend or reuse sprint stage model resolution to cover `execute` with precedence: explicit command override when supported, stage-specific model, global sprint/planning model, `models.primary`, then `models.default`.
-  - [ ] Reject unknown stage model keys and empty model values during validation with field-path diagnostics.
+  - [x] Reject unknown stage model keys and empty model values during validation with field-path diagnostics.
   - [x] Include selected model source in prompt previews, runtime request summaries, and diagnostics without exposing secrets or full runtime config.
-  - [ ] Add tests for override precedence, stage-specific `execute` winning over global/default, fallback order, unknown stage key rejection, empty model rejection, command override, and redacted diagnostics.
+  - [x] Add tests for override precedence, stage-specific `execute` winning over global/default, fallback order, unknown stage key rejection, empty model rejection, command override, and redacted diagnostics.
 
-- [ ] **Task 5: Render Execute Prompts And Runtime Requests**
+- [x] **Task 5: Render Execute Prompts And Runtime Requests**
   > Executes: `Decision 1`, `Decision 5`, `Decision 7`, `LLM Runtime`, `LLM Evaluation / Cost / Safety`, `REQ-23-43`, `REQ-23-44`
-  - [ ] Add deterministic execute prompt rendering from validated task data, sprint/project paths, target path, expected evidence, safety constraints, and non-goal exclusions.
-  - [ ] Build generic platform runtime requests with prompt, workdir, model, timeout, permissions, expected outputs, metadata, and validation expectations while keeping `internal/platform/runtime` free of sprint semantics.
-  - [ ] Persist or expose only safe runtime metadata summaries such as run/session IDs, model source, attempt count, validation summary, permission summary, usage summary where safe, and omission reasons for unsafe payloads.
-  - [ ] Add golden prompt tests and fake-runtime request assertion tests covering target scope, model source, metadata, permissions, expected evidence, and absence of forbidden workflow instructions.
+  - [x] Add deterministic execute prompt rendering from validated task data, sprint/project paths, target path, expected evidence, safety constraints, and non-goal exclusions.
+  - [x] Build generic platform runtime requests with prompt, workdir, model, timeout, permissions, expected outputs, metadata, and validation expectations while keeping `internal/platform/runtime` free of sprint semantics.
+  - [x] Persist or expose only safe runtime metadata summaries such as run/session IDs, model source, attempt count, validation summary, permission summary, usage summary where safe, and omission reasons for unsafe payloads.
+  - [x] Add golden prompt tests and fake-runtime request assertion tests covering target scope, model source, metadata, permissions, expected evidence, and absence of forbidden workflow instructions.
 
-- [ ] **Task 6: Run Execute Tasks Conservatively With Durable Transitions**
+- [x] **Task 6: Run Execute Tasks Conservatively With Durable Transitions**
   > Executes: `Decision 3`, `Decision 4`, `Decision 6`, `Persistence And Migrations`, `Workflows`, `Performance`, `REQ-23-45`, `REQ-23-46`, `REQ-23-47`
-  - [ ] Implement the execute task runner to process one selected or pending task at a time by default, mark transitions atomically, increment attempts, drain runtime events, call runtime wait, and save safe diagnostics.
-  - [ ] Apply completion gates so runtime success without expected evidence becomes failed unless an explicit safe diagnostic-only completion path is recorded.
-  - [ ] Implement cancellation handling that stops scheduling, cancels active runtime work through context/runtime APIs, saves state, and marks active task `cancelled` or retryable/failed according to the selected policy.
-  - [ ] Implement resume reconciliation that loads state strictly, recovers stale `running` tasks with diagnostics, skips `complete` tasks, and refuses mismatched plan fingerprints or task sets unless an explicit future force behavior is designed.
-  - [ ] Add fake-runtime workflow tests for success with evidence, success without evidence, runtime failure, validation failure, diagnostic-only completion, cancellation, timeout, stale recovery, selected task execution, resume without redoing complete tasks, and no goroutine leaks.
+  - [x] Implement the execute task runner to process one selected or pending task at a time by default, mark transitions atomically, increment attempts, drain runtime events, call runtime wait, and save safe diagnostics.
+  - [x] Apply completion gates so runtime success without expected evidence becomes failed unless an explicit safe diagnostic-only completion path is recorded.
+  - [x] Implement cancellation handling that stops scheduling, cancels active runtime work through context/runtime APIs, saves state, and marks active task `cancelled` or retryable/failed according to the selected policy.
+  - [x] Implement resume reconciliation that loads state strictly, recovers stale `running` tasks with diagnostics, skips `complete` tasks, and refuses mismatched plan fingerprints or task sets unless an explicit future force behavior is designed.
+  - [x] Add fake-runtime workflow tests for success with evidence, success without evidence, runtime failure, validation failure, diagnostic-only completion, cancellation, timeout, stale recovery, selected task execution, resume without redoing complete tasks, and no goroutine leaks.
 
-- [ ] **Task 7: Generate Execute Summary And Runtime-Free Status**
+- [x] **Task 7: Generate Execute Summary And Runtime-Free Status**
   > Executes: `Decision 3`, `Decision 4`, `Decision 8`, `Documentation`, `Observability`, `REQ-23-48`, `REQ-23-49`
-  - [ ] Add `execute.md` summary rendering that cites `plan.md`, lists task counts by terminal state, records completion evidence, records actionable failed-task diagnostics or `.run-state.json` pointers, and avoids claiming deferred behavior completion.
-  - [ ] Update sprint status to compute execute readiness/progress from prerequisite validation, `flow-state.json`, `.run-state.json`, and `execute.md` without invoking runtime.
-  - [ ] Add `execute.md` validation checks for required sections, plan citation, task counts, terminal states, evidence/diagnostic entries, and absence of smoke/review/issues/Git mutation claims.
-  - [ ] Add golden tests for `execute.md`, text status, JSON status, stale summary indicators where applicable, and status behavior when run state is missing, malformed, in progress, failed, or complete.
+  - [x] Add `execute.md` summary rendering that cites `plan.md`, lists task counts by terminal state, records completion evidence, records actionable failed-task diagnostics or `.run-state.json` pointers, and avoids claiming deferred behavior completion.
+  - [x] Update sprint status to compute execute readiness/progress from prerequisite validation, `flow-state.json`, `.run-state.json`, and `execute.md` without invoking runtime.
+  - [x] Add `execute.md` validation checks for required sections, plan citation, task counts, terminal states, evidence/diagnostic entries, and absence of smoke/review/issues/Git mutation claims.
+  - [x] Add golden tests for `execute.md`, text status, JSON status, stale summary indicators where applicable, and status behavior when run state is missing, malformed, in progress, failed, or complete.
 
-- [ ] **Task 8: Integrate Execute Into Flow And Validation**
+- [x] **Task 8: Integrate Execute Into Flow And Validation**
   > Executes: `Decision 1`, `Decision 2`, `Decision 8`, `Decision 9`, `Workflows`, `REQ-23-40`, `REQ-23-48`, `REQ-23-51`
-  - [ ] Update sprint flow so `execute` is allowed only after valid prerequisites through `plan.md` and deferred targets such as `smoke`, `review`, and `issues` are rejected as out of scope.
-  - [ ] Update `flow-state.json` handling to represent execute readiness, progress, success, failure, and prerequisite failures without adding deferred stages.
-  - [ ] Ensure `validate execute` checks prerequisites, task extractability, target safety, run-state validity when present, and `execute.md` validity when produced.
-  - [ ] Add flow and validation tests for missing prerequisites, invalid plan, no executable tasks, execute readiness, execute failure status, complete status, rejected deferred stages, and runtime-free validation/status paths.
+  - [x] Update sprint flow so `execute` is allowed only after valid prerequisites through `plan.md` and deferred targets such as `smoke`, `review`, and `issues` are rejected as out of scope.
+  - [x] Update `flow-state.json` handling to represent execute readiness, progress, success, failure, and prerequisite failures without adding deferred stages.
+  - [x] Ensure `validate execute` checks prerequisites, task extractability, target safety, run-state validity when present, and `execute.md` validity when produced.
+  - [x] Add flow and validation tests for missing prerequisites, invalid plan, no executable tasks, execute readiness, execute failure status, complete status, rejected deferred stages, and runtime-free validation/status paths.
 
-- [ ] **Task 9: Wire App And CLI Commands Thinly**
+- [x] **Task 9: Wire App And CLI Commands Thinly**
   > Executes: `Decision 8`, `CLI Surface`, `Errors`, `Testing`, `REQ-23-40`, `REQ-23-48`
-  - [ ] Add app/use-case request and result types for execute validation, prompt preview, flow through execute, task execution, selected task, dry-run, resume, and status output.
-  - [ ] Wire CLI commands and flags for `ultraplan sprint <project> <sprint> validate execute`, execute prompt preview, execute-stage flow handling, `execute`, `execute --task <id>`, dry-run/prompt preview, text/JSON status, help, and exit-code mapping.
-  - [ ] Keep command handlers limited to parsing, dependency construction, use-case calls, and output rendering; do not put task extraction, runtime execution, state transitions, or validation policy in command glue.
-  - [ ] Add command tests for help, usage errors, invalid prerequisites, invalid stages, dry-run/prompt preview, selected task, runtime failure, validation failure, partial completion, cancellation exit code, text output, JSON output, and status without runtime.
+  - [x] Add app/use-case request and result types for execute validation, prompt preview, flow through execute, task execution, selected task, dry-run, resume, and status output.
+  - [x] Wire CLI commands and flags for `ultraplan sprint <project> <sprint> validate execute`, execute prompt preview, execute-stage flow handling, `execute`, `execute --task <id>`, dry-run/prompt preview, text/JSON status, help, and exit-code mapping.
+  - [x] Keep command handlers limited to parsing, dependency construction, use-case calls, and output rendering; do not put task extraction, runtime execution, state transitions, or validation policy in command glue.
+  - [x] Add command tests for help, usage errors, invalid prerequisites, invalid stages, dry-run/prompt preview, selected task, runtime failure, validation failure, partial completion, cancellation exit code, text output, JSON output, and status without runtime.
 
-- [ ] **Task 10: Enforce Deferred Behavior Exclusions And Dependency Boundaries**
+- [x] **Task 10: Enforce Deferred Behavior Exclusions And Dependency Boundaries**
   > Executes: `Decision 1`, `Decision 5`, `Decision 9`, `Architecture`, `Security`, `REQ-23-43`, `REQ-23-51`
-  - [ ] Review execute implementation for forbidden imports or calls: no study services/models, no direct OpenCode/opencode adapter calls from sprint/app product code except through platform runtime composition, no shelling out to runtime tools, and no native runtime stream parsing.
-  - [ ] Ensure no execute path creates `smoke.md`, `smoke.json`, generated `review.md`, `issues.md`, `issues.json`, Git add/commit/push/branch/PR/checkout/reset behavior, hosted/browser UI, TUI behavior, or cross-sprint scheduling.
-  - [ ] Add regression tests or focused review assertions for rejected stages, forbidden artifacts, forbidden command families, no Git mutation, no study-service reuse, and platform/runtime product-agnostic imports.
-  - [ ] Record any required deviation from `reasoning.md` before implementation continues rather than silently expanding scope.
+  - [x] Review execute implementation for forbidden imports or calls: no study services/models, no direct OpenCode/opencode adapter calls from sprint/app product code except through platform runtime composition, no shelling out to runtime tools, and no native runtime stream parsing.
+  - [x] Ensure no execute path creates `smoke.md`, `smoke.json`, generated `review.md`, `issues.md`, `issues.json`, Git add/commit/push/branch/PR/checkout/reset behavior, hosted/browser UI, TUI behavior, or cross-sprint scheduling.
+  - [x] Add regression tests or focused review assertions for rejected stages, forbidden artifacts, forbidden command families, no Git mutation, no study-service reuse, and platform/runtime product-agnostic imports.
+  - [x] Record any required deviation from `reasoning.md` before implementation continues rather than silently expanding scope.
 
-- [ ] **Task 11: Complete Verification And Review Evidence**
+- [x] **Task 11: Complete Verification And Review Evidence**
   > Executes: `Decision 10`, `Testing`, `Architecture`, `REQ-23-50`
-  - [ ] Run focused unit, command, fake-runtime, fixture, and golden tests covering execute task extraction, state, flow, status, prompts, validation, target safety, model resolution, and non-goals.
-  - [ ] Run `go test ./...` from `../ultraplan-go` and save the result in implementation notes for review.
-  - [ ] Run `go test -race ./...` from `../ultraplan-go` and save the result in implementation notes for review.
-  - [ ] Run `go build ./cmd/ultraplan` from `../ultraplan-go` and save the result in implementation notes for review.
-  - [ ] Prepare architecture and sprint review evidence using `system/protocols/architecture-review-protocol.md` and `system/protocols/sprint-review-protocol.md`, including import review, command evidence, fake-runtime evidence, and non-goal exclusions.
+  - [x] Run focused unit, command, fake-runtime, fixture, and golden tests covering execute task extraction, state, flow, status, prompts, validation, target safety, model resolution, and non-goals.
+  - [x] Run `go test ./...` from `../ultraplan-go` and save the result in implementation notes for review.
+  - [x] Run `go test -race ./...` from `../ultraplan-go` and save the result in implementation notes for review.
+  - [x] Run `go build ./cmd/ultraplan` from `../ultraplan-go` and save the result in implementation notes for review.
+  - [x] Prepare architecture and sprint review evidence using `system/protocols/architecture-review-protocol.md` and `system/protocols/sprint-review-protocol.md`, including import review, command evidence, fake-runtime evidence, and non-goal exclusions.
 
 ## Evidence Checklist
 
-- [ ] Tests prove required execute behavior from validated `plan.md` through task extraction, runtime request construction, durable state, evidence gating, summary/status, and flow integration.
-- [ ] Runtime or diagnostic evidence exists where required, using deterministic fake runtimes for normal acceptance.
-- [ ] Documentation and help/status updates are complete where required.
-- [ ] Deviations from `reasoning.md` are recorded before implementation continues.
-- [ ] Required review protocols have evidence: `system/protocols/architecture-review-protocol.md` and `system/protocols/sprint-review-protocol.md`.
-- [ ] Import/code review confirms dependency direction and product/runtime separation.
-- [ ] Non-goal regression evidence confirms no smoke, review automation, issue tracking, Git mutation, hosted/browser UI, TUI behavior, cross-sprint scheduling, or study-service reuse.
+- [x] Tests prove required execute behavior from validated `plan.md` through task extraction, runtime request construction, durable state, evidence gating, summary/status, and flow integration.
+- [x] Runtime or diagnostic evidence exists where required, using deterministic fake runtimes for normal acceptance.
+- [x] Documentation and help/status updates are complete where required.
+- [x] Deviations from `reasoning.md` are recorded before implementation continues.
+- [x] Required review protocols have evidence: `system/protocols/architecture-review-protocol.md` and `system/protocols/sprint-review-protocol.md`.
+- [x] Import/code review confirms dependency direction and product/runtime separation.
+- [x] Non-goal regression evidence confirms no smoke, review automation, issue tracking, Git mutation, hosted/browser UI, TUI behavior, cross-sprint scheduling, or study-service reuse.
 
 ## Verification Commands
 
@@ -164,13 +164,13 @@ Run verification commands from `../ultraplan-go`.
 
 | Risk / Blocker | Source | Mitigation | Status |
 | --- | --- | --- | --- |
-| Valid `plan.md` task structure may be too loose for deterministic extraction. | `reasoning.md#assumptions-and-risks`; `technical-handbook.md#open-questions-for-reasoning` | Reject unsupported or ambiguous tasks before runtime and require plan repair. | open |
+| Valid `plan.md` task structure may be too loose for deterministic extraction. | `reasoning.md#assumptions-and-risks`; `technical-handbook.md#open-questions-for-reasoning` | Reject unsupported or ambiguous tasks before runtime and require plan repair. | mitigated |
 | Runtime-created edits can conflict across tasks. | `reasoning.md#decision-6-execute-runs-conservatively-and-resumes-safely`; `reasoning/architecture.md#performance-and-scale-assumptions` | Run serially by default and defer parallel execution until conflict controls are designed. | mitigated by plan |
-| `.run-state.json` can drift from target repository reality if evidence is weak. | `reasoning.md#assumptions-and-risks` | Require evidence or explicit safe diagnostic before marking complete; persist missing-evidence failures. | partly mitigated by Task 1 schema and strict state validation; evidence gate remains open for runner work |
-| Diagnostics may leak secrets or unsafe runtime payloads. | `reasoning.md#decision-5-target-repository-and-runtime-diagnostics-are-safety-gated`; `TRD.md#19-logging-and-diagnostics` | Redact secrets, persist safe summaries only, and record unsafe payload omission facts. | open |
-| Concurrent execute invocations may race on state. | `reasoning.md#potential-technical-debt`; `reasoning.md#assumptions-and-risks` | Use atomic writes and strict reload validation now; add explicit locks only if implementation/review exposes a concrete race. | open |
+| `.run-state.json` can drift from target repository reality if evidence is weak. | `reasoning.md#assumptions-and-risks` | Require evidence or explicit safe diagnostic before marking complete; persist missing-evidence failures. | mitigated |
+| Diagnostics may leak secrets or unsafe runtime payloads. | `reasoning.md#decision-5-target-repository-and-runtime-diagnostics-are-safety-gated`; `TRD.md#19-logging-and-diagnostics` | Redact secrets, persist safe summaries only, and record unsafe payload omission facts. | mitigated |
+| Concurrent execute invocations may race on state. | `reasoning.md#potential-technical-debt`; `reasoning.md#assumptions-and-risks` | Use atomic writes and strict reload validation now; add explicit locks only if implementation/review exposes a concrete race. | accepted follow-up if concurrent execute becomes common |
 | `execute.md` may be stale relative to `.run-state.json`. | `reasoning.md#decision-3-versioned-run-state-is-the-durable-source-of-truth` | Treat `.run-state.json` as source of truth, status reads state, and summary refreshes after execute transitions. | mitigated by plan |
-| Existing platform/runtime seams may not yet support all fake-runtime injection needs. | `reasoning.md#assumptions-and-risks` | Keep runtime dependency injected at app/sprint boundary and refactor composition narrowly if needed. | open |
+| Existing platform/runtime seams may not yet support all fake-runtime injection needs. | `reasoning.md#assumptions-and-risks` | Keep runtime dependency injected at app/sprint boundary and refactor composition narrowly if needed. | mitigated |
 | Target repository layout may differ from `../ultraplan-go`. | `reasoning.md#decision-5-target-repository-and-runtime-diagnostics-are-safety-gated` | Reject alternate layouts this sprint unless future explicit safe configuration is selected. | mitigated by plan |
 | Fake runtime may not reveal provider-specific integration issues. | `reasoning.md#decision-10-verification-uses-deterministic-fake-runtime-evidence` | Keep fake-runtime tests as acceptance; leave real-runtime smoke optional and gated outside normal acceptance. | accepted |
 
@@ -197,16 +197,17 @@ Review should use:
 | `2026-07-09 / Task 2` | Added execute prerequisite validation and deterministic extraction from explicit `plan.md` task checklist entries. | `GOCACHE=/tmp/ultraplan-go-build-cache go test ./internal/sprint` passed. |
 | `2026-07-09 / Task 3` | Added execute target resolver, approved-target enforcement, workdir containment, and non-goal safety instruction coverage. | `GOCACHE=/tmp/ultraplan-go-build-cache go test ./internal/sprint` passed. |
 | `2026-07-09 / Task 4 partial` | Added `planning.execute_model` / `planning.execute_variant` config fields and source-aware execute model precedence. | `GOCACHE=/tmp/ultraplan-go-build-cache go test ./internal/sprint ./internal/platform/config ./internal/app` passed. Remaining: stage-key and empty-value validation coverage. |
+| `2026-07-09 / completion` | Wired execute prompt, validation, flow target, serial runner, `.run-state.json`, `execute.md`, CLI `execute`, selected task, dry-run, resume, and safety exclusions. | `GOCACHE=/tmp/ultraplan-go-build-cache go test ./...`, `GOCACHE=/tmp/ultraplan-go-build-cache go test -race ./...`, and `GOCACHE=/tmp/ultraplan-go-build-cache GOMODCACHE=/tmp/ultraplan-go-mod-cache go build ./cmd/ultraplan` passed. |
 
 ## Completion Criteria
 
-- [ ] All tasks are complete or explicitly deferred.
-- [ ] Verification commands were run or deferrals are documented.
-- [ ] Evidence satisfies the expectations from `reasoning.md`.
-- [ ] `review.md` can evaluate conformance without guessing intent.
-- [ ] Execute implementation preserves sprint-owned semantics and generic runtime separation.
-- [ ] `.run-state.json` is durable source of truth and `execute.md` is reviewable summary only.
-- [ ] Execute refuses invalid prerequisites and unsupported plan tasks before runtime launch.
-- [ ] Task completion requires expected evidence or explicit safe diagnostic.
-- [ ] Target path safety and diagnostic redaction are verified.
-- [ ] Deferred smoke, review, issue, Git mutation, TUI, hosted/browser, and cross-sprint scheduling behavior remains absent.
+- [x] All tasks are complete or explicitly deferred.
+- [x] Verification commands were run or deferrals are documented.
+- [x] Evidence satisfies the expectations from `reasoning.md`.
+- [x] `review.md` can evaluate conformance without guessing intent.
+- [x] Execute implementation preserves sprint-owned semantics and generic runtime separation.
+- [x] `.run-state.json` is durable source of truth and `execute.md` is reviewable summary only.
+- [x] Execute refuses invalid prerequisites and unsupported plan tasks before runtime launch.
+- [x] Task completion requires expected evidence or explicit safe diagnostic.
+- [x] Target path safety and diagnostic redaction are verified.
+- [x] Deferred smoke, review, issue, Git mutation, TUI, hosted/browser, and cross-sprint scheduling behavior remains absent.
