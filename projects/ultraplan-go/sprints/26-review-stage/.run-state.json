@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "project": "ultraplan-go",
+  "sprint": "26-review-stage",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan-go",
+    "source": "projects/ultraplan-go/project-index.md"
+  },
+  "planPath": "projects/ultraplan-go/sprints/26-review-stage/plan.md",
+  "planFingerprint": "f4307270a5b111759c056200a5cf01e5f77c0d2482d7ba5c92188e920c42d7b6",
+  "createdAt": "2026-07-19T20:26:47Z",
+  "updatedAt": "2026-07-19T20:26:47Z",
+  "status": "complete",
+  "completedAt": "2026-07-19T20:26:47Z",
+  "files": [
+    "internal/app/config_commands.go",
+    "internal/app/operations.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/tui_commands.go",
+    "internal/app/usecases.go",
+    "internal/platform/config/config.go",
+    "internal/platform/config/redaction.go",
+    "internal/sprint/artifacts.go",
+    "internal/sprint/domain.go",
+    "internal/sprint/flow.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/study/run_loop.go",
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/workspace/init.go",
+    "internal/workspace/scaffold/prompts/review.md",
+    "internal/workspace/scaffold/templates/review.md",
+    "internal/workspace/workspace_test.go"
+  ],
+  "testsRun": [
+    "go test ./internal/sprint/...: pass",
+    "go test ./internal/app/...: pass",
+    "go test ./internal/tui/...: pass",
+    "go test ./internal/workspace/...: pass",
+    "go test ./internal/sprint ./internal/app ./internal/tui ./internal/workspace ./internal/platform/config: pass",
+    "go test ./...: pass",
+    "go test -race ./...: pass",
+    "go build ./cmd/ultraplan: pass",
+    "ultraplan sprint ultraplan-go 26-review-stage validate plan: pass"
+  ],
+  "blockers": [],
+  "tasks": [
+    {"id":"task-1","identity":{"name":"Extend Review Domain And Flow State","planLine":71,"decisions":["Decision 1","Decision 5"],"requirements":["AC-09","AC-10","AC-13","AC-14"],"evidence":["internal/sprint/domain.go","internal/sprint/state.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"implementation","summary":"review domain and state","path":"internal/sprint/domain.go"}]},
+    {"id":"task-2","identity":{"name":"Resolve And Freeze The Review Manifest","planLine":81,"decisions":["Decision 2"],"requirements":["AC-01","AC-02","AC-03","AC-04","AC-16"],"evidence":["internal/sprint/review.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"implementation","summary":"frozen fingerprinted manifest","path":"internal/sprint/review.go"}]},
+    {"id":"task-3","identity":{"name":"Orchestrate Independent Read-Only Reviewers","planLine":93,"decisions":["Decision 3","Decision 7"],"requirements":["AC-05","AC-06","AC-07","AC-11","AC-20"],"evidence":["internal/sprint/review.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"test","summary":"bounded collect-all read-only fan-out","path":"internal/sprint/review_test.go"}]},
+    {"id":"task-4","identity":{"name":"Validate Evidence And Synthesize The Verdict","planLine":106,"decisions":["Decision 4"],"requirements":["AC-07","AC-08","AC-09","AC-10","AC-20"],"evidence":["internal/sprint/review.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"test","summary":"schema citation and verdict tests","path":"internal/sprint/review_test.go"}]},
+    {"id":"task-5","identity":{"name":"Render Validate Persist And Reconcile Current Evidence","planLine":118,"decisions":["Decision 5"],"requirements":["AC-09","AC-11","AC-12","AC-13","AC-14"],"evidence":["internal/sprint/review.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"test","summary":"atomic persistence and freshness","path":"internal/sprint/review_test.go"}]},
+    {"id":"task-6","identity":{"name":"Expose Shared App Use Cases And CLI Surfaces","planLine":131,"decisions":["Decision 1","Decision 6"],"requirements":["AC-14","AC-15","AC-16","AC-17","AC-18"],"evidence":["internal/app/sprint_commands.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"implementation","summary":"CLI and shared typed operations","path":"internal/app/sprint_commands.go"}]},
+    {"id":"task-7","identity":{"name":"Add TUI Review Operation Parity","planLine":143,"decisions":["Decision 1","Decision 6"],"requirements":["AC-17","AC-18"],"evidence":["internal/tui/model.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"test","summary":"TUI review navigation and operation wiring","path":"internal/tui/model_test.go"}]},
+    {"id":"task-8","identity":{"name":"Complete Embedded Review Assets And Documentation","planLine":154,"decisions":["Decision 8"],"requirements":["AC-09","AC-16","AC-19"],"evidence":["internal/workspace/scaffold/prompts/review.md"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"test","summary":"embedded optional defaults","path":"internal/workspace/workspace_test.go"}]},
+    {"id":"task-9","identity":{"name":"Prove Product Boundaries And Complete Review Protocols","planLine":165,"decisions":["Decision 8"],"requirements":["AC-20","AC-21","RP-01","RP-02"],"evidence":["internal/sprint/review_test.go"]},"status":"complete","attempts":1,"createdAt":"2026-07-19T20:26:47Z","updatedAt":"2026-07-19T20:26:47Z","startedAt":"2026-07-19T20:26:47Z","completedAt":"2026-07-19T20:26:47Z","evidence":[{"kind":"verification","summary":"full test race build and protocol evidence","path":"internal/sprint/review_test.go"}]}
+  ],
+  "metadata": {
+    "executionMode": "plan-driven-manual",
+    "runtime": "not required",
+    "realOpenCodeReview": "optional and not run"
+  }
+}

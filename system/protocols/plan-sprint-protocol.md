@@ -1,8 +1,8 @@
 # Plan Sprint Protocol
 
 > Role: sprint planning protocol.
-> Used by: agents preparing `.ultra/projects/<project>/sprints/<sprint>/plan.md`.
-> Sources: `.ultra/README.md` and `.ultra/prompts/*.md`.
+> Used by: agents preparing `ultraplan-go-workspace/projects/<project>/sprints/<sprint>/plan.md`.
+> Sources: `ultraplan-go-workspace/README.md`, project/sprint inputs, and the prompts/templates embedded in UltraPlan.
 
 This protocol instructs the agent to work from sprint requirements and project index through the Ultra sprint planning artifacts, ending with an evidence-grounded sprint plan. It is a planning protocol only. Do not implement code while using it.
 
@@ -23,17 +23,17 @@ The goal is to produce a sprint plan that can be executed without reopening arch
 The final output is:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/plan.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/plan.md
 ```
 
 Planning may also create or validate these prerequisite artifacts:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
-.ultra/projects/<project>/sprints/<sprint-slug>/sprint-index.md
-.ultra/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning/*.md
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/sprint-index.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning/*.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning.md
 ```
 
 ---
@@ -47,32 +47,29 @@ Identify:
 ```text
 Project: <project>
 Sprint: <sprint-slug>
-Sprint directory: .ultra/projects/<project>/sprints/<sprint-slug>/
+Sprint directory: ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/
 ```
 
 ### Required workspace sources
 
-Read the workflow and prompt guidance before writing planning artifacts:
+Read the workspace workflow guidance before writing planning artifacts:
 
 ```text
-.ultra/README.md
-.ultra/prompts/create-requirements.md
-.ultra/prompts/create-sprint-index.md
-.ultra/prompts/create-technical-handbook.md
-.ultra/prompts/create-area-reasoning.md
-.ultra/prompts/create-sprint-reasoning.md
-.ultra/prompts/plan-sprint.md
+ultraplan-go-workspace/README.md
 ```
 
-Use templates from:
+Render the current stage guidance, including its embedded output template, through UltraPlan:
 
 ```text
-.ultra/system/templates/requirements.md
-.ultra/system/templates/sprint-index.md
-.ultra/system/templates/technical-handbook.md
-.ultra/system/templates/sprint-reasoning.md
-.ultra/system/templates/sprint-plan.md
+ultraplan --workspace ultraplan-go-workspace sprint <project> <sprint-slug> prompt requirements
+ultraplan --workspace ultraplan-go-workspace sprint <project> <sprint-slug> prompt sprint-index
+ultraplan --workspace ultraplan-go-workspace sprint <project> <sprint-slug> prompt technical-handbook
+ultraplan --workspace ultraplan-go-workspace sprint <project> <sprint-slug> prompt area-reasoning
+ultraplan --workspace ultraplan-go-workspace sprint <project> <sprint-slug> prompt reasoning
+ultraplan --workspace ultraplan-go-workspace sprint <project> <sprint-slug> prompt plan
 ```
+
+Do not require a workspace `prompts/` or `templates/` directory. UltraPlan falls back to embedded defaults. Files at those paths are intentional local overrides and should be materialized with `ultraplan defaults install` only when customization is required.
 
 If an artifact already exists, inspect it before deciding whether to keep it, update it, or stop for missing inputs. Do not overwrite complete artifacts casually.
 
@@ -80,7 +77,7 @@ If an artifact already exists, inspect it before deciding whether to keep it, up
 
 ## 2. Planning Flow Order
 
-Follow the Ultra sprint flow order from `.ultra/README.md`:
+Follow the Ultra sprint flow order from `ultraplan-go-workspace/README.md`:
 
 ```text
 requirements
@@ -104,11 +101,10 @@ Do not create implementation files during this protocol.
 Read:
 
 ```text
-.ultra/projects/<project>/project-index.md
-.ultra/projects/<project>/roadmap.md
-.ultra/projects/<project>/docs/*.md
-.ultra/system/templates/requirements.md
-.ultra/projects/<project>/sprints/*/review.md, if prior sprint reviews exist
+ultraplan-go-workspace/projects/<project>/project-index.md
+ultraplan-go-workspace/projects/<project>/roadmap.md
+ultraplan-go-workspace/projects/<project>/docs/*.md
+ultraplan-go-workspace/projects/<project>/sprints/*/review.md, if prior sprint reviews exist
 ```
 
 ### Output
@@ -116,7 +112,7 @@ Read:
 Write or validate:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
 ```
 
 ### Rules
@@ -139,10 +135,9 @@ Do not invent requirements from implementation preferences.
 Read in this order:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
-.ultra/projects/<project>/project-index.md
-.ultra/projects/<project>/docs/*.md
-.ultra/system/templates/sprint-index.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/project-index.md
+ultraplan-go-workspace/projects/<project>/docs/*.md
 ```
 
 ### Output
@@ -150,7 +145,7 @@ Read in this order:
 Write or validate:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/sprint-index.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/sprint-index.md
 ```
 
 ### Rules
@@ -173,9 +168,8 @@ If selected sections are empty, still contain placeholders, or reference items a
 Read:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/sprint-index.md
-.ultra/system/templates/technical-handbook.md
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/sprint-index.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
 ```
 
 Then read only the evidence reports selected in the sprint index.
@@ -185,7 +179,7 @@ Then read only the evidence reports selected in the sprint index.
 Write or validate:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
 ```
 
 ### Rules
@@ -214,10 +208,10 @@ If no area reasoning templates are selected, record that area reasoning is skipp
 Read:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
-.ultra/projects/<project>/docs/*.md
-.ultra/system/reasoning/<selected-template>.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/docs/*.md
+ultraplan-go-workspace/system/reasoning/<selected-template>.md
 ```
 
 ### Output
@@ -225,7 +219,7 @@ Read:
 For each selected area, write or validate:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning/<area>.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning/<area>.md
 ```
 
 ### Rules
@@ -248,13 +242,12 @@ Area reasoning may make area-specific decisions, but final sprint-wide decisions
 Read in this order:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
-.ultra/projects/<project>/project-index.md
-.ultra/projects/<project>/docs/*.md
-.ultra/projects/<project>/sprints/<sprint-slug>/sprint-index.md
-.ultra/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning/*.md, if present
-.ultra/system/templates/sprint-reasoning.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/project-index.md
+ultraplan-go-workspace/projects/<project>/docs/*.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/sprint-index.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning/*.md, if present
 ```
 
 ### Output
@@ -262,7 +255,7 @@ Read in this order:
 Write or validate:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning.md
 ```
 
 ### Rules
@@ -296,14 +289,13 @@ The reasoning must be specific enough that `plan.md` can execute without reopeni
 Read in this order:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/requirements.md
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning.md
-.ultra/projects/<project>/sprints/<sprint-slug>/sprint-index.md
-.ultra/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
-.ultra/projects/<project>/sprints/<sprint-slug>/reasoning/*.md, if present
-.ultra/projects/<project>/docs/*.md
-.ultra/projects/<project>/project-index.md
-.ultra/system/templates/sprint-plan.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/requirements.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/sprint-index.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/technical-handbook.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/reasoning/*.md, if present
+ultraplan-go-workspace/projects/<project>/docs/*.md
+ultraplan-go-workspace/projects/<project>/project-index.md
 ```
 
 Open linked final reports only when a specific implementation decision needs deeper evidence. Resolve code references only for specific implementation questions.
@@ -313,7 +305,7 @@ Open linked final reports only when a specific implementation decision needs dee
 Write or validate:
 
 ```text
-.ultra/projects/<project>/sprints/<sprint-slug>/plan.md
+ultraplan-go-workspace/projects/<project>/sprints/<sprint-slug>/plan.md
 ```
 
 ### Rules

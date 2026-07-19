@@ -1,8 +1,8 @@
 # UltraPlan Go Roadmap
 
 > Project: `ultraplan-go`  
-> Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution through `execute`, and a local terminal UI over the same workflows.
-> Phase 1 completed the study-side release scope. Phase 2 adds governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Phase 3 adds a local TUI in three increments: read-only dashboard, operational workflow controls, and full workflow cockpit. Smoke, review automation, issue tracking, hosted SaaS, browser UI, multi-user collaboration, and automatic Git mutation remain deferred.
+> Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution, post-execute review and deep smoke, and a local terminal UI over the same workflows.
+> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Hosted SaaS, browser UI, multi-user collaboration, general-purpose issue tracking, and automatic Git mutation remain deferred.
 
 ## Scope Principle
 
@@ -27,7 +27,7 @@ Phase 2 introduces the planning side of UltraPlan:
 study -> select -> distill -> reason -> plan -> execute
 ```
 
-Phase 2 now includes controlled implementation execution from validated sprint plans. The following remain out of scope until a later requirements revision:
+Phase 2 now includes controlled implementation execution from validated sprint plans. The following are outside Phase 2; review and smoke enter scope in Product Phase 3 while the other items remain deferred:
 
 - smoke investigation runs
 - conformance review automation
@@ -37,13 +37,21 @@ Phase 2 now includes controlled implementation execution from validated sprint p
 - browser UI
 - multi-user collaboration
 
-Phase 3 introduces a local terminal UI. It must use shared application use cases and product services instead of scraping CLI text or invoking `ultraplan` as a subprocess for normal UltraPlan operations.
+The TUI enabling track introduced a local terminal UI. It uses shared application use cases and product services instead of scraping CLI text or invoking `ultraplan` as a subprocess for normal UltraPlan operations.
+
+Sprints 24 and 25 delivered that TUI foundation before the next product phase. Product Phase 3 is the post-execute verification phase:
+
+```text
+study -> select -> distill -> reason -> plan -> execute -> review -> smoke
+```
+
+Review runs first because it is cheaper and more deterministic than live smoke. A blocking review verdict stops the default flow before smoke. Deep smoke then proves runtime-facing claims through the external harness cataloged by the project index. The sprint root keeps only the human-readable `review.md` and `smoke.md`; detailed smoke runs and issue evidence remain in the external smoke harness.
 
 ---
 
 # Current Implementation Roadmap
 
-## Phase 0 — Governance and Scope Alignment
+## Implementation Wave 0 — Governance and Scope Alignment
 
 ### Sprint 0: Roadmap, Scope, and Template Alignment
 
@@ -63,15 +71,17 @@ reasoning/*.md
 reasoning.md
 plan.md
 execute.md
+flow-state.json
 .run-state.json
 review.md
+smoke.md
 ```
 
 **Acceptance:**
 
 - Roadmap is accepted.
 - TRD target/sprint references are removed or clearly marked deferred.
-- Template names match the canonical artifact chain.
+- Embedded prompt/template defaults and generated artifact names match the canonical chain; workspace copies remain optional overrides.
 - Contract reviews use the phase gates below rather than applying production-only requirements to skeleton sprints.
 
 ## Contract Phase Gates
@@ -145,7 +155,7 @@ Required then:
 
 ---
 
-## Phase 1 — CLI Foundation
+## Study Implementation Wave 1 — CLI Foundation
 
 ### Sprint 1: Go Module, CLI Shell, and App Composition
 
@@ -203,7 +213,7 @@ ultraplan health
 
 ---
 
-## Phase 2 — Study Model and Initialization
+## Study Implementation Wave 2 — Study Model and Initialization
 
 ### Sprint 3: Study Domain, Listing, and Resolution
 
@@ -275,7 +285,7 @@ GetApplicableSources(sources []Source, dimension Dimension) []Source
 
 ---
 
-## Phase 3 — Reports, Prompt Composition, and Run State
+## Study Implementation Wave 3 — Reports, Prompt Composition, and Run State
 
 ### Sprint 6: Report Validation and Rating Parsing
 
@@ -337,7 +347,7 @@ ultraplan study <study> status
 
 ---
 
-## Phase 4 — Runtime and Prompt Execution
+## Study Implementation Wave 4 — Runtime and Prompt Execution
 
 ### Sprint 9: Agentwrap/OpenCode Runtime Integration
 
@@ -381,7 +391,7 @@ ultraplan study <study> synthesize <dimension-ref>
 
 ---
 
-## Phase 5 — Batch Execution and Resumability
+## Study Implementation Wave 5 — Batch Execution and Resumability
 
 ### Sprint 11: `run-all` Batch Execution
 
@@ -447,7 +457,7 @@ ultraplan code <report>...
 
 ---
 
-## Phase 6 — Hardening and Release
+## Study Implementation Wave 6 — Hardening and Release
 
 ### Sprint 14: Validation Command, Diagnostics, and JSON Stability
 
@@ -537,17 +547,14 @@ flow-state.json
 .run-state.json
 ```
 
-The following artifacts remain future scope:
+The following artifacts are added by Product Phase 3, not Planning Phase 2:
 
 ```text
-smoke.md
-smoke.json
 review.md
-issues.md
-issues.json
+smoke.md
 ```
 
-Existing historical sprint `review.md` files may remain in project history, but Planning Phase 2 does not generate or automate reviews.
+Detailed smoke run data and issue evidence stay in the external smoke harness. General-purpose `issues.md` / `issues.json` artifacts remain deferred. Existing historical sprint `review.md` and `deep-smoke.md` files may remain until Phase 3 migration replaces them with the current generated `review.md` and `smoke.md`; Planning Phase 2 itself does not generate or automate either stage.
 
 ## Planning Phase 2 Contract Gate
 
@@ -746,7 +753,7 @@ plus gated planning-runtime smoke when environment is available.
 
 ---
 
-# Post-Execute TUI Phase — Local Terminal UI
+# Delivered TUI Enabling Track — Local Terminal UI
 
 The post-execute TUI phase adds a TUI without changing the workspace model or making the CLI secondary. The TUI is a local terminal surface over existing product services and durable artifacts.
 
@@ -838,29 +845,186 @@ Not required for TUI sprints:
 - CLI command behavior remains unchanged.
 - External terminal-library types remain contained inside `internal/tui`; app and product result types stay plain Go data.
 
-### Sprint 26: Full Workflow Cockpit and TUI Release
+---
 
-**Goal:** make the TUI a complete local cockpit for normal UltraPlan operation while keeping the CLI stable for automation.
+# Product Phase 3 — Review and Deep Smoke
+
+Product Phase 3 completes the governed sprint workflow after `execute`:
+
+```text
+requirements
+  -> sprint-index
+  -> technical-handbook
+  -> area-reasoning
+  -> reasoning
+  -> plan
+  -> execute
+  -> review
+  -> smoke
+```
+
+The phase deliberately keeps its sprint artifacts simple:
+
+```text
+review.md
+smoke.md
+```
+
+`review.md` is the current automated conformance review and replaces the older manually produced review when the review stage is run. `smoke.md` is the current sprint smoke summary. Raw smoke JSON, command output, per-test artifacts, and open/resolved issue files remain under the external smoke harness referenced by `project-index.md`; `smoke.md` links the relevant run IDs and evidence paths.
+
+## Phase 3 Contract Gate
+
+Required for Phase 3:
+
+- `internal/sprint` owns review and smoke stage semantics, validation, prompt construction, artifact paths, flow ordering, and verdict rules.
+- `internal/platform/runtime` remains generic and executes structured review requests through agentwrap without learning sprint or contract semantics.
+- External smoke execution uses an explicit executable plus argument list, bounded environment forwarding, `context.Context`, timeout, and cancellation; it must not evaluate a shell command assembled from Markdown.
+- Review resolves selected contracts and review protocols from `project-index.md`; it does not hardcode a fixed contract map.
+- Reviewers are read-only and return structured results. UltraPlan synthesizes the final verdict and atomically writes `review.md`.
+- Review runs before smoke. Blocking or high-severity applicable review findings stop the default flow before smoke.
+- Smoke selects the narrowest harness suite that covers the sprint, records why it is sufficient, and atomically writes `smoke.md` with links to the external evidence.
+- Missing required runtime, credentials, harness coverage, or environment produces a blocked result, never a false pass.
+- Runtime-free or otherwise irrelevant smoke scope is reported as `not_applicable`, not as a passing run.
+- A code, contract, handbook, reasoning, plan, or execute-state change makes prior review and smoke results stale until rerun.
+- Review and smoke do not modify product source, product tests, governed planning artifacts, or Git state. The smoke harness may update its own tests, runs, and issue evidence only through a separate harness-maintenance action.
+- CLI and TUI call the same typed app use cases. Every Phase 3 sprint updates the TUI for the functionality introduced by that sprint.
+- Phase 3 prompt and output-template defaults ship embedded in UltraPlan. Workspace `prompts/` and `templates/` files remain optional intentional overrides and are never stage prerequisites.
+- Default tests use fake runtimes and a fake smoke harness. Real OpenCode and live smoke remain gated.
+
+Still deferred:
+
+- general-purpose issue tracking, assignment, scheduling, and remote issue synchronization
+- automatic product fixes during review or smoke
+- Git add, commit, push, branch, merge, or reset
+- hosted review services, browser UI, and multi-user collaboration
+- cross-project or cross-sprint verification scheduling
+
+### Sprint 26: Automated Sprint Review
+
+**Goal:** replace the manual sprint review with a product-owned, evidence-grounded review stage that writes the current `review.md` and is fully operable from the TUI.
 
 **Build:**
 
-- integrated project -> sprint -> stage workflow navigation
-- integrated study -> task -> report workflow navigation
-- artifact preview with validation context and related action shortcuts
-- prompt preview and generated-output inspection flows
-- run history and cost/usage summaries where available
-- execute task detail view with attempts, evidence, diagnostics, and runtime metadata
-- resilient refresh behavior for external file edits
-- terminal resize polish and narrow-layout fallbacks
-- TUI user docs and recovery docs
-- TUI smoke checklist
+- Phase 3 domain additions in `internal/sprint` for review scope, reviewer tasks, findings, verdicts, validation, and flow integration
+- dynamic selected-contract and selected-review-protocol resolution through `project-index.md`
+- a frozen review manifest held in run state while the command executes, including governed input hashes, target implementation identity, changed-path scope, plan tasks, and execute evidence
+- one independent, structured agentwrap review request per selected contract plus one technical-handbook review request
+- bounded review concurrency, cancellation, retry, and in-process resume of completed reviewer results
+- read-only reviewer permissions and validated structured reviewer output
+- deterministic checks for decision conformance, plan-task execution evidence, verification-command results, citation containment, and missing reviewer coverage
+- deterministic severity and verdict synthesis; an LLM may summarize findings but cannot choose the machine verdict
+- updated embedded review prompt and `review.md` output-template defaults, available for optional customization through `ultraplan defaults install`
+- atomic replacement of sprint-root `review.md`
+- `ultraplan sprint <project> <sprint> review`
+- review support in `status`, `validate review`, `prompt review`, and `flow --to review`
+- text and stable JSON output
+- TUI review readiness/status, dry-run and prompt preview, confirmation, live reviewer progress, cancellation, result display, finding navigation, and `review.md` preview
 
 **Acceptance:**
 
-- A user can inspect projects, plan sprint artifacts, run guarded planning/execute actions, monitor study run-loop progress, inspect failures, and open relevant artifacts without leaving the TUI for normal local operation.
-- All TUI actions map to documented CLI concepts and shared app use cases.
-- TUI state recovers cleanly after failed runtime actions, cancellation, terminal resize, and external artifact edits.
-- Release gate includes `go test ./...`, `go build ./cmd/ultraplan`, deterministic TUI model tests, and gated interactive smoke where practical.
+- Review requires valid prerequisites through `execute`, unless an explicit review-only diagnostic mode is later approved.
+- Every selected contract resolves from the project catalog; missing, duplicate, unknown, or escaping paths fail preflight.
+- Review does not assume the runtime can spawn subagents; UltraPlan owns bounded fan-out over independent runtime calls.
+- A failed reviewer task is recorded and cannot be silently converted into a passing review.
+- Applicable blocker/high findings produce `fail`; only medium/low/info findings may produce `pass_with_findings`.
+- All citations are workspace/target-contained and checked before the final artifact is accepted.
+- Runtime success is insufficient: `review.md` must exist, contain the required sections, and pass review validation before the stage is complete.
+- Re-running review atomically replaces the old manual or generated `review.md`; unrelated sprint artifacts are unchanged.
+- TUI and CLI expose the same options, progress, cancellation, and final verdict through shared typed use cases.
+- Offline fake-runtime tests, `go test ./...`, `go test -race ./...`, and `go build ./cmd/ultraplan` pass.
+
+### Sprint 27: Deep Smoke Harness Integration
+
+**Goal:** run the narrowest sufficient real-system smoke after review, keep raw evidence in the external harness, write the current sprint `smoke.md`, and expose the full operation through the TUI.
+
+**Build:**
+
+- a versioned smoke-harness manifest in `ultraplan-go-smoke` describing its entrypoint, supported discovery/run commands, evidence directories, and protocol version
+- project-index discovery of the harness and its manifest
+- structured harness discovery for levels, suites, tests, prerequisites, expected duration/cost class, and sprint mappings
+- safe external-process execution without shell interpolation
+- review-verdict gate, smoke preflight, narrowest-sufficient suite selection, explicit level/suite/test overrides, and dry-run
+- timeout, cancellation, descendant-process cleanup, and post-cancel evidence refresh
+- structured import of run ID, command arguments, result counts, model/runtime, duration, evidence paths, hashes, and relevant open/resolved issue IDs
+- an embedded `smoke.md` output-template default, available for optional customization through `ultraplan defaults install`; no workspace template is required
+- atomic replacement of sprint-root `smoke.md`
+- `ultraplan sprint <project> <sprint> smoke`
+- smoke support in `status`, `validate smoke`, and `flow --to smoke`
+- text and stable JSON output
+- TUI smoke readiness/status, scope selection, prerequisite display, cost/duration class, confirmation, live suite/test progress, cancellation, result display, issue summary, and `smoke.md` preview
+
+**Acceptance:**
+
+- Smoke runs after a passing or non-blocking review by default; an explicit force flag is required to investigate after a failed review.
+- Harness commands and models are discovered or explicitly configured; no developer-specific absolute command is built into the protocol.
+- The product never treats README prose as an executable command.
+- Raw evidence remains in the smoke harness `runs/` and `issues/` directories. `smoke.md` contains stable run IDs and links rather than copying the full evidence set.
+- A failing selected smoke path produces `fail`; unavailable required prerequisites produce `blocked`; irrelevant smoke produces `not_applicable`.
+- Product source and governed sprint inputs remain unchanged.
+- Cancellation terminates the owned process tree and leaves a clear, inspectable result.
+- TUI and CLI expose the same scope, confirmation, progress, cancellation, and verdict through shared typed use cases.
+- Fake-harness tests and gated real-harness tests cover success, failure, blocked, not-applicable, timeout, cancellation, malformed JSON, missing evidence, and path escape.
+
+### Sprint 28: Integrated Review-to-Smoke Verification Flow
+
+**Goal:** make `execute -> review -> smoke` a coherent resumable flow with stale-result detection, focused reruns, clear recovery, and a complete TUI workflow.
+
+**Build:**
+
+- flow ordering and prerequisite enforcement through smoke
+- input fingerprints in flow state for review and smoke freshness
+- combined sprint status showing review and smoke execution state, verdict, artifact, run ID, and required next action
+- `ultraplan sprint <project> <sprint> verify` as a convenience command over the same review/smoke use cases
+- focused review reruns and smoke test/suite reruns without bypassing final containing-suite evidence
+- deterministic overall assessment rendered in status from the current `review.md`, `smoke.md`, flow state, and referenced harness issues; no third assessment artifact is added
+- recovery for interruption, stale inputs, malformed artifacts, missing harness evidence, and externally edited review/smoke summaries
+- TUI end-to-end verification action from execute status through review and smoke, with gate explanations, focused rerun controls, linked raw evidence, current overall assessment, and recovery guidance
+
+**Acceptance:**
+
+- `flow --to smoke` and `verify` always apply review before smoke unless the user explicitly selects a diagnostic override.
+- A governed-input or implementation change marks prior review and smoke evidence stale.
+- A passing narrow smoke test does not hide failure of the containing required suite.
+- Relevant open harness issues prevent a clean smoke pass and are listed in `smoke.md` and status.
+- The overall assessment is deterministic and cannot contradict the stage verdicts.
+- Interrupted review or smoke can be rerun without corrupting flow state or the prior complete Markdown artifact.
+- CLI, JSON, and TUI agree on current state, verdict, staleness, and next action.
+- TUI supports the complete normal Phase 3 workflow without invoking CLI handlers or parsing terminal output.
+
+### Sprint 29: Phase 3 Documentation, Hardening, and Release
+
+**Goal:** stabilize review and smoke as supported CLI and TUI workflows, migrate away from manual artifacts, dogfood the phase, and pass the release gate.
+
+**Build:**
+
+- CLI reference, user guide, TUI guide, recovery guide, configuration reference, smoke-harness guide, migration guide, and release checklist updates
+- stable JSON schema documentation for review, smoke, verify, and status
+- documentation source-of-truth declaration and validation of the single authoritative project planning-doc set
+- migration instructions that allow old manual `review.md` and `deep-smoke.md` files to be removed and replaced by current generated `review.md` and `smoke.md`
+- security/redaction audit, path-containment audit, bounded-concurrency audit, race tests, cancellation tests, and durable-state compatibility fixtures
+- dogfood review and smoke against representative planning, execute, and TUI sprints
+- gated real-runtime test of the review stage and gated real smoke-harness test
+- final TUI Phase 3 polish: review/smoke dashboard summaries, evidence links, responsive progress, error and recovery panes, narrow-terminal behavior, keyboard help, and documentation
+
+**Release gate:**
+
+```bash
+go test ./...
+go test -race ./...
+go build ./cmd/ultraplan
+```
+
+plus:
+
+- fake-runtime review suite passes
+- fake smoke-harness suite passes
+- deliberate contract violation produces a failing `review.md`
+- deliberate runtime behavior failure produces a failing `smoke.md` linked to harness evidence
+- required-environment absence produces blocked, not pass
+- cancellation leaves CLI and TUI state recoverable
+- authoritative project planning docs are internally consistent and current
+- no relevant blocker/high review finding or open smoke issue remains
+- the entire normal `execute -> review -> smoke` workflow is operable from both CLI and TUI
 
 ---
 
@@ -898,3 +1062,23 @@ Before operational TUI starts:
 - [ ] Runtime-backed app use cases support progress callbacks and cancellation.
 - [ ] Confirmation policy for mutating TUI actions is documented.
 - [ ] Fake-runtime TUI test harness exists.
+
+Before automated review starts:
+
+- [x] Phase 3 PRD, TRD, architecture, roadmap, project-index, and protocol updates are accepted; embedded review defaults are updated in Sprint 26.
+- [x] `review.md` is confirmed as the canonical current review artifact and may replace manual review output.
+- [x] Review permissions, selected-contract resolution, verdict policy, and fake-runtime strategy are documented.
+
+Before deep smoke starts:
+
+- [ ] `ultraplan-go-smoke` exposes a versioned machine-readable harness contract.
+- [x] `smoke.md` is confirmed as the canonical sprint summary while detailed evidence stays in the external harness.
+- [x] Review-before-smoke gating, environment classification, timeout, cancellation, and mutation boundaries are documented.
+
+Before Phase 3 release:
+
+- [ ] Review and smoke JSON schemas are stable and documented.
+- [ ] CLI/TUI parity tests cover every Phase 3 operation.
+- [ ] Legacy manual review/deep-smoke migration is documented.
+- [ ] Authoritative planning-doc validation passes.
+- [ ] Phase 3 dogfood evidence exists for review, smoke, cancellation, failure, and recovery paths.

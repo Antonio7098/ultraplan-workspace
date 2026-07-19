@@ -18,7 +18,7 @@ A product module should encapsulate a complete slice of behavior:
 module = state + logic + workflows + validation + persistence adapters + local interface surface
 ```
 
-This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning and execute behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
+This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, review, and smoke behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
 
 CLI and TUI are local interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol.
 
@@ -29,10 +29,11 @@ Prefer this:
 ```text
 internal/study owns its validation, scheduling, reports, prompts, state, and persistence
 internal/project owns project docs, project-index cataloging, and project validation
-internal/sprint owns planning artifacts, planning and execute flow state, prompt rendering, stage validation, and controlled implementation execution through execute
+internal/sprint owns planning artifacts, flow state, prompt rendering, stage validation, controlled implementation through execute, automated review, and external-harness-backed smoke
 internal/codeextract owns its parsing, resolution, extraction, and validation behavior
 internal/workspace owns workspace discovery, path rules, and workspace validation
 internal/platform/runtime owns generic execution only
+internal/platform/process owns safe generic external executable/argv execution only
 internal/app owns local composition and shared use-case wiring for CLI and TUI
 internal/tui owns terminal widgets, navigation, key handling, and rendering only
 ```
@@ -49,7 +50,7 @@ internal/study
 
 Global technical-layer packages look clean at first, but they tend to fracture product context and create cross-module coupling.
 
-## Initial Layout
+## Target Layout
 
 Use a pragmatic Go layout: one package per product module, split by focused files first, and introduce subpackages only when the module grows enough that the boundary improves comprehension.
 
@@ -77,6 +78,8 @@ internal/
       runtime.go            # generic execution interface
       agentwrap.go          # agentwrap integration
       opencode.go           # opencode-specific adapter, if needed
+    process/
+      runner.go             # executable/argv/cwd/env/timeout/cancellation boundary
 
   workspace/
     domain.go
@@ -118,6 +121,10 @@ internal/
     service.go
     store_fs.go
     cli.go
+    review.go               # review scope, reviewer orchestration, verdict, review.md
+    review_validation.go
+    smoke.go                # harness discovery, scope, invocation, verdict, smoke.md
+    smoke_validation.go
 
   codeextract/
     domain.go
@@ -207,7 +214,7 @@ Local interface commands for project workflows
 
 ### `sprint`
 
-`sprint` owns governed planning and execute artifacts under `projects/<project>/sprints/<slug>` through `execute`:
+`sprint` owns governed planning, execute, review, and smoke artifacts under `projects/<project>/sprints/<slug>` through `smoke`:
 
 ```text
 requirements.md
@@ -219,12 +226,14 @@ plan.md
 execute.md
 flow-state.json
 .run-state.json
+review.md
+smoke.md
 ```
 
 It owns:
 
 ```text
-Planning and execute stage order through execute
+Planning, execute, review, and smoke stage order through smoke
 Stage validation
 Sprint-index subset checks against project-index.md
 Technical handbook prompt/rendering behavior
@@ -236,13 +245,15 @@ Plan task extraction and deterministic task IDs
 Sprint stage model-resolution rules
 Flow state persistence
 Execute run-state persistence
+Review scope, selected-contract/protocol resolution, structured reviewer orchestration, deterministic verdicts, and review.md
+Smoke review-gating, external harness selection/invocation, evidence-link validation, deterministic verdicts, and smoke.md
 Sprint status output
 Local interface commands for planning-stage sprint workflows
 ```
 
-`sprint` may depend on `project` for project catalogs, `workspace` for path rules, configuration for stage-specific runtime model selection, and `platform/runtime` for generic prompt execution and implementation task execution. It must not depend on `study` services, source/dimension models, study report validation, rating parsing, summary generation, or study run-loop scheduling.
+`sprint` may depend on `project` for project catalogs, `workspace` for path rules, configuration for stage-specific runtime model selection, `platform/runtime` for generic prompt/reviewer/implementation execution, and `platform/process` for safe external harness invocation. It must not depend on `study` services, source/dimension models, study report validation, rating parsing, summary generation, or study run-loop scheduling.
 
-Phase 2 now includes controlled implementation execution through `execute`. `sprint` must not model smoke investigation, review automation, issue tracking, or Git mutation as current workflow stages.
+Phase 2 includes controlled implementation execution through `execute`. Phase 3 extends the same sprint module through `review` and `smoke`. It keeps only the current `review.md` and `smoke.md` in the sprint root; detailed smoke runs and issue evidence remain in the external harness. `sprint` must not model general-purpose issue tracking, automatic product fixes, or Git mutation as workflow stages.
 
 ### `app`
 
@@ -255,6 +266,7 @@ workspace/config/runtime preflight wiring
 typed use-case functions for local interfaces
 text and JSON output adapters for CLI commands
 stable error classification and process exit mapping
+review/smoke progress, cancellation, result, evidence-link, and recovery use cases shared by CLI and TUI
 ```
 
 As the TUI enters scope, command handlers should be thinned so the real operation lives in shared app use cases or product services. The desired shape is:
@@ -278,9 +290,11 @@ terminal rendering and resize behavior
 read-only artifact previews
 guarded action prompts for mutating/runtime operations
 progress/event display
+review scope, reviewer progress, findings, verdict, reruns, and review.md preview
+smoke scope, prerequisites, suite/test progress, linked harness evidence, issues, verdict, reruns, and smoke.md preview
 ```
 
-It may depend on `app` use cases and domain result types. It must not own product state machines, validation rules, prompt construction, runtime execution, or artifact persistence. Durable workspace files remain the source of truth.
+It may depend on `app` use cases and domain result types. It must not own product state machines, validation rules, prompt construction, runtime execution, smoke-harness invocation, verdict synthesis, or artifact persistence. Durable workspace files and linked harness evidence remain the source of truth.
 
 If a third-party terminal UI library is used, it should stay behind `internal/tui` and not leak into product modules.
 
@@ -326,6 +340,29 @@ sprint -> platform/runtime
 platform/runtime -> no product modules
 ```
 
+### `platform/process`
+
+The process package is a generic volatile-boundary adapter used by Phase 3 to run the cataloged smoke harness. It may understand:
+
+```text
+Executable
+Argument vector
+Working directory
+Allowlisted environment
+Timeout and context cancellation
+Stdout/stderr capture limits
+Exit code and process-tree cleanup
+```
+
+It must not understand projects, sprints, reviews, smoke levels, harness issue semantics, verdicts, or `review.md`/`smoke.md`. Those remain in `internal/sprint`.
+
+The dependency direction is:
+
+```text
+sprint -> platform/process
+platform/process -> no product modules
+```
+
 Runtime supervision is delegated to `agentwrap`. UltraPlan's runtime integration should translate generic execution requests into agentwrap requests and translate generic results/events back to UltraPlan's platform-facing runtime model.
 
 ### `workspace`
@@ -340,7 +377,20 @@ Workspace marker/config lookup
 Canonical workspace paths
 Workspace-level validation
 Path safety rules
+Embedded prompt/template default registry and override resolution
+Opt-in default materialization
 ```
+
+Product modules own the semantics of their prompts and generated artifacts. The workspace package owns the mechanical asset policy:
+
+```text
+readable workspace file at prompts/<name> or templates/<name>
+  -> intentional local override
+otherwise
+  -> embedded binary default
+```
+
+`init-workspace` must not export prompt or template files. `ultraplan defaults install` is the explicit operation for materializing editable copies. A workspace without `prompts/` or `templates/` remains complete and operational, and embedded Phase 3 defaults are updated in the sprint that implements the corresponding stage.
 
 It should not know:
 
@@ -349,6 +399,7 @@ Which dimensions exist
 How study synthesis works
 How report summaries are generated
 How code extraction parses citations
+What review or smoke content means
 ```
 
 Boundary:

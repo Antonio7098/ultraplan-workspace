@@ -3,16 +3,16 @@
 > Project: `ultraplan-go`
 > Sprint: `23-execute-stage`
 > Purpose: selected context for this sprint. Must be a subset of `projects/ultraplan-go/project-index.md`.
-> **Inputs Used:** `projects/ultraplan-go/project-index.md`, `projects/ultraplan-go/sprints/23-execute-stage/requirements.md`, `projects/ultraplan-go/docs/ARCHITECTURE.md`, `projects/ultraplan-go/docs/PRD.md`, `projects/ultraplan-go/docs/TRD.md`
+> **Inputs Used:** `projects/ultraplan-go/project-index.md`, `projects/ultraplan-go/roadmap.md`, `projects/ultraplan-go/sprints/23-execute-stage/requirements.md`, `projects/ultraplan-go/docs/ARCHITECTURE.md`, `projects/ultraplan-go/docs/PRD.md`, `projects/ultraplan-go/docs/TRD.md`
 
 This document selects what must be read, distilled, reasoned through, or checked for this sprint. It does not make implementation decisions. All selections must come from the project index - no items may be included that are not listed in the project index.
 
 ## Sprint Scope
 
 - **Sprint Goal:** Execute validated `plan.md` implementation tasks through the generic runtime boundary with durable task state, safe target-repository boundaries, resumability, and clear diagnostics.
-- **Planned Output:** `sprint-index.md`, `technical-handbook.md`, `reasoning.md`, `plan.md`, execute prompt rendering, deterministic task extraction, `.run-state.json`, `execute.md`, flow through `execute`, and status updates showing execute progress.
-- **Depends On:** Project index catalog validation, valid planning prerequisites through `plan`, runtime model config, and flow-state persistence.
-- **Non-Goals:** Smoke investigation; review automation; issue tracking; automatic Git mutation; hosted SaaS; browser UI; project-management features; cross-sprint scheduling.
+- **Planned Output:** Context selection for execute-stage implementation planning, followed by `technical-handbook.md`, `reasoning/architecture.md`, `reasoning.md`, `plan.md`, `execute.md`, `.run-state.json`, `flow-state.json`, execute domain/persistence/flow/prompt/service/validation updates, CLI command wiring, and execute-focused tests.
+- **Depends On:** Valid `requirements.md`, project catalog validation, completed planning prerequisites through `plan.md`, runtime model configuration, flow-state persistence, and the explicit target implementation directory `../ultraplan-go`.
+- **Non-Goals:** Smoke investigation; automated review artifact generation; issue tracking; Git state mutation; hosted SaaS; browser UI; project-management workflows; generic workflow engine; cross-sprint scheduling; reuse of study services or study-specific models for execute behavior.
 
 ## Source Project Index
 
@@ -24,19 +24,19 @@ Each contract applies as a flat whole to this sprint. All paths must appear in t
 
 | Contract | Why Selected |
 | ------------ | -------------------------------------------- |
-| Architecture | Execute-stage planning must preserve module ownership, dependency direction, and product/platform separation for `internal/sprint`, `internal/project`, `workspace`, and `platform/runtime`. |
-| CLI Surface | Execute-stage planning concerns sprint commands, stage validation, status output, prompt rendering, and scriptable behavior. |
-| Configuration | Execute-stage planning needs global and per-stage model selection, runtime config mapping, preflight validation, and redaction. |
-| Documentation | This sprint produces editable planning Markdown artifacts and must keep generated docs readable and maintainable. |
-| Errors | Execute-stage planning must account for actionable diagnostics, validation failures, runtime failures, cancellation, and task failure reporting. |
-| LLM Evaluation / Cost / Safety | Execute-stage runtime planning needs usage/cost metadata, safety discipline, and bounded validation expectations where runtime metadata is available. |
-| LLM Runtime | Execute-stage planning depends on agentwrap/OpenCode integration boundaries, runtime behavior, provider/model mapping, and adapter use. |
-| Observability | Execute-stage planning needs task metadata, flow/run state visibility, diagnostics, structured logs, and truthful status output. |
-| Performance | Execute-stage planning must avoid unbounded work, respect startup/status performance, and plan for large artifacts and bounded execution. |
-| Persistence And Migrations | Execute-stage planning depends on durable `flow-state.json`, `.run-state.json`, atomic writes, schema versions, and resumability. |
-| Security | Execute-stage planning must preserve workspace path safety, secret redaction, runtime permission policy, source isolation, and no automatic Git mutation. |
-| Testing | Planning must identify unit, fixture, fake-runtime, and gated integration expectations for execute-stage behavior. |
-| Workflows | Execute-stage planning is governed by stateful workflow execution, retries, cancellation, resumability, and controlled task execution. |
+| Architecture | Execute behavior must preserve `internal/sprint` ownership, allowed dependency direction, thin app/CLI wiring, and generic `platform/runtime` separation. |
+| CLI Surface | Sprint 23 adds or updates `validate execute`, `prompt execute`, `flow --to execute`, `execute`, task selection, dry-run, help, exit codes, text output, and status behavior. |
+| Configuration | Execute requires global/default sprint model resolution plus stage-specific overrides, command preflight validation, config diagnostics, and redaction. |
+| Documentation | Execute artifacts and help/status output must remain readable, maintainable, and aligned with editable Markdown artifact expectations. |
+| Errors | Execute prerequisites, task extraction, runtime failures, validation failures, stale state recovery, and target path violations need actionable diagnostics and exit behavior. |
+| LLM Evaluation / Cost / Safety | Runtime-backed execute work must treat runtime success as insufficient, record safe metadata where available, and avoid unsafe payload or secret leakage. |
+| LLM Runtime | Execute must use the existing generic runtime boundary backed by agentwrap/OpenCode and must not parse native runtime streams or invent a competing runtime contract. |
+| Observability | Execute status, logs, run-state metadata, diagnostics, attempts, task counts, and runtime summaries must be inspectable without requiring runtime calls. |
+| Performance | Execute task extraction, status, resume, and state loading must remain bounded and deterministic for larger plans and repositories. |
+| Persistence And Migrations | `.run-state.json` and `flow-state.json` require versioned schemas, strict loading, same-directory atomic writes, and resumable recovery behavior. |
+| Security | Execute writes target another repository, so path safety, workspace-safe diagnostics, target containment, permissions, and secret redaction are central constraints. |
+| Testing | Acceptance requires deterministic offline fake-runtime tests, command tests, race tests, build verification, and non-goal regression coverage. |
+| Workflows | Execute is a stateful workflow stage with prerequisite gates, task states, attempts, resumability, cancellation/stale recovery, and terminal-state summaries. |
 
 ## Selected Evidence Reports
 
@@ -65,7 +65,7 @@ All paths must appear in the project index's "Available Reasoning Templates" tab
 
 | Template | Output Path | Why Selected |
 | ------------ | -------------------------------------------------------------- | ------------ |
-| Architecture | `projects/ultraplan-go/sprints/23-execute-stage/reasoning/architecture.md` | Execute-stage planning must reason through module boundaries, dependency direction, package layout, and runtime/product separation before final sprint decisions. |
+| Architecture | `projects/ultraplan-go/sprints/23-execute-stage/reasoning/architecture.md` | Execute-stage planning must reason through module ownership, dependency direction, package layout, runtime/product separation, persistence ownership, and target-repository safety before final sprint decisions. |
 
 ## Prior Decisions To Carry Forward
 
@@ -73,7 +73,7 @@ All decision paths must appear in the project index's "Prior Decisions" table.
 
 | Decision | Path | Constraint For This Sprint |
 | ------------ | -------- | -------------------------- |
-| None yet | N/A | No prior decisions are listed in the project index. |
+| None yet | None yet - this is the first project. | No prior decisions are cataloged in the project index; carry forward only the roadmap, PRD, TRD, architecture, requirements, and selected catalog entries. |
 
 ## Required Review Protocols
 
@@ -81,27 +81,28 @@ All paths must appear in the project index's "Review Protocols" table.
 
 | Protocol | Path | Required Evidence |
 | ------------ | --------------------------------------- | ----------------- |
-| Architecture Review | `system/protocols/architecture-review-protocol.md` | Evidence that execute-stage planning preserves package layout, dependency boundaries, and runtime/module separation. |
-| Sprint Review | `system/protocols/sprint-review-protocol.md` | Evidence that completed planning artifacts satisfy sprint requirements, selected catalog constraints, and acceptance criteria. |
+| Architecture Review | `system/protocols/architecture-review-protocol.md` | Evidence that execute implementation preserves package layout, dependency boundaries, sprint-owned product semantics, generic runtime/module separation, and target path safety. |
+| Sprint Review | `system/protocols/sprint-review-protocol.md` | Evidence that completed sprint artifacts and implementation satisfy selected contracts, requirements acceptance criteria, validators, tests, and deferred-behavior exclusions. |
 
 ## Excluded Context
 
 | Context | Reason Excluded | Revisit If |
 | ----------- | --------------- | ------------- |
-| Implementation execution outside validated `plan.md` tasks | The sprint includes controlled execute behavior only for validated `plan.md` implementation tasks through the runtime boundary; ad hoc execution remains excluded. | A later sprint adds broader execution modes or operators. |
-| Smoke investigation | Sprint requirements, PRD, TRD, and project scope exclude smoke investigation from planning generation and Phase 2 product behavior. | A later sprint explicitly requires real-runtime smoke evidence outside the planning flow. |
-| Deep Smoke Sprint protocol | Smoke investigation is a non-goal for this sprint and deferred by PRD/TRD scope. | A completed implementation sprint needs real-runtime smoke evidence. |
-| Review automation | Sprint requirements and project scope defer review automation; this sprint may select review protocols for later human/gated review evidence but does not implement automated review execution. | A later sprint explicitly adds review automation as product behavior. |
-| `12-extensibility` evidence report | Execute-stage planning is focused on controlled execution, state, diagnostics, runtime boundaries, and validation rather than plugin or extension architecture. | The sprint scope expands to new extension points, plugin behavior, or public APIs. |
-| Hosted SaaS and browser UI context | PRD and TRD exclude hosted service and browser UI from the first production release. | Product scope changes to include hosted or browser-based operation. |
-| Issue tracking | PRD and TRD explicitly defer issue tracking, assignment, scheduling, and project-management features. | A later requirements revision adds issue or project-management scope. |
-| Git mutation | Requirements, PRD, TRD, and project index explicitly exclude automatic Git mutation from planning and execute behavior. | A later sprint adds explicit opt-in Git hook or mutation requirements. |
-| Study implementation internals | Architecture and project index require Phase 2 to reuse infrastructure, not study services, source/dimension models, report validation, rating parsing, summary generation, or run-loop scheduling. | A concrete shared infrastructure need appears that is product-neutral and stable. |
+| Implementation execution outside validated `plan.md` tasks | Sprint 23 brings controlled implementation execution into scope only through validated `plan.md` task extraction and the generic runtime boundary. Ad hoc execution, broad operators, and cross-sprint execution are not selected. | A later sprint explicitly adds broader execution modes or cross-sprint orchestration. |
+| Smoke investigation | Requirements, PRD, TRD, roadmap, and project index explicitly defer smoke investigation and `smoke.md` / `smoke.json` artifacts. | A later sprint explicitly selects smoke investigation or the Deep Smoke Sprint protocol as product scope. |
+| Review automation | Requirements, PRD, TRD, roadmap, and project index defer automated conformance `review.md` generation and review automation. Review protocols are selected only as later review checks against completed implementation. | A later sprint explicitly adds automated review generation as product behavior. |
+| Issue tracking | Requirements, PRD, TRD, roadmap, and project index defer issue files, issue JSON, assignment, scheduling, and project-management workflows. | A later requirements revision adds issue or project-management scope. |
+| Git mutation | Requirements, PRD, TRD, roadmap, and project index exclude automatic Git add, commit, push, branch, PR, checkout, reset, or other Git state mutation. | A later sprint adds explicit opt-in Git hook or mutation requirements. |
+| Deep Smoke Sprint protocol | Smoke investigation is out of scope for this sprint, so the cataloged smoke protocol is not selected as a required review protocol. | A completed implementation sprint needs real-runtime smoke evidence as selected scope. |
+| `12-extensibility` evidence report | Execute-stage work is about controlled execution, state, runtime boundaries, validation, diagnostics, and command behavior rather than plugin architecture or new public extension points. | The sprint scope expands to plugin behavior, extension APIs, or public extension contracts. |
+| Study services and study semantics | Architecture, TRD, and project index require Phase 2 to reuse generic infrastructure only, not study services, source/dimension models, report validation, rating parsing, summary generation, or run-loop scheduling. | A concrete shared infrastructure need appears that is product-neutral and stable. |
+| Hosted SaaS and browser UI | PRD, TRD, roadmap, and project index exclude hosted service and browser UI from Phase 2 and the first production release. | Product scope changes to include hosted or browser-based operation. |
+| TUI behavior | Sprint 23 precedes the post-execute TUI phase and does not implement `internal/tui` or terminal dashboard behavior. | Sprint 24 or later selects TUI foundation or operational controls. |
 
 ## Next Artifacts
 
 - `technical-handbook.md` reads from the evidence reports listed above.
 - `reasoning/*.md` captures area-specific reasoning.
 - `reasoning.md` makes final sprint decisions.
-- `plan.md` turns `reasoning.md` decisions into ordered implementation tasks and evidence checks.
-- Execute behavior runs validated `plan.md` tasks through the generic runtime boundary and records `.run-state.json` plus `execute.md`.
+- `plan.md` executes `reasoning.md`.
+- `review.md` runs the selected review protocols against implementation.

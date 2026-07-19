@@ -1,13 +1,13 @@
 # Technical Requirements Document: UltraPlan Go
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 **Status:** Draft
 **Owner:** Engineering
-**Last Updated:** 2026-07-03
+**Last Updated:** 2026-07-17
 
 ## 1. Purpose
 
-This TRD defines the technical requirements for UltraPlan Go, a production-grade Go CLI that implements the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Phase 3 adds a local terminal UI over the same application services for richer inspection and guarded workflow operation.
+This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI and TUI that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`.
 
 This document is implementation-oriented. It defines boundaries, modules, data models, state machines, validators, runtime contracts, error handling, and testing requirements. It does not prescribe every package name or third-party library, but it should be specific enough to guide implementation.
 
@@ -28,6 +28,9 @@ UltraPlan Go is responsible for:
 - Validating project indexes that catalog contracts, evidence, reasoning templates, and review protocols.
 - Creating and validating sprint planning artifacts through `plan.md`.
 - Executing validated sprint plan tasks through the generic runtime boundary with durable task state.
+- Reviewing implemented sprint scope against selected contracts, selected review protocols, technical-handbook guidance, sprint decisions, plan tasks, and verification evidence.
+- Running sprint-targeted deep smoke through a cataloged external harness after review.
+- Writing the current human-readable sprint `review.md` and `smoke.md` summaries while linking detailed smoke evidence in the harness.
 - Providing human-readable and structured operational output.
 - Providing a local TUI over the same workspace and workflow services after the CLI workflows are stable.
 
@@ -40,7 +43,10 @@ UltraPlan Go is not responsible for:
 - Owning AI provider billing.
 - Guaranteeing semantic correctness of generated prose beyond validation rules.
 - Reimplementing agentwrap SDK features that already exist as runtime-neutral primitives.
-- Running smoke investigations, review automation, issue tracking, or Git mutation in Phase 2.
+- Providing a general-purpose issue tracker, remote issue synchronization, or project-management workflow.
+- Automatically fixing product code or tests during review or smoke.
+- Mutating Git state during planning, execute, review, or smoke.
+- Owning detailed smoke run/issue persistence that belongs to the external harness.
 - Replacing the CLI or JSON surfaces with a TUI-only workflow.
 
 ## 3. Architecture Overview
@@ -62,10 +68,11 @@ internal/
     logging/
     filesystem/
     runtime/
+    process/            # safe external executable/argv execution for the smoke harness
   workspace/            # workspace discovery, paths, and validation
   study/                # study lifecycle, prompts, scheduling, validation, reports, state
   project/              # project docs, project-index cataloging and validation
-  sprint/               # planning artifacts, execute state, prompts, validators, and flow through execute
+  sprint/               # planning, execute, review, smoke, prompts, validators, state, and flow through smoke
   codeextract/          # citation parsing, file resolution, snippet extraction
 ```
 
@@ -101,13 +108,16 @@ The CLI must not become the only place where use cases are assembled. Before or 
 - Make dry-run behavior available before expensive operations.
 - Keep generated Markdown and YAML readable by humans.
 - Keep the CLI as the stable automation contract even when a TUI is available.
+- Run review before smoke by default so deterministic conformance failures block unnecessary live-runtime work.
+- Keep only `review.md` and `smoke.md` in the sprint root; link detailed smoke evidence from the external harness.
+- Compute review/smoke verdicts from validated evidence and explicit severity rules, not from runtime exit success or unstructured model prose alone.
 
 ## 4.1 Application Surface Requirements
 
 The `internal/app` package is the composition boundary for local interfaces. It should provide:
 
 - shared dependency construction for workspace discovery, config loading, runtime setup, and service creation
-- typed use-case functions for project, sprint, study, code extraction, validation, status, flow, and execute operations
+- typed use-case functions for project, sprint, study, code extraction, validation, status, flow, execute, review, smoke, and verify operations
 - CLI adapters that parse arguments, call use cases, and render text/JSON
 - TUI adapters that translate key actions into the same use cases and render terminal models
 
@@ -146,21 +156,18 @@ Required top-level structure:
 
 ```text
 .
+  README.md
   ultraplan.yml
-  prompts/
-    base.md
-    synthesize.md
-  templates/
-    repo-analysis.md
-    report.md
   studies/
-  projects/
 ```
 
 Optional structure:
 
 ```text
 .
+  projects/
+  prompts/      # intentional overrides of embedded defaults only
+  templates/    # intentional overrides of embedded defaults only
   .ultraplan/
     cache/
     logs/
@@ -327,12 +334,16 @@ Operational behavior, added after the read-only baseline:
 - display live progress from existing progress/event callbacks
 - support cancellation through `context.Context`
 - leave durable state as the source of truth after cancellation or terminal resize/exit
+- show review readiness, scope, selected contracts, reviewer progress, findings, verdict, reruns, and `review.md`
+- show smoke readiness, selected harness scope, prerequisites, expected cost/duration class, suite/test progress, external evidence links, open issues, verdict, reruns, and `smoke.md`
+- expose the complete `execute -> review -> smoke` workflow through the same typed app use cases as the CLI
 
 Quality requirements:
 
 - normal unit tests must not require an interactive terminal
 - TUI model/update logic should be testable with deterministic messages
 - runtime-backed TUI behavior must use fake runtimes in normal tests and gated real-runtime smoke where available
+- smoke-backed TUI behavior must use a fake harness in normal tests and the cataloged external harness only in gated tests
 - TUI rendering must degrade gracefully in narrow terminals
 
 ## 8. Domain Model
@@ -993,7 +1004,7 @@ Sprint planning prompt inputs are defined in section 18. Study prompt compositio
 - Prompt builders must be unit-tested with golden fixtures.
 - Prompt builders must return both prompt text and input manifest.
 - Dry-run mode must expose the input manifest.
-- Missing required prompt files must fail before runtime execution.
+- Prompt/template lookup must prefer an intentional readable workspace override and otherwise use the embedded default. It must fail before runtime execution only when neither source is available or when an existing override is unreadable or invalid.
 - Directory source prompts must preserve source-isolation and file-line citation rules.
 - Markdown document source prompts must embed stripped document content and use document-analysis instructions.
 - Prompt builders must not embed YAML frontmatter from Markdown document sources.
@@ -1517,15 +1528,15 @@ Rating parser must handle:
 
 Ambiguous ratings should create warnings, not invented values.
 
-## 18. Project, Sprint Planning, and Execute Technical Requirements
+## 18. Project, Sprint Planning, Execute, Review, and Smoke Technical Requirements
 
-Phase 2 implements the governed planning and execute side of UltraPlan through `execute`:
+Phase 2 implements the governed planning and execute side of UltraPlan through `execute`. Phase 3 extends the same product-owned sprint flow through review and smoke:
 
 ```text
-study -> select -> distill -> reason -> plan -> execute
+study -> select -> distill -> reason -> plan -> execute -> review -> smoke
 ```
 
-The TypeScript prototype includes planning, execution, smoke, review, and issue-tracking behavior. UltraPlan Go Phase 2 ports the planning artifact chain and adds controlled implementation execution. Smoke investigation, review automation, local issue tracking, and Git mutation remain deferred.
+The TypeScript prototype includes planning, execution, smoke, review, and issue-tracking behavior. UltraPlan Go Phase 2 ports the planning artifact chain and adds controlled implementation execution. Phase 3 replaces the prototype's manually coordinated review and smoke with product-owned stages while keeping detailed smoke runs and issue evidence in the external harness. General-purpose issue tracking and Git mutation remain deferred.
 
 ### 18.1 Package Ownership
 
@@ -1558,6 +1569,9 @@ internal/sprint
 - global and per-stage runtime model resolution for sprint planning and execute stages
 - sprint status output
 - flow execution through `execute`
+- review scope, prompt rendering, independent reviewer orchestration, structured result validation, deterministic verdict synthesis, and `review.md`
+- smoke harness discovery, review gating, scope selection, safe invocation, evidence-link validation, verdict synthesis, and `smoke.md`
+- flow execution through `review` and `smoke`
 
 The dependency direction is:
 
@@ -1565,6 +1579,7 @@ The dependency direction is:
 sprint -> project
 sprint -> workspace
 sprint -> platform/runtime
+sprint -> platform/process
 project -> workspace
 platform/* -> no product modules
 study -> no project or sprint modules
@@ -1663,7 +1678,7 @@ type StageState struct {
 }
 ```
 
-Supported planning artifacts:
+Supported sprint artifacts through Phase 3:
 
 ```text
 requirements.md
@@ -1675,19 +1690,18 @@ plan.md
 execute.md
 flow-state.json
 .run-state.json
+review.md
+smoke.md
 ```
 
 Deferred artifacts:
 
 ```text
-smoke.md
-smoke.json
-review.md
 issues.md
 issues.json
 ```
 
-Historical `review.md` files may exist in older sprint directories. Phase 2 may display their existence but must not generate or validate them as required planning artifacts.
+Detailed smoke JSON and issue records belong to the external harness `runs/` and `issues/` directories rather than the sprint root. Historical manual `review.md` and `deep-smoke.md` files may exist until migration; Phase 3 review and smoke atomically replace the canonical root `review.md` and `smoke.md` when explicitly run.
 
 ### 18.5 Flow State
 
@@ -1720,6 +1734,9 @@ Requirements:
 - `area-reasoning` is skipped only when `sprint-index.md` selects no reasoning templates.
 - Execute may appear in Phase 2 flow state only after valid prerequisites through `plan`.
 - No smoke, review, or issue stages may appear in Phase 2 flow state.
+- Phase 3 flow state adds `review` after `execute` and `smoke` after `review`.
+- Review and smoke stage state must distinguish execution status from verdict so a successfully completed investigation may truthfully report a failing verdict.
+- Review and smoke state must record the governed input fingerprint used by the current artifact. A fingerprint mismatch makes the artifact stale.
 
 ### 18.5.1 Execute Run State
 
@@ -1814,9 +1831,31 @@ Planning validators are product behavior owned by `internal/sprint`.
 - records failed tasks with actionable diagnostics or pointers to `.run-state.json`
 - does not claim smoke, review, issue, or Git mutation completion
 
+`review.md` validator checks:
+
+- file exists after review completes and contains no placeholders
+- identifies project, sprint, target implementation, input fingerprint, review date, selected contracts, and selected protocols
+- includes decision conformance, plan execution, verification evidence, contract conformance, handbook conformance, applicability/deferred scope, findings, deviations, and final assessment
+- includes one valid result for every selected contract plus the technical handbook
+- uses repository/workspace-relative contained evidence paths and valid line references
+- records missing/failed reviewer tasks rather than treating them as pass
+- uses only `pass`, `pass_with_findings`, `fail`, or `blocked` as the review verdict
+- applies deterministic severity rules: applicable blocker/high findings cannot produce pass or pass-with-findings
+- does not claim smoke execution or modify other sprint artifacts
+
+`smoke.md` validator checks:
+
+- file exists after smoke completes and contains no placeholders
+- identifies project, sprint, review verdict/fingerprint, selected harness, selected scope, selection rationale, environment/runtime/model, and smoke date
+- includes run ID, safe argv display, result counts, verdict, external summary/detail paths, relevant issue references, and required next action
+- verifies referenced harness evidence exists under the cataloged harness and matches the reported run ID
+- uses only `pass`, `pass_with_open_issues`, `fail`, `blocked`, or `not_applicable` as the smoke verdict
+- never treats missing prerequisites or missing required coverage as pass
+- does not copy raw event streams, secrets, or unrestricted stdout/stderr into the sprint artifact
+
 ### 18.7 Prompt Rendering and Runtime Execution
 
-Sprint planning prompts are product prompts owned by the sprint module or workspace prompt directory. Prompt rendering must support:
+Sprint planning prompts and output templates are product assets shipped as embedded defaults. The sprint module owns their semantics; the workspace package owns safe default lookup and opt-in materialization through `ultraplan defaults install`. Files at matching workspace `prompts/` or `templates/` paths are optional overrides, not prerequisites. Prompt rendering must support:
 
 - project name substitution
 - sprint slug substitution
@@ -1835,7 +1874,7 @@ Sprint runtime model resolution must be product-owned and deterministic:
 4. `models.primary`
 5. `models.default`
 
-Supported stage-specific keys are `sprint-index`, `technical-handbook`, `area-reasoning`, `reasoning`, `plan`, and `execute`. Validation must reject unknown stage keys and empty model values. Diagnostics and prompt previews must show the selected model source without leaking secrets.
+Supported stage-specific keys are `sprint-index`, `technical-handbook`, `area-reasoning`, `reasoning`, `plan`, `execute`, and `review`. Smoke model/runtime selection belongs to the external harness request and its explicit configuration rather than an agentwrap review model key. Validation must reject unknown stage keys and empty model values. Diagnostics and prompt previews must show the selected model source without leaking secrets.
 
 Runtime success is insufficient. A planning stage is complete only when:
 
@@ -1854,7 +1893,7 @@ Runtime success is insufficient for execute tasks. An execute task is complete o
 
 ### 18.8 Commands
 
-Required Phase 2 commands:
+Required commands through Phase 3:
 
 ```bash
 ultraplan project list
@@ -1865,6 +1904,9 @@ ultraplan sprint <project> <sprint> validate [stage]
 ultraplan sprint <project> <sprint> prompt <stage>
 ultraplan sprint <project> <sprint> flow --to <stage>
 ultraplan sprint <project> <sprint> execute [--task <id>]
+ultraplan sprint <project> <sprint> review
+ultraplan sprint <project> <sprint> smoke
+ultraplan sprint <project> <sprint> verify [--to review|smoke]
 ```
 
 Flow options:
@@ -1875,19 +1917,68 @@ Flow options:
 - `--no-skip`
 - `--dry-run`
 - model, variant, and timeout overrides where runtime execution is available
-- stage-specific model overrides for sprint planning and execute runtime requests
+- stage-specific model overrides for sprint planning, execute, and review runtime requests
+- bounded review parallelism and review resume controls
+- explicit smoke level/suite/test selection, smoke timeout, and review-failure diagnostic override
+- stable `--json` output for review, smoke, verify, and status
 
-Valid `--to` stages end at `execute`. Values for `smoke`, `review`, or `issues` must be rejected as out of scope.
+Phase 2 valid `--to` stages end at `execute`. Phase 3 adds `review` and then `smoke`. `issues` remains invalid.
 
-### 18.9 Deferred Technical Requirements
+### 18.9 Phase 3 Review And Deep Smoke Requirements
+
+#### 18.9.1 Review Scope And Execution
+
+Review preflight must:
+
+- require valid governed inputs through `execute`
+- resolve every selected contract and review protocol from `project-index.md`
+- reject missing, duplicate, unknown, unreadable, or escaping catalog paths
+- compute a deterministic fingerprint over requirements, sprint index, technical handbook, area reasoning, final reasoning, plan, execute state/summary, selected contracts/protocols, target implementation identity, and explicit changed-path scope
+- show the selected model source, reviewer count, concurrency, target scope, and permitted writes in dry-run/TUI confirmation
+
+UltraPlan, not the model, owns reviewer fan-out. It must issue one independent structured agentwrap request per selected contract plus one handbook request, with bounded concurrency, context cancellation, read-only permissions, and validated JSON results. A reviewer must classify each requirement/guidance item as direct, partial, not triggered, or explicitly deferred before judging conformance.
+
+Deterministic product checks must cover decision conformance, plan-task execution evidence, approved verification-command results, citation containment/line validity, complete reviewer coverage, deviations, and missing evidence. Runtime exit success alone cannot produce a passing review.
+
+The final review verdict is computed by product code. The final Markdown is written atomically to the sprint-root `review.md`, replacing the prior manual or generated file only when the command has permission to run. A failed/incomplete new review must not corrupt the last complete review artifact; current failed state and diagnostics remain visible through flow state and status.
+
+#### 18.9.2 Smoke Harness Contract And Execution
+
+`project-index.md` must catalog the smoke harness root and versioned manifest. The manifest must describe an executable plus argument prefix, protocol version, machine-readable discovery/run commands, evidence directories, and supported capability flags. UltraPlan must never execute a shell command parsed from Markdown or README prose.
+
+Harness discovery must return structured levels, suites, tests, sprint mappings, runtime/network/credential prerequisites, expected duration/cost class, and evidence schema version. Smoke selection prefers a sprint-specific suite, then directly mapped suites, then explicit tests for investigation. A narrow passing rerun does not replace required evidence from its containing suite.
+
+Smoke execution must:
+
+- require a current passing or non-blocking review by default
+- show scope, prerequisites, model/runtime, duration/cost class, allowed mutation roots, and external evidence destination before execution
+- use explicit argv, contained cwd, bounded environment forwarding, timeout, context cancellation, and descendant-process cleanup
+- validate the harness run ID, exit/result counts, evidence paths, evidence identity, and relevant open/resolved issue references
+- keep raw run JSON, stdout/stderr, per-test artifacts, and issue files in the harness
+- atomically write only the linked human-readable sprint-root `smoke.md`
+- classify unavailable required environment as blocked and irrelevant scope as not applicable
+
+The product review/smoke workflows must not edit product source, product tests, governed sprint inputs, or Git state. Harness test/issue maintenance is a separate action outside normal product smoke execution.
+
+#### 18.9.3 Flow, Freshness, And TUI Parity
+
+The default order is `execute -> review -> smoke`. Blocking/high review findings stop smoke unless an explicit diagnostic override is confirmed. Flow state records execution status, verdict, artifact path, timestamp, input fingerprint, run/evidence ID where applicable, and safe diagnostics for both stages.
+
+Any governed input, selected contract/protocol, execute evidence, or implementation fingerprint change makes the prior review stale. A stale review also makes smoke stale. Status, JSON, and TUI must agree on readiness, running/completed/failed/cancelled state, verdict, staleness, artifact, evidence link, and required next action.
+
+Every Phase 3 delivery sprint must update the TUI in the same sprint. TUI operations use the shared app use cases and expose the same review/smoke scope, dry-run, confirmation, progress, cancellation, results, focused reruns, evidence links, and recovery behavior as the CLI. TUI code must not invoke CLI handlers, parse terminal output, interpret native provider payloads, or persist an alternate verification state.
+
+Normal tests use fake review runtimes and a fake smoke harness. Required tests cover success, findings, blocking failure, missing reviewer result, malformed structured output, stale inputs, missing harness, missing coverage, blocked environment, not-applicable scope, timeout, cancellation, malformed harness output, missing evidence, path escape, redaction, CLI/JSON/TUI agreement, and recovery.
+
+### 18.10 Deferred Technical Requirements
 
 The following remain explicitly deferred:
 
-- smoke investigation runs
-- automated conformance review
-- issue tracking
+- general-purpose issue tracking and remote issue synchronization
+- automatic product/test fixes from findings
 - Git add/commit/push
-- cross-sprint execution scheduler
+- cross-sprint review/smoke scheduler
+- hosted review or smoke service
 
 ## 19. Logging and Diagnostics
 
@@ -2126,6 +2217,9 @@ Golden tests should cover:
 - Code extraction output.
 - Project catalog output.
 - Sprint planning artifacts through `plan.md`.
+- Sprint review Markdown with contract, handbook, plan, evidence, finding, and verdict sections.
+- Sprint smoke Markdown with selected scope, run ID, result, evidence links, issues, and verdict.
+- Review/smoke/status JSON envelopes.
 
 Golden updates must be explicit.
 
@@ -2182,6 +2276,9 @@ The Go implementation must preserve the important prototype workflows:
 - Project catalog validation.
 - Sprint planning flow through `plan`.
 - Sprint execute flow through `execute`.
+- Sprint automated review through root `review.md`.
+- Sprint deep-smoke summary through root `smoke.md` with detailed evidence retained in the external harness.
+- CLI/TUI operation of review, smoke, focused reruns, cancellation, evidence inspection, and recovery.
 - Markdown document sources with `applicable_dimensions`.
 
 The Go implementation may intentionally change:
@@ -2200,6 +2297,8 @@ Migration support should include:
 - Ability to read existing study directory layouts where practical.
 - Validation command that reports incompatible or missing files.
 - Documentation for converting prototype config into `ultraplan.yml`.
+- Documentation for removing/replacing manual `review.md` and legacy `deep-smoke.md` with the Phase 3 generated `review.md` and `smoke.md`.
+- Validation that recognizes legacy artifacts without treating them as current Phase 3 evidence.
 
 ## 26. Acceptance Criteria
 
@@ -2228,6 +2327,10 @@ UltraPlan Go is technically acceptable when:
 - Project catalog commands validate required files.
 - Sprint planning loads required files and updates flow-state validation through `plan`.
 - Sprint execute extracts validated plan tasks, updates `.run-state.json`, and reports task progress through status.
+- Sprint review dynamically covers every selected contract plus the technical handbook, applies deterministic verdict rules, and atomically writes valid `review.md`.
+- Sprint smoke runs after review by default, selects or validates the narrowest sufficient external harness scope, and atomically writes valid `smoke.md` linked to matching harness evidence.
+- Review/smoke freshness, blocking, cancellation, rerun, and recovery behavior agree across CLI text, JSON, status, and TUI.
+- Every Phase 3 sprint exposes its completed functionality in the TUI through shared typed app use cases.
 - Logs redact secrets.
 - State writes are atomic.
 - Cancellation saves state.
@@ -2244,6 +2347,8 @@ UltraPlan Go is technically acceptable when:
 - Should code extraction support non-local source paths in the first release?
 - Should generated report templates be versioned independently from the CLI binary?
 - What is the minimum stable JSON schema for status output?
+- What long-term compatibility guarantee should the external smoke-harness protocol provide across independently released harness versions?
+- Which target identity should be mandatory when Git metadata is unavailable: execute-state fingerprint, explicit changed paths, or a full contained tree manifest?
 
 ## 28. Changelog
 
@@ -2253,8 +2358,9 @@ UltraPlan Go is technically acceptable when:
 | 1.1.0 | 2026-05-25 | Ground runtime supervision in agentwrap | Require UltraPlan Go to use agentwrap runtime contracts, wrappers, OpenCode adapter, validation, policy, health, observability, metadata, and permissions. |
 | 1.2.0 | 2026-06-13 | Add project and sprint planning through plan | Scope Phase 2 to governed planning artifacts while deferring execution, smoke, review automation, issue tracking, and Git mutation. |
 | 1.3.0 | 2026-07-02 | Add sprint execute scope | Expand Phase 2 to controlled implementation execution from validated `plan.md` tasks while keeping smoke, review automation, issue tracking, and Git mutation deferred. |
+| 1.5.0 | 2026-07-17 | Add Phase 3 review and deep smoke | Define root `review.md`/`smoke.md`, dynamic structured review, external harness integration, review-before-smoke gates, freshness, and full CLI/TUI parity. |
 
 
 ## Current Scope Clarification
 
-UltraPlan has two product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project and sprint planning artifacts, then executing validated implementation tasks. This TRD now covers the study side and the planning/execute side through `execute`. Smoke investigation, review automation, issue tracking, and Git mutation remain non-goals until a later requirements revision.
+UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. This TRD covers the governed sprint flow through `smoke`. General-purpose issue tracking, automatic product fixes, cross-sprint scheduling, and Git mutation remain non-goals.
