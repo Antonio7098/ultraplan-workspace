@@ -1,7 +1,7 @@
 # Study Run Summary
 
 - Study: `agent-harness-study`
-- Updated: `2026-07-03T16:42:18Z`
+- Updated: `2026-07-22T19:08:30Z`
 - Study progress state: `.ultraplan/run-state.json`
 - Ledger: `.ultraplan/runs/tasks.jsonl`
 
@@ -9,145 +9,19 @@
 
 | Metric | Value |
 | --- | ---: |
-| Runs recorded | 86 |
-| Completed | 69 |
-| Failed | 10 |
-| Cancelled | 7 |
+| Runs recorded | 294 |
+| Completed | 215 |
+| Failed | 33 |
+| Cancelled | 46 |
 | Skipped | 0 |
-| Remaining tasks | 829 |
-| Dimensions seen | 10 |
-| Sources seen | 8 |
+| Remaining tasks | 681 |
+| Dimensions seen | 31 |
+| Sources seen | 10 |
 
 ## Remaining Work
 
 | Dimension | Source | Kind | Status |
 | --- | --- | --- | --- |
-| 01.10-replay-and-determinism | temporal | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | agent-framework | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | langfuse | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | langgraph | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | letta | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | openhands | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | temporal | analysis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | agent-framework | analysis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | langgraph | analysis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | letta | analysis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | openhands | analysis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | temporal | analysis | pending |
-| 02.03-event-sourcing-and-replay-state | langgraph | analysis | pending |
-| 02.03-event-sourcing-and-replay-state | temporal | analysis | pending |
-| 02.04-mutation-discipline-and-state-transitions | agent-framework | analysis | pending |
-| 02.04-mutation-discipline-and-state-transitions | langgraph | analysis | pending |
-| 02.04-mutation-discipline-and-state-transitions | letta | analysis | pending |
-| 02.04-mutation-discipline-and-state-transitions | openhands | analysis | pending |
-| 02.04-mutation-discipline-and-state-transitions | temporal | analysis | pending |
-| 02.05-persistence-durability-tiers | agent-framework | analysis | pending |
-| 02.05-persistence-durability-tiers | langfuse | analysis | pending |
-| 02.05-persistence-durability-tiers | langgraph | analysis | pending |
-| 02.05-persistence-durability-tiers | letta | analysis | pending |
-| 02.05-persistence-durability-tiers | openhands | analysis | pending |
-| 02.05-persistence-durability-tiers | temporal | analysis | pending |
-| 02.06-schema-versioning-and-migration | agent-framework | analysis | pending |
-| 02.06-schema-versioning-and-migration | langfuse | analysis | pending |
-| 02.06-schema-versioning-and-migration | langgraph | analysis | pending |
-| 02.06-schema-versioning-and-migration | letta | analysis | pending |
-| 02.06-schema-versioning-and-migration | temporal | analysis | pending |
-| 02.07-session-thread-user-boundaries | agent-framework | analysis | pending |
-| 02.07-session-thread-user-boundaries | langfuse | analysis | pending |
-| 02.07-session-thread-user-boundaries | langgraph | analysis | pending |
-| 02.07-session-thread-user-boundaries | letta | analysis | pending |
-| 02.07-session-thread-user-boundaries | openhands | analysis | pending |
-| 02.07-session-thread-user-boundaries | temporal | analysis | pending |
-| 02.08-crash-recovery-and-reconstruction | agent-framework | analysis | pending |
-| 02.08-crash-recovery-and-reconstruction | langgraph | analysis | pending |
-| 02.08-crash-recovery-and-reconstruction | letta | analysis | pending |
-| 02.08-crash-recovery-and-reconstruction | openhands | analysis | pending |
-| 02.08-crash-recovery-and-reconstruction | temporal | analysis | pending |
-| 02.09-state-pruning-compaction-retention | agent-framework | analysis | pending |
-| 02.09-state-pruning-compaction-retention | langfuse | analysis | pending |
-| 02.09-state-pruning-compaction-retention | langgraph | analysis | pending |
-| 02.09-state-pruning-compaction-retention | letta | analysis | pending |
-| 02.09-state-pruning-compaction-retention | openhands | analysis | pending |
-| 02.09-state-pruning-compaction-retention | temporal | analysis | pending |
-| 03.01-llm-turn-loop-structure | agent-framework | analysis | pending |
-| 03.01-llm-turn-loop-structure | crewai | analysis | pending |
-| 03.01-llm-turn-loop-structure | langgraph | analysis | pending |
-| 03.01-llm-turn-loop-structure | letta | analysis | pending |
-| 03.01-llm-turn-loop-structure | openai-agents-sdk | analysis | pending |
-| 03.01-llm-turn-loop-structure | openhands | analysis | pending |
-| 03.01-llm-turn-loop-structure | pydantic-ai | analysis | pending |
-| 03.02-reason-act-observe-cadence | agent-framework | analysis | pending |
-| 03.02-reason-act-observe-cadence | crewai | analysis | pending |
-| 03.02-reason-act-observe-cadence | langgraph | analysis | pending |
-| 03.02-reason-act-observe-cadence | letta | analysis | pending |
-| 03.02-reason-act-observe-cadence | openai-agents-sdk | analysis | pending |
-| 03.02-reason-act-observe-cadence | openhands | analysis | pending |
-| 03.02-reason-act-observe-cadence | pydantic-ai | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | agent-framework | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | crewai | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | langgraph | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | letta | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | openai-agents-sdk | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | openhands | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | pydantic-ai | analysis | pending |
-| 03.04-planner-executor-separation | agent-framework | analysis | pending |
-| 03.04-planner-executor-separation | crewai | analysis | pending |
-| 03.04-planner-executor-separation | langgraph | analysis | pending |
-| 03.04-planner-executor-separation | openai-agents-sdk | analysis | pending |
-| 03.04-planner-executor-separation | openhands | analysis | pending |
-| 03.04-planner-executor-separation | pydantic-ai | analysis | pending |
-| 03.05-reflection-reask-self-correction | agent-framework | analysis | pending |
-| 03.05-reflection-reask-self-correction | crewai | analysis | pending |
-| 03.05-reflection-reask-self-correction | langgraph | analysis | pending |
-| 03.05-reflection-reask-self-correction | letta | analysis | pending |
-| 03.05-reflection-reask-self-correction | openai-agents-sdk | analysis | pending |
-| 03.05-reflection-reask-self-correction | openhands | analysis | pending |
-| 03.05-reflection-reask-self-correction | pydantic-ai | analysis | pending |
-| 03.06-stuck-doom-loop-detection | agent-framework | analysis | pending |
-| 03.06-stuck-doom-loop-detection | crewai | analysis | pending |
-| 03.06-stuck-doom-loop-detection | langgraph | analysis | pending |
-| 03.06-stuck-doom-loop-detection | letta | analysis | pending |
-| 03.06-stuck-doom-loop-detection | openai-agents-sdk | analysis | pending |
-| 03.06-stuck-doom-loop-detection | openhands | analysis | pending |
-| 03.06-stuck-doom-loop-detection | pydantic-ai | analysis | pending |
-| 03.07-context-refresh-inside-loop | agent-framework | analysis | pending |
-| 03.07-context-refresh-inside-loop | crewai | analysis | pending |
-| 03.07-context-refresh-inside-loop | langgraph | analysis | pending |
-| 03.07-context-refresh-inside-loop | letta | analysis | pending |
-| 03.07-context-refresh-inside-loop | openai-agents-sdk | analysis | pending |
-| 03.07-context-refresh-inside-loop | openhands | analysis | pending |
-| 03.07-context-refresh-inside-loop | pydantic-ai | analysis | pending |
-| 03.08-subagent-forked-loop-design | agent-framework | analysis | pending |
-| 03.08-subagent-forked-loop-design | crewai | analysis | pending |
-| 03.08-subagent-forked-loop-design | langgraph | analysis | pending |
-| 03.08-subagent-forked-loop-design | openai-agents-sdk | analysis | pending |
-| 03.08-subagent-forked-loop-design | openhands | analysis | pending |
-| 03.08-subagent-forked-loop-design | pydantic-ai | analysis | pending |
-| 03.09-completion-and-finalization-semantics | agent-framework | analysis | pending |
-| 03.09-completion-and-finalization-semantics | crewai | analysis | pending |
-| 03.09-completion-and-finalization-semantics | langgraph | analysis | pending |
-| 03.09-completion-and-finalization-semantics | letta | analysis | pending |
-| 03.09-completion-and-finalization-semantics | openai-agents-sdk | analysis | pending |
-| 03.09-completion-and-finalization-semantics | openhands | analysis | pending |
-| 03.09-completion-and-finalization-semantics | pydantic-ai | analysis | pending |
-| 04.01-tool-definition-and-registration | agent-framework | analysis | pending |
-| 04.01-tool-definition-and-registration | crewai | analysis | pending |
-| 04.01-tool-definition-and-registration | langgraph | analysis | pending |
-| 04.01-tool-definition-and-registration | letta | analysis | pending |
-| 04.01-tool-definition-and-registration | openai-agents-sdk | analysis | pending |
-| 04.01-tool-definition-and-registration | openhands | analysis | pending |
-| 04.01-tool-definition-and-registration | pydantic-ai | analysis | pending |
-| 04.02-tool-schema-generation-validation | agent-framework | analysis | pending |
-| 04.02-tool-schema-generation-validation | crewai | analysis | pending |
-| 04.02-tool-schema-generation-validation | langgraph | analysis | pending |
-| 04.02-tool-schema-generation-validation | letta | analysis | pending |
-| 04.02-tool-schema-generation-validation | opa | analysis | pending |
-| 04.02-tool-schema-generation-validation | openai-agents-sdk | analysis | pending |
-| 04.02-tool-schema-generation-validation | openhands | analysis | pending |
-| 04.02-tool-schema-generation-validation | pydantic-ai | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | agent-framework | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | crewai | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | langgraph | analysis | pending |
 | 04.03-tool-catalog-discovery-routing | letta | analysis | pending |
 | 04.03-tool-catalog-discovery-routing | openai-agents-sdk | analysis | pending |
 | 04.03-tool-catalog-discovery-routing | openhands | analysis | pending |
@@ -741,28 +615,6 @@
 | 24.04-embedding-and-host-integration-ergonomics | openhands | analysis | pending |
 | 24.04-embedding-and-host-integration-ergonomics | pydantic-ai | analysis | pending |
 | 24.04-embedding-and-host-integration-ergonomics | temporal | analysis | pending |
-| 01.09-delivery-guarantees-idempotency | (synthesis) | synthesis | pending |
-| 01.10-replay-and-determinism | (synthesis) | synthesis | pending |
-| 02.01-state-taxonomy-and-ownership | (synthesis) | synthesis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | (synthesis) | synthesis | pending |
-| 02.03-event-sourcing-and-replay-state | (synthesis) | synthesis | pending |
-| 02.04-mutation-discipline-and-state-transitions | (synthesis) | synthesis | pending |
-| 02.05-persistence-durability-tiers | (synthesis) | synthesis | pending |
-| 02.06-schema-versioning-and-migration | (synthesis) | synthesis | pending |
-| 02.07-session-thread-user-boundaries | (synthesis) | synthesis | pending |
-| 02.08-crash-recovery-and-reconstruction | (synthesis) | synthesis | pending |
-| 02.09-state-pruning-compaction-retention | (synthesis) | synthesis | pending |
-| 03.01-llm-turn-loop-structure | (synthesis) | synthesis | pending |
-| 03.02-reason-act-observe-cadence | (synthesis) | synthesis | pending |
-| 03.03-tool-calling-roundtrip-control | (synthesis) | synthesis | pending |
-| 03.04-planner-executor-separation | (synthesis) | synthesis | pending |
-| 03.05-reflection-reask-self-correction | (synthesis) | synthesis | pending |
-| 03.06-stuck-doom-loop-detection | (synthesis) | synthesis | pending |
-| 03.07-context-refresh-inside-loop | (synthesis) | synthesis | pending |
-| 03.08-subagent-forked-loop-design | (synthesis) | synthesis | pending |
-| 03.09-completion-and-finalization-semantics | (synthesis) | synthesis | pending |
-| 04.01-tool-definition-and-registration | (synthesis) | synthesis | pending |
-| 04.02-tool-schema-generation-validation | (synthesis) | synthesis | pending |
 | 04.03-tool-catalog-discovery-routing | (synthesis) | synthesis | pending |
 | 04.04-tool-context-dependency-injection | (synthesis) | synthesis | pending |
 | 04.05-tool-permissions-approval-metadata | (synthesis) | synthesis | pending |
@@ -864,73 +716,158 @@
 | 01.06-scheduling-and-trigger-semantics | 13 | 6 | 3 | 114m43s | - | - |
 | 01.07-concurrency-and-parallel-advancement | 11 | 8 | 0 | 67m38s | - | - |
 | 01.08-streaming-execution-semantics | 8 | 8 | 0 | 10m22s | - | - |
-| 01.09-delivery-guarantees-idempotency | 4 | 4 | 0 | 10m21s | - | - |
-| 01.10-replay-and-determinism | 1 | 1 | 0 | 6m49s | - | - |
+| 01.09-delivery-guarantees-idempotency | 7 | 5 | 2 | 7m02s | - | - |
+| 01.10-replay-and-determinism | 3 | 3 | 0 | 10m58s | - | - |
+| 02.01-state-taxonomy-and-ownership | 29 | 7 | 12 | 4m01s | - | - |
+| 02.02-snapshot-and-checkpoint-architecture | 6 | 6 | 0 | 7m21s | - | - |
+| 02.03-event-sourcing-and-replay-state | 3 | 3 | 0 | 12m05s | - | - |
+| 02.04-mutation-discipline-and-state-transitions | 8 | 6 | 0 | 10m58s | - | - |
+| 02.05-persistence-durability-tiers | 13 | 7 | 0 | 14m28s | - | - |
+| 02.06-schema-versioning-and-migration | 10 | 6 | 0 | 6m56s | - | - |
+| 02.07-session-thread-user-boundaries | 10 | 7 | 2 | 10m14s | - | - |
+| 02.08-crash-recovery-and-reconstruction | 8 | 6 | 2 | 12m01s | - | - |
+| 02.09-state-pruning-compaction-retention | 9 | 7 | 0 | 177m02s | 9182246 | 0.0000 USD |
+| 03.01-llm-turn-loop-structure | 9 | 8 | 0 | 16m12s | - | - |
+| 03.02-reason-act-observe-cadence | 9 | 8 | 1 | 124m02s | - | - |
+| 03.03-tool-calling-roundtrip-control | 10 | 8 | 0 | 187m54s | - | - |
+| 03.04-planner-executor-separation | 9 | 7 | 0 | 14m50s | - | - |
+| 03.05-reflection-reask-self-correction | 8 | 8 | 0 | 104m27s | 13267339 | 0.0000 USD |
+| 03.06-stuck-doom-loop-detection | 10 | 8 | 0 | 83m55s | 11559601 | 0.0000 USD |
+| 03.07-context-refresh-inside-loop | 8 | 8 | 0 | 11m36s | 10665613 | 0.0000 USD |
+| 03.08-subagent-forked-loop-design | 10 | 7 | 0 | 7m21s | 8669596 | 0.0000 USD |
+| 03.09-completion-and-finalization-semantics | 9 | 8 | 1 | 10m30s | 23056032 | 0.0000 USD |
+| 04.01-tool-definition-and-registration | 10 | 8 | 1 | 11m03s | - | - |
+| 04.02-tool-schema-generation-validation | 12 | 9 | 1 | 8m37s | - | - |
+| 04.03-tool-catalog-discovery-routing | 3 | 1 | 1 | 11m05s | - | - |
 
 ## Sources
 
 | Source | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| agent-framework | 13 | 9 | 2 | 63m12s | - | - |
-| crewai | 10 | 7 | 2 | 14m38s | - | - |
-| langgraph | 12 | 10 | 2 | 18m53s | - | - |
-| letta | 6 | 5 | 1 | 25m42s | - | - |
-| openai-agents-sdk | 7 | 6 | 1 | 7m58s | - | - |
-| openhands | 12 | 9 | 1 | 67m06s | - | - |
-| pydantic-ai | 6 | 6 | 0 | 13m15s | - | - |
-| temporal | 12 | 9 | 1 | 74m24s | - | - |
+| agent-framework | 39 | 29 | 4 | 27m35s | 11332757 | 0.0000 USD |
+| crewai | 25 | 18 | 2 | 45m09s | - | - |
+| langfuse | 5 | 5 | 0 | 7m58s | 9182246 | 0.0000 USD |
+| langgraph | 35 | 30 | 3 | 13m34s | 25829138 | 0.0000 USD |
+| letta | 40 | 22 | 6 | 37m42s | 9714465 | 0.0000 USD |
+| opa | 2 | 1 | 0 | 17m25s | - | - |
+| openai-agents-sdk | 19 | 17 | 1 | 8m46s | 11445381 | 0.0000 USD |
+| openhands | 36 | 27 | 2 | 70m59s | - | - |
+| pydantic-ai | 20 | 17 | 1 | 11m21s | 8669596 | 0.0000 USD |
+| temporal | 30 | 19 | 1 | 38m51s | - | - |
 
 ## Runtime And Model
 
 | Runtime / Provider / Model | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 85 | 69 | 10 | 37m46s | - | - |
-| opencode / - / minimax-coding-plan/MiniMax-M3 | 1 | 0 | 0 | - | - | - |
+| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 283 | 215 | 23 | 39m00s | 76400427 | 0.0000 USD |
+| opencode / - / minimax-coding-plan/MiniMax-M3 | 11 | 0 | 10 | - | - | - |
 
 ## Recent Runs
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
-| 2026-07-03T16:42:17Z | 01.09-delivery-guarantees-idempotency | temporal | analysis | completed | 10m09s | MiniMax-M3 | - | - |
-| 2026-07-03T16:39:08Z | 01.09-delivery-guarantees-idempotency | openhands | analysis | completed | 7m01s | MiniMax-M3 | - | - |
-| 2026-07-03T16:38:57Z | 01.10-replay-and-determinism | langgraph | analysis | completed | 6m49s | MiniMax-M3 | - | - |
-| 2026-07-03T16:32:06Z | 01.09-delivery-guarantees-idempotency | agent-framework | analysis | completed | 17m50s | MiniMax-M3 | - | - |
-| 2026-07-03T16:20:42Z | 01.09-delivery-guarantees-idempotency | langgraph | analysis | completed | 6m26s | MiniMax-M3 | - | - |
-| 2026-07-03T16:18:32Z | 01.08-streaming-execution-semantics | (synthesis) | synthesis | completed | 4m16s | MiniMax-M3 | - | - |
-| 2026-07-03T11:55:48Z | 01.08-streaming-execution-semantics | temporal | analysis | completed | 11m40s | MiniMax-M3 | - | - |
-| 2026-07-03T11:50:44Z | 01.08-streaming-execution-semantics | pydantic-ai | analysis | completed | 6m36s | MiniMax-M3 | - | - |
-| 2026-07-03T11:50:30Z | 01.08-streaming-execution-semantics | openhands | analysis | completed | 6m22s | MiniMax-M3 | - | - |
-| 2026-07-03T11:37:49Z | 01.08-streaming-execution-semantics | langgraph | analysis | completed | 17m26s | MiniMax-M3 | - | - |
-| 2026-07-03T11:25:41Z | 01.08-streaming-execution-semantics | openai-agents-sdk | analysis | completed | 5m18s | MiniMax-M3 | - | - |
-| 2026-07-03T11:25:02Z | 01.07-concurrency-and-parallel-advancement | (synthesis) | synthesis | completed | 4m39s | MiniMax-M3 | - | - |
-| 2026-07-03T11:20:22Z | 01.08-streaming-execution-semantics | crewai | analysis | completed | 19m33s | MiniMax-M3 | - | - |
-| 2026-07-03T11:12:31Z | 01.08-streaming-execution-semantics | agent-framework | analysis | completed | 11m43s | MiniMax-M3 | - | - |
-| 2026-07-03T11:09:44Z | 01.07-concurrency-and-parallel-advancement | temporal | analysis | completed | 8m56s | MiniMax-M3 | - | - |
-| 2026-07-03T10:54:06Z | 01.07-concurrency-and-parallel-advancement | openhands | analysis | completed | 23m37s | MiniMax-M3 | - | - |
-| 2026-07-03T10:42:22Z | 01.07-concurrency-and-parallel-advancement | pydantic-ai | analysis | completed | 11m54s | MiniMax-M3 | - | - |
-| 2026-07-03T10:35:44Z | 01.07-concurrency-and-parallel-advancement | openai-agents-sdk | analysis | completed | 5m16s | MiniMax-M3 | - | - |
-| 2026-07-03T10:30:27Z | 01.07-concurrency-and-parallel-advancement | crewai | analysis | completed | 6m17s | MiniMax-M3 | - | - |
-| 2026-07-03T10:29:32Z | 01.07-concurrency-and-parallel-advancement | langgraph | analysis | completed | 5m22s | MiniMax-M3 | - | - |
+| 2026-07-22T19:08:30Z | 04.03-tool-catalog-discovery-routing | crewai | analysis | cancelled | 13m21s | MiniMax-M3 | - | - |
+| 2026-07-22T19:07:19Z | 04.03-tool-catalog-discovery-routing | langgraph | analysis | failed | 12m10s | MiniMax-M3 | - | - |
+| 2026-07-22T18:58:05Z | 04.02-tool-schema-generation-validation | (synthesis) | synthesis | completed | 2m57s | MiniMax-M3 | - | - |
+| 2026-07-22T18:55:09Z | 04.03-tool-catalog-discovery-routing | agent-framework | analysis | completed | 7m44s | MiniMax-M3 | - | - |
+| 2026-07-22T18:53:04Z | 04.02-tool-schema-generation-validation | openhands | analysis | completed | 5m40s | MiniMax-M3 | - | - |
+| 2026-07-22T18:51:10Z | 04.02-tool-schema-generation-validation | pydantic-ai | analysis | completed | 3m46s | MiniMax-M3 | - | - |
+| 2026-07-22T18:47:24Z | 04.02-tool-schema-generation-validation | opa | analysis | completed | 24m04s | MiniMax-M3 | - | - |
+| 2026-07-22T18:32:51Z | 04.02-tool-schema-generation-validation | letta | analysis | completed | 9m31s | MiniMax-M3 | - | - |
+| 2026-07-22T18:29:27Z | 04.02-tool-schema-generation-validation | openai-agents-sdk | analysis | completed | 6m07s | MiniMax-M3 | - | - |
+| 2026-07-22T18:23:20Z | 04.01-tool-definition-and-registration | (synthesis) | synthesis | completed | 10m40s | MiniMax-M3 | - | - |
+| 2026-07-22T18:18:47Z | 04.02-tool-schema-generation-validation | langgraph | analysis | completed | 6m07s | MiniMax-M3 | - | - |
+| 2026-07-22T18:15:59Z | 04.02-tool-schema-generation-validation | crewai | analysis | completed | 3m19s | MiniMax-M3 | - | - |
+| 2026-07-22T18:12:40Z | 04.01-tool-definition-and-registration | pydantic-ai | analysis | completed | 17m48s | MiniMax-M3 | - | - |
+| 2026-07-22T18:05:03Z | 03.09-completion-and-finalization-semantics | (synthesis) | synthesis | completed | 10m10s | MiniMax-M3 | - | - |
+| 2026-07-22T18:02:57Z | 04.02-tool-schema-generation-validation | agent-framework | analysis | completed | 8m05s | MiniMax-M3 | - | - |
+| 2026-07-22T17:54:52Z | 03.09-completion-and-finalization-semantics | langgraph | analysis | completed | 11m34s | MiniMax-M3 | 13341567 | 0.0000 USD |
+| 2026-07-22T17:54:49Z | 03.09-completion-and-finalization-semantics | pydantic-ai | analysis | completed | 11m31s | MiniMax-M3 | - | - |
+| 2026-07-22T17:53:05Z | 04.01-tool-definition-and-registration | agent-framework | analysis | completed | 9m47s | MiniMax-M3 | - | - |
+| 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | opa | analysis | cancelled | 10m45s | MiniMax-M3 | - | - |
+| 2026-07-19T22:22:23Z | 04.01-tool-definition-and-registration | pydantic-ai | analysis | cancelled | 10m45s | MiniMax-M3 | - | - |
 
 ## Slowest Runs
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
+| 2026-07-13T18:27:54Z | 02.09-state-pruning-compaction-retention | openhands | analysis | completed | 1421m21s | MiniMax-M3 | - | - |
+| 2026-07-14T14:41:36Z | 03.03-tool-calling-roundtrip-control | letta | analysis | completed | 1065m50s | MiniMax-M3 | - | - |
+| 2026-07-14T14:31:13Z | 03.02-reason-act-observe-cadence | (synthesis) | synthesis | failed | 1055m27s | MiniMax-M3 | - | - |
+| 2026-07-15T08:58:47Z | 03.05-reflection-reask-self-correction | (synthesis) | synthesis | completed | 736m16s | MiniMax-M3 | - | - |
+| 2026-07-15T08:58:47Z | 03.03-tool-calling-roundtrip-control | (synthesis) | synthesis | completed | 736m16s | MiniMax-M3 | - | - |
+| 2026-07-15T08:58:47Z | 03.06-stuck-doom-loop-detection | crewai | analysis | cancelled | 736m16s | MiniMax-M3 | - | - |
 | 2026-07-03T08:52:04Z | 01.07-concurrency-and-parallel-advancement | agent-framework | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
-| 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | openhands | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
 | 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | temporal | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
+| 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | openhands | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
 | 2026-07-02T16:49:10Z | 01.03-step-turn-task-atomicity | temporal | analysis | failed | 108m59s | MiniMax-M3 | - | - |
-| 2026-07-02T16:54:58Z | 01.04-termination-and-loop-bounds | langgraph | analysis | completed | 104m17s | MiniMax-M3 | - | - |
-| 2026-07-02T17:02:41Z | 01.04-termination-and-loop-bounds | letta | analysis | completed | 103m46s | MiniMax-M3 | - | - |
-| 2026-07-02T14:24:05Z | 01.03-step-turn-task-atomicity | agent-framework | analysis | failed | 24m12s | MiniMax-M3 | - | - |
-| 2026-07-02T17:47:15Z | 01.06-scheduling-and-trigger-semantics | agent-framework | analysis | failed | 24m10s | MiniMax-M3 | - | - |
-| 2026-07-02T17:48:33Z | 01.06-scheduling-and-trigger-semantics | langgraph | analysis | failed | 24m10s | MiniMax-M3 | - | - |
-| 2026-07-02T17:47:43Z | 01.06-scheduling-and-trigger-semantics | crewai | analysis | failed | 24m10s | MiniMax-M3 | - | - |
 
 ## Failed Or Cancelled Runs
 
 | Completed | Dimension | Source | Status | Error |
 | --- | --- | --- | --- | --- |
+| 2026-07-22T19:08:30Z | 04.03-tool-catalog-discovery-routing | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-22T19:07:19Z | 04.03-tool-catalog-discovery-routing | langgraph | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | opa | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-19T22:22:23Z | 04.01-tool-definition-and-registration | pydantic-ai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-19T20:47:08Z | 04.02-tool-schema-generation-validation | agent-framework | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-19T18:38:09Z | 04.01-tool-definition-and-registration | agent-framework | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-19T18:38:09Z | 03.09-completion-and-finalization-semantics | pydantic-ai | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-15T11:11:32Z | 03.08-subagent-forked-loop-design | openai-agents-sdk | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T11:11:32Z | 03.08-subagent-forked-loop-design | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T11:11:32Z | 03.08-subagent-forked-loop-design | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T09:38:16Z | 03.06-stuck-doom-loop-detection | pydantic-ai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T08:58:47Z | 03.06-stuck-doom-loop-detection | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T16:07:00Z | 03.03-tool-calling-roundtrip-control | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T16:07:00Z | 03.04-planner-executor-separation | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T15:59:38Z | 03.03-tool-calling-roundtrip-control | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T15:59:38Z | 03.04-planner-executor-separation | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T14:31:13Z | 03.02-reason-act-observe-cadence | (synthesis) | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-13T18:45:17Z | 02.07-session-thread-user-boundaries | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-13T18:45:17Z | 02.09-state-pruning-compaction-retention | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-12T18:22:05Z | 02.09-state-pruning-compaction-retention | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-12T18:22:01Z | 03.01-llm-turn-loop-structure | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-12T16:30:06Z | 02.07-session-thread-user-boundaries | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-11T10:11:04Z | 02.08-crash-recovery-and-reconstruction | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T20:40:00Z | 02.08-crash-recovery-and-reconstruction | openhands | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-10T19:54:25Z | 02.07-session-thread-user-boundaries | letta | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-10T16:21:57Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T16:21:57Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-10T14:47:30Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:47:30Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:47:30Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:56Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:56Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:56Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:27Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:27Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:27Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:41:19Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:41:19Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:41:19Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:39:29Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:36:28Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:35:43Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:29:50Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T14:29:36Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:19:18Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T14:19:18Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-10T14:10:50Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:08:32Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T14:07:58Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T10:37:58Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T10:37:58Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-10T09:04:15Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:58:32Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:57:30Z | 02.04-mutation-discipline-and-state-transitions | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:57:30Z | 02.04-mutation-discipline-and-state-transitions | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:19:53Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-06T21:14:53Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-06T17:27:11Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-06T17:24:45Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-04T13:04:29Z | 01.09-delivery-guarantees-idempotency | (synthesis) | failed | validation: validation: required output validation failed |
+| 2026-07-03T16:44:39Z | 01.09-delivery-guarantees-idempotency | (synthesis) | failed | validation: validation: required output validation failed |
 | 2026-07-03T08:52:04Z | 01.07-concurrency-and-parallel-advancement | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
 | 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | temporal | cancelled | validation: cancellation: validation run was cancelled |
 | 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | openhands | cancelled | validation: cancellation: validation run was cancelled |

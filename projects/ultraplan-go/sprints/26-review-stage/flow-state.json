@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "ultraplan-go",
   "sprint": "26-review-stage",
-  "updatedAt": "2026-07-19T20:36:31.951146684Z",
+  "updatedAt": "2026-07-22T19:08:31.447999742Z",
   "stages": [
     {
       "stage": "requirements",
@@ -36,13 +36,75 @@
     }
   ],
   "review": {
-    "status": "completed",
-    "verdict": "pass",
+    "status": "failed",
+    "verdict": "blocked",
     "path": "projects/ultraplan-go/sprints/26-review-stage/review.md",
-    "lastRunAt": "2026-07-19T20:36:31.951142236Z",
-    "fingerprint": "d72c1dde7109691f1816aa99ed182ae03a537600290c2287492dc5520d72b56f",
-    "stale": false,
+    "lastRunAt": "2026-07-19T23:18:25.575551151Z",
+    "fingerprint": "4ac2bdd03766822735d132fc57d1dc59d0d05ce44ef82888ff118f85a8e6b12f",
+    "stale": true,
     "completed": 14,
-    "total": 14
+    "total": 14,
+    "diagnostics": [
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-architecture"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-cli-surface"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-configuration"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-documentation"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-errors"
+      },
+      {
+        "code": "invalid-finding",
+        "message": "finding failed schema or citation validation",
+        "coverage_id": "contract-llm-evaluation-cost-safety"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-observability"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-performance"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-persistence-and-migrations"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-security"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "contract-workflows"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "runtime did not return a structured review result",
+        "coverage_id": "handbook"
+      }
+    ]
   }
 }
