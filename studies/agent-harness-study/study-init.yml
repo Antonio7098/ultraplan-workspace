@@ -1,7 +1,7 @@
 name: agent-harness-study
 description: >
   Comprehensive architecture study of agent harness frameworks and runtimes.
-  Covers 24 study areas decomposed into 118 focused dimensions across execution
+  Covers 24 study areas decomposed into 121 focused dimensions across execution
   semantics, state, agent loops, tools, memory, planning, tool execution, security,
   governance, traceability, context, prompts, failure, supervision, coordination,
   artifacts, isolation, evals, standards, economics, extensibility, org architecture,
@@ -49,6 +49,10 @@ dimensions:
     name: replay-and-determinism
     title: Replay and Determinism in Execution
     purpose: Understand whether execution can be replayed deterministically.
+  - number: "01.11"
+    name: terminal-outcome-arbitration
+    title: Terminal Outcome Arbitration
+    purpose: Study how competing terminal signals resolve to one authoritative outcome.
 
   # 02. State Model
   - number: "02.01"
@@ -311,6 +315,10 @@ dimensions:
     name: export-interoperability-observability
     title: Export, Interoperability, and Observability Backends
     purpose: Study whether traces can flow to external backends.
+  - number: "10.05"
+    name: event-retention-observer-delivery-backpressure
+    title: Event Retention, Observer Delivery, and Backpressure
+    purpose: Study retained event replay and non-blocking delivery to multiple observers.
 
   # 11. Context Engineering
   - number: "11.01"
@@ -439,6 +447,10 @@ dimensions:
     name: cost-latency-quality-evaluation
     title: Cost, Latency, and Quality Evaluation
     purpose: Study whether evals include token cost and economic tradeoffs.
+  - number: "18.05"
+    name: lifecycle-concurrency-invariant-verification
+    title: Lifecycle and Concurrency Invariant Verification
+    purpose: Study how lifecycle and concurrency invariants are proven under adverse interleavings.
 
   # 19. Open Standards Strategy
   - number: "19.01"
