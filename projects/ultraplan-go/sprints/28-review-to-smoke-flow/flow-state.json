@@ -1,0 +1,1900 @@
+{
+  "schemaVersion": 2,
+  "project": "ultraplan-go",
+  "sprint": "28-review-to-smoke-flow",
+  "updatedAt": "2026-07-23T15:42:26.682473646Z",
+  "stages": [
+    {
+      "stage": "requirements",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/requirements.md",
+      "lastRunAt": "2026-07-22T19:40:41.372427388Z"
+    },
+    {
+      "stage": "sprint-index",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/sprint-index.md",
+      "lastRunAt": "2026-07-22T19:40:41.372427388Z"
+    },
+    {
+      "stage": "technical-handbook",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/technical-handbook.md",
+      "lastRunAt": "2026-07-22T19:40:41.372427388Z"
+    },
+    {
+      "stage": "area-reasoning",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/reasoning",
+      "lastRunAt": "2026-07-22T19:40:41.372427388Z"
+    },
+    {
+      "stage": "reasoning",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/reasoning.md",
+      "lastRunAt": "2026-07-22T19:40:41.372427388Z"
+    },
+    {
+      "stage": "plan",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/plan.md",
+      "lastRunAt": "2026-07-22T19:40:41.372427388Z"
+    }
+  ],
+  "review": {
+    "status": "failed",
+    "verdict": "blocked",
+    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/review.md",
+    "lastRunAt": "2026-07-23T15:42:26.678976924Z",
+    "fingerprint": "e1d95c6fbceee2dee231e1b931f897f3324f6233a5ab4fbdfb56407a00ad9c44",
+    "stale": false,
+    "completed": 12,
+    "total": 12,
+    "diagnostics": [
+      {
+        "code": "reviewer-failed",
+        "message": "opencode event: runtime_exit: OpenCode reported a fatal session error",
+        "coverage_id": "contract-architecture"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "reviewer result failed schema or citation validation",
+        "coverage_id": "contract-observability"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "reviewer result failed schema or citation validation",
+        "coverage_id": "contract-persistence-and-migrations"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "reviewer result failed schema or citation validation",
+        "coverage_id": "contract-workflows"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "reviewer result failed schema or citation validation",
+        "coverage_id": "handbook"
+      }
+    ],
+    "lastAttempt": {
+      "id": "review-1784820593926713921",
+      "status": "failed",
+      "startedAt": "2026-07-23T15:29:53.926713921Z",
+      "completedAt": "2026-07-23T15:42:26.678976924Z",
+      "diagnostics": [
+        "reviewer-failed: opencode event: runtime_exit: OpenCode reported a fatal session error",
+        "reviewer-failed: reviewer result failed schema or citation validation",
+        "reviewer-failed: reviewer result failed schema or citation validation",
+        "reviewer-failed: reviewer result failed schema or citation validation",
+        "reviewer-failed: reviewer result failed schema or citation validation"
+      ]
+    },
+    "resume": {
+      "attemptId": "review-1784820593926713921",
+      "inputFingerprint": "e1d95c6fbceee2dee231e1b931f897f3324f6233a5ab4fbdfb56407a00ad9c44",
+      "model": "minimax-coding-plan/MiniMax-M3",
+      "updatedAt": "2026-07-23T15:42:26.635072317Z",
+      "coverage": [
+        {
+          "coverageId": "contract-architecture",
+          "status": "failed",
+          "sessionId": "ses_07068c7f6ffeGLty6R1xzuKMAK",
+          "updatedAt": "2026-07-23T15:30:14.635608802Z"
+        },
+        {
+          "coverageId": "contract-cli-surface",
+          "status": "completed",
+          "sessionId": "ses_07066f578ffeeKEAlrgVR3Vf4Q",
+          "updatedAt": "2026-07-23T15:36:29.730530106Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-cli-surface",
+            "applicability": "direct",
+            "summary": "The CLI surface change for sprint review-to-smoke flow substantially satisfies the CLI Surface contract. JSON output, exit codes, help text, stream separation, lifecycle/cancellation, destructive-action controls, and non-interactive safety are implemented and tested in the changed files. A small number of partial gaps remain in help documentation of exit codes and worked examples.",
+            "findings": [
+              {
+                "id": "CLI-IO-001-progress-to-stderr",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Progress output stays on stderr across text and JSON modes",
+                "detail": "Sprint flow, review, smoke, and runtime progress callbacks all write to deps.stderr rather than stdout, preserving stdout for the final result or JSON payload even when --json is selected.",
+                "action": "Keep this separation; the smoke progress formatter already redacts values via config.RedactValue before writing.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 341,
+                    "endLine": 353
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 410,
+                    "endLine": 414
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 302,
+                    "endLine": 308
+                  }
+                ]
+              },
+              {
+                "id": "CLI-JSON-001-single-structured-document",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "JSON output is a single structured document per command",
+                "detail": "All --json branches use json.NewEncoder(deps.stdout).Encode with a top-level map containing schema_version, operation, status, and result (plus error when present). TestSprintFailureJSONIsOneStructuredDocument verifies there is no trailing data.",
+                "action": "Maintain the single-document discipline; reuse stableCommandError for the error payload.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 95,
+                    "endLine": 110
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 196,
+                    "endLine": 226
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 252,
+                    "endLine": 266
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 315,
+                    "endLine": 332
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 356,
+                    "endLine": 367
+                  }
+                ]
+              },
+              {
+                "id": "CLI-EXIT-001-stable-meaningful-codes",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Stable typed exit codes cover usage, config, workspace, validation, runtime, cancellation, and partial outcomes",
+                "detail": "ExitOK/ExitError/ExitUsage/ExitConfig/ExitWorkspace/ExitValidation/ExitRuntime/ExitCancel/ExitPartial are defined and consistently mapped via classedError, classified, mapSprintError, and mapSmokeError. Tests assert specific codes for usage, workspace, validation, and JSON failure paths.",
+                "action": "Preserve the mapping helpers; downstream scripts rely on these codes for branching.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 15,
+                    "endLine": 25
+                  },
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 210,
+                    "endLine": 222
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 500,
+                    "endLine": 569
+                  },
+                  {
+                    "path": "target/internal/app/app_test.go",
+                    "startLine": 71,
+                    "endLine": 82
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands_test.go",
+                    "startLine": 102,
+                    "endLine": 133
+                  }
+                ]
+              },
+              {
+                "id": "CLI-SAFE-001-destructive-controls",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Destructive actions require explicit dry-run, force, or override flags",
+                "detail": "sprint smoke/flow/verify require --dry-run to skip mutation and refuse non-dry-run smoke without --yes. --force-review requires a non-empty --override-reason, and sprint verify refuses --to smoke without --yes in non-dry-run mode.",
+                "action": "Keep the fail-fast guards; they directly satisfy the contract's destructive-action controls and non-interactive safety.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 186,
+                    "endLine": 188
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 232,
+                    "endLine": 234
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 338,
+                    "endLine": 340
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 446,
+                    "endLine": 498
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 655,
+                    "endLine": 727
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 572,
+                    "endLine": 610
+                  }
+                ]
+              },
+              {
+                "id": "CLI-NONINT-001-no-hang",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Non-interactive mode never waits on TTY input",
+                "detail": "Smoke, flow --to smoke, and verify --to smoke reject non-dry-run invocations without --yes/--non-interactive before any harness or runtime call, so CI/agent runs fail fast instead of hanging.",
+                "action": "Maintain the early-exit checks; they are the only thing protecting CI from silent prompt waits.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 186,
+                    "endLine": 188
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 232,
+                    "endLine": 234
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 338,
+                    "endLine": 340
+                  }
+                ]
+              },
+              {
+                "id": "CLI-CONFIG-001-precedence-and-redaction",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Workspace precedence and config redaction are honored",
+                "detail": "discoverWorkspace applies ExplicitPath \u003e EnvWorkspace \u003e StartDir precedence, and smoke/flow progress messages are passed through config.RedactValue before being written to stderr. config show --json output is asserted not to leak secrets.",
+                "action": "Continue routing progress strings through RedactValue; consider documenting the precedence in --help output for operators.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 264,
+                    "endLine": 275
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 350,
+                    "endLine": 354
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 411,
+                    "endLine": 413
+                  },
+                  {
+                    "path": "target/internal/app/app_test.go",
+                    "startLine": 210,
+                    "endLine": 233
+                  }
+                ]
+              },
+              {
+                "id": "CLI-LIFE-001-signal-and-cancellation",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Signal handling and context cancellation propagate into long-running commands",
+                "detail": "main wires SIGINT/SIGTERM through signal.NotifyContext and passes the resulting context to app.Run, which threads it into sprint operations. cancellation maps to ExitCancel via mapSprintError/mapSmokeError so the terminal state is distinguishable from a generic failure.",
+                "action": "Keep the context propagation; verify smoke cleanup respects the cancelled context downstream.",
+                "citations": [
+                  {
+                    "path": "target/cmd/ultraplan/main.go",
+                    "startLine": 13,
+                    "endLine": 26
+                  },
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 83,
+                    "endLine": 161
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 549,
+                    "endLine": 569
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 500,
+                    "endLine": 513
+                  }
+                ]
+              },
+              {
+                "id": "CLI-HELP-001-no-worked-examples",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Sprint subcommand help lacks worked examples for non-trivial flows",
+                "detail": "Subcommand help strings cover Usage and a description but do not include concrete worked examples for non-trivial flows such as `sprint \u003cp\u003e \u003cs\u003e flow --to smoke --yes --force-review --override-reason ...` or `sprint \u003cp\u003e \u003cs\u003e verify --to review --focus-review \u003cid\u003e --restart-review`. The contract requires examples for non-trivial commands so operators and agents can copy a working invocation.",
+                "action": "Add a short Examples section to sprintHelp/sprintFlowHelp/sprintVerifyHelp/sprintSmokeHelp showing the safe invocation with all required flags (--yes, --override-reason) so the contract's example requirement is met.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 987,
+                    "endLine": 1037
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1087,
+                    "endLine": 1116
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1135,
+                    "endLine": 1150
+                  }
+                ]
+              },
+              {
+                "id": "CLI-EXIT-001-exit-codes-undocumented",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Stable exit codes are not surfaced in --help output",
+                "detail": "The contract requires documented special exit codes where scripts branch on them, but renderHelp() and the subcommand help strings enumerate commands and flags only. Exit codes 0, 1, 2, 3, 4, 5, 6, 7, 8 are defined in code yet not surfaced anywhere in the user-facing help.",
+                "action": "Add a short 'Exit Codes' section to renderHelp() (and where useful to sprintHelp) listing 0 OK, 1 internal error, 2 usage, 3 config, 4 workspace, 5 validation, 6 runtime, 7 cancellation, 8 partial, so scripts can reference a stable mapping.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 15,
+                    "endLine": 25
+                  },
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 231,
+                    "endLine": 253
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 987,
+                    "endLine": 1037
+                  }
+                ]
+              },
+              {
+                "id": "CLI-SHAPE-001-positional-order",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Sprint subcommand relies on two positional args with documented but example-free order",
+                "detail": "All sprint subcommands require \u003cproject\u003e \u003csprint\u003e as positional arguments before the action keyword. The order is documented via the Usage section in help, satisfying the contract's prohibition on undocumented argument order, but with three positional tokens (project, sprint, action) and several flag combinations the entry point is more than the minimal two-token surface the contract encourages.",
+                "action": "Keep the documented Usage block; consider promoting the project/sprint references to a subcommand (e.g. `sprint run \u003cproject\u003e \u003csprint\u003e flow --to ...`) if a future sprint wants to reduce positional args, and add an explicit Examples block so the order is reinforced.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 26,
+                    "endLine": 76
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 987,
+                    "endLine": 1037
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-configuration",
+          "status": "completed",
+          "sessionId": "ses_07066f4e1ffejyl286ifHgSJG4",
+          "updatedAt": "2026-07-23T15:35:49.138716868Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-configuration",
+            "applicability": "partial",
+            "summary": "Sprint 28 changes introduce typed, parsed, and allowlisted configuration for smoke (timeout precedence with tracked source, env forwarding allowlist, argv redaction) and add a v1→v2 migration path for persisted flow state. These advances directly satisfy CFG-SOURCE-001, CFG-TYPE-001, CFG-COMPAT-001, CFG-SECRET-001, and CFG-OBS-001 for the smoke pipeline. The review cannot certify CFG-START-001, the broader CFG-TYPE-001 boundary validation, or CFG-PUBLIC-001 because the frozen target tree contains zero files under internal/platform/config/ while the changed code references config.Config, config.Effective, config.Load, config.CLIOverrides, and config.RedactValue across app.go, sprint_commands.go, tui_commands.go, runtime.go, and sprint_commands_test.go. The target therefore cannot build or load effective configuration, so most startup/preflight and public-config allowlist claims are unverifiable. CFG-ENV-001 is only partially satisfied: smoke env allowlisting exists, but there is no explicit dev/staging/prod mode flag or unsafe-development guard in the touched files.",
+            "findings": [
+              {
+                "id": "CFG-START-001-missing-config-package",
+                "severity": "blocker",
+                "applicability": "direct",
+                "title": "internal/platform/config package is referenced but absent from the target tree",
+                "detail": "The changed files import github.com/Antonio7098/ultraplan-go/internal/platform/config and call config.Load (target/internal/app/app.go:11, app.go:286-295), config.CLIOverrides (target/internal/app/app.go:286; tui_commands.go:10, tui_commands.go:35; sprint_commands.go:13, sprint_commands.go:73, sprint_commands.go:391), config.Config (target/internal/app/sprint_commands.go:20, sprint_commands.go:22, sprint_commands.go:515, sprint_commands.go:623; target/internal/platform/runtime/runtime.go:13, runtime.go:431), config.Effective (target/internal/app/sprint_commands.go:435; sprint_commands.go:443), and config.RedactValue (target/internal/app/sprint_commands.go:352, sprint_commands.go:412). However, the frozen target tree has no internal/platform/config directory; internal/platform/ contains only runtime/. There is no Config, Effective, Load, LoadOptions, CLIOverrides, Sources, RedactValue, or DefaultOverrideFile implementation. The target therefore cannot compile, cannot satisfy CFG-START-001 (required config must fail before work starts), and cannot satisfy CFG-TYPE-001/CFG-PUBLIC-001/CFG-OBS-001 for the actual config-loading seam.",
+                "action": "Add the internal/platform/config package implementing Config/Effective/Load/LoadOptions/CLIOverrides/Sources/RedactValue in the target tree, or rewrite the four call sites to use a comparable local source so the frozen target compiles and config-driven startup actually validates.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 11,
+                    "endLine": 11
+                  },
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 286,
+                    "endLine": 295
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 13,
+                    "endLine": 13
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 20,
+                    "endLine": 22
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 73,
+                    "endLine": 73
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 352,
+                    "endLine": 352
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 391,
+                    "endLine": 391
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 412,
+                    "endLine": 412
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 435,
+                    "endLine": 443
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 515,
+                    "endLine": 515
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands_test.go",
+                    "startLine": 12,
+                    "endLine": 12
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands_test.go",
+                    "startLine": 623,
+                    "endLine": 623
+                  },
+                  {
+                    "path": "target/internal/app/tui_commands.go",
+                    "startLine": 10,
+                    "endLine": 10
+                  },
+                  {
+                    "path": "target/internal/app/tui_commands.go",
+                    "startLine": 35,
+                    "endLine": 35
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 13,
+                    "endLine": 13
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 431,
+                    "endLine": 431
+                  }
+                ]
+              },
+              {
+                "id": "CFG-COMPAT-001-flow-state-migration",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Flow state schema v1→v2 migration is explicit and revalidated",
+                "detail": "LoadFlowState accepts both FlowStateSchemaVersion=2 and PreviousFlowStateSchemaVersion=1, refuses unknown schema versions with ErrFlowStateUnsupported, runs migrateFlowStateV1, and revalidates via ValidateFlowState before persisting and returning. Migrated state backfills artifact digests, lastComplete, fingerprints, and marks review/smoke stale so callers observe the migration. CFG-COMPAT-001 is satisfied for flow-state.json compatibility.",
+                "action": "Keep migration tests as new flow-state fields are added; document the schema-bump policy in the contract README so future changes do not silently reinterpret v2 state.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 20,
+                    "endLine": 68
+                  },
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 71,
+                    "endLine": 110
+                  },
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 119,
+                    "endLine": 187
+                  },
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 189,
+                    "endLine": 249
+                  }
+                ]
+              },
+              {
+                "id": "CFG-SOURCE-001-smoke-timeout-precedence",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Smoke run timeout follows explicit precedence with recorded source",
+                "detail": "smokeTimeout (smoke_protocol.go:503-516) resolves effective timeout in this order: request override, workspace/env settings (source label 'workspace' or 'env'), manifest Defaults.Timeout when parseable and within 24h, otherwise the settings default. The chosen source is returned as TimeoutSource and recorded in SmokeResult.TimeoutSource and in the smoke fingerprint (verify.go:284). CFG-SOURCE-001 is satisfied for the smoke timeout path.",
+                "action": "Document the same precedence contract for any new settings (prerequisites, scope defaults) so future fields do not silently lose source tracking.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 503,
+                    "endLine": 516
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 57,
+                    "endLine": 57
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_types.go",
+                    "startLine": 124,
+                    "endLine": 127
+                  },
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 284,
+                    "endLine": 284
+                  }
+                ]
+              },
+              {
+                "id": "CFG-TYPE-001-smoke-manifest-validation",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Smoke manifest is parsed into typed settings and validated with rejected unsafe values",
+                "detail": "validateSmokeManifest (smoke_protocol.go:204-231) rejects unknown protocol/schema, missing required harness/executable/cwd/commands/evidence, invalid or out-of-range DefaultTimeouts (must be a positive Go duration ≤24h via time.ParseDuration), missing required capabilities, and duplicate or malformed environment names. validProtocolEnvName (smoke_protocol.go:428-438) constrains env names to uppercase letters, digits, and underscores. Smoke manifest timeout tests cover invalid, zero, negative, and \u003e24h values (smoke_test.go:190-199). CFG-TYPE-001 is satisfied for the smoke pipeline.",
+                "action": "Add typed parsing tests for unknown fields in the smoke manifest and for negative/invalid env names so contract rejection is regression-locked.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 204,
+                    "endLine": 231
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 428,
+                    "endLine": 438
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_test.go",
+                    "startLine": 190,
+                    "endLine": 199
+                  }
+                ]
+              },
+              {
+                "id": "CFG-SECRET-001-smoke-env-allowlist",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Smoke harness env forwarding is allowlisted but defaults include filesystem-revealing names",
+                "detail": "smokeEnvironment (smoke_protocol.go:482-501) builds the allowlist from settings.Environment and only forwards variables that are in the settings allowlist. The smoke manifest may request additional names, but they are only added when also present in settings.Environment. safeArgv (smoke.go:496-515) replaces non-flag argument values with [ARG] and flag values containing '=' with name=[REDACTED] in stable smoke output. config.RedactValue is applied to sprint/smoke progress messages before they reach stderr (sprint_commands.go:352, sprint_commands.go:412). ValidateSmokeContent rejects forbidden raw payload markers ('-----BEGIN', 'Authorization: Bearer', '\"stdout\":', '\"stderr\":') (smoke.go:449-453). However, the default SmokeSettings.Environment includes PATH, HOME, TMPDIR, LANG, LC_ALL (smoke_types.go:52). PATH and HOME commonly reveal filesystem layout and are arguably sensitive in multi-tenant settings. CFG-SECRET-001 is satisfied for argv and progress, but the default allowlist is broader than necessary.",
+                "action": "Default the smoke env allowlist to LANG/LC_ALL/TMPDIR only, require explicit opt-in for PATH/HOME, and document the redaction policy so future environment additions remain minimal.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 482,
+                    "endLine": 501
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_types.go",
+                    "startLine": 51,
+                    "endLine": 53
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 449,
+                    "endLine": 453
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 496,
+                    "endLine": 515
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 352,
+                    "endLine": 352
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 412,
+                    "endLine": 412
+                  }
+                ]
+              },
+              {
+                "id": "CFG-ENV-001-no-explicit-mode",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "No explicit dev/test/prod mode or unsafe-development gate in changed code",
+                "detail": "The smoke pipeline supports a settings-level environment allowlist and timeout source labels, but the changed code does not define an explicit development/test/production mode, does not gate debug-only behavior on a mode flag, and does not reject combinations such as verbose logs plus unsafe permissions. The platform runtime still reads from cfg via the missing internal/platform/config, which would carry such a mode in practice. CFG-ENV-001 is therefore only partially satisfied.",
+                "action": "Add a documented runtime mode to settings, gate debug/test features explicitly, and reject unsafe combinations during ValidateFlowState or loadEffectiveConfig.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 435,
+                    "endLine": 444
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_types.go",
+                    "startLine": 42,
+                    "endLine": 53
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 431,
+                    "endLine": 454
+                  }
+                ]
+              },
+              {
+                "id": "CFG-PUBLIC-001-unverifiable",
+                "severity": "medium",
+                "applicability": "deferred",
+                "title": "Public-config allowlist cannot be verified because config.Load is not implemented",
+                "detail": "CFG-PUBLIC-001 requires an explicit allowlist for public config exports (config show, JSON output). The changed code calls config.Load and config.RedactValue (app.go:286-295; sprint_commands.go:352, sprint_commands.go:412) but the package those symbols belong to is absent from the target tree (see CFG-START-001-missing-config-package). 'config show' tests reference a redaction field result.Logging.Format (app_test.go:210-243) and the implementation paths cannot be reviewed. The smoke pipeline partially satisfies the rule via the env allowlist and safeArgv redaction, but the broader public-config claim is unverifiable.",
+                "action": "Restore the internal/platform/config package with an explicit allowlist for any value exposed through 'config show', '--json' status, or TUI summaries, and add tests that confirm no unallowlisted field is exported.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 286,
+                    "endLine": 295
+                  },
+                  {
+                    "path": "target/internal/app/app_test.go",
+                    "startLine": 210,
+                    "endLine": 243
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 352,
+                    "endLine": 352
+                  }
+                ]
+              },
+              {
+                "id": "CFG-OBS-001-effective-timeout-inspectable",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Effective smoke timeout and source are surfaced in status and the smoke summary",
+                "detail": "SmokeResult.EffectiveTimeout and TimeoutSource are rendered by smoke summary markdown (smoke.go:389), by sprint.smoke JSON and text (sprint_commands.go:945; operations.go:144), and included in the smoke fingerprint (verify.go:284). The renderSprintSmoke and renderSprintStatus outputs also include TimeoutSource and redacted argv, satisfying the inspectable effective non-secret config rule for the smoke path.",
+                "action": "Add an explicit 'diagnostics show' command or 'ultraplan config show smoke' that lists the same effective values for operators without rerunning smoke.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 382,
+                    "endLine": 391
+                  },
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 280,
+                    "endLine": 285
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 945,
+                    "endLine": 945
+                  },
+                  {
+                    "path": "target/internal/app/operations.go",
+                    "startLine": 144,
+                    "endLine": 144
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-documentation",
+          "status": "completed",
+          "sessionId": "ses_07066f4d1ffealAdzA2qwzRQda",
+          "updatedAt": "2026-07-23T15:36:05.117440114Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-documentation",
+            "applicability": "direct",
+            "summary": "The Documentation contract is largely satisfied: docs have clear ownership (DOC-OWNER-001), all Sprint 28 architecture changes carry decision context in reasoning.md/plan.md/execute.md (DOC-ARCH-001), CLI and TUI help text exists for every public surface (DOC-PUBLIC-001), operator-facing recovery guidance exists (DOC-OPS-001), generated review.md/smoke.md/flow-state.json have deterministic renderers and strict validators (DOC-GEN-001), and the technical-handbook is concise and authoritative (DOC-AGENT-001). Real gaps are limited to DOC-EXAMPLE-001 (CLI help text shows flag patterns but no concrete example invocations) and a partial DOC-PUBLIC-001 issue where the TUI's bottom help bar references an undefined HelpText() function, leaving the rendered in-app key map incomplete. No review-rejection criteria are met.",
+            "findings": [
+              {
+                "id": "DOC-EXAMPLE-001-CLI-HELP-NO-EXAMPLES",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "CLI command help lacks concrete example invocations",
+                "detail": "The Documentation contract DOC-EXAMPLE-001 requires examples to be 'minimal and realistic'. The sprint subcommand help blocks in internal/app/sprint_commands.go expose only Usage flag patterns (e.g. 'ultraplan sprint \u003cproject\u003e \u003csprint\u003e verify [--to review|smoke] [--focus-review \u003cid\u003e] [--restart-review] [--level \u003cid\u003e|--suite \u003cid\u003e|--test \u003cid\u003e] [--timeout \u003cduration\u003e] [--force-review --override-reason \u003ctext\u003e] [--dry-run] [--yes] [--json]') but never show a worked invocation such as 'ultraplan sprint ultraplan-go 28-review-to-smoke-flow verify --to smoke --yes'. Users have to guess how placeholder tokens (\u003cproject\u003e, \u003csprint\u003e, \u003ccoverage-id\u003e) map to real values, especially for the new --force-review/--override-reason/--focus-review flags introduced by Sprint 28.",
+                "action": "Add at least one minimal realistic invocation example per sprint subcommand help block (verify, flow, review, smoke, execute), illustrating the new diagnostic-override and focused-rerun flags introduced by Sprint 28.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 987,
+                    "endLine": 1037
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1087,
+                    "endLine": 1116
+                  }
+                ]
+              },
+              {
+                "id": "DOC-PUBLIC-001-TUI-HELPTEXT-UNDEFINED",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "TUI help bar references an undefined HelpText() function",
+                "detail": "DOC-PUBLIC-001 requires public surfaces to be documented. internal/tui/views.go RenderWithSize invokes HelpText() to populate the bottom-of-screen help strip (views.go:57), but no function named HelpText is defined in any file under target/internal/tui/ (model.go, views.go, verify_test.go are the only files; no keys.go exists). The current TUI therefore renders no in-app key map; users get only the brief `tui --help` paragraph in tui_commands.go (171-184), which never lists keybindings, route operations, or how to dismiss a confirmation.",
+                "action": "Either restore a HelpText() function that documents the keybindings used by Model.Update (Up/Down/Left/Right/Enter/Esc/q/c) plus route semantics, or remove the call site in views.go:57 and update DOC-OWNER-001/DOC-PUBLIC-001 evidence accordingly. Add a TUI help test that asserts the rendered help strip is non-empty and contains the documented keys.",
+                "citations": [
+                  {
+                    "path": "target/internal/tui/views.go",
+                    "startLine": 57,
+                    "endLine": 57
+                  },
+                  {
+                    "path": "target/internal/app/tui_commands.go",
+                    "startLine": 171,
+                    "endLine": 184
+                  }
+                ]
+              },
+              {
+                "id": "DOC-OPS-001-VERIFY-HELP-MISSING-DIAGNOSTIC-LIMITS",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "sprintVerifyHelp does not document the limits of --force-review",
+                "detail": "DOC-OPS-001 requires operator notes for recovery, override, and cancellation behavior. sprintVerifyHelp (sprint_commands.go:1108-1116) tells the operator that an override 'remains diagnostic, and cannot improve the overall assessment', and that it requires --yes and a rationale. It does not document the operational limits set out in reasoning.md#decision-4: that the override is scoped to a single smoke run, that it does not grant extra mutation or environment capability, and that stale/blocked/incomplete review evidence cannot be promoted by the override. Sprint 28 added these limits precisely so operators understand what an override can and cannot do; the CLI help only captures the 'cannot improve' half.",
+                "action": "Extend sprintVerifyHelp and sprintSmokeHelp with one sentence covering the non-promotion limits (no mutation or environment expansion, no review freshness effect, single-run scope) so an operator can decide whether to apply --force-review without re-reading reasoning.md.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1108,
+                    "endLine": 1116
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1087,
+                    "endLine": 1106
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/reasoning.md",
+                    "startLine": 147,
+                    "endLine": 157
+                  }
+                ]
+              },
+              {
+                "id": "DOC-OWNER-001-INFO-PASS",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Documentation ownership and locations are clear and conflict-free",
+                "detail": "DOC-OWNER-001 holds: system contracts live under system/contracts/ (architecture, errors, configuration, observability, security, testing, documentation, cli, llm, workflows, persistence); project documents live under projects/ultraplan-go/docs/ (PRD.md, TRD.md, ARCHITECTURE.md) with project-index.md declaring this directory the sole authoritative source; sprint artifacts live under projects/ultraplan-go/sprints/28-review-to-smoke-flow/; rendered CLI help lives in internal/app/sprint_commands.go sprintHelp/sprintReviewHelp/sprintVerifyHelp/sprintSmokeHelp. No competing or duplicate source-of-truth documents were introduced by Sprint 28.",
+                "action": "None. Maintain the existing single source of truth and continue pointing docs index entries to projects/ultraplan-go/docs/.",
+                "citations": [
+                  {
+                    "path": "projects/ultraplan-go/project-index.md",
+                    "startLine": 18,
+                    "endLine": 26
+                  },
+                  {
+                    "path": "system/contracts/core/documentation.md",
+                    "startLine": 48,
+                    "endLine": 63
+                  }
+                ]
+              },
+              {
+                "id": "DOC-ARCH-001-INFO-PASS",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Sprint 28 architecture changes have decision context",
+                "detail": "DOC-ARCH-001 holds. Sprint 28 introduced v2 strict flow-state schema with one v1 migration, a 96 KiB bounded terminal output field alongside the existing 4 KiB mapped-event cap, per-coverage review resume checkpoints, atomic per-sprint mutation exclusion, and the diagnostic-override policy. Each is recorded with rationale, rejected alternatives, and study citations in reasoning.md (Decisions 1-7, lines 113-207), carried into plan.md's Decisions To Execute table (lines 28-37), and acknowledged in execute.md (lines 53-59, 116-123). review-sprint-protocol is selected in sprint-index.md and the technical-handbook maps the underlying patterns (lines 30-50).",
+                "action": "None. Continue recording each architecture-level change in reasoning.md and reflecting it in plan.md before implementation begins.",
+                "citations": [
+                  {
+                    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/reasoning.md",
+                    "startLine": 113,
+                    "endLine": 207
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/plan.md",
+                    "startLine": 28,
+                    "endLine": 37
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/execute.md",
+                    "startLine": 53,
+                    "endLine": 59
+                  }
+                ]
+              },
+              {
+                "id": "DOC-GEN-001-INFO-PASS",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Generated review.md and smoke.md are deterministic, validated, and drift-checked",
+                "detail": "DOC-GEN-001 holds. RenderReviewMarkdown (review.go:925-973) and RenderSmoke (smoke.go:382-433) produce the canonical Markdown artifacts from typed inputs, and ValidateReviewContent (review.go:975-1003) plus ValidateSmokeContent (smoke.go:435-459) reject placeholder text, missing required sections, unsupported verdicts, stale fingerprints, and raw/secret-bearing content (smoke.go:449-453 forbids -----BEGIN, Authorization: Bearer, raw stdout/stderr keys). flow-state.json is rendered by saveFlowStateWithHooks (state.go:137-187) and validated by ValidateFlowState (state.go:189-249) with DisallowUnknownFields, schema version gating, and migration from v1 only (state.go:71-110). The same artifact digest is recomputed at read time by VerificationStatus (verify.go:173-184) and (verify.go:205-216), so any external edit becomes stale.",
+                "action": "None. Continue running the validators on every promote path and add regression coverage for any new required section introduced in future sprints.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 925,
+                    "endLine": 1003
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 382,
+                    "endLine": 459
+                  },
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 137,
+                    "endLine": 249
+                  },
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 173,
+                    "endLine": 216
+                  }
+                ]
+              },
+              {
+                "id": "DOC-AGENT-001-INFO-PASS",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Agent-facing docs are concise, current, and authoritative",
+                "detail": "DOC-AGENT-001 holds. technical-handbook.md is 175 lines, normative on patterns and warnings, and references only the 13 evidence reports selected by sprint-index.md. reasoning.md clearly distinguishes normative rules from deferred considerations (lines 75-106). system/contracts/core/documentation.md itself remains procedural rather than exploratory, and contracts/protocols/templates are separated in workspace layouts. No contradictory agent instructions were introduced by Sprint 28.",
+                "action": "None. Continue keeping technical-handbook under 200 lines per sprint and updating it when new evidence reports or warnings are selected.",
+                "citations": [
+                  {
+                    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/technical-handbook.md",
+                    "startLine": 1,
+                    "endLine": 175
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/28-review-to-smoke-flow/reasoning.md",
+                    "startLine": 75,
+                    "endLine": 106
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-errors",
+          "status": "completed",
+          "sessionId": "ses_07066f586ffe5O0aVG5cJ0Xdtl",
+          "updatedAt": "2026-07-23T15:34:31.509443346Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-errors",
+            "applicability": "direct",
+            "summary": "Review against system/contracts/core/errors.md for the Sprint 28 review-to-smoke flow scope. The implementation exposes structured error wrappers (classedError, SmokeError, OperationError) and applies them across startup preflight, command boundaries, review coverage, smoke run, and persistence paths. ERR-CORE-001 and ERR-STARTUP-001 are largely honored: failure paths return wrapped errors, persistence failures are joined, mutation locks fail before work, and execute completeness is required before review/smoke. However, three contract rules are materially violated in the changed scope: smoke-error translation drops the cause chain when wrapping into classified exit codes (ERR-TRANS-001), string-substring matching is used to derive stable error codes (ERR-CODE-001), and SDK response headers/bodies are passed through to diagnostics without secret redaction (ERR-REDACT-001). Additional partial gaps exist in canonical shape, retryable policy enforcement, and orphaned-attempt reconciliation.",
+            "findings": [
+              {
+                "id": "ERR-TRANS-001-smoke-cause-dropped",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Smoke error translation drops the original cause chain when wrapping into classified exit errors",
+                "detail": "mapSmokeError formats the wrapped SmokeError with '%s: %s' against se.Code and se.Error(). classified() then builds the inner error via fmt.Errorf(format, args...) with no %w verb, so the underlying *SmokeError (and its .Err cause) is not reachable through errors.As / errors.Is. The structured outer wrapper preserves only class and code; cause, message, and guidance are flattened into the formatted string. By contrast, mapSprintError correctly uses '%s: %w' so the originating sprint error remains wrappable. This asymmetry breaks ERR-TRANS-001's rule to 'keep the original cause or causal chain' and 'preserve the original code when possible' across the smoke boundary that the Sprint 28 contract surface explicitly owns.",
+                "action": "Re-thread the smoke cause through the wrapper: either pass se to classified via fmt.Errorf('%s: %w', se.Code, se) (preserving errors.As against *SmokeError) or build a classedError that holds se directly and exposes Unwrap() to se. Also align mapSprintError's %w usage with the smoke path so every classified translation keeps the originating error wrappable.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 500,
+                    "endLine": 513
+                  }
+                ]
+              },
+              {
+                "id": "ERR-CODE-001-substring-code-derivation",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Operation error codes are derived from substring matching of error text, making them unstable",
+                "detail": "failedOperation in operations.go chooses OperationError.Code/Category by lower-casing err.Error() and matching on substrings such as 'validation', 'unsupported', 'parallelism', 'runtime', 'provider', and 'lock'. This contradicts ERR-CODE-001's 'codes must be stable across refactors and useful for alerting, metrics, and review': any error message that happens to include 'runtime' (e.g. a sprint-status 'review not yet runtime-backed' message) would be promoted to provider.runtime, and any future error message that mentions 'lock' for an unrelated reason would be relabeled workflow.locked. It also collapses operationally distinct failures (e.g. domain validation vs usage vs reference) into a single 'validation.reference' bucket. The contract forbids 'one catch-all code for unrelated failures'.",
+                "action": "Drive the operation error code from typed sentinels (sprint.* sentinels, smoke error codes via AsSmokeError, context cancellation via errors.Is) rather than from err.Error(). Reserve substring matching as a last-resort diagnostic, never as the primary code. Add explicit typed errors for each domain (e.g. ErrUsageConflict, ErrLockHeld, ErrRuntimeUnavailable) so mapSprintError/failedOperation can match them with errors.Is/As and emit stable category.code values.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/operations.go",
+                    "startLine": 300,
+                    "endLine": 326
+                  }
+                ]
+              },
+              {
+                "id": "ERR-REDACT-001-sdk-response-leaks-secrets",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Runtime adapter preserves SDK response headers and body in diagnostics without secret redaction",
+                "detail": "mapError in runtime.go clones sdk.ResponseHeaders and sdk.ResponseBody (the latter only truncated to maxMappedDiagnosticBytes = 4096) and leaves them on the returned *agentwrap.SDKError, which is then carried into OperationResult.Error / ReviewCoverageResult.Error via the existing translation chain. agentwrap SDK error responses commonly include Authorization: Bearer \u003ctoken\u003e, x-api-key, Set-Cookie, and provider-specific key identifiers; these are exactly the items the contract lists under 'Always redact'. Truncation alone does not satisfy ERR-REDACT-001 because the secret is still in the bounded payload. The contract forbids 'leaking secret material into details payloads' and forbids 'solving exposure risk by dropping the entire detail payload when narrower redaction would work'; cloning the headers verbatim violates the first and only protects by truncation, not by redaction.",
+                "action": "Apply explicit deterministic redaction (Authorization/Cookie/Set-Cookie/API key/signature patterns and any provider-known secret headers) inside mapError before cloning ResponseHeaders and ResponseBody. Replace matched values with a stable '[REDACTED:\u003cheader-name\u003e]' marker while preserving the structural detail (header set, status, body length) so operators can still diagnose. Cover the smoke progress path too: smoke.go:316-335 walks response.Issues and re-attaches resolved paths and IDs without redaction; add the same scrubbing there for any identifiers that originate in the harness payload.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 566,
+                    "endLine": 589
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/agentwrap.go",
+                    "startLine": 124,
+                    "endLine": 131
+                  }
+                ]
+              },
+              {
+                "id": "ERR-SHAPE-001-canonical-fields-missing",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Structured error types in scope omit canonical fields required by the contract",
+                "detail": "The contract requires every operational error to carry code, category, message, details, severity, retryable, operation, component, correlation_id, trace_id, cause, causes, and timestamp. In the changed scope, classedError (app.go:40-48) carries only class/code/inner error; SmokeError (smoke_types.go:172-175) carries Code/Category/Message/Guidance/Err and no severity, retryable, correlation_id, trace_id, timestamp, or causes; OperationError (operations.go:98-101) carries Code/Category/Operation/Component/Message/Cause/Guidance/Retryable but no severity, correlation_id, trace_id, timestamp, or causes. The contract accepts 'a justified safe subset', but the implementation neither stores correlation_id/trace_id at the boundary nor threads a stable attempt-id/incident-id through into the wrapped error, so post-hoc incident correlation and severity-based alerting from the operation layer is impossible.",
+                "action": "Extend the wrappers with severity, correlation_id, and timestamp at minimum; thread trace_id from runtime events when available. Use the existing attempt id (Attempt.ID / run-id) as correlation_id, and add a Severity enum (info/low/medium/high/blocker) consistent with the review severity scale. Persist these on the wrapped error so they survive translation at the CLI/JSON/TUI boundary.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/app.go",
+                    "startLine": 40,
+                    "endLine": 60
+                  },
+                  {
+                    "path": "target/internal/app/operations.go",
+                    "startLine": 98,
+                    "endLine": 101
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_types.go",
+                    "startLine": 172,
+                    "endLine": 195
+                  }
+                ]
+              },
+              {
+                "id": "ERR-RETRY-001-retryable-flag-is-orphan",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "OperationError.Retryable is set but no retry policy consumes it",
+                "detail": "operations.go:310 sets Retryable for smoke errors whose category is 'process' or 'timeout'; operations.go:324 sets Retryable for tui.operation errors whose category is 'runtime' or 'concurrency'. views.go:323 only renders the boolean for the operator. ERR-RETRY-001 requires that 'an error marked retryable=true must be retried by the owning runtime when a retry can be performed safely' and must classify retryability 'before retry decisions are made', with explicit bounded attempts, attempt budget, and emitted retry/exhaustion signals. The implementation classifies retryability but no call site (sprint_commands, tui_commands, or the verify/RunSmoke flow) reads Retryable to drive a bounded retry; there is no emitted 'retry' or 'exhausted' event. The flag is informational, not actionable.",
+                "action": "Either remove Retryable from the shape and replace it with an actionable NextAction surfaced only in the operator channel, or wire a single bounded retry policy at the owning boundary (RunSmoke for smoke errors, sprintRuntimeService for runtime errors) that consumes the flag, increments an attempt counter on the active attempt, and emits an explicit retry/exhaustion diagnostic before terminal failure.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/operations.go",
+                    "startLine": 300,
+                    "endLine": 326
+                  },
+                  {
+                    "path": "target/internal/tui/views.go",
+                    "startLine": 322,
+                    "endLine": 324
+                  }
+                ]
+              },
+              {
+                "id": "ERR-TASK-001-attempt-expired-unused",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "VerificationAttempt reconciliation helper is defined but never invoked; orphaned attempts can persist in running state",
+                "detail": "verify.go defines attemptExpired(attempt, now) with a 24h threshold against attempt.StartedAt, intended (per ERR-TASK-001 'reconcile orphaned tasks into explicit failed or timed-out state') to flip stale ActiveAttempt to AttemptTimedOut. A grep across the target tree shows zero call sites. As a result, a review or smoke attempt whose owning process died without producing terminal state keeps ActiveAttempt.Status = AttemptRunning indefinitely; loadFlowState accepts it because validateAttempt only checks structural fields, and VerificationStatus.Resumable stays true even though no live process exists. This means a follow-on Verify can attempt to resume an attempt whose session is gone, with no terminal reconciliation.",
+                "action": "Invoke attemptExpired during VerificationStatus and during saveReviewState/saveSmokeAttempt; when it returns true, set ActiveAttempt.Status = AttemptTimedOut, populate LastAttempt, clear ActiveAttempt, and emit an 'attempt-expired' diagnostic so the next Review/RunSmoke restarts cleanly instead of resuming.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 412,
+                    "endLine": 414
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-llm-runtime",
+          "status": "completed",
+          "sessionId": "ses_07066b03cffetgWDBjQF0ePGxn",
+          "updatedAt": "2026-07-23T15:37:08.960542101Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-llm-runtime",
+            "applicability": "direct",
+            "summary": "Coverage of system/contracts/runtime/llm.md is direct. The changed paths add or extend the generic agentwrap-backed LLM runtime adapter, the sprint-owned reviewer/runtime caller, the review/smoke gating flow, and the CLI/TUI surfaces that consume them, so the LLM Runtime contract applies in full. The implementation mostly honours the contract: boundary separation between substrate and mode-specific policy is preserved (LLM-BOUNDARY-001), tool selection is deny-default with an explicit read/list/search allowlist in the reviewer (LLM-TOOL-001 / LLM-SAFETY-001), structured review output is parsed and validated locally before any verdict is recorded (LLM-IO-001), lifecycle transitions for cancel/timeout are inspectable (LLM-LIFECYCLE-001), bounded event history is preserved with explicit drop warnings (LLM-RUN-001), token/cost/latency metadata is surfaced through `runtime.Usage`, `runtime.CostEstimate`, and `StartedAt`/`FinishedAt` (LLM-COST-001), operational exposure flows through `internal/sprint` and `internal/app` rather than directly from the runtime (LLM-EXPOSE-001), and the smoke/review gating supplies evaluation coverage (LLM-EVAL-001). Two concrete contract clauses are not satisfied by the current target source: concrete prompts are not represented with explicit `prompt_id`/`prompt_version`/owner fields propagated through durable state and events (LLM-PROMPT-001, high), and runtime events do not carry canonical trace/correlation identifiers (LLM-OBS-001, medium). A third clause is only partially satisfied because the retry-state mapping exposes fewer fields than the contract requires (LLM-RETRY-001, medium). All other clauses are met or noted as low-severity info observations with citations.",
+            "findings": [
+              {
+                "id": "LLM-PROMPT-001-violation",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "Concrete prompts are not represented as first-class, explicitly versioned prompt identities in the runtime surface or in inspectable state",
+                "detail": "The contract requires concrete prompts to be assigned an explicit version identifier, represented as first-class definitions with stable prompt identity separate from agent/task identity, and to propagate through durable or inspectable runtime state, logs, events, traces, diagnostics, and operational metadata. The canonical field shape must include `prompt_id`, `prompt_version`, `prompt_owner_kind`, `prompt_owner_id`, `prompt_purpose`, and `prompt_checksum` when available. In the target, `runtime.Request` only carries `Prompt` as a string plus a generic `Metadata map[string]string`; there is no typed `PromptID`/`PromptVersion`/owner field and `runtimeRequest` only injects `stage`/`task`/`coverage` metadata. Prompt templates are loaded as opaque content via `loadReviewAsset` and the review manifest captures only `manifest.PromptTemplate` plus a sha256 `Hash` over the captured bytes on `ReviewInput`. The runtime events emitted via `Event` carry only `ID`, `RunID`, `SessionID`, `Type`, `Kind`, and `Payload`; no prompt identity or version is added to events, payload, or mapped `Metadata`. There is no logging or `OnEvent` integration that surfaces `prompt_id`/`prompt_version`. As a result, the only handle on the effective prompt is its content hash, which conflates semantic versions with formatting edits and breaks the contract's required `prompt_id`/`prompt_version` propagation.",
+                "action": "Introduce a typed `PromptReference` (with `prompt_id`, `prompt_version`, `prompt_owner_kind`, `prompt_owner_id`, `prompt_purpose`, and optional `prompt_checksum`) on `runtime.Request`; populate it from the reviewer and flow stages; copy it into every emitted `Event` payload and the `Result` metadata; and persist it on the reviewer resume checkpoint and `flow-state.json` so that the effective prompt is reconstructible from durable state.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 16,
+                    "endLine": 32
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 189,
+                    "endLine": 204
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1159,
+                    "endLine": 1162
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1310,
+                    "endLine": 1318
+                  },
+                  {
+                    "path": "target/internal/sprint/service.go",
+                    "startLine": 905,
+                    "endLine": 934
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 71,
+                    "endLine": 85
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 487,
+                    "endLine": 511
+                  }
+                ]
+              },
+              {
+                "id": "LLM-OBS-001-violation",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Runtime events do not carry canonical trace/correlation identifiers required by observability surfaces",
+                "detail": "The contract requires that LLM-backed execution preserve request and trace correlation, emit lifecycle signals through canonical events/metrics/tracing/diagnostics, and include the effective prompt version in canonical monitoring surfaces. The runtime `Event` type only exposes `ID`, `RunID`, `SessionID`, `Time`, `Type`, `Kind`, `Payload`, and bounded raw fields; it carries no trace/span/request identifier and no prompt identity. The mapped `Result` likewise lacks any `trace_id`/`correlation_id` field, and `runtimeRequest` does not propagate caller-supplied request correlation into the runtime. The sprint-side `RuntimeProgress` observer forwards events but has nowhere to surface a trace ID and never adds one. Consequently, when an LLM-backed attempt appears in logs, flow state, or status renderers, it cannot be tied back to a request-level correlation, and the prompt identity is also missing (see LLM-PROMPT-001).",
+                "action": "Add an optional `TraceID`/`SpanID` (or canonical correlation field) to `runtime.Request`, propagate it through `Result` and every emitted `Event`, and forward it to `RuntimeProgress` so logs, `flow-state.json` resume checkpoints, and status renderers expose the correlation alongside the effective prompt reference.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 16,
+                    "endLine": 32
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 47,
+                    "endLine": 69
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 71,
+                    "endLine": 85
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 513,
+                    "endLine": 531
+                  },
+                  {
+                    "path": "target/internal/sprint/service.go",
+                    "startLine": 79,
+                    "endLine": 91
+                  },
+                  {
+                    "path": "target/internal/sprint/service.go",
+                    "startLine": 905,
+                    "endLine": 934
+                  }
+                ]
+              },
+              {
+                "id": "LLM-RETRY-001-partial",
+                "severity": "medium",
+                "applicability": "partial",
+                "title": "Retry-state mapping exposes attempt, status, and rate-limit fields but omits the contract's required `max_attempts`, `issue_kind`, and `issue_code` fields",
+                "detail": "The contract requires inspectable retry state to include `attempt, max attempts, remaining or next attempt, issue kind, issue code, and retryable outcome`, plus provider failure details (`provider`, `model`, `timeout configuration`, `remote status code`, `provider request id`, `operation`, `redacted remote context`) and provider retry details (`attempt`, `max attempts`, `attempts remaining`, `active model`, `primary model`, `backup model when configured`, `retry-after header`). `runtime.AttemptSummary` carries `Attempt`, `AttemptOnTarget`, `TargetIndex`, `RunID`, `Status`, `Provider`, `Model`, `ErrorCategory`, `RateLimited`, and `RetryAfter`, and `runtime.PolicySummary` adds `FinalAttempt`, `FinalTargetIndex`, `Exhausted`, `ExhaustedReason`, and per-decision `PolicyDecision` records. However, the mapped structures do not include the contract's `max_attempts`, `attempts_remaining`, or `next_attempt` field on the attempt; there is no typed `issue_kind` (e.g., `provider_error`/`timeout`/`empty_completion`/`invalid_json`/`output_validation`) or `issue_code` separate from `ErrorCategory`; the retry classification is left to the underlying `agentwrap` SDK and not normalized at the runtime boundary; provider retry details such as `primary_model`/`backup_model` and `provider_request_id` are not represented on `AttemptSummary`; and the mapped `Event` payloads do not enrich `ErrorCategory` into a stable `issue_kind`/`issue_code` pair.",
+                "action": "Extend `runtime.AttemptSummary` with `MaxAttempts`, `AttemptsRemaining`/`NextAttempt`, and a typed `IssueKind`/`IssueCode` plus `PrimaryModel`/`BackupModel`/`ProviderRequestID`; surface normalized retry classification through `Event` payloads and `PolicySummary` so that application policy can make retry decisions from inspectable, mode-aware fields rather than from raw SDK categories.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 135,
+                    "endLine": 163
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 487,
+                    "endLine": 511
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 513,
+                    "endLine": 531
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime_test.go",
+                    "startLine": 312,
+                    "endLine": 394
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 65,
+                    "endLine": 88
+                  }
+                ]
+              },
+              {
+                "id": "LLM-BOUNDARY-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Shared LLM substrate and mode-specific policy remain properly separated",
+                "detail": "The platform runtime package exposes only generic types (`Request`, `Result`, `Event`, `Usage`, `PermissionPolicy`, `Validation`-aware SDK passthrough) and contains no sprint, review, smoke, contract, handbook, or verdict semantics. Mode-specific behaviour (reviewer prompts, tool policy, repair, resume, structured-output validation) lives in `internal/sprint/review.go` and is configured per call through `runtimeRequest`/`runReviewer`. This matches the contract's required separation between shared substrate, runtime mechanics, and mode-specific policy.",
+                "action": "No change required; continue to keep `internal/platform/runtime` product-neutral as the architectural reasoning and sprint plan already prescribe.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 1,
+                    "endLine": 69
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 431,
+                    "endLine": 485
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 790,
+                    "endLine": 856
+                  },
+                  {
+                    "path": "target/internal/sprint/service.go",
+                    "startLine": 905,
+                    "endLine": 934
+                  }
+                ]
+              },
+              {
+                "id": "LLM-TOOL-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Reviewer tool execution is bounded by an explicit, deny-default permission policy and read-only sandbox",
+                "detail": "The contract forbids hidden tool execution and requires tool selection policy to remain in the owning mode. `runReviewer` sets `req.Sandbox = \"read_only\"`, `req.Permissions = \"restricted\"`, requires the `permissions` capability, and overrides `req.Policy` with `Default: \"deny\"` plus an explicit `{read, list, search}` allowlist. It additionally checks `r.Permissions.UnsupportedCount \u003e 0` after the run and fails with `runtime could not enforce review permission policy` if the SDK reports unsupported permission features, so unsafe tool execution cannot silently proceed.",
+                "action": "No change required; the deny-default tool policy and explicit unsupported-permission check satisfy the contract's tool-boundary requirements.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 802,
+                    "endLine": 833
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/agentwrap.go",
+                    "startLine": 75,
+                    "endLine": 104
+                  }
+                ]
+              },
+              {
+                "id": "LLM-IO-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Structured reviewer output is parsed and validated locally before any verdict is recorded",
+                "detail": "Structured reviewer output is required to be parsed and validated locally rather than trusted to provider-side strictness. `validateReviewCoverage` enforces `SchemaVersion == 1`, a closed applicability enum, severity enum, and per-citation range/path checks against the captured frozen manifest, and per-finding applicability gating prevents `partial`/`direct` findings without real citations. A reviewer that fails to return a structured result triggers a single repair prompt (`--prompt-only` style continuation) before the result is treated as terminal; persistent failure is recorded as a typed `ReviewDiagnostic` and the coverage result is treated as failed rather than successful. Smoke runs apply the same local validation to `smokeRunResponse` schema/protocol/harness/scope/counts/evidence identity checks via `validateSmokeRun`.",
+                "action": "No change required; local validation is authoritative and the contract's structured-output requirements are satisfied.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 835,
+                    "endLine": 856
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 858,
+                    "endLine": 923
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1412,
+                    "endLine": 1421
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 272,
+                    "endLine": 335
+                  }
+                ]
+              },
+              {
+                "id": "LLM-LIFECYCLE-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Cancellation, timeout, and resume transitions are explicit and inspectable",
+                "detail": "The contract requires lifecycle transitions to remain explicit and inspectable with unambiguous terminal states. `runtime.Adapter.StartRun` propagates `context.Canceled` to the underlying run, waits up to 5 seconds for graceful shutdown, and emits `Result.Status == \"cancelled\"` with `Error.Category == \"cancellation\"`. `context.DeadlineExceeded` is mapped to `Result.Status == \"failed\"` with `Error.Category == \"timeout\"`. The reviewer preserves resume semantics through `ReviewResumeState`, `ReviewCoverageCheckpoint` (`pending`/`running`/`completed`/`failed`), retained session IDs, and bounded `complete`/`fail` decisions in `runReviewer`. Sprint flow state validators (`validateReviewStageState`) reject zero/active/resume mismatches and unsafe IDs. `TestStartRunCancelsUnderlyingRunWhenContextCancelled` and the resume unit tests prove these transitions are observable.",
+                "action": "No change required; lifecycle controls are explicit and inspectable.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 269,
+                    "endLine": 320
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime_test.go",
+                    "startLine": 432,
+                    "endLine": 448
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 65,
+                    "endLine": 88
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 635,
+                    "endLine": 709
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1005,
+                    "endLine": 1063
+                  }
+                ]
+              },
+              {
+                "id": "LLM-RUN-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Runs and events are bounded but durable/inspectable, with explicit drop warnings",
+                "detail": "The contract requires runs and events to be durable or inspectable. The runtime keeps the last `retainedRuntimeEventLimit = 200` events in-memory, samples `MemoryStats` (start/peak/end/samples), and appends an explicit warning when earlier events are dropped (`runtime retained last N events and dropped M earlier events`). The reviewer persists durable state via `ReviewStageState`/`ReviewResumeState` and `flow-state.json` and reconciles fingerprint and digest on every status read. The `LastComplete` block preserves prior coverage, fingerprint, and artifact digest when a new attempt fails, and `VerificationStatus` derives `Fresh`/`Stale` reasons from fingerprint and digest mismatches.",
+                "action": "No change required; runs and events are inspectable and durable via the review/smoke flow-state surface.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 109,
+                    "endLine": 109
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 294,
+                    "endLine": 320
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 348,
+                    "endLine": 418
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime_test.go",
+                    "startLine": 205,
+                    "endLine": 240
+                  },
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 134,
+                    "endLine": 231
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1057,
+                    "endLine": 1122
+                  }
+                ]
+              },
+              {
+                "id": "LLM-COST-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Token, cost, and latency metadata are exposed through the runtime surface and operational events",
+                "detail": "The contract requires token, cost, and latency fields where operationally meaningful. `runtime.Usage` exposes `InputTokens`, `OutputTokens`, `TotalTokens`, `ReasoningTokens`, `CacheReadTokens`, `CacheWriteTokens`, and `Turns` with explicit `*Known` booleans so missing data is distinguishable from zero; `runtime.CostEstimate` carries `Amount`, `Currency`, and `Estimate`; `runtime.Result` carries `StartedAt`/`FinishedAt` and surfaces `EventStats` and `Memory`; and `OperationEvent` forwards `Tokens`, `TokensKnown`, `Duration`, and `Cost` to CLI and TUI consumers. `TestAdapterMapsPolicyRetryFallbackAndValidationMetadata` proves the cost and extended-usage metadata are mapped through the runtime boundary.",
+                "action": "No change required; cost/latency/token metadata is machine-usable and exposed to operational surfaces.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 111,
+                    "endLine": 133
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 487,
+                    "endLine": 511
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 533,
+                    "endLine": 564
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime_test.go",
+                    "startLine": 312,
+                    "endLine": 394
+                  },
+                  {
+                    "path": "target/internal/app/operations.go",
+                    "startLine": 78,
+                    "endLine": 90
+                  }
+                ]
+              },
+              {
+                "id": "LLM-EXPOSE-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Operational exposure flows through sprint/app composition rather than platform runtime internals",
+                "detail": "The contract requires operational exposure to flow through application modules. `cmd/ultraplan/main.go` and `internal/tui/model.go` reach only into `internal/app` use cases; `internal/app` composes `sprint.Service` and supplies the runtime through `SprintRuntimeFactory` and `sprintRuntimeService`; only `sprint.Service` calls `Runtime.StartRun`. The platform runtime package is product-neutral and never imports sprint/review/smoke/contract/handbook/verdict semantics, satisfying the contract.",
+                "action": "No change required.",
+                "citations": [
+                  {
+                    "path": "target/cmd/ultraplan/main.go",
+                    "startLine": 1,
+                    "endLine": 26
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 20,
+                    "endLine": 24
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 390,
+                    "endLine": 408
+                  },
+                  {
+                    "path": "target/internal/sprint/flow.go",
+                    "startLine": 12,
+                    "endLine": 15
+                  },
+                  {
+                    "path": "target/internal/sprint/service.go",
+                    "startLine": 71,
+                    "endLine": 77
+                  }
+                ]
+              },
+              {
+                "id": "LLM-SAFETY-001-positive",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Reviewer tools and runtime permission policy are gated by explicit safety boundaries with documented enforcement",
+                "detail": "The contract requires tool execution and consequential operations to pass explicit safety checks. The reviewer sandbox is `read_only`, permissions are `restricted`, the tool policy is `Default: \"deny\"` with `{read, list, search}` allowed, and any `Permissions.UnsupportedCount \u003e 0` result fails the review. `mapPermissionPolicy` validates and refuses unsupported `PathRules` unless `best_effort` is configured. Smoke runs execute an allowlisted harness executable with a contained cwd, an allowlisted environment, and bounded output, and dangerous inputs are rejected by typed `SmokeError` categories. No raw payload is persisted by the runtime (`RawOmitted: true` by default in `mapEvent`), preventing secret-bearing output from leaking into state.",
+                "action": "No change required; safety boundaries for reviewer tools, harness execution, and raw payload retention are explicit and enforced.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 802,
+                    "endLine": 833
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/agentwrap.go",
+                    "startLine": 75,
+                    "endLine": 104
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 513,
+                    "endLine": 531
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 446,
+                    "endLine": 501
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-observability",
+          "status": "failed",
+          "sessionId": "ses_07062c0f1ffeLnHUnHIQaI1Fx7",
+          "updatedAt": "2026-07-23T15:40:07.585380717Z"
+        },
+        {
+          "coverageId": "contract-persistence-and-migrations",
+          "status": "failed",
+          "sessionId": "ses_070619344ffevYoxuF5123Fq8k",
+          "updatedAt": "2026-07-23T15:41:53.443701574Z"
+        },
+        {
+          "coverageId": "contract-security",
+          "status": "completed",
+          "sessionId": "ses_0706154d2ffe0xTDnO7yPII0Pu",
+          "updatedAt": "2026-07-23T15:38:09.183008689Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-security",
+            "applicability": "direct",
+            "summary": "Sprint 28 (review-to-smoke flow) integrates read-only review with a bounded external smoke harness. Security posture is well-aligned with the contract: structured argv throughout, explicit path containment (canonicalDirectoryInside / canonicalFileInside), environment allowlist with strict name validation, safeArgv redaction for stable reporting, RawSafe-controlled runtime payload exposure, DisallowUnknownFields JSON deserialization, citation validation against frozen contents, and a documented diagnostic-override gate that requires explicit confirmation plus bounded rationale. No authentication, no new dependencies, no new outbound endpoints. Default-fail-closed behaviour holds: smoke requires --yes, --force-review requires --override-reason, malformed flow-state.json is rejected.",
+            "findings": [
+              {
+                "id": "SEC-INJECT-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Smoke harness invoked via explicit argv with bounded environment allowlist",
+                "detail": "External smoke execution goes through pprocess.Runner with explicit Executable + Args arrays (never shell); the env allowlist is computed by intersect(workspace settings, manifest) and names are validated with validProtocolEnvName (uppercase/_/digit, no shell metacharacters). safeArgv redacts positional arg values for stable reporting and tests confirm --authorization/--credential values are not leaked.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 64,
+                    "endLine": 118
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 496,
+                    "endLine": 515
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 482,
+                    "endLine": 516
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 428,
+                    "endLine": 438
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_test.go",
+                    "startLine": 200,
+                    "endLine": 204
+                  }
+                ]
+              },
+              {
+                "id": "SEC-INPUT-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "CLI and manifest inputs are validated at the boundary",
+                "detail": "parseSprintSmokeArgs / parseSprintVerifyArgs / parseSprintReviewArgs constrain flags and values: --timeout is parsed as a positive duration \u003c= 24h, --parallel is a positive int, --force-review requires --override-reason, and exactly one of --level/--suite/--test is permitted. The smoke manifest is parsed by decodeOneJSON and validated by validateSmokeManifest/validateSmokeDiscovery; sprint-flow target is bounded by validateFlowTarget. review input citations must resolve into the frozen manifest contents.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 446,
+                    "endLine": 498
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 612,
+                    "endLine": 727
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 204,
+                    "endLine": 304
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 483,
+                    "endLine": 495
+                  },
+                  {
+                    "path": "target/internal/sprint/flow.go",
+                    "startLine": 288,
+                    "endLine": 292
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1412,
+                    "endLine": 1421
+                  }
+                ]
+              },
+              {
+                "id": "SEC-SECRETS-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Secret-bearing values are bounded, redacted, and excluded from canonical artifacts",
+                "detail": "Runtime event payloads are sanitised through agentwrap.sanitizeAnyMap (bounded fields, strings, slices, depth). Raw payloads are exposed only when RawSafe is set. safeArgv redacts positional arg values; safeReviewText strips the workspace root from review diagnostics; safeError truncates to 180 chars and removes control characters. ValidateSmokeContent rejects persisted smoke.md containing '-----BEGIN', 'Authorization: Bearer', or raw '\"stdout\":'/'\"stderr\":' fragments, so secret-bearing harness output cannot survive into the canonical artifact. Sprint-flow progress messages are routed through config.RedactValue before being written to stderr.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/platform/runtime/agentwrap.go",
+                    "startLine": 124,
+                    "endLine": 228
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 513,
+                    "endLine": 531
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 449,
+                    "endLine": 459
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 274,
+                    "endLine": 286
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 496,
+                    "endLine": 515
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1472,
+                    "endLine": 1474
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 352,
+                    "endLine": 414
+                  }
+                ]
+              },
+              {
+                "id": "SEC-FILES-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "All review/smoke path reads and writes are constrained to declared roots",
+                "detail": "Smoke harness root, manifest, executable, CWD, runs root, and issues root are all canonicalised (EvalSymlinks + Clean) and asserted to be inside the harness root via inside(); a symlink that escapes is rejected. Review catalog entries are resolved through workspace.ResolveInside (rejects traversal); reviewer snapshots are materialised into a per-run MkdirTemp with 0o400 file permissions, then removed via deferred os.RemoveAll. validateReviewCitation rejects citations outside the frozen review contents. flow-state stages and reviewer/smoke paths are validated against resolveSprintContained; review.md and smoke.md writes are atomic (tmp + rename + syncDir).",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 446,
+                    "endLine": 480
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 572,
+                    "endLine": 604
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 285,
+                    "endLine": 311
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1336,
+                    "endLine": 1462
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1412,
+                    "endLine": 1421
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1005,
+                    "endLine": 1063
+                  },
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 189,
+                    "endLine": 249
+                  }
+                ]
+              },
+              {
+                "id": "SEC-AUTHZ-001",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Diagnostic smoke override is a deliberate authorization gate; rationale is bounded and cannot improve overall assessment",
+                "detail": "When review verdict is fail/blocked, smoke only proceeds with explicit ForceReview AND OverrideConfirmed AND a non-empty, CRLF-free, \u003c=240-char rationale. validateSmokeStageState rejects malformed overrides on load. deriveAssessment treats ReviewFail as AssessmentFail regardless of diagnostic smoke, so the override cannot raise the overall assessment. Rationale is bounded to 240 chars and is bounded/replaced safely when written to flow-state; tests in smoke_test.go exercise force-review + rationale flow. The override is therefore well-designed: explicit, auditable, and incapable of weakening the overall verdict.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke_protocol.go",
+                    "startLine": 189,
+                    "endLine": 200
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_types.go",
+                    "startLine": 237,
+                    "endLine": 241
+                  },
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 233,
+                    "endLine": 266
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 337,
+                    "endLine": 380
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 494,
+                    "endLine": 498
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 723,
+                    "endLine": 726
+                  }
+                ]
+              },
+              {
+                "id": "SEC-NET-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "External calls use bounded timeouts and opaque session ids",
+                "detail": "Smoke process runs carry an explicit Timeout (DiscoveryTimeout=30s default; RunTimeout=30m default; bounded by configured/manifest values \u003c=24h) and CleanupGrace; cancellation propagates from the entrypoint context. Runtime calls go through the agentwrap boundary with bounded timeouts and disallow unknown permission paths. Session IDs are opaque (no caller-controlled URL or remote target).",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 67,
+                    "endLine": 118
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_types.go",
+                    "startLine": 43,
+                    "endLine": 64
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/agentwrap.go",
+                    "startLine": 75,
+                    "endLine": 104
+                  },
+                  {
+                    "path": "target/internal/platform/runtime/runtime.go",
+                    "startLine": 231,
+                    "endLine": 320
+                  }
+                ]
+              },
+              {
+                "id": "SEC-DESER-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "JSON parsing uses strict decoders and rejects multi-value/unknown fields",
+                "detail": "LoadFlowState uses DisallowUnknownFields and rejects trailing JSON (multiple JSON values) for flow-state.json. decodeOneJSON enforces one JSON object for harness discovery and run responses. extractReviewValue requires a recognisable ReviewCoverageResult with CoverageID, rejecting naive eval/extract of attacker-controlled runtime output. Review citations must satisfy structural and content-bound checks; reviewer result schema and severity/applicability values are whitelisted.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 45,
+                    "endLine": 55
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 483,
+                    "endLine": 495
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 1371,
+                    "endLine": 1421
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 858,
+                    "endLine": 923
+                  }
+                ]
+              },
+              {
+                "id": "SEC-DEFAULT-001",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Security-sensitive defaults fail closed",
+                "detail": "Smoke execution refuses to run without --yes (--non-interactive). sprint verify / sprint smoke / sprint flow all require explicit NonInteractive before invoking the external harness. --force-review requires --override-reason at parse time. Review verdict defaults to pass_with_findings (not pass) when no high/blocker finding is present; failing review verdict cannot be masked by smoke. Repository/state loaders reject unsupported schemaVersion and malformed flow state with explicit errors.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 232,
+                    "endLine": 234
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 338,
+                    "endLine": 340
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 186,
+                    "endLine": 188
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 494,
+                    "endLine": 498
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 911,
+                    "endLine": 922
+                  },
+                  {
+                    "path": "target/internal/sprint/verify.go",
+                    "startLine": 237,
+                    "endLine": 248
+                  },
+                  {
+                    "path": "target/internal/sprint/state.go",
+                    "startLine": 38,
+                    "endLine": 69
+                  }
+                ]
+              },
+              {
+                "id": "SEC-DEPS-001",
+                "severity": "info",
+                "applicability": "not_triggered",
+                "title": "No new dependencies introduced by this sprint",
+                "detail": "Changed-path manifest touches internal/sprint, internal/app, internal/tui, internal/platform/runtime, internal/platform/process (call sites) and cmd/ultraplan. No go.mod / go.sum changes are required for the change scope. New code only consumes existing agentwrap and process-runner boundaries.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/smoke.go",
+                    "startLine": 16,
+                    "endLine": 17
+                  },
+                  {
+                    "path": "target/internal/sprint/service.go",
+                    "startLine": 12,
+                    "endLine": 17
+                  }
+                ]
+              },
+              {
+                "id": "SEC-AUTHN-001",
+                "severity": "info",
+                "applicability": "not_triggered",
+                "title": "Authentication is out of scope for this CLI",
+                "detail": "ultraplan-go is a single-user, local CLI/TUI. There is no authentication boundary in the changed surface; session continuity relies on opaque session IDs returned by the agentwrap runtime, not caller-supplied identity. No code path derives actor identity from caller-controlled data.",
+                "action": "No action required.",
+                "citations": [
+                  {
+                    "path": "target/cmd/ultraplan/main.go",
+                    "startLine": 13,
+                    "endLine": 26
+                  },
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 790,
+                    "endLine": 856
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-testing",
+          "status": "completed",
+          "sessionId": "ses_07060f482ffeBRfJc6AvKcVks3",
+          "updatedAt": "2026-07-23T15:39:21.601071841Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-testing",
+            "applicability": "direct",
+            "summary": "The frozen manifest satisfies the testing contract. Reviewers, smoke, TUI, CLI, and flow composition are exercised by unit, integration, race/concurrency, compatibility, and CLI/JSON contract tests against public seams (constructor injection and With* builders). Failure paths are explicitly verified for malformed review results, malformed smoke output, invalid flow state, unsupported health/capability IDs, permission path rules, atomic-rename failure, context cancellation, and external evidence tampering. One narrow gap remains: two runtime-error branches inside the per-coverage reviewer (unsupported permission enforcement and exhausted structured-output repair) have no dedicated negative-case test, which is a partial TEST-FAIL-001 finding against changed code.",
+            "findings": [
+              {
+                "id": "TEST-F-001",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Reviewer permission-enforcement failure branch is not tested explicitly",
+                "detail": "review.go:831-833 short-circuits the reviewer result when the runtime reports Permissions.UnsupportedCount \u003e 0 and records out.Error = \"runtime could not enforce review permission policy\". This is a real failure mode introduced by the read-only/sandboxed reviewer path, but the only permission-path tests in the manifest are runtime_test.go:396-415 (TestPermissionPathRulesFailUnlessBestEffort), which exercise mapPermissionPolicy at the adapter boundary and not the review.go guard. No test drives a fake Runtime with a non-zero UnsupportedCount to assert that the reviewer branch returns Error and never reaches extractReviewResult.",
+                "action": "Add a fake runtime returning pruntime.Result{Permissions: pruntime.PermissionSummary{Mode: \"restricted\", UnsupportedCount: 1, UnsupportedReasons: []string{\"path rule\"}}} and assert that ReviewCoverageResult.Error is the policy-enforcement message, RepairAttempt is skipped, and the coverage is treated as failed by validateReviewCoverage.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 831,
+                    "endLine": 833
+                  }
+                ]
+              },
+              {
+                "id": "TEST-F-002",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Reviewer exhausted structured-output repair branch is not tested explicitly",
+                "detail": "review.go:847-850 covers the case where the structured-output repair prompt also fails to produce a parseable ReviewCoverageResult (r.SessionID == \"\" branch at review.go:836-839 is similarly untested). TestReviewerGetsOneStructuredOutputRepair only exercises the successful-repair path and asserts a Pass verdict, so the terminal failure branches rely solely on validateReviewCoverage rejecting a result whose Error field is set.",
+                "action": "Extend the repair fake so the second StartRun also returns no session ID and no structured payload; assert that the coverage result carries the \"runtime did not return a structured review result after one repair attempt\" error and that the overall verdict becomes ReviewVerdictBlocked.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 836,
+                    "endLine": 850
+                  }
+                ]
+              },
+              {
+                "id": "TEST-F-003",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Determinism, seams, contract, and integration coverage are satisfied",
+                "detail": "Reviewer concurrency is verified by TestReviewFanOutUsesConfiguredBound (review_test.go:341) using atomic counters on a concurrentReviewRuntime. Atomic-write safety is verified by TestAtomicReviewWritePreservesPriorArtifactOnRenameFailure (review_test.go:326). Input drift is verified by TestReviewDetectsInputDriftBeforePersistence (review_test.go:357). Public seams are honored: tests configure Service via NewService + WithRuntime / WithStageRuntime / WithReviewConcurrency / WithSmokeSettings / WithProcessRunner (review_test.go:107-115, sprint_commands_test.go:329-331, smoke_test.go:140), with no private-field patching. CLI/JSON compatibility is covered by TestSprintFailureJSONIsOneStructuredDocument (sprint_commands_test.go:73) and TestSprintHelpIsRegistered (sprint_commands_test.go:17). End-to-end coverage exists for review (TestReviewManifestExecutionAndArtifactPreservation), smoke (TestSmokeRunCommitsValidatedArtifactAndPreservesItOnMalformedRun), and CLI flow (TestSprintFlowNonDryRunUsesConfiguredRuntime, TestTUISprintFlowRunsAndStreamsProgress). Real-dependency smoke is intentionally gated behind ULTRAPLAN_REAL_SMOKE=1 (smoke_test.go:206) and provides the cheap, opt-in baseline that TEST-SMOKE-002 requires. Migration coverage is verified by TestFlowStateMigratesExactlyOnePredecessor (verify_test.go:62).",
+                "action": "No action required; this is a positive compliance record that justifies the verdict.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/review.go",
+                    "startLine": 467,
+                    "endLine": 492
+                  },
+                  {
+                    "path": "target/internal/sprint/review_test.go",
+                    "startLine": 107,
+                    "endLine": 158
+                  },
+                  {
+                    "path": "target/internal/sprint/review_test.go",
+                    "startLine": 326,
+                    "endLine": 368
+                  },
+                  {
+                    "path": "target/internal/sprint/review_test.go",
+                    "startLine": 341,
+                    "endLine": 355
+                  },
+                  {
+                    "path": "target/internal/sprint/verify_test.go",
+                    "startLine": 62,
+                    "endLine": 93
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_test.go",
+                    "startLine": 101,
+                    "endLine": 177
+                  },
+                  {
+                    "path": "target/internal/sprint/smoke_test.go",
+                    "startLine": 206,
+                    "endLine": 230
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands_test.go",
+                    "startLine": 73,
+                    "endLine": 100
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands_test.go",
+                    "startLine": 290,
+                    "endLine": 400
+                  },
+                  {
+                    "path": "target/internal/app/tui_commands_test.go",
+                    "startLine": 52,
+                    "endLine": 99
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-workflows",
+          "status": "failed",
+          "sessionId": "ses_070605a12ffe3fIsNCc784O3dm",
+          "updatedAt": "2026-07-23T15:40:29.584228296Z"
+        },
+        {
+          "coverageId": "handbook",
+          "status": "failed",
+          "sessionId": "ses_0705f6e26ffeFDGKgOHVcxGfR9",
+          "updatedAt": "2026-07-23T15:42:26.635072317Z"
+        }
+      ]
+    }
+  }
+}

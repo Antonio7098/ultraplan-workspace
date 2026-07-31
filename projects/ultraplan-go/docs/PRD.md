@@ -1,21 +1,21 @@
 # Product Requirements Document: UltraPlan Go
 
-**Version:** 1.4.0
+**Version:** 1.5.0
 **Status:** Draft
 **Owner:** Product and Engineering
-**Last Updated:** 2026-07-17
+**Last Updated:** 2026-07-22
 
 ## Stage 1: Product Brief
 
 ### 1.1 Executive Summary
 
-UltraPlan Go is a production-grade local planning, implementation, review, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the sprint workflow with automated conformance review followed by sprint-targeted deep smoke, exposed through both CLI and TUI without introducing a hosted or browser surface.
+UltraPlan Go is a production-grade local planning, implementation, review, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases.
 
 - **Problem Statement:** The current prototype proves the workflow, but it is script-like, tightly coupled to a local Bun/TypeScript environment, and not hardened for durable runs, reproducible outputs, reliable retries, clear configuration, or long-term extensibility.
 - **Proposed Solution:** Rebuild UltraPlan as a Go CLI with a well-defined domain model, deterministic filesystem layout, resumable orchestration, structured runtime adapters, robust validation, and production-quality testing.
 - **Target Users:** Engineers, technical leads, AI workflow builders, and product teams using agentic coding runtimes to study codebases, compare architectural patterns, and plan future implementation work from separately reviewed study outputs.
 - **Expected Outcome:** Users can initialize studies, run large batches of source analyses, synthesize final reports, extract code citations, inspect study status, use selected study evidence to generate governed sprint planning artifacts through `plan.md`, execute validated sprint tasks, review implementation against selected contracts and evidence, and deep-smoke runtime-facing claims with durable state and diagnostics.
-  Every supported Phase 3 operation is available through stable CLI/JSON surfaces and the local TUI over the same typed use cases.
+  Every supported workflow remains available through stable CLI/JSON surfaces. The TUI and Phase 4 browser UI reuse the same typed use cases and durable workspace state.
 
 ### 1.2 Product Context
 
@@ -31,7 +31,7 @@ The prototype in `ultraplan/cli` demonstrates the core product shape:
 - Project documents for PRDs, TRDs, roadmaps, project indexes, sprint requirements, sprint indexes, technical handbooks, reasoning, and plans in the prototype.
 - Sprint planning and sprint execution workflows in the prototype.
 
-For UltraPlan Go, Phase 2 ports the planning artifact chain from the prototype through `plan.md` and adds controlled implementation execution from validated plans. The delivered TUI enabling track exposes those services locally. Phase 3 replaces manual sprint review and smoke coordination with product-owned `review.md` and `smoke.md` stages. Detailed smoke runs and issue evidence remain in the external harness referenced by the project index. General-purpose issue tracking, Git mutation, browser UI, hosted SaaS, and project-management behavior remain future scope.
+For UltraPlan Go, Phase 2 ports the planning artifact chain from the prototype through `plan.md` and adds controlled implementation execution from validated plans. The delivered TUI enabling track exposes those services locally. Phase 3 replaces manual sprint review and smoke coordination with product-owned `review.md` and `smoke.md` stages. Detailed smoke runs and issue evidence remain in the external harness referenced by the project index. Phase 4 adds a local browser surface without introducing hosted SaaS, multi-user collaboration, remote execution, a database-backed alternate state model, or project-management behavior.
 
 The Go product keeps those core capabilities but makes them reliable, portable, testable, and extensible.
 
@@ -52,7 +52,7 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 - **Small composable primitives:** Studies, dimensions, sources, runs, reports, projects, and planning sprints must remain clear concepts.
 - **Product workflows stay product-owned:** Runtime adapters execute prompts; UltraPlan owns study behavior, project catalog behavior, sprint planning behavior, and sprint execute behavior.
 - **Portable local-first operation:** The primary product is a CLI that works from a repository checkout without requiring a server.
-- **One product core, multiple local surfaces:** CLI and TUI surfaces must share product services and use-case wiring instead of duplicating workflow logic or shelling out to each other for normal operation.
+- **One product core, multiple local surfaces:** CLI, TUI, and local browser surfaces must share product services and use-case wiring instead of duplicating workflow logic or shelling out to each other for normal operation.
 - **Review before expensive proof:** Evidence-grounded review runs before live smoke so deterministic conformance failures block unnecessary runtime work.
 - **Summaries local, raw evidence linked:** Sprint roots keep readable `review.md` and `smoke.md`; detailed smoke evidence remains in the cataloged harness and is linked by stable run IDs.
 
@@ -134,6 +134,12 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 13. **Operate review and smoke through the TUI**
    - As a local workflow navigator, I want review and smoke readiness, scope, confirmation, progress, cancellation, findings, evidence links, reruns, and recovery in the TUI so that the full post-execute workflow is available without losing CLI parity.
 
+14. **Inspect work through a browser**
+   - As a local workflow navigator, I want a browser dashboard served by UltraPlan that shows projects, studies, sprints, validation findings, and bounded artifact previews without requiring a separate frontend service.
+
+15. **Operate workflows through a browser**
+   - As an operator, I want guarded local workflow actions, live progress, cancellation, and recovery in the browser while durable workspace files remain the source of truth.
+
 ### 1.7 Business and Product Goals
 
 - Provide a durable Go implementation of the proven prototype workflow.
@@ -146,13 +152,14 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 - Provide deterministic, scope-aware sprint review that replaces the manually coordinated review process and writes the current `review.md`.
 - Provide sprint-targeted deep smoke that writes `smoke.md` and links detailed run/issue evidence in the external harness.
 - Provide the complete `execute -> review -> smoke` workflow through both CLI and TUI over shared app use cases.
+- Provide a loopback-only local HTTP server and simple browser UI over the same app use cases beginning in Sprint 30.
 - Allow future runtime support without changing the study workflow model.
 - Keep the CLI understandable enough that users can inspect and edit generated artifacts directly.
 
 ### 1.8 Non-Goals
 
-- Do not build a hosted SaaS product in the first production release.
-- Do not build a web UI in the first production release.
+- Do not turn the Phase 4 local server into a hosted SaaS or remotely exposed service.
+- Do not add multi-user accounts, team permissions, tenant isolation, or remote workers in Phase 4.
 - Do not require users to adopt one particular AI provider.
 - Do not hide generated files behind an opaque database-only workflow.
 - Do not make study dimensions immutable; users must be able to edit Markdown/YAML artifacts.
@@ -164,6 +171,7 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 - Do not depend on free-form terminal text when a runtime offers structured output.
 - Do not make the TUI the only supported interface; scripts and documentation must continue to use stable CLI and JSON surfaces.
 - Do not let the TUI call the UltraPlan CLI as its normal integration mechanism. It should share product services and application use cases.
+- Do not let the browser UI call CLI subprocesses, own workflow state machines, or persist an alternate product state.
 
 ## Stage 2: Solution Specification
 
@@ -178,6 +186,14 @@ ultraplan tui
 ```
 
 The TUI is a terminal-native surface over the same workspace, project, sprint, study, validation, runtime, and state services. It is not a browser UI and does not introduce a server.
+
+Beginning in Sprint 30, the same binary also exposes a local browser surface:
+
+```bash
+ultraplan serve
+```
+
+The server binds to a loopback address by default, serves Go-rendered HTML templates plus embedded CSS/JavaScript, exposes a versioned local HTTP API, and streams operation progress with Server-Sent Events (SSE). It does not require Node.js, Vite, a separate frontend process, or a database at runtime.
 
 The CLI must support these top-level areas:
 
@@ -196,6 +212,7 @@ The CLI must support these top-level areas:
 - Configuration inspection and validation.
 - Health checks for runtime dependencies.
 - Local TUI dashboard and guarded workflow operation.
+- Local Go HTTP server, browser dashboard, guarded operations, and SSE progress.
 
 The command surface should be stable, scriptable, and documented through help output.
 
@@ -216,6 +233,7 @@ Required workspace concepts:
 - **Project index:** The catalog of available contracts, evidence reports, reasoning templates, review protocols, and project-specific source documents.
 - **Planning sprint:** A sprint directory under `projects/<project>/sprints/<slug>` that contains governed planning artifacts through `plan.md` and execute artifacts for controlled implementation runs.
 - **TUI session:** A local interactive terminal session that reads and mutates the same workspace artifacts through shared application use cases. It does not create an alternate persistence model.
+- **Web session:** A local browser session connected to the loopback UltraPlan server. Server connection, confirmation, subscription, and active-operation handles are ephemeral; workspace artifacts and product-owned run state remain authoritative.
 
 ### 2.3 Functional Requirements
 
@@ -365,6 +383,20 @@ Required workspace concepts:
     - The product includes fake runtime fixtures for deterministic runtime behavior.
     - OpenCode integration tests are gated so normal test runs do not require OpenCode.
 
+23. **Local HTTP server**
+    - Users can start the local server with `ultraplan serve`.
+    - The server binds to loopback by default and rejects non-loopback binding in Phase 4.
+    - HTTP handlers call typed app use cases rather than CLI handlers or product modules directly.
+    - The server exposes versioned JSON endpoints for dashboard, detail, artifact-preview, validation, confirmation, operation, and cancellation behavior.
+    - The server owns only ephemeral connection and subscription state; durable product state remains in workspace artifacts.
+
+24. **Local browser UI and progress streaming**
+    - The Go server renders browser pages from embedded `html/template` assets and serves embedded CSS and minimal JavaScript.
+    - Users can inspect projects, studies, sprints, findings, state, and bounded Markdown/JSON artifact previews.
+    - Runtime-backed or mutating actions require a server-validated confirmation bound to the normalized request and current input state.
+    - Commands use ordinary HTTP requests; live operation progress uses SSE and cancellation uses an explicit HTTP request.
+    - Browser disconnect or refresh does not determine product task success and does not replace durable run-state recovery.
+
 #### Should Have
 
 1. **Machine-readable output modes**
@@ -404,13 +436,13 @@ Required workspace concepts:
 1. Additional runtime adapters beyond OpenCode.
 2. Direct provider/model workers for non-coding document generation.
 3. Watch mode for status dashboards.
-4. Terminal UI for active run monitoring.
-5. Remote artifact storage.
-6. Embedded local API server for future UI integration.
-7. Pluggable report output formats beyond Markdown and CSV.
-8. Advanced source acquisition beyond Git clone, such as local tarballs or registries.
+4. Remote artifact storage.
+5. Pluggable report output formats beyond Markdown and CSV.
+6. Advanced source acquisition beyond Git clone, such as local tarballs or registries.
 
-#### Won't Have In The Phase 3 Release
+#### Won't Have In The Phase 3 Release (Historical Gate)
+
+Browser UI was intentionally excluded from Phase 3 and enters scope only in Product Phase 4 beginning with Sprint 30. The other exclusions remain deferred unless a later product phase explicitly changes them.
 
 1. Hosted multi-user service.
 2. Browser UI.
@@ -427,6 +459,10 @@ Required workspace concepts:
 The exact command names may be refined during implementation, but the production CLI must cover this surface.
 
 #### Global Commands
+
+- `ultraplan serve`
+  - Starts the loopback-only local HTTP server and embedded browser UI.
+  - Supports explicit loopback listen address, optional browser opening, and graceful shutdown.
 
 - `ultraplan list`
   - Lists studies in Phase 1. Project listing is handled by `ultraplan project list` in Phase 2.
@@ -752,6 +788,7 @@ Artifact requirements:
 - **Validation:** First-class validators for config, study structure, reports, code references, and run state.
 - **Testing:** Unit tests, fixture tests, fake runtime tests, and gated real-runtime integration tests.
 - **Compatibility:** Linux and macOS are required for first release; Windows support should not be intentionally blocked but may be later-release.
+- **Local Web Surface:** Go `net/http`, `html/template`, embedded static assets, and SSE; no separate frontend runtime or database.
 
 ### 3.2 System Architecture
 
@@ -771,6 +808,7 @@ UltraPlan Go should be organized around these responsibilities:
 - Project catalog service.
 - Sprint planning artifact service.
 - Logging and diagnostics.
+- Local HTTP and browser interface adapter.
 
 Data flow for a per-source analysis:
 
@@ -863,6 +901,24 @@ CLI or TUI action
   -> flow-state update
 ```
 
+Data flow for the local browser surface:
+
+```text
+Browser request
+  -> loopback HTTP route, origin/CSRF/body-limit checks
+  -> HTTP request/response DTO mapping
+  -> shared app use case
+  -> owning product module and durable workspace state
+  -> Go-rendered HTML or versioned JSON response
+
+Browser operation start
+  -> server-validated confirmation
+  -> shared app operation use case
+  -> bounded ephemeral operation/event hub
+  -> SSE progress stream
+  -> durable product state refresh on completion, cancellation, or reconnect
+```
+
 General issue tracking, automatic product fixes, and automatic Git mutation remain deferred.
 
 ### 3.3 Dependencies
@@ -883,6 +939,7 @@ Internal dependencies:
 - Stable embedded prompt and output-template defaults with explicit workspace-override precedence.
 - Workspace config schema.
 - Validator definitions.
+- Embedded Go HTML templates, CSS, and minimal JavaScript for the local browser surface.
 
 ### 3.4 Performance Requirements
 
@@ -942,10 +999,9 @@ Status output must answer:
 
 ### 3.8 Non-Goals and Icebox
 
-The first production release excludes:
+Hosted and collaborative service scope remains excluded:
 
 - Hosted service mode.
-- Browser UI.
 - Multi-user auth.
 - Team collaboration features.
 - Full remote execution service.
@@ -955,10 +1011,9 @@ The first production release excludes:
 
 Deferred possibilities:
 
-- Local API server.
 - Remote worker mode.
 - Additional runtime adapters.
-- Rich HTML report rendering.
+- Rich client-side application behavior beyond the simple Go-rendered UI.
 - Integration with GitHub issues or pull requests.
 - General-purpose local or remote issue tracking.
 - Automatic Git add/commit/push from sprint execution.
@@ -1028,6 +1083,12 @@ Deferred possibilities:
 - Target: 100%.
 - Measurement: Smoke validation and evidence-path/hash checks.
 
+**Phase 4 KPI: Interface State Agreement**
+
+- Definition: Percentage of representative workspace/project/sprint/study states and terminal operation results that agree across shared app results, CLI/TUI projections, and the local browser surface.
+- Target: 100% for documented Phase 4 scenarios.
+- Measurement: API compatibility fixtures and CLI/TUI/web integration tests over the same temporary workspaces.
+
 ### 4.2 Definition of Done
 
 The first production release is done when:
@@ -1049,6 +1110,14 @@ The first production release is done when:
 - Sprint review writes a valid current `review.md`, uses every selected contract, and applies deterministic verdict rules.
 - Sprint smoke writes a valid current `smoke.md` linked to a real external harness run or records a truthful blocked/not-applicable result.
 - Review-before-smoke gating, staleness detection, cancellation, focused reruns, and recovery work from both CLI and TUI.
+
+Product Phase 4 is done when:
+
+- `ultraplan serve` starts a loopback-only HTTP server and serves the embedded browser UI without Node.js or a separate frontend process.
+- Browser dashboard and detail pages report the same workspace, project, sprint, study, validation, and artifact state as shared app use cases.
+- Guarded operations require server-validated confirmation and expose bounded SSE progress plus explicit cancellation.
+- Browser refresh, SSE reconnect, and server shutdown preserve truthful recovery through durable product state.
+- Path containment, origin/CSRF checks, secret redaction, request limits, and hostile-Markdown rendering tests pass.
 
 ### 4.3 Instrumentation Requirements
 
@@ -1116,6 +1185,18 @@ Metrics to monitor locally:
 
 - Add the versioned external harness contract, narrow smoke selection, root `smoke.md`, review-before-smoke flow, evidence links, focused reruns, recovery, full TUI operation, and Phase 3 release hardening.
 
+**Rollout Step 8: Local web foundation**
+
+- Beginning with Sprint 30, add explicit interface-runner composition, `ultraplan serve`, a loopback-only Go HTTP server, embedded templates/static assets, read-only dashboard/detail pages, and bounded artifact previews.
+
+**Rollout Step 9: Guarded web operations and streaming**
+
+- Add server-validated confirmations, validation and workflow actions, bounded SSE progress, cancellation, reconnect behavior, and product-owned mutation locking.
+
+**Rollout Step 10: Local web hardening and release**
+
+- Add security, API compatibility, race, browser, accessibility, recovery, packaging, and gated real-runtime coverage without introducing hosted or multi-user scope.
+
 ### 4.5 Review History
 
 | Date | Reviewer | Status | Notes |
@@ -1124,6 +1205,7 @@ Metrics to monitor locally:
 | 2026-06-13 | Product/Engineering | Draft | Add Phase 2 governed project/sprint planning scope through `plan.md`; keep execute/smoke/review/issues deferred. |
 | 2026-07-02 | Product/Engineering | Draft | Expand Phase 2 to include controlled sprint implementation execution through `execute`; keep smoke/review/issues/Git mutation deferred. |
 | 2026-07-17 | Product/Engineering | Draft | Define Product Phase 3 as automated review followed by deep smoke, keep `review.md`/`smoke.md` as the only sprint summaries, link raw smoke evidence externally, and require full TUI parity in every Phase 3 sprint. |
+| 2026-07-22 | Product/Engineering | Draft | Add Product Phase 4 beginning at Sprint 30: a loopback-only Go HTTP server, Go-rendered browser UI, guarded operations, SSE progress, and no hosted/multi-user scope. |
 
 ### 4.6 Changelog
 
@@ -1131,3 +1213,4 @@ Metrics to monitor locally:
 |---------|------|--------|-----------|
 | 1.0.0 | 2026-05-25 | Initial full PRD | Establish production requirements for UltraPlan Go. |
 | 1.4.0 | 2026-07-17 | Add Phase 3 review and smoke | Replace manual post-execute verification with automated `review.md`, external-harness-backed `smoke.md`, integrated CLI/TUI operation, and deterministic gates. |
+| 1.5.0 | 2026-07-22 | Add Phase 4 local web surface | Introduce a loopback Go server and simple embedded browser UI over shared app use cases, with HTTP commands and SSE progress starting in Sprint 30. |

@@ -9,20 +9,21 @@
 - **Repository:** `../ultraplan-go/`
 - **Target Implementation Directory:** `/home/antonioborgerees/coding/ultraplan-go`
 - **Smoke Harness Directory:** `/home/antonioborgerees/coding/ultraplan-go-smoke`
-- **Primary Goal:** Build a production-grade Go CLI and local TUI for UltraPlan study workflows, governed project/sprint planning and execution, automated conformance review, and deep smoke through `smoke`.
+- **Primary Goal:** Build a production-grade Go CLI, local TUI, and loopback-only Go-served browser UI for UltraPlan study workflows, governed project/sprint planning and execution, automated conformance review, and deep smoke through `smoke`.
 - **Phase 1 Goal:** Study initialization, source analysis, synthesis, code-reference extraction, resumable orchestration, validation, and diagnostics.
 - **Phase 2 Goal:** Project cataloging plus sprint planning and execute artifacts: `requirements.md`, `sprint-index.md`, `technical-handbook.md`, `reasoning/*.md`, `reasoning.md`, `plan.md`, `execute.md`, `flow-state.json`, `.run-state.json`, and configurable global/per-stage models for sprint stages.
 - **Phase 3 Goal:** Automated post-execute `review.md`, sprint-targeted `smoke.md`, external smoke-harness evidence, review-before-smoke flow integration, and complete CLI/TUI operation through smoke.
-- **Non-Goals:** General-purpose issue tracking, automatic product fixes, hosted SaaS, browser UI, multi-user collaboration, cross-sprint verification scheduling, and automatic Git mutation are explicitly deferred per PRD.
+- **Phase 4 Goal:** Beginning with Sprint 30, add `ultraplan serve`, a loopback-only Go HTTP server, Go-rendered browser dashboard, guarded HTTP operations, SSE progress, and browser recovery over the same app use cases and workspace state.
+- **Non-Goals:** General-purpose issue tracking, automatic product fixes, hosted SaaS, remote exposure, multi-user collaboration, remote workers, cross-sprint verification scheduling, and automatic Git mutation are explicitly deferred per PRD.
 - **Documentation Source Of Truth:** `projects/ultraplan-go/docs/` in this planning workspace is the sole authoritative location for the PRD, TRD, and Architecture documents. The implementation repository does not carry duplicate mirrors.
 
 ## Source Documents
 
 | Document | Path | Summary |
 |---|---|---|
-| Product Requirements | `projects/ultraplan-go/docs/PRD.md` | Product goals, user scenarios, CLI/TUI command surface, study workflows, planning and execute workflows, review, smoke, validation, and launch criteria. |
-| Technical Requirements | `projects/ultraplan-go/docs/TRD.md` | Go architecture, workspace/config/runtime/state/validation requirements, planning/execute/review/smoke requirements, agentwrap integration, external smoke-harness boundary, and testing requirements. |
-| Architecture | `projects/ultraplan-go/docs/ARCHITECTURE.md` | Module-driven package layout and dependency rules for `study`, `project`, `sprint`, `workspace`, `codeextract`, TUI, and platform runtime/process packages. |
+| Product Requirements | `projects/ultraplan-go/docs/PRD.md` | Product goals, user scenarios, CLI/TUI/local-web surfaces, study workflows, planning and execute workflows, review, smoke, validation, and launch criteria. |
+| Technical Requirements | `projects/ultraplan-go/docs/TRD.md` | Go architecture, workspace/config/runtime/state/validation requirements, planning/execute/review/smoke requirements, agentwrap integration, local HTTP/SSE boundary, external smoke-harness boundary, and testing requirements. |
+| Architecture | `projects/ultraplan-go/docs/ARCHITECTURE.md` | Module-driven package layout and dependency rules for `study`, `project`, `sprint`, `workspace`, `codeextract`, TUI, web, and platform runtime/process packages. |
 
 ## Active Contract Pool
 
@@ -79,6 +80,21 @@ study -> select -> distill -> reason -> plan -> execute -> review -> smoke
 - Review and smoke are available through the CLI and the TUI using the same typed app use cases.
 - Review and smoke must not modify product source, product tests, governed planning inputs, or Git state.
 
+## Phase 4 Local Web Context
+
+Phase 4 starts with Sprint 30 and adds a local interface rather than another workflow stage:
+
+```text
+browser -> internal/web HTTP/SSE -> internal/app use cases -> existing product modules
+```
+
+- `internal/web` owns loopback HTTP lifecycle, Go templates/static assets, transport mapping, browser security, confirmation tokens, and bounded SSE subscriptions.
+- `internal/web` must not import product modules directly, call CLI handlers, parse CLI output, or persist an alternate workflow state.
+- Go `html/template`, embedded CSS, and minimal JavaScript are the initial UI stack; Node.js, Vite, and a separate frontend process are not required.
+- HTTP POST/DELETE carries commands and cancellation; SSE carries one-way progress only.
+- Workspace artifacts and product-owned run state remain authoritative across browser refresh, disconnect, and server restart.
+- Hosted service, remote binding, accounts, permissions, tenants, collaboration, remote workers, and WebSockets remain deferred.
+
 ## Available Studies
 
 | Study | Path | Useful For | Status |
@@ -110,6 +126,8 @@ study -> select -> distill -> reason -> plan -> execute -> review -> smoke
 | Template | Path | Useful For | Status |
 |---|---|---|---|
 | Architecture | `system/reasoning/architecture_reasoning_template.md` | Module boundaries, dependency direction, package layout, runtime/product separation | Current |
+| API Design | `system/reasoning/api-design-reasoning-template.md` | Phase 4 HTTP resources, versioning, errors, confirmation, cancellation, and SSE semantics | Current |
+| Frontend | `system/reasoning/frontend-reasoning-template.md` | Phase 4 server-rendered browser flows, state placement, progressive enhancement, and accessibility | Current |
 
 ## Smoke Harnesses
 
@@ -139,6 +157,7 @@ None yet — this is the first project.
 - The external smoke harness owns detailed `runs/` and `issues/` evidence. UltraPlan owns smoke selection, invocation, summary validation, flow state, and the sprint-root `smoke.md` link summary.
 - Verification findings are evidence inside `review.md`, `smoke.md`, and the harness issue records; do not turn Phase 3 into a general-purpose issue tracker.
 - Every Phase 3 sprint must update the TUI for the CLI/use-case functionality introduced by that sprint.
+- Product Phase 4 starts at Sprint 30 and keeps the browser UI local, Go-rendered, progressively enhanced, and backed by shared app use cases.
 - Built-in prompts and output templates ship embedded in UltraPlan. Workspace `prompts/` and `templates/` paths are optional intentional overrides, never required project inputs.
 - Automatic Git mutation remains prohibited.
 - TRD requires `github.com/Antonio7098/agentwrap` and `agentwrap/opencode` as the runtime SDK. Do not invent competing runtime contracts.

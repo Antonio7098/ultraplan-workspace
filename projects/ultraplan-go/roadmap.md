@@ -1,8 +1,8 @@
 # UltraPlan Go Roadmap
 
 > Project: `ultraplan-go`  
-> Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution, post-execute review and deep smoke, and a local terminal UI over the same workflows.
-> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Hosted SaaS, browser UI, multi-user collaboration, general-purpose issue tracking, and automatic Git mutation remain deferred.
+> Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution, post-execute review and deep smoke, a local terminal UI, and a loopback-only Go-served browser UI over the same workflows.
+> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, and automatic Git mutation remain deferred.
 
 ## Scope Principle
 
@@ -27,14 +27,14 @@ Phase 2 introduces the planning side of UltraPlan:
 study -> select -> distill -> reason -> plan -> execute
 ```
 
-Phase 2 now includes controlled implementation execution from validated sprint plans. The following are outside Phase 2; review and smoke enter scope in Product Phase 3 while the other items remain deferred:
+Phase 2 now includes controlled implementation execution from validated sprint plans. The following are outside Phase 2; review and smoke enter scope in Product Phase 3, the local browser UI enters Product Phase 4, and the other items remain deferred:
 
 - smoke investigation runs
 - conformance review automation
 - issue tracking
 - automatic Git mutation
 - hosted SaaS
-- browser UI
+- browser UI until Product Phase 4
 - multi-user collaboration
 
 The TUI enabling track introduced a local terminal UI. It uses shared application use cases and product services instead of scraping CLI text or invoking `ultraplan` as a subprocess for normal UltraPlan operations.
@@ -46,6 +46,14 @@ study -> select -> distill -> reason -> plan -> execute -> review -> smoke
 ```
 
 Review runs first because it is cheaper and more deterministic than live smoke. A blocking review verdict stops the default flow before smoke. Deep smoke then proves runtime-facing claims through the external harness cataloged by the project index. The sprint root keeps only the human-readable `review.md` and `smoke.md`; detailed smoke runs and issue evidence remain in the external smoke harness.
+
+Product Phase 4 adds no new product workflow stage:
+
+```text
+browser -> local HTTP/SSE adapter -> shared app use cases -> existing product modules
+```
+
+The server and browser UI are local interfaces over the existing filesystem-backed product. They do not add hosted service behavior, a remote worker protocol, accounts, tenancy, or a database-backed alternate source of truth.
 
 ---
 
@@ -1028,6 +1036,132 @@ plus:
 
 ---
 
+# Product Phase 4 — Local Go Server and Browser UI
+
+Product Phase 4 begins with Sprint 30. It adds a simple local browser surface without changing the governed workflow, workspace layout, or source of truth.
+
+```text
+CLI command ─┐
+TUI action  ─┼─> shared app use cases -> product modules -> workspace artifacts
+HTTP action ─┘
+
+app progress -> bounded server event hub -> SSE -> browser
+```
+
+The initial UI is rendered with Go `html/template` and uses embedded CSS plus minimal JavaScript for form submission, progressive refresh, cancellation, and `EventSource`. It does not introduce React, Vite, Node.js, a frontend build step, or a separate frontend process. A richer client framework remains a later option only if real interaction complexity earns it.
+
+## Phase 4 Contract Gate
+
+Required for Phase 4:
+
+- `internal/web` owns only loopback HTTP lifecycle, HTML/templates/static assets, transport DTO mapping, browser security, confirmation tokens, and SSE subscriptions.
+- HTTP handlers call typed `internal/app` use cases and do not import product modules, invoke CLI handlers, parse CLI output, or execute `ultraplan` as a subprocess.
+- `cmd/ultraplan` explicitly constructs CLI/TUI/web interface dependencies; Phase 4 does not add another package-global mutable runner registration.
+- Workspace artifacts and product-owned run state remain authoritative. The server operation hub is ephemeral, bounded, and recoverable by rereading durable state.
+- Commands use explicit HTTP methods and structured responses. SSE is a one-way progress channel, not a command or durable-state protocol.
+- Browser disconnect cancels only the subscription. Explicit cancellation propagates through the shared app operation context and product/runtime cleanup path.
+- Mutating or runtime-backed actions require a short-lived server-issued confirmation bound to normalized scope and current governed-input fingerprints.
+- Study and sprint mutation exclusion remains product-owned. HTTP middleware must not become the only concurrency guard.
+- The server binds to loopback only, uses same-origin requests, validates Host and Origin, protects mutations from CSRF, bounds bodies/timeouts/streams, redacts secrets, contains paths, and safely renders untrusted Markdown.
+- Normal tests use `httptest`, fake app use cases, fake runtimes, and fake harnesses. Gated tests cover real runtime/harness behavior only where needed.
+- CLI and TUI behavior remain supported and unchanged except for the explicit composition refactor needed to add the new surface cleanly.
+
+Still deferred:
+
+- hosted SaaS or LAN/public binding
+- multi-user authentication, authorization, accounts, teams, tenancy, or collaboration
+- remote workers and remote workspace synchronization
+- browser editing of arbitrary workspace files
+- a database-backed alternate product state
+- interactive terminal/session transport, bidirectional agent chat, or WebSockets
+- general-purpose issue tracking and automatic Git mutation
+
+### Sprint 30: Local Web Foundation and Read-Only Dashboard
+
+**Goal:** add `ultraplan serve` and a loopback-only, read-only browser dashboard using Go HTTP/templates over existing app use cases.
+
+**Build:**
+
+- refactor TUI/interface runner construction from package-global registration to explicit composition in `cmd/ultraplan`
+- `ultraplan serve` with explicit loopback listen address, optional browser opening, signal-aware graceful shutdown, and bounded HTTP timeouts
+- `internal/web` package with `net/http` routes, middleware, `html/template` rendering, embedded CSS/minimal JavaScript, and structured error mapping
+- browser dashboard for workspace, projects, project sprints, studies, validation summaries, and current run/flow state
+- project, sprint, and study detail pages backed by typed app queries
+- bounded, allowlisted Markdown/JSON artifact previews with hostile-content-safe rendering
+- initial `/api/v1` read-only JSON endpoints and a server health endpoint
+- same-origin, Host/Origin, path-containment, redaction, request-limit, and security-header foundation
+- CLI help, local-web user documentation, architecture reasoning, and API design documentation
+
+**Acceptance:**
+
+- `ultraplan serve` starts from a workspace or with `--workspace`, listens only on loopback, and shuts down cleanly on context cancellation or signal.
+- A browser can inspect the same workspace, project, sprint, study, validation, and artifact state exposed by shared app use cases.
+- The web package does not call CLI handlers, parse stdout, import product modules directly, or persist web-specific product state.
+- The server and UI run from the Go binary without Node.js, Vite, a separate asset server, or a database.
+- Unknown `/api/` routes return structured JSON errors and never fall through to an HTML page.
+- Artifact previews reject unsupported and escaping paths, remain bounded, and do not execute workspace HTML/scripts.
+- `httptest`, template, security, route, API-shape, shutdown, `go test ./...`, `go test -race ./...`, and `go build ./cmd/ultraplan` checks pass.
+
+### Sprint 31: Guarded Web Operations and SSE Progress
+
+**Goal:** expose the existing guarded local operations through HTTP and stream truthful live progress to the browser without introducing another workflow engine.
+
+**Build:**
+
+- browser validation, prompt-preview, dry-run, flow, execute, review, smoke, verify, study run-loop, and cancellation actions as supported by current app use cases
+- `POST /api/v1/operations/prepare` returning scope, paths, runtime/model information, mutation class, input fingerprint, expiry, and a bound confirmation token
+- confirmed operation start, status/result, and explicit cancellation endpoints
+- bounded ephemeral operation hub with operation IDs, cancellation functions, safe recent events, SSE subscribers, terminal results, and short retention
+- SSE event IDs, typed event names, heartbeat comments, reconnect support, slow-subscriber handling, and durable-status refresh guidance
+- browser progress, result, finding, failure, recovery, and cancellation views
+- product-owned per-sprint mutation locking plus conflict diagnostics; existing study locking remains authoritative
+- structured conflict, stale-confirmation, cancellation, validation, runtime, and internal error responses
+
+**Acceptance:**
+
+- Mutating or runtime-backed work cannot start without a valid current server-issued confirmation matching the normalized request.
+- Commands use HTTP POST/DELETE; SSE carries progress only.
+- A disconnected or slow browser cannot block, complete, fail, or silently cancel product work.
+- SSE reconnect resumes from bounded recent events when available and otherwise directs the browser to current durable status.
+- Explicit cancellation reaches the shared operation context, preserves cleanup metadata, and leaves durable state recoverable from CLI, TUI, and browser.
+- Conflicting sprint or study mutations fail with actionable scope/lock information rather than running concurrently.
+- Normal tests cover success, validation failure, runtime failure, cancellation, stale confirmation, reconnect, buffer rollover, slow subscriber, shutdown, redaction, and CLI/TUI/web agreement with fake dependencies.
+
+### Sprint 32: Local Web Hardening, Documentation, and Release
+
+**Goal:** make the local browser surface a supported, secure, recoverable interface while keeping its scope explicitly local and single-user.
+
+**Build:**
+
+- stable `/api/v1` JSON and error-envelope documentation plus compatibility fixtures
+- complete local-web user, configuration, security, recovery, and troubleshooting documentation
+- accessibility and keyboard-navigation pass for dashboard, details, confirmations, progress, findings, and errors
+- cache policy for HTML/static/API responses; bounded polling/refetch behavior for changes made by CLI or TUI
+- CSRF, Host/Origin, session, CSP/security-header, request-smuggling/body-limit, hostile-Markdown, path-containment, and redaction audit
+- operation/SSE concurrency, leak, race, slow-client, reconnect, graceful-shutdown, and recovery tests
+- representative browser integration tests over temporary workspaces and fake runtime/harness dependencies
+- gated real-runtime and real smoke-harness browser operation evidence
+- release packaging and checks confirming templates/static assets are embedded in the single Go binary
+
+**Release gate:**
+
+```bash
+go test ./...
+go test -race ./...
+go build ./cmd/ultraplan
+```
+
+plus:
+
+- `ultraplan serve` is loopback-only and needs no external frontend/runtime dependency
+- read-only browser state agrees with CLI/TUI/shared app results
+- guarded browser operations, progress, reconnect, cancellation, and recovery pass representative scenarios
+- browser refresh or server restart never promotes ephemeral state over durable workspace truth
+- no high-severity local-web security, path, redaction, concurrency, or accessibility finding remains
+- hosted/multi-user/remote-worker behavior has not entered the implementation accidentally
+
+---
+
 # Roadmap Review Gates
 
 Before Sprint 1 starts:
@@ -1082,3 +1216,19 @@ Before Phase 3 release:
 - [ ] Legacy manual review/deep-smoke migration is documented.
 - [ ] Authoritative planning-doc validation passes.
 - [ ] Phase 3 dogfood evidence exists for review, smoke, cancellation, failure, and recovery paths.
+
+Before Sprint 30 starts:
+
+- [ ] Phase 3 release gate is complete or any remaining exceptions are explicitly recorded.
+- [ ] Phase 4 PRD, TRD, architecture, roadmap, project-index, and reasoning selections are accepted.
+- [ ] `internal/app` exposes the required typed query, confirmation, operation, progress, cancellation, and error surfaces without CLI dependencies.
+- [ ] Explicit CLI/TUI/web composition has a reviewed package-cycle-free design.
+- [ ] Loopback-only, same-origin, CSRF, path-containment, SSE, shutdown, and fake-runtime browser test strategies are documented.
+
+Before Phase 4 release:
+
+- [ ] `/api/v1` compatibility and error envelopes are documented and fixture-tested.
+- [ ] Browser read-only and guarded-operation state agrees with CLI/TUI/shared app results.
+- [ ] SSE slow-client, reconnect, cancellation, shutdown, leak, and race tests pass.
+- [ ] Local-web security, hostile-content, path-containment, and redaction audits pass.
+- [ ] Gated representative real-runtime and smoke-harness browser evidence exists.

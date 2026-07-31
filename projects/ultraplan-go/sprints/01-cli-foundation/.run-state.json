@@ -1,0 +1,29 @@
+{
+  "status": "complete",
+  "completedAt": "2026-05-30T11:07:22+01:00",
+  "files": [
+    "/home/antonioborgerees/coding/ultraplan-go/go.mod",
+    "/home/antonioborgerees/coding/ultraplan-go/cmd/ultraplan/main.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/app.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/version.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/app_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/config/doc.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/logging/doc.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/filesystem/doc.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/runtime/doc.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/workspace/doc.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/study/doc.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/codeextract/doc.go",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/01-cli-foundation/plan.md"
+  ],
+  "testsRun": [
+    "go test ./...: passed",
+    "go build ./cmd/ultraplan: failed because project directory is not a Git repository and Go VCS stamping could not obtain status",
+    "go build -buildvcs=false ./cmd/ultraplan: passed",
+    "./ultraplan --help: exited 0 and wrote help to stdout",
+    "./ultraplan: exited 0 and wrote help to stdout",
+    "./ultraplan version: exited 0 and printed Version, Commit, BuildDate, and GoVersion",
+    "./ultraplan definitely-unknown: exited 2, wrote diagnostic to stderr, and left stdout empty"
+  ],
+  "blockers": []
+}

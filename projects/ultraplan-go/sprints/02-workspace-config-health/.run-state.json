@@ -1,0 +1,32 @@
+{
+  "status": "complete",
+  "completedAt": "2026-05-30T12:10:57+01:00",
+  "files": [
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/app.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/app_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/config_commands.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/health_commands.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/app/workspace_commands.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/config/config.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/config/config_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/config/redaction.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/logging/logging.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/platform/logging/logging_test.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/workspace/discovery.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/workspace/init.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/workspace/paths.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/workspace/validation.go",
+    "/home/antonioborgerees/coding/ultraplan-go/internal/workspace/workspace_test.go",
+    "/home/antonioborgerees/coding/ultra/.ultra/projects/ultraplan-go/sprints/02-workspace-config-health/plan.md"
+  ],
+  "testsRun": [
+    "go test ./...: passed",
+    "go build -o /tmp/ultraplan-check ./cmd/ultraplan: passed",
+    "/tmp/ultraplan-check init-workspace --path <temp-dir> --dry-run: passed",
+    "/tmp/ultraplan-check init-workspace --path <temp-dir>: passed",
+    "/tmp/ultraplan-check --workspace <temp-dir> config show --json | python3 -m json.tool: passed",
+    "/tmp/ultraplan-check --workspace <temp-dir> health --json | python3 -m json.tool: passed",
+    "rg excluded-scope terms --glob '*.go' .: passed"
+  ],
+  "blockers": []
+}

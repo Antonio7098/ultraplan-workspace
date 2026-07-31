@@ -1,0 +1,21 @@
+{
+  "status": "complete",
+  "completedAt": "2026-07-10T09:52:51+01:00",
+  "files": [
+    "internal/app/operations.go",
+    "internal/app/tui_commands.go",
+    "internal/tui/app.go",
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/test_fakes_test.go",
+    "internal/tui/views.go",
+    "projects/ultraplan-go/sprints/25-operational-tui-controls/plan.md"
+  ],
+  "testsRun": [
+    "GOCACHE=/tmp/ultraplan-go-cache go test ./internal/app ./internal/tui: passed",
+    "GOCACHE=/tmp/ultraplan-go-cache go test ./...: passed",
+    "GOCACHE=/tmp/ultraplan-go-cache go test -race ./internal/app ./internal/tui ./internal/sprint ./internal/study: passed",
+    "GOCACHE=/tmp/ultraplan-go-cache go build ./cmd/ultraplan: passed with non-fatal read-only module stat-cache warning"
+  ],
+  "blockers": []
+}

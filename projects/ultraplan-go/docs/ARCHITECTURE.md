@@ -20,7 +20,7 @@ module = state + logic + workflows + validation + persistence adapters + local i
 
 This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, review, and smoke behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
 
-CLI and TUI are local interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol.
+CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol.
 
 ## Core Rule
 
@@ -34,8 +34,9 @@ internal/codeextract owns its parsing, resolution, extraction, and validation be
 internal/workspace owns workspace discovery, path rules, and workspace validation
 internal/platform/runtime owns generic execution only
 internal/platform/process owns safe generic external executable/argv execution only
-internal/app owns local composition and shared use-case wiring for CLI and TUI
+internal/app owns local composition and shared use-case wiring for CLI, TUI, and web
 internal/tui owns terminal widgets, navigation, key handling, and rendering only
+internal/web owns loopback HTTP transport, Go templates/static assets, JSON mapping, SSE subscriptions, and browser security only
 ```
 
 Avoid this as the default shape:
@@ -62,13 +63,23 @@ cmd/
 internal/
   app/
     app.go                  # composition root, dependency wiring, CLI adapters
-    usecases.go             # shared operations used by CLI and TUI, introduced as needed
+    surfaces.go             # explicit TUI/web runner dependencies constructed by cmd
+    usecases.go             # shared operations used by CLI, TUI, and web
 
   tui/
     app.go                  # Bubble Tea or equivalent program setup
     model.go                # TUI state/update model
     views.go                # terminal rendering
     keys.go                 # key bindings and commands
+
+  web/
+    server.go               # loopback net/http lifecycle and graceful shutdown
+    routes.go               # HTML and versioned JSON route registration
+    handlers.go             # app use-case request/response mapping
+    operations.go           # bounded ephemeral operation/SSE subscription hub
+    security.go             # Host/Origin/CSRF/body-limit/security-header policy
+    templates/              # embedded html/template pages and partials
+    static/                 # embedded CSS and minimal progressive-enhancement JS
 
   platform/
     config/
@@ -266,17 +277,20 @@ workspace/config/runtime preflight wiring
 typed use-case functions for local interfaces
 text and JSON output adapters for CLI commands
 stable error classification and process exit mapping
-review/smoke progress, cancellation, result, evidence-link, and recovery use cases shared by CLI and TUI
+review/smoke progress, cancellation, result, evidence-link, and recovery use cases shared by CLI, TUI, and web
 ```
 
-As the TUI enters scope, command handlers should be thinned so the real operation lives in shared app use cases or product services. The desired shape is:
+As additional interfaces enter scope, command handlers should be thinned so the real operation lives in shared app use cases or product services. The desired shape is:
 
 ```text
 CLI command -> parse flags -> call app use case -> render text/JSON
 TUI action  -> build request -> call app use case -> update model/view
+HTTP action -> decode/validate request -> call app use case -> render HTML/JSON/SSE
 ```
 
-Avoid letting the TUI call CLI command functions that write to stdout, or shelling out to the `ultraplan` binary to parse its own output.
+Avoid letting the TUI or web surface call CLI command functions that write to stdout, or shelling out to the `ultraplan` binary to parse its own output.
+
+Side-effectful surface runners should be constructed explicitly in `cmd/ultraplan` and passed into app composition. Do not add package-global mutable runner registration as each interface is introduced.
 
 ### `tui`
 
@@ -297,6 +311,27 @@ smoke scope, prerequisites, suite/test progress, linked harness evidence, issues
 It may depend on `app` use cases and domain result types. It must not own product state machines, validation rules, prompt construction, runtime execution, smoke-harness invocation, verdict synthesis, or artifact persistence. Durable workspace files and linked harness evidence remain the source of truth.
 
 If a third-party terminal UI library is used, it should stay behind `internal/tui` and not leak into product modules.
+
+### `web`
+
+`web` owns the Phase 4 local browser interface:
+
+```text
+loopback HTTP lifecycle and graceful shutdown
+HTML routes and html/template view models
+embedded templates, CSS, and minimal JavaScript
+versioned JSON request/response mapping
+Host, Origin, CSRF, body-limit, timeout, and security-header enforcement
+short-lived guarded-operation confirmations
+bounded ephemeral operation handles and SSE subscribers
+safe Markdown/JSON artifact presentation
+```
+
+It may depend on `app` use-case interfaces and plain result types. It must not import `study`, `project`, `sprint`, runtime adapters, or process adapters directly. It must not own workflow state machines, validators, prompts, runtime execution, smoke invocation, verdicts, product locks, or durable recovery.
+
+The server operation hub is transport-lifecycle state, not product state. It may retain bounded recent safe events and terminal results for reconnect, but workspace files and product-owned run state remain authoritative. Slow or disconnected SSE subscribers must never block an app operation.
+
+The first web UI is server-rendered and progressively enhanced. A frontend framework or JavaScript build pipeline is not part of the Phase 4 foundation; add one only after real client-side complexity earns it.
 
 ### `platform/runtime`
 
@@ -443,7 +478,10 @@ Expected dependency direction for the current build:
 
 ```text
 cmd/ultraplan -> internal/app
+cmd/ultraplan -> internal/tui + internal/web for explicit interface construction
 internal/app -> product modules + platform modules
+internal/tui -> internal/app
+internal/web -> internal/app
 study -> workspace
 study -> platform/runtime
 study -> platform/config/logging/filesystem as needed
@@ -458,6 +496,8 @@ codeextract -> platform/filesystem/logging as needed
 workspace -> platform/filesystem as needed
 platform/* -> no product modules
 ```
+
+`internal/web` must not become a parallel application layer. HTTP DTOs, templates, confirmations, and SSE subscriptions are interface concerns; product rules remain behind app use cases. `internal/web` must not call CLI handlers, parse CLI output, or execute the UltraPlan binary.
 
 ## Encapsulation in Practice
 

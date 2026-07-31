@@ -1,13 +1,13 @@
 # Technical Requirements Document: UltraPlan Go
 
-**Version:** 1.5.0
+**Version:** 1.6.0
 **Status:** Draft
 **Owner:** Engineering
-**Last Updated:** 2026-07-17
+**Last Updated:** 2026-07-22
 
 ## 1. Purpose
 
-This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI and TUI that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`.
+This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress.
 
 This document is implementation-oriented. It defines boundaries, modules, data models, state machines, validators, runtime contracts, error handling, and testing requirements. It does not prescribe every package name or third-party library, but it should be specific enough to guide implementation.
 
@@ -33,11 +33,12 @@ UltraPlan Go is responsible for:
 - Writing the current human-readable sprint `review.md` and `smoke.md` summaries while linking detailed smoke evidence in the harness.
 - Providing human-readable and structured operational output.
 - Providing a local TUI over the same workspace and workflow services after the CLI workflows are stable.
+- Providing a loopback-only local HTTP server and embedded browser UI over the same typed application use cases beginning in Sprint 30.
 
 UltraPlan Go is not responsible for:
 
 - Hosting a multi-user service.
-- Providing a browser application.
+- Providing a hosted, remotely exposed, or multi-user browser service.
 - Managing team permissions.
 - Replacing source control, issue trackers, or project management systems.
 - Owning AI provider billing.
@@ -48,6 +49,7 @@ UltraPlan Go is not responsible for:
 - Mutating Git state during planning, execute, review, or smoke.
 - Owning detailed smoke run/issue persistence that belongs to the external harness.
 - Replacing the CLI or JSON surfaces with a TUI-only workflow.
+- Replacing workspace artifacts with browser-owned or server-only durable state.
 
 ## 3. Architecture Overview
 
@@ -61,8 +63,9 @@ cmd/
     main.go
 
 internal/
-  app/                  # composition root, shared use cases, and CLI/TUI wiring
+  app/                  # composition root, shared use cases, and interface wiring
   tui/                  # local terminal UI over app use cases, added after execute
+  web/                  # loopback HTTP, Go templates/static assets, JSON, and SSE over app use cases
   platform/             # generic infrastructure only
     config/
     logging/
@@ -89,12 +92,12 @@ Do not create global technical-layer packages such as `internal/validation`, `in
 
 Runtime supervision is delegated to `agentwrap`. The platform runtime package must stay generic: it may know about prompts, working directories, models, timeouts, permissions, events, and execution results, but it must not know about studies, dimensions, sources, synthesis gating, report semantics, project catalogs, sprint stages, or product state machines.
 
-The CLI must not become the only place where use cases are assembled. Before or during TUI work, shared application operations should be extracted from command-specific glue into testable structs/functions that both CLI commands and TUI actions can call. The TUI should not invoke `ultraplan` subprocesses for normal product behavior.
+The CLI must not become the only place where use cases are assembled. Shared application operations should be extracted from command-specific glue into testable structs/functions that CLI commands, TUI actions, and local HTTP handlers can call. Neither TUI nor web code should invoke `ultraplan` subprocesses for normal product behavior.
 
 ## 4. Design Principles
 
 - Keep the domain model independent of CLI parsing.
-- Keep product use cases independent of both CLI parsing and TUI widget state.
+- Keep product use cases independent of CLI parsing, TUI widget state, HTTP transport DTOs, and HTML rendering.
 - Keep runtime adapters independent of study semantics.
 - Treat filesystem artifacts as durable product state.
 - Validate outputs before marking tasks successful.
@@ -108,6 +111,7 @@ The CLI must not become the only place where use cases are assembled. Before or 
 - Make dry-run behavior available before expensive operations.
 - Keep generated Markdown and YAML readable by humans.
 - Keep the CLI as the stable automation contract even when a TUI is available.
+- Keep the filesystem and product-owned run state authoritative when the local server is running.
 - Run review before smoke by default so deterministic conformance failures block unnecessary live-runtime work.
 - Keep only `review.md` and `smoke.md` in the sprint root; link detailed smoke evidence from the external harness.
 - Compute review/smoke verdicts from validated evidence and explicit severity rules, not from runtime exit success or unstructured model prose alone.
@@ -120,12 +124,14 @@ The `internal/app` package is the composition boundary for local interfaces. It 
 - typed use-case functions for project, sprint, study, code extraction, validation, status, flow, execute, review, smoke, and verify operations
 - CLI adapters that parse arguments, call use cases, and render text/JSON
 - TUI adapters that translate key actions into the same use cases and render terminal models
+- Web adapters that map HTTP requests to the same use cases and render HTML, JSON, or SSE without owning product behavior
 
 The intended direction is:
 
 ```text
 cmd/ultraplan -> internal/app -> product modules/platform
 internal/tui  -> internal/app -> product modules/platform
+internal/web  -> internal/app -> product modules/platform
 ```
 
 Avoid this direction:
@@ -133,6 +139,7 @@ Avoid this direction:
 ```text
 internal/tui -> CLI command handlers -> stdout parsing
 internal/tui -> os/exec("ultraplan", ...)
+internal/web -> CLI command handlers or os/exec("ultraplan", ...)
 ```
 
 Subprocess execution is acceptable only for explicit external runtime behavior already owned by `platform/runtime` and `agentwrap`, not for UltraPlan calling itself.
@@ -345,6 +352,46 @@ Quality requirements:
 - runtime-backed TUI behavior must use fake runtimes in normal tests and gated real-runtime smoke where available
 - smoke-backed TUI behavior must use a fake harness in normal tests and the cataloged external harness only in gated tests
 - TUI rendering must degrade gracefully in narrow terminals
+
+## 7.5 Local HTTP Server And Browser UI Requirements
+
+Product Phase 4 begins with Sprint 30. The same `ultraplan` binary must expose the local web surface through:
+
+```bash
+ultraplan serve
+```
+
+Server requirements:
+
+- use Go `net/http`; use `html/template` for pages and embedded CSS/minimal JavaScript for browser behavior
+- bind to `127.0.0.1` or `::1` by default and reject non-loopback binding in Phase 4
+- support an explicit loopback listen address, optional browser opening, signal-aware graceful shutdown, and bounded HTTP timeouts
+- expose versioned JSON endpoints for dashboard/detail queries, bounded artifact previews, validation, confirmation, operation start/status, and cancellation
+- expose operation progress as `text/event-stream` using SSE; ordinary commands remain explicit HTTP requests
+- call typed app use cases rather than CLI command handlers or product modules directly
+- keep HTTP request/response types and template models inside `internal/web`
+- serve no arbitrary workspace paths and accept no executable command assembled from browser input
+- require no Node.js, Vite, separate frontend server, database, or asset build step at runtime
+
+Browser UI requirements:
+
+- show projects, studies, sprints, validation findings, workflow state, and bounded Markdown/JSON artifact previews
+- begin with server-rendered pages and progressive enhancement; a client-side application framework is not required for Phase 4
+- render untrusted Markdown without executing embedded HTML or scripts
+- show operation scope, affected paths, runtime/model information, and mutation class before starting guarded work
+- use a server-issued, short-lived confirmation bound to the normalized request and current governed-input fingerprint for mutating or runtime-backed work
+- stream bounded progress events, support cancellation, and refresh durable state after completion, failure, cancellation, or reconnect
+- remain truthful when the browser disconnects: subscriber presence is not task state and loss of an SSE connection does not mark work complete or failed
+
+Local server security requirements:
+
+- same-origin pages and API, no permissive CORS
+- strict Host and Origin checks, CSRF protection for mutations, request-body limits, security response headers, and bounded concurrent streams
+- safe cookies or an equivalent per-process session mechanism where browser state is required
+- path containment, artifact allowlisting, secret redaction, and safe error projection identical in strength to CLI/TUI behavior
+- no hosted authentication, team permissions, tenant isolation, or remote-worker protocol in Phase 4
+
+Normal tests must use `httptest`, fake app use cases, deterministic templates, fake runtimes, and fake smoke harnesses. Required coverage includes route/method errors, JSON compatibility, confirmation expiry/staleness, path escape, CSRF/origin rejection, hostile Markdown, SSE ordering/reconnect/slow subscribers, cancellation, shutdown, redaction, and CLI/TUI/web agreement.
 
 ## 8. Domain Model
 
@@ -1980,6 +2027,53 @@ The following remain explicitly deferred:
 - cross-sprint review/smoke scheduler
 - hosted review or smoke service
 
+## 18A. Phase 4 Local Web Surface Technical Requirements
+
+Phase 4 is an interface expansion, not a new product workflow. `internal/web` owns HTTP routing, transport validation, HTML/template rendering, embedded static assets, browser-session protection, SSE subscriptions, and ephemeral operation handles. It must not own study/project/sprint state machines, prompt construction, runtime or smoke invocation, verdict computation, artifact persistence, or durable recovery.
+
+The required dependency direction is:
+
+```text
+cmd/ultraplan -> internal/app + internal/tui + internal/web
+internal/web  -> internal/app
+internal/web  -> no product modules directly
+internal/app  -> product modules + platform modules
+```
+
+Interface runners and other side-effectful surface dependencies should be constructed explicitly at the composition root and passed inward. Phase 4 must not add another package-global mutable runner registration.
+
+Required initial route capabilities:
+
+```text
+GET    /                         browser dashboard
+GET    /projects/...             browser project and sprint pages
+GET    /studies/...              browser study pages
+GET    /api/v1/dashboard         structured dashboard state
+GET    /api/v1/artifacts/{ref}   bounded allowlisted preview
+POST   /api/v1/validations       read-only validation
+POST   /api/v1/operations/prepare guarded-operation confirmation
+POST   /api/v1/operations        start confirmed operation
+GET    /api/v1/operations/{id}   ephemeral operation status/result
+GET    /api/v1/operations/{id}/events SSE progress
+DELETE /api/v1/operations/{id}   cancellation request
+```
+
+Exact resource detail routes may evolve, but `/api/v1` JSON and error envelopes are compatibility-controlled once documented. Unknown `/api/` routes return structured JSON errors and must never fall through to an HTML page.
+
+The server operation hub is ephemeral and bounded. It may hold operation IDs, normalized requests, cancellation functions, recent safe event buffers, subscribers, and terminal results for short retention. It must not become a second durable scheduler or database. Server restart recovery reads product-owned workspace state. Slow or disconnected SSE subscribers must not block product execution.
+
+Commands and streams remain separate:
+
+```text
+browser -> HTTP POST/DELETE -> app command/cancellation
+browser <- SSE GET          <- safe bounded progress events
+browser -> HTTP GET         -> refreshed durable state
+```
+
+Product-owned mutation locks remain mandatory. Existing study locks stay in `internal/study`; sprint mutation exclusion belongs in `internal/sprint`, not in HTTP middleware. Conflicting work must return an actionable conflict rather than execute concurrently by accident.
+
+The first Phase 4 UI uses embedded `html/template` files, CSS, and minimal JavaScript. No frontend framework or JavaScript build system is required. A later client-side framework is allowed only after demonstrated interaction complexity and must still consume the same versioned HTTP/app boundary.
+
 ## 19. Logging and Diagnostics
 
 UltraPlan logging and diagnostics must consume agentwrap observability records rather than directly inspecting native runtime process streams.
@@ -2057,6 +2151,8 @@ Required sink failures must be treated according to agentwrap semantics: returne
 - Ensure `agentwrap.Run.Wait()` is called for every started run.
 - Let the agentwrap adapter own subprocess waiting and cleanup.
 - Ensure no goroutine leaks in tests.
+- Bound HTTP request concurrency, active operations, SSE subscribers, and per-operation event buffers.
+- Never let an SSE write or slow browser subscriber block the underlying app operation.
 
 ### 20.2 Cancellation
 
@@ -2076,6 +2172,8 @@ Cancellation behavior:
 - Mark active tasks cancelled or retryable based on policy.
 - Return cancellation exit code when user initiated.
 - Preserve agentwrap cleanup metadata separately from the primary run result.
+- Disconnecting an SSE subscriber cancels only that subscription; explicit operation cancellation uses the operation context and shared app cancellation path.
+- Graceful server shutdown stops accepting new work, closes subscribers, cancels server-owned active operations, and leaves durable product state recoverable.
 
 ## 21. Persistence and File Writes
 
@@ -2111,6 +2209,8 @@ Lock requirements:
 - Require explicit opt-in for commands that mutate Git state.
 - Runtime permission posture must be expressed through `agentwrap.PermissionPolicy` where possible.
 - Unsupported required permission policy features must fail before runtime launch unless explicitly configured as best-effort.
+- The Phase 4 server must remain loopback-only, same-origin, CSRF-protected, body-limited, timeout-bounded, and strict about Host/Origin validation.
+- Browser routes must not expose arbitrary workspace paths, raw provider payloads, unrestricted stderr, secrets, or executable HTML from workspace Markdown.
 
 ### 22.1 Permission Policy Requirements
 
@@ -2153,6 +2253,8 @@ Required unit coverage:
 - Agentwrap `RunRequest` construction for analysis, synthesis, and planning artifact generation tasks.
 - Agentwrap wrapper composition.
 - Permission policy construction.
+- HTTP route and method mapping, request validation, safe error projection, confirmation binding/expiry, and template model construction.
+- SSE event encoding, bounded buffering, slow-subscriber behavior, reconnect behavior, and operation-hub cancellation.
 
 ### 23.2 Fixture Tests
 
@@ -2205,6 +2307,8 @@ These tests must be opt-in and skipped by default unless required environment va
 
 OpenCode integration tests must go through `agentwrap/opencode`, not direct process invocation.
 
+Local web integration tests must use `httptest` with real app use cases over temporary workspaces and fake runtime/process dependencies. Browser-level tests must cover read-only navigation, guarded confirmation, live progress, cancellation, refresh/reconnect recovery, hostile artifact content, and CLI/TUI/web state agreement without requiring a live provider.
+
 ### 23.5 Golden Tests
 
 Golden tests should cover:
@@ -2234,6 +2338,7 @@ Golden updates must be explicit.
 - Local development may use a `replace` directive or workspace file to point at the sibling `agentwrap` checkout.
 - Release builds must pin an explicit agentwrap version or commit.
 - Agentwrap documentation under `agentwrap/docs` is the canonical reference for runtime integration behavior.
+- Go builds embed the Phase 4 HTML templates, CSS, and minimal JavaScript. A JavaScript package manager, Vite server, or separate asset build is not required to build or run the initial web UI.
 
 ### 24.2 Version Command
 
@@ -2335,6 +2440,10 @@ UltraPlan Go is technically acceptable when:
 - State writes are atomic.
 - Cancellation saves state.
 - Documentation explains normal workflows and recovery workflows.
+- `ultraplan serve` starts the loopback-only local server and serves the embedded browser UI from the same binary.
+- HTTP handlers use shared app use cases; browser pages do not shell out to the CLI or duplicate product workflow logic.
+- Guarded web operations require a current server-issued confirmation, stream bounded SSE progress, support explicit cancellation, and recover from durable state after refresh or restart.
+- Local web security, redaction, path-containment, SSE, browser, race, and graceful-shutdown tests pass.
 
 ## 27. Open Technical Questions
 
@@ -2359,8 +2468,9 @@ UltraPlan Go is technically acceptable when:
 | 1.2.0 | 2026-06-13 | Add project and sprint planning through plan | Scope Phase 2 to governed planning artifacts while deferring execution, smoke, review automation, issue tracking, and Git mutation. |
 | 1.3.0 | 2026-07-02 | Add sprint execute scope | Expand Phase 2 to controlled implementation execution from validated `plan.md` tasks while keeping smoke, review automation, issue tracking, and Git mutation deferred. |
 | 1.5.0 | 2026-07-17 | Add Phase 3 review and deep smoke | Define root `review.md`/`smoke.md`, dynamic structured review, external harness integration, review-before-smoke gates, freshness, and full CLI/TUI parity. |
+| 1.6.0 | 2026-07-22 | Add Phase 4 local web surface | Define the Sprint 30+ loopback Go HTTP server, embedded Go-rendered browser UI, guarded commands, SSE progress, and local-only security boundary. |
 
 
 ## Current Scope Clarification
 
-UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. This TRD covers the governed sprint flow through `smoke`. General-purpose issue tracking, automatic product fixes, cross-sprint scheduling, and Git mutation remain non-goals.
+UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. Phase 4 adds a third local interface over those existing capabilities; it does not add a third workflow or persistence model. General-purpose issue tracking, hosted/multi-user service, remote workers, automatic product fixes, cross-sprint scheduling, and Git mutation remain non-goals.
