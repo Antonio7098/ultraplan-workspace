@@ -1,7 +1,7 @@
 # Study Run Summary
 
 - Study: `agent-harness-study`
-- Updated: `2026-07-22T19:08:30Z`
+- Updated: `2026-07-28T08:56:29Z`
 - Study progress state: `.ultraplan/run-state.json`
 - Ledger: `.ultraplan/runs/tasks.jsonl`
 
@@ -9,33 +9,19 @@
 
 | Metric | Value |
 | --- | ---: |
-| Runs recorded | 294 |
-| Completed | 215 |
+| Runs recorded | 314 |
+| Completed | 229 |
 | Failed | 33 |
-| Cancelled | 46 |
+| Cancelled | 52 |
 | Skipped | 0 |
-| Remaining tasks | 681 |
-| Dimensions seen | 31 |
+| Remaining tasks | 666 |
+| Dimensions seen | 33 |
 | Sources seen | 10 |
 
 ## Remaining Work
 
 | Dimension | Source | Kind | Status |
 | --- | --- | --- | --- |
-| 04.03-tool-catalog-discovery-routing | letta | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | openai-agents-sdk | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | openhands | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | pydantic-ai | analysis | pending |
-| 04.04-tool-context-dependency-injection | agent-framework | analysis | pending |
-| 04.04-tool-context-dependency-injection | crewai | analysis | pending |
-| 04.04-tool-context-dependency-injection | langgraph | analysis | pending |
-| 04.04-tool-context-dependency-injection | letta | analysis | pending |
-| 04.04-tool-context-dependency-injection | openai-agents-sdk | analysis | pending |
-| 04.04-tool-context-dependency-injection | openhands | analysis | pending |
-| 04.04-tool-context-dependency-injection | pydantic-ai | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | agent-framework | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | crewai | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | langgraph | analysis | pending |
 | 04.05-tool-permissions-approval-metadata | opa | analysis | pending |
 | 04.05-tool-permissions-approval-metadata | openai-agents-sdk | analysis | pending |
 | 04.05-tool-permissions-approval-metadata | openhands | analysis | pending |
@@ -615,7 +601,6 @@
 | 24.04-embedding-and-host-integration-ergonomics | openhands | analysis | pending |
 | 24.04-embedding-and-host-integration-ergonomics | pydantic-ai | analysis | pending |
 | 24.04-embedding-and-host-integration-ergonomics | temporal | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | (synthesis) | synthesis | pending |
 | 04.04-tool-context-dependency-injection | (synthesis) | synthesis | pending |
 | 04.05-tool-permissions-approval-metadata | (synthesis) | synthesis | pending |
 | 04.06-tool-result-contract-error-envelope | (synthesis) | synthesis | pending |
@@ -738,54 +723,56 @@
 | 03.09-completion-and-finalization-semantics | 9 | 8 | 1 | 10m30s | 23056032 | 0.0000 USD |
 | 04.01-tool-definition-and-registration | 10 | 8 | 1 | 11m03s | - | - |
 | 04.02-tool-schema-generation-validation | 12 | 9 | 1 | 8m37s | - | - |
-| 04.03-tool-catalog-discovery-routing | 3 | 1 | 1 | 11m05s | - | - |
+| 04.03-tool-catalog-discovery-routing | 10 | 8 | 1 | 8m39s | 24001024 | 0.0000 USD |
+| 04.04-tool-context-dependency-injection | 8 | 6 | 0 | 113m04s | 4205237 | 0.0000 USD |
+| 04.05-tool-permissions-approval-metadata | 5 | 1 | 0 | 339m48s | - | - |
 
 ## Sources
 
 | Source | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| agent-framework | 39 | 29 | 4 | 27m35s | 11332757 | 0.0000 USD |
-| crewai | 25 | 18 | 2 | 45m09s | - | - |
+| agent-framework | 41 | 31 | 4 | 26m32s | 15537994 | 0.0000 USD |
+| crewai | 29 | 20 | 2 | 68m49s | - | - |
 | langfuse | 5 | 5 | 0 | 7m58s | 9182246 | 0.0000 USD |
-| langgraph | 35 | 30 | 3 | 13m34s | 25829138 | 0.0000 USD |
-| letta | 40 | 22 | 6 | 37m42s | 9714465 | 0.0000 USD |
+| langgraph | 40 | 31 | 3 | 54m19s | 30060634 | 0.0000 USD |
+| letta | 42 | 24 | 6 | 36m15s | 12264464 | 0.0000 USD |
 | opa | 2 | 1 | 0 | 17m25s | - | - |
-| openai-agents-sdk | 19 | 17 | 1 | 8m46s | 11445381 | 0.0000 USD |
-| openhands | 36 | 27 | 2 | 70m59s | - | - |
-| pydantic-ai | 20 | 17 | 1 | 11m21s | 8669596 | 0.0000 USD |
+| openai-agents-sdk | 21 | 19 | 1 | 9m03s | 19387549 | 0.0000 USD |
+| openhands | 38 | 29 | 2 | 67m52s | - | - |
+| pydantic-ai | 22 | 19 | 1 | 10m59s | 17761026 | 0.0000 USD |
 | temporal | 30 | 19 | 1 | 38m51s | - | - |
 
 ## Runtime And Model
 
 | Runtime / Provider / Model | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 283 | 215 | 23 | 39m00s | 76400427 | 0.0000 USD |
+| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 303 | 229 | 23 | 45m11s | 104606688 | 0.0000 USD |
 | opencode / - / minimax-coding-plan/MiniMax-M3 | 11 | 0 | 10 | - | - | - |
 
 ## Recent Runs
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
-| 2026-07-22T19:08:30Z | 04.03-tool-catalog-discovery-routing | crewai | analysis | cancelled | 13m21s | MiniMax-M3 | - | - |
-| 2026-07-22T19:07:19Z | 04.03-tool-catalog-discovery-routing | langgraph | analysis | failed | 12m10s | MiniMax-M3 | - | - |
-| 2026-07-22T18:58:05Z | 04.02-tool-schema-generation-validation | (synthesis) | synthesis | completed | 2m57s | MiniMax-M3 | - | - |
-| 2026-07-22T18:55:09Z | 04.03-tool-catalog-discovery-routing | agent-framework | analysis | completed | 7m44s | MiniMax-M3 | - | - |
-| 2026-07-22T18:53:04Z | 04.02-tool-schema-generation-validation | openhands | analysis | completed | 5m40s | MiniMax-M3 | - | - |
-| 2026-07-22T18:51:10Z | 04.02-tool-schema-generation-validation | pydantic-ai | analysis | completed | 3m46s | MiniMax-M3 | - | - |
-| 2026-07-22T18:47:24Z | 04.02-tool-schema-generation-validation | opa | analysis | completed | 24m04s | MiniMax-M3 | - | - |
-| 2026-07-22T18:32:51Z | 04.02-tool-schema-generation-validation | letta | analysis | completed | 9m31s | MiniMax-M3 | - | - |
-| 2026-07-22T18:29:27Z | 04.02-tool-schema-generation-validation | openai-agents-sdk | analysis | completed | 6m07s | MiniMax-M3 | - | - |
-| 2026-07-22T18:23:20Z | 04.01-tool-definition-and-registration | (synthesis) | synthesis | completed | 10m40s | MiniMax-M3 | - | - |
-| 2026-07-22T18:18:47Z | 04.02-tool-schema-generation-validation | langgraph | analysis | completed | 6m07s | MiniMax-M3 | - | - |
-| 2026-07-22T18:15:59Z | 04.02-tool-schema-generation-validation | crewai | analysis | completed | 3m19s | MiniMax-M3 | - | - |
-| 2026-07-22T18:12:40Z | 04.01-tool-definition-and-registration | pydantic-ai | analysis | completed | 17m48s | MiniMax-M3 | - | - |
-| 2026-07-22T18:05:03Z | 03.09-completion-and-finalization-semantics | (synthesis) | synthesis | completed | 10m10s | MiniMax-M3 | - | - |
-| 2026-07-22T18:02:57Z | 04.02-tool-schema-generation-validation | agent-framework | analysis | completed | 8m05s | MiniMax-M3 | - | - |
-| 2026-07-22T17:54:52Z | 03.09-completion-and-finalization-semantics | langgraph | analysis | completed | 11m34s | MiniMax-M3 | 13341567 | 0.0000 USD |
-| 2026-07-22T17:54:49Z | 03.09-completion-and-finalization-semantics | pydantic-ai | analysis | completed | 11m31s | MiniMax-M3 | - | - |
-| 2026-07-22T17:53:05Z | 04.01-tool-definition-and-registration | agent-framework | analysis | completed | 9m47s | MiniMax-M3 | - | - |
-| 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | opa | analysis | cancelled | 10m45s | MiniMax-M3 | - | - |
-| 2026-07-19T22:22:23Z | 04.01-tool-definition-and-registration | pydantic-ai | analysis | cancelled | 10m45s | MiniMax-M3 | - | - |
+| 2026-07-28T08:56:28Z | 04.05-tool-permissions-approval-metadata | crewai | analysis | cancelled | 7m36s | MiniMax-M3 | - | - |
+| 2026-07-28T08:56:25Z | 04.05-tool-permissions-approval-metadata | langgraph | analysis | cancelled | 7m33s | MiniMax-M3 | - | - |
+| 2026-07-28T08:56:25Z | 04.04-tool-context-dependency-injection | langgraph | analysis | cancelled | 7m33s | MiniMax-M3 | - | - |
+| 2026-07-28T08:48:45Z | 04.04-tool-context-dependency-injection | langgraph | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | langgraph | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | crewai | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
+| 2026-07-27T16:25:14Z | 04.04-tool-context-dependency-injection | openhands | analysis | completed | 12m01s | MiniMax-M3 | - | - |
+| 2026-07-27T16:20:17Z | 04.05-tool-permissions-approval-metadata | agent-framework | analysis | completed | 7m03s | MiniMax-M3 | - | - |
+| 2026-07-27T16:19:26Z | 04.04-tool-context-dependency-injection | pydantic-ai | analysis | completed | 6m13s | MiniMax-M3 | - | - |
+| 2026-07-27T16:06:28Z | 04.04-tool-context-dependency-injection | openai-agents-sdk | analysis | completed | 17m35s | MiniMax-M3 | - | - |
+| 2026-07-27T15:56:47Z | 04.04-tool-context-dependency-injection | letta | analysis | completed | 7m54s | MiniMax-M3 | - | - |
+| 2026-07-27T15:48:53Z | 04.04-tool-context-dependency-injection | crewai | analysis | completed | 9m29s | MiniMax-M3 | - | - |
+| 2026-07-27T15:44:46Z | 04.04-tool-context-dependency-injection | agent-framework | analysis | completed | 5m22s | MiniMax-M3 | 4205237 | 0.0000 USD |
+| 2026-07-27T15:43:32Z | 04.03-tool-catalog-discovery-routing | (synthesis) | synthesis | completed | 4m08s | MiniMax-M3 | 185931 | 0.0000 USD |
+| 2026-07-27T15:39:24Z | 04.03-tool-catalog-discovery-routing | openhands | analysis | completed | 11m25s | MiniMax-M3 | - | - |
+| 2026-07-27T15:36:13Z | 04.03-tool-catalog-discovery-routing | pydantic-ai | analysis | completed | 8m15s | MiniMax-M3 | 9091430 | 0.0000 USD |
+| 2026-07-27T15:33:48Z | 04.03-tool-catalog-discovery-routing | openai-agents-sdk | analysis | completed | 5m49s | MiniMax-M3 | 7942168 | 0.0000 USD |
+| 2026-07-27T15:27:58Z | 04.03-tool-catalog-discovery-routing | crewai | analysis | completed | 11m38s | MiniMax-M3 | - | - |
+| 2026-07-27T15:22:36Z | 04.03-tool-catalog-discovery-routing | letta | analysis | completed | 6m16s | MiniMax-M3 | 2549999 | 0.0000 USD |
+| 2026-07-27T15:21:58Z | 04.03-tool-catalog-discovery-routing | langgraph | analysis | completed | 5m38s | MiniMax-M3 | 4231496 | 0.0000 USD |
 
 ## Slowest Runs
 
@@ -794,18 +781,24 @@
 | 2026-07-13T18:27:54Z | 02.09-state-pruning-compaction-retention | openhands | analysis | completed | 1421m21s | MiniMax-M3 | - | - |
 | 2026-07-14T14:41:36Z | 03.03-tool-calling-roundtrip-control | letta | analysis | completed | 1065m50s | MiniMax-M3 | - | - |
 | 2026-07-14T14:31:13Z | 03.02-reason-act-observe-cadence | (synthesis) | synthesis | failed | 1055m27s | MiniMax-M3 | - | - |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | langgraph | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
+| 2026-07-28T08:48:45Z | 04.04-tool-context-dependency-injection | langgraph | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | crewai | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
 | 2026-07-15T08:58:47Z | 03.05-reflection-reask-self-correction | (synthesis) | synthesis | completed | 736m16s | MiniMax-M3 | - | - |
 | 2026-07-15T08:58:47Z | 03.03-tool-calling-roundtrip-control | (synthesis) | synthesis | completed | 736m16s | MiniMax-M3 | - | - |
 | 2026-07-15T08:58:47Z | 03.06-stuck-doom-loop-detection | crewai | analysis | cancelled | 736m16s | MiniMax-M3 | - | - |
 | 2026-07-03T08:52:04Z | 01.07-concurrency-and-parallel-advancement | agent-framework | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
-| 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | temporal | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
-| 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | openhands | analysis | cancelled | 664m33s | MiniMax-M3 | - | - |
-| 2026-07-02T16:49:10Z | 01.03-step-turn-task-atomicity | temporal | analysis | failed | 108m59s | MiniMax-M3 | - | - |
 
 ## Failed Or Cancelled Runs
 
 | Completed | Dimension | Source | Status | Error |
 | --- | --- | --- | --- | --- |
+| 2026-07-28T08:56:28Z | 04.05-tool-permissions-approval-metadata | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:56:25Z | 04.05-tool-permissions-approval-metadata | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:56:25Z | 04.04-tool-context-dependency-injection | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:48:45Z | 04.04-tool-context-dependency-injection | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | crewai | cancelled | validation: cancellation: validation run was cancelled |
 | 2026-07-22T19:08:30Z | 04.03-tool-catalog-discovery-routing | crewai | cancelled | validation: cancellation: validation run was cancelled |
 | 2026-07-22T19:07:19Z | 04.03-tool-catalog-discovery-routing | langgraph | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
 | 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | opa | cancelled | validation: cancellation: validation run was cancelled |
