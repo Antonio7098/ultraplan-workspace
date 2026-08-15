@@ -1,13 +1,13 @@
 # Technical Requirements Document: UltraPlan Go
 
-**Version:** 1.6.0
+**Version:** 1.7.0
 **Status:** Draft
 **Owner:** Engineering
-**Last Updated:** 2026-07-22
+**Last Updated:** 2026-08-15
 
 ## 1. Purpose
 
-This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress.
+This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress. Phase 5 begins with Sprint 33 and inserts a validated `code-context` stage after requirements, then reuses its exact Markdown source pack through downstream agent-backed stages.
 
 This document is implementation-oriented. It defines boundaries, modules, data models, state machines, validators, runtime contracts, error handling, and testing requirements. It does not prescribe every package name or third-party library, but it should be specific enough to guide implementation.
 
@@ -34,6 +34,7 @@ UltraPlan Go is responsible for:
 - Providing human-readable and structured operational output.
 - Providing a local TUI over the same workspace and workflow services after the CLI workflows are stable.
 - Providing a loopback-only local HTTP server and embedded browser UI over the same typed application use cases beginning in Sprint 30.
+- Generating a sprint-owned `code-context.md` from read-only inspection of the resolved implementation repository and reusing it as the common downstream prompt foundation beginning in Sprint 33.
 
 UltraPlan Go is not responsible for:
 
@@ -50,6 +51,8 @@ UltraPlan Go is not responsible for:
 - Owning detailed smoke run/issue persistence that belongs to the external harness.
 - Replacing the CLI or JSON surfaces with a TUI-only workflow.
 - Replacing workspace artifacts with browser-owned or server-only durable state.
+- Treating a code-context pack as a repository index, exclusive source boundary, cache database, or second machine-readable manifest.
+- Introducing content identity, expanded QA/repair, retrieval, SQLite product persistence, knowledge-graph persistence, cloud, or Aren capabilities before their explicit roadmap evidence gates.
 
 ## 3. Architecture Overview
 
@@ -115,6 +118,8 @@ The CLI must not become the only place where use cases are assembled. Shared app
 - Run review before smoke by default so deterministic conformance failures block unnecessary live-runtime work.
 - Keep only `review.md` and `smoke.md` in the sprint root; link detailed smoke evidence from the external harness.
 - Compute review/smoke verdicts from validated evidence and explicit severity rules, not from runtime exit success or unstructured model prose alone.
+- Preserve exact requirements and code-context bytes in one shared prompt prefix before stage-specific instructions; downstream agents may still inspect additional live source.
+- Keep Markdown authoritative initially. Any later search record or knowledge graph is derived and rebuildable; any later SQLite authority is an explicit product-mode decision rather than a web-side shadow store.
 
 ## 4.1 Application Surface Requirements
 
@@ -208,6 +213,7 @@ models:
   backup: provider/model
   stages:
     sprint-index: provider/model
+    code-context: provider/model
     technical-handbook: provider/model
     area-reasoning: provider/model
     reasoning: provider/model
@@ -392,6 +398,49 @@ Local server security requirements:
 - no hosted authentication, team permissions, tenant isolation, or remote-worker protocol in Phase 4
 
 Normal tests must use `httptest`, fake app use cases, deterministic templates, fake runtimes, and fake smoke harnesses. Required coverage includes route/method errors, JSON compatibility, confirmation expiry/staleness, path escape, CSRF/origin rejection, hostile Markdown, SSE ordering/reconnect/slow subscribers, cancellation, shutdown, redaction, and CLI/TUI/web agreement.
+
+## 7.6 Sprint Code-Context Requirements
+
+Product Phase 5 adds `code-context` immediately after `requirements`:
+
+```text
+requirements
+-> code-context
+-> sprint-index
+-> technical-handbook
+-> area-reasoning
+-> reasoning
+-> plan
+```
+
+Required behavior:
+
+- expose `prompt code-context`, `validate code-context`, and `flow --to code-context` through the existing sprint command/application surfaces
+- store exactly one authoritative artifact at `projects/<project>/sprints/<sprint>/code-context.md`; do not add a parallel JSON context manifest
+- resolve the target implementation repository through the project index and existing execute/worktree mechanisms
+- allow repository reads while limiting stage writes to `code-context.md` in the sprint root
+- require validated requirements before execution and require structural code-context validation before sprint-index becomes ready
+- include scope interpretation, inspected repository areas, selected exact source excerpts, repository-relative paths, optional well-formed ranges and symbols, relevance explanations, important relationships, constraints, and open questions
+- reject unsafe absolute/escaping source paths, placeholders, missing excerpts, missing rationale, and malformed ranges
+- atomically replace only `code-context.md` on an explicit rerun
+- preserve compatibility for workspaces and flow state created before the stage existed
+- provide stage-specific model/variant configuration using existing fallback behavior
+- expose readiness, progress, findings, artifact preview, rerun, cancellation, and recovery through shared CLI/TUI/web use cases
+
+Downstream prompt composition must use one shared renderer with this order:
+
+```text
+stable shared planning instructions
+sprint identity
+exact requirements.md
+exact code-context.md
+other shared context
+stage-specific instructions and output contract
+```
+
+The requirements/code-context block must remain byte-for-byte identical across compatible downstream calls and must not contain stage names, timestamps, run IDs, output paths, or other dynamic run data. Sprint index, technical handbook, area/final reasoning, plan, execute, Conformance Review, and smoke must receive it whenever they invoke an agent. The pack is a prepared foundation, not an access restriction; agents may inspect additional repository files.
+
+The first implementation must not add a repository index, RAG or embedding system, UltraPlan cache/key subsystem, provider-specific cache-control dependency, automatic staleness detector, context amendment protocol, or hard maximum excerpt count.
 
 ## 8. Domain Model
 
@@ -2062,6 +2111,8 @@ Exact resource detail routes may evolve, but `/api/v1` JSON and error envelopes 
 
 The server operation hub is ephemeral and bounded. It may hold operation IDs, normalized requests, cancellation functions, recent safe event buffers, subscribers, and terminal results for short retention. It must not become a second durable scheduler or database. Server restart recovery reads product-owned workspace state. Slow or disconnected SSE subscribers must not block product execution.
 
+Graceful server shutdown owns cancellation of every active server-owned operation. Shutdown must enter draining, reject new mutations and queued starts, request canonical cancellation exactly once with reason `server_shutdown`, propagate through retries/runtime/process trees, wait for bounded cleanup, and persist one truthful terminal outcome. Valid outcomes are clean cancellation, interruption, cleanup uncertainty, or a failure/completion that was already authoritative before cancellation won. HTTP/SSE closes only after durable outcome or bounded uncertainty recording. Browser navigation, tab close, refresh, or SSE disconnect never cancels a run. Startup must reconcile stale active operations and locks after forced termination without inferring success from process absence or artifact presence.
+
 Commands and streams remain separate:
 
 ```text
@@ -2073,6 +2124,33 @@ browser -> HTTP GET         -> refreshed durable state
 Product-owned mutation locks remain mandatory. Existing study locks stay in `internal/study`; sprint mutation exclusion belongs in `internal/sprint`, not in HTTP middleware. Conflicting work must return an actionable conflict rather than execute concurrently by accident.
 
 The first Phase 4 UI uses embedded `html/template` files, CSS, and minimal JavaScript. No frontend framework or JavaScript build system is required. A later client-side framework is allowed only after demonstrated interaction complexity and must still consume the same versioned HTTP/app boundary.
+
+## 18B. Phase 5 Grounded Planning Technical Requirements
+
+`internal/sprint` owns the `code-context` stage, including ordered-stage membership, artifact paths, prerequisites, validation, runtime execution, flow transitions, state compatibility, and downstream prompt integration. It reuses project-owned target implementation resolution and the generic runtime boundary; neither `internal/web` nor a new repository-index package owns source selection.
+
+The implementation sequence is split deliberately:
+
+1. Sprint 33 adds the vertical slice: stage/state/artifact model, template and prompt, repository read boundary, output restriction, runtime config, validation, CLI/app/web surfaces, compatibility, and deterministic tests.
+2. Sprint 34 adds one shared prompt-prefix renderer, injects exact requirements and code-context content into every downstream agent request, materializes the manual skill, completes documentation, and dogfoods a representative real repository.
+
+Required tests include ordered-stage transitions, old flow-state compatibility, path/range validation, source-read/output-write isolation, fake runtime output, missing/invalid output, atomic rerun, model/variant fallback, CLI/JSON/TUI/web parity, exact prefix equality across representative downstream stages, absence of dynamic prefix data, flow execution exactly once, cancellation, and recovery.
+
+The web extensibility gate requires the new stage to expose status, artifact preview, operation start, progress, cancellation, findings, and recovery through the existing application capability model. Adding route-specific product logic for `code-context` fails the gate.
+
+## 18C. Gated Post-Phase-5 Technical Direction
+
+The following sequence is directional and does not authorize implementation until a later sprint selects it explicitly:
+
+1. **Content identity/provenance pilot:** optional versioned YAML frontmatter with minimal `schema`, `id`, `type`, `title`, `status`, and `authority`; selective semantic block IDs; revision-aware evidence; warning-first validation; legacy files remain valid.
+2. **Read-only QA:** retain `review` compatibility while presenting it as Conformance Review; introduce a separate `VerificationPhase`; map changed behavior into deterministic bounded shards; allow read-only investigation and synthesis only.
+3. **Evidence QA and repair:** require isolated writable investigation workspaces before generated tests/probes; adjudicate evidence globally before issue promotion; permit production repair only from frozen evidence-backed issue packets; bound cycles and expose stalled/escalated outcomes.
+4. **Derived retrieval:** build deterministic semantic records and a measured lexical baseline first. Indexes are disposable, preserve exact authoritative text/provenance/status, and never override project/sprint context selection. Embeddings remain deferred until lexical evaluation proves a gap.
+5. **Persistence/SQLite:** first classify authored artifacts, checkpoints, derived data, operational state, run evidence, and repository source. Extract focused package-owned repositories only for proven workflows; keep Git/source and execution workspaces filesystem-native; select one authority at composition; prohibit generic virtual filesystems, silent dual writes, and premature sync.
+6. **Knowledge graph:** only after stable explicit relationships and retrieval baseline demonstrate multi-hop need, build a deterministic in-memory read-only projection. Keep edge provenance/origin, status, revision, contradiction, and supersession explicit. A persistent graph remains derived and rebuildable; a graph database is not assumed.
+7. **Authority/cloud/Aren:** compare filesystem, SQLite/server, and hybrid publication modes on real work before choosing. Cloud and typed Aren artifact tools reuse proven application contracts; source edits/builds/tests remain sandboxed filesystem/Git work.
+
+Every branch must stop when its evidence gate fails. In particular: no repair without adjudicated evidence and isolation; no retrieval before content dogfood; no SQLite merely for architectural cleanliness; no graph persistence before useful bounded traversal; no cloud authority before local authority and recovery semantics are proven.
 
 ## 19. Logging and Diagnostics
 
@@ -2174,6 +2252,9 @@ Cancellation behavior:
 - Preserve agentwrap cleanup metadata separately from the primary run result.
 - Disconnecting an SSE subscriber cancels only that subscription; explicit operation cancellation uses the operation context and shared app cancellation path.
 - Graceful server shutdown stops accepting new work, closes subscribers, cancels server-owned active operations, and leaves durable product state recoverable.
+- Shutdown cancellation records `reason: server_shutdown`, is idempotent, and participates in the same single-terminal-outcome arbitration as user cancellation, failure, timeout, and completion.
+- The server waits only for a configured bounded cleanup period, does not release locks before ownership is reconciled, and records `interrupted` or `cleanup_uncertain` when complete cleanup cannot be proven.
+- Forced termination is reconciled at startup; stale `running` state, missing processes, or partial artifacts never imply successful completion.
 
 ## 21. Persistence and File Writes
 
@@ -2444,6 +2525,12 @@ UltraPlan Go is technically acceptable when:
 - HTTP handlers use shared app use cases; browser pages do not shell out to the CLI or duplicate product workflow logic.
 - Guarded web operations require a current server-issued confirmation, stream bounded SSE progress, support explicit cancellation, and recover from durable state after refresh or restart.
 - Local web security, redaction, path-containment, SSE, browser, race, and graceful-shutdown tests pass.
+- Graceful server shutdown cancels every server-owned active operation, performs bounded cleanup, records a truthful outcome, and keeps browser disconnection independent from run cancellation.
+- `code-context` is ordered immediately after requirements, writes a structurally valid `code-context.md` from read-only target-repository inspection, and makes sprint-index ready.
+- Existing pre-code-context sprint state remains usable through explicit compatibility handling.
+- Exact requirements and code-context content appears in a stable shared prefix for every downstream agent-backed stage, while additional repository inspection remains allowed.
+- CLI, JSON, TUI, and browser agree on code-context readiness, progress, findings, artifact, rerun, cancellation, and recovery.
+- No repository index, RAG/cache subsystem, parallel context manifest, or automatic staleness mechanism is required by Phase 5.
 
 ## 27. Open Technical Questions
 
@@ -2469,8 +2556,9 @@ UltraPlan Go is technically acceptable when:
 | 1.3.0 | 2026-07-02 | Add sprint execute scope | Expand Phase 2 to controlled implementation execution from validated `plan.md` tasks while keeping smoke, review automation, issue tracking, and Git mutation deferred. |
 | 1.5.0 | 2026-07-17 | Add Phase 3 review and deep smoke | Define root `review.md`/`smoke.md`, dynamic structured review, external harness integration, review-before-smoke gates, freshness, and full CLI/TUI parity. |
 | 1.6.0 | 2026-07-22 | Add Phase 4 local web surface | Define the Sprint 30+ loopback Go HTTP server, embedded Go-rendered browser UI, guarded commands, SSE progress, and local-only security boundary. |
+| 1.7.0 | 2026-08-15 | Add Phase 5 grounded planning and gated future architecture | Define the `code-context` stage and stable downstream prompt prefix, strengthen server shutdown ownership, and record evidence gates for content, QA/repair, retrieval, persistence, optional graph, and cloud/Aren. |
 
 
 ## Current Scope Clarification
 
-UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. Phase 4 adds a third local interface over those existing capabilities; it does not add a third workflow or persistence model. General-purpose issue tracking, hosted/multi-user service, remote workers, automatic product fixes, cross-sprint scheduling, and Git mutation remain non-goals.
+UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. Phase 4 adds a third local interface over those capabilities without another persistence model. Phase 5 adds the first new planning stage through the same interface and application boundaries. Content identity, expanded QA/repair, retrieval, alternate persistence, knowledge graphs, cloud, and Aren remain gated future directions rather than current implementation scope. General-purpose issue tracking, hosted/multi-user service, remote workers, automatic Git mutation, and unbounded autonomous repair remain non-goals.

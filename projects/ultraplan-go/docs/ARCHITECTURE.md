@@ -20,7 +20,7 @@ module = state + logic + workflows + validation + persistence adapters + local i
 
 This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, review, and smoke behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
 
-CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol.
+CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol. Phase 5 proves that boundary by adding `code-context` as a new sprint stage surfaced uniformly through all three interfaces.
 
 ## Core Rule
 
@@ -29,7 +29,7 @@ Prefer this:
 ```text
 internal/study owns its validation, scheduling, reports, prompts, state, and persistence
 internal/project owns project docs, project-index cataloging, and project validation
-internal/sprint owns planning artifacts, flow state, prompt rendering, stage validation, controlled implementation through execute, automated review, and external-harness-backed smoke
+internal/sprint owns planning artifacts including code-context, flow state, shared sprint-context prompt rendering, stage validation, controlled implementation through execute, automated review, and external-harness-backed smoke
 internal/codeextract owns its parsing, resolution, extraction, and validation behavior
 internal/workspace owns workspace discovery, path rules, and workspace validation
 internal/platform/runtime owns generic execution only
@@ -136,6 +136,8 @@ internal/
     review_validation.go
     smoke.go                # harness discovery, scope, invocation, verdict, smoke.md
     smoke_validation.go
+    code_context.go         # requirements-driven source-context stage and validation
+    prompt_context.go       # exact shared requirements/code-context prefix
 
   codeextract/
     domain.go
@@ -251,6 +253,8 @@ Technical handbook prompt/rendering behavior
 Area reasoning prompt/rendering behavior
 Final reasoning prompt/rendering behavior
 Plan prompt/rendering behavior
+Code-context prompt, artifact, validation, repository-read boundary, and ordered-stage behavior
+Stable shared requirements/code-context prompt-prefix rendering
 Execute prompt/rendering behavior
 Plan task extraction and deterministic task IDs
 Sprint stage model-resolution rules
@@ -265,6 +269,8 @@ Local interface commands for planning-stage sprint workflows
 `sprint` may depend on `project` for project catalogs, `workspace` for path rules, configuration for stage-specific runtime model selection, `platform/runtime` for generic prompt/reviewer/implementation execution, and `platform/process` for safe external harness invocation. It must not depend on `study` services, source/dimension models, study report validation, rating parsing, summary generation, or study run-loop scheduling.
 
 Phase 2 includes controlled implementation execution through `execute`. Phase 3 extends the same sprint module through `review` and `smoke`. It keeps only the current `review.md` and `smoke.md` in the sprint root; detailed smoke runs and issue evidence remain in the external harness. `sprint` must not model general-purpose issue tracking, automatic product fixes, or Git mutation as workflow stages.
+
+Phase 5 inserts `code-context` after requirements. The sprint module resolves the implementation target through project-owned configuration, invokes generic runtime execution with read access to that target, permits only `code-context.md` as stage output, validates the Markdown, and advances flow state. A shared renderer then inserts exact requirements and code-context bytes before stage-specific instructions for later agent requests. The pack is durable prepared evidence, not an index or exclusive repository view; downstream stages may inspect more live source.
 
 ### `app`
 
@@ -330,6 +336,8 @@ safe Markdown/JSON artifact presentation
 It may depend on `app` use-case interfaces and plain result types. It must not import `study`, `project`, `sprint`, runtime adapters, or process adapters directly. It must not own workflow state machines, validators, prompts, runtime execution, smoke invocation, verdicts, product locks, or durable recovery.
 
 The server operation hub is transport-lifecycle state, not product state. It may retain bounded recent safe events and terminal results for reconnect, but workspace files and product-owned run state remain authoritative. Slow or disconnected SSE subscribers must never block an app operation.
+
+The server owns every operation it starts. Graceful shutdown enters draining, rejects new mutations, cancels all active server-owned operations through their canonical cancellation functions, waits for bounded cleanup/reconciliation, persists truthful terminal or uncertain outcomes, then closes SSE/HTTP. Browser disconnect is subscription loss only and never operation cancellation. Detached local runs that survive server exit are unsupported until a future durable-worker architecture explicitly changes ownership.
 
 The first web UI is server-rendered and progressively enhanced. A frontend framework or JavaScript build pipeline is not part of the Phase 4 foundation; add one only after real client-side complexity earns it.
 
@@ -601,6 +609,70 @@ task state machines
 ```
 
 If two modules need the same mechanical filesystem behavior, extract the mechanical helper. If two modules merely have similar product workflows, keep the behavior in the owning modules until repeated concrete implementations prove a shared abstraction is stable. Execute task semantics belong to `internal/sprint`; do not move them into a global scheduler or workflow package.
+
+## Gated Architecture Evolution After Grounded Planning
+
+The implementation plans describe a long-term direction, not permission to build every abstraction now. The architectural order is:
+
+```text
+filesystem-backed observable web
+-> code-context through shared app/web boundaries
+-> minimal content identity and revision-aware provenance
+-> read-only QA decomposition and synthesis
+-> isolated empirical QA and adjudication
+-> bounded repair
+-> measured lexical retrieval
+-> proven product persistence boundary and optional SQLite
+-> optional derived knowledge graph
+-> authority decision, cloud, and Aren tools
+```
+
+### Authoritative versus derived state
+
+Until an explicit authority decision changes it:
+
+```text
+Markdown artifacts                  = authoritative authored content
+flow/run JSON                       = authoritative machine state for owned concerns
+Git checkout                        = authoritative source and implementation workspace
+browser views                       = app-mediated projections
+search records / graph projections  = derived, disposable, and rebuildable
+```
+
+Never allow the browser, retrieval index, or graph to become a shadow source of truth.
+
+### Content and retrieval boundary
+
+An optional focused content-metadata package may eventually parse versioned frontmatter, stable IDs, semantic blocks, relationships, and revision-aware evidence while preserving legacy Markdown bodies. It must not become a universal product artifact service or persistence layer. Explicit project/sprint selections continue to govern agent context; retrieval may propose or display candidates but cannot silently alter governance.
+
+Derived retrieval begins with deterministic semantic chunks and a measured lexical baseline. Embeddings, automatic prompt injection, and hosted indexing require separate evidence. Every record retains exact authoritative text, status, authority, provenance, source revision, and rebuild version.
+
+### Verification and repair boundary
+
+Keep Conformance Review, empirical QA, adjudication, and repair distinct:
+
+- Conformance Review remains read-only and preserves `review`/`review.md` compatibility.
+- QA maps changed behavior into bounded verification surfaces and owns theory/evidence gathering, not production repair.
+- Writable investigators require isolated validated workspaces; isolation uncertainty blocks mutation.
+- A global adjudicator grounds expectations, rejects invalid/flaky evidence, groups root causes, and alone promotes repairable issues.
+- Repair consumes frozen issue packets, changes only allowed production scope, cannot weaken evidence or requirements, and is progressively reverified.
+- Automatic repair has fixed cycle/reopen limits and explicit `blocked`, `escalated`, and `stalled` outcomes.
+
+Detailed QA attempt state belongs outside `flow-state.json`; flow state keeps canonical summaries, freshness, verdicts, and pointers.
+
+### Persistence boundary
+
+Do not inject a generic virtual filesystem. If concrete browser workflows prove the need for alternate persistence, define focused interfaces in the consuming product modules—for example `project.Repository`, `sprint.Repository`, `study.Repository`, and `run.Repository`. Repository contracts express semantic atomic stage commits, immutable artifact revisions, and optimistic concurrency, not paths, SQL, or transaction handles.
+
+Filesystem and any later SQLite adapters must pass shared contract suites. Persistence selection occurs once at composition, one authority is active at a time, and migration/import/export is explicit. Source repositories, Git operations, code search, builds/tests, and agent execution workspaces remain real filesystems. No silent dual writes or synchronization precede an explicit authority decision.
+
+### Knowledge graph boundary
+
+A future graph starts, if justified, as a deterministic in-memory read-only projection over explicit artifact IDs and relationships. Every material edge carries provenance, origin (`explicit`, `structural`, `deterministic`, or visibly weaker `inferred`), status, and revision. Inferred edges cannot satisfy governance, completion, implementation, or verification. Persistent graph storage remains a disposable index and a dedicated graph database is not assumed.
+
+### Stop/go rule
+
+Each boundary is earned by the next demonstrated use case. Stop when metadata becomes unreliable bureaucracy, QA isolation/evidence is uncertain, repair does not converge, lexical search answers the real corpus, SQLite lacks concrete product value, or graph traversal does not outperform direct evidence inspection.
 
 ## Final Principle
 

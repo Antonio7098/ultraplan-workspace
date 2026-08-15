@@ -1,15 +1,17 @@
 # Product Requirements Document: UltraPlan Go
 
-**Version:** 1.5.0
+**Version:** 1.6.0
 **Status:** Draft
 **Owner:** Product and Engineering
-**Last Updated:** 2026-07-22
+**Last Updated:** 2026-08-15
 
 ## Stage 1: Product Brief
 
 ### 1.1 Executive Summary
 
-UltraPlan Go is a production-grade local planning, implementation, review, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases.
+UltraPlan Go is a production-grade local planning, implementation, review, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases. Phase 5, beginning with Sprint 33, adds a durable `code-context` stage immediately after requirements and reuses its exact source pack across downstream planning, execution, and verification prompts.
+
+The near-term product commitment ends with the observable grounded-planning release in Sprint 34. Later content identity, empirical QA, repair, retrieval, alternate persistence, knowledge graph, cloud, and Aren directions are gated options: each requires the preceding capability to be dogfooded and measured before it becomes committed sprint scope.
 
 - **Problem Statement:** The current prototype proves the workflow, but it is script-like, tightly coupled to a local Bun/TypeScript environment, and not hardened for durable runs, reproducible outputs, reliable retries, clear configuration, or long-term extensibility.
 - **Proposed Solution:** Rebuild UltraPlan as a Go CLI with a well-defined domain model, deterministic filesystem layout, resumable orchestration, structured runtime adapters, robust validation, and production-quality testing.
@@ -195,6 +197,8 @@ ultraplan serve
 
 The server binds to a loopback address by default, serves Go-rendered HTML templates plus embedded CSS/JavaScript, exposes a versioned local HTTP API, and streams operation progress with Server-Sent Events (SSE). It does not require Node.js, Vite, a separate frontend process, or a database at runtime.
 
+Beginning in Sprint 33, sprint planning also includes a first-class `code-context` stage immediately after requirements. One requirements-driven agent inspects the target implementation repository and writes a curated `code-context.md` containing exact source excerpts, repository-relative locators, rationale, relationships, and open questions. The stored Markdown is reused unchanged as a common prompt foundation; it is neither a repository index nor a restriction on further source inspection.
+
 The CLI must support these top-level areas:
 
 - Study discovery and inspection.
@@ -208,6 +212,7 @@ The CLI must support these top-level areas:
 - Code-reference extraction.
 - Project discovery, inspection, and project-index validation.
 - Sprint planning artifact generation and validation through `plan.md`.
+- Sprint implementation-context generation and validation through `code-context.md`.
 - Sprint implementation execution from validated `plan.md` tasks through `execute`.
 - Configuration inspection and validation.
 - Health checks for runtime dependencies.
@@ -232,6 +237,7 @@ Required workspace concepts:
 - **Project:** A governed planning root under `projects/<project>` containing product/technical documents, roadmap, project index, and sprint directories.
 - **Project index:** The catalog of available contracts, evidence reports, reasoning templates, review protocols, and project-specific source documents.
 - **Planning sprint:** A sprint directory under `projects/<project>/sprints/<slug>` that contains governed planning artifacts through `plan.md` and execute artifacts for controlled implementation runs.
+- **Code-context pack:** A sprint-owned Markdown snapshot selected from the target implementation repository after requirements. It is authoritative as the prepared common context for that sprint, while the live repository remains authoritative for source code.
 - **TUI session:** A local interactive terminal session that reads and mutates the same workspace artifacts through shared application use cases. It does not create an alternate persistence model.
 - **Web session:** A local browser session connected to the loopback UltraPlan server. Server connection, confirmation, subscription, and active-operation handles are ephemeral; workspace artifacts and product-owned run state remain authoritative.
 
@@ -397,6 +403,16 @@ Required workspace concepts:
     - Commands use ordinary HTTP requests; live operation progress uses SSE and cancellation uses an explicit HTTP request.
     - Browser disconnect or refresh does not determine product task success and does not replace durable run-state recovery.
 
+25. **Grounded sprint code context**
+    - The canonical planning order is `requirements -> code-context -> sprint-index -> technical-handbook -> area-reasoning -> reasoning -> plan`.
+    - `code-context` can read the resolved implementation repository but may write only the sprint's `code-context.md`.
+    - The artifact contains selected exact source excerpts with repository-relative paths, useful ranges/symbols, relevance explanations, important relationships, and explicit uncertainties.
+    - Exact `requirements.md` and `code-context.md` content forms a stable common prefix before downstream stage-specific instructions.
+    - Sprint index, handbook, reasoning, plan, execute, Conformance Review, and smoke receive the stored pack whenever they invoke an agent.
+    - Downstream agents remain free to inspect additional live repository files.
+    - Legacy sprints without the stage remain usable through explicit compatibility behavior.
+    - No repository index, RAG system, cache subsystem, parallel JSON manifest, automatic staleness system, or provider-specific caching dependency is introduced.
+
 #### Should Have
 
 1. **Machine-readable output modes**
@@ -522,9 +538,9 @@ The exact command names may be refined during implementation, but the production
 - `ultraplan study <study> validate`
   - Validates study structure and generated artifacts.
 
-#### Sprint Planning, Execute, Review, And Smoke Commands
+#### Sprint Planning, Code Context, Execute, Review, And Smoke Commands
 
-Phase 2 supports sprint planning commands through `plan.md` and controlled implementation execution through `execute`. Phase 3 extends the same sprint surface through review and smoke:
+Phase 2 supports sprint planning commands through `plan.md` and controlled implementation execution through `execute`. Phase 3 extends the same sprint surface through review and smoke. Phase 5 inserts `code-context` after requirements without creating a separate workflow surface:
 
 - `ultraplan sprint <project> <sprint> status`
   - Shows planning artifacts and `flow-state.json`.
@@ -554,6 +570,7 @@ Supported stages:
 
 ```text
 requirements
+code-context
 sprint-index
 technical-handbook
 area-reasoning
@@ -563,6 +580,8 @@ execute
 review
 smoke
 ```
+
+For `code-context`, the existing `prompt`, `validate`, `flow --to`, status, JSON, TUI, and browser surfaces apply. `flow --to plan` runs it exactly once when required. Explicit reruns replace only `code-context.md` atomically.
 
 `ultraplan issue ...`, automatic product fixes, and automatic Git mutation commands remain deferred.
 
@@ -755,6 +774,7 @@ Required generated artifacts:
 - Optional code extraction bundles.
 - Project `project-index.md`.
 - Sprint `requirements.md`.
+- Sprint `code-context.md` for sprints using the grounded-planning stage chain.
 - Sprint `sprint-index.md`.
 - Sprint `technical-handbook.md`.
 - Sprint `reasoning/*.md`, when selected.
@@ -855,6 +875,8 @@ CLI command
   -> flow-state update
 ```
 
+For grounded-planning sprints, requirements completion first enables `code-context`. That stage resolves the implementation target, performs read-only repository exploration, writes and validates only `code-context.md`, and then enables sprint-index. One shared prompt renderer places exact requirements and code-context content before stage-specific instructions for all later agent-backed stages.
+
 Data flow for sprint execute:
 
 ```text
@@ -918,6 +940,8 @@ Browser operation start
   -> SSE progress stream
   -> durable product state refresh on completion, cancellation, or reconnect
 ```
+
+Graceful server shutdown enters a draining state, rejects new mutations, requests cancellation for every server-owned active operation, waits for bounded cleanup and reconciliation, persists a truthful `cancelled`, `interrupted`, `cleanup_uncertain`, or already-authoritative failure/completion outcome, closes SSE/HTTP, and exits. Closing or refreshing a browser tab does not cancel work.
 
 General issue tracking, automatic product fixes, and automatic Git mutation remain deferred.
 
@@ -1020,6 +1044,19 @@ Deferred possibilities:
 - Automatic product fixes during review or smoke.
 - Cross-project/cross-sprint verification scheduling.
 
+Post-Sprint-34 product directions are deliberately gated in this order:
+
+1. Pilot minimal artifact identity, authority, provenance, semantic blocks, and revision-aware evidence while preserving legacy Markdown.
+2. Add read-only Conformance Review-to-QA decomposition and synthesis before permitting generated checks.
+3. Add isolated evidence-producing QA, then adjudicated manual repair, then bounded automatic repair only if convergence is demonstrated.
+4. Dogfood the combined browser, code-context, content, QA, and repair experience before building retrieval infrastructure.
+5. Add derived lexical retrieval before embeddings; keep indexes disposable and governed selections authoritative.
+6. Extract package-owned persistence contracts and consider SQLite only when browser usage proves needs such as drafts, immutable revisions, approvals, provenance, cross-project queries, or performance.
+7. Consider an in-memory, read-only knowledge graph only after stable relationships and a retrieval baseline prove a real multi-hop traceability need.
+8. Decide filesystem, SQLite/server, or hybrid authority before cloud or Aren integration.
+
+These directions are not current release commitments. A failed evidence gate stops or simplifies the branch.
+
 ### 3.9 Risks and Mitigations
 
 - **Risk:** Runtime structured output changes.
@@ -1089,6 +1126,12 @@ Deferred possibilities:
 - Target: 100% for documented Phase 4 scenarios.
 - Measurement: API compatibility fixtures and CLI/TUI/web integration tests over the same temporary workspaces.
 
+**Phase 5 KPI: Shared Context Integrity**
+
+- Definition: Percentage of representative downstream agent prompts that contain byte-for-byte identical validated requirements and code-context content before stage-specific instructions.
+- Target: 100% across sprint index, handbook, reasoning, plan, execute, Conformance Review, and smoke fixtures.
+- Measurement: Prompt-prefix stability tests plus one gated real-repository requirements-to-plan dogfood flow.
+
 ### 4.2 Definition of Done
 
 The first production release is done when:
@@ -1118,6 +1161,18 @@ Product Phase 4 is done when:
 - Guarded operations require server-validated confirmation and expose bounded SSE progress plus explicit cancellation.
 - Browser refresh, SSE reconnect, and server shutdown preserve truthful recovery through durable product state.
 - Path containment, origin/CSRF checks, secret redaction, request limits, and hostile-Markdown rendering tests pass.
+- Graceful shutdown cancels all server-owned active work through the canonical cancellation path, records truthful durable outcomes after bounded cleanup, and restart reconciles abrupt interruption without inferring success.
+- Browser disconnection remains independent from operation cancellation.
+
+Product Phase 5 is done when:
+
+- `code-context` is a first-class validated planning stage immediately after requirements.
+- A real implementation repository can be inspected to produce a useful `code-context.md` without source mutation.
+- Existing pre-stage workspaces remain compatible.
+- CLI, TUI, and browser agree on readiness, progress, findings, artifact preview, rerun, cancellation, and recovery.
+- Exact requirements and code-context content is reused in a stable common prefix across every downstream agent-backed stage.
+- A representative requirements-to-plan dogfood flow runs the stage exactly once and passes normal test, race, and build gates.
+- No repository index, retrieval system, UltraPlan cache, parallel context manifest, or automatic staleness claim has entered the release.
 
 ### 4.3 Instrumentation Requirements
 
@@ -1197,6 +1252,18 @@ Metrics to monitor locally:
 
 - Add security, API compatibility, race, browser, accessibility, recovery, packaging, and gated real-runtime coverage without introducing hosted or multi-user scope.
 
+**Rollout Step 11: Code-context vertical slice**
+
+- Add stage order, artifact, validation, runtime configuration, repository-read/output-write boundaries, CLI/app/web surfaces, compatibility, and fake-runtime coverage.
+
+**Rollout Step 12: Shared-context grounded-planning release**
+
+- Reuse exact requirements and `code-context.md` through a stable downstream prompt prefix, add the manual stage skill, dogfood the real-repository flow, and stop before content identity, QA, or retrieval expansion.
+
+**Later gated evaluation**
+
+- Sequence content/provenance, QA/adjudication/repair, retrieval, persistence/SQLite, optional graph, and cloud/Aren only through the evidence gates described above; do not assign sprint scope merely from architectural possibility.
+
 ### 4.5 Review History
 
 | Date | Reviewer | Status | Notes |
@@ -1206,6 +1273,7 @@ Metrics to monitor locally:
 | 2026-07-02 | Product/Engineering | Draft | Expand Phase 2 to include controlled sprint implementation execution through `execute`; keep smoke/review/issues/Git mutation deferred. |
 | 2026-07-17 | Product/Engineering | Draft | Define Product Phase 3 as automated review followed by deep smoke, keep `review.md`/`smoke.md` as the only sprint summaries, link raw smoke evidence externally, and require full TUI parity in every Phase 3 sprint. |
 | 2026-07-22 | Product/Engineering | Draft | Add Product Phase 4 beginning at Sprint 30: a loopback-only Go HTTP server, Go-rendered browser UI, guarded operations, SSE progress, and no hosted/multi-user scope. |
+| 2026-08-15 | Product/Engineering | Draft | Add Phase 5 grounded planning through `code-context`, adopt the server-owned shutdown cancellation contract, and record the evidence-gated post-Phase-5 sequence from content provenance through QA, retrieval, persistence, optional graph, and cloud/Aren. |
 
 ### 4.6 Changelog
 
@@ -1214,3 +1282,4 @@ Metrics to monitor locally:
 | 1.0.0 | 2026-05-25 | Initial full PRD | Establish production requirements for UltraPlan Go. |
 | 1.4.0 | 2026-07-17 | Add Phase 3 review and smoke | Replace manual post-execute verification with automated `review.md`, external-harness-backed `smoke.md`, integrated CLI/TUI operation, and deterministic gates. |
 | 1.5.0 | 2026-07-22 | Add Phase 4 local web surface | Introduce a loopback Go server and simple embedded browser UI over shared app use cases, with HTTP commands and SSE progress starting in Sprint 30. |
+| 1.6.0 | 2026-08-15 | Add grounded planning and gated future direction | Add `code-context` as the Phase 5 shared source foundation, make server shutdown cancellation explicit, and align later content, QA, retrieval, persistence, graph, and cloud/Aren work with measured stop/go gates. |

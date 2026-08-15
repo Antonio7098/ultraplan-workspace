@@ -2,7 +2,7 @@
 
 > Project: `ultraplan-go`  
 > Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution, post-execute review and deep smoke, a local terminal UI, and a loopback-only Go-served browser UI over the same workflows.
-> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, and automatic Git mutation remain deferred.
+> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Product Phase 5 begins at Sprint 33 and adds a durable `code-context` stage whose exact output is reused across downstream planning, execution, and verification prompts. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, automatic Git mutation, content identity, provenance, QA expansion, retrieval, and automatic repair remain deferred beyond this roadmap chunk.
 
 ## Scope Principle
 
@@ -54,6 +54,23 @@ browser -> local HTTP/SSE adapter -> shared app use cases -> existing product mo
 ```
 
 The server and browser UI are local interfaces over the existing filesystem-backed product. They do not add hosted service behavior, a remote worker protocol, accounts, tenancy, or a database-backed alternate source of truth.
+
+Product Phase 5 adds the first new workflow through those shared interface boundaries:
+
+```text
+requirements
+  -> code-context
+  -> sprint-index
+  -> technical-handbook
+  -> area-reasoning
+  -> reasoning
+  -> plan
+  -> execute
+  -> review
+  -> smoke
+```
+
+The new stage gathers implementation evidence once into `code-context.md` and reuses that exact foundation downstream. It does not introduce repository indexing, retrieval, cache ownership, automatic staleness, or a second machine-readable context format.
 
 ---
 
@@ -1127,21 +1144,45 @@ Still deferred:
 - Conflicting sprint or study mutations fail with actionable scope/lock information rather than running concurrently.
 - Normal tests cover success, validation failure, runtime failure, cancellation, stale confirmation, reconnect, buffer rollover, slow subscriber, shutdown, redaction, and CLI/TUI/web agreement with fake dependencies.
 
-### Sprint 32: Local Web Hardening, Documentation, and Release
+## Post-Sprint-31 Delivery Chunk 1 — Observable Grounded Planning
 
-**Goal:** make the local browser surface a supported, secure, recoverable interface while keeping its scope explicitly local and single-user.
+This chunk finishes the browser as a supported product surface, then proves its extensibility by adding `code-context` as the first new workflow operated through that surface.
+
+The boundary is deliberately limited to Sprints 32–34:
+
+```text
+Sprint 32: Web hardening and release
+Sprint 33: Code-context vertical slice
+Sprint 34: Shared-context integration and release
+```
+
+The integrated product roadmap and this workspace roadmap use different phase numbering. Their mapping for this chunk is:
+
+| Integrated product roadmap | Workspace product roadmap |
+|---|---|
+| Phases 1–3: web foundation, operations, and hardening | Product Phase 4, Sprints 30–32 |
+| Phase 4: code-context | Product Phase 5, Sprints 33–34 |
+| Phase 5 onward: content identity, provenance, and QA | Later roadmap chunks |
+
+**Immediate prerequisite:** Complete Sprint 31's planning chain before materializing Sprint 32. Its current `flow-state.json` records `technical-handbook` as failed and `area-reasoning`, `reasoning`, and `plan` as missing.
+
+### Sprint 32: Local Web Hardening and Observable-Product Release
+
+**Goal:** turn the Sprint 30–31 browser implementation into a supported local interface and prove that the application boundary is ready to accept new stages.
 
 **Build:**
 
-- stable `/api/v1` JSON and error-envelope documentation plus compatibility fixtures
-- complete local-web user, configuration, security, recovery, and troubleshooting documentation
+- stabilize `/api/v1` JSON responses and typed error envelopes, with documentation and compatibility fixtures
+- complete local-web user, configuration, packaging, security, recovery, and troubleshooting documentation
 - accessibility and keyboard-navigation pass for dashboard, details, confirmations, progress, findings, and errors
 - cache policy for HTML/static/API responses; bounded polling/refetch behavior for changes made by CLI or TUI
 - CSRF, Host/Origin, session, CSP/security-header, request-smuggling/body-limit, hostile-Markdown, path-containment, and redaction audit
-- operation/SSE concurrency, leak, race, slow-client, reconnect, graceful-shutdown, and recovery tests
+- operation/SSE concurrency, leak, race, slow-client, reconnect, cancellation, reconciliation, graceful-shutdown, and recovery tests
+- explicit shutdown coverage proving that server-owned active operations are cancelled, bounded cleanup produces a truthful durable outcome, browser disconnection does not cancel work, and restart reconciles interrupted or cleanup-uncertain work
 - representative browser integration tests over temporary workspaces and fake runtime/harness dependencies
 - gated real-runtime and real smoke-harness browser operation evidence
 - release packaging and checks confirming templates/static assets are embedded in the single Go binary
+- an interface capability test proving that stage status, artifacts, commands, progress, cancellation, and recovery are exposed through shared application abstractions rather than route-specific workflow logic
 
 **Release gate:**
 
@@ -1154,11 +1195,204 @@ go build ./cmd/ultraplan
 plus:
 
 - `ultraplan serve` is loopback-only and needs no external frontend/runtime dependency
-- read-only browser state agrees with CLI/TUI/shared app results
+- browser, CLI, and TUI agree on durable state, readiness, verdicts, artifacts, and next actions
 - guarded browser operations, progress, reconnect, cancellation, and recovery pass representative scenarios
 - browser refresh or server restart never promotes ephemeral state over durable workspace truth
-- no high-severity local-web security, path, redaction, concurrency, or accessibility finding remains
+- one substantial study workflow and one substantial sprint workflow can be observed and operated through the browser
+- no high-severity local-web security, path, redaction, concurrency, cancellation, shutdown, or accessibility finding remains
+- adding another planning stage does not require a parallel web workflow implementation
 - hosted/multi-user/remote-worker behavior has not entered the implementation accidentally
+
+---
+
+# Product Phase 5 — Grounded Planning Foundation
+
+Product Phase 5 gathers implementation evidence once per sprint, preserves it as a durable artifact, and reuses the exact same foundation across planning, execution, and verification.
+
+```text
+requirements
+  -> code-context
+  -> sprint-index
+  -> technical-handbook
+  -> area-reasoning
+  -> reasoning
+  -> plan
+  -> execute
+  -> review
+  -> smoke
+```
+
+The authoritative artifact is:
+
+```text
+projects/<project>/sprints/<sprint>/code-context.md
+```
+
+## Phase 5 Contract Gate
+
+Required for Phase 5:
+
+- `internal/sprint` owns `code-context` stage order, prerequisites, status, validation, artifact paths, flow transitions, and downstream prompt integration.
+- The stage reuses the existing project implementation-repository/worktree resolution and may read the source repository while writing only the sprint's `code-context.md`.
+- `code-context.md` remains the single authoritative context-pack format; no parallel JSON manifest is added.
+- Existing workspaces and persisted sprint state that predate `code-context` remain usable through explicit compatibility handling.
+- Downstream prompts use one shared sprint-context renderer. Exact `requirements.md` and `code-context.md` content appear before stage-specific instructions without rewriting or dynamic run data.
+- Downstream agents may inspect any additional repository files needed to verify assumptions or complete their work.
+- CLI, TUI, and browser use the same application operations and durable state. The browser gains no route-specific `code-context` workflow semantics.
+- Runtime success alone is insufficient: the artifact must exist and pass structural validation before the stage completes.
+- No repository index, RAG system, cache subsystem, cache key, provider-specific cache dependency, automatic staleness system, or amendment workflow enters this phase.
+
+### Sprint 33: Code-Context Stage Vertical Slice
+
+**Goal:** make `code-context` a fully operational stage capable of inspecting the implementation repository and producing a validated source-context pack.
+
+**Build:**
+
+- add `StageCodeContext` immediately after `StageRequirements` in every canonical ordered stage list
+- add artifact-path, readiness, prerequisite, status, cumulative-flow, and flow-state support
+- preserve compatibility with existing sprint state that predates the stage
+- add the embedded `create-code-context` prompt and `code-context.md` template, including defaults-install registration
+- add stage-specific runtime model and variant configuration with existing fallback behavior
+- resolve the project repository/worktree through existing implementation-repository mechanisms
+- permit repository reads while restricting stage output to `code-context.md`
+- add prompt preview, structural validation, and runtime-backed application use cases
+- validate required sections, selected excerpts, repository-relative paths, rationale, language-tagged fenced code, safe paths, and well-formed line ranges
+- add CLI support for `prompt code-context`, `validate code-context`, `flow --to code-context`, help, status, and stable JSON projections
+- surface readiness, progress, validation findings, artifact preview, explicit rerun, cancellation, and recovery through the existing web operation model
+- add focused stage-order, runtime, state, compatibility, CLI, application, web, defaults, and validation tests
+
+**Acceptance:**
+
+- completed valid requirements make `code-context` ready, and a valid context pack makes `sprint-index` ready
+- a fake runtime or gated real runtime can inspect the source repository and produce a valid `code-context.md`
+- missing or invalid output fails truthfully, records actionable findings, and does not mark the stage complete
+- the browser observes and controls the stage through shared application and operation abstractions without new route-specific workflow semantics
+- existing workspaces and pre-stage flow state remain usable
+- no repository index, RAG system, cache subsystem, JSON context manifest, or automatic staleness system is introduced
+
+This sprint is useful independently of downstream prompt reuse: users can explicitly generate, inspect, validate, rerun, and recover the implementation evidence pack.
+
+### Sprint 34: Shared Context Integration and Grounded-Planning Release
+
+**Goal:** reuse the stored requirements and code-context pack unchanged across every downstream agent operation.
+
+**Build:**
+
+- add one shared sprint-context renderer
+- compose downstream prompts in this order:
+
+```text
+stable shared instructions
+sprint identity
+exact requirements.md
+exact code-context.md
+other shared context
+stage-specific instructions
+```
+
+- keep the requirements and code-context block byte-for-byte identical across compatible downstream calls
+- inject the shared context into sprint index, technical handbook, area reasoning, final reasoning, plan, execute, Conformance Review, and smoke wherever those operations invoke an agent; retain the same integration point for later QA without adding QA in this chunk
+- ensure `flow --to plan` runs `code-context` exactly once in the correct position
+- explicitly allow every downstream agent to inspect additional repository files
+- add prefix-stability fixtures proving that timestamps, run IDs, stage names, output paths, and other dynamic run data do not enter the shared prefix
+- add and materialize the manually invokable `code-context` stage skill using the canonical CLI operation
+- update README, CLI reference, user guide, architecture, recovery, planning-smoke, generated-workspace, skill, and local-web documentation
+- dogfood the stage in a temporary representative workspace against a real implementation repository and a gated runtime
+- verify prompt reuse, cancellation, rerun, atomic artifact replacement, and browser recovery end to end
+
+**Release gate:**
+
+- every relevant downstream agent prompt contains the exact stored requirements and context pack
+- the common prefix remains byte-for-byte stable until stage-specific instructions begin
+- rerunning `code-context` atomically replaces only `code-context.md`
+- downstream agents remain free to inspect additional source
+- CLI, TUI, and browser agree on stage readiness, state, artifacts, findings, and recovery
+- the complete requirements-to-plan flow succeeds with `code-context` inserted exactly once
+- fake-runtime coverage and gated real-runtime dogfood pass
+- `go test ./...`, `go test -race ./...`, and `go build ./cmd/ultraplan` pass
+- no caching claim or dependency is introduced; the prompt layout merely enables provider prefix caching where available
+
+## Why This Chunk Stops After Sprint 34
+
+Sprint 34 is a clean product milestone:
+
+```text
+observable browser
+  -> first new stage added through shared boundaries
+  -> implementation evidence gathered once
+  -> evidence reused across the full sprint lifecycle
+```
+
+The resulting real `code-context.md` examples should inform the next chunk's content-identity, provenance, and QA work. That chunk should begin with an evidence-based artifact inventory and retrieval-question corpus rather than designing metadata in the abstract.
+
+---
+
+# Gated Direction After Sprint 34
+
+The detailed implementation plans establish the following dependency order, but this roadmap does not assign sprint numbers beyond Sprint 34 until the preceding evidence gate passes:
+
+The implementation-repository planning sources are:
+
+- `docs/plans/integrated-roadmap.md`
+- `docs/plans/ultraplan-local-server-experiment-plan.md`
+- `docs/plans/server-shutdown-run-cancellation-contract.md`
+- `docs/plans/sprint-code-context-stage.md`
+- `docs/plans/retrieval-ready-content-plan.md`
+- `docs/plans/post-execution-qa-and-repair-loop.md`
+- `docs/plans/retrieval-ready-content-knowledge-graph-addendum.md`
+
+Those plans remain detailed design inputs. This workspace roadmap owns product sequencing and promotion into committed sprint scope.
+
+```text
+minimal content identity and revision-aware provenance
+-> read-only QA mapping, investigation, and synthesis
+-> isolated evidence-producing QA and smoke integration
+-> adjudicated manual repair, then bounded automatic repair
+-> joint browser/code-context/content/QA dogfood
+-> derived lexical retrieval
+-> proven product persistence boundary and optional SQLite
+-> optional in-memory knowledge graph
+-> explicit authority choice, cloud, and Aren integration
+```
+
+## Gate A — Content Contract
+
+- Begin with an artifact inventory and at least twenty real retrieval/traceability questions.
+- Pilot optional minimal metadata, selective semantic block IDs, and revision-aware evidence on new artifacts.
+- Preserve legacy Markdown validity and explicit project/sprint context selection.
+- Stop if metadata is inaccurate, burdensome, or does not improve real discovery and traceability.
+
+## Gate B — QA And Repair
+
+- Keep current `review` compatibility while presenting it as Conformance Review.
+- Introduce read-only deterministic QA shards and global synthesis before generated tests or production mutation.
+- Require isolated writable workspaces and evidence adjudication before issue promotion.
+- Permit repair only from frozen evidence-backed issue packets; bound cycles, reopenings, scope growth, and convergence.
+- Preserve smoke protocol guarantees while absorbing smoke only after QA parity is proven.
+
+## Gate C — Retrieval
+
+- Derive disposable semantic records from authoritative artifacts after content dogfood.
+- Establish metadata filtering and lexical search before embeddings.
+- Measure against the retrieval-question corpus; do not silently inject results into governed context.
+- Keep authority, status, provenance, exact source text, freshness, and explicit selection visible.
+
+## Gate D — Persistence And SQLite
+
+- Dogfood the filesystem-backed browser first and identify concrete needs such as drafts, immutable revisions, approvals, cross-project queries, provenance, or measured filesystem cost.
+- Extract focused product-owned repository contracts one workflow at a time; do not create a universal storage or virtual-filesystem abstraction.
+- Keep Git/source and agent execution workspaces filesystem-native.
+- Select one authoritative storage mode at composition, use explicit migration/import/export, and prohibit silent dual writes.
+- Compare filesystem and SQLite modes on real work before choosing server-canonical, dual first-class, or hybrid publication authority.
+
+## Gate E — Knowledge Graph, Cloud, And Aren
+
+- Consider a graph only after stable explicit relationships and a retrieval baseline prove multi-hop traceability value.
+- Start with a deterministic in-memory read-only graph; preserve edge provenance, origin, status, revision, contradiction, and supersession.
+- Treat any persisted graph as derived and rebuildable; do not assume a graph database.
+- Move toward Postgres, durable workers, remote identity, and typed Aren artifact tools only after local persistence, authority, execution projection, cancellation, and recovery semantics are proven.
+
+The normative local-server shutdown rule applies throughout server-backed phases: graceful server stop cancels every server-owned active run through the canonical cancellation path, waits for bounded cleanup, records a truthful outcome, and never equates browser disconnection with cancellation.
 
 ---
 
@@ -1232,3 +1466,16 @@ Before Phase 4 release:
 - [ ] SSE slow-client, reconnect, cancellation, shutdown, leak, and race tests pass.
 - [ ] Local-web security, hostile-content, path-containment, and redaction audits pass.
 - [ ] Gated representative real-runtime and smoke-harness browser evidence exists.
+- [ ] A capability test proves that a new stage can expose status, artifacts, commands, progress, cancellation, and recovery without route-specific product logic.
+
+Before Sprint 32 starts:
+
+- [ ] Sprint 31's technical handbook is valid and its area reasoning, final reasoning, and plan are complete.
+
+Before Product Phase 5 release:
+
+- [ ] Existing sprint state remains compatible after inserting `code-context` after requirements.
+- [ ] CLI, TUI, and browser parity covers the new stage through shared application abstractions.
+- [ ] Prefix-stability fixtures prove exact requirements and code-context reuse across downstream agent prompts.
+- [ ] A representative real-repository dogfood flow completes from requirements through plan with `code-context` run exactly once.
+- [ ] Content identity, retrieval, caching, automatic staleness, and QA expansion remain outside this chunk.

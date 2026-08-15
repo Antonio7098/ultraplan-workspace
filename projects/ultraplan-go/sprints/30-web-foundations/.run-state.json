@@ -1,59 +1,170 @@
 {
-  "status": "complete",
-  "completedAt": "2026-07-29T07:32:03Z",
-  "files": [
-    "cmd/ultraplan/main.go",
-    "docs/architecture.md",
-    "docs/cli-reference.md",
-    "docs/local-web.md",
-    "internal/app/app.go",
-    "internal/app/serve_commands.go",
-    "internal/app/serve_commands_test.go",
-    "internal/app/sprint_usecases.go",
-    "internal/app/surfaces.go",
-    "internal/app/usecases.go",
-    "internal/app/web_usecases.go",
-    "internal/app/web_usecases_test.go",
-    "internal/sprint/service.go",
-    "internal/web/artifacts.go",
-    "internal/web/artifacts_test.go",
-    "internal/web/handlers.go",
-    "internal/web/routes.go",
-    "internal/web/routes_test.go",
-    "internal/web/security.go",
-    "internal/web/security_test.go",
-    "internal/web/server.go",
-    "internal/web/server_test.go",
-    "internal/web/static/app.css",
-    "internal/web/static/app.js",
-    "internal/web/templates/artifact.html",
-    "internal/web/templates/dashboard.html",
-    "internal/web/templates/error.html",
-    "internal/web/templates/project.html",
-    "internal/web/templates/projects.html",
-    "internal/web/templates/shell.html",
-    "internal/web/templates/sprint.html",
-    "internal/web/templates/studies.html",
-    "internal/web/templates/study.html",
-    "internal/web/templates_test.go",
-    "internal/web/test_fakes_test.go",
-    "projects/ultraplan-go/sprints/30-web-foundations/plan.md"
+  "schemaVersion": 1,
+  "project": "ultraplan-go",
+  "sprint": "30-web-foundations",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan-go",
+    "source": "project-index"
+  },
+  "planPath": "projects/ultraplan-go/sprints/30-web-foundations/plan.md",
+  "planFingerprint": "sha256:ad4a3f0018691abdfe5153a3522b00e8fe48ff9a4e81c3cb40045079c2ce81ed",
+  "createdAt": "2026-07-29T07:32:03Z",
+  "updatedAt": "2026-08-15T15:02:39Z",
+  "tasks": [
+    {
+      "id": "task-01-readiness",
+      "identity": {
+        "name": "Task 1: Confirm Phase 3 And Existing-Surface Readiness",
+        "planLine": 112,
+        "decisions": ["Decision 8"],
+        "requirements": ["AC-13"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "execution-summary", "summary": "Phase 3 readiness and existing surface inventory recorded", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-02-app-boundary",
+      "identity": {
+        "name": "Task 2: Establish Explicit Surface Composition And Query-Only App Use Cases",
+        "planLine": 119,
+        "decisions": ["Decision 1", "Decision 7"],
+        "requirements": ["AC-6", "AC-7", "AC-12", "AC-13"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "Explicit surfaces and typed read-only web use cases implemented", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-03-serve-lifecycle",
+      "identity": {
+        "name": "Task 3: Add Serve Parsing, Preflight, And Lifecycle",
+        "planLine": 128,
+        "decisions": ["Decision 2", "Decision 5"],
+        "requirements": ["AC-1", "AC-2", "AC-3", "AC-4", "AC-5", "AC-13"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "Serve parsing, loopback preflight, lifecycle, and tests completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-04-routing",
+      "identity": {
+        "name": "Task 4: Implement Read-Only Routing, DTOs, And Error Projection",
+        "planLine": 137,
+        "decisions": ["Decision 3", "Decision 5"],
+        "requirements": ["AC-6", "AC-7", "AC-9"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "HTML and API routes, DTOs, errors, and route tests completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-05-security",
+      "identity": {
+        "name": "Task 5: Enforce Local HTTP Security And Redacted Diagnostics",
+        "planLine": 146,
+        "decisions": ["Decision 5"],
+        "requirements": ["AC-3", "AC-9", "AC-10", "AC-11"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "Host, Origin, limits, headers, redaction, diagnostics, and tests completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-06-artifacts",
+      "identity": {
+        "name": "Task 6: Implement Opaque Bounded Artifact Preview",
+        "planLine": 154,
+        "decisions": ["Decision 4", "Decision 5"],
+        "requirements": ["AC-10", "AC-11", "AC-12"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "Opaque bounded artifact previews and hostile-content tests completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-07-frontend",
+      "identity": {
+        "name": "Task 7: Build The Embedded Accessible Progressive Frontend",
+        "planLine": 163,
+        "decisions": ["Decision 6"],
+        "requirements": ["AC-6", "AC-8", "AC-10", "AC-11", "AC-12"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "Embedded accessible templates, assets, and semantic tests completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-08-live-projection",
+      "identity": {
+        "name": "Task 8: Complete Live Projection And Truthful Health Coverage",
+        "planLine": 173,
+        "decisions": ["Decision 7"],
+        "requirements": ["AC-4", "AC-6", "AC-14"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "implementation", "summary": "Fresh live projections and truthful health coverage completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-09-documentation",
+      "identity": {
+        "name": "Task 9: Update User And Architecture Documentation",
+        "planLine": 179,
+        "decisions": ["Decision 8"],
+        "requirements": ["AC-1", "AC-8"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "documentation", "summary": "Local web, CLI reference, and architecture documentation completed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    },
+    {
+      "id": "task-10-verification",
+      "identity": {
+        "name": "Task 10: Run Layered Verification And Prepare Review Evidence",
+        "planLine": 187,
+        "decisions": ["Decision 8"],
+        "requirements": ["AC-1", "AC-2", "AC-3", "AC-4", "AC-5", "AC-6", "AC-7", "AC-8", "AC-9", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14"]
+      },
+      "status": "complete",
+      "attempts": 0,
+      "createdAt": "2026-07-29T07:32:03Z",
+      "updatedAt": "2026-07-29T07:32:03Z",
+      "completedAt": "2026-07-29T07:32:03Z",
+      "evidence": [{"kind": "verification", "summary": "Focused tests, full tests, race, build, vet, diff, help, dependency, live-loopback, and accessibility checks passed", "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md"}]
+    }
   ],
-  "testsRun": [
-    "go test ./internal/app -run 'Serve|Surface|Dispatch|TUI|Web' — pass",
-    "go test ./internal/web -run 'Server|Lifecycle|Listen|Shutdown|Health' — pass",
-    "go test ./internal/web -run 'Route|API|Method|Head|Envelope' — pass",
-    "go test ./internal/web -run 'Security|Host|Origin|Limit|Header|Redact|RequestID' — pass",
-    "go test ./internal/web -run 'Artifact|Preview|Traversal|Symlink|Hostile|Truncat' — pass",
-    "go test ./internal/web -run 'Template|Render|Accessibility|Static' — pass",
-    "go test ./... — pass",
-    "go test -race ./... — pass",
-    "go build ./cmd/ultraplan — pass",
-    "go vet ./... — pass",
-    "git diff --check — pass",
-    "go run ./cmd/ultraplan serve --help — pass",
-    "go list -deps ./internal/web and direct-import audit — pass",
-    "live loopback health/dashboard/cross-origin/shutdown command-path check — pass"
-  ],
-  "blockers": []
+  "metadata": {
+    "migration": "Reconciled from the completed legacy execution summary without rerunning execute",
+    "legacyCompletedAt": "2026-07-29T07:32:03Z",
+    "legacyBlockers": "none"
+  }
 }
