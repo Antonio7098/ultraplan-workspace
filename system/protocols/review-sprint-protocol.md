@@ -54,7 +54,9 @@ Check decision conformance, plan/execute evidence, approved verification command
 
 UltraPlan owns bounded fan-out and does not assume a reviewer runtime can spawn subagents. Run one structured reviewer per selected contract and one for the technical handbook.
 
-Each reviewer classifies applicability as `direct`, `partial`, `not_triggered`, or `explicitly_deferred`; reports conformance, severity, contained evidence, issue, and recommended action; and returns validated structured data without writing files. Missing/failed mandatory reviewers remain failures and are never silently dropped.
+Each reviewer classifies applicability as `direct`, `partial`, `not_triggered`, or `explicitly_deferred`; reports conformance, severity, contained evidence, issue, and recommended action; and returns schema-versioned structured data without writing files. The canonical result uses `schemaVersion: 1`, the exact assigned `coverageId`, a non-empty summary, and findings with unique stable IDs, valid severities/applicability, and contained line citations for every `direct` or `partial` finding. Confirmed conformance belongs in the summary; findings are reserved for actionable deviations. Missing, malformed, duplicate, or failed mandatory reviewer results remain failures and are never silently dropped.
+
+Structured-result repair is bounded: first repair in the retained session when possible, then make at most one fresh-session fallback. Persist only schema- and citation-valid checkpoints, resume compatible completed coverage by default, and reserve a full restart for an explicitly incompatible schema, model, or input fingerprint.
 
 ## 5. Synthesize `review.md`
 
