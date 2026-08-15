@@ -78,8 +78,14 @@ internal/
     handlers.go             # app use-case request/response mapping
     operations.go           # bounded ephemeral operation/SSE subscription hub
     security.go             # Host/Origin/CSRF/body-limit/security-header policy
-    templates/              # embedded html/template pages and partials
-    static/                 # embedded CSS and minimal progressive-enhancement JS
+    templates/              # embedded html/template presentation hierarchy
+      primitives/           # smallest reusable visual elements
+      components/           # composed domain-neutral UI pieces
+      layouts/              # shared page shells and content arrangements
+      pages/                # route-level page composition only
+    static/
+      css/                  # tokens, base, primitives, components, layouts, utilities
+      js/                   # minimal progressive enhancement, operations, and SSE
 
   platform/
     config/
@@ -340,6 +346,21 @@ The server operation hub is transport-lifecycle state, not product state. It may
 The server owns every operation it starts. Graceful shutdown enters draining, rejects new mutations, cancels all active server-owned operations through their canonical cancellation functions, waits for bounded cleanup/reconciliation, persists truthful terminal or uncertain outcomes, then closes SSE/HTTP. Browser disconnect is subscription loss only and never operation cancellation. Detached local runs that survive server exit are unsupported until a future durable-worker architecture explicitly changes ownership.
 
 The first web UI is server-rendered and progressively enhanced. A frontend framework or JavaScript build pipeline is not part of the Phase 4 foundation; add one only after real client-side complexity earns it.
+
+Sprint 32 formalizes the template hierarchy:
+
+```text
+page -> layout -> component -> primitive
+```
+
+- **Primitives** are presentation-only atoms such as buttons, badges, links, icons, and code blocks.
+- **Components** combine primitives into reusable UI such as breadcrumbs, validation summaries, artifact previews, operation status, progress panels, tables, empty states, and error panels.
+- **Layouts** define shared shells and arrangements such as base, dashboard, and detail layouts.
+- **Pages** are route-level compositions that bind explicit typed view models to layouts and components.
+
+Dependencies flow downward only. A primitive must not render a component, and no template reads workspace files, calls an app use case, interprets product state, or performs transport validation. Handlers map typed app results into explicit page/component view models before rendering.
+
+Template definitions use stable, namespaced names such as `primitive/button`, `component/breadcrumb`, `layout/base`, and `page/sprint` so parsing the embedded tree cannot silently collide. CSS follows the same layering and design tokens remain presentation concerns. JavaScript stays dependency-free and capability-focused; it enhances server-rendered behavior but never becomes the authoritative router, store, or workflow engine.
 
 ### `platform/runtime`
 

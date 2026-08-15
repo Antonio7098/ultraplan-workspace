@@ -398,6 +398,8 @@ Required workspace concepts:
 
 24. **Local browser UI and progress streaming**
     - The Go server renders browser pages from embedded `html/template` assets and serves embedded CSS and minimal JavaScript.
+    - Browser presentation is organized as primitives, components, layouts, and route-level pages; composition flows from pages down to primitives.
+    - Handlers provide explicit typed view models. Templates do not read files, call application use cases, validate HTTP requests, or decide product workflow state.
     - Users can inspect projects, studies, sprints, findings, state, and bounded Markdown/JSON artifact previews.
     - Runtime-backed or mutating actions require a server-validated confirmation bound to the normalized request and current input state.
     - Commands use ordinary HTTP requests; live operation progress uses SSE and cancellation uses an explicit HTTP request.
@@ -1161,6 +1163,7 @@ Product Phase 4 is done when:
 - Guarded operations require server-validated confirmation and expose bounded SSE progress plus explicit cancellation.
 - Browser refresh, SSE reconnect, and server shutdown preserve truthful recovery through durable product state.
 - Path containment, origin/CSRF checks, secret redaction, request limits, and hostile-Markdown rendering tests pass.
+- The embedded UI has a documented and tested primitives/components/layouts/pages hierarchy with namespaced template definitions and layered CSS.
 - Graceful shutdown cancels all server-owned active work through the canonical cancellation path, records truthful durable outcomes after bounded cleanup, and restart reconciles abrupt interruption without inferring success.
 - Browser disconnection remains independent from operation cancellation.
 
@@ -1282,4 +1285,4 @@ Metrics to monitor locally:
 | 1.0.0 | 2026-05-25 | Initial full PRD | Establish production requirements for UltraPlan Go. |
 | 1.4.0 | 2026-07-17 | Add Phase 3 review and smoke | Replace manual post-execute verification with automated `review.md`, external-harness-backed `smoke.md`, integrated CLI/TUI operation, and deterministic gates. |
 | 1.5.0 | 2026-07-22 | Add Phase 4 local web surface | Introduce a loopback Go server and simple embedded browser UI over shared app use cases, with HTTP commands and SSE progress starting in Sprint 30. |
-| 1.6.0 | 2026-08-15 | Add grounded planning and gated future direction | Add `code-context` as the Phase 5 shared source foundation, make server shutdown cancellation explicit, and align later content, QA, retrieval, persistence, graph, and cloud/Aren work with measured stop/go gates. |
+| 1.6.0 | 2026-08-15 | Add grounded planning and gated future direction | Add `code-context` as the Phase 5 shared source foundation, make server shutdown cancellation explicit, organize the embedded UI as primitives/components/layouts/pages, and align later content, QA, retrieval, persistence, graph, and cloud/Aren work with measured stop/go gates. |

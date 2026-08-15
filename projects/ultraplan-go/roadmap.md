@@ -1174,6 +1174,8 @@ The integrated product roadmap and this workspace roadmap use different phase nu
 
 - stabilize `/api/v1` JSON responses and typed error envelopes, with documentation and compatibility fixtures
 - complete local-web user, configuration, packaging, security, recovery, and troubleshooting documentation
+- reorganize embedded browser presentation into `templates/primitives`, `templates/components`, `templates/layouts`, and `templates/pages`, with downward-only composition and namespaced template definitions
+- organize embedded CSS into tokens/base/primitives/components/layouts/utilities and keep JavaScript split by narrow progressive-enhancement capability without adding a client router, store, framework, or build pipeline
 - accessibility and keyboard-navigation pass for dashboard, details, confirmations, progress, findings, and errors
 - cache policy for HTML/static/API responses; bounded polling/refetch behavior for changes made by CLI or TUI
 - CSRF, Host/Origin, session, CSP/security-header, request-smuggling/body-limit, hostile-Markdown, path-containment, and redaction audit
@@ -1201,6 +1203,8 @@ plus:
 - one substantial study workflow and one substantial sprint workflow can be observed and operated through the browser
 - no high-severity local-web security, path, redaction, concurrency, cancellation, shutdown, or accessibility finding remains
 - adding another planning stage does not require a parallel web workflow implementation
+- page templates compose layouts, components, and primitives through explicit typed view models; templates contain no workspace reads, app calls, transport validation, or product-state logic
+- template parsing, component rendering, hostile-content escaping, accessibility semantics, and embedded asset paths are covered by focused tests
 - hosted/multi-user/remote-worker behavior has not entered the implementation accidentally
 
 ---

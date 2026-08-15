@@ -383,6 +383,10 @@ Browser UI requirements:
 
 - show projects, studies, sprints, validation findings, workflow state, and bounded Markdown/JSON artifact previews
 - begin with server-rendered pages and progressive enhancement; a client-side application framework is not required for Phase 4
+- organize templates into `primitives`, `components`, `layouts`, and `pages`; allow dependencies only in that downward order
+- give template definitions stable namespaced names and render them from explicit typed view models prepared by handlers
+- keep filesystem reads, application calls, HTTP validation, product-state interpretation, and durable state mutation out of templates
+- layer CSS as tokens, base, primitives, components, layouts, and utilities; split JavaScript only by narrow progressive-enhancement capability
 - render untrusted Markdown without executing embedded HTML or scripts
 - show operation scope, affected paths, runtime/model information, and mutation class before starting guarded work
 - use a server-issued, short-lived confirmation bound to the normalized request and current governed-input fingerprint for mutating or runtime-backed work
@@ -2125,6 +2129,31 @@ Product-owned mutation locks remain mandatory. Existing study locks stay in `int
 
 The first Phase 4 UI uses embedded `html/template` files, CSS, and minimal JavaScript. No frontend framework or JavaScript build system is required. A later client-side framework is allowed only after demonstrated interaction complexity and must still consume the same versioned HTTP/app boundary.
 
+Sprint 32 must converge on this presentation structure:
+
+```text
+internal/web/
+  templates/
+    primitives/
+    components/
+    layouts/
+    pages/
+  static/
+    css/
+      tokens.css
+      base.css
+      primitives.css
+      components.css
+      layouts.css
+      utilities.css
+    js/
+      app.js
+      operations.js
+      sse.js
+```
+
+File names may evolve with the actual component set, but the ownership and dependency layers are normative. Template parsing must fail at server startup on duplicate/invalid definitions. Focused tests must render representative primitives, components, layouts, and pages; validate complete no-JavaScript output; assert escaping of hostile values; and verify embedded asset paths, accessibility semantics, and absence of inline or third-party executable content.
+
 ## 18B. Phase 5 Grounded Planning Technical Requirements
 
 `internal/sprint` owns the `code-context` stage, including ordered-stage membership, artifact paths, prerequisites, validation, runtime execution, flow transitions, state compatibility, and downstream prompt integration. It reuses project-owned target implementation resolution and the generic runtime boundary; neither `internal/web` nor a new repository-index package owns source selection.
@@ -2556,7 +2585,7 @@ UltraPlan Go is technically acceptable when:
 | 1.3.0 | 2026-07-02 | Add sprint execute scope | Expand Phase 2 to controlled implementation execution from validated `plan.md` tasks while keeping smoke, review automation, issue tracking, and Git mutation deferred. |
 | 1.5.0 | 2026-07-17 | Add Phase 3 review and deep smoke | Define root `review.md`/`smoke.md`, dynamic structured review, external harness integration, review-before-smoke gates, freshness, and full CLI/TUI parity. |
 | 1.6.0 | 2026-07-22 | Add Phase 4 local web surface | Define the Sprint 30+ loopback Go HTTP server, embedded Go-rendered browser UI, guarded commands, SSE progress, and local-only security boundary. |
-| 1.7.0 | 2026-08-15 | Add Phase 5 grounded planning and gated future architecture | Define the `code-context` stage and stable downstream prompt prefix, strengthen server shutdown ownership, and record evidence gates for content, QA/repair, retrieval, persistence, optional graph, and cloud/Aren. |
+| 1.7.0 | 2026-08-15 | Add Phase 5 grounded planning and gated future architecture | Define the `code-context` stage and stable downstream prompt prefix, strengthen server shutdown ownership, formalize the embedded primitives/components/layouts/pages hierarchy, and record evidence gates for content, QA/repair, retrieval, persistence, optional graph, and cloud/Aren. |
 
 
 ## Current Scope Clarification
