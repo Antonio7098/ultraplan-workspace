@@ -1,6 +1,6 @@
 ---
 name: ultraplan-review
-description: Manually run the UltraPlan review stage when given a project sprint path or project/sprint references. Use only when the user explicitly invokes $ultraplan-review or directly asks to run this exact UltraPlan stage; do not invoke implicitly and do not substitute a generic code review.
+description: Manually run the UltraPlan review stage when given a project sprint path or project/sprint references. Use only when the user explicitly invokes $ultraplan-review or directly asks to run this exact UltraPlan stage; do not invoke implicitly.
 ---
 
 # UltraPlan Review
@@ -9,16 +9,8 @@ Run this stage interactively while preserving UltraPlan's governed artifact chai
 
 ## Operating contract
 
-1. Treat a supplied sprint path as UltraPlan stage input, not as a Git review target. For an input such as `projects/<project>/sprints/<sprint>/` or `.ultra/projects/<project>/sprints/<sprint>/`:
-
-   - find the workspace root from the path or current directory
-   - derive `<project>` and `<sprint>` from the path
-   - read `projects/<project>/project-index.md` (or `.ultra/projects/<project>/project-index.md`) from that workspace
-   - resolve the implementation repository from `Target Implementation Directory`, falling back to `Repository` only when the target field is absent
-   - resolve a relative repository path against the workspace root and verify that the result is a Git worktree
-
-   The sprint directory contains the governed review inputs and outputs. The repository named by the project index contains the implementation being reviewed. Do not search nested source repositories for a generic `review` skill, do not run the review against the sprint-artifact directory, and do not ask what to review merely because the supplied input is a directory.
-2. If no sprint path was supplied, locate the workspace root and resolve the project and sprint from the user's explicit references and current location. Ask only when the project index is missing, the target repository cannot be resolved, or more than one project/sprint remains possible.
+1. Treat a supplied sprint path as UltraPlan stage input, not as a Git target. For an input such as `projects/<project>/sprints/<sprint>/` or `.ultra/projects/<project>/sprints/<sprint>/`, find the workspace root, derive `<project>` and `<sprint>` from the path, and read the matching `project-index.md`. The sprint directory contains governed stage artifacts; when implementation access is required, resolve its repository from `Target Implementation Directory`, falling back to `Repository` only when the target field is absent. Resolve relative repository paths against the workspace root and verify the result before using it. Do not search nested source repositories for a similarly named skill, and do not ask what target to use merely because the supplied input is a directory.
+2. If no sprint path was supplied, locate the workspace root and resolve the project and sprint from explicit references and the current location. Ask only when the project index is missing, a required implementation target cannot be resolved, or more than one project/sprint remains possible.
 3. Run all UltraPlan commands from the resolved workspace root. Run `ultraplan project <project> status` and `ultraplan sprint <project> <sprint> status --json`. Treat files, the project index, and fresh CLI status as authoritative; never hand-edit flow-state JSON.
 4. Check these prerequisites:
 
@@ -41,10 +33,7 @@ Run this stage interactively while preserving UltraPlan's governed artifact chai
 
 ## Stage workflow
 
-For example, the input `projects/ultraplan-go/sprints/30-web-foundations/`
-resolves to project `ultraplan-go`, sprint `30-web-foundations`, and the target
-implementation directory declared in `projects/ultraplan-go/project-index.md`.
-It does not resolve to the workspace repository or to a nested source checkout.
+For example, the input `projects/ultraplan-go/sprints/30-web-foundations/` resolves to project `ultraplan-go`, sprint `30-web-foundations`, and the target implementation directory declared in `projects/ultraplan-go/project-index.md`. It does not resolve to the workspace repository or to a nested source checkout.
 
 Preview the review scope first:
 
