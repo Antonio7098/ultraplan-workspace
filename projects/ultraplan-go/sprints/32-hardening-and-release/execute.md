@@ -46,4 +46,25 @@ Run state: `projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.js
 
 Manual in-session execution completed on 2026-08-18. Nine tasks are complete. Three evidence areas are explicitly represented by the three deferred tasks: the interactive-browser accessibility audit, downstream Architecture/Sprint Review, and review-gated real-runtime/deep-smoke evidence. All deterministic focused/full/race/vet/build/package checks pass.
 
-Implementation commit: `830fbb3` (`Harden local web release surface`), pushed to `origin/main` in the target repository.
+Implementation commits: `830fbb3` (`Harden local web release surface`) and overlapping CSS follow-up `6602bc6` (`Refine collapsible sidebar controls`), pushed to `origin/main` in the target repository.
+
+## Verification Transcript
+
+- PASS — `go test ./internal/app -run 'TestWeb|TestOperation|TestCapability'`
+- PASS — `go test ./internal/web`
+- PASS — `go test ./internal/web -run 'TestAPICompatibility|TestRoute|TestMethod|TestErrorMapping|TestCache'`
+- PASS — `go test ./internal/web -run 'TestSecurity|TestHost|TestOrigin|TestCSRF|TestSession|TestCSP|TestBody|TestPath|TestMarkdown|TestRedaction'`
+- PASS — `go test ./internal/web -run 'TestOperation|TestConfirmation|TestSSE|TestSubscriber|TestReplay|TestDisconnect'`
+- PASS — `go test ./internal/web -run 'TestServer|TestShutdown|TestDraining|TestCleanup|TestRestart|TestReconcile'`
+- PASS — `go test ./internal/web -run 'TestTemplate|TestRender|TestNoJavaScript|TestAccessibility|TestEmbedded'`
+- PASS — `go test ./internal/web -run 'TestIntegration|TestStudyWorkflow|TestSprintWorkflow|TestSurfaceAgreement'`
+- PASS — `go test -race ./internal/web ./internal/app`
+- PASS — `go test ./...`
+- PASS — `go test -race ./...`
+- PASS — `go build ./cmd/ultraplan` (verified with output redirected to `/tmp/ultraplan-sprint32` to avoid an untracked repository-root binary)
+- PASS — `go run ./cmd/ultraplan serve --help`
+- PASS — `go test ./internal/web -run 'TestPackagedBinary|TestEmbeddedAssetsOutsideSourceTree'`
+- PASS — `go vet ./...`
+- PASS — `git diff --check`
+- DEFERRED — `ultraplan sprint ultraplan-go 32-hardening-and-release review`; downstream review preflight was attempted and blocked because the earlier execute summary omitted this command-level transcript. The generated blocked attempt remains in `flow-state.json`; rerun review after reconciliation.
+- DEFERRED — `ultraplan sprint ultraplan-go 32-hardening-and-release smoke`; requires a current acceptable review and owns the gated real runtime and `ultraplan-go-smoke` harness evidence.
