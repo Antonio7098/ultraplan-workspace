@@ -46,7 +46,7 @@ Run state: `projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.js
 
 Manual in-session execution completed on 2026-08-18. Nine tasks are complete. Three evidence areas are explicitly represented by the three deferred tasks: the interactive-browser accessibility audit, downstream Architecture/Sprint Review, and review-gated real-runtime/deep-smoke evidence. All deterministic focused/full/race/vet/build/package checks pass.
 
-Implementation commits: `830fbb3` (`Harden local web release surface`) and overlapping CSS follow-up `6602bc6` (`Refine collapsible sidebar controls`), pushed to `origin/main` in the target repository.
+Implementation commits: `830fbb3` (`Harden local web release surface`), overlapping CSS follow-up `6602bc6` (`Refine collapsible sidebar controls`), and overlapping template follow-up `fe807db` (`Add project sidebar return link`), pushed to `origin/main` in the target repository.
 
 ## Verification Transcript
 
