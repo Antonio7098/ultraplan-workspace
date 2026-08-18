@@ -1,0 +1,506 @@
+{
+  "schemaVersion": 1,
+  "project": "ultraplan-go",
+  "sprint": "32-hardening-and-release",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go",
+    "source": "project-index.md"
+  },
+  "planPath": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+  "planFingerprint": "sha256:9f58772d9b20e7c05473f945b0a71d9aa0e7da9ed2bda43c86729d06fd356566",
+  "createdAt": "2026-08-18T16:55:39.419828935Z",
+  "updatedAt": "2026-08-18T17:41:24Z",
+  "tasks": [
+    {
+      "id": "task-cfb128f587a1",
+      "identity": {
+        "name": "Task 1: Inventory The Compatibility Baseline, Boundaries, And Release Inputs",
+        "planLine": 64,
+        "requirements": [
+          "AC-03",
+          "AC-06",
+          "AC-08",
+          "AC-11",
+          "AC-22",
+          "AC-23"
+        ],
+        "evidence": [
+          "**Evidence:** reviewed baseline matrix, boundary/import inventory, lifecycle ownership/lock-order inventory, asset/cache inventory, and configuration-limit inventory referenced by subsequent task changes.",
+          "Compare the inventory with Sprint 30-31 documentation and tests; classify each mismatch as implementation defect, documentation defect, or explicit unresolved compatibility question. Do not create or regenerate compatibility goldens while any mismatch lacks a rationale.",
+          "Record the baseline manifest and implementation findings in test fixtures or implementation-owned documentation selected during execution; do not add a new durable product registry, web database, or planning artifact."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:55:39.430225583Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Compatibility, boundary, lifecycle, asset, cache, and fixed-limit baseline recorded in docs/web-compatibility-baseline.md."
+        }
+      ]
+    },
+    {
+      "id": "task-990998227a99",
+      "identity": {
+        "name": "Task 2: Enforce Shared App Capabilities And The Thin Web Boundary",
+        "planLine": 77,
+        "decisions": [
+          "Decision 1"
+        ],
+        "requirements": [
+          "AC-06",
+          "AC-11"
+        ],
+        "evidence": [
+          "**Evidence:** focused app tests, import-boundary output, handler tests, fake-stage capability fixture, and cross-surface typed-result comparisons.",
+          "Add `internal/app/web_usecases_test.go` coverage with a fake future-stage capability that exposes the complete fixed vocabulary through existing generic web behavior without a stage-specific route branch or production registration mechanism.",
+          "Add a direct import-boundary check and handler delegation tests proving `internal/web` imports only `internal/app` and standard-library packages and never invokes the `ultraplan` binary."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.229432265Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Thin-boundary and shared capability tests pass; Markdown rendering moved behind internal/app."
+        }
+      ]
+    },
+    {
+      "id": "task-03148b7e4cbf",
+      "identity": {
+        "name": "Task 3: Freeze The `/api/v1` Contract And Typed Transport Mapping",
+        "planLine": 89,
+        "decisions": [
+          "Decision 2"
+        ],
+        "requirements": [
+          "AC-03",
+          "AC-05",
+          "AC-15"
+        ],
+        "evidence": [
+          "**Evidence:** reviewed compatibility fixtures and semantic API tests with an explicit rationale for every baseline difference.",
+          "Build `internal/web/api_compatibility_test.go` as an exhaustive reviewed route/method matrix that fails on field addition/omission, type/nullability, status, code, content type, and cache-policy changes; include empty/null cases, wrong methods, and unknown API paths.",
+          "Require a written contract rationale for every fixture change and pair exact fixtures with semantic tests for deduplication, cancellation, safe errors, operation expiry, and durable refresh."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.281566794Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "API route, method, schema, error, and cache compatibility fixtures pass."
+        }
+      ]
+    },
+    {
+      "id": "task-5368de378d5b",
+      "identity": {
+        "name": "Task 4: Fail Closed On Configuration, Browser Security, Paths, And Redaction",
+        "planLine": 102,
+        "decisions": [
+          "Decision 3"
+        ],
+        "requirements": [
+          "AC-02",
+          "AC-14",
+          "AC-16"
+        ],
+        "evidence": [
+          "**Evidence:** configuration precedence/startup suite, complete security regression matrix, and forbidden-value scan across all projections and captures.",
+          "**Stop condition:** do not weaken a hard bound or fail-closed check to make a representative workflow pass; record and review a proposed safe default change first.",
+          "Add `internal/web/security_test.go` coverage for IPv4/IPv6, Host/Origin, CSRF/session, CSP/headers, cache, body/smuggling cases, hostile JSON/Markdown/HTML/URLs, path/reference forgery, and a forbidden corpus containing tokens, cookies, CSRF values, confirmations, prompts, unsafe paths, provider payloads, stderr, arguments, and representative secrets.",
+          "Harden `internal/web/security.go` for strict Host and exact same-origin Origin checks, CSRF and per-process session behavior, safe cookie attributes for actual loopback HTTP, CSP/security headers, strict content types, body and timeout limits, and ambiguous-header rejection."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.331328378Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Origin, request framing, immutable bounds, Markdown safety, and security matrix tests pass."
+        }
+      ]
+    },
+    {
+      "id": "task-a592a0cc859d",
+      "identity": {
+        "name": "Task 5: Bound Confirmations, Operations, Events, Subscribers, And SSE Recovery",
+        "planLine": 116,
+        "decisions": [
+          "Decision 4"
+        ],
+        "requirements": [
+          "AC-05",
+          "AC-07",
+          "AC-16",
+          "AC-17",
+          "AC-20"
+        ],
+        "evidence": [
+          "**Evidence:** deterministic operation/SSE suites, focused race output, and no-leak/no-backpressure assertions.",
+          "Add `internal/web/operations_test.go` and `internal/web/sse_test.go` coverage using deterministic clocks, IDs, barriers, and subscriber controls for bounds, expiry, deduplication, ordering, replay, rollover, gaps, heartbeat, slow clients, disconnects, terminal flush, capacity errors, cancellation races, and cleanup.",
+          "Bind short-lived confirmations to normalized request, scope, mutation class, governed-input fingerprint, and session; define one critical ordering for expiry/staleness checks, confirmation consumption, capacity reservation, deduplication record creation, and operation publication.",
+          "Run focused race and leak checks against concurrent starts, duplicate submissions, cancellations, event publication, subscriber eviction, operation expiry, and terminal arbitration."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.385775226Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Operation/SSE contract, retry deduplication, cancellation, capacity, replay, and race tests pass."
+        }
+      ]
+    },
+    {
+      "id": "task-9b4e8fe2df21",
+      "identity": {
+        "name": "Task 6: Close The Shutdown And Restart Reconciliation Gap",
+        "planLine": 130,
+        "decisions": [
+          "Decision 5"
+        ],
+        "requirements": [
+          "AC-18",
+          "AC-20"
+        ],
+        "evidence": [
+          "**Evidence:** lifecycle/reconciliation suite, durable state fixtures for clean and uncertain outcomes, focused race/leak checks, and safe captured lifecycle diagnostics.",
+          "Add `internal/web/server_test.go` and supporting app/product tests for multiple active operations, draining rejection, exact-once reasoned cancellation, deadline exhaustion, terminal races, no-I/O-under-lock, process-tree cleanup metadata, atomic terminal/uncertainty writes, forced interruption, abrupt restart, stale locks, and orphan detection.",
+          "Define and test lock ordering across hub state, product mutation locks, persistence, subscribers, process cleanup, and reconciliation; snapshot under lock and perform no app callback, I/O, send, wait, or cancellation invocation while holding hub locks.",
+          "Reconcile stale active state and locks at startup through owning product modules; process absence, HTTP completion, SSE delivery, and artifact presence remain evidence only and never imply success."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.436555366Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Lifecycle, draining, shutdown, cancellation, reconciliation, and full race suites pass."
+        }
+      ]
+    },
+    {
+      "id": "task-ba95e55ae1a9",
+      "identity": {
+        "name": "Task 7: Build The Namespaced Server-Rendered Template Hierarchy",
+        "planLine": 144,
+        "decisions": [
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-10",
+          "AC-15",
+          "AC-21"
+        ],
+        "evidence": [
+          "**Evidence:** parse/startup tests, render fixtures with reviewed changes, semantic accessibility assertions, hostile-content tests, and no-JavaScript journey coverage.",
+          "Add `internal/web/templates_test.go` coverage for names/dependencies/startup failures, typed models, every representative page/state, no-JavaScript forms/actions, safe Markdown, hostile text/URL/attribute escaping, labels/landmarks/headings/status regions, and embedded paths."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.486687077Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Embedded namespaced template hierarchy and downward-dependency validation tests pass."
+        }
+      ]
+    },
+    {
+      "id": "task-0bb9b59672f6",
+      "identity": {
+        "name": "Task 8: Layer CSS And Add Disposable Progressive Enhancement",
+        "planLine": 157,
+        "requirements": [
+          "AC-11",
+          "AC-17",
+          "AC-20",
+          "AC-21"
+        ],
+        "evidence": [
+          "**Evidence:** browser fixtures, CSS/render review matrix, timer/EventSource cleanup checks, accessibility semantic tests, and recorded manual keyboard/focus/announcement/color/motion/zoom/reflow checks."
+        ]
+      },
+      "status": "deferred",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.536824498Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Manual keyboard, assistive-announcement, color, motion, 200% zoom, and narrow-reflow checks require an installed interactive browser; no Chromium or Firefox executable is available.",
+          "at": "2026-08-18T17:41:24Z"
+        }
+      ],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Layered embedded CSS and dependency-free JavaScript are implemented; deterministic template/accessibility semantics pass."
+        }
+      ]
+    },
+    {
+      "id": "task-9dd4ff56c0b8",
+      "identity": {
+        "name": "Task 9: Prove Representative Workflows And Cross-Surface Agreement",
+        "planLine": 171,
+        "requirements": [
+          "AC-06",
+          "AC-08",
+          "AC-17",
+          "AC-20"
+        ],
+        "evidence": [
+          "**Evidence:** deterministic representative study/sprint integration results, cross-surface comparison assertions, mutation-conflict proof, and forbidden-value scan.",
+          "Build `internal/web/integration_test.go` around real app use cases, temporary workspaces, `httptest`, deterministic clocks/IDs, and fake runtime/process/smoke-harness dependencies."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.586501493Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Real app-use-case integration fixtures agree across HTML and API projections in temporary workspaces."
+        }
+      ]
+    },
+    {
+      "id": "task-33a0c379047f",
+      "identity": {
+        "name": "Task 10: Embed, Package, And Reconcile Public Documentation",
+        "planLine": 183,
+        "requirements": [
+          "AC-02",
+          "AC-05",
+          "AC-21",
+          "AC-23"
+        ],
+        "evidence": [
+          "**Evidence:** outside-tree packaging transcript, complete asset/route request matrix, and documentation-to-fixture/config reconciliation checklist.",
+          "Build the binary and launch it from a temporary directory outside the source checkout with an empty browser/cache context; request every documented page, API capability, and static asset and verify no Node.js, Vite, package manager, CDN, database, source asset tree, or separate frontend process is required.",
+          "Reconcile every documented route, method, field, code, state, bound, flag, cache rule, recovery action, and security limitation against Task 3 fixtures and Task 4 effective configuration; do not document intended behavior that tests do not prove.",
+          "Update `docs/release-checklist.md` with deterministic, race/leak, build, outside-tree packaging, API compatibility, security/redaction, manual accessibility, fake integration, architecture/sprint review, and gated real-system checks."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.639786936Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Outside-tree packaged binary serves every documented page, API, CSS, and JavaScript asset; public docs reconciled."
+        }
+      ]
+    },
+    {
+      "id": "task-ba5119592e2f",
+      "identity": {
+        "name": "Task 11: Run Deterministic Release Gates And Resolve Applicable Findings",
+        "planLine": 198,
+        "decisions": [
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-01",
+          "AC-03",
+          "AC-24"
+        ],
+        "evidence": [
+          "**Evidence:** focused/full/race/build/package results, Architecture Review evidence, current Sprint Review evidence, finding dispositions, and no unresolved applicable high-severity finding.",
+          "**Stop condition:** any deterministic gate failure or unresolved applicable high-severity finding blocks gated release evidence and sprint completion.",
+          "Execute the selected Sprint Review protocol against all selected contracts, reasoning decisions, plan tasks, implementation diff, deterministic evidence, documentation, and release checklist.",
+          "Resolve all applicable high-severity local-web security, path, redaction, concurrency, cancellation, shutdown, API compatibility, and accessibility findings; do not waive them through fixture updates or narrowed test scope.",
+          "Run outside-tree packaging, forbidden-value, goroutine/subscriber/lock leak, and documentation reconciliation checks and retain their reviewable evidence."
+        ]
+      },
+      "status": "deferred",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.689168766Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Focused and deterministic release gates pass; Architecture Review and Sprint Review are owned by the downstream review stage and are not generated during execute.",
+          "at": "2026-08-18T17:41:24Z"
+        }
+      ],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Focused suites, go test ./..., go test -race ./..., go vet ./..., production build, serve help, packaging, and diff check pass."
+        }
+      ]
+    },
+    {
+      "id": "task-713c2dcba481",
+      "identity": {
+        "name": "Task 12: Capture Gated Real-System Evidence And Final Release State",
+        "planLine": 211,
+        "decisions": [
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-07",
+          "AC-15",
+          "AC-23",
+          "AC-24"
+        ],
+        "evidence": [
+          "**Evidence:** real runtime and harness run links with pass evidence, or a truthful blocked record naming exact prerequisites; finalized release checklist.",
+          "**Stop condition:** a failed real operation is a failure to investigate, not a blocked prerequisite or pass; completion requires current evidence and truthful classification.",
+          "Complete the release checklist only when all deterministic checks, documentation, reviews, packaging, and gated pass-or-blocked records are current and mutually consistent.",
+          "Link harness run/evidence identifiers from the governed smoke output without copying raw harness evidence into the sprint or creating alternate issue artifacts.",
+          "Re-run only the deterministic checks affected by any gated finding, then repeat required review/smoke gates according to their protocols; do not treat a narrow rerun as a substitute for the mandatory release matrix.",
+          "Verify safe confirmation metadata, bounded progress, explicit cancellation or completion, durable terminal/recovery state, redacted evidence, and browser/CLI/TUI agreement for the gated operations."
+        ]
+      },
+      "status": "deferred",
+      "attempts": 1,
+      "createdAt": "2026-08-18T16:55:39.419828935Z",
+      "updatedAt": "2026-08-18T17:41:24Z",
+      "startedAt": "2026-08-18T16:59:56.738171823Z",
+      "completedAt": "2026-08-18T17:41:24Z",
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "A current review verdict is required before real runtime and ultraplan-go-smoke evidence can run in the downstream smoke stage.",
+          "at": "2026-08-18T17:41:24Z"
+        }
+      ],
+      "runtime": {
+        "model": "GPT-5 Codex",
+        "modelSource": "manual in-session execution",
+        "validationSummary": "deterministic validation passed",
+        "omissionReason": "raw tool output summarized in governed artifacts"
+      },
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Deterministic release evidence retained; review-gated real-system evidence truthfully deferred to downstream smoke."
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "executionMode": "manual-in-session",
+    "deterministicGates": "passed",
+    "downstream": "review, smoke, manual browser accessibility"
+  }
+}
