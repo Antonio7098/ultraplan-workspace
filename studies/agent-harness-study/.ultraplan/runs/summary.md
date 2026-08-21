@@ -1,7 +1,7 @@
 # Study Run Summary
 
 - Study: `agent-harness-study`
-- Updated: `2026-07-28T08:56:29Z`
+- Updated: `2026-08-15T15:53:10Z`
 - Study progress state: `.ultraplan/run-state.json`
 - Ledger: `.ultraplan/runs/tasks.jsonl`
 
@@ -9,32 +9,19 @@
 
 | Metric | Value |
 | --- | ---: |
-| Runs recorded | 314 |
-| Completed | 229 |
-| Failed | 33 |
-| Cancelled | 52 |
+| Runs recorded | 332 |
+| Completed | 245 |
+| Failed | 34 |
+| Cancelled | 53 |
 | Skipped | 0 |
-| Remaining tasks | 666 |
-| Dimensions seen | 33 |
+| Remaining tasks | 651 |
+| Dimensions seen | 35 |
 | Sources seen | 10 |
 
 ## Remaining Work
 
 | Dimension | Source | Kind | Status |
 | --- | --- | --- | --- |
-| 04.05-tool-permissions-approval-metadata | opa | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | openai-agents-sdk | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | openhands | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | pydantic-ai | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | agent-framework | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | crewai | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | langgraph | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | letta | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | openai-agents-sdk | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | openhands | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | pydantic-ai | analysis | pending |
-| 04.07-external-tool-protocols-mcp | agent-framework | analysis | pending |
-| 04.07-external-tool-protocols-mcp | crewai | analysis | pending |
 | 04.07-external-tool-protocols-mcp | langgraph | analysis | pending |
 | 04.07-external-tool-protocols-mcp | openai-agents-sdk | analysis | pending |
 | 04.07-external-tool-protocols-mcp | openhands | analysis | pending |
@@ -601,8 +588,6 @@
 | 24.04-embedding-and-host-integration-ergonomics | openhands | analysis | pending |
 | 24.04-embedding-and-host-integration-ergonomics | pydantic-ai | analysis | pending |
 | 24.04-embedding-and-host-integration-ergonomics | temporal | analysis | pending |
-| 04.04-tool-context-dependency-injection | (synthesis) | synthesis | pending |
-| 04.05-tool-permissions-approval-metadata | (synthesis) | synthesis | pending |
 | 04.06-tool-result-contract-error-envelope | (synthesis) | synthesis | pending |
 | 04.07-external-tool-protocols-mcp | (synthesis) | synthesis | pending |
 | 04.08-agent-as-tool-composition | (synthesis) | synthesis | pending |
@@ -724,55 +709,57 @@
 | 04.01-tool-definition-and-registration | 10 | 8 | 1 | 11m03s | - | - |
 | 04.02-tool-schema-generation-validation | 12 | 9 | 1 | 8m37s | - | - |
 | 04.03-tool-catalog-discovery-routing | 10 | 8 | 1 | 8m39s | 24001024 | 0.0000 USD |
-| 04.04-tool-context-dependency-injection | 8 | 6 | 0 | 113m04s | 4205237 | 0.0000 USD |
-| 04.05-tool-permissions-approval-metadata | 5 | 1 | 0 | 339m48s | - | - |
+| 04.04-tool-context-dependency-injection | 10 | 8 | 0 | 92m14s | 10124106 | 0.0000 USD |
+| 04.05-tool-permissions-approval-metadata | 12 | 8 | 0 | 147m35s | - | - |
+| 04.06-tool-result-contract-error-envelope | 7 | 6 | 1 | 9m13s | 345185 | 0.0000 USD |
+| 04.07-external-tool-protocols-mcp | 2 | 1 | 0 | 7m15s | - | - |
 
 ## Sources
 
 | Source | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| agent-framework | 41 | 31 | 4 | 26m32s | 15537994 | 0.0000 USD |
-| crewai | 29 | 20 | 2 | 68m49s | - | - |
+| agent-framework | 43 | 32 | 4 | 25m37s | 15537994 | 0.0000 USD |
+| crewai | 32 | 23 | 2 | 63m04s | - | - |
 | langfuse | 5 | 5 | 0 | 7m58s | 9182246 | 0.0000 USD |
-| langgraph | 40 | 31 | 3 | 54m19s | 30060634 | 0.0000 USD |
-| letta | 42 | 24 | 6 | 36m15s | 12264464 | 0.0000 USD |
-| opa | 2 | 1 | 0 | 17m25s | - | - |
-| openai-agents-sdk | 21 | 19 | 1 | 9m03s | 19387549 | 0.0000 USD |
-| openhands | 38 | 29 | 2 | 67m52s | - | - |
-| pydantic-ai | 22 | 19 | 1 | 10m59s | 17761026 | 0.0000 USD |
+| langgraph | 43 | 34 | 3 | 51m21s | 35979503 | 0.0000 USD |
+| letta | 43 | 25 | 6 | 35m35s | 12264464 | 0.0000 USD |
+| opa | 3 | 2 | 0 | 13m56s | - | - |
+| openai-agents-sdk | 23 | 20 | 2 | 8m55s | 19387549 | 0.0000 USD |
+| openhands | 40 | 31 | 2 | 65m11s | 345185 | 0.0000 USD |
+| pydantic-ai | 24 | 21 | 1 | 11m11s | 17761026 | 0.0000 USD |
 | temporal | 30 | 19 | 1 | 38m51s | - | - |
 
 ## Runtime And Model
 
 | Runtime / Provider / Model | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 303 | 229 | 23 | 45m11s | 104606688 | 0.0000 USD |
+| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 321 | 245 | 24 | 43m11s | 110870742 | 0.0000 USD |
 | opencode / - / minimax-coding-plan/MiniMax-M3 | 11 | 0 | 10 | - | - | - |
 
 ## Recent Runs
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
+| 2026-08-15T15:53:10Z | 04.07-external-tool-protocols-mcp | agent-framework | analysis | cancelled | 7m18s | MiniMax-M3 | - | - |
+| 2026-08-15T15:53:05Z | 04.07-external-tool-protocols-mcp | crewai | analysis | completed | 7m13s | MiniMax-M3 | - | - |
+| 2026-08-15T15:50:45Z | 04.06-tool-result-contract-error-envelope | pydantic-ai | analysis | completed | 4m53s | MiniMax-M3 | - | - |
+| 2026-08-15T15:45:52Z | 04.06-tool-result-contract-error-envelope | openhands | analysis | completed | 23m12s | MiniMax-M3 | 345185 | 0.0000 USD |
+| 2026-08-15T15:30:22Z | 04.06-tool-result-contract-error-envelope | letta | analysis | completed | 7m42s | MiniMax-M3 | - | - |
+| 2026-08-15T15:29:18Z | 04.06-tool-result-contract-error-envelope | openai-agents-sdk | analysis | failed | 6m38s | MiniMax-M3 | - | - |
+| 2026-08-15T15:22:40Z | 04.06-tool-result-contract-error-envelope | langgraph | analysis | completed | 10m15s | MiniMax-M3 | - | - |
+| 2026-08-15T15:18:00Z | 04.06-tool-result-contract-error-envelope | crewai | analysis | completed | 5m36s | MiniMax-M3 | - | - |
+| 2026-08-15T15:16:08Z | 04.05-tool-permissions-approval-metadata | (synthesis) | synthesis | completed | 3m43s | MiniMax-M3 | - | - |
+| 2026-08-15T15:12:24Z | 04.05-tool-permissions-approval-metadata | pydantic-ai | analysis | completed | 21m53s | MiniMax-M3 | - | - |
+| 2026-08-15T14:56:44Z | 04.06-tool-result-contract-error-envelope | agent-framework | analysis | completed | 6m13s | MiniMax-M3 | - | - |
+| 2026-08-15T14:55:52Z | 04.05-tool-permissions-approval-metadata | openhands | analysis | completed | 5m21s | MiniMax-M3 | - | - |
+| 2026-08-15T14:50:31Z | 04.04-tool-context-dependency-injection | (synthesis) | synthesis | completed | 8m46s | MiniMax-M3 | - | - |
+| 2026-08-15T14:49:58Z | 04.05-tool-permissions-approval-metadata | openai-agents-sdk | analysis | completed | 8m13s | MiniMax-M3 | - | - |
+| 2026-08-15T14:48:43Z | 04.05-tool-permissions-approval-metadata | opa | analysis | completed | 6m58s | MiniMax-M3 | - | - |
+| 2026-08-15T14:41:45Z | 04.05-tool-permissions-approval-metadata | langgraph | analysis | completed | 16m23s | MiniMax-M3 | - | - |
+| 2026-08-15T14:34:50Z | 04.05-tool-permissions-approval-metadata | crewai | analysis | completed | 9m28s | MiniMax-M3 | - | - |
+| 2026-08-15T14:34:22Z | 04.04-tool-context-dependency-injection | langgraph | analysis | completed | 9m00s | MiniMax-M3 | 5918869 | 0.0000 USD |
 | 2026-07-28T08:56:28Z | 04.05-tool-permissions-approval-metadata | crewai | analysis | cancelled | 7m36s | MiniMax-M3 | - | - |
 | 2026-07-28T08:56:25Z | 04.05-tool-permissions-approval-metadata | langgraph | analysis | cancelled | 7m33s | MiniMax-M3 | - | - |
-| 2026-07-28T08:56:25Z | 04.04-tool-context-dependency-injection | langgraph | analysis | cancelled | 7m33s | MiniMax-M3 | - | - |
-| 2026-07-28T08:48:45Z | 04.04-tool-context-dependency-injection | langgraph | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
-| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | langgraph | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
-| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | crewai | analysis | cancelled | 838m24s | MiniMax-M3 | - | - |
-| 2026-07-27T16:25:14Z | 04.04-tool-context-dependency-injection | openhands | analysis | completed | 12m01s | MiniMax-M3 | - | - |
-| 2026-07-27T16:20:17Z | 04.05-tool-permissions-approval-metadata | agent-framework | analysis | completed | 7m03s | MiniMax-M3 | - | - |
-| 2026-07-27T16:19:26Z | 04.04-tool-context-dependency-injection | pydantic-ai | analysis | completed | 6m13s | MiniMax-M3 | - | - |
-| 2026-07-27T16:06:28Z | 04.04-tool-context-dependency-injection | openai-agents-sdk | analysis | completed | 17m35s | MiniMax-M3 | - | - |
-| 2026-07-27T15:56:47Z | 04.04-tool-context-dependency-injection | letta | analysis | completed | 7m54s | MiniMax-M3 | - | - |
-| 2026-07-27T15:48:53Z | 04.04-tool-context-dependency-injection | crewai | analysis | completed | 9m29s | MiniMax-M3 | - | - |
-| 2026-07-27T15:44:46Z | 04.04-tool-context-dependency-injection | agent-framework | analysis | completed | 5m22s | MiniMax-M3 | 4205237 | 0.0000 USD |
-| 2026-07-27T15:43:32Z | 04.03-tool-catalog-discovery-routing | (synthesis) | synthesis | completed | 4m08s | MiniMax-M3 | 185931 | 0.0000 USD |
-| 2026-07-27T15:39:24Z | 04.03-tool-catalog-discovery-routing | openhands | analysis | completed | 11m25s | MiniMax-M3 | - | - |
-| 2026-07-27T15:36:13Z | 04.03-tool-catalog-discovery-routing | pydantic-ai | analysis | completed | 8m15s | MiniMax-M3 | 9091430 | 0.0000 USD |
-| 2026-07-27T15:33:48Z | 04.03-tool-catalog-discovery-routing | openai-agents-sdk | analysis | completed | 5m49s | MiniMax-M3 | 7942168 | 0.0000 USD |
-| 2026-07-27T15:27:58Z | 04.03-tool-catalog-discovery-routing | crewai | analysis | completed | 11m38s | MiniMax-M3 | - | - |
-| 2026-07-27T15:22:36Z | 04.03-tool-catalog-discovery-routing | letta | analysis | completed | 6m16s | MiniMax-M3 | 2549999 | 0.0000 USD |
-| 2026-07-27T15:21:58Z | 04.03-tool-catalog-discovery-routing | langgraph | analysis | completed | 5m38s | MiniMax-M3 | 4231496 | 0.0000 USD |
 
 ## Slowest Runs
 
@@ -793,6 +780,8 @@
 
 | Completed | Dimension | Source | Status | Error |
 | --- | --- | --- | --- | --- |
+| 2026-08-15T15:53:10Z | 04.07-external-tool-protocols-mcp | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-08-15T15:29:18Z | 04.06-tool-result-contract-error-envelope | openai-agents-sdk | failed | validation_failed |
 | 2026-07-28T08:56:28Z | 04.05-tool-permissions-approval-metadata | crewai | cancelled | validation: cancellation: validation run was cancelled |
 | 2026-07-28T08:56:25Z | 04.05-tool-permissions-approval-metadata | langgraph | cancelled | validation: cancellation: validation run was cancelled |
 | 2026-07-28T08:56:25Z | 04.04-tool-context-dependency-injection | langgraph | cancelled | validation: cancellation: validation run was cancelled |

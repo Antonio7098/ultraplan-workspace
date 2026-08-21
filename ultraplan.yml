@@ -13,6 +13,8 @@ execution:
 planning:
   requirements_model: openai/gpt-5.6-sol
   requirements_variant: high
+  code_context_model: openai/gpt-5.6-sol
+  code_context_variant: low
   sprint_index_model: openai/gpt-5.6-sol
   sprint_index_variant: high
   technical_handbook_model: openai/gpt-5.6-sol
@@ -24,6 +26,8 @@ planning:
   plan_model: openai/gpt-5.6-sol
   plan_variant: high
   review_model: minimax-coding-plan/MiniMax-M3
+  smoke_model: openai/gpt-5.6-sol
+  smoke_variant: low
   execute_model: openai/gpt-5.6-sol
   execute_variant: high
 logging:

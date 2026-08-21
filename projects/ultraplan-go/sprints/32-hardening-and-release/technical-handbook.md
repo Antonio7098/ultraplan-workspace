@@ -7,6 +7,28 @@
 
 This handbook distills the studies and reports selected by `sprint-index.md` for sprint reasoning. It does not decide architecture or implementation.
 
+## Contract Coverage Scope
+
+The selected Go CLI study is supporting evidence, not a substitute for the
+selected contracts. Where the study is silent, reasoning must apply the named
+contract directly and record that fact.
+
+| Selected contract | Study support | Direct-contract concerns still required |
+| --- | --- | --- |
+| Architecture | structure, command architecture, dependency injection, extensibility | product ownership, web/app boundary, presentation hierarchy |
+| CLI Surface | command architecture, configuration, errors, I/O | stable `serve` lifecycle, help, exit and non-interactive behavior |
+| Configuration | configuration management, security | field-level source reporting, schema rejection and redacted `config show` |
+| Documentation | testing and command examples only | public-surface ownership, operational recovery and release reconciliation |
+| Errors | error handling, I/O, observability | stable cross-transport codes and terminal/durable error agreement |
+| LLM Evaluation / Cost / Safety | security and observability only | runtime/model/prompt identity, usage, retry, duration, tool/fallback metadata and safety gates |
+| LLM Runtime | cancellation, concurrency and observability only | prompt versioning, structured-output validation, inspectable lifecycle and bounded retry classification |
+| Observability | logging, state/context and errors | correlation fields, blocked-as-not-pass and projection-level redaction |
+| Performance | performance and concurrency | explicit local latency/scale expectations and rejection at capacity |
+| Persistence And Migrations | I/O and state/context only | atomic-write ownership, snapshots, schema ownership and conservative reconciliation/migration |
+| Security | security, configuration and I/O | browser Host/Origin/CSRF/session policy and per-projection allowlists |
+| Testing | testing, I/O and dependency injection | API fixtures, browser semantics, race/leak, packaging and gated real dependencies |
+| Workflows | state/context and concurrency | definition compatibility, exact-once cancellation, durable terminal arbitration and recovery |
+
 ## Selected Studies And Reports
 
 | Study / Report | Path | Relevant Finding | Confidence |
@@ -112,11 +134,15 @@ This handbook distills the studies and reports selected by `sprint-index.md` for
 - What replay-gap contract tells a browser to refresh durable state without treating an event gap as product failure?
 - Which terminal information must be flushed to current subscribers, and what happens when a slow client cannot receive it within its stream bound?
 - Which configuration sources control web limits and bind behavior, what is their exact precedence, and which invalid combinations fail startup?
+- Does `config show` report each effective field's source without exposing secret values, and which source/redaction assertions freeze that behavior?
 - Which values need secret-safe types, which values require explicit allowlists, and where must final projection-level redaction occur?
+- Which runtime-backed browser projections expose runtime/provider/model and prompt version, token, retry, duration, tool, cost, and fallback metadata; which fields are unavailable or unsafe?
+- Where are structured runtime outputs validated locally, and how are retry causes and limits represented in inspectable operation state?
 - What API fixture format makes field additions, omissions, method changes, status changes, and stable error-code changes deliberate and reviewable?
 - Which accessibility properties can be asserted deterministically from rendered HTML, and which still require manual keyboard, zoom, reflow, color, and reduced-motion evidence?
 - How can the future-stage capability fixture prove extensibility without introducing production-only genericity or a second registration mechanism?
 - What evidence distinguishes durable completion, durable cancellation, durable failure, and cleanup uncertainty after abrupt interruption or deadline exhaustion?
+- Which product layer owns atomic writes, snapshots and schema versions, and how do migrations or restart reconciliation preserve recoverable prior state?
 - Which tests use deterministic clocks, IDs, and barriers, and which timing behaviors need race/leak or gated integration coverage instead?
 - What diagnostic fields are necessary for release support, and which are forbidden because they could reveal secrets, prompts, provider payloads, raw stderr, or unsafe paths?
 - Which resources should initialize lazily, and which templates, routes, configuration, and security invariants must be validated before the listener serves requests?

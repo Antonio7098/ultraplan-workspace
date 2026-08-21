@@ -20,7 +20,7 @@ module = state + logic + workflows + validation + persistence adapters + local i
 
 This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, review, and smoke behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
 
-CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol. Phase 5 proves that boundary by adding `code-context` as a new sprint stage surfaced uniformly through all three interfaces.
+CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol. Phase 5 proves that boundary by adding `code-context` as a new sprint stage surfaced uniformly through all three interfaces. Phase 6 strengthens it by making run identity and observation workspace-wide instead of coupling them to an interface process or browser session.
 
 ## Core Rule
 
@@ -37,6 +37,7 @@ internal/platform/process owns safe generic external executable/argv execution o
 internal/app owns local composition and shared use-case wiring for CLI, TUI, and web
 internal/tui owns terminal widgets, navigation, key handling, and rendering only
 internal/web owns loopback HTTP transport, Go templates/static assets, JSON mapping, SSE subscriptions, and browser security only
+the Phase 6 execution-control boundary owns durable run identity, lifecycle projection, liveness, event history, and reconciliation outside every interface adapter; its final package placement is selected during sprint reasoning
 ```
 
 Avoid this as the default shape:
@@ -76,16 +77,18 @@ internal/
     server.go               # loopback net/http lifecycle and graceful shutdown
     routes.go               # HTML and versioned JSON route registration
     handlers.go             # app use-case request/response mapping
-    operations.go           # bounded ephemeral operation/SSE subscription hub
+    operations.go           # HTTP operation compatibility and transient SSE delivery over durable runs
     security.go             # Host/Origin/CSRF/body-limit/security-header policy
-    templates/              # embedded html/template presentation hierarchy
-      primitives/           # smallest reusable visual elements
-      components/           # composed domain-neutral UI pieces
-      layouts/              # shared page shells and content arrangements
-      pages/                # route-level page composition only
-    static/
-      css/                  # tokens, base, primitives, components, layouts, utilities
-      js/                   # minimal progressive enhancement, operations, and SSE
+    ui/                     # browser presentation assets and embedding
+      embed.go              # embedded assets and template parsing
+      templates/            # html/template presentation hierarchy
+        primitives/         # smallest reusable visual elements
+        components/         # composed domain-neutral UI pieces
+        layouts/            # shared page shells and content arrangements
+        pages/              # route-level page composition only
+      static/
+        css/                # tokens, base, primitives, components, layouts, utilities
+        js/                 # minimal progressive enhancement, operations, and SSE
 
   platform/
     config/
@@ -267,7 +270,7 @@ Sprint stage model-resolution rules
 Flow state persistence
 Execute run-state persistence
 Review scope, selected-contract/protocol resolution, structured reviewer orchestration, deterministic verdicts, and review.md
-Smoke review-gating, external harness selection/invocation, evidence-link validation, deterministic verdicts, and smoke.md
+Smoke review-gating, agent-driven sprint-suite authoring inside manifest-declared harness paths, enumerated coverage validation, external harness selection/invocation, evidence-link validation, deterministic verdicts, and smoke.md
 Sprint status output
 Local interface commands for planning-stage sprint workflows
 ```
@@ -335,15 +338,35 @@ embedded templates, CSS, and minimal JavaScript
 versioned JSON request/response mapping
 Host, Origin, CSRF, body-limit, timeout, and security-header enforcement
 short-lived guarded-operation confirmations
-bounded ephemeral operation handles and SSE subscribers
+durable-run request/response mapping and bounded transient SSE subscribers
 safe Markdown/JSON artifact presentation
 ```
 
-It may depend on `app` use-case interfaces and plain result types. It must not import `study`, `project`, `sprint`, runtime adapters, or process adapters directly. It must not own workflow state machines, validators, prompts, runtime execution, smoke invocation, verdicts, product locks, or durable recovery.
+It may depend on `app` use-case interfaces and plain result types. It must not import `study`, `project`, `sprint`, runtime adapters, or process adapters directly. It must not own workflow state machines, validators, prompts, runtime execution, smoke invocation, verdicts, product locks, durable run identity, or durable recovery.
 
-The server operation hub is transport-lifecycle state, not product state. It may retain bounded recent safe events and terminal results for reconnect, but workspace files and product-owned run state remain authoritative. Slow or disconnected SSE subscribers must never block an app operation.
+The server operation hub is transport-lifecycle state, not product state. It may retain bounded delivery buffers and subscribers, but it cannot be the authoritative run registry or sole event history. Slow or disconnected SSE subscribers must never block an app operation. A server restart or browser-session change replaces delivery state without erasing the durable run.
 
-The server owns every operation it starts. Graceful shutdown enters draining, rejects new mutations, cancels all active server-owned operations through their canonical cancellation functions, waits for bounded cleanup/reconciliation, persists truthful terminal or uncertain outcomes, then closes SSE/HTTP. Browser disconnect is subscription loss only and never operation cancellation. Detached local runs that survive server exit are unsupported until a future durable-worker architecture explicitly changes ownership.
+Until Sprint 35 reasoning changes the ownership topology, the server owns every worker it starts. Graceful shutdown enters draining, rejects new mutations, cancels all server-owned workers through their canonical cancellation functions, waits for bounded cleanup/reconciliation, persists truthful terminal or uncertain outcomes, then closes SSE/HTTP. Browser disconnect is subscription loss only and never operation cancellation. Run identity and retained observation survive the server even when the worker does not.
+
+### Durable execution control boundary
+
+Sprint 35 introduces a product-owned operational boundary shared by CLI, TUI, and web. Its semantic responsibilities are fixed even though its concrete package, coordinator topology, and store are reasoning decisions:
+
+```text
+accept run durably before starting work
+assign stable run / attempt / stage / task correlations
+publish one workspace-wide lifecycle projection
+record sanitized monotonically ordered events before fan-out
+track owner lease, heartbeat, fencing, and process/runtime identity
+route authorized idempotent cancellation to the current owner
+arbitrate exactly one terminal outcome
+reconcile stale, interrupted, and cleanup-uncertain work conservatively
+apply bounded retention with explicit cursor gaps and tombstones
+```
+
+Product modules still decide whether their own stages and artifacts succeeded. The shared boundary records and projects execution facts; it does not replace sprint flow state, study run state, execute task state, Markdown artifacts, Git/source state, or external smoke evidence.
+
+The final design must reason explicitly about a dedicated product module versus package-owned repositories coordinated through `app`; filesystem journal versus SQLite or another local store; one coordinator versus fenced multi-process writers; worker cancellation versus adoption after owner loss; and same-host versus shared-filesystem multi-host guarantees. Whichever choices are selected must satisfy the same public lifecycle, replay, security, migration, and fault-injection contracts.
 
 The first web UI is server-rendered and progressively enhanced. A frontend framework or JavaScript build pipeline is not part of the Phase 4 foundation; add one only after real client-side complexity earns it.
 
@@ -631,13 +654,14 @@ task state machines
 
 If two modules need the same mechanical filesystem behavior, extract the mechanical helper. If two modules merely have similar product workflows, keep the behavior in the owning modules until repeated concrete implementations prove a shared abstraction is stable. Execute task semantics belong to `internal/sprint`; do not move them into a global scheduler or workflow package.
 
-## Gated Architecture Evolution After Grounded Planning
+## Gated Architecture Evolution After Durable Run Control
 
 The implementation plans describe a long-term direction, not permission to build every abstraction now. The architectural order is:
 
 ```text
 filesystem-backed observable web
 -> code-context through shared app/web boundaries
+-> durable workspace-wide run control and observation
 -> minimal content identity and revision-aware provenance
 -> read-only QA decomposition and synthesis
 -> isolated empirical QA and adjudication
@@ -655,8 +679,10 @@ Until an explicit authority decision changes it:
 ```text
 Markdown artifacts                  = authoritative authored content
 flow/run JSON                       = authoritative machine state for owned concerns
+durable operational run records     = authoritative execution identity, liveness, event order, and terminal observation for their concern
 Git checkout                        = authoritative source and implementation workspace
 browser views                       = app-mediated projections
+SSE connections                     = transient delivery only
 search records / graph projections  = derived, disposable, and rebuildable
 ```
 
@@ -683,7 +709,9 @@ Detailed QA attempt state belongs outside `flow-state.json`; flow state keeps ca
 
 ### Persistence boundary
 
-Do not inject a generic virtual filesystem. If concrete browser workflows prove the need for alternate persistence, define focused interfaces in the consuming product modules—for example `project.Repository`, `sprint.Repository`, `study.Repository`, and `run.Repository`. Repository contracts express semantic atomic stage commits, immutable artifact revisions, and optimistic concurrency, not paths, SQL, or transaction handles.
+Operational run durability in Sprint 35 does not decide the later authority of authored product artifacts. The run store may use the smallest mechanism that proves concurrent acceptance, ordered append, liveness, replay, bounded retention, and recovery, while Markdown and package-owned workflow artifacts retain their existing authority.
+
+Do not inject a generic virtual filesystem. If concrete browser workflows prove the need for alternate product-artifact persistence, define focused interfaces in the consuming product modules—for example `project.Repository`, `sprint.Repository`, and `study.Repository`. Repository contracts express semantic atomic stage commits, immutable artifact revisions, and optimistic concurrency, not paths, SQL, or transaction handles.
 
 Filesystem and any later SQLite adapters must pass shared contract suites. Persistence selection occurs once at composition, one authority is active at a time, and migration/import/export is explicit. Source repositories, Git operations, code search, builds/tests, and agent execution workspaces remain real filesystems. No silent dual writes or synchronization precede an explicit authority decision.
 

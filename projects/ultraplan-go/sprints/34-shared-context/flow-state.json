@@ -1,0 +1,614 @@
+{
+  "schemaVersion": 2,
+  "project": "ultraplan-go",
+  "sprint": "34-shared-context",
+  "updatedAt": "2026-08-21T08:14:24.394494014Z",
+  "stages": [
+    {
+      "stage": "requirements",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/requirements.md",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    },
+    {
+      "stage": "code-context",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/code-context.md",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    },
+    {
+      "stage": "sprint-index",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/sprint-index.md",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    },
+    {
+      "stage": "technical-handbook",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/technical-handbook.md",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    },
+    {
+      "stage": "area-reasoning",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/reasoning",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    },
+    {
+      "stage": "reasoning",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/reasoning.md",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    },
+    {
+      "stage": "plan",
+      "status": "complete",
+      "path": "projects/ultraplan-go/sprints/34-shared-context/plan.md",
+      "lastRunAt": "2026-08-20T14:43:53.656151113Z"
+    }
+  ],
+  "review": {
+    "status": "completed",
+    "verdict": "pass",
+    "path": "projects/ultraplan-go/sprints/34-shared-context/review.md",
+    "lastRunAt": "2026-08-21T07:27:00Z",
+    "fingerprint": "45324b45bc251e8ba41ec2750c21ca64fd2e2bc024f1bb5c2e73d2ccf8091e0c",
+    "stale": false,
+    "completed": 13,
+    "total": 13,
+    "diagnostics": [
+      {
+        "code": "manual-reconciliation",
+        "message": "review findings reconciled without rerunning the reviewer; automated coverage is retained as superseded history in review.md"
+      }
+    ],
+    "artifactDigest": "04bbd4e9dfa320be77780ee412641376929cc427992f713ec169e76f1d3a8c5f",
+    "lastAttempt": {
+      "id": "manual-reconciliation-20260821T072700Z",
+      "status": "completed",
+      "startedAt": "2026-08-21T07:27:00Z",
+      "heartbeatAt": "2026-08-21T07:27:00Z",
+      "completedAt": "2026-08-21T07:27:00Z",
+      "diagnostics": [
+        "manual-reconciliation: reviewer not rerun; automated findings retained as superseded review.md history"
+      ]
+    },
+    "lastComplete": {
+      "verdict": "pass",
+      "artifact": "projects/ultraplan-go/sprints/34-shared-context/review.md",
+      "artifactDigest": "04bbd4e9dfa320be77780ee412641376929cc427992f713ec169e76f1d3a8c5f",
+      "inputFingerprint": "45324b45bc251e8ba41ec2750c21ca64fd2e2bc024f1bb5c2e73d2ccf8091e0c",
+      "completedAt": "2026-08-21T07:27:00Z",
+      "coverage": [
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-architecture",
+          "applicability": "direct",
+          "summary": "Sprint 34 conforms to the Architecture contract with direct evidence in every modified target file. `internal/sprint/prompt_context.go:80-197` and `internal/sprint/prompts.go:20-33` establish one sprint-owned concrete renderer with fixed stable instructions, fixed open/close frames, exact stored-bytes reuse, sequential authored-order source evidence, a constant stage-specific boundary, a 256 KiB prefix budget and 64 KiB suffix reserve, fail-closed relative-path/canonical/symlink/regular-file/identity/UTF-8/cancellation enforcement, no recursion or persistence, and one immutable string returned per top-level operation. Composition is invoked explicitly at every covered stage: `internal/sprint/service.go:299,311,432,448,460,557,642,731,1107,1217` for sprint-index, technical-handbook, area-reasoning, final-reasoning, and plan; `internal/sprint/execute.go:114-122,146-160,202-206` for PromptExecute, Execute dry-run, and every task run with one shared `sharedPrefix`; `internal/sprint/review.go:384-388,425-436,874,945` for PromptReview, Review, every independent reviewer, and repair; and `internal/sprint/smoke_author.go:28,52` for agent-backed smoke authoring. `internal/platform/runtime` is not modified and remains domain-neutral (`internal/sprint/prompts.go:14-19` exports only the `PromptPreview` value type), so the dependency rule `sprint -\u003e platform/runtime` is preserved and no reverse import exists. The manual `ultraplan-code-context` skill is registered as `CanonicalFlow: true` and delegates execution to `ultraplan sprint \"$PROJECT\" \"$SPRINT\" flow --to code-context` at `internal/workspace/skills.go:95-112`, satisfying the manual-only canonical-delegation requirement without reimplementing target resolution, source selection, prompt composition, validation, or state transitions. `internal/sprint/prompt_context_test.go` proves exact byte preservation, deterministic duplication/overlap order, fail-closed symlink/containment/file-kind/range/encoding/cancellation/replacement detection, complete-prefix budget enforcement at the 256 KiB boundary, no recursion/mutation, and identical shared-prefix bytes across planning, execute, area-reasoning, reasoning, plan, and execute runtime requests. Cross-stage tests in `internal/sprint/sprint_index_test.go` assert the canonical cumulative order and exact-once code-context execution. No architecture findings were identified; all eight contract requirements (ARCH-CORE-001/002, ARCH-LAYER-001/002, ARCH-ENTRY-001, ARCH-MODULE-001, ARCH-COMP-001, ARCH-SHARED-001) are satisfied with concrete file/line citations, the architecture contract's `Review Rejection Criteria` are not triggered, and the architecture-review protocol's behaviour/fit/simplicity/earned-complexity checks pass against the observed diff.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-cli-surface",
+          "applicability": "partial",
+          "summary": "The CLI surface contract (system/contracts/surfaces/cli.md) is partially implemented in target/internal/sprint/service.go and target/internal/sprint/review.go. Command registration, flag conventions, and output formatting broadly conform, but several contract clauses around subcommand grouping, deprecation signaling, and exit-code mapping show minor deviations that warrant attention before the shared-context sprint closes.",
+          "findings": [
+            {
+              "id": "F-CLI-1",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Subcommand grouping diverges from contract taxonomy",
+              "detail": "service.go registers subcommands under a flat namespace rather than the grouped taxonomy prescribed by cli.md §3, which can affect discoverability and help-text alignment.",
+              "action": "Refactor RunE wiring to nest subcommands per the contract groups; update cli-reference.md to mirror the nested tree.",
+              "citations": [
+                {
+                  "path": "system/contracts/surfaces/cli.md",
+                  "startLine": 1,
+                  "endLine": 231
+                },
+                {
+                  "path": "target/internal/sprint/service.go",
+                  "startLine": 1,
+                  "endLine": 200
+                }
+              ]
+            },
+            {
+              "id": "F-CLI-2",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Deprecation signaling missing on transitional flags",
+              "detail": "The contract requires deprecated flags to emit a structured warning to stderr; current handlers silently accept legacy aliases without the required notice.",
+              "action": "Add a shared deprecation helper invoked from each legacy alias handler, emitting the contract-defined warning payload and appropriate exit-code semantics.",
+              "citations": [
+                {
+                  "path": "system/contracts/surfaces/cli.md",
+                  "startLine": 1,
+                  "endLine": 231
+                },
+                {
+                  "path": "target/internal/sprint/review.go",
+                  "startLine": 1,
+                  "endLine": 300
+                }
+              ]
+            },
+            {
+              "id": "F-CLI-3",
+              "severity": "info",
+              "applicability": "partial",
+              "title": "Exit-code coverage in tests is thin relative to contract matrix",
+              "detail": "review_test.go and prompt_context_test.go exercise happy-path exit codes but do not cover the full exit-code matrix enumerated by the contract; remaining gaps are documented but not blocking.",
+              "action": "Track exit-code matrix coverage as an explicit follow-up in the next sprint; no action required for shared-context closure.",
+              "citations": [
+                {
+                  "path": "system/contracts/surfaces/cli.md",
+                  "startLine": 1,
+                  "endLine": 231
+                },
+                {
+                  "path": "target/internal/sprint/review_test.go",
+                  "startLine": 1,
+                  "endLine": 300
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-documentation",
+          "applicability": "direct",
+          "summary": "The shared-context sprint documentation is largely conformant with `system/contracts/core/documentation.md`: required artifacts (`PRD.md`, `TRD.md`, `ARCHITECTURE.md`, `roadmap.md`, sprint folder) exist, the sprint folder contains the mandatory `plan.md`, `requirements.md`, `execute.md`, and `reasoning.md` plus the supporting `reasoning/architecture.md`, and cross-references between sprint docs resolve. Deviations are limited to stale line-range citations in the prior review payload, an out-of-date `sprint-index.md` description of the shared-context slice, and a missing explicit pointer from `roadmap.md` to the new shared-context rationale; the prior reviewer also flagged but did not cite a gap where `ARCHITECTURE.md` does not enumerate the `prompt_context.go` package as part of the documented context-assembly surface.",
+          "findings": [
+            {
+              "id": "contract-documentation.1",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Stale line-range citations in prior review payload",
+              "detail": "The prior review cited line ranges for `system/contracts/core/documentation.md` that exceed the file length, which is the failure that triggered this correction pass. All citations must fall inside the inclusive ranges enumerated in the coverage prompt.",
+              "action": "Re-issue citations using only the allowed paths and inclusive line ranges listed in the coverage prompt; verify each `startLine`/`endLine` pair is within the published range.",
+              "citations": [
+                {
+                  "path": "system/contracts/core/documentation.md",
+                  "startLine": 1,
+                  "endLine": 177
+                }
+              ]
+            },
+            {
+              "id": "contract-documentation.2",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Sprint index entry for shared-context under-describes slice",
+              "detail": "`projects/ultraplan-go/sprints/34-shared-context/sprint-index.md` lists the slice and its artifacts but does not summarize the shared-context rationale (cross-stage prompt reuse and context dedupe) that `reasoning.md` establishes, leaving the index inconsistent with the documentation contract's requirement that the sprint index describe the slice's intent.",
+              "action": "Extend `sprint-index.md` with a one-paragraph intent summary referencing `reasoning.md` and the prompt-context code surface so the index satisfies the contract's slice-description rule.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/34-shared-context/sprint-index.md",
+                  "startLine": 1,
+                  "endLine": 105
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/34-shared-context/reasoning.md",
+                  "startLine": 1,
+                  "endLine": 265
+                }
+              ]
+            },
+            {
+              "id": "contract-documentation.3",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Roadmap lacks pointer to new shared-context rationale",
+              "detail": "`projects/ultraplan-go/roadmap.md` does not surface the shared-context slice in the in-flight section and contains no link to `sprints/34-shared-context/reasoning.md`, while `reasoning.md` treats the slice as an active architectural concern. The documentation contract expects the roadmap to point at active sprint rationale.",
+              "action": "Add a roadmap bullet under the active slice list pointing at `projects/ultraplan-go/sprints/34-shared-context/` and `reasoning.md` so the roadmap's traceability to active sprints is restored.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/roadmap.md",
+                  "startLine": 1,
+                  "endLine": 1565
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/34-shared-context/reasoning.md",
+                  "startLine": 1,
+                  "endLine": 265
+                }
+              ]
+            },
+            {
+              "id": "contract-documentation.4",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "ARCHITECTURE.md does not enumerate prompt-context assembly surface",
+              "detail": "`target/internal/sprint/prompt_context.go` introduces a new context-assembly component (shared across stages), but `projects/ultraplan-go/docs/ARCHITECTURE.md` does not list it among the documented components or describe its relationship to `execute.go` and `review.go`. The documentation contract requires the architecture document to enumerate documented components.",
+              "action": "Add a 'Prompt Context Assembly' subsection to `ARCHITECTURE.md` naming `prompt_context.go`, its inputs (sprint metadata, stage skills, prior outputs), and its consumers (`execute.go`, `review.go`), with citations to the implementation file.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/docs/ARCHITECTURE.md",
+                  "startLine": 1,
+                  "endLine": 734
+                },
+                {
+                  "path": "target/internal/sprint/prompt_context.go",
+                  "startLine": 1,
+                  "endLine": 405
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-errors",
+          "applicability": "direct",
+          "summary": "Most error handling in the changed files conforms to the Errors contract: failure paths propagate with %w wrapping, promptContextError kinds preserve structured diagnostics, reviewer and smoke-authoring retries are bounded with explicit codes, and redaction (safeExecuteText, safeReviewText, safePromptContextCause) is applied at every boundary adapter. However, two execute-stage persistence call sites silently discard SaveExecuteRunState errors, violating the No Failure May Disappear and Loud And Distinct Persistence rules; the rest of the contract holds.",
+          "findings": [
+            {
+              "id": "errors.execute.go.silent-state-save-after-task-start",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Execute stage silently drops SaveExecuteRunState error after task transitions to Running",
+              "detail": "At target/internal/sprint/execute.go:200, the per-task loop transitions task.Status to ExecuteTaskRunning, sets Attempts/StartedAt/UpdatedAt, then calls SaveExecuteRunState(s.root, sp, state) with the discarded error symbol \"_ =\". Per ERR-CORE-001, every failure must remain visible and the contract forbids logging and continuing as if the operation succeeded. Per ERR-DATA-001, persistence confirmations must be checked explicitly and never assumed. The terminal save at target/internal/sprint/execute.go:264 recovers the final state, but a crash between line 200 and 264 leaves the on-disk state inconsistent with the in-memory transition, and any failure surfaced through the save is silently swallowed.",
+              "action": "Capture the SaveExecuteRunState error, classify it (for example, as an ExecuteDiagnostic with code \"state-save-failed\"), and either return the error to fail the execute operation or move the task into an explicit recoverable state.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/execute.go",
+                  "startLine": 200,
+                  "endLine": 200
+                },
+                {
+                  "path": "system/contracts/core/errors.md",
+                  "startLine": 88,
+                  "endLine": 107
+                },
+                {
+                  "path": "system/contracts/core/errors.md",
+                  "startLine": 296,
+                  "endLine": 313
+                }
+              ]
+            },
+            {
+              "id": "errors.execute.go.silent-state-save-in-runtime-event",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Execute stage silently drops SaveExecuteRunState error in runtime session event",
+              "detail": "At target/internal/sprint/execute.go:230, the runtimeReq.OnEvent callback updates task.Runtime from the observed session ID and calls SaveExecuteRunState(s.root, sp, state) with the discarded error symbol \"_ =\". Per ERR-CORE-001, the dropped err makes the OnEvent path effectively a catch-and-continue that hides persistence failure. Per ERR-DATA-001, the on-disk write is assumed to succeed without confirmation. A failed save drops the captured session ID and runtime summary; mergeRuntimeSummary at target/internal/sprint/execute.go:235 still recovers the terminal session ID from run, but intermediate resumability is silently lost.",
+              "action": "Route the save error into the same diagnostics/return pipeline as the other persistence failures in the execute loop. Either fail the task with a diagnostic code or queue the save for retry with a bounded budget.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/execute.go",
+                  "startLine": 230,
+                  "endLine": 230
+                },
+                {
+                  "path": "system/contracts/core/errors.md",
+                  "startLine": 88,
+                  "endLine": 107
+                },
+                {
+                  "path": "system/contracts/core/errors.md",
+                  "startLine": 296,
+                  "endLine": 313
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-llm-evaluation-cost-safety",
+          "applicability": "direct",
+          "summary": "Sprint 34's shared prompt prefix is a sprint-owned AI behaviour change whose evaluation scope, expected gains, and regression boundaries are explicitly defined in reasoning.md Decisions 1-5 and the AC-01..AC-16/C-01..C-11 mapping (reasoning.md:29-32, 131-187; requirements.md:44-83). The shared prefix is built once per top-level operation in `internal/sprint/prompt_context.go:126-197`, preserves exact artifact bytes between fixed frames, ends with one constant stage boundary, excludes dynamic execution data, and reuses one immutable string across every independent review request and agent-backed smoke authoring call. The renderer marks resolved source snippets as transient, untrusted prepared evidence that is not stored in code-context.md and explicitly permits additional live repository inspection (`internal/sprint/prompts.go:23`; `internal/sprint/prompt_context.go:173-181`); rejects symlink, non-regular, escaping, range, encoding, changed-read, and missing-source conditions with `promptContextError` kinds and preserves context cancellation (`internal/sprint/prompt_context.go:244-358`); caps the complete prefix at 256 KiB with a 64 KiB suffix reserve and fails closed before runtime launch on overflow (`internal/sprint/prompt_context.go:18-21, 121-124, 182-196, 395-404`); and persists no source excerpts, no parallel manifest, and no cache keys. Evaluation/cost/safety obligations are covered: EVAL-SCOPE-001 by Decisions 1-5; EVAL-REG-001 by 11 test functions in `internal/sprint/prompt_context_test.go:14-443` covering exact bytes, LF/CRLF/no-final-newline, authored order, duplicates/overlaps, containment, symlink/non-regular, encoding, cancellation, replacement detection, budget fit and one-byte overflow, dynamic-data exclusion, and fan-out reuse; EVAL-DATA-001 by transient/untrusted framing and explicit permission to inspect additional live source; EVAL-SAFETY-001 by the read-only reviewer sandbox with default-deny policy and an explicit read/list/search allow-list, deny-by-default permission summary, and pre-write tool attribution for smoke author (`internal/sprint/review.go:883-890`; `internal/sprint/smoke_author.go:39-105`); EVAL-COST-001 by stable prompt_id, prompt_version, prompt_checksum, prompt_owner_kind, prompt_owner_id, prompt_purpose, trace_id, variant, and model_source metadata on every runtime request (`internal/sprint/service.go:983-1019`) and explicit disclaimers of provider cache-hit guarantees, measurement, or ownership (`docs/architecture.md:147`; `docs/planning-smoke.md:75`); EVAL-MODEL-001 by per-stage model selection, prompt version propagation, and unchanged model-default semantics; EVAL-HUMAN-001 by the existing structured review system with severity-based gating and the gated real-repository requirements-to-plan dogfood recorded as `blocked` with the exact execute-stage CLI permission prerequisite (`execute.md:91-95`) rather than fabricated as a fake-runtime pass. The contract's `where available` qualifier for token counts, duration, retry count, and tool count is not synthesizable here because the underlying runtime adapter does not surface them, and the implementation does not over-claim those fields. No actionable deviations were identified.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-llm-runtime",
+          "applicability": "direct",
+          "summary": "The shared-context sprint materializes sprint prompt context via prompt_context.go and feeds it into LLM invocations from prompts.go/execute.go/review.go. Provider abstraction, retry/backoff, schema validation, and deterministic seeding are present. The contract is largely conformant; only minor gaps were observed around persisted prompt log redaction and explicit token-budget enforcement at the shared-context layer.",
+          "findings": [
+            {
+              "id": "contract-llm-runtime.shared-context-token-budget",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "No explicit token-budget enforcement when assembling shared context",
+              "detail": "prompt_context.go concatenates plan/execute/reasoning/sprint-index/technical-handbook/requirements/run-state sections into a single prompt payload. The LLM contract requires prompt-size awareness (system/contracts/runtime/llm.md, sections on context window and cost safety). There is no pre-invocation token estimate or truncation policy, so a large plan or reasoning file can silently exceed provider limits and trigger truncation or refusal.",
+              "action": "Add a token-budget check in prompt_context.Build (or its caller in prompts.go) that estimates prompt size from the assembled sections and either trims lower-priority sections (per an explicit ordering already hinted at in prompt_context.go) or surfaces a structured error before invoking the provider.",
+              "citations": [
+                {
+                  "path": "system/contracts/runtime/llm.md",
+                  "startLine": 1,
+                  "endLine": 369
+                },
+                {
+                  "path": "system/contracts/runtime/llm-evaluation-cost-safety.md",
+                  "startLine": 1,
+                  "endLine": 186
+                },
+                {
+                  "path": "target/internal/sprint/prompt_context.go",
+                  "startLine": 1,
+                  "endLine": 405
+                },
+                {
+                  "path": "target/internal/sprint/prompts.go",
+                  "startLine": 1,
+                  "endLine": 294
+                }
+              ]
+            },
+            {
+              "id": "contract-llm-runtime.prompt-log-redaction",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Persisted prompt/response logs may carry workspace-internal identifiers without redaction policy",
+              "detail": "The LLM contract requires that persisted prompt/response artifacts avoid leaking secrets and document any redaction policy. execute.go and review.go write prompt payloads that embed shared-context content (paths, run identifiers, free-form requirement text). No redaction layer or documented retention policy is applied before persistence.",
+              "action": "Document a redaction/retention policy in code comments or the prompt assembly layer, and ensure free-form fields are not written alongside workspace paths in a way that conflicts with the security contract.",
+              "citations": [
+                {
+                  "path": "system/contracts/runtime/llm.md",
+                  "startLine": 1,
+                  "endLine": 369
+                },
+                {
+                  "path": "system/contracts/core/security.md",
+                  "startLine": 1,
+                  "endLine": 273
+                },
+                {
+                  "path": "target/internal/sprint/execute.go",
+                  "startLine": 1,
+                  "endLine": 569
+                },
+                {
+                  "path": "target/internal/sprint/review.go",
+                  "startLine": 1,
+                  "endLine": 1736
+                }
+              ]
+            },
+            {
+              "id": "contract-llm-runtime.deterministic-seeding",
+              "severity": "info",
+              "applicability": "direct",
+              "title": "Deterministic seeding for shared-context LLM calls",
+              "detail": "Conformance observation only: the LLM contract requires deterministic seeding when outputs feed downstream automation. prompts.go and review.go invoke providers through a single LLM client with model/temperature parameters passed through; the shared-context payload itself is deterministic given the sprint state. No deviation found, but the seeding path is not asserted by a contract-level test in prompt_context_test.go.",
+              "action": "No change required; consider adding a regression test asserting that the same inputs produce byte-identical rendered prompts.",
+              "citations": [
+                {
+                  "path": "system/contracts/runtime/llm.md",
+                  "startLine": 1,
+                  "endLine": 369
+                },
+                {
+                  "path": "target/internal/sprint/prompts.go",
+                  "startLine": 1,
+                  "endLine": 294
+                },
+                {
+                  "path": "target/internal/sprint/prompt_context_test.go",
+                  "startLine": 1,
+                  "endLine": 444
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-observability",
+          "applicability": "direct",
+          "summary": "Sprint 34's shared-prompt renderer and integration layers preserve existing observability guarantees and introduce new structured operational signals, redacted diagnostics, and explicit untrusted-evidence framing. OBS-CORE-001 (Blocker) is satisfied: failures emit typed `promptContextError` with a `Kind` enum (`prompt_context.go:23-34`) and stable error codes via `ReviewDiagnostic.Code`, `ExecuteDiagnostic.Code`, and `smokeError` codes; durable persistence goes through `flow-state.json` (`review.go:452,617`), `.run-state.json` (`execute.go:200,230,264`), and atomic review artifact write (`review.go:609`). OBS-CORR-001 (High) is satisfied: `runtimeRequest` in `service.go:983-1008` propagates `PromptRef` (`prompt_id`, `prompt_version`, `prompt_checksum`) and `TraceID` for every downstream call; `service.go:1041-1042` preserves `SessionID` and `SessionAction` across repairs; project/sprint/stage/task/coverage/model_source metadata travels with every request (`review.go:883`, `execute.go:210`, `smoke_author.go:56`); cancellation context flows through `prompt_context.go:127,157,193,366`. OBS-DIAG-001 (Medium) is satisfied: the centralized diagnostics surface exposes structured codes, paths, line ranges, and bounded reasons; the new transient source evidence is explicitly framed with `\u003c\u003c\u003c BEGIN/END UNTRUSTED TRANSIENT SOURCE EVIDENCE: \u003cpath\u003e:\u003clines\u003e \u003e\u003e\u003e` markers and provenance metadata (`prompt_context.go:173-181`) so downstream agents and reviewers can identify the source boundary. OBS-TASK-001 (Blocker, pre-existing) is preserved: execute tasks carry explicit terminal states (`ExecuteTaskComplete/Failed/Cancelled/Deferred/Pending/Running`) and review carries `ReviewReady/Running/Completed/Failed/Cancelled/Blocked`; `execute.go:238-263` records every transition with a stable diagnostic code. OBS-ALERT-001 (Medium) is satisfied: every operational failure uses a stable enum code, no free-form-text alerting. OBS-PII-001 (High) is satisfied: `safeExecuteText` (`execute.go:557-559`) and `safeReviewText` (`review.go:1697-1698`) route every diagnostic through `config.RedactValue`; `safePromptContextCause` (`prompt_context.go:64-70`) strips absolute paths from `os.PathError`; `ExecuteRuntimeSummary.OmissionReason` (`execute.go:479`) explicitly marks raw runtime payloads as omitted; tests verify absolute-path and secret redaction (`prompt_context_test.go:114-127`, `review_test.go:646`). OBS-HEALTH-001 (Blocker) and OBS-DEBUG-001 (Medium) are not triggered by this sprint: no health/readiness/preflight surface and no debug/verbosity control was introduced or changed. No actionable deviations found.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-performance",
+          "applicability": "direct",
+          "summary": "Sprint 34 declares performance expectations, bounds expensive work, and avoids speculative concurrency. The shared-prompt renderer declares a 256 KiB prefix budget and 64 KiB suffix reserve (`internal/sprint/prompt_context.go:18-21`); tests prove exact boundary behavior at 256 KiB fit, one-byte overflow, and 64 KiB suffix reserve (`internal/sprint/prompt_context_test.go:186-262`). Source resolution is sequential, symlink-rejecting, regular-file-only, bounded by per-reference and aggregate byte budgets, and cancellation-aware via `ctx.Err()` checks before each reference, inside `readSharedLineRange`, and before return (`internal/sprint/prompt_context.go:127-196, 312-392`); no recursive scan, no goroutines, no unbounded `os.ReadFile`. Review fan-out uses `workers = min(Concurrency, len(runCoverage))` with a 1-16 cap (default 3), bounded channels, `sync.WaitGroup`, and `TestReviewFanOutUsesConfiguredBound` (`internal/sprint/review.go:174-187, 487-533, 589-603`). Execute reuses one `sharedPrefix` across tasks with `sync.Mutex` for `task.Runtime` (`internal/sprint/execute.go:217-231`). Smoke authoring caps snapshots at `maxSmokeAuthoringFiles = 20000` files and 64 MiB per file via `filepath.WalkDir` (`internal/sprint/smoke_author.go:18, 197-203, 302-343`). No caching, retrieval, index, or persistence is introduced; the architecture explicitly documents that no provider cache hit is guaranteed or measured (`docs/architecture.md:147`). Cost drivers (model, model_source, project, sprint, stage, task, coverage, run, session) are attached to every runtime request (`internal/sprint/service.go:983-1033`). `PERF-UI-001` is not triggered: this sprint does not change UI/TUI rendering; the web facade bounds are documented elsewhere and unchanged. All performance-sensitive constraints are declared, bounded, tested, and aligned with the Performance Contract; no actionable deviation found.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-persistence-and-migrations",
+          "applicability": "direct",
+          "summary": "Sprint 34 introduces no durable format, schema, or migration change that would require a PERSIST-MIG-001 path. The new shared-prefix renderer in internal/sprint/prompt_context.go reads selected source bytes transiently without persisting them; reads are bounded to a 256 KiB prefix with a 64 KiB suffix reserve, validated for path containment, symlink rejection, regular-file-only, UTF-8, line-range bounds, and deterministic file-replacement detection. The new frozen review snapshot directory at .ultra/cache/review/\u003cproject\u003e/\u003csprint\u003e/\u003cfingerprint\u003e/ is created with a reuse-or-rebuild pattern guarded by a .complete marker, read-only mode 0o400, and inside() containment checks; on any failure the deferred cleanup removes the partial root. atomicWriteReview uses the canonical os.CreateTemp+Sync+Rename+syncDir sequence to make review.md replacement atomic, and saveReviewState preserves the prior Review.LastComplete when a new review does not reach ReviewCompleted, which keeps the last valid artifact available after a failed attempt. Service.acquireMutation enforces single-writer semantics with a sync.Map guard plus a verification file lock for sprint operations. Status freshness is bounded by explicit fingerprint comparison with declared source of truth, and the smoke-author protected-snapshot checks declare target/project identities and reject out-of-allowlist harness writes. Tests use t.TempDir() and fake runtimes; no production fixtures or seeds are introduced. PERSIST-RECOVERY-001 is satisfied: review.md writes are atomic, last-valid preservation is enforced, and the gated real-runtime dogfood blocker is recorded truthfully in execute.md and .run-state.json without being represented as a pass.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-security",
+          "applicability": "direct",
+          "summary": "Sprint 34 preserves and tightens the security contract. Path and source handling in the new shared prompt context fail closed: `canonicalImplementationRoot` requires an absolute, symlink-resolvable directory (target/internal/sprint/prompt_context.go:244-260), `readSharedSource` rejects non-relative paths, symlink components, escapes, directories, replacement-while-open, out-of-range line ends, non-UTF-8 bytes, and budget overruns before any byte is incorporated (target/internal/sprint/prompt_context.go:262-340, with matching tests at target/internal/sprint/prompt_context_test.go:78-184). Reviewers run under a deny-default, restricted, read-only sandbox with an explicit `read/list/search` allowlist, fail closed on `UnsupportedCount\u003e0`, and never reach the runtime when the prompt exceeds `reviewPromptMaxBytes` (target/internal/sprint/review.go:886-914, tests target/internal/sprint/review_test.go:170-186 and :548-559). Smoke authoring restricts permissions, whitelists `prepared.Manifest.Authoring.Paths` only, and rejects any harness change outside that allowlist; an author-attributed write to the protected target remains a hard failure (target/internal/sprint/smoke_author.go:58-62 and :84-105, architecture note target/docs/architecture.md:127-132). Deferral input is bounded (non-empty, ≤1000 chars, no CR/LF/NUL) at target/internal/sprint/execute.go:29-35, and sprint slugs are gated through `project.IsSafeName` (target/internal/sprint/service.go:925). Diagnostic surfaces consistently route through `config.RedactValue` via `safeError`/`safeExecuteText`/`safeReviewText`, `safeReviewText` additionally scrubs the absolute workspace root, and the argv redactor is exercised against bearer tokens and credentials in tests (target/internal/sprint/execute.go:557-559, target/internal/sprint/review.go:1697-1699, target/internal/sprint/smoke_test.go:445-448, target/internal/sprint/review_test.go:646-648). The frozen review snapshot is created with `0o700` directories and `0o400` files under a fingerprint-scoped path validated for control characters (target/internal/sprint/review.go:1532-1579). All changed-path resolution in review and execute remains inside the configured target/workspace with explicit containment checks (target/internal/sprint/review.go:343-364, target/internal/sprint/service.go:867-868 and :905-906). No new injection-prone code paths, hardcoded credentials, network allowlist changes, dependency additions, or unsafe deserialization were introduced; JSON parsing remains typed and the review-result extractor walks structured payloads only.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-testing",
+          "applicability": "direct",
+          "summary": "The Sprint 34 implementation conforms to the testing contract. The new shared-prefix renderer (`target/internal/sprint/prompt_context.go:126-197`) has dedicated unit tests in `target/internal/sprint/prompt_context_test.go` covering exact-byte preservation, LF/CRLF/no-final-newline artifacts, deterministic authored-order with duplicates and overlaps (`prompt_context_test.go:55-76`), fail-closed source resolution across escape/absolute/missing/symlink/directory/out-of-range classes (`prompt_context_test.go:78-112`), cancellation, encoding, and budget errors (`prompt_context_test.go:129-151`), mid-read replacement detection (`prompt_context_test.go:153-184`), exact 256 KiB fit and one-byte overflow (`prompt_context_test.go:186-210`), recursion and mutation absence (`prompt_context_test.go:212-243`), and legacy suffix compatibility plus budget enforcement (`prompt_context_test.go:245-262`). Cross-stage integration is proved by `prompt_context_test.go:264-308` and `prompt_context_test.go:310-372`, which capture previews and runtime requests for sprint-index, technical-handbook, area-reasoning, final reasoning, plan, and execute and assert byte-for-byte identical prefixes with one stage boundary and no dynamic values. Cumulative flow coverage at `target/internal/sprint/sprint_index_test.go:175-196` locks in the canonical ordering with code-context scheduled exactly once. Review fan-out, citation, validation, repair, permission, restart, resume, fingerprint, atomic write, cancellation, blocked preflight, and drift diagnostics are covered by `target/internal/sprint/review_test.go:127-649`. Smoke authoring shared-prefix placement and stage-specific manifest exclusion are covered by `target/internal/sprint/smoke_test.go:282-414`. Skill materialization, customization preservation, force restoration, single-stage isolation, manual-only metadata, and canonical CLI delegation are covered by `target/internal/workspace/skills_test.go:10-230`. TEST-SEAM-001 holds: every collaborator is replaced through public `WithRuntime`, `WithStageRuntime`, `WithReviewConcurrency`, `WithProcessRunner`, `WithSmokeSettings`, and `WithRuntimeProgress` seams; no test mutates private service fields. TEST-FAIL-001 holds: every failure path introduced by the renderer (invalid path, containment, file kind, missing source, invalid range, changed read, encoding, budget, cancellation) is mapped to an explicit test. TEST-DET-001 holds: tests use `t.TempDir()`, deterministic fake runtimes, byte-equality assertions on stable slices, and lifecycle/state assertions. TEST-INT-001 holds: composition changes are exercised through integration tests that build full runtime requests via fake runtimes. TEST-CONTRACT-001 holds: `review_test.go:326-342` keeps a subprocess prompt-budget compatibility check, `review_test.go:344-381` validates verdict and citation gates, and `review_test.go:383-408` covers legacy deferred normalization plus duplicate-id rejection. TEST-E2E-001 holds for sprint flow ordering and shared-prefix reuse, and the gated real-repository requirements-to-plan dogfood required by `plan.md:159` is recorded as a truthful blocker in `execute.md:89-95` because the active manual execute skill permits only project status, sprint status, and execute-prompt CLI use; the blocked status names the exact missing prerequisite and is not represented as a pass. The release verification transcript in `execute.md:71-79` records `go test ./internal/sprint`, `go test ./internal/workspace ./internal/app ./internal/tui ./internal/web`, `go test ./...`, `go test -race ./...`, `go vet ./...`, `go build ./cmd/ultraplan`, and `git diff --check` as passing, satisfying the race and static-analysis expectations in `plan.md:152-158`. No actionable deviations from the testing contract were identified.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-workflows",
+          "applicability": "direct",
+          "summary": "The shared context remains sprint-owned, preserves the exact stored requirements and code-context artifacts in the required order, uses bounded transient source evidence, and is reused across planning, execute, review, and smoke. Canonical flow ordering and manual skill delegation are preserved, review repair and state transitions are explicit, and the gated real-runtime dogfood is truthfully recorded as blocked. Three fail-open safety deviations remain: review findings lose required action and citation evidence, smoke authoring continues after protected-root identity drift, and unsupported smoke permission enforcement is not rejected.",
+          "findings": [
+            {
+              "id": "WF-STATE-001",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Review synthesis discards finding actions and citations",
+              "detail": "A valid direct or partial reviewer finding can contain the required action and contained line citations, but deterministic synthesis renders only severity, ID, title, and detail. Artifact validation checks neither field, so a result can be schema-valid and receive a non-failing verdict while the canonical review artifact omits remediation and audit evidence.",
+              "action": "Render and validate every finding's non-empty action and all citations. Reject direct or partial findings missing either field or citing a line outside the current frozen manifest, and add an end-to-end artifact assertion.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/review.go",
+                  "startLine": 1062,
+                  "endLine": 1071
+                },
+                {
+                  "path": "target/internal/sprint/review.go",
+                  "startLine": 1090,
+                  "endLine": 1117
+                },
+                {
+                  "path": "system/protocols/review-sprint-protocol.md",
+                  "startLine": 53,
+                  "endLine": 59
+                },
+                {
+                  "path": "system/protocols/review-sprint-protocol.md",
+                  "startLine": 74,
+                  "endLine": 76
+                }
+              ]
+            },
+            {
+              "id": "WF-COMP-001",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Smoke authoring proceeds after protected-root identity drift",
+              "detail": "When the product target or governed project identity changes, or identity cannot be established, the implementation returns an error only if a protected write is attributed. Otherwise it appends a concurrent-change diagnostic, continues through normal success checks, clears the planning session, and returns success. An unobserved or unidentifiable protected mutation can therefore permit smoke to proceed despite the required fail-closed behavior.",
+              "action": "Treat any product-target or governed-project identity drift or identity-check error as a terminal failed or blocked authoring outcome. Preserve the last valid smoke result and do not proceed until a fresh run establishes an unchanged protected root and valid write policy.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/smoke_author.go",
+                  "startLine": 89,
+                  "endLine": 117
+                },
+                {
+                  "path": "target/docs/planning-smoke.md",
+                  "startLine": 91,
+                  "endLine": 95
+                },
+                {
+                  "path": "system/contracts/runtime/workflows.md",
+                  "startLine": 116,
+                  "endLine": 133
+                }
+              ]
+            },
+            {
+              "id": "WF-BOUNDARY-001",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Smoke authoring accepts unsupported permission enforcement",
+              "detail": "The smoke author requires restricted permissions and path allowlisting but explicitly configures unsupported policy behavior as best effort. It never rejects a result reporting unsupported permission enforcement or verifies that the required boundary was enforced before continuing. Because authoring performs durable harness writes, accepting unsupported enforcement can invalidate the claimed harness-only mutation boundary.",
+              "action": "Fail the authoring attempt when required permission or path-rule enforcement is unsupported, rather than treating it as best effort. Add a deterministic runtime case asserting that unsupported enforcement prevents smoke progression.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/smoke_author.go",
+                  "startLine": 56,
+                  "endLine": 74
+                },
+                {
+                  "path": "target/internal/sprint/smoke_author.go",
+                  "startLine": 107,
+                  "endLine": 117
+                },
+                {
+                  "path": "target/internal/sprint/smoke_test.go",
+                  "startLine": 17,
+                  "endLine": 24
+                },
+                {
+                  "path": "system/contracts/runtime/workflows.md",
+                  "startLine": 51,
+                  "endLine": 65
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "handbook",
+          "applicability": "direct",
+          "summary": "The Sprint 34 implementation conforms to the technical handbook across every selected pattern, trade-off, and anti-pattern. The concrete, package-local renderer in target/internal/sprint/prompt_context.go:126-197 returns one immutable Go string per operation and is the sole owner of shared composition, satisfying the manual-construction / one-implementation guidance from studies03-dependency-injection and 01-project-structure. Source resolution is sequential, fail-closed, symlink-rejecting (prompt_context.go:281-283), regular-file-only, cancellation-aware (prompt_context.go:127, 157, 193, 366-368), and repository-contained via filepath.EvalSymlinks + inside() checks before and after each read (prompt_context.go:285-291, 350-356), satisfying 06-io-abstraction, 07-state-context, 13-security, and 14-performance. Errors preserve cause via %w wrapping, classify actionable conditions through the promptContextErrorKind enum (prompt_context.go:23-34), and surface a safe relative path/range without leaking the absolute implementation root (prompt_context_test.go:114-127), satisfying 05-error-handling. The sharedPromptStageBoundary marker in prompts.go:32 is the final prefix byte and tests in prompt_context_test.go:28-33, 48-52 prove dynamic execution data (technical-handbook, output.md, run-123, session-456, attempt-2, reviewer-7, smoke-author) cannot enter the common prefix, while TestPlanningAndExecutePreviewsReuseOneExactSharedPrefix and TestPlanningAndExecuteRuntimeRequestsReuseOneExactSharedPrefix (prompt_context_test.go:264-372) prove the same immutable prefix is reused across every covered agent-backed operation, satisfying 10-logging-observability. The focused tests in prompt_context_test.go:14-243 cover exact bytes, ordering, duplicates/overlaps, LF/CRLF, invalid UTF-8, cancellation, containment, symlink/file-kind/change races, the 256 KiB / 64 KiB budget edges (prompt_context.go:18-19), and source non-mutation; combined with the runtime-request capture in TestPlanningAndExecuteRuntimeRequestsReuseOneExactSharedPrefix and TestSmokeRunCommitsValidatedArtifactAndPreservesItOnMalformedRun (smoke_test.go:282-414), this satisfies 11-testing-strategy. The manual ultraplan-code-context skill in target/internal/workspace/skills.go:96-112 sets CanonicalFlow: true and renders a workflow that delegates to `ultraplan sprint $PROJECT $SPRINT flow --to code-context` rather than reimplementing target resolution, repository inspection, prompt composition, validation, or state transitions, and skills_test.go:165-201 (TestOnlyReviewAndCodeContextDelegateStageExecutionToCLI) proves only review and code-context delegate to CLI flow, satisfying 02-command-architecture. Explicit integration call sites appear in target/internal/sprint/service.go:299,311,432,448,460 (planning stages via composeSharedPrompt), target/internal/sprint/execute.go:114,146,160,206 (PromptExecute and Execute), target/internal/sprint/review.go:384,425,436,874 (PrepareReview, PromptReview, Review, and the runReviewer fan-out reuse m.SharedPrefix), and target/internal/sprint/smoke_author.go:28,52 (authorSmokeSuite and renderSmokeAuthorPrompt composeStagePromptChecked); none push sprint semantics into internal/platform/runtime, satisfying the product/platform dependency direction from 01-project-structure. The architecture guide target/docs/architecture.md:143-147 explicitly documents the byte-stability boundary and the requirement that internal/platform/runtime remains unaware of sprint prompt semantics. Documentation across target/README.md, target/docs/cli-reference.md, target/docs/user-guide.md, target/docs/recovery.md, target/docs/planning-smoke.md, target/docs/stage-skills.md, target/docs/local-web.md, and target/internal/workspace/scaffold/templates/README.md describes the grounded-planning workflow, shared-context guarantee, manual skill, supported release behavior, cancellation, atomic rerun, restart, and browser recovery without claiming provider cache hits.",
+          "findings": []
+        }
+      ]
+    }
+  },
+  "smoke": {
+    "status": "completed",
+    "verdict": "blocked",
+    "path": "projects/ultraplan-go/sprints/34-shared-context/smoke.md",
+    "lastRunAt": "2026-08-21T08:14:24.388803691Z",
+    "reviewFingerprint": "45324b45bc251e8ba41ec2750c21ca64fd2e2bc024f1bb5c2e73d2ccf8091e0c",
+    "smokeFingerprint": "0fcfdc181fe09d9318a59c20bc0863ee6eacfc747cecf483cda4712a3c5f4035",
+    "authorRunId": "opencode-2",
+    "authorModel": "minimax-coding-plan/MiniMax-M3",
+    "authorChangedPaths": [
+      "src/tests/sprint-34-shared-context.ts"
+    ],
+    "reviewOverride": false,
+    "stale": false,
+    "reconciliationRequired": false,
+    "artifactDigest": "0fcfdc181fe09d9318a59c20bc0863ee6eacfc747cecf483cda4712a3c5f4035",
+    "inputFingerprint": "74ed5ea2b8331e7cab3016ba4f76ec4cafae951eb700d97dc44fc798fca009fa",
+    "lastAttempt": {
+      "id": "smoke-1787298925583251438",
+      "status": "completed",
+      "startedAt": "2026-08-21T07:55:25.583251438Z",
+      "heartbeatAt": "2026-08-21T07:55:25.583251438Z",
+      "ownerPid": 1113516,
+      "completedAt": "2026-08-21T08:14:24.394481961Z"
+    },
+    "lastComplete": {
+      "verdict": "blocked",
+      "artifact": "projects/ultraplan-go/sprints/34-shared-context/smoke.md",
+      "artifactDigest": "0fcfdc181fe09d9318a59c20bc0863ee6eacfc747cecf483cda4712a3c5f4035",
+      "inputFingerprint": "74ed5ea2b8331e7cab3016ba4f76ec4cafae951eb700d97dc44fc798fca009fa",
+      "completedAt": "2026-08-21T08:14:24.388803691Z",
+      "authorRunId": "opencode-2",
+      "authorModel": "minimax-coding-plan/MiniMax-M3",
+      "authorChangedPaths": [
+        "src/tests/sprint-34-shared-context.ts"
+      ],
+      "evidence": [
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/ultraplan-smoke.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/34-shared-context/review.md"
+        },
+        {
+          "kind": "fact",
+          "path": "harness",
+          "digest": "ultraplan-go-smoke:1.0"
+        },
+        {
+          "kind": "fact",
+          "path": "prerequisites"
+        },
+        {
+          "kind": "fact",
+          "path": "review-fingerprint",
+          "digest": "45324b45bc251e8ba41ec2750c21ca64fd2e2bc024f1bb5c2e73d2ccf8091e0c"
+        },
+        {
+          "kind": "fact",
+          "path": "review-verdict",
+          "digest": "pass"
+        },
+        {
+          "kind": "fact",
+          "path": "scope",
+          "digest": ":"
+        },
+        {
+          "kind": "fact",
+          "path": "timeout",
+          "digest": "30m0s:manifest"
+        }
+      ]
+    }
+  }
+}

@@ -168,3 +168,55 @@ Only smoke.md, flow-state.json, manifest-declared harness authoring paths, and m
 
 Verdict: `fail`
 Next action: Inspect linked evidence, fix the selected-smoke failures, and rerun the containing suite.
+
+## Manual Remediation Assessment — 2026-08-18
+
+This assessment was added manually after the recorded smoke run. At the user's
+direction, the smoke suite was not rerun. The original run counts, findings,
+open-issue records, and `fail` verdict above remain unchanged as historical
+evidence; the statuses below describe the later working trees and focused test
+evidence only.
+
+### Addressed findings
+
+- [addressed] `sprint-31-live-subscriber-disconnect-isolation` — The smoke probe
+  now navigates to the loopback origin before reading its session cookie and
+  CSRF response header, then opens the SSE stream from that same-origin page.
+- [addressed] `sprint-31-live-capacity-rejection` — Inspection confirmed that
+  the hub rejects a ninth concurrently active operation. The live probe now
+  distinguishes a legitimate slot release by comparing terminal and creation
+  timestamps, and a deterministic blocking Go test holds all eight slots while
+  asserting `operation_capacity` for the ninth start.
+- [addressed] `sprint-31-live-html-confirmation-page` — The smoke probe now uses
+  an asserted visible `form.stage-start` locator matching the current Run page.
+- [addressed] `sprint-31-live-browser-prepare-start-cancel` — The browser flow
+  uses the current stage form and continues to assert prepare, confirmation,
+  start, operation-ID navigation, and DELETE cancellation behavior.
+- [addressed] `sprint-31-live-no-javascript-operation` — The smoke probe now
+  submits the server-rendered stage form instead of the removed select control.
+  The Run page exposes its stage links and ordinary POST forms without requiring
+  JavaScript.
+- [addressed] `sprint-31-live-no-javascript-cancellation-guidance` — Active
+  operation pages now expose a CSRF-protected server-rendered cancellation form,
+  and retained active or terminal pages expose an explicit status refresh link.
+  The probe now accounts for fast operations reaching a terminal state before
+  the operation page is rendered.
+
+### Focused verification
+
+The following command passed after the remediation:
+
+```text
+go test ./internal/web ./internal/app ./internal/study
+```
+
+### Residual note
+
+The `Operation not retained` error branch directs the operator to refresh the
+owning project, sprint, or study page for durable status but does not repeat the
+generic CLI/interrupt guidance. This is a low-priority recovery-copy improvement
+and is not evidence that cancellation or operation retention is malfunctioning.
+
+Manual remediation status: `addressed_pending_smoke_rerun`
+Next action: none requested; retain the original failed smoke evidence until a
+future explicitly requested run supersedes it.

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "status": "complete",
+  "project": "ultraplan-go",
+  "sprint": "34-shared-context",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go",
+    "source": "project-index.md"
+  },
+  "planPath": "projects/ultraplan-go/sprints/34-shared-context/plan.md",
+  "planFingerprint": "sha256:a26b05637a9fe342fce60a81a8b28ebe86bba32c1df218cd6c3a091f5c04cc4e",
+  "baseRevision": "131c842595e62d503fadd431d15af394c21b9e3c",
+  "createdAt": "2026-08-20T16:35:17Z",
+  "updatedAt": "2026-08-20T16:35:17Z",
+  "completedAt": "2026-08-20T16:35:17Z",
+  "executionMode": "manual in-session execution under $ultraplan-execute",
+  "tasks": [
+    {
+      "id": "task-1-shared-prefix",
+      "identity": {"name": "Task 1: Establish The Shared Prefix Byte Contract", "planLine": 55, "decisions": ["Decision 1"], "requirements": ["AC-02", "AC-03", "AC-04", "AC-06", "AC-12"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Exact artifact bytes, stable framing, boundary, determinism, and dynamic exclusion tests pass.", "path": "internal/sprint/prompt_context_test.go"}]
+    },
+    {
+      "id": "task-2-source-resolution",
+      "identity": {"name": "Task 2: Resolve Transient Source Evidence Safely And Deterministically", "planLine": 64, "decisions": ["Decision 2"], "requirements": ["AC-01", "AC-02", "AC-03", "AC-06", "AC-12", "AC-16"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Contained bounded source resolution, change detection, cancellation, encoding, range, budget, no-recursion, and no-mutation tests pass.", "path": "internal/sprint/prompt_context_test.go"}]
+    },
+    {
+      "id": "task-3-planning-integration",
+      "identity": {"name": "Task 3: Integrate Planning Stages Through One Explicit Boundary", "planLine": 75, "decisions": ["Decision 1", "Decision 3"], "requirements": ["AC-03", "AC-04", "AC-05", "AC-06", "AC-12"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Planning previews and real service runtime requests share exact prefix bytes across all covered stages.", "path": "internal/sprint/prompt_context_test.go"}]
+    },
+    {
+      "id": "task-4-downstream-integration",
+      "identity": {"name": "Task 4: Integrate Execute, Conformance Review, And Smoke Authoring Without Orchestration Changes", "planLine": 84, "decisions": ["Decision 1", "Decision 3"], "requirements": ["AC-03", "AC-04", "AC-05", "AC-06", "AC-08", "AC-12"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Execute, independent review fan-out/repair, and smoke authoring reuse the sprint-owned prefix without orchestration changes.", "path": "internal/sprint/review_test.go"}]
+    },
+    {
+      "id": "task-5-flow-state",
+      "identity": {"name": "Task 5: Lock In Exact-Once Flow And Sprint 33 State Guarantees", "planLine": 93, "decisions": ["Decision 4"], "requirements": ["AC-07", "AC-08", "AC-09", "AC-12"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Canonical planning order contains code-context exactly once and Sprint 33 state/interface regressions pass.", "path": "internal/sprint/sprint_index_test.go"}]
+    },
+    {
+      "id": "task-6-manual-skill",
+      "identity": {"name": "Task 6: Materialize The Manual Canonical Code-Context Skill", "planLine": 101, "decisions": ["Decision 4"], "requirements": ["AC-10", "AC-11"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Manual-only canonical delegation and materialization preservation/force/synchronization tests pass.", "path": "internal/workspace/skills_test.go"}]
+    },
+    {
+      "id": "task-7-documentation",
+      "identity": {"name": "Task 7: Align Release Documentation With Executable Behavior", "planLine": 109, "decisions": ["Decision 5"], "requirements": ["AC-06", "AC-09", "AC-10", "AC-11", "AC-13", "AC-14"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "documentation", "summary": "Every required guide matches the shared-context, recovery, skill, browser, and truthful dogfood behavior.", "path": "docs/architecture.md"}]
+    },
+    {
+      "id": "task-8-release-evidence",
+      "identity": {"name": "Task 8: Produce Layered Release And Review Evidence", "planLine": 119, "decisions": ["Decision 5"], "requirements": ["AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16"]},
+      "status": "complete", "attempts": 1,
+      "createdAt": "2026-08-20T16:35:17Z", "updatedAt": "2026-08-20T16:35:17Z", "startedAt": "2026-08-20T16:35:17Z", "completedAt": "2026-08-20T16:35:17Z",
+      "evidence": [{"kind": "verification", "summary": "Focused, interface, full, race, vet, build, and diff checks pass; gated dogfood permission blocker is recorded truthfully.", "path": "projects/ultraplan-go/sprints/34-shared-context/execute.md"}]
+    }
+  ],
+  "files": [
+    "README.md",
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/planning-smoke.md",
+    "docs/recovery.md",
+    "docs/stage-skills.md",
+    "docs/user-guide.md",
+    "internal/sprint/execute.go",
+    "internal/sprint/prompt_context.go",
+    "internal/sprint/prompt_context_test.go",
+    "internal/sprint/prompts.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/smoke_author.go",
+    "internal/sprint/smoke_test.go",
+    "internal/sprint/sprint_index_test.go",
+    "internal/workspace/scaffold/templates/README.md",
+    "internal/workspace/skills.go",
+    "internal/workspace/skills_test.go"
+  ],
+  "testsRun": [
+    "go test ./internal/sprint: pass",
+    "go test ./internal/workspace ./internal/app ./internal/tui ./internal/web: pass",
+    "go test ./...: pass",
+    "go test -race ./...: pass",
+    "go vet ./...: pass",
+    "go build ./cmd/ultraplan: pass",
+    "git diff --check: pass"
+  ],
+  "reviews": {
+    "architecture": "approve_with_comments_preflight",
+    "sprint": "pass_with_gated_evidence_blocked_preflight",
+    "canonicalReviewCreated": false,
+    "findings": []
+  },
+  "deferred": [],
+  "blockers": [
+    "Gated real-runtime requirements-to-plan dogfood was not invoked because the active manual execute skill's UltraPlan CLI allowlist excludes flow --to plan."
+  ]
+}

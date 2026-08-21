@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "project": "ultraplan-go",
+  "sprint": "31-web-operations",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go",
+    "source": "project-index.md"
+  },
+  "planPath": "projects/ultraplan-go/sprints/31-web-operations/plan.md",
+  "planFingerprint": "sha256:2d97b0cf999fa5824f2bbb3c2d462a26b2bb4e84ad60632439452800ee42d148",
+  "createdAt": "2026-08-16T14:29:51.275824418Z",
+  "updatedAt": "2026-08-16T16:21:24.254900875Z",
+  "tasks": [
+    {
+      "id": "task-745de49054d9",
+      "identity": {
+        "name": "Task 1: Stabilize The Closed Shared App Operation Capability",
+        "planLine": 56,
+        "decisions": [
+          "Decision 1",
+          "Decision 2",
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-01",
+          "AC-03",
+          "AC-16",
+          "AC-17"
+        ],
+        "evidence": [
+          "Add `internal/app/web_operations_test.go` with per-variant normalization/fingerprint mutation fixtures, preparation side-effect assertions, safe projection/redaction, nested cancellation, and cross-surface agreement."
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.022899654Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.282989747Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.026566281Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-d4f9c6635ec2",
+      "identity": {
+        "name": "Task 2: Add Product-Owned Sprint Mutation Exclusion And Recovery Truth",
+        "planLine": 65,
+        "decisions": [
+          "Decision 3",
+          "Decision 4"
+        ],
+        "requirements": [
+          "AC-09",
+          "AC-13"
+        ],
+        "evidence": [
+          "Add `../ultraplan-go/internal/sprint/locks.go`, building on the existing verification-lock behavior, so sprint flow, execute, review, smoke, and verify share one exclusive per-sprint mutation lease across processes and surfaces.",
+          "Add `internal/sprint/locks_test.go` and focused recovery fixtures for acquire/release, cross-surface conflict, cleanup-barrier ordering, cancellation/shutdown, stale owner, process evidence, compatibility, and study-lock non-overlap."
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.029728202Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.289409177Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.033495667Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-2cc2ca609812",
+      "identity": {
+        "name": "Task 3: Implement Binding Session And Confirmation Policy",
+        "planLine": 74,
+        "decisions": [
+          "Decision 2",
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-01",
+          "AC-02",
+          "AC-14"
+        ],
+        "evidence": [
+          "Test strict JSON and unknown fields, caller-authored authority fields, CSRF/session separation, expiry, mismatch, stale input, replay, response-loss replay protection, preparation capacity, and hostile token/log fixtures."
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.037169538Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.295394803Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.040575055Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-2644556332da",
+      "identity": {
+        "name": "Task 4: Build The Bounded Ephemeral Operation Hub",
+        "planLine": 81,
+        "decisions": [
+          "Decision 4",
+          "Decision 5",
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-05",
+          "AC-12"
+        ],
+        "evidence": [
+          "Add `internal/web/operations_test.go` for capacity, aggregate bounds, exact-once cancellation, terminal races, retention/eviction, restart loss, slow/abandoned subscribers, cleanup, and absence of durable hub state."
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.044171911Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.301405226Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.047580995Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-de7ad28c9f71",
+      "identity": {
+        "name": "Task 5: Add Versioned Operation Routes, Results, Errors, And SSE",
+        "planLine": 89,
+        "decisions": [
+          "Decision 2",
+          "Decision 5",
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-01",
+          "AC-08",
+          "AC-14",
+          "AC-16"
+        ],
+        "evidence": [
+          "Add or extend `routes_test.go` and add `sse_test.go` for methods, envelopes, strict DTOs, compatibility with Sprint 30, every state/error code, concurrent monotonic IDs, replay/rollover, heartbeat, payload bounds, slow readers, disconnect isolation, and terminal ordering.",
+          "Implement SSE initial snapshot, retained replay after `Last-Event-ID`, explicit replay-gap `recovery_required` plus snapshot, heartbeat comments, terminal flush, session recheck, and bounded closure without command semantics."
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.050779784Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.307591939Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.053913281Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-c79d0f23a0ad",
+      "identity": {
+        "name": "Task 6: Integrate Ordered Server Shutdown And Startup Reconciliation** — implemented except the recorded owner-specific durable deadline-exhaustion write.",
+        "planLine": 97,
+        "decisions": [
+          "Decision 3",
+          "Decision 4"
+        ],
+        "requirements": [
+          "AC-06",
+          "AC-09",
+          "AC-12"
+        ],
+        "evidence": [
+          "Add deterministic server/hub integration tests for idle and multi-operation shutdown, draining rejection, nested cancellation, process escalation, exact-once races, lock ordering, terminal-before-close, bounded deadline, and stale-running/lock restart reconciliation."
+        ]
+      },
+      "status": "deferred",
+      "attempts": 1,
+      "createdAt": "2026-08-16T15:59:19.406021481Z",
+      "updatedAt": "2026-08-16T16:21:24.202403277Z",
+      "startedAt": "2026-08-16T15:59:19.41182489Z",
+      "completedAt": "2026-08-16T16:21:24.202403277Z",
+      "diagnostics": [
+        {
+          "code": "cancelled",
+          "message": "context canceled",
+          "at": "2026-08-16T15:59:25.022654641Z"
+        },
+        {
+          "code": "deferred",
+          "message": "Owner-specific durable cleanup-uncertain persistence after an exhausted shutdown deadline requires a separately governed app/product capability; existing cancellation, process esca",
+          "at": "2026-08-16T16:21:24.202403277Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-4bd21dce4320",
+      "identity": {
+        "name": "Task 7: Add Server-Rendered Operation Views And Narrow Enhancement",
+        "planLine": 105,
+        "decisions": [
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-01",
+          "AC-07",
+          "AC-08",
+          "AC-15"
+        ],
+        "evidence": [
+          "Extend CSS/templates/static tests for escaped text and allowlisted URLs, native controls, focus/error behavior, live regions, reduced motion, color-independent states, bounded timeline, one stream, all lifecycle/reason/error fixtures, and enhanced/non-enhanced DTO parity."
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.063308121Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.320693982Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.067052424Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-c5ed04095920",
+      "identity": {
+        "name": "Task 8: Complete Safe Observability And Cross-Boundary Security Evidence",
+        "planLine": 113,
+        "decisions": [
+          "Decision 5",
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-07",
+          "AC-14",
+          "AC-16"
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.070223872Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.326610809Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.073892833Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-07131f16c36b",
+      "identity": {
+        "name": "Task 9: Update Public And Architecture Documentation",
+        "planLine": 120,
+        "decisions": [
+          "Decision 8"
+        ]
+      },
+      "status": "complete",
+      "attempts": 2,
+      "createdAt": "2026-08-16T14:29:51.275824418Z",
+      "updatedAt": "2026-08-16T15:19:00.00507912Z",
+      "startedAt": "2026-08-16T14:35:01.077264547Z",
+      "completedAt": "2026-08-16T15:19:00.00507912Z",
+      "diagnostics": [
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:29:51.337741385Z"
+        },
+        {
+          "code": "runtime-failed",
+          "message": "permission path rules are unsupported by the current OpenCode adapter",
+          "at": "2026-08-16T14:35:01.080893693Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    },
+    {
+      "id": "task-22aebbd2a149",
+      "identity": {
+        "name": "Task 10: Run Deterministic Verification And Required Reviews** — deterministic verification and manual architecture review are complete; governed independent Sprint Review remains downstream.",
+        "planLine": 127,
+        "decisions": [
+          "Decision 8"
+        ],
+        "requirements": [
+          "AC-18"
+        ],
+        "evidence": [
+          "Run package race tests, the full test suite, full race suite, and binary build; record commands and outcomes in execution evidence."
+        ]
+      },
+      "status": "deferred",
+      "attempts": 1,
+      "createdAt": "2026-08-16T15:59:19.406021481Z",
+      "updatedAt": "2026-08-16T16:21:24.254870368Z",
+      "startedAt": "2026-08-16T15:59:25.02715681Z",
+      "completedAt": "2026-08-16T16:21:24.254870368Z",
+      "diagnostics": [
+        {
+          "code": "cancelled",
+          "message": "context canceled",
+          "at": "2026-08-16T15:59:25.03173357Z"
+        },
+        {
+          "code": "deferred",
+          "message": "The independent governed Sprint Review is the downstream review stage and must not be executed or fabricated within execute; deterministic verification and the manual architecture ",
+          "at": "2026-08-16T16:21:24.254870368Z"
+        }
+      ],
+      "runtime": {
+        "model": "openai/gpt-5.6-sol",
+        "modelSource": "planning.execute_model",
+        "validationSummary": "configured=false passed=false failures=0",
+        "omissionReason": "raw runtime payloads omitted"
+      }
+    }
+  ]
+}

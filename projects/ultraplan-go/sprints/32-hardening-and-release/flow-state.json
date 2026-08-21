@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "32-hardening-and-release",
-  "updatedAt": "2026-08-18T17:56:09.235961188Z",
+  "updatedAt": "2026-08-19T18:31:11.585827156Z",
   "stages": [
     {
       "stage": "requirements",
@@ -42,79 +42,716 @@
     }
   ],
   "review": {
-    "status": "blocked",
-    "verdict": "blocked",
+    "status": "completed",
+    "verdict": "pass_with_findings",
     "path": "projects/ultraplan-go/sprints/32-hardening-and-release/review.md",
-    "lastRunAt": "2026-08-18T17:52:09.783662509Z",
-    "fingerprint": "88106b4820b31f054df417eeec6e84c6b1ba8e115f7ff28dc9063a98b3c742b9",
-    "stale": true,
-    "completed": 0,
+    "lastRunAt": "2026-08-19T11:00:47.400923652Z",
+    "fingerprint": "6e6902e21705467ad32d24f765f6784c6b61fea396eb73f7e453ab1931affe5a",
+    "stale": false,
+    "completed": 14,
     "total": 14,
-    "diagnostics": [
+    "artifactDigest": "f0327a6d4304c841904eb6d7163ea5fea5edcf0acc5feed38ec22ed29805d82a",
+    "lastAttempt": {
+      "id": "review-1787136777577426148",
+      "status": "completed",
+      "startedAt": "2026-08-19T10:52:57.577426148Z",
+      "heartbeatAt": "2026-08-19T11:00:47.356889433Z",
+      "ownerPid": 75796,
+      "completedAt": "2026-08-19T11:00:47.400923652Z"
+    },
+    "lastComplete": {
+      "verdict": "pass_with_findings",
+      "artifact": "projects/ultraplan-go/sprints/32-hardening-and-release/review.md",
+      "artifactDigest": "f0327a6d4304c841904eb6d7163ea5fea5edcf0acc5feed38ec22ed29805d82a",
+      "inputFingerprint": "6e6902e21705467ad32d24f765f6784c6b61fea396eb73f7e453ab1931affe5a",
+      "completedAt": "2026-08-19T11:35:00Z",
+      "coverage": [
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-architecture",
+          "applicability": "direct",
+          "summary": "The Architecture contract applies directly to Sprint 32. The eight requirement IDs are conformant within the executed scope. (ARCH-CORE-001 / ARCH-CORE-002) `internal/web` boundary inventory and shared-capability refactor (Tasks 1-2) establish explicit module boundaries and an inward-only dependency direction; the direct import-boundary check and explicit prohibition on `internal/web` importing product, runtime, process, or CLI handler packages is documented as passing evidence and required by acceptance criterion AC-09. (ARCH-LAYER-001) Domain code under `study`, `project`, `sprint`, `workspace`, and `codeextract` was not modified by Sprint 32 and remains pure; the architecture reasoning explicitly forbids moving domain behavior into web or platform. (ARCH-LAYER-002) Use-case capabilities in `internal/app` are exposed through narrow, cohesive interfaces justified by volatility and multi-surface substitution rather than broad god interfaces, and the fake future-stage capability fixture is the contract test that proves the seam without a stage-specific branch or production plugin registry. (ARCH-ENTRY-001) Web handlers and CLI command adapters stay thin and delegate to typed app capabilities; route-specific workflow logic, executable construction, direct file interpretation, and stage-name branching are explicitly prohibited by decision 1 and validated by handler delegation tests. (ARCH-MODULE-001) Module public APIs remain small, web-owned request/response DTOs stay inside `internal/web`, and shared app results remain surface-neutral rather than generalized into domain objects. (ARCH-COMP-001) Composition happens at `cmd/ultraplan` with explicit capability wiring; no package-global runner, reflection container, service locator, or production registry is added, which the contract permits for small CLI skeletons that do not hide volatile collaborators. (ARCH-SHARED-001) Web is treated as a domain surface rather than a platform package, Markdown rendering was moved behind `internal/app` so templates stay presentation-only, and `internal/platform/runtime` plus `internal/platform/process` remain generic and product-neutral. The execute transcript reports PASS for every relevant suite (`internal/app`, `internal/web`, focused compatibility, security, operation, SSE, lifecycle, templates, and integration suites, race detection, production build, `go vet`, `git diff --check`). Three planned items remain deferred by design (manual browser accessibility under Task 8, current Architecture and Sprint Review under Task 11, gated real-runtime and harness evidence under Task 12) with explicit prerequisite reasons and downstream ownership; none introduces an architectural deviation within the executed scope. Two risks remain open in `plan.md` (shared-capability god-interface drift at line 275 and cleanup-deadline ownership at line 279); both are within the architecture's existing hard rules and are mitigated today by the fake-stage contract test and the bounded-cleanup-context race/leak evidence respectively.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-cli-surface",
+          "applicability": "direct",
+          "summary": "CLI Surface contract is directly satisfied for the `ultraplan serve` command hardened in Sprint 32. CLI-SHAPE-001: serve command shape matches the PRD 2.4 description at `projects/ultraplan-go/docs/PRD.md:481-484` and TRD 7.5 local HTTP server requirements at `projects/ultraplan-go/docs/TRD.md:363-403`; long flags follow TRD 7.1 global flag conventions at `projects/ultraplan-go/docs/TRD.md:294-301`; no ambiguous booleans are introduced. CLI-HELP-001: command-level `--help` is verified PASS at `projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:65`; root-level `--version` support is unchanged from the established version command. CLI-IO-001: stdout/stderr separation is enforced by the typed app use case layer per `projects/ultraplan-go/docs/ARCHITECTURE.md:297-307` and TRD 7.3 output modes; tests verify separation and no contamination of JSON stdout. CLI-EXIT-001: stable exit code classes are documented at TRD 7.2 `projects/ultraplan-go/docs/TRD.md:304-314`; graceful shutdown returns 0, failures return appropriate non-zero codes, and TestServer, TestShutdown, TestDraining, TestCleanup, TestRestart, and TestReconcile all PASS per `projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:58`. CLI-JSON-001: serve is not an automation-facing status/list/inspect command per PRD Should Have `projects/ultraplan-go/docs/PRD.md:421`; the JSON envelopes serve exposes travel through HTTP `/api/v1` governed by the Errors, Security, and Compatibility contracts, not the CLI invocation itself. CLI-CONFIG-001: precedence is documented at TRD 6.2 `projects/ultraplan-go/docs/TRD.md:240-247` (defaults \u003c workspace \u003c environment \u003c flags), `config show` redacts sensitive values per TRD 6.3, and tests cover precedence, fail-closed startup, and redaction. CLI-LIFE-001: the long-running serve lifecycle is explicit per PRD 2.4 and TRD 7.5; draining, exact-once canonical cancellation, bounded cleanup, durable terminal or cleanup-uncertain reconciliation, conservative restart, and bounded HTTP timeouts are demonstrated by passing tests in `internal/web/server_test.go` and `internal/web/operations_test.go` per `projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:58`. CLI-SAFE-001: serve performs no destructive default; guarded mutation and runtime-backed operations carry their own confirmation protocol covered by other contracts. CLI-NONINT-001: serve starts without interactive prompts and uses bounded timeouts so CI/agent execution is deterministic. Three execute tasks remain deferred with documented reasons at `projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:31-44`: Task 8 (interactive browser accessibility audit) is blocked on missing Chromium/Firefox in this environment and is a CSS/JS accessibility concern outside CLI Surface scope; Task 11 (deterministic release gates including this Architecture/Sprint Review evidence) is the review work being conducted now; Task 12 (gated real-runtime and smoke-harness evidence) is downstream of the current review verdict. None of the seven reviewer rejection criteria at `system/contracts/surfaces/cli.md:218-228` are triggered for the implemented serve hardening: no command returns success when the operation failed; logs and progress do not contaminate JSON stdout; Decision 2 at `projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md:139-148` freezes the Sprint 30-31 `/api/v1` contract so no public output or exit behaviour changes without compatibility consideration; lifecycle for the long-running serve command is explicit; serve adds no destructive defaults; non-interactive execution is deterministic; and secrets are redacted at type and projection boundaries. No actionable high-severity deviation from the CLI Surface contract is identified.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-configuration",
+          "applicability": "direct",
+          "summary": "Sprint 32 conforms to the Configuration contract. CFG-SOURCE-001 is satisfied by the explicit precedence (built-in defaults, workspace config, environment, command flags) fixed in reasoning.md:152-159 and reasoning/api-design.md:21, and by the centralized composition root documented in projects/ultraplan-go/docs/ARCHITECTURE.md:13-14; ULTRAPLAN_WORKSPACE in projects/ultraplan-go/docs/TRD.md:159 shows the application-specific env-var prefix is in use. CFG-TYPE-001 is satisfied by the typed bounds validated before listening in reasoning.md:152, the project/config layer in projects/ultraplan-go/docs/TRD.md:73,202-247, and the parsing/startup tests included in the focused web suite listed in projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:54. CFG-COMPAT-001 is not triggered: the local web server config is loaded fresh on every ultraplan serve invocation and is not persisted across process, release, or user-machine boundaries, so there is no durable config to version or migrate. CFG-SECRET-001 is satisfied by the type- plus final-projection redaction across HTML, JSON, SSE, retained data, and diagnostics in reasoning.md:152, reasoning/architecture.md:45-47, the constant-time bearer-secret comparison in reasoning/api-design.md:48, and the redaction and forbidden-corpus coverage in projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:56. CFG-START-001 is satisfied by fail-closed validation before the listener accepts requests in reasoning.md:152, reasoning/architecture.md:44, the project-config invariants in projects/ultraplan-go/docs/TRD.md:258-268, and the startup-failure coverage in the focused web and security suites. CFG-ENV-001 is not triggered: the local web server is single-mode (numeric-loopback, same-origin, single-process) per projects/ultraplan-go/docs/ARCHITECTURE.md:332-348 and the project-index's Phase 4 context, so the contract's dev/test/staging/prod axis does not apply. CFG-PUBLIC-001 is satisfied by app-resolved opaque/allowlisted references and final projection-level redaction in reasoning.md:152 and reasoning/api-design.md:46-47, the type plus projection redaction in reasoning/architecture.md:46, and the projection/secret scan in projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:56. CFG-OBS-001 is satisfied by source/precedence diagnostics without secrets in projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:105, by TRD's effective-config object recording defaulted versus user-provided values in projects/ultraplan-go/docs/TRD.md:247, and by the structured diagnostics emitted in reasoning/api-design.md:58. The full deterministic suite, race suite, vet, build, serve --help, packaging check, and diff check all pass per projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:53-68, and Task 4 is complete with evidence 'Origin, request framing, immutable bounds, Markdown safety, and security matrix tests pass' in .run-state.json:163-168.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-documentation",
+          "applicability": "partial",
+          "summary": "The frozen input demonstrates strong conformance with the documentation contract for planning artifacts: PRD, TRD, and ARCHITECTURE have clear ownership, comprehensive coverage, decision rationale, and operational guidance. reasoning.md documents 7 final decisions with full context, alternatives, contracts, and evidence (DOC-ARCH-001 satisfied). The project-index.md declares sole authoritative source to prevent duplicate source-of-truth conflicts. Compatibility fixtures freeze documented behavior (DOC-GEN-001 satisfied). Examples appear in PRD/TRD and are tested where practical. However, the documentation contract review cannot achieve full applicability coverage because the 7 required public-facing documentation outputs listed in requirements.md (lines 44-50: docs/local-web.md, docs/configuration.md, docs/cli-reference.md, docs/user-guide.md, docs/recovery.md, docs/architecture.md, docs/release-checklist.md) are NOT present in the frozen input index. These are the actual user-facing artifacts that DOC-PUBLIC-001 and DOC-OPS-001 require to be updated when public behavior changes, and their absence means the reviewer cannot verify the documentation contract is fully satisfied for Sprint 32's substantial public-surface changes (local web UI, /api/v1 contract, serve command, configuration schema). The plan.md Task 10 evidence claims 'public docs reconciled' but the reviewer cannot verify this claim against absent files. Additionally, the PRD (version 1.6.0) and TRD (version 1.7.0) share the same Last Updated date (2026-08-15) but the PRD lacks a visible changelog to explain its version progression, creating minor version-staleness uncertainty.",
+          "findings": [
+            {
+              "id": "DOC-PUB-001",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Public-facing documentation outputs absent from frozen input",
+              "detail": "The documentation contract requires that public surfaces be documented and updated when public behavior changes (DOC-PUBLIC-001, severity High). Sprint 32 introduces substantial new public surfaces including the local web UI, /api/v1 HTTP contract, ultraplan serve command, web configuration schema, and recovery/shutdown behavior. requirements.md lines 44-50 lists 7 required public documentation outputs that must be updated: docs/local-web.md, docs/configuration.md, docs/cli-reference.md, docs/user-guide.md, docs/recovery.md, docs/architecture.md, docs/release-checklist.md. plan.md Task 10 (line 183) and its evidence field claim 'public docs reconciled' and that the outside-tree packaged binary serves every documented page, but none of these 7 documentation files appear in the frozen input index for this review. The reviewer cannot verify the documentation contract compliance for the user-facing artifacts the contract most directly governs.",
+              "action": "Provide the 7 required public documentation files (docs/local-web.md, docs/configuration.md, docs/cli-reference.md, docs/user-guide.md, docs/recovery.md, docs/architecture.md, docs/release-checklist.md) in the frozen input so that the documentation contract review can verify their existence, content alignment with implementation, and conformance with DOC-PUBLIC-001, DOC-OPS-001, and DOC-OWNER-001 requirements.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md",
+                  "startLine": 44,
+                  "endLine": 50
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 183,
+                  "endLine": 197
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 36,
+                  "endLine": 44
+                }
+              ]
+            },
+            {
+              "id": "DOC-OPS-001",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Operational recovery documentation absent from frozen input",
+              "detail": "DOC-OPS-001 requires operator-facing documentation for changes affecting deployment, config, local state, cancellation, recovery, and common failures. Sprint 32 explicitly closes the Sprint 31 shutdown-reconciliation gap (requirement AC-18, AC-19, AC-20 and decision 5 in reasoning.md) by adding owner-specific cleanup_uncertain outcomes, restart reconciliation, and bounded cleanup. The recovery guide (docs/recovery.md) is a required output in requirements.md line 48 and must document reconnect, cancellation, interrupted work, cleanup uncertainty, stale locks, restart reconciliation, and durable-state recovery. This document is not in the frozen input despite being the primary artifact for the Sprint 31 carry-forward gap that Sprint 32 closes.",
+              "action": "Provide docs/recovery.md in the frozen input so the documentation contract review can verify the operational documentation covers reconnect, cancellation, interrupted work, cleanup uncertainty, stale locks, restart reconciliation, operation expiry, replay gaps, and durable recovery actions.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md",
+                  "startLine": 48,
+                  "endLine": 48
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 170,
+                  "endLine": 181
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 130,
+                  "endLine": 142
+                }
+              ]
+            },
+            {
+              "id": "DOC-OWNER-002",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "PRD and TRD version numbering inconsistency without PRD changelog",
+              "detail": "DOC-OWNER-001 requires clear ownership and location of important docs. The PRD declares Version 1.6.0 and Last Updated 2026-08-15, while the TRD declares Version 1.7.0 and Last Updated 2026-08-15. Both were updated on the same date but with different version numbers. The TRD includes a changelog section (lines 2583-2591) explaining its 1.7.0 version added Phase 5 grounded planning, but the PRD has no visible changelog to explain its 1.6.0 version progression or whether the PRD was updated for Phase 5 alongside the TRD. This creates minor version-staleness ambiguity.",
+              "action": "Either add a changelog section to the PRD matching the TRD format to explain the 1.6.0 version progression and confirm Phase 5 content alignment, or align the PRD and TRD version numbers to reflect the same update scope.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/docs/PRD.md",
+                  "startLine": 1,
+                  "endLine": 7
+                },
+                {
+                  "path": "projects/ultraplan-go/docs/TRD.md",
+                  "startLine": 1,
+                  "endLine": 6
+                },
+                {
+                  "path": "projects/ultraplan-go/docs/TRD.md",
+                  "startLine": 2583,
+                  "endLine": 2591
+                }
+              ]
+            },
+            {
+              "id": "DOC-OPS-002",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Configuration documentation absent from frozen input",
+              "detail": "DOC-OPS-001 requires documentation of config, secrets, and lifecycle. The configuration reference (docs/configuration.md) is a required output in requirements.md line 45 and must document local-web configuration, precedence, loopback restrictions, limits, and safe diagnostics. The plan.md Task 4 (line 102) and Task 10 (line 183) both depend on this documentation matching the Task 1 configuration inventory and the effective configuration behavior. This file is not in the frozen input.",
+              "action": "Provide docs/configuration.md in the frozen input so the documentation contract review can verify it documents every web setting, source precedence, numeric-loopback restriction, defaults, valid ranges/combinations, fail-closed behavior, and redacted diagnostics.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md",
+                  "startLine": 45,
+                  "endLine": 45
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 102,
+                  "endLine": 114
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 150,
+                  "endLine": 159
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-errors",
+          "applicability": "direct",
+          "summary": "Sprint 32-hardening-and-release directly applies the Errors contract: it (re)introduces or alters failure paths through the thin web boundary, transport DTO/error mapping, typed `internal/app` capability surface, startup/preflight validation, lifecycle and shutdown reconciliation, and projection-level redaction; it translates errors across HTTP/JSON/SSE/HTML boundaries; it changes task, workflow, dependency, persistence, and observability behavior; and it changes logging, event emission, and redaction around failures. Conformance was verified against the twelve requirement rows in `system/contracts/core/errors.md` (errors.md:38-52) and the corresponding rule bodies (errors.md:88-360). The plan (plan.md:42-46) and architecture/api-design reasoning bind the sprint to stable typed codes, `errors.Is`/`errors.As` mapping (api-design.md:29-32), unknown-route/method JSON behavior (api-design.md:32), confirmation-bound deduplication and idempotent cancellation (api-design.md:24-25, plan task 5), fail-closed configuration/preflight validation (plan task 4, reasoning.md:54-56), exact-once cancellation with bounded cleanup and `cleanup_uncertain` (plan task 6, reasoning.md:174), and type+projection redaction excluding tokens, cookies, CSRF values, prompts, provider payloads, stderr, unsafe paths, and executable arguments (architecture.md:46, frontend.md:40-42). Execute evidence (`projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:53-60`) records PASS for the suites that directly exercise the contract: `TestAPICompatibility|TestRoute|TestMethod|TestErrorMapping|TestCache` covers ERR-CORE-001, ERR-SHAPE-001, ERR-CODE-001, ERR-TRANS-001, ERR-IO-001; `TestSecurity|TestHost|TestOrigin|TestCSRF|TestSession|TestCSP|TestBody|TestPath|TestMarkdown|TestRedaction` covers ERR-IO-001, ERR-REDACT-001; `TestOperation|TestConfirmation|TestSSE|TestSubscriber|TestReplay|TestDisconnect` covers ERR-TASK-001, ERR-RETRY-001; `TestServer|TestShutdown|TestDraining|TestCleanup|TestRestart|TestReconcile` covers ERR-STARTUP-001, ERR-TASK-001, ERR-DATA-001; full `go test ./...` and `go test -race ./...` plus `go vet ./...` and the production build cover the remaining contract hooks (execute.md:61-67). Deferred tasks (8, 11, 12) are explicitly recorded as `blocked` with exact missing prerequisites rather than as passed (execute.md:31-43, plan.md:157, 198, 211): the manual-browser accessibility audit, the downstream review/smoke execution, and the real-runtime + smoke-harness evidence. None of these deferrals hide a failure; they are surfaced in `.run-state.json` and `execute.md` with codes and timestamps, satisfying the ERR-CORE-001 visibility requirement. No reviewer-cited deviation was identified against the Errors contract rules or its rejection criteria (errors.md:88-371).",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-llm-evaluation-cost-safety",
+          "applicability": "direct",
+          "summary": "The contract applies to Sprint 32 because the sprint hardens browser-exposed runtime-backed operations that act on AI features (requirements.md:32). EVAL-SCOPE-001, EVAL-REG-001, EVAL-DATA-001, and EVAL-MODEL-001 are not_triggered for this sprint: it introduces no prompt/model/tool/retrieval changes, no eval datasets, and no model/provider/runtime/fallback/temperature/context/output-validation changes. EVAL-SAFETY-001 (blocker) is conformant: internal/web is bounded to import only internal/app and the Go standard library (architecture decision 1, reasoning/architecture.md:13-16), so no model output can reach arbitrary tools or shell/network/file operations; mutating and runtime-backed browser actions require a server-issued short-lived confirmation bound to normalized request, scope, mutation class, governed-input fingerprint, and session (reasoning/api-design.md:22-25); raw prompts, provider payloads, stderr, cookies, CSRF/session values, tokens, unsafe paths, and executable arguments are excluded from HTML/JSON/SSE projections and terminal results at both the type and projection boundaries (reasoning/architecture.md:46; reasoning/api-design.md:30). EVAL-HUMAN-001 (high) is conformant: high-impact runtime-backed browser operations present safe operation scope, mutation class, affected references, and runtime/model metadata on the confirmation page, gating auto-execution behind server-validated confirmation (reasoning/frontend.md:21, reasoning/api-design.md:22-25, requirements.md:392, PRD.md:404-406). EVAL-COST-001 (medium) is partially conformant: bounded operation, preparation, event, subscriber, stream, retention, heartbeat, lifetime, polling, and cleanup limits prevent hidden retries and unbounded context assembly or tool loops (reasoning/api-design.md decisions 4 and 5; plan.md task 5), and the underlying agentwrap runtime retains token/latency/cost metadata (contract llm.md LLM-COST-001), but the explicit set of cost/latency fields surfaced in the browser preparation, operation, and SSE projections for runtime-backed operations is not enumerated in planning artifacts.",
+          "findings": [
+            {
+              "id": "EVAL-COST-001-partial-metadata-surface",
+              "severity": "medium",
+              "applicability": "partial",
+              "title": "EVAL-COST-001 partial — explicit cost/latency metadata surface in browser projections not enumerated in planning artifacts",
+              "detail": "The contract requires runtime/provider-backed AI paths to capture and expose runtime identifier, provider identifier, model identifier, prompt version, token counts where available, retry count, duration, tool count, and fallback/runtime/provider selection where relevant. The sprint preserves the underlying agentwrap observability through the app capability boundary and adds bounded limits that prevent hidden retries and unbounded loops (reasoning/api-design.md decisions 4 and 5; plan.md task 5). However, the planning artifacts describe the browser projection generically as 'safe runtime/model metadata' (reasoning/frontend.md:21) without enumerating which specific EVAL-COST-001 fields appear in browser confirmation, operation status, retained event, or terminal projection paths. The integration test (plan.md:171-181) verifies safe metadata exposure but does not enumerate the surfaced fields. Reviewer cannot access the implementation, so the contract requirement is not verifiable from governed inputs alone.",
+              "action": "Enumerate in the implementation the specific EVAL-COST-001 fields surfaced in browser confirmation, operation, and SSE projections for runtime-backed browser operations — runtime identifier, provider identifier, model identifier, prompt version, input/output/total token counts, retry count, duration, tool count, and fallback selection where available — and document the enumerated field set in docs/local-web.md or docs/configuration.md. Add focused tests asserting each safe relevant field appears in browser confirmation and operation projections without exposing prompts, provider payloads, stderr, or other sensitive values, so the contract requirement is verifiable against the published contract.",
+              "citations": [
+                {
+                  "path": "system/contracts/runtime/llm-evaluation-cost-safety.md",
+                  "startLine": 122,
+                  "endLine": 138
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md",
+                  "startLine": 32,
+                  "endLine": 32
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/frontend.md",
+                  "startLine": 21,
+                  "endLine": 21
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/api-design.md",
+                  "startLine": 22,
+                  "endLine": 48
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 171,
+                  "endLine": 181
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-llm-runtime",
+          "applicability": "partial",
+          "summary": "Sprint 32 (Local Web Hardening and Observable-Product Release) does not introduce new conversational, structured, or shared LLM substrate behavior; it hardens the existing loopback browser surface over typed app capabilities. The LLM Runtime contract is selected because representative browser operations may invoke existing runtime-backed work (projects/ultraplan-go/sprints/32-hardening-and-release/sprint-index.md:33-34). Confirmed conformance: shared LLM substrate boundaries remain in product/app/platform layers and the web layer imports only internal/app plus stdlib (projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md:13-16; projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:78-87); no new concrete prompts, tool bundles, or structured-output contracts are introduced (projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md:80-88); runtime-backed browser exposure flows through shared app capabilities rather than reaching into generic runtime internals (projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/api-design.md:14-17; projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:78-87); server-owned lifecycle, exact-once cancellation, bounded cleanup, and terminal arbitration are centralized in shared app operations rather than mode-local retry loops (projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md:172-181; projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:116-128; projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md:33-40); redaction is enforced at both type and projection boundaries so prompts, provider payloads, stderr, CSRF/session values, tokens, and unsafe paths never enter HTML, JSON, SSE, retained events, terminal results, or diagnostics (projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md:42-47; projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/frontend.md:37-43; projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:178-180, 226-244); canonical observability surfaces are reused rather than introducing a parallel telemetry path (projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md:42-47); normal tests use fake runtime and harness dependencies while gated real-runtime evidence remains truthfully blocked (projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:42-43, 69-70; projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.json:482-486); durable workspace state and bounded retry policy remain owned by agentwrap and product layers without mode-local duplicates (projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:116-128; projects/ultraplan-go/docs/TRD.md section 14.1 via project-index.md).",
+          "findings": [
+            {
+              "id": "llm-runtime-001",
+              "severity": "medium",
+              "applicability": "partial",
+              "title": "Gated real-runtime browser evidence is truthfully deferred to downstream smoke; deterministic fake-runtime coverage stands in",
+              "detail": "LLM-EVAL-001 requires that prompt, model, and runtime changes have evaluation or smoke coverage appropriate to risk. Sprint 32 introduces no prompt/model/runtime changes but adds a browser surface that may invoke runtime-backed operations in later sprints. Plan Task 12 and execute.md record that real runtime and ultraplan-go-smoke evidence is deferred because 'A current review verdict is required before real runtime and ultraplan-go-smoke evidence can run' (projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.json:482-486; projects/ultraplan-go/sprints/32-hardening-and-release/execute.md:42-43, 69-70). The deferred diagnostic code 'deferred' is correctly classified; missing prerequisites are not reported as pass. The risk is that the downstream smoke stage runs without exercising one real runtime-backed and one harness-backed browser operation, which would leave browser runtime exposure unproven for real boundaries such as provider model behavior, process lifecycle, and cancellation semantics that deterministic fakes cannot prove.",
+              "action": "When the downstream smoke stage runs, exercise one real runtime-backed browser operation and one real smoke-harness-backed browser operation; if any prerequisite is unavailable, record blocked with the exact missing executable, provider/model, credential, network, or harness prerequisite and never report skipped/unavailable work as passed.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 42,
+                  "endLine": 43
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 69,
+                  "endLine": 70
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.json",
+                  "startLine": 482,
+                  "endLine": 486
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 211,
+                  "endLine": 221
+                },
+                {
+                  "path": "system/contracts/runtime/llm.md",
+                  "startLine": 300,
+                  "endLine": 316
+                }
+              ]
+            },
+            {
+              "id": "llm-runtime-002",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Browser projections must continue to redaction-allowlist runtime fields; token/cost/latency metadata passes through existing agentwrap RunMetadata",
+              "detail": "LLM-COST-001 requires token, cost, and latency metadata where operationally meaningful. LLM-SAFETY-001 requires explicit safety boundaries and inspectable safety decisions for consequential operations. Sprint 32 surfaces runtime/model identifiers and bounded metadata safely before confirmation through typed app capabilities and applies final projection-level redaction across HTML, JSON, SSE, retained events, terminal results, and diagnostics (projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md:42-47; projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/frontend.md:37-43; projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:178-180, 226-244). The forbidden-value scan is recorded as passing (projects/ultraplan-go/sprints/32-hardening-and-release/plan.md:226-244). The risk is that any future browser surface addition for runtime-backed operations must reapply the same allowlist at the new projection, since each transport boundary is independently responsible for redaction (projects/ultraplan-go/docs/TRD.md sections 6.3 and 12.4).",
+              "action": "Maintain redaction across every browser projection (HTML, JSON, SSE, retained events, terminal results, logs, diagnostics); surface runtime/model identifiers and bounded metadata only through allowlisted fields and never embed prompts, provider payloads, stderr, unsafe paths, CSRF/session values, tokens, or executable arguments.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md",
+                  "startLine": 42,
+                  "endLine": 47
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/frontend.md",
+                  "startLine": 37,
+                  "endLine": 43
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 178,
+                  "endLine": 180
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 226,
+                  "endLine": 244
+                },
+                {
+                  "path": "system/contracts/runtime/llm.md",
+                  "startLine": 318,
+                  "endLine": 355
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-observability",
+          "applicability": "direct",
+          "summary": "The Observability contract is directly applicable to Sprint 32 (Local Web Hardening and Observable-Product Release): the sprint introduces server-owned operations, SSE progress, bounded retries, lifecycle and shutdown ordering, terminal arbitration, allowlisted structured diagnostics, and final-projection redaction, which match every applicability trigger in the contract (new failure path, task/batch execution, runtime/diagnostics surfaces, and runtime logging/event behavior). The contract is explicitly selected in projects/ultraplan-go/sprints/32-hardening-and-release/sprint-index.md (line 34) and mapped to acceptance criteria AC-06, AC-15, AC-18, and AC-23 in projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md (lines 47-78), projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md (line 59), and projects/ultraplan-go/sprints/32-hardening-and-release/plan.md (line 47). The governed inputs require structured allowlisted correlation/lifecycle fields, captured logs/events with required fields, blocked-as-not-pass semantics, type-level and final-projection redaction across HTML, JSON, SSE, retained events, terminal results, and diagnostics, atomic owner-specific uncertainty before shutdown, and forbidden-value scans across all surfaces — reasoning.md Decision 5 (lines 172-181) and Decision 3 (lines 150-159) commit to these observability obligations. The execute.md verification transcript (lines 53-65) shows that the focused observability-bearing test patterns (TestOperation|TestConfirmation|TestSSE|TestServer|TestShutdown|TestDraining|TestCleanup|TestRestart|TestSecurity|TestRedaction|TestIntegration) pass under both normal and -race runs, and the Evidence Checklist in plan.md (lines 231-234) explicitly enumerates the OBS-CORE-001, OBS-CORR-001, OBS-HEALTH-001, OBS-DIAG-001, OBS-TASK-001, and OBS-PII-001 evidence. The contract is satisfied by the governed plan and the executed deterministic verification; implementation-level deviations inside the target source tree are not enumerated here because the reviewer's read-only mandate applies to the governed inputs above.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-performance",
+          "applicability": "direct",
+          "summary": "Sprint 32 adds a local HTTP server, browser dashboard, and SSE operation hub to UltraPlan Go. The implementation bounds request, operation, confirmation, payload, event, subscriber, stream, retention, polling, and cleanup paths per the Performance contract. Concurrency is bounded, race-tested, and observable; cleanup uses a distinct bounded cleanup context; operations use exact-once cancellation with no fire-and-forget goroutines; slow subscribers are evicted without blocking product execution. Server-rendered templates with downward namespaced composition provide stable layout; layered CSS and dependency-free JavaScript preserve progressive enhancement without layout jumps. Cache policy uses `no-store` for state-bearing responses and revalidation for static assets unless content-addressed. Server configuration is validated once before serving, so unsafe or incoherent bounds fail closed. Two partial deviations remain: (1) no explicit latency/throughput expectations are documented for the new important paths (PERF-BUDGET-001); and (2) cost driver visibility through the web surface is limited to safe runtime/model metadata; token count, request count, duration, and other cost-relevant fields are delegated to the underlying platform runtime, and end-to-end verification is deferred to downstream gated real-system smoke (PERF-COST-001).",
+          "findings": [
+            {
+              "id": "PERF-BUDGET-001-LATENCY-BUDGETS-MISSING",
+              "severity": "medium",
+              "applicability": "partial",
+              "title": "Important paths lack explicit latency/throughput expectations",
+              "detail": "Sprint 32 introduces several new important user-facing runtime paths (HTTP server startup, /api/v1 endpoint responses, SSE first-event delivery, dashboard render, operation preparation). The reasoning documents (api-design.md and architecture.md sections on idempotency/cache and operation/shutdown lifecycle) and the plan's Performance contract row emphasize bounded resources, race-free concurrency, and streaming patterns but do not declare latency/throughput expectations for the new important paths. The verification matrix in plan.md covers compatibility, security, race, build, and packaging checks but adds no load or latency benchmark. PERF-BUDGET-001 requires identification of latency/throughput expectations where meaningful and expected data size or request volume assumptions; bounding alone is not a substitute for declared performance expectations, and the contract permits explicit acknowledgement that performance is intentionally not yet optimized.",
+              "action": "Add explicit latency/throughput expectations for the new important paths in docs/local-web.md and the sprint reasoning: HTTP server startup time, /api/v1 endpoint response time, SSE first-event latency, and dashboard render time. Where performance is intentionally not yet optimized, document that intent. Add at least one load or latency benchmark to the verification matrix for a representative endpoint and a representative SSE flow, gated where real timing requires representative state.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/api-design.md",
+                  "startLine": 51,
+                  "endLine": 55
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md",
+                  "startLine": 33,
+                  "endLine": 41
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 48,
+                  "endLine": 48
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 250,
+                  "endLine": 267
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 60,
+                  "endLine": 60
+                }
+              ]
+            },
+            {
+              "id": "PERF-COST-001-COST-DRIVER-VISIBILITY-PARTIAL",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Cost driver visibility through the web surface is limited",
+              "detail": "The LLM Runtime and LLM Evaluation/Cost/Safety contracts apply via sprint-index.md (lines 32-33). The web surface exposes safe runtime/model metadata before confirmation per the page and workflow behavior section in reasoning/frontend.md, but does not explicitly surface runtime cost drivers (token count, request count, duration, cost estimates) for runtime-backed browser operations through its own projections. PERF-COST-001 requires runtime/provider paths to expose meaningful cost drivers in logs, events, or metrics. The actual cost metadata capture is delegated to the underlying platform runtime via agentwrap and is not validated through the web surface in this sprint. Gated real-system evidence (Task 12 in .run-state.json lines 451-498) is deferred to the downstream smoke stage because the current review verdict does not yet exist, so end-to-end cost driver propagation cannot be confirmed.",
+              "action": "Confirm that runtime-backed browser operations propagate cost driver metadata (token count, request count, duration) through the shared app operation capability so the values are inspectable via diagnostics, logs, and the operation status projection. Add a verification step in Task 12 (gated real-system evidence) to confirm cost metadata appears in operation events and terminal results without exposing raw provider payloads. If cost metadata capture is intentionally delegated to the platform runtime, document that boundary and ensure diagnostics surface the captured values through the shared app boundary.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/frontend.md",
+                  "startLine": 20,
+                  "endLine": 22
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/sprint-index.md",
+                  "startLine": 32,
+                  "endLine": 33
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 63,
+                  "endLine": 63
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.json",
+                  "startLine": 451,
+                  "endLine": 498
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/architecture.md",
+                  "startLine": 42,
+                  "endLine": 48
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-persistence-and-migrations",
+          "applicability": "direct",
+          "summary": "Sprint 32 (Local Web Hardening and Observable-Product Release) directly applies the Persistence And Migrations contract. The contract is selected by sprint-index.md and mapped to AC-06, AC-18, AC-19 and C-02, C-08 in plan.md. The implementation preserves authoritative workspace and run state, adds no web durable state, enforces atomic terminal/cleanup-uncertainty writes before HTTP/SSE close, and reconciles stale active state conservatively at startup. Evidence: lifecycle, draining, shutdown, cancellation, reconciliation, race, leak, and packaging tests pass per execute.md. Three tasks are deferred (Task 8 manual browser accessibility, Task 11 downstream review execution, Task 12 downstream gated smoke evidence); each deferral is truthfully recorded as `deferred` in .run-state.json and execute.md with the exact missing prerequisite rather than being converted to passing status, satisfying the contract's forbidden conversion of unavailable/skipped evidence into pass. No new durable schema or migration is introduced; the `cleanup_uncertain` lifecycle state is additive to operation hub state and does not modify the existing versioned `flow-state.json`/`run-state.json` schemas. No web-owned database, queue, detached worker, or alternate persistence authority is introduced; the web hub is explicitly bounded, ephemeral, and never authoritative.",
+          "findings": []
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-security",
+          "applicability": "direct",
+          "summary": "Sprint 32 directly applies the Security contract to the local browser surface. The reasoning/plan pair binds Decision 3 to fail-closed loopback binding, strict Host/Origin, CSRF/session, CSP/headers, body/path/reference limits, safe Markdown, and constant-time bearer-secret comparisons with type- and projection-level redaction (reasoning.md:150-159, plan.md:102-114). Decision 5 closes the Sprint 31 shutdown gap with exact-once cancellation and durable cleanup_uncertain before HTTP/SSE closes (reasoning.md:172-181, plan.md:130-142). Task 2 enforces internal/web -\u003e internal/app + stdlib only, with the import-boundary check, fake future-stage capability fixture, and no ultraplan subprocess (plan.md:77-87, reasoning/architecture.md:11-23). Task 4 records the configuration precedence/startup suite, full security regression matrix (IPv4/IPv6, Host/Origin, CSRF/session, CSP/headers, cache, body/smuggling, hostile JSON/Markdown/HTML/URLs, path/reference forgery), and a forbidden-value corpus covering tokens, cookies, CSRF, confirmations, prompts, unsafe paths, provider payloads, stderr, arguments, and representative secrets (plan.md:102-114). The execute transcript shows TestSecurity/Host/Origin/CSRF/Session/CSP/Body/Path/Markdown/Redaction suites, TestOperation/Confirmation/SSE/Subscriber/Replay/Disconnect suites, TestServer/Shutdown/Draining/Cleanup/Restart/Reconcile suites, and focused -race coverage pass deterministically (execute.md:53-67). Requirements/constraints require numeric loopback, fail-closed startup, secret redaction across HTML/JSON/SSE/logs/retained events, and bounded operation/SSE behaviour with disconnect isolating only the subscription (requirements.md:67-103, plan.md:102-114). Phase 4 explicitly excludes authentication/authorization/tenancy/remote and treats the per-process session as a browser-security boundary rather than account identity (requirements.md:81-88, reasoning/api-design.md:43-49), so SEC-AUTHN-001 is not triggered as identity-bearing and SEC-AUTHZ-001 is satisfied through typed app capability resolution at object/scope boundaries.",
+          "findings": [
+            {
+              "id": "SEC-DEFAULT-001-manual-audit-deferred",
+              "severity": "medium",
+              "applicability": "partial",
+              "title": "Manual interactive-browser accessibility/security audit is deferred as blocked",
+              "detail": "execute.md records Task 8 as deferred because no Chromium or Firefox executable is available in the verification environment; the deferred diagnostic is 'Manual keyboard, assistive-announcement, color, motion, 200% zoom, and narrow-reflow checks require an installed interactive browser' (execute.md:33, .run-state.json:310-316). The contract requires security-relevant browser behaviour (focus visibility, reduced motion, non-color state cues, keyboard-only operation) to be verified, and the plan/requirements call these out as mandatory release evidence (plan.md:236, requirements.md:66, 76). The deterministic template/accessibility semantic tests pass, but the missing manual matrix means browser-visible security and accessibility behaviour cannot be claimed fully verified for release until the deferred manual audit runs.",
+              "action": "Record the deferred Task 8 manual browser audit as blocked with the exact missing browser prerequisite; rerun it on an environment with an installed interactive browser before claiming release readiness for accessibility/security behaviour that static assertions cannot prove.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 33,
+                  "endLine": 33
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.json",
+                  "startLine": 310,
+                  "endLine": 316
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 236,
+                  "endLine": 236
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md",
+                  "startLine": 66,
+                  "endLine": 76
+                }
+              ]
+            },
+            {
+              "id": "SEC-NET-001-gated-real-system-evidence-deferred",
+              "severity": "medium",
+              "applicability": "partial",
+              "title": "Review-gated real-runtime and smoke-harness evidence is downstream-deferred",
+              "detail": "Tasks 11 and 12 are deferred to the downstream review and smoke stages: Task 11 'Architecture Review and Sprint Review are owned by the downstream review stage' and Task 12 'requires a current acceptable review and owns the gated real runtime and ultraplan-go-smoke harness evidence' (execute.md:39-43, .run-state.json:425-498). SEC-NET-001, SEC-INPUT-001, and SEC-SECRETS-001 require bounded outbound access, validation, and redaction in real runtime/harness paths, not only in deterministic tests with fakes. The deterministic checks and -race runs pass (execute.md:53-67), but real-runtime and smoke-harness browser-operation evidence is not yet available in this sprint, so end-to-end network/secret behaviour against the real runtime and harness cannot be confirmed until the downstream smoke stage runs.",
+              "action": "Treat the downstream smoke stage as the gate that converts the current deterministic pass into a confirmed pass for SEC-NET-001, SEC-INPUT-001, and SEC-SECRETS-001 against real runtime and harness; record blocked prerequisites verbatim and rerun the deterministic suite after any gated finding before claiming release.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 39,
+                  "endLine": 43
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.json",
+                  "startLine": 425,
+                  "endLine": 498
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 211,
+                  "endLine": 221
+                }
+              ]
+            },
+            {
+              "id": "SEC-AUTHN-001-session-boundary-scope",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Phase 4 browser session is a browser-security boundary, not an account identity",
+              "detail": "The reasoning and requirements explicitly state that the per-process browser session/CSRF is a same-origin browser-security boundary rather than account or durable identity, and that hosted, LAN, remote, account, role, tenant, and multi-user behaviour are non-goals (reasoning.md:151-159, reasoning/api-design.md:43-49, requirements.md:81-88). Therefore SEC-AUTHN-001's identity-bearing requirements do not apply, and the CSRF/session enforcement plus constant-time bearer comparisons cover the contract's required/forbidden evidence for the Phase 4 boundary (plan.md:102-114). This is documented but reviewers reading the contract in isolation should not infer that authentication or authorization is being weakened; it is intentionally scoped to local loopback.",
+              "action": "No code change required; ensure documentation (docs/local-web.md, docs/security scope) restates that the session is a browser-security boundary and not account authentication, so a Phase 5 remote/hosted phase does not inherit this scope by default.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 151,
+                  "endLine": 159
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/api-design.md",
+                  "startLine": 43,
+                  "endLine": 49
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/requirements.md",
+                  "startLine": 81,
+                  "endLine": 88
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 102,
+                  "endLine": 114
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-testing",
+          "applicability": "direct",
+          "summary": "The Testing contract is directly applied to the local-web hardening release. The plan binds every required test layer to concrete outputs and the execute evidence confirms the deterministic focused/full/race/build/package gates all pass over temporary workspaces and fakes. TEST-SEAM-001, TEST-UNIT-001, TEST-INT-001, TEST-SMOKE-001, TEST-FAIL-001, TEST-DET-001, TEST-CONTRACT-001, and TEST-E2E-001 are satisfied through the documented fake future-stage capability fixture, typed app capability tests, exhaustive /api/v1 compatibility fixtures, deterministic operation/SSE suites with explicit failure-path races, race-detector and packaging runs, and representative study/sprint integration over fake runtime/harness dependencies. TEST-MIGRATION-001 is not triggered because the sprint introduces no schema, config, or data migrations; product-owned persistence uses atomic writes verified through integration and lifecycle tests. Manual interactive-browser accessibility audit is explicitly deferred (Task 8) because no Chromium/Firefox executable is available in the execute environment; deterministic semantic accessibility tests pass. No Testing contract review rejection criteria are met.",
+          "findings": [
+            {
+              "id": "testing.smoke.real.partial-deferral",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "TEST-SMOKE-002 real-dependency runtime/harness smoke is explicitly deferred to the downstream smoke stage",
+              "detail": "TEST-SMOKE-002 requires one real-dependency smoke for the critical runtime-backed and harness-backed browser operations. Plan Task 12 (plan.md:211-221) and its execute evidence (execute.md:41-43, 67) explicitly defer this evidence to the downstream smoke stage with the contractually required 'blocked' classification when prerequisites are unavailable. The Testing contract's own evidence section (testing.md:120) accepts 'explicit justified deferral' as valid review evidence. The deterministic fake-runtime/harness journey tests already cover bounded behavior, and the canonical downstream run must produce either pass evidence or a blocked record naming exact missing prerequisites, never a pass for skipped or unavailable work.",
+              "action": "Confirm the downstream smoke stage exercises the real runtime-backed and harness-backed browser operations using the cataloged ultraplan-go-smoke harness, or records the exact missing prerequisites as blocked. The current deterministic evidence is acceptable for the testing contract review; the canonical gated run must not be marked passed when prerequisites are unavailable.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 211,
+                  "endLine": 221
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 41,
+                  "endLine": 43
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 67,
+                  "endLine": 67
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 194,
+                  "endLine": 203
+                },
+                {
+                  "path": "system/contracts/core/testing.md",
+                  "startLine": 99,
+                  "endLine": 120
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-workflows",
+          "applicability": "direct",
+          "summary": "Sprint 32 hardens the Sprint 30-31 local web operation hub and explicitly treats it as a workflow: a bounded, ephemeral, server-owned operation/SSE state machine that prepares, starts, observes, and arbitrates terminal and cancellation outcomes for shared app operations. Decisions 1, 4, and 5 plus Tasks 2, 5, 6, and 9 enforce the required workflow-contract shape: internal/web imports only internal/app and stdlib (no engine or product coupling); terminal completion, failure, timeout, user cancellation, and shutdown are arbitrated once through a central terminal arbiter; retries are bounded by short-lived, server-issued confirmations with confirmation-to-operation deduplication; cancellation is idempotent and cannot overwrite an authoritative terminal; partial side effects are compensated by a distinct bounded cleanup context that persists owner-specific cleanup_uncertain before HTTP/SSE closes; the server reconciles stale active state conservatively at startup and treats process absence and artifact presence as evidence only. Decisions, plan, reasoning/architecture, reasoning/api-design, and execute evidence consistently satisfy WF-SCOPE-001, WF-BOUNDARY-001, WF-STATE-001, WF-RETRY-001, WF-IDEMPOTENCY-001, and WF-COMP-001. WF-VERSION-001 is partially applicable: the retained hub events and bounded operation window are not accompanied by an explicit version identifier on the workflow definition, but the design mitigates the underlying risk through bounded retention, explicit non-terminal replay-gap signals, and mandatory durable HTTP refresh after gap, expiry, terminal, or reconnect exhaustion.",
+          "findings": [
+            {
+              "id": "WF-VERSION-001-partial",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Operation hub workflow definition is not explicitly versioned for in-flight retention",
+              "detail": "The web operation hub is a multi-step workflow (prepare/start/observe/cancel/terminal) whose behavior is encoded in event types, replay semantics, and the bounded retention window. The contract requires explicit version identifiers on long-running workflow definitions and propagation through inspectable runtime state and events. The sprint's documented design treats the web hub as bounded and ephemeral; events are emitted with monotonically increasing per-operation IDs but without a workflow-definition version. The design mitigates the underlying risk through bounded retention, explicit non-terminal replay-gap signals, and a mandatory durable HTTP refresh after gap, expiry, terminal, or reconnect exhaustion (see reasoning.md decisions 4 and 5 and api-design.md #SSE protocol and recovery). Direct version identifiers are not required by the sprint requirements or by the architecture or technical handbook, so this is a partial applicability: the contract's intent (avoid breaking in-flight interpretation after a behavior change) is met by retention, gap semantics, and refresh rather than by a version field.",
+              "action": "Retain the current bounded retention + durable refresh mitigation, and if a future sprint adds durable cross-process workflow definitions or extends retained event semantics, add an explicit workflow-definition version identifier on the operation hub and propagate it through inspectable operation state and event records so older retained events can be interpreted unambiguously across releases.",
+              "citations": [
+                {
+                  "path": "system/contracts/runtime/workflows.md",
+                  "startLine": 135,
+                  "endLine": 151
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning.md",
+                  "startLine": 161,
+                  "endLine": 167
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/reasoning/api-design.md",
+                  "startLine": 35,
+                  "endLine": 41
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/plan.md",
+                  "startLine": 116,
+                  "endLine": 128
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/execute.md",
+                  "startLine": 25,
+                  "endLine": 28
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "handbook",
+          "applicability": "direct",
+          "summary": "The technical handbook is a competent, citation-anchored distillation of every report selected by sprint-index.md. The Inputs Used list (line 6) matches project-index's available evidence (lines 107-121) and excludes the unselected `09-terminal-ux` and `15-philosophy`. All 13 selected go-cli-study reports have a high-confidence row in 'Selected Studies And Reports' (lines 14-26), are grounded in 'Relevant Patterns' (lines 30-39) with concrete line citations to mature Go repositories (helm, gh-cli, restic, chezmoi, rclone, go-task, k9s), surface balanced trade-offs (lines 43-54) with real-path citations, enumerate anti-patterns that map to handbook warnings (lines 58-69), and provide inspectable 'Examples Worth Inspecting' (lines 75-85). 'Design Pressures' (lines 89-100) faithfully capture Phase 4 constraints (cross-surface semantic consistency, /api/v1 compatibility, browser-disconnect semantics, shutdown reconciliation ordering, local boundary security, no-JS completeness, capability extensibility, layered test evidence, fail-closed startup, release observability). 'Open Questions For Reasoning' (lines 104-123) and 'Evidence Pointers' (lines 127-139) preserve traceability back to the source reports. 'Handoff To Reasoning' (lines 143-147) correctly forbids copying external patterns without sprint-specific reasoning and refuses to preempt decisions. The handbook does not invent decisions, scope, or architecture beyond distilling the selected evidence. Citations are checkable line ranges inside source repos. Confirmed conformance: evidence fidelity, citation concreteness, decision/evidence separation, design-pressure coverage, mature-repository grounding, and downstream actionability for the reasoning and plan stages.",
+          "findings": [
+            {
+              "id": "HB-COV-001",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "No contract-coverage scope statement mapping each selected contract to its evidence support",
+              "detail": "The Inputs Used list (line 6) selects 13 go-cli-study evidence reports plus project-index, sprint-index, and requirements, and the sprint-index (lines 28-39) selects 13 contracts including LLM Runtime (`system/contracts/runtime/llm.md`), LLM Evaluation/Cost/Safety (`system/contracts/runtime/llm-evaluation-cost-safety.md`), and Persistence And Migrations (`system/contracts/runtime/persistence-and-migrations.md`). The studied go-cli-study evidence addresses Go-CLI structural, concurrency, observability, security, performance, and testing patterns but does not produce guidance for prompt versioning, structured output local validation, lifecycle inspectability, bounded retry classification, atomic-write/snapshot/transaction boundaries, schema ownership, or migration safety. The Relevant Patterns (lines 30-39), Trade-Offs (lines 43-54), Anti-Patterns And Warnings (lines 58-69), and Examples Worth Inspecting (lines 75-85) sections carry no LLM-runtime or persistence-migration guidance. The Handoff To Reasoning (lines 143-147) tells reasoning to 'validate whether the observed patterns fit this project's constraints' but does not enumerate the selected contracts whose constraints must specifically be verified, so reasoning may silently omit contract-mandated patterns when the studied evidence is silent. This makes the contract-coverage scope implicit rather than explicit, lowering contract-review traceability.",
+              "action": "Add a brief 'Scope Of Evidence' or 'Contract Coverage' section, either after Inputs Used or before Handoff To Reasoning, that explicitly maps every selected contract to its handbook support: name the contracts well-served by the studied evidence (Architecture, Configuration, Errors, Observability, Performance, Security, Testing, Workflows, CLI Surface, Documentation) and separately name the contracts whose evidence is silent and therefore require reasoning + project context (LLM Runtime, LLM Evaluation/Cost/Safety, Persistence And Migrations). Augment the Handoff To Reasoning so it reminds reasoning to verify every selected contract is addressed before declaring decisions complete.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 6,
+                  "endLine": 6
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 12,
+                  "endLine": 26
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 28,
+                  "endLine": 39
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 141,
+                  "endLine": 147
+                }
+              ]
+            },
+            {
+              "id": "HB-OPENQ-002",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Open Questions For Reasoning does not enumerate contract-mandated patterns where studied evidence is silent",
+              "detail": "The 'Open Questions For Reasoning' section (lines 102-123) covers capability vocabulary, interface vs concrete types, error/status mapping, lifecycle ownership and bounds, replay/refresh, terminal flush, secrets and redaction, API fixture format, accessibility properties, future-stage capability, restart reconciliation, test determinism vs race, diagnostic field safety, eager validation, and release evidence. It does not, however, surface a question for the Configuration contract's `config show` field-level source diagnostics and secret-redaction discipline (line 114 addresses precedence and failure modes only), nor does it surface questions for the LLM Runtime contract's prompt versioning, structured output local validation, lifecycle inspectability, and bounded retry policy for runtime-backed browser operations, nor for the Persistence And Migrations contract's atomic-write/snapshot ownership and migration/reconciliation behavior for product-owned workspace and run state. Combined with HB-COV-001, these omissions raise the risk that reasoning under-specifies contract-required behavior in decisions and plans, even though the same lines already enumerate many lower-bound contract concerns.",
+              "action": "Add open questions covering: (a) the Configuration contract's `config show` redaction discipline and field-level source diagnostics; (b) the LLM Runtime contract's prompt versioning, structured output local validation, lifecycle inspectability, and bounded retry/timeout classification for runtime-backed browser operations; (c) the Persistence And Migrations contract's atomic-write/snapshot ownership and explicit migration/reconciliation behavior for product-owned workspace artifacts and run state. Each new question should describe the constraint it surfaces and reference the cited system contract path so reasoning can locate the underlying requirement without independent rediscovery.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 102,
+                  "endLine": 123
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 111,
+                  "endLine": 111
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/32-hardening-and-release/technical-handbook.md",
+                  "startLine": 114,
+                  "endLine": 114
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "smoke": {
+    "status": "completed",
+    "verdict": "pass",
+    "path": "projects/ultraplan-go/sprints/32-hardening-and-release/smoke.md",
+    "lastRunAt": "2026-08-19T18:31:11.577159184Z",
+    "reviewFingerprint": "6e6902e21705467ad32d24f765f6784c6b61fea396eb73f7e453ab1931affe5a",
+    "smokeFingerprint": "eb6f98c280a8b68ac78cdbd828ad04d7edf48fcca88217379d63def2fa03f9d5",
+    "runId": "run-8kxoK3aQec",
+    "authorRunId": "opencode-1",
+    "authorModel": "minimax-coding-plan/MiniMax-M3",
+    "evidenceId": "44764485879eb1465bc791fb932ca9bbcd7faa396c774864e88918ab98caf972",
+    "reviewOverride": false,
+    "stale": false,
+    "reconciliationRequired": false,
+    "artifactDigest": "eb6f98c280a8b68ac78cdbd828ad04d7edf48fcca88217379d63def2fa03f9d5",
+    "inputFingerprint": "d63fc6d6a6933fe4da25a33c34b253cb5bef076ffac1adb764eddf69876a33c3",
+    "evidence": [
       {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
+        "kind": "run",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-8kxoK3aQec.json",
+        "digest": "44764485879eb1465bc791fb932ca9bbcd7faa396c774864e88918ab98caf972"
       },
       {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
-      },
-      {
-        "code": "preflight",
-        "message": "approved verification evidence missing: execute.md does not record the planned command"
+        "kind": "summary",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-8kxoK3aQec-summary.md",
+        "digest": "5a2f9a5ab373da25742babb751e053d206e385c02ef1fa167da9c8091a719402"
       }
     ],
     "lastAttempt": {
-      "id": "review-1787075529783662509",
-      "status": "blocked",
-      "startedAt": "2026-08-18T17:52:09.783662509Z",
-      "heartbeatAt": "2026-08-18T17:52:09.783662509Z",
-      "ownerPid": 1333883,
-      "completedAt": "2026-08-18T17:52:09.783662509Z",
-      "diagnostics": [
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command",
-        "preflight: approved verification evidence missing: execute.md does not record the planned command"
+      "id": "smoke-1787164146944703576",
+      "status": "completed",
+      "startedAt": "2026-08-19T18:29:06.944703576Z",
+      "heartbeatAt": "2026-08-19T18:29:06.944703576Z",
+      "ownerPid": 205507,
+      "completedAt": "2026-08-19T18:31:11.585811216Z"
+    },
+    "lastComplete": {
+      "verdict": "pass",
+      "artifact": "projects/ultraplan-go/sprints/32-hardening-and-release/smoke.md",
+      "artifactDigest": "eb6f98c280a8b68ac78cdbd828ad04d7edf48fcca88217379d63def2fa03f9d5",
+      "inputFingerprint": "d63fc6d6a6933fe4da25a33c34b253cb5bef076ffac1adb764eddf69876a33c3",
+      "completedAt": "2026-08-19T18:31:11.577159184Z",
+      "runId": "run-8kxoK3aQec",
+      "authorRunId": "opencode-1",
+      "authorModel": "minimax-coding-plan/MiniMax-M3",
+      "evidenceId": "44764485879eb1465bc791fb932ca9bbcd7faa396c774864e88918ab98caf972",
+      "evidence": [
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-8kxoK3aQec-summary.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-8kxoK3aQec.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/ultraplan-smoke.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/32-hardening-and-release/review.md"
+        },
+        {
+          "kind": "fact",
+          "path": "harness",
+          "digest": "ultraplan-go-smoke:1.0"
+        },
+        {
+          "kind": "fact",
+          "path": "prerequisites"
+        },
+        {
+          "kind": "fact",
+          "path": "review-fingerprint",
+          "digest": "6e6902e21705467ad32d24f765f6784c6b61fea396eb73f7e453ab1931affe5a"
+        },
+        {
+          "kind": "fact",
+          "path": "review-verdict",
+          "digest": "pass_with_findings"
+        },
+        {
+          "kind": "fact",
+          "path": "scope",
+          "digest": "suite:sprint-32"
+        },
+        {
+          "kind": "fact",
+          "path": "timeout",
+          "digest": "30m0s:manifest"
+        }
       ]
     }
   }

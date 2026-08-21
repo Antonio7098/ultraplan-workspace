@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "status": "complete",
+  "project": "ultraplan-go",
+  "sprint": "33-code-context-stage",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go",
+    "source": "project-index.md"
+  },
+  "planPath": "projects/ultraplan-go/sprints/33-code-context-stage/plan.md",
+  "planFingerprint": "sha256:b03a83ac580d901c471321529d68c8c7080d88cc23491b2c6cdf5df9d557d520",
+  "baseRevision": "f3690348f56c2dc22a3fec4c013df2ba0f384834",
+  "createdAt": "2026-08-19T18:00:00Z",
+  "updatedAt": "2026-08-20T08:25:58Z",
+  "completedAt": "2026-08-19T21:09:24Z",
+  "executionMode": "manual in-session execution; UltraPlan CLI not used",
+  "tasks": [
+    {
+      "id": "task-1-stage-state",
+      "identity": {
+        "name": "Task 1: Establish Canonical Stage Order And Compatible State",
+        "planLine": 89,
+        "decisions": ["Decision 1", "Decision 7"],
+        "requirements": ["AC-01", "AC-02", "AC-03", "AC-11"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-19T21:09:24Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-19T21:09:24Z",
+      "evidence": [{"kind":"verification","summary":"Canonical stage order, legacy compatibility, readiness, and atomic later serialization tests pass.","path":"internal/sprint/verify_test.go"}]
+    },
+    {
+      "id": "task-2-artifact-validator",
+      "identity": {
+        "name": "Task 2: Define The Artifact, Defaults, And Structural Validator",
+        "planLine": 97,
+        "decisions": ["Decision 3"],
+        "requirements": ["AC-06", "AC-07", "AC-08", "AC-12"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-19T21:09:24Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-19T21:09:24Z",
+      "evidence": [{"kind":"verification","summary":"Embedded prompt/template parity and the structural Markdown validator test matrix pass.","path":"internal/sprint/code_context_test.go"}]
+    },
+    {
+      "id": "task-3-runtime-promotion",
+      "identity": {
+        "name": "Task 3: Implement Sequential Runtime Execution And Atomic Promotion",
+        "planLine": 106,
+        "decisions": ["Decision 2", "Decision 6"],
+        "requirements": ["AC-04", "AC-05", "AC-06", "AC-09", "AC-10", "AC-13", "AC-15"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-19T21:09:24Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-19T21:09:24Z",
+      "evidence": [{"kind":"verification","summary":"Fake-runtime and temporary-repository tests cover execution, containment, cancellation, rollback, and atomic promotion.","path":"internal/sprint/code_context_test.go"}]
+    },
+    {
+      "id": "task-4-config-cli",
+      "identity": {
+        "name": "Task 4: Add Source-Aware Configuration And CLI Wiring",
+        "planLine": 118,
+        "decisions": ["Decision 4"],
+        "requirements": ["AC-03", "AC-04", "AC-05", "AC-13"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-19T21:09:24Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-19T21:09:24Z",
+      "evidence": [{"kind":"verification","summary":"Configuration precedence, redaction, CLI stage handling, dry-run, overrides, and stable JSON tests pass.","path":"internal/app/sprint_commands_test.go"}]
+    },
+    {
+      "id": "task-5-app-operations",
+      "identity": {
+        "name": "Task 5: Extend Shared App Use Cases And Generic Operations",
+        "planLine": 126,
+        "decisions": ["Decision 4", "Decision 5", "Decision 6"],
+        "requirements": ["AC-03", "AC-13", "AC-14", "AC-15"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-19T21:09:24Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-19T21:09:24Z",
+      "evidence": [{"kind":"verification","summary":"Typed app projections, safe preview, generic operations, conflicts, cancellation, and recovery tests pass.","path":"internal/app/web_operations_test.go"}]
+    },
+    {
+      "id": "task-6-browser",
+      "identity": {
+        "name": "Task 6: Present Code-Context Through The Existing Sprint Page",
+        "planLine": 135,
+        "decisions": ["Decision 5"],
+        "requirements": ["AC-14", "AC-15"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-19T21:09:24Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-19T21:09:24Z",
+      "evidence": [{"kind":"verification","summary":"Browser contract and template tests cover DOM order, generic operations, preserved artifacts, and latest outcomes.","path":"internal/web/templates_test.go"}]
+    },
+    {
+      "id": "task-7-verification",
+      "identity": {
+        "name": "Task 7: Run Layered Verification And Enforce Scope",
+        "planLine": 143,
+        "decisions": ["Decision 7"],
+        "requirements": ["AC-16", "AC-17", "AC-18"]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-19T18:00:00Z",
+      "updatedAt": "2026-08-20T08:25:58Z",
+      "startedAt": "2026-08-19T18:00:00Z",
+      "completedAt": "2026-08-20T08:25:58Z",
+      "evidence": [{"kind":"verification","summary":"Focused, full, race, vet, build, and diff-integrity gates pass and scope deferrals are recorded.","path":"projects/ultraplan-go/sprints/33-code-context-stage/execute.md"}]
+    }
+  ],
+  "files": [
+    "internal/app/app_test.go",
+    "internal/app/config_commands.go",
+    "internal/app/operations.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases_test.go",
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/redaction.go",
+    "internal/sprint/artifacts.go",
+    "internal/sprint/code_context.go",
+    "internal/sprint/code_context_test.go",
+    "internal/sprint/domain.go",
+    "internal/sprint/flow.go",
+    "internal/sprint/handbook_test.go",
+    "internal/sprint/prompts.go",
+    "internal/sprint/reasoning_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/sprint_index_test.go",
+    "internal/sprint/sprint_test.go",
+    "internal/sprint/state.go",
+    "internal/sprint/store_fs.go",
+    "internal/sprint/verify_test.go",
+    "internal/web/api_compatibility_test.go",
+    "internal/web/handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go",
+    "internal/web/test_fakes_test.go",
+    "internal/workspace/init.go",
+    "internal/workspace/scaffold/prompts/create-code-context.md",
+    "internal/workspace/scaffold/templates/code-context.md",
+    "internal/workspace/workspace_test.go"
+  ],
+  "testsRun": [
+    "go test ./internal/sprint -run 'Test.*(CodeContext|FlowState|DomainStages|CumulativeFlow|Mutation|Atomic)': pass",
+    "go test ./internal/sprint: pass",
+    "go test ./internal/platform/config -run 'Test.*(LoadPrecedence|Redact|CodeContext)': pass",
+    "go test ./internal/workspace -run 'Test.*(Embedded|Default)': pass",
+    "go test ./internal/app -run 'Test.*(Sprint|WebOperation|WebUseCases|Preview|ConfigShow)': pass",
+    "go test ./internal/web -run 'Test.*(Sprint|Operation|Template|Artifact|APICompatibility)': pass",
+    "go test ./internal/platform/config ./internal/workspace ./internal/app ./internal/web: pass",
+    "go test -race ./internal/sprint ./internal/app ./internal/web: pass",
+    "go test ./...: pass",
+    "go test -race ./...: pass",
+    "go vet ./...: pass",
+    "go build ./cmd/ultraplan: pass",
+    "git diff --check: pass"
+  ],
+  "reviews": {
+    "architecture": "approve",
+    "sprint": "pass",
+    "findings": []
+  },
+  "deferred": [
+    "Representative live-provider/runtime dogfood remains Sprint 34 scope.",
+    "Shared downstream requirements/code-context prefix injection, manual stage skill, and broad documentation remain Sprint 34 scope."
+  ],
+  "blockers": []
+}

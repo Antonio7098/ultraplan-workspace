@@ -1,13 +1,13 @@
 # Technical Requirements Document: UltraPlan Go
 
-**Version:** 1.7.0
+**Version:** 1.8.0
 **Status:** Draft
 **Owner:** Engineering
-**Last Updated:** 2026-08-15
+**Last Updated:** 2026-08-20
 
 ## 1. Purpose
 
-This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress. Phase 5 begins with Sprint 33 and inserts a validated `code-context` stage after requirements, then reuses its exact Markdown source pack through downstream agent-backed stages.
+This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress. Phase 5 begins with Sprint 33 and inserts a validated `code-context` stage after requirements, then reuses its exact Markdown source pack through downstream agent-backed stages. Phase 6 begins with Sprint 35 and establishes durable workspace-wide run identity, lifecycle/liveness projection, replayable sanitized events, cross-surface control, and correlated operational telemetry.
 
 This document is implementation-oriented. It defines boundaries, modules, data models, state machines, validators, runtime contracts, error handling, and testing requirements. It does not prescribe every package name or third-party library, but it should be specific enough to guide implementation.
 
@@ -35,6 +35,7 @@ UltraPlan Go is responsible for:
 - Providing a local TUI over the same workspace and workflow services after the CLI workflows are stable.
 - Providing a loopback-only local HTTP server and embedded browser UI over the same typed application use cases beginning in Sprint 30.
 - Generating a sprint-owned `code-context.md` from read-only inspection of the resolved implementation repository and reusing it as the common downstream prompt foundation beginning in Sprint 33.
+- Persisting a stable operational run identity and safe ordered history before execution is exposed, then projecting it consistently through CLI, JSON, TUI, and supported local server instances beginning in Sprint 35.
 
 UltraPlan Go is not responsible for:
 
@@ -51,6 +52,7 @@ UltraPlan Go is not responsible for:
 - Owning detailed smoke run/issue persistence that belongs to the external harness.
 - Replacing the CLI or JSON surfaces with a TUI-only workflow.
 - Replacing workspace artifacts with browser-owned or server-only durable state.
+- Treating operational run persistence as authority for governed Markdown, stage outcomes, Git/source state, or external smoke evidence.
 - Treating a code-context pack as a repository index, exclusive source boundary, cache database, or second machine-readable manifest.
 - Introducing content identity, expanded QA/repair, retrieval, SQLite product persistence, knowledge-graph persistence, cloud, or Aren capabilities before their explicit roadmap evidence gates.
 
@@ -81,6 +83,8 @@ internal/
   sprint/               # planning, execute, review, smoke, prompts, validators, state, and flow through smoke
   codeextract/          # citation parsing, file resolution, snippet extraction
 ```
+
+Sprint 35 may add a focused execution-control package or package-owned repositories exposed through `internal/app`. The reasoning stage must select that shape from concrete lifecycle and concurrency requirements; this TRD intentionally does not reserve a package name before ownership is proven. In every valid shape, `internal/web` remains a transport adapter and no interface process owns the only authoritative run registry.
 
 The core rule is:
 
@@ -1246,7 +1250,10 @@ UltraPlan task state and logs should map these event kinds into product-facing s
 - Unknown native events projected as `native_extension` must not fail tasks by themselves.
 - Unsafe raw native payload bytes must not be persisted by UltraPlan unless an explicit debug retention option is enabled.
 - Persisted event records should preserve raw payload presence, source, encoding, safety, and omission reason when bytes are omitted.
-- UltraPlan should implement or configure an agentwrap `EventSink` and `RunStore` for durable local inspection.
+- UltraPlan must implement or configure an agentwrap `EventSink` and `RunStore` that correlate agentwrap records with the UltraPlan operational run and support durable local inspection.
+- Sprint 35 product-facing event records have a monotonically increasing sequence within each UltraPlan run. They are sanitized and durably appended before live fan-out.
+- Replay uses an explicit cursor. Duplicate delivery is safe; an unavailable cursor produces a typed retention-gap result plus the current durable run snapshot rather than silently beginning a partial stream.
+- Persistence, compaction, sampling, and subscriber backpressure failures are observable and cannot block the underlying runtime indefinitely.
 
 ### 12.4 Agentwrap Metadata
 
@@ -2044,21 +2051,24 @@ The final review verdict is computed by product code. The final Markdown is writ
 
 #### 18.9.2 Smoke Harness Contract And Execution
 
-`project-index.md` must catalog the smoke harness root and versioned manifest. The manifest must describe an executable plus argument prefix, protocol version, machine-readable discovery/run commands, evidence directories, and supported capability flags. UltraPlan must never execute a shell command parsed from Markdown or README prose.
+`project-index.md` must catalog the smoke harness root and versioned manifest. The manifest must describe an executable plus argument prefix, protocol version, machine-readable discovery/run commands, bounded authoring paths, evidence directories, and supported capability flags. UltraPlan must never execute a shell command parsed from Markdown or README prose.
 
-Harness discovery must return structured levels, suites, tests, sprint mappings, runtime/network/credential prerequisites, expected duration/cost class, and evidence schema version. Smoke selection prefers a sprint-specific suite, then directly mapped suites, then explicit tests for investigation. A narrow passing rerun does not replace required evidence from its containing suite.
+Before discovery on every non-dry smoke run, UltraPlan must invoke the configured smoke author model in the external harness. The author receives the governed sprint inputs, execute/review evidence, target implementation, deterministic test inventory, existing harness, and manifest-declared writable paths. It must create or update a durable sprint-specific suite for real boundaries that deterministic unit/integration tests cannot prove. Those boundaries include real provider/model behavior where the product path uses a provider, process and signal lifecycle, real filesystem/configuration, network, credentials, browser engines, timing, cancellation, and platform behavior. It must not duplicate ordinary deterministic verification or introduce a provider call into an otherwise offline product path.
+
+Harness discovery must return structured levels, suites, enumerated tests, per-test coverage IDs, sprint mappings with required coverage IDs, runtime/network/credential prerequisites, expected duration/cost class, and evidence schema version. A complete mapping with empty suites, empty tests, missing required coverage, or unassigned coverage must not pass. Smoke selection prefers the authored sprint-specific suite, then directly mapped suites, then explicit tests for investigation. A narrow passing rerun does not replace required evidence from its containing suite.
 
 Smoke execution must:
 
 - require a current passing or non-blocking review by default
+- record the smoke author run/model and every changed harness path
 - show scope, prerequisites, model/runtime, duration/cost class, allowed mutation roots, and external evidence destination before execution
 - use explicit argv, contained cwd, bounded environment forwarding, timeout, context cancellation, and descendant-process cleanup
 - validate the harness run ID, exit/result counts, evidence paths, evidence identity, and relevant open/resolved issue references
 - keep raw run JSON, stdout/stderr, per-test artifacts, and issue files in the harness
-- atomically write only the linked human-readable sprint-root `smoke.md`
+- atomically write the linked human-readable sprint-root `smoke.md` after validating the authoring scope and enumerated executed test identities
 - classify unavailable required environment as blocked and irrelevant scope as not applicable
 
-The product review/smoke workflows must not edit product source, product tests, governed sprint inputs, or Git state. Harness test/issue maintenance is a separate action outside normal product smoke execution.
+The product review/smoke workflows must not edit product source, product tests, governed sprint inputs, or Git state. Smoke authoring may edit only manifest-declared harness authoring paths; run and issue evidence remains confined to the manifest-declared evidence roots. Any other harness change or any product/governed-input identity change fails smoke.
 
 #### 18.9.3 Flow, Freshness, And TUI Parity
 
@@ -2082,7 +2092,7 @@ The following remain explicitly deferred:
 
 ## 18A. Phase 4 Local Web Surface Technical Requirements
 
-Phase 4 is an interface expansion, not a new product workflow. `internal/web` owns HTTP routing, transport validation, HTML/template rendering, embedded static assets, browser-session protection, SSE subscriptions, and ephemeral operation handles. It must not own study/project/sprint state machines, prompt construction, runtime or smoke invocation, verdict computation, artifact persistence, or durable recovery.
+Phase 4 is an interface expansion, not a new product workflow. `internal/web` owns HTTP routing, transport validation, HTML/template rendering, embedded static assets, browser-session protection, and SSE connections. It must not own study/project/sprint state machines, prompt construction, runtime or smoke invocation, verdict computation, artifact persistence, durable run identity, or durable recovery.
 
 The required dependency direction is:
 
@@ -2106,16 +2116,20 @@ GET    /api/v1/artifacts/{ref}   bounded allowlisted preview
 POST   /api/v1/validations       read-only validation
 POST   /api/v1/operations/prepare guarded-operation confirmation
 POST   /api/v1/operations        start confirmed operation
-GET    /api/v1/operations/{id}   ephemeral operation status/result
-GET    /api/v1/operations/{id}/events SSE progress
-DELETE /api/v1/operations/{id}   cancellation request
+GET    /api/v1/operations/{id}   compatibility projection to stable run status/result
+GET    /api/v1/operations/{id}/events compatibility projection to replayable progress
+DELETE /api/v1/operations/{id}   compatibility cancellation request
+GET    /api/v1/runs              workspace-wide durable run projection
+GET    /api/v1/runs/{id}         durable run status/result/recovery
+GET    /api/v1/runs/{id}/events  cursor-based replay and live progress
+DELETE /api/v1/runs/{id}         authorized idempotent cancellation request
 ```
 
 Exact resource detail routes may evolve, but `/api/v1` JSON and error envelopes are compatibility-controlled once documented. Unknown `/api/` routes return structured JSON errors and must never fall through to an HTML page.
 
-The server operation hub is ephemeral and bounded. It may hold operation IDs, normalized requests, cancellation functions, recent safe event buffers, subscribers, and terminal results for short retention. It must not become a second durable scheduler or database. Server restart recovery reads product-owned workspace state. Slow or disconnected SSE subscribers must not block product execution.
+The server delivery hub is ephemeral and bounded. It may hold normalized requests, current connections, and delivery buffers, but not the only run IDs, cancellation routes, history, or terminal results. Server restart recovery reads the durable run projection and package-owned product state. Slow or disconnected SSE subscribers must not block product execution. Compatibility operation URLs must resolve to the durable run, a retained tombstone, or a typed recovery response; session expiry or in-memory reaping alone cannot produce an unexplained 404 for a valid run.
 
-Graceful server shutdown owns cancellation of every active server-owned operation. Shutdown must enter draining, reject new mutations and queued starts, request canonical cancellation exactly once with reason `server_shutdown`, propagate through retries/runtime/process trees, wait for bounded cleanup, and persist one truthful terminal outcome. Valid outcomes are clean cancellation, interruption, cleanup uncertainty, or a failure/completion that was already authoritative before cancellation won. HTTP/SSE closes only after durable outcome or bounded uncertainty recording. Browser navigation, tab close, refresh, or SSE disconnect never cancels a run. Startup must reconcile stale active operations and locks after forced termination without inferring success from process absence or artifact presence.
+Graceful server shutdown owns cancellation of every worker the server owns under the selected Sprint 35 topology. Shutdown must enter draining, reject new mutations and queued starts, request canonical cancellation exactly once with reason `server_shutdown`, propagate through retries/runtime/process trees, wait for bounded cleanup, and persist one truthful terminal outcome. Valid outcomes are clean cancellation, interruption, cleanup uncertainty, or a failure/completion that was already authoritative before cancellation won. HTTP/SSE closes only after durable outcome or bounded uncertainty recording. Browser navigation, tab close, refresh, or SSE disconnect never cancels a run. Startup and periodic reconciliation must handle stale active runs and locks after forced termination without inferring success from process absence or artifact presence.
 
 Commands and streams remain separate:
 
@@ -2167,7 +2181,50 @@ Required tests include ordered-stage transitions, old flow-state compatibility, 
 
 The web extensibility gate requires the new stage to expose status, artifact preview, operation start, progress, cancellation, findings, and recovery through the existing application capability model. Adding route-specific product logic for `code-context` fails the gate.
 
-## 18C. Gated Post-Phase-5 Technical Direction
+## 18C. Phase 6 Durable Run Control And Observation
+
+The current in-memory operation hub is a compatibility/delivery mechanism, not an adequate execution control plane. Sprint 35 must provide one workspace-wide model shared by CLI, TUI, browser pages, and every local server instance within the explicitly supported topology.
+
+The durable run envelope must include, directly or through stable references:
+
+```text
+workspace-scoped run ID
+operation kind and project/study/sprint/stage target
+accepted / queued / running / terminal lifecycle timestamps
+attempt, stage, task, agentwrap run/session, process, and external-harness correlations
+owner identity, renewable lease, heartbeat, fencing value, and safe process-birth identity
+latest durable event sequence and retention boundary
+cancellation request/acknowledgement facts
+one immutable arbitrated terminal result or explicit cleanup uncertainty
+safe diagnostics, schema version, and migration metadata
+```
+
+Acceptance of a runtime-backed execution is atomic with durable run creation and happens before child execution. If required acceptance persistence fails, the child does not start. Event records are redacted before persistence, assigned monotonically increasing per-run sequences, and committed before live fan-out. The store may compact detail, but it must retain an explicit snapshot and lower replay boundary so clients can distinguish complete replay from a gap.
+
+Active-run queries are workspace-wide. Product-page status may filter the common projection, but the global running count cannot be derived from the current page, browser session, or one server's memory. Planning stage readiness and operational execution lifecycle are separate types; UI code must not infer `running` from a stage-status enum that cannot represent it.
+
+Read visibility is independent from originating-session continuity. Mutation still requires fresh authorization and a resolvable current owner. Cancellation is idempotent, durably recorded, routed through the canonical product/runtime cancellation path, and arbitrated against completion, failure, timeout, interruption, shutdown, and reconciliation so only one terminal outcome wins.
+
+Liveness is conservative. A PID alone is insufficient because of PID reuse. Lease expiry, missing process, missing owner, artifact presence, or lost server memory cannot independently prove completion. Reconciliation uses fencing or equivalent stale-writer protection, records its evidence and decisions, and exposes `stalled`, `interrupted`, or `cleanup_uncertain` where truth cannot be proven.
+
+The following are required reasoning decisions, not preselected implementation requirements:
+
+- same-host multi-process versus shared-filesystem multi-host support and the guarantees at that boundary
+- dedicated coordinator/daemon, fenced direct repository writers, or a hybrid
+- filesystem snapshot/journal, SQLite, agentwrap store composition, or another smallest sufficient durable mechanism
+- interface/package ownership without moving workflow semantics out of study/sprint modules or duplicating agentwrap
+- worker cancellation versus safe adoption after owner loss
+- run/attempt/stage/task identity hierarchy and correlation format
+- lease duration, heartbeat cadence, clock assumptions, fencing, and process-birth verification
+- replay guarantee, deduplication, cursor expiry, retention, compaction, snapshot, backpressure, and disk-limit policy
+- cross-session read policy versus cancel/retry authorization
+- compatibility and tombstone behavior for legacy operation URLs, locks, state files, and checkpoints
+- local metrics/health interfaces, optional trace export, and support-bundle scope
+- safe behavior when acceptance, mid-run append, heartbeat, or terminal persistence fails
+
+Every chosen mechanism must pass the same cross-process failure matrix: two CLI runs visible globally; a second supported server replaying and then following a current run; browser-session expiry; observer restart; abrupt owner death; stale lease and PID reuse; duplicate cancellation; completion/cancellation races; slow subscribers; cursor expiry; corrupt/torn records; disk-full or permission failure; bounded retention; and redaction. Tests must prove that operational records never override canonical product artifacts or stage verdicts.
+
+## 18D. Gated Post-Phase-6 Technical Direction
 
 The following sequence is directional and does not authorize implementation until a later sprint selects it explicitly:
 
@@ -2175,7 +2232,7 @@ The following sequence is directional and does not authorize implementation unti
 2. **Read-only QA:** retain `review` compatibility while presenting it as Conformance Review; introduce a separate `VerificationPhase`; map changed behavior into deterministic bounded shards; allow read-only investigation and synthesis only.
 3. **Evidence QA and repair:** require isolated writable investigation workspaces before generated tests/probes; adjudicate evidence globally before issue promotion; permit production repair only from frozen evidence-backed issue packets; bound cycles and expose stalled/escalated outcomes.
 4. **Derived retrieval:** build deterministic semantic records and a measured lexical baseline first. Indexes are disposable, preserve exact authoritative text/provenance/status, and never override project/sprint context selection. Embeddings remain deferred until lexical evaluation proves a gap.
-5. **Persistence/SQLite:** first classify authored artifacts, checkpoints, derived data, operational state, run evidence, and repository source. Extract focused package-owned repositories only for proven workflows; keep Git/source and execution workspaces filesystem-native; select one authority at composition; prohibit generic virtual filesystems, silent dual writes, and premature sync.
+5. **Product persistence/SQLite:** first classify authored artifacts, checkpoints, derived data, operational state, run evidence, and repository source. Sprint 35 operational run storage does not select a new authored-artifact authority. Extract focused package-owned repositories only for proven workflows; keep Git/source and execution workspaces filesystem-native; select one product-artifact authority at composition; prohibit generic virtual filesystems, silent dual writes, and premature sync.
 6. **Knowledge graph:** only after stable explicit relationships and retrieval baseline demonstrate multi-hop need, build a deterministic in-memory read-only projection. Keep edge provenance/origin, status, revision, contradiction, and supersession explicit. A persistent graph remains derived and rebuildable; a graph database is not assumed.
 7. **Authority/cloud/Aren:** compare filesystem, SQLite/server, and hybrid publication modes on real work before choosing. Cloud and typed Aren artifact tools reuse proven application contracts; source edits/builds/tests remain sandboxed filesystem/Git work.
 
@@ -2203,7 +2260,10 @@ Structured log fields:
 - Project.
 - Sprint.
 - Run ID.
+- Run schema version.
+- Owner and fencing identity when applicable.
 - Task ID.
+- Stage/execution ID.
 - Attempt.
 - Runtime.
 - Model.
@@ -2213,6 +2273,8 @@ Structured log fields:
 - Agentwrap session ID.
 - Agentwrap event kind.
 - Agentwrap policy decision when applicable.
+- Durable event sequence and replay boundary when applicable.
+- Lifecycle transition, lease state, reconciliation decision, and terminal-outcome winner when applicable.
 
 ### 19.2 Diagnostics
 
@@ -2228,6 +2290,11 @@ Diagnostics must include:
 - State file path.
 - Agentwrap `RunMetadata` summaries for attempts, policy, validation, repair, sessions, permissions, cleanup, artifacts, usage, warnings, and errors.
 - Agentwrap raw payload omission/safety facts when relevant.
+- Durable run record path/store identity and schema version.
+- Owner, lease, heartbeat age, fencing, and safe process-birth facts.
+- Current lifecycle snapshot, last event sequence, oldest retained sequence, and any replay gap.
+- Acceptance/append/terminal persistence health, reconciliation backlog, and last decision evidence.
+- Cancellation request, routing, acknowledgement, and cleanup certainty.
 
 Diagnostics must not include:
 
@@ -2243,7 +2310,7 @@ UltraPlan must use agentwrap observability hooks:
 - `agentwrap.EventSink` for event fan-out to logs and local event records.
 - `agentwrap.RunStore` for run inspection.
 
-First release may use `agentwrap.MemoryRunStore` in tests and small local runs, but production local durability should use an UltraPlan store backed by workspace files if run records need to survive process exit.
+`agentwrap.MemoryRunStore` is suitable for isolated tests only. Sprint 35 production paths require an UltraPlan durable operational store correlated with agentwrap records. The selected storage mechanism is a reasoning output; filesystem files are not mandated if they cannot satisfy the required atomicity, concurrency, replay, and recovery contracts.
 
 Required sink failures must be treated according to agentwrap semantics: returned from `Wait` when the primary runtime outcome succeeded. Best-effort sink failures must be recorded as warnings without replacing the primary outcome.
 
@@ -2260,6 +2327,8 @@ Required sink failures must be treated according to agentwrap semantics: returne
 - Ensure no goroutine leaks in tests.
 - Bound HTTP request concurrency, active operations, SSE subscribers, and per-operation event buffers.
 - Never let an SSE write or slow browser subscriber block the underlying app operation.
+- Serialize or fence competing lifecycle writers so stale owners cannot renew leases, append authoritative transitions, or overwrite the winning terminal outcome.
+- Bound durable journal queues, append latency, retained bytes/events, replay work, reconciliation concurrency, and support-bundle size.
 
 ### 20.2 Cancellation
 
@@ -2280,10 +2349,11 @@ Cancellation behavior:
 - Return cancellation exit code when user initiated.
 - Preserve agentwrap cleanup metadata separately from the primary run result.
 - Disconnecting an SSE subscriber cancels only that subscription; explicit operation cancellation uses the operation context and shared app cancellation path.
-- Graceful server shutdown stops accepting new work, closes subscribers, cancels server-owned active operations, and leaves durable product state recoverable.
+- Graceful server shutdown stops accepting new work, closes subscribers, cancels workers owned by that server under the selected topology, and leaves durable product and operational state recoverable.
 - Shutdown cancellation records `reason: server_shutdown`, is idempotent, and participates in the same single-terminal-outcome arbitration as user cancellation, failure, timeout, and completion.
 - The server waits only for a configured bounded cleanup period, does not release locks before ownership is reconciled, and records `interrupted` or `cleanup_uncertain` when complete cleanup cannot be proven.
 - Forced termination is reconciled at startup; stale `running` state, missing processes, or partial artifacts never imply successful completion.
+- Cancellation from another supported process is first persisted against the run, then routed to the current fenced owner. Repetition is safe and an unreachable owner remains visibly pending or uncertain until reconciliation.
 
 ## 21. Persistence and File Writes
 
@@ -2294,10 +2364,12 @@ Cancellation behavior:
 - Report files written by runtimes are validated after runtime exit.
 - UltraPlan-created helper files should use `0644` permissions by default.
 - Directories should use `0755` by default.
+- Durable operational acceptance, event append, lease, cancellation, and terminal writes use the atomicity and durability contract selected for Sprint 35; partial success must be detectable and recoverable.
+- Operational retention/compaction never deletes the only current lifecycle snapshot or hides the lower replay boundary.
 
 ### 21.2 Locks
 
-The first release should prevent accidental concurrent mutation of the same study run state.
+UltraPlan must prevent accidental concurrent mutation of package-owned workflow state and stale concurrent mutation of shared operational run state.
 
 Lock requirements:
 
@@ -2305,6 +2377,7 @@ Lock requirements:
 - Lock file includes PID, command, and timestamp.
 - Stale lock detection should be conservative.
 - Users can force unlock with explicit command or flag.
+- Sprint 35 run ownership uses leases plus fencing or an equivalently safe mechanism; a lock file containing only PID and timestamp is not sufficient authority.
 
 ## 22. Security Requirements
 
@@ -2364,7 +2437,8 @@ Required unit coverage:
 - Agentwrap wrapper composition.
 - Permission policy construction.
 - HTTP route and method mapping, request validation, safe error projection, confirmation binding/expiry, and template model construction.
-- SSE event encoding, bounded buffering, slow-subscriber behavior, reconnect behavior, and operation-hub cancellation.
+- SSE event encoding, bounded buffering, slow-subscriber behavior, cursor replay/gaps, reconnect behavior, durable-run lookup, and cancellation routing.
+- Run envelope validation, lifecycle transitions, monotonic sequence allocation, lease renewal/expiry, fencing, terminal arbitration, retention/compaction, redaction-before-append, tombstones, and migration.
 
 ### 23.2 Fixture Tests
 
@@ -2386,6 +2460,8 @@ Fixtures required:
 - Rate limit event or diagnostic.
 - Timeout fixture through fake runtime.
 - Agentwrap event records for lifecycle, validation, retry, fallback, permission, and cleanup.
+- Durable run records for active, stalled, interrupted, cleanup-uncertain, terminal, migrated, tombstoned, compacted, corrupt/torn, and unsupported-version cases.
+- Event journals with duplicate delivery, missing cursors, explicit retention gaps, redacted payloads, and terminal races.
 
 ### 23.3 Fake Runtime Tests
 
@@ -2418,6 +2494,8 @@ These tests must be opt-in and skipped by default unless required environment va
 OpenCode integration tests must go through `agentwrap/opencode`, not direct process invocation.
 
 Local web integration tests must use `httptest` with real app use cases over temporary workspaces and fake runtime/process dependencies. Browser-level tests must cover read-only navigation, guarded confirmation, live progress, cancellation, refresh/reconnect recovery, hostile artifact content, and CLI/TUI/web state agreement without requiring a live provider.
+
+Sprint 35 cross-process tests must cover two concurrent CLI-started runs visible from the browser top bar, a run observed through a second supported local server, session expiry, observing-server restart, retained replay followed by new live events, owner crash at every commit boundary, stale lease, PID reuse, fencing of stale writers, duplicate cancellation, cancellation/completion races, slow subscribers, cursor expiry, compaction, disk-full/permission failure, corrupted/torn records, schema migration, and a redacted support bundle. The test harness must distinguish observer restart from worker-owner restart and assert the selected topology contract explicitly.
 
 ### 23.5 Golden Tests
 
@@ -2560,6 +2638,13 @@ UltraPlan Go is technically acceptable when:
 - Exact requirements and code-context content appears in a stable shared prefix for every downstream agent-backed stage, while additional repository inspection remains allowed.
 - CLI, JSON, TUI, and browser agree on code-context readiness, progress, findings, artifact, rerun, cancellation, and recovery.
 - No repository index, RAG/cache subsystem, parallel context manifest, or automatic staleness mechanism is required by Phase 5.
+- Every runtime-backed execution is durably accepted with a stable workspace run ID before child start, or fails closed without starting the child.
+- Workspace-wide run queries and the browser top bar include active CLI-, TUI-, and web-started work from the shared lifecycle projection.
+- A supported second local server can inspect a current run, replay retained ordered events, and receive subsequently committed events without depending on the originating browser session.
+- Refresh, session expiry, observing-server restart, bounded delivery reaping, and legacy operation URLs resolve to durable run state, an explicit tombstone/gap, or precise recovery rather than an unexplained 404.
+- Lease/fencing, owner loss, PID reuse, cancellation routing, terminal arbitration, reconciliation, retention, persistence failure, and backpressure have deterministic race and fault-injection coverage.
+- Logs, metrics, health, diagnostics, and support exports correlate UltraPlan run/attempt/stage/task identities with agentwrap/runtime/process identities safely.
+- Sprint 35 operational persistence does not change authority for governed artifacts, flow outcomes, Git/source state, or external smoke evidence.
 
 ## 27. Open Technical Questions
 
@@ -2574,6 +2659,17 @@ UltraPlan Go is technically acceptable when:
 - What is the minimum stable JSON schema for status output?
 - What long-term compatibility guarantee should the external smoke-harness protocol provide across independently released harness versions?
 - Which target identity should be mandatory when Git metadata is unavailable: execute-state fingerprint, explicit changed paths, or a full contained tree manifest?
+- What exact topology does Sprint 35 support: multiple local processes, shared-filesystem multi-host observers/owners, or both, and which guarantees are conditional?
+- Should execution control use a coordinator/daemon, fenced direct repository writers, or a hybrid, and where does that responsibility live without duplicating product modules or agentwrap?
+- Which durable mechanism best satisfies acceptance atomicity, ordered append, concurrent observation, recovery, and bounded retention: filesystem journal/snapshots, SQLite, agentwrap store composition, or another local design?
+- Which workers may be adopted after owner loss, if any, and which must be cancelled or reconciled as interrupted?
+- What is the stable identity hierarchy among operation, product run, attempt, stage execution, task, agentwrap run/session, OS process, and smoke-harness run?
+- What lease, heartbeat, clock, fencing, and process-birth rules prevent stale writers and PID reuse without falsely killing slow healthy work?
+- What event delivery guarantee, replay cursor, deduplication, retention, compaction, snapshot, backpressure, and disk-limit policy is supportable?
+- Which run history is visible across sessions, and which cancel/retry controls require fresh session authorization?
+- How long do legacy operation mappings and terminal tombstones remain, and what typed response replaces a missing/expired mapping?
+- Which metrics and health surfaces are always local, and is OpenTelemetry export an optional Sprint 35 adapter or a later concern?
+- What is the safe fail-closed or degraded behavior for acceptance, mid-run append, heartbeat, and terminal persistence failures?
 
 ## 28. Changelog
 
@@ -2586,8 +2682,9 @@ UltraPlan Go is technically acceptable when:
 | 1.5.0 | 2026-07-17 | Add Phase 3 review and deep smoke | Define root `review.md`/`smoke.md`, dynamic structured review, external harness integration, review-before-smoke gates, freshness, and full CLI/TUI parity. |
 | 1.6.0 | 2026-07-22 | Add Phase 4 local web surface | Define the Sprint 30+ loopback Go HTTP server, embedded Go-rendered browser UI, guarded commands, SSE progress, and local-only security boundary. |
 | 1.7.0 | 2026-08-15 | Add Phase 5 grounded planning and gated future architecture | Define the `code-context` stage and stable downstream prompt prefix, strengthen server shutdown ownership, formalize the embedded primitives/components/layouts/pages hierarchy, and record evidence gates for content, QA/repair, retrieval, persistence, optional graph, and cloud/Aren. |
+| 1.8.0 | 2026-08-20 | Add Phase 6 durable run control and observability | Define stable workspace run identity, durable ordered safe events, cross-surface/server projection, lease/fencing and reconciliation, compatible run inspection, cancellation routing, telemetry, and a comprehensive failure matrix while leaving storage and coordinator choices to Sprint 35 reasoning. |
 
 
 ## Current Scope Clarification
 
-UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. Phase 4 adds a third local interface over those capabilities without another persistence model. Phase 5 adds the first new planning stage through the same interface and application boundaries. Content identity, expanded QA/repair, retrieval, alternate persistence, knowledge graphs, cloud, and Aren remain gated future directions rather than current implementation scope. General-purpose issue tracking, hosted/multi-user service, remote workers, automatic Git mutation, and unbounded autonomous repair remain non-goals.
+UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, automated conformance review, and deep smoke. Phase 4 adds a third local interface over those capabilities. Phase 5 adds the first new planning stage through the same interface and application boundaries. Phase 6 adds durable operational run identity and observation without selecting an alternate authority for product artifacts. Content identity, expanded QA/repair, retrieval, alternate product-artifact persistence, knowledge graphs, cloud, and Aren remain gated future directions rather than current implementation scope. General-purpose issue tracking, hosted/multi-user service, remote workers, automatic Git mutation, and unbounded autonomous repair remain non-goals.

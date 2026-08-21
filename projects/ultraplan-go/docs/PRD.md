@@ -1,23 +1,23 @@
 # Product Requirements Document: UltraPlan Go
 
-**Version:** 1.6.0
+**Version:** 1.7.0
 **Status:** Draft
 **Owner:** Product and Engineering
-**Last Updated:** 2026-08-15
+**Last Updated:** 2026-08-20
 
 ## Stage 1: Product Brief
 
 ### 1.1 Executive Summary
 
-UltraPlan Go is a production-grade local planning, implementation, review, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases. Phase 5, beginning with Sprint 33, adds a durable `code-context` stage immediately after requirements and reuses its exact source pack across downstream planning, execution, and verification prompts.
+UltraPlan Go is a production-grade local planning, implementation, review, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases. Phase 5, beginning with Sprint 33, adds a durable `code-context` stage immediately after requirements and reuses its exact source pack across downstream planning, execution, and verification prompts. Phase 6, beginning with Sprint 35, gives every runtime-backed execution a durable workspace-visible identity, replayable safe history, truthful liveness, and consistent observation across CLI, TUI, browser sessions, and supported local server processes.
 
-The near-term product commitment ends with the observable grounded-planning release in Sprint 34. Later content identity, empirical QA, repair, retrieval, alternate persistence, knowledge graph, cloud, and Aren directions are gated options: each requires the preceding capability to be dogfooded and measured before it becomes committed sprint scope.
+The near-term product commitment ends with the durable-run observability release in Sprint 35. Later content identity, empirical QA, repair, retrieval, alternate product-artifact persistence, knowledge graph, cloud, and Aren directions are gated options: each requires the preceding capability to be dogfooded and measured before it becomes committed sprint scope. Sprint 35 operational persistence does not select a new authority for authored product artifacts.
 
 - **Problem Statement:** The current prototype proves the workflow, but it is script-like, tightly coupled to a local Bun/TypeScript environment, and not hardened for durable runs, reproducible outputs, reliable retries, clear configuration, or long-term extensibility.
 - **Proposed Solution:** Rebuild UltraPlan as a Go CLI with a well-defined domain model, deterministic filesystem layout, resumable orchestration, structured runtime adapters, robust validation, and production-quality testing.
 - **Target Users:** Engineers, technical leads, AI workflow builders, and product teams using agentic coding runtimes to study codebases, compare architectural patterns, and plan future implementation work from separately reviewed study outputs.
 - **Expected Outcome:** Users can initialize studies, run large batches of source analyses, synthesize final reports, extract code citations, inspect study status, use selected study evidence to generate governed sprint planning artifacts through `plan.md`, execute validated sprint tasks, review implementation against selected contracts and evidence, and deep-smoke runtime-facing claims with durable state and diagnostics.
-  Every supported workflow remains available through stable CLI/JSON surfaces. The TUI and Phase 4 browser UI reuse the same typed use cases and durable workspace state.
+  Every supported workflow remains available through stable CLI/JSON surfaces. The TUI and browser reuse the same typed use cases, canonical workspace artifacts, and durable workspace-wide run projection. A run remains discoverable and explainable when the observing page, browser session, or local server process changes.
 
 ### 1.2 Product Context
 
@@ -33,7 +33,7 @@ The prototype in `ultraplan/cli` demonstrates the core product shape:
 - Project documents for PRDs, TRDs, roadmaps, project indexes, sprint requirements, sprint indexes, technical handbooks, reasoning, and plans in the prototype.
 - Sprint planning and sprint execution workflows in the prototype.
 
-For UltraPlan Go, Phase 2 ports the planning artifact chain from the prototype through `plan.md` and adds controlled implementation execution from validated plans. The delivered TUI enabling track exposes those services locally. Phase 3 replaces manual sprint review and smoke coordination with product-owned `review.md` and `smoke.md` stages. Detailed smoke runs and issue evidence remain in the external harness referenced by the project index. Phase 4 adds a local browser surface without introducing hosted SaaS, multi-user collaboration, remote execution, a database-backed alternate state model, or project-management behavior.
+For UltraPlan Go, Phase 2 ports the planning artifact chain from the prototype through `plan.md` and adds controlled implementation execution from validated plans. The delivered TUI enabling track exposes those services locally. Phase 3 replaces manual sprint review and smoke coordination with product-owned `review.md` and `smoke.md` stages. Detailed smoke runs and issue evidence remain in the external harness referenced by the project index. Phase 4 adds a local browser surface without introducing hosted SaaS, multi-user collaboration, remote execution, a database-backed alternate product-artifact model, or project-management behavior. Phase 6 makes operational run identity and observation durable without changing those product-artifact authority boundaries.
 
 The Go product keeps those core capabilities but makes them reliable, portable, testable, and extensible.
 
@@ -55,6 +55,7 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 - **Product workflows stay product-owned:** Runtime adapters execute prompts; UltraPlan owns study behavior, project catalog behavior, sprint planning behavior, and sprint execute behavior.
 - **Portable local-first operation:** The primary product is a CLI that works from a repository checkout without requiring a server.
 - **One product core, multiple local surfaces:** CLI, TUI, and local browser surfaces must share product services and use-case wiring instead of duplicating workflow logic or shelling out to each other for normal operation.
+- **A run outlives its observer:** Execution identity, lifecycle, and retained safe history must not depend on one browser session, HTTP server, SSE subscriber, or top-level page.
 - **Review before expensive proof:** Evidence-grounded review runs before live smoke so deterministic conformance failures block unnecessary runtime work.
 - **Summaries local, raw evidence linked:** Sprint roots keep readable `review.md` and `smoke.md`; detailed smoke evidence remains in the cataloged harness and is linked by stable run IDs.
 
@@ -142,6 +143,9 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 15. **Operate workflows through a browser**
    - As an operator, I want guarded local workflow actions, live progress, cancellation, and recovery in the browser while durable workspace files remain the source of truth.
 
+16. **Observe current work from any local surface**
+   - As an operator, I want every current run in my workspace to appear with the same identity, liveness, progress, history, and recovery action in CLI, TUI, and any supported local browser server, regardless of where it started.
+
 ### 1.7 Business and Product Goals
 
 - Provide a durable Go implementation of the proven prototype workflow.
@@ -155,6 +159,7 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 - Provide sprint-targeted deep smoke that writes `smoke.md` and links detailed run/issue evidence in the external harness.
 - Provide the complete `execute -> review -> smoke` workflow through both CLI and TUI over shared app use cases.
 - Provide a loopback-only local HTTP server and simple browser UI over the same app use cases beginning in Sprint 30.
+- Provide a workspace-wide durable run list, stable run inspection, replayable progress, conservative liveness, cross-surface cancellation, and correlated diagnostics beginning in Sprint 35.
 - Allow future runtime support without changing the study workflow model.
 - Keep the CLI understandable enough that users can inspect and edit generated artifacts directly.
 
@@ -174,6 +179,8 @@ The Go product keeps those core capabilities but makes them reliable, portable, 
 - Do not make the TUI the only supported interface; scripts and documentation must continue to use stable CLI and JSON surfaces.
 - Do not let the TUI call the UltraPlan CLI as its normal integration mechanism. It should share product services and application use cases.
 - Do not let the browser UI call CLI subprocesses, own workflow state machines, or persist an alternate product state.
+- Do not make an in-memory server registry, browser cookie, open page, or SSE connection the authority for whether a run exists.
+- Do not use Sprint 35 operational records as a shadow authority for governed Markdown, flow outcomes, Git/source state, or external smoke evidence.
 
 ## Stage 2: Solution Specification
 
@@ -239,7 +246,8 @@ Required workspace concepts:
 - **Planning sprint:** A sprint directory under `projects/<project>/sprints/<slug>` that contains governed planning artifacts through `plan.md` and execute artifacts for controlled implementation runs.
 - **Code-context pack:** A sprint-owned Markdown snapshot selected from the target implementation repository after requirements. It is authoritative as the prepared common context for that sprint, while the live repository remains authoritative for source code.
 - **TUI session:** A local interactive terminal session that reads and mutates the same workspace artifacts through shared application use cases. It does not create an alternate persistence model.
-- **Web session:** A local browser session connected to the loopback UltraPlan server. Server connection, confirmation, subscription, and active-operation handles are ephemeral; workspace artifacts and product-owned run state remain authoritative.
+- **Web session:** A local browser session connected to the loopback UltraPlan server. Connection, confirmation, and subscription state are ephemeral; durable run identity and read visibility are not coupled to the session.
+- **Operational run:** A workspace-scoped record of one accepted execution, including stable identity, lifecycle, owner/liveness facts, attempts, safe ordered events, terminal outcome, and correlation to product and runtime state. It is authoritative only for those operational concerns.
 
 ### 2.3 Functional Requirements
 
@@ -394,7 +402,7 @@ Required workspace concepts:
     - The server binds to loopback by default and rejects non-loopback binding in Phase 4.
     - HTTP handlers call typed app use cases rather than CLI handlers or product modules directly.
     - The server exposes versioned JSON endpoints for dashboard, detail, artifact-preview, validation, confirmation, operation, and cancellation behavior.
-    - The server owns only ephemeral connection and subscription state; durable product state remains in workspace artifacts.
+    - The server owns only ephemeral connection and subscription state; durable product and operational state are reached through shared application boundaries.
 
 24. **Local browser UI and progress streaming**
     - The Go server renders browser pages from embedded `html/template` assets and serves embedded CSS and minimal JavaScript.
@@ -402,10 +410,19 @@ Required workspace concepts:
     - Handlers provide explicit typed view models. Templates do not read files, call application use cases, validate HTTP requests, or decide product workflow state.
     - Users can inspect projects, studies, sprints, findings, state, and bounded Markdown/JSON artifact previews.
     - Runtime-backed or mutating actions require a server-validated confirmation bound to the normalized request and current input state.
-    - Commands use ordinary HTTP requests; live operation progress uses SSE and cancellation uses an explicit HTTP request.
+    - Commands use ordinary HTTP requests; live operation progress may use SSE and cancellation uses an explicit HTTP request.
     - Browser disconnect or refresh does not determine product task success and does not replace durable run-state recovery.
 
-25. **Grounded sprint code context**
+25. **Durable run control and observation**
+    - Every runtime-backed execution is durably accepted with a stable run ID before child work begins.
+    - Active-run counts and lists are workspace-wide and agree across CLI, JSON, TUI, dashboard, and detail pages.
+    - Stable run inspection and retained safe events remain available across browser-session expiry, observer restart, and supported local server changes.
+    - Event delivery resumes from a durable ordered cursor. Retention gaps, sampled detail, and degraded persistence are explicit rather than silently presented as a complete stream.
+    - Owner liveness, cancellation routing, terminal arbitration, and reconciliation are conservative, idempotent, and diagnosable.
+    - Read visibility and mutation authorization are separate policies: losing the originating browser session does not erase the run, while cancellation and retry still require current authorization.
+    - The exact storage, coordinator, process-ownership, retention, and supported topology choices remain Sprint 35 reasoning decisions constrained by these outcomes.
+
+26. **Grounded sprint code context**
     - The canonical planning order is `requirements -> code-context -> sprint-index -> technical-handbook -> area-reasoning -> reasoning -> plan`.
     - `code-context` can read the resolved implementation repository but may write only the sprint's `code-context.md`.
     - The artifact contains selected exact source excerpts with repository-relative paths, useful ranges/symbols, relevance explanations, important relationships, and explicit uncertainties.
@@ -563,7 +580,7 @@ Phase 2 supports sprint planning commands through `plan.md` and controlled imple
   - Runs the selected contract and handbook reviewers, deterministic plan/decision/evidence checks, and atomically replaces the sprint's current `review.md`.
 
 - `ultraplan sprint <project> <sprint> smoke`
-  - After review, discovers the cataloged external smoke harness, selects or accepts an explicit smoke scope, runs it safely, and atomically replaces the sprint's current `smoke.md` with linked evidence.
+  - After review, uses the configured smoke author to build or update a durable sprint-specific suite for non-deterministic real boundaries in the cataloged external harness, validates its enumerated coverage, runs it safely, and atomically replaces the sprint's current `smoke.md` with linked evidence.
 
 - `ultraplan sprint <project> <sprint> verify [--to review|smoke]`
   - Convenience orchestration over the same review and smoke use cases; it does not introduce a third verification artifact.
@@ -938,9 +955,11 @@ Browser request
 Browser operation start
   -> server-validated confirmation
   -> shared app operation use case
-  -> bounded ephemeral operation/event hub
-  -> SSE progress stream
-  -> durable product state refresh on completion, cancellation, or reconnect
+  -> durable run acceptance before child start
+  -> product/runtime owner with lease and heartbeat
+  -> sanitized ordered event journal before fan-out
+  -> transient SSE delivery from a replay cursor
+  -> durable run plus product-state refresh on completion, cancellation, or reconnect
 ```
 
 Graceful server shutdown enters a draining state, rejects new mutations, requests cancellation for every server-owned active operation, waits for bounded cleanup and reconciliation, persists a truthful `cancelled`, `interrupted`, `cleanup_uncertain`, or already-authoritative failure/completion outcome, closes SSE/HTTP, and exits. Closing or refreshing a browser tab does not cancel work.
@@ -1134,6 +1153,12 @@ These directions are not current release commitments. A failed evidence gate sto
 - Target: 100% across sprint index, handbook, reasoning, plan, execute, Conformance Review, and smoke fixtures.
 - Measurement: Prompt-prefix stability tests plus one gated real-repository requirements-to-plan dogfood flow.
 
+**Phase 6 KPI: Run Observation Agreement**
+
+- Definition: Percentage of representative active, terminal, interrupted, and cleanup-uncertain executions whose identity, lifecycle, liveness, progress cursor, result, and recovery action agree across CLI, JSON, TUI, and every supported local server topology.
+- Target: 100% for the Sprint 35 failure matrix, including concurrent CLI runs, session expiry, reconnect, observer restart, owner loss, retention gaps, and cancellation races.
+- Measurement: Cross-process integration/browser tests plus gated real-runtime dogfood over one workspace.
+
 ### 4.2 Definition of Done
 
 The first production release is done when:
@@ -1177,6 +1202,17 @@ Product Phase 5 is done when:
 - A representative requirements-to-plan dogfood flow runs the stage exactly once and passes normal test, race, and build gates.
 - No repository index, retrieval system, UltraPlan cache, parallel context manifest, or automatic staleness claim has entered the release.
 
+Product Phase 6 is done when:
+
+- Every accepted runtime-backed execution has a stable durable run ID before child execution starts.
+- Workspace-wide active counts include current CLI-, TUI-, and web-started work without requiring navigation to an owning detail page.
+- A supported second local server can inspect a run, replay retained history, and receive subsequently committed events.
+- Refresh, browser-session expiry, observing-server restart, and bounded delivery retention never erase a valid run or produce an unexplained operation 404.
+- Lifecycle, liveness, event cursor/gap, result, cancellation, and recovery agree across CLI, JSON, TUI, and browser.
+- Owner death, stale leases, PID reuse, duplicate cancellation, terminal races, persistence failure, backpressure, and retention limits have deterministic fault-injection coverage.
+- Logs, metrics, health, diagnostics, and the redacted support bundle share safe run/attempt/stage/task/runtime correlation.
+- Operational run persistence remains separate from canonical authored artifacts and passes migration, race, build, browser, and gated real-runtime release checks.
+
 ### 4.3 Instrumentation Requirements
 
 Track these event categories:
@@ -1196,6 +1232,12 @@ Track these event categories:
 - Task failed.
 - Task cancelled.
 - Summary generated.
+- Run durably accepted or rejected before start.
+- Owner lease acquired, renewed, fenced, expired, or reconciled.
+- Event journal append, replay, cursor gap, compaction, or persistence failure.
+- Subscriber connected, lagged, dropped detail, reconnected, or closed.
+- Cancellation requested, routed, acknowledged, or left uncertain.
+- Terminal outcome proposed, won, rejected as stale, or reconciled.
 
 Metrics to monitor locally:
 
@@ -1207,6 +1249,11 @@ Metrics to monitor locally:
 - Citation resolution counts.
 - Generated artifact counts.
 - Pending/running/completed/failed task counts.
+- Active runs by lifecycle and owner-liveness state.
+- Lease-renewal failures and reconciliation backlog/latency.
+- Durable append latency/failures, journal bytes, retained events, and compaction results.
+- Replay distance, cursor gaps, subscriber lag, and dropped/sampled event detail.
+- Cancellation routing latency and cleanup-uncertain outcomes.
 
 ### 4.4 Rollout Strategy
 
@@ -1241,7 +1288,7 @@ Metrics to monitor locally:
 
 **Rollout Step 7: Deep smoke and integrated verification**
 
-- Add the versioned external harness contract, narrow smoke selection, root `smoke.md`, review-before-smoke flow, evidence links, focused reruns, recovery, full TUI operation, and Phase 3 release hardening.
+- Add agent-driven authoring of durable sprint-specific harness suites, the versioned external harness contract with bounded authoring paths and enumerated coverage, narrow smoke selection, root `smoke.md`, review-before-smoke flow, evidence links, focused reruns, recovery, full TUI operation, and Phase 3 release hardening.
 
 **Rollout Step 8: Local web foundation**
 
@@ -1263,6 +1310,11 @@ Metrics to monitor locally:
 
 - Reuse exact requirements and `code-context.md` through a stable downstream prompt prefix, add the manual stage skill, dogfood the real-repository flow, and stop before content identity, QA, or retrieval expansion.
 
+**Rollout Step 13: Durable run control and observation**
+
+- Establish stable run identity, workspace-wide lifecycle projection, durable sanitized event history, replayable delivery, liveness/lease and reconciliation semantics, cross-surface cancellation, compatibility, correlated diagnostics, and failure-matrix dogfood.
+- Select storage, ownership/coordinator, topology, retention, authorization, and telemetry mechanisms through sprint reasoning; do not treat operational persistence as approval for alternate product-artifact authority.
+
 **Later gated evaluation**
 
 - Sequence content/provenance, QA/adjudication/repair, retrieval, persistence/SQLite, optional graph, and cloud/Aren only through the evidence gates described above; do not assign sprint scope merely from architectural possibility.
@@ -1277,6 +1329,7 @@ Metrics to monitor locally:
 | 2026-07-17 | Product/Engineering | Draft | Define Product Phase 3 as automated review followed by deep smoke, keep `review.md`/`smoke.md` as the only sprint summaries, link raw smoke evidence externally, and require full TUI parity in every Phase 3 sprint. |
 | 2026-07-22 | Product/Engineering | Draft | Add Product Phase 4 beginning at Sprint 30: a loopback-only Go HTTP server, Go-rendered browser UI, guarded operations, SSE progress, and no hosted/multi-user scope. |
 | 2026-08-15 | Product/Engineering | Draft | Add Phase 5 grounded planning through `code-context`, adopt the server-owned shutdown cancellation contract, and record the evidence-gated post-Phase-5 sequence from content provenance through QA, retrieval, persistence, optional graph, and cloud/Aren. |
+| 2026-08-20 | Product/Engineering | Draft | Add Phase 6 durable run identity and cross-surface observability after live use exposed server-memory, browser-session, and page-local visibility gaps. |
 
 ### 4.6 Changelog
 
@@ -1286,3 +1339,4 @@ Metrics to monitor locally:
 | 1.4.0 | 2026-07-17 | Add Phase 3 review and smoke | Replace manual post-execute verification with automated `review.md`, external-harness-backed `smoke.md`, integrated CLI/TUI operation, and deterministic gates. |
 | 1.5.0 | 2026-07-22 | Add Phase 4 local web surface | Introduce a loopback Go server and simple embedded browser UI over shared app use cases, with HTTP commands and SSE progress starting in Sprint 30. |
 | 1.6.0 | 2026-08-15 | Add grounded planning and gated future direction | Add `code-context` as the Phase 5 shared source foundation, make server shutdown cancellation explicit, organize the embedded UI as primitives/components/layouts/pages, and align later content, QA, retrieval, persistence, graph, and cloud/Aren work with measured stop/go gates. |
+| 1.7.0 | 2026-08-20 | Add durable run control and observation | Commit Sprint 35 outcomes for workspace-wide run identity, replayable safe events, cross-server observation, liveness/reconciliation, compatible stable inspection, and correlated operational diagnostics while leaving the implementation topology open for reasoning. |

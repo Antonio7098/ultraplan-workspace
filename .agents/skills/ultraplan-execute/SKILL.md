@@ -1,6 +1,6 @@
 ---
 name: ultraplan-execute
-description: Manually run the UltraPlan execute stage for a selected project sprint. Use only when the user explicitly invokes $ultraplan-execute or directly asks to run this exact UltraPlan stage; do not invoke implicitly.
+description: Manually run the UltraPlan execute stage when given a project sprint path or project/sprint references. Use only when the user explicitly invokes $ultraplan-execute or directly asks to run this exact UltraPlan stage; do not invoke implicitly.
 ---
 
 # UltraPlan Execute
@@ -9,38 +9,38 @@ Run this stage interactively while preserving UltraPlan's governed artifact chai
 
 ## Operating contract
 
-1. Locate the workspace root and resolve the project and sprint. If either is ambiguous, ask the user instead of guessing.
-2. Run `ultraplan project <project> status` and `ultraplan sprint <project> <sprint> status --json`. Treat files and fresh CLI status as authoritative; never hand-edit flow-state JSON.
-3. Check these prerequisites:
+1. Treat a supplied sprint path as UltraPlan stage input, not as a Git target. For an input such as `projects/<project>/sprints/<sprint>/` or `.ultra/projects/<project>/sprints/<sprint>/`, find the workspace root, derive `<project>` and `<sprint>` from the path, and read the matching `project-index.md`. The sprint directory contains governed stage artifacts; when implementation access is required, resolve its repository from `Target Implementation Directory`, falling back to `Repository` only when the target field is absent. Resolve relative repository paths against the workspace root and verify the result before using it. Do not search nested source repositories for a similarly named skill, and do not ask what target to use merely because the supplied input is a directory.
+2. If no sprint path was supplied, locate the workspace root and resolve the project and sprint from explicit references and the current location. Ask only when the project index is missing, a required implementation target cannot be resolved, or more than one project/sprint remains possible.
+3. Run all UltraPlan commands from the resolved workspace root. Run `ultraplan project <project> status` and `ultraplan sprint <project> <sprint> status --json`. Treat files, the project index, and fresh CLI status as authoritative; never hand-edit flow-state JSON.
+4. Check these prerequisites:
 
 - validated plan and all planning artifacts
 - resolvable target implementation directory
 
-4. Validate every prerequisite that has a sprint validation command. If anything is missing, invalid, stale, or internally inconsistent, show the exact gaps and ask whether to fill them. Do not fill prerequisite gaps until the user agrees. If they agree, run the corresponding earlier UltraPlan skills in canonical order, then return to this stage.
-5. If the target is already complete and valid, summarize that state and ask before regenerating or materially changing it.
-6. If the user explicitly asks for a proposal, analysis, or discussion only, inspect all relevant evidence and return that without writing artifacts or advancing state. Otherwise, do the stage now; do not stop at a proposal.
-7. Use the current effective prompt and concrete paths:
+5. Inspect every prerequisite artifact directly and use fresh sprint state to check completeness and consistency. Do not run CLI validation. If anything is missing, invalid, stale, or internally inconsistent, show the exact gaps and ask whether to fill them. Do not fill prerequisite gaps until the user agrees.
+6. If the target is already complete and valid, summarize that state and ask before regenerating or materially changing it.
+7. If the user explicitly asks for a proposal, analysis, or discussion only, inspect all relevant evidence and return that without writing artifacts or advancing state. Otherwise, do the stage now; do not stop at a proposal.
+8. Act as the execution agent and perform the entire stage manually with your own file-editing and command tools. Use the UltraPlan CLI only for `project <project> status`, `sprint <project> <sprint> status --json`, `sprint <project> <sprint> prompt execute`, and the final `sprint <project> <sprint> review --dry-run --json` readiness check. Do not use any other UltraPlan CLI command during execution, including execution dry-run, validate, execute, verify, smoke, or flow commands.
+9. Use the current effective prompt and concrete paths:
 
     ultraplan sprint <project> <sprint> prompt execute
 
    The resolved prompt can include workspace or project overrides and therefore takes precedence over the canonical prompt below.
-8. Complete the stage-specific workflow, preserve unrelated user edits, and do not cross declared mutation boundaries.
-9. Run `ultraplan sprint <project> <sprint> validate execute` when supported. Fix validation findings within this stage rather than declaring success early.
-10. Run `ultraplan sprint <project> <sprint> status --json` after writes or governed execution so flow-state, freshness, and artifact status are reconciled. Re-run project status if the project or sprint index changed.
-11. Inspect downstream artifacts for references made stale by this change. Update directly coupled indexes/references when safe; otherwise report the exact dependent stage that must be revisited. Never delete or silently rewrite downstream decisions.
-12. Finish with the artifact/result paths, validation outcome, state transition, and any remaining blocker or dependent stage.
+10. Complete the stage-specific workflow, preserve unrelated user edits, and do not cross declared mutation boundaries.
+11. Inspect the completed implementation and governed execution artifacts yourself and run the plan's required checks directly. Do not use an UltraPlan CLI validation command; use sprint status only to reconcile the state after the manual work is recorded.
+12. Run `ultraplan sprint <project> <sprint> status --json` after writes or governed review execution so flow-state, freshness, and artifact status are reconciled. Re-run project status if the project or sprint index changed.
+13. Inspect downstream artifacts for references made stale by this change. Update directly coupled indexes/references when safe; otherwise report the exact dependent stage that must be revisited. Never delete or silently rewrite downstream decisions.
+14. Finish with the artifact/result paths, validation outcome, state transition, and any remaining blocker or dependent stage.
 
 ## Stage workflow
 
-Run a dry-run first:
+Use the resolved execution prompt and approved plan to perform the implementation yourself in the target implementation directory.
 
-    ultraplan sprint <project> <sprint> execute --dry-run
+Act as the execution agent: work through incomplete plan tasks in order, inspect the code, edit the implementation, run the required checks directly, and maintain plan checkboxes, execution evidence, and the execution artifacts required by the prompt. Continue until the plan is complete or a genuine blocker requires the user.
 
-Then execute or resume the governed plan:
+For this stage, use the UltraPlan CLI only to check project or sprint state, materialise the effective execution prompt, and run the review readiness check described below. Do not use CLI execution dry runs, validation, execute, verify, smoke, or flow commands to perform, preview, validate, or complete the sprint. Inspect and verify the implementation and governed artifacts yourself, then use sprint status to reconcile the resulting state.
 
-    ultraplan sprint <project> <sprint> execute --resume
-
-Follow progress, inspect partial failures, and continue until the execution state is complete or a genuine blocker requires the user. Do not replace this governed execution with untracked ad-hoc implementation.
+After the implementation and execution evidence are complete, run `ultraplan sprint <project> <sprint> review --dry-run --json`. Require the top-level status and `result.execution_status` to be `ready` with no blocking diagnostics. If review is not ready, inspect its diagnostics, fix every in-scope execution artifact or evidence problem directly, reconcile with sprint status, and repeat the review dry-run until it is ready or a genuine blocker must be reported. Do not launch the actual review from this skill.
 
 ## Canonical stage prompt
 

@@ -2,7 +2,7 @@
 
 > Project: `ultraplan-go`  
 > Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution, post-execute review and deep smoke, a local terminal UI, and a loopback-only Go-served browser UI over the same workflows.
-> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Product Phase 5 begins at Sprint 33 and adds a durable `code-context` stage whose exact output is reused across downstream planning, execution, and verification prompts. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, automatic Git mutation, content identity, provenance, QA expansion, retrieval, and automatic repair remain deferred beyond this roadmap chunk.
+> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Product Phase 5 begins at Sprint 33 and adds a durable `code-context` stage whose exact output is reused across downstream planning, execution, and verification prompts. Product Phase 6 begins at Sprint 35 and makes execution identity, liveness, event history, and observation durable across CLI, TUI, browser sessions, and local server processes. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, automatic Git mutation, content identity, provenance, QA expansion, retrieval, and automatic repair remain deferred beyond this roadmap chunk.
 
 ## Scope Principle
 
@@ -1234,6 +1234,21 @@ projects/<project>/sprints/<sprint>/code-context.md
 
 ## Phase 5 Contract Gate
 
+**Mandatory planning-source instruction:** Before materializing Sprint 33 or
+any later sprint, the planning agent must inspect the implementation
+repository's `../ultraplan-go/docs/plans/` directory and read every plan that
+is relevant to the proposed sprint scope. It must not rely only on this
+workspace roadmap, PRD, TRD, or architecture summary. For Sprints 33–34 this
+includes, at minimum, `docs/plans/integrated-roadmap.md` and
+`docs/plans/sprint-code-context-stage.md`; the agent must also inspect the
+other files in `docs/plans/` and read any whose dependencies, boundaries, or
+deferred work overlap the sprint. The generated requirements, sprint index,
+reasoning, and plan must name the implementation plans actually used, carry
+forward their applicable constraints and acceptance gates, and explicitly
+reconcile any difference with this roadmap. The workspace roadmap continues
+to own sequencing and committed sprint scope; implementation plans are
+mandatory design inputs, not authority to expand a sprint silently.
+
 Required for Phase 5:
 
 - `internal/sprint` owns `code-context` stage order, prerequisites, status, validation, artifact paths, flow transitions, and downstream prompt integration.
@@ -1316,7 +1331,7 @@ stage-specific instructions
 - `go test ./...`, `go test -race ./...`, and `go build ./cmd/ultraplan` pass
 - no caching claim or dependency is introduced; the prompt layout merely enables provider prefix caching where available
 
-## Why This Chunk Stops After Sprint 34
+## Why The Grounded-Planning Chunk Stops After Sprint 34
 
 Sprint 34 is a clean product milestone:
 
@@ -1331,9 +1346,66 @@ The resulting real `code-context.md` examples should inform the next chunk's con
 
 ---
 
-# Gated Direction After Sprint 34
+# Product Phase 6 — Durable Run Control And Observable Execution
 
-The detailed implementation plans establish the following dependency order, but this roadmap does not assign sprint numbers beyond Sprint 34 until the preceding evidence gate passes:
+Real use after the browser and grounded-planning releases exposed a narrower prerequisite before content identity and QA expansion: UltraPlan's durable workflow state and its web server's ephemeral operation state do not form one truthful execution view.
+
+The failure is visible in three user-facing symptoms:
+
+- CLI- or TUI-started work can hold a valid workspace lock and runtime session while the browser top bar reports zero running processes.
+- a current run opened through another local server can lose its progress stream because event history and subscriptions belong to the starting server's memory.
+- a legitimate operation link can become `404 Operation not retained` after session expiry, server restart, server change, or bounded in-memory reaping even though the owning workflow remains active or recoverable.
+
+Phase 6 treats these as one control-plane problem. It separates:
+
+```text
+canonical product artifacts and outcomes  = owned by project/study/sprint modules
+durable operational run record            = workspace-visible identity, lifecycle, liveness, and safe event history
+browser/TUI/CLI presentation               = replaceable projections and controls over those records
+SSE connection                             = transient delivery, never run authority
+```
+
+This is not the later product-persistence decision in Gate D. Sprint 35 may persist operational run records using the smallest mechanism proven by reasoning, but it must not move Markdown, flow outcomes, Git/source state, or smoke evidence into a new canonical store.
+
+## Sprint 35: Durable Run Identity And Cross-Surface Observability
+
+**Goal:** Make every accepted runtime-backed execution discoverable, inspectable, replayable, cancellable when authorized, and conservatively recoverable from every supported local surface and server instance attached to the workspace.
+
+**Build:**
+
+- introduce a stable workspace-scoped run identity before child execution starts
+- record run acceptance, attempts, stage/task correlation, ownership/liveness, sanitized ordered events, and one arbitrated terminal result durably
+- replace page-local and server-memory-only running counts with one workspace-wide active-run projection
+- provide stable run detail and event replay independent of the browser session or server process that started the work
+- keep SSE as a possible delivery transport while resuming from durable sequence cursors and exposing replay gaps explicitly
+- add conservative lease/heartbeat, fencing, cancellation routing, and startup/periodic reconciliation semantics
+- correlate product run, attempt, stage/task, agentwrap run/session, process, and external harness identities without leaking secrets
+- expose structured logs, metrics, diagnostics, health, and a redacted support bundle for lifecycle and delivery failures
+- preserve compatibility or actionable migration for current operation URLs, locks, flow state, execute state, and runtime checkpoints
+- prove the model with multi-process/server, restart, expiry, crash, PID-reuse, race, slow-subscriber, storage-failure, and retention tests
+
+**Release gate:**
+
+- two CLI-started runs appear as two active runs in the browser without visiting their owning pages
+- a supported second local server can inspect a current run, replay retained history, and receive subsequently committed events
+- refresh, browser-session expiry, observer restart, and operation retention no longer erase run identity or produce an unexplained 404
+- CLI, JSON, TUI, and browser agree on run identity, lifecycle state, liveness, progress, terminal result, and recovery action
+- event ordering, replay cursor, gap, retention, redaction, backpressure, and persistence-failure behavior are explicit and tested
+- owner death, stale leases, duplicate cancellation, terminal races, and forced restart reconcile conservatively and idempotently
+- operational persistence remains distinct from canonical product-artifact authority
+- `go test ./...`, `go test -race ./...`, `go build ./cmd/ultraplan`, browser integration tests, and gated real-runtime dogfood pass
+
+The sprint's normative requirements and deliberately unresolved design questions are in `sprints/35-durable-run-observability/requirements.md`. Reasoning must select the supported topology, control ownership, storage representation, lease/fencing model, retention and backpressure policy, read/control authorization boundary, compatibility path, and telemetry/export depth. The roadmap commits the observable behavior and failure semantics, not SQLite, a daemon, WebSockets, Postgres, OpenTelemetry, or any other preferred implementation.
+
+## Why This Roadmap Chunk Stops After Sprint 35
+
+Sprint 35 repairs the execution-observation foundation needed to trust later browser-driven QA, repair, retrieval, and persistence experiments. The next sprint number remains gated until durable-run dogfood demonstrates that multiple surfaces and supported server topologies agree under restart, expiry, cancellation, and failure.
+
+---
+
+# Gated Direction After Sprint 35
+
+The detailed implementation plans establish the following dependency order, but this roadmap does not assign sprint numbers beyond Sprint 35 until the preceding evidence gate passes:
 
 The implementation-repository planning sources are:
 
@@ -1347,8 +1419,14 @@ The implementation-repository planning sources are:
 
 Those plans remain detailed design inputs. This workspace roadmap owns product sequencing and promotion into committed sprint scope.
 
+For every sprint promoted from this gated direction, the planning agent must
+re-read the relevant files from `../ultraplan-go/docs/plans/` at planning time
+and record them in the sprint's inputs. A prior sprint's summary or citation
+does not substitute for reading the current plan files.
+
 ```text
-minimal content identity and revision-aware provenance
+durable workspace-wide execution observation
+-> minimal content identity and revision-aware provenance
 -> read-only QA mapping, investigation, and synthesis
 -> isolated evidence-producing QA and smoke integration
 -> adjudicated manual repair, then bounded automatic repair
@@ -1383,6 +1461,7 @@ minimal content identity and revision-aware provenance
 
 ## Gate D — Persistence And SQLite
 
+- Keep Sprint 35 operational run persistence distinct from the authority decision for authored product artifacts in this gate.
 - Dogfood the filesystem-backed browser first and identify concrete needs such as drafts, immutable revisions, approvals, cross-project queries, provenance, or measured filesystem cost.
 - Extract focused product-owned repository contracts one workflow at a time; do not create a universal storage or virtual-filesystem abstraction.
 - Keep Git/source and agent execution workspaces filesystem-native.
@@ -1396,7 +1475,7 @@ minimal content identity and revision-aware provenance
 - Treat any persisted graph as derived and rebuildable; do not assume a graph database.
 - Move toward Postgres, durable workers, remote identity, and typed Aren artifact tools only after local persistence, authority, execution projection, cancellation, and recovery semantics are proven.
 
-The normative local-server shutdown rule applies throughout server-backed phases: graceful server stop cancels every server-owned active run through the canonical cancellation path, waits for bounded cleanup, records a truthful outcome, and never equates browser disconnection with cancellation.
+The normative local-server shutdown rule applies throughout server-backed phases: graceful server stop cancels every worker it owns through the canonical cancellation path, waits for bounded cleanup, records a truthful outcome, and never equates browser disconnection with cancellation. Durable run identity and retained observation survive the presenting server according to the selected Sprint 35 topology.
 
 ---
 

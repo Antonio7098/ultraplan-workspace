@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "30-web-foundations",
-  "updatedAt": "2026-08-15T15:28:59.215801261Z",
+  "updatedAt": "2026-08-16T13:58:00.852541135Z",
   "stages": [
     {
       "stage": "requirements",
@@ -42,87 +42,272 @@
     }
   ],
   "review": {
-    "status": "running",
+    "status": "completed",
+    "verdict": "pass_with_findings",
     "path": "projects/ultraplan-go/sprints/30-web-foundations/review.md",
-    "lastRunAt": "2026-08-15T15:28:44.932916118Z",
-    "fingerprint": "4bf08fb33c49a327ea7d9767600e8c9eea885b336303091967d7212d3e09c0b2",
-    "stale": true,
-    "completed": 0,
+    "lastRunAt": "2026-08-16T13:48:34.547569546Z",
+    "fingerprint": "8eed35875b03a4c9bd2823e290f64a6487108ca6d8647648efbec1c19caceacb",
+    "stale": false,
+    "completed": 10,
     "total": 10,
-    "activeAttempt": {
-      "id": "review-1786807724932916118",
-      "status": "running",
-      "startedAt": "2026-08-15T15:28:44.932916118Z"
-    },
+    "artifactDigest": "0834056c1bf61cdcceae68b846b793032b80ff325970d5837436c9fdae2f2385",
     "lastAttempt": {
-      "id": "review-1786807214660317764",
+      "id": "review-1786887696357366682",
       "status": "failed",
-      "startedAt": "2026-08-15T15:20:14.660317764Z",
-      "completedAt": "2026-08-15T15:28:17.793653708Z",
+      "startedAt": "2026-08-16T13:41:36.357366682Z",
+      "heartbeatAt": "2026-08-16T13:48:34.536259653Z",
+      "ownerPid": 809299,
+      "completedAt": "2026-08-16T13:48:34.547569546Z",
       "diagnostics": [
-        "inputs-changed: review inputs changed during execution"
+        "reviewer-failed: terminal output did not contain one review result JSON object",
+        "reviewer-failed: terminal output did not contain one review result JSON object",
+        "reviewer-failed: terminal output did not contain one review result JSON object",
+        "reviewer-failed: terminal output did not contain one review result JSON object",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing"
       ]
     },
-    "resume": {
-      "attemptId": "review-1786807724932916118",
-      "inputFingerprint": "4bf08fb33c49a327ea7d9767600e8c9eea885b336303091967d7212d3e09c0b2",
-      "model": "minimax-coding-plan/MiniMax-M3",
-      "updatedAt": "2026-08-15T15:28:59.215663573Z",
+    "lastComplete": {
+      "verdict": "pass_with_findings",
+      "artifact": "projects/ultraplan-go/sprints/30-web-foundations/review.md",
+      "artifactDigest": "0834056c1bf61cdcceae68b846b793032b80ff325970d5837436c9fdae2f2385",
+      "inputFingerprint": "8eed35875b03a4c9bd2823e290f64a6487108ca6d8647648efbec1c19caceacb",
+      "completedAt": "2026-08-16T12:09:58.893870443Z",
       "coverage": [
         {
+          "schemaVersion": 1,
           "coverageId": "contract-architecture",
-          "status": "running",
-          "sessionId": "ses_ff9f5bbd1ffeTnDSV0RhhUnMtA",
-          "updatedAt": "2026-08-15T15:28:56.475003636Z"
+          "applicability": "direct",
+          "summary": "Sprint 30 adds `internal/web` and supporting app composition for the read-only local dashboard and is conformant with every Architecture Contract requirement. ARCH-CORE-001 / module boundaries: `internal/web` is a transport-only module for HTTP lifecycle, route/DTO mapping, templates, and security per `projects/ultraplan-go/docs/ARCHITECTURE.md:329-365` and Decision 1 in `projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:131-141`. ARCH-CORE-002 / dependency direction: dependency graph `cmd/ultraplan -\u003e internal/app + internal/tui + internal/web` with `internal/web -\u003e internal/app` only and explicit rejection of web importing product/runtime/process/workspace/CLI handlers (`projects/ultraplan-go/sprints/30-web-foundations/reasoning/architecture.md:13-44`); execute evidence records `internal/web` direct imports limited to `internal/app` and stdlib (`projects/ultraplan-go/sprints/30-web-foundations/execute.md:108-110`). ARCH-LAYER-001 / domain purity: no domain product edits required (`projects/ultraplan-go/sprints/30-web-foundations/requirements.md:40-54`). ARCH-LAYER-002 / ports at real seams: artifact references and bounded previews are issued and resolved in `internal/app`; `internal/web/artifacts.go` only renders the typed result (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:163-173`); no runtime/process/CLI-handler injection into use cases. ARCH-ENTRY-001 / thin entrypoints: handlers validate, resolve, call one facade, map to DTOs/templates (`projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:42-46`, `projects/ultraplan-go/sprints/30-web-foundations/technical-handbook.md:28-39`). ARCH-MODULE-001 / small stable APIs: one cohesive typed read-only facade; no repositories or utility bags exported from web (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:131-141`). ARCH-COMP-001 / composition via registrars: `cmd/ultraplan` is the explicit composition root, `internal/app/surfaces.go` defines runner contracts, web resources are constructed lazily only for `serve` (`projects/ultraplan-go/sprints/30-web-foundations/reasoning/architecture.md:11-44`, `projects/ultraplan-go/sprints/30-web-foundations/plan.md:119-136`). ARCH-SHARED-001 / shared-platform neutrality: shared and platform packages are untouched and no bounded-context behavior is placed there. Scope limitation: the working-tree target was not directly readable in this review session, so this verdict relies on the frozen governed inputs and the documented execution evidence rather than line-level inspection of the changed Go sources. No actionable Architecture Contract deviation is identified in those inputs; conformance recorded as direct/positive pending the broader sprint reviewer's independent implementation-tree inspection.",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-cli-surface",
-          "status": "running",
-          "sessionId": "ses_ff9f5bbb1ffeBr9akgdFBHA6kO",
-          "updatedAt": "2026-08-15T15:28:56.184778919Z"
+          "applicability": "direct",
+          "summary": "Sprint 30 adds the new `ultraplan serve` CLI command (loopback HTTP server with `--listen`, `--open-browser`, and the existing global `--workspace`), so every requirement of the CLI Surface contract is in scope and was examined against the governed inputs. The contract requirement index is satisfied end-to-end: CLI-SHAPE-001 by the consistent explicit flag shape documented in `projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144` (Decision 2) and the Fixed Implementation Contract at `projects/ultraplan-go/sprints/30-web-foundations/plan.md:76-85`; CLI-HELP-001 by the documented and executed `go run ./cmd/ultraplan serve --help` check that records workspace, listen, browser opening, read-only scope, and shutdown at `projects/ultraplan-go/sprints/30-web-foundations/execute.md:97` and `projects/ultraplan-go/sprints/30-web-foundations/execute.md:306`; CLI-IO-001 by the dedicated server diagnostic channel separate from HTML/JSON/CLI output in `projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:177` (Decision 5); CLI-EXIT-001 by Decision 2 keeping the existing CLI exit classes (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144`); CLI-JSON-001 by the versioned `/api/v1` envelope contract `{data,meta}`/`{error:{code,message,details?},meta}` and explicit DTO mapping in `projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:55-108`; CLI-CONFIG-001 by the documented precedence (built-in defaults → workspace config → environment → explicitly set flags) and preflight-before-listener validation in Decision 2 (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144`) and `projects/ultraplan-go/sprints/30-web-foundations/plan.md:131-133`; CLI-LIFE-001 by the explicit fixed HTTP timeouts (5s header, 15s request-read, 30s write, 60s idle, 10s graceful shutdown), 32 in-flight request bound, owned listener/goroutines, and root/request cancellation in Decision 2 (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144`) and `projects/ultraplan-go/sprints/30-web-foundations/plan.md:133-134`; CLI-SAFE-001 by the absence of any delete/overwrite/publish/migrate/spend-money/send-message/external-mutate action in the `serve` command (it only serves read-only content) so the destructive-action controls are not triggered, and the only side-effect-capable edge is the optional injected browser launcher whose failure is warning-only and does not affect a healthy server per Decision 2 (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144`) and `projects/ultraplan-go/sprints/30-web-foundations/plan.md:135`; and CLI-NONINT-001 by the absence of prompts, the warning-only launcher behavior, and the documented loopback-only / non-hang lifecycle in Decision 2 (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144`). Existing CLI/TUI dispatch and output discipline are explicitly preserved (AC-13) by the focused command-path regression tests in `projects/ultraplan-go/sprints/30-web-foundations/execute.md:85` and the non-regression requirements in `projects/ultraplan-go/sprints/30-web-foundations/requirements.md:53,107`. The Review Rejection Criteria in `system/contracts/surfaces/cli.md:218-228` are not triggered: no success-on-failure path is documented, diagnostics are kept off JSON/stdout on a dedicated channel, the versioned API maintains compatibility-controlled DTOs, the lifecycle setup is explicit, no destructive command is added, the launcher failure path is warning-only and non-hanging, and redaction of secrets/Host/Origin/paths is mandated by Decision 5 (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:177`).",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-configuration",
-          "status": "running",
-          "sessionId": "ses_ff9f5bbb5ffePZoOLF8c84i3Gf",
-          "updatedAt": "2026-08-15T15:28:57.675382586Z"
+          "applicability": "direct",
+          "summary": "Sprint 30 introduces `ultraplan serve` as a loopback-only read-only web foundation that reuses the existing workspace configuration precedence (built-in defaults, workspace `ultraplan.yml`, environment, then explicit flags, per TRD §6.2 at `projects/ultraplan-go/docs/TRD.md:240-247`) and adds new typed, validated command flags (`--listen`, `--open-browser`, plus the existing global `--workspace`). The Configuration contract applies throughout and is satisfied for the read-only web foundation scope: CFG-SOURCE-001 holds because serve config flows through the same explicit source precedence rather than ambient reads, and serve-only construction is centralized in `internal/app/serve_commands.go` (`projects/ultraplan-go/sprints/30-web-foundations/plan.md:121-135`); CFG-TYPE-001 holds because numeric IPv4/IPv6 loopback and explicit ports are validated and bind policy is rechecked before listener acquisition (`projects/ultraplan-go/sprints/30-web-foundations/reasoning/architecture.md:62-65`; `projects/ultraplan-go/sprints/30-web-foundations/plan.md:131-135`); CFG-COMPAT-001 is not triggered because Sprint 30 does not modify the durable `ultraplan.yml` schema or any persisted config format; CFG-SECRET-001 holds because diagnostics, response envelopes, and the `/api/v1/health` readiness projection redact URLs, paths, Host/Origin, environment, secrets, provider payloads, raw stderr, and internal causes (`projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:117-119`; `projects/ultraplan-go/sprints/30-web-foundations/plan.md:149-152`), and the existing CLI `ultraplan config show` continues to redact sensitive fields per `projects/ultraplan-go/docs/TRD.md:249-254`; CFG-START-001 holds because workspace discovery, TRD §6.4 config validation, and bind-policy recheck run before listener acquisition with documented preflight and runner-not-called tests (`projects/ultraplan-go/sprints/30-web-foundations/plan.md:131-135`, `projects/ultraplan-go/sprints/30-web-foundations/plan.md:216-217`); CFG-ENV-001 holds because production-safe defaults such as `--open-browser=false` and IP-literal loopback binding are explicit, and browser-launch failure is a redacted warning rather than an implicit debug route (`projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144`, `projects/ultraplan-go/sprints/30-web-foundations/plan.md:76-77`); CFG-PUBLIC-001 holds because `/api/v1` endpoints use explicit transport-owned DTOs and a bounded public error code set (`invalid_request`, `request_rejected`, `not_found`, `method_not_allowed`, `request_too_large`, `internal_error`, `unavailable`) and never serialize raw app structs, runtime config internals, or workspace paths in responses (`projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:79-107`, `projects/ultraplan-go/sprints/30-web-foundations/plan.md:81-82`); CFG-OBS-001 holds through the existing CLI `ultraplan config show` command (`projects/ultraplan-go/docs/PRD.md:491-493`) combined with the bounded server lifecycle diagnostics (`listen host`, `startup result`, `shutdown cause`, `shutdown duration`, `cleanup failures` per `projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:117-119`), which together let operators inspect effective non-secret configuration relevant to runtime diagnosis. The execute summary confirms focused web security/secret/limit and lifecycle preflight suites pass and the live loopback server, dashboard, cross-origin rejection, and SIGTERM shutdown checks pass (`projects/ultraplan-go/sprints/30-web-foundations/execute.md:82-100`). No actionable deviation was identified against the contract's review rejection criteria for the read-only web foundation scope.",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-documentation",
-          "status": "running",
-          "sessionId": "ses_ff9f5bb8fffetu0X5M3zD8FnS5",
-          "updatedAt": "2026-08-15T15:28:56.45159058Z"
+          "applicability": "direct",
+          "summary": "Sprint 30 (Local Web Foundation and Read-Only Dashboard) conforms to the Documentation contract. The planning workspace owns the authoritative PRD (v1.6.0), TRD (v1.7.0), and Architecture documents under projects/ultraplan-go/docs/ with explicit Version/Status/Owner/Last Updated metadata on PRD and TRD and a declared single-source-of-truth statement in project-index.md. Architecture changes (adding internal/web, third-surface composition, query-only app facade, opaque artifact references, /api/v1 envelope, embedded frontend) are recorded in reasoning/architecture.md, reasoning/api-design.md, reasoning/frontend.md, and synthesized in reasoning.md with rationale, study/source grounding, trade-offs, and rejected alternatives per decision (Decisions 1-8). The plan Task 9 commits to adding implementation-repo docs (local-web.md, cli-reference.md, architecture.md) for the new serve command, browser UI, and loopback-only lifecycle, and execute.md asserts they were completed. Operator-facing guidance is captured through the plan (startup, flags, defaults, loopback forms, read-only scope, local trust limits, state authority, list/preview bounds, source-preview behavior, launcher warnings, shutdown, troubleshooting) and Decision 2/5/7 (HTTP timeouts, security, /api/v1/health semantics). Generated documentation (embedded html/template, /api/v1 JSON envelope) is reproducible through parse-at-startup template verification and the documented envelope in reasoning/api-design.md. Agent-facing review protocols (review-sprint-protocol.md, architecture-review-protocol.md) remain normative, concise, and authoritative. Two low-severity deviations are recorded below.",
+          "findings": [
+            {
+              "id": "DOC-OWNER-001-arch-metadata",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Architecture document lacks explicit Version/Status/Owner/Last Updated metadata",
+              "detail": "The planning workspace PRD and TRD carry explicit Version/Status/Owner/Last Updated headers that anchor doc provenance and update timing, but projects/ultraplan-go/docs/ARCHITECTURE.md begins with only a title and jumps straight into the Architecture Philosophy section. The Documentation contract requires important docs to have clear ownership and provenance tracking equivalent to other planning artifacts, and the Architecture document is a primary planning artifact that changes with Phase 4 composition, code-context insertion, and gated future directions. The Architecture doc has been updated across multiple PRD/TRD versions but does not show those updates in a version line comparable to PRD 1.6.0 or TRD 1.7.0.",
+              "action": "Add a Version/Status/Owner/Last Updated header to projects/ultraplan-go/docs/ARCHITECTURE.md using the same format as PRD and TRD so provenance, change tracking, and ownership are explicit. Update it whenever the architecture changes (e.g., when Sprint 31 adds guarded operations or Sprint 33 introduces the code-context stage) so reviewers can correlate architecture revisions with PRD/TRD versions.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/docs/ARCHITECTURE.md",
+                  "startLine": 1,
+                  "endLine": 5
+                },
+                {
+                  "path": "projects/ultraplan-go/docs/PRD.md",
+                  "startLine": 1,
+                  "endLine": 7
+                },
+                {
+                  "path": "projects/ultraplan-go/docs/TRD.md",
+                  "startLine": 1,
+                  "endLine": 7
+                }
+              ]
+            },
+            {
+              "id": "DOC-PUBLIC-001-impl-repo-verification",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Implementation-repository documentation cannot be verified from the planning workspace",
+              "detail": "Plan Task 9 commits to adding projects/../ultraplan-go/docs/local-web.md, updating ../ultraplan-go/docs/cli-reference.md, and updating ../ultraplan-go/docs/architecture.md in the implementation repository to document the new serve command, loopback-only lifecycle, browser UI, /api/v1 envelope, and Sprint 31 deferrals. execute.md asserts these were completed alongside the other changed paths. The review is read-only against the planning workspace, and execute.md explicitly notes 'The implementation is still uncommitted, so review must inspect the current working-tree diff rather than a stable commit.' The actual implementation-repository documentation content cannot be reviewed from the planning workspace, so the Documentation contract requirement that public surface documentation (serve command, browser UI, /api/v1 routes) be accurate and current can only be partially verified through the planning artifacts (requirements.md, plan.md, reasoning.md).",
+              "action": "Treat the implementation-repository documentation commitments as authoritative for this review summary based on plan Task 9 and execute.md assertions. For the final sign-off review, ensure the implementation repository's documentation is committed and directly inspectable so the public-surface documentation accuracy (DOC-PUBLIC-001) for the serve command, browser UI, and /api/v1 envelope can be verified end-to-end rather than only via the planning summary.",
+              "citations": [
+                {
+                  "path": "projects/ultraplan-go/sprints/30-web-foundations/plan.md",
+                  "startLine": 179,
+                  "endLine": 185
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/30-web-foundations/execute.md",
+                  "startLine": 115,
+                  "endLine": 122
+                }
+              ]
+            }
+          ]
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-errors",
-          "status": "running",
-          "sessionId": "ses_ff9f5bc23ffenkLC75Ksbm31Ds",
-          "updatedAt": "2026-08-15T15:28:59.215663573Z"
+          "applicability": "partial",
+          "summary": "Errors contract is selected for Sprint 30 (projects/ultraplan-go/sprints/30-web-foundations/sprint-index.md:28) and largely applies via new long-running serve command, CLI/HTML/JSON boundary adapters, loopback bind preflight, and redacted structured diagnostics. Plan and area reasoning bind each ERR-XXX-001 to design choices; execute.md:79-101 records all focused and full verification passing. Applicability is partial because rules outside Sprint 30's read-only HTTP scope (owned async tasks, retryable classification, external runtime, persistence writes) are not triggered. ERR-CORE-001 met by typed startup/cancellation errors, retained typed identity (projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:107), and absence of background workers/caches/watchers (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:198-206). ERR-SHAPE-001 met as justified safe subset at transport: code, message, optional details, request_id, generated_at, api_version (projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:56-77); app layer retains typed causes. Severity, category, retryable, operation, component, cause, causes are absent from the transport envelope but the contract permits a justified subset. ERR-CODE-001 met by fixed machine-readable set invalid_request, request_rejected, not_found, method_not_allowed, request_too_large, internal_error, unavailable (projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:94-105). ERR-TRANS-001 met by errors.As/Is-style identity and cause retention in app/product layers (projects/ultraplan-go/sprints/30-web-foundations/plan.md:60). ERR-RETRY-001 not triggered: no retryable classification or retry paths. ERR-STARTUP-001 met by preflight before runner/listener (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:144; projects/ultraplan-go/sprints/30-web-foundations/plan.md:131). ERR-IO-001 met by fixed 4xx/5xx mapping preserving request_id and generated_at (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:176-183). ERR-TASK-001, ERR-DEP-001, ERR-DATA-001 not triggered: no owned async tasks, no runtime/harness invocation, no browser writes. ERR-REDACT-001 met by redacting URLs, queries, artifact content, absolute paths, Host/Origin, env, secrets, raw internal errors while preserving safe normalized fields (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:176-183; projects/ultraplan-go/docs/TRD.md:2232-2237). ERR-USER-001 met by separate user-facing HTML/JSON and operator diagnostics (projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:107-109; projects/ultraplan-go/docs/TRD.md:2196-2230). No review-rejection criteria from system/contracts/core/errors.md:362-370 are triggered. The contract is satisfied within the declared read-only HTTP scope.",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-observability",
-          "status": "pending",
-          "updatedAt": "2026-08-15T15:28:44.956601596Z"
+          "applicability": "partial",
+          "summary": "Sprint 30 adds `ultraplan serve`, a loopback-only read-only HTTP server with versioned `/api/v1` JSON and server-rendered HTML, plus bounded opaque artifact previews. Three of the contract's five scope triggers are met: new failure paths (startup, route, Host/Origin, lifecycle), a new health surface (`/api/v1/health`), and new structured request/lifecycle diagnostic emission. The change adds no runtime, LLM, owned-task, batch, or workflow execution. Conformance for directly applicable requirements: OBS-CORE-001 — typed HTTP error envelopes with stable machine codes {invalid_request, request_rejected, not_found, method_not_allowed, request_too_large, internal_error, unavailable} (plan Decision 5, `plan.md:81`) plus structured lifecycle/request diagnostics on a dedicated diagnostic channel so every failure is visible in at least the response (immediate) and the structured log (inspectable). OBS-HEALTH-001 — `/api/v1/health` returns truthful 200 `ok` or 503 `unavailable` from cheap server readiness plus a lightweight configured-workspace query check (plan Decision 7, `plan.md:199`); it never scans projects, studies, or artifacts and never invokes runtime, provider, review, or smoke, so readiness cannot be masked by optimistic output. The single endpoint combines liveness and readiness, which is appropriate for a read-only surface where the only readiness dependency is workspace-query availability. OBS-DIAG-001 — diagnostics are centralized on a separate channel that exposes server-generated request ID, normalized route, method, status, duration, response bytes, safe error class, and lifecycle/shutdown fields (plan Decision 5, `plan.md:177`); no hidden debug routes, flags, or files are added, and the canonical surface is extended rather than scattered. OBS-PII-001 — explicit deterministic redaction: secrets, raw URLs/query values, absolute workspace paths, Host/Origin values, environment, raw stderr, provider payloads, and internal causes are omitted from responses and diagnostics (`plan.md:177`, `plan.md:151`), with structure preserved. Not triggered for Sprint 30: OBS-TASK-001 (no owned asynchronous, batch, worker, or long-running work; guarded operations are explicitly deferred to Sprint 31 per `reasoning.md:262`) and OBS-ALERT-001 (the read-only foundation emits no operational events, no alertable codes, and no metrics surfaces). Partial applicability: OBS-CORR-001 — server-generated request IDs are emitted in JSON success/error envelopes and in lifecycle/request diagnostics (Decision 5, `plan.md:177`), but no upstream correlation headers such as `X-Request-ID` or `X-Correlation-ID` are honored, and LLM/prompt correlation is explicitly out of scope because Sprint 30 does not invoke runtime; for a loopback-only read-only foundation with no upstream caller identity to preserve, server-side generation is the contractually compliant choice. OBS-DEBUG-001 — the surface inherits the existing platform `logging.level` and `logging.format` configuration (`TRD.md:228`); no serve-specific verbosity CLI flag is documented, and elevated-verbosity behavior is not separately tested, though inherited redaction rules apply at all levels per the plan's redaction policy (`plan.md:151`).",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-performance",
-          "status": "pending",
-          "updatedAt": "2026-08-15T15:28:44.956601596Z"
+          "applicability": "direct",
+          "summary": "Sprint 30 (Local Web Foundation and Read-Only Dashboard) is in scope for the Performance contract: it adds a user-facing runtime HTTP path with bounded request concurrency, new rendering/cache/bundle surfaces, and bounded collection/preview reads. All seven PERF requirements are addressed by the decided plan: HTTP timeouts (5s header / 15s read / 30s write / 60s idle / 10s shutdown) and 32 in-flight cap (PERF-BOUND, PERF-CONC); 200-entry collection and 256 KiB preview bounds with no recursive scans or whole-workspace materialization (PERF-BOUND); sequential aggregation with no handler fan-out, polling, watcher, snapshot, or background refresh, plus Cache-Control: no-store on every state response (PERF-CACHE, PERF-CONC); fixed lazy serve-only construction and immutable startup config so unrelated CLI/TUI commands pay no web cost (PERF-BOUND); server-rendered buffered rendering, single-column reflow, local table/code overflow, reduced-motion behavior, no client router/store/cache and no heavy framework, so initial content and refresh avoid blank hangs, layout jumps, and duplicate fetches (PERF-UI); explicit bound and trade-off tables in technical-handbook.md plus acknowledged measurement-driven reassessment in plan.md (PERF-MEASURE); Sprint 30 deliberately excludes runtime/provider/cloud-cost paths so PERF-COST is not triggered. Decisions 2, 6, and 7 in reasoning.md and Decisions 2/4/5 in api-design.md are the binding evidence; execute.md and verification matrix confirm focused route/security/artifact/template/race/lifecycle tests passed. No LLM optimization or speculative complexity was added. Confirmed conformance across PERF-BUDGET-001, PERF-MEASURE-001, PERF-BOUND-001, PERF-UI-001, PERF-CACHE-001, and PERF-CONC-001; PERF-COST-001 is not triggered.",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-security",
-          "status": "pending",
-          "updatedAt": "2026-08-15T15:28:44.956601596Z"
+          "applicability": "direct",
+          "summary": "Sprint 30 adds a loopback-only Go HTTP server and embedded browser dashboard. SEC-INPUT-001, SEC-INJECT-001, SEC-SECRETS-001, SEC-FILES-001, SEC-NET-001, SEC-DEFAULT-001, SEC-DEPS-001, and SEC-DESER-001 apply directly; SEC-AUTHN-001 and SEC-AUTHZ-001 are explicitly not_triggered because the sprint is a single-process read-only loopback surface with no authentication or multi-tenant authorization (system/contracts/core/security.md:33-42, projects/ultraplan-go/sprints/30-web-foundations/requirements.md:60-65, projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:96-98). Conformance evidence per applicable SEC-*: numeric IP-literal loopback binding only with localhost/non-loopback/malformed rejected (projects/ultraplan-go/sprints/30-web-foundations/plan.md:77); exact Host/Origin with absent-Origin accepted only after Host validation, null/malformed/cross-origin/non-loopback origins rejected, no CORS, restrictive CSP, nosniff, no-referrer, frame denial, no-store (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:177-184, projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:109-115); fixed HTTP timeouts, 32 in-flight bound, 8 KiB request-target, 64 KiB declared body, 128-byte identifier/reference limits, strict rejection of bodies, control chars, separators, malformed/duplicate identifiers, unknown query parameters (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:142-152, projects/ultraplan-go/sprints/30-web-foundations/reasoning/api-design.md:47-53); html/template contextual escaping with explicit prohibition of template.HTML/innerHTML/executable links and escaped Markdown/JSON previews (projects/ultraplan-go/sprints/30-web-foundations/reasoning/frontend.md:38-44, projects/ultraplan-go/sprints/30-web-foundations/plan.md:159); opaque app-issued artifact references with app-owned canonical containment rejecting stale, forged, traversal, encoded-traversal, absolute, separator/control, symlink-escape, non-allowlisted targets, governed Markdown/JSON classes only, 256 KiB plus one byte, all rejections collapsing to safe 404 (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:164-174, projects/ultraplan-go/sprints/30-web-foundations/plan.md:155-161); server-generated request IDs and a separate diagnostic channel recording only normalized route/method/status/duration/bytes/error-code and lifecycle fields, omitting raw URLs, paths, Host/Origin, artifact content, environment, secrets, provider payloads, raw stderr, and raw internal errors at normal level (projects/ultraplan-go/sprints/30-web-foundations/reasoning.md:177-184, projects/ultraplan-go/sprints/30-web-foundations/plan.md:147-152); no new third-party dependencies in internal/web with go list -deps confirming only internal/app plus the standard library (projects/ultraplan-go/sprints/30-web-foundations/execute.md:98); immutable preflight validation before listener acquisition and template parse-fail-fast at startup (projects/ultraplan-go/sprints/30-web-foundations/plan.md:163-166). Live evidence: binary bound 127.0.0.1:18080, /api/v1/health 200 ok, semantic HTML dashboard, cross-origin probe 403, clean SIGTERM shutdown, normalized diagnostics to redacted log (projects/ultraplan-go/sprints/30-web-foundations/execute.md:103-110). No actionable deviations identified. Direct read of /home/antonioborgerees/coding/ultraplan-go was blocked by an external-directory policy in this reviewer environment; conclusions derive from the frozen governed inputs and the replay evidence attested in execute.md",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "contract-testing",
-          "status": "pending",
-          "updatedAt": "2026-08-15T15:28:44.956601596Z"
+          "applicability": "direct",
+          "summary": "Sprint 30's governed inputs (requirements, sprint-index, technical-handbook, reasoning/architecture|api-design|frontend, reasoning, plan, execute, .run-state) and its documented test/build evidence show that the read-only local-web implementation is tested against the Testing contract for the capabilities it actually introduces. The sprint introduces new wiring (cmd composition, web use cases, serve command, HTTP lifecycle, security middleware, artifact preview, templates) and each is backed by deterministic unit, route-level, security, artifact, template, and lifecycle tests in the documented internal/app/*_test.go and internal/web/*_test.go files. Constructor injection through the typed app facade, deterministic httptest paths, narrow normalized envelope goldens, race-suite passes, and the live loopback serve sanity check satisfy TEST-SEAM-001, TEST-UNIT-001, TEST-INT-001, TEST-SMOKE-001, TEST-FAIL-001, TEST-DET-001, and TEST-CONTRACT-001 for this sprint's scope. TEST-SMOKE-002 and TEST-MIGRATION-001 are correctly scoped as not triggered because Sprint 30 adds no runtime- or provider-backed path and no schema/config/data migration; the deferred operations are explicitly listed in requirements.md NG-1 through NG-10 and in reasoning.md Future Considerations, and Phase 4 scope is reasserted in project-index.md and roadmap.md. TEST-E2E-001 is satisfied via bounded httptest routes plus the documented live-loopback serve command smoke check.",
+          "findings": []
         },
         {
+          "schemaVersion": 1,
           "coverageId": "handbook",
-          "status": "pending",
-          "updatedAt": "2026-08-15T15:28:44.956601596Z"
+          "applicability": "direct",
+          "summary": "The technical handbook at `projects/ultraplan-go/sprints/30-web-foundations/technical-handbook.md` conforms to its sprint role. It covers exactly the 13 evidence reports selected by `sprint-index.md` (`01-project-structure`, `02-command-architecture`, `03-dependency-injection`, `04-configuration-management`, `05-error-handling`, `06-io-abstraction`, `07-state-context`, `08-concurrency`, `10-logging-observability`, `11-testing-strategy`, `12-extensibility`, `13-security`, `14-performance`), which are a subset of the `project-index.md` Available Evidence Reports entries for `studies/go-cli-study`. The unselected reports `09-terminal-ux` and `15-philosophy` are correctly excluded. The handbook includes all required structural sections: Selected Studies And Reports (with path, finding, and confidence columns), Relevant Patterns, Trade-Offs (benefit/cost/when it matters), Anti-Patterns And Warnings, Examples Worth Inspecting, Design Pressures, Open Questions For Reasoning, Evidence Pointers, and Handoff To Reasoning. It opens by declaring it distills the selected evidence and does not decide architecture or implementation. It marks confidence for each selected report, cites concrete external repository paths with line numbers, and frames trade-offs and questions as inputs to reasoning rather than as decisions. The area reasoning documents (`reasoning/architecture.md`, `reasoning/api-design.md`, `reasoning/frontend.md`) and the final `reasoning.md` consistently reference the same handbook patterns, source citations, and trade-offs, and resolve the handbook's open questions through their final decisions. No actionable deviations found.",
+          "findings": []
+        }
+      ]
+    }
+  },
+  "smoke": {
+    "status": "completed",
+    "verdict": "pass",
+    "path": "projects/ultraplan-go/sprints/30-web-foundations/smoke.md",
+    "lastRunAt": "2026-08-16T13:55:04.040323789Z",
+    "reviewFingerprint": "8eed35875b03a4c9bd2823e290f64a6487108ca6d8647648efbec1c19caceacb",
+    "smokeFingerprint": "f8881439f577169ca4b44e41d7d073ee51ed18292b58080f8cf4ec8cd7b57171",
+    "runId": "run-O3OrwQhAkj",
+    "authorRunId": "manual-codex-2026-08-16-sprint-30",
+    "authorModel": "openai/gpt-5.6-sol",
+    "authorChangedPaths": [
+      "package-lock.json",
+      "package.json",
+      "src/cli.ts",
+      "src/protocol.ts",
+      "src/scenarios/workspace-factory.ts",
+      "src/tests/sprint-30-web-foundations.ts",
+      "tsconfig.json"
+    ],
+    "evidenceId": "89f98c415a497bf0785862e630a758df31a3b4f0c6c110395614f583aada92ca",
+    "reviewOverride": false,
+    "stale": false,
+    "reconciliationRequired": false,
+    "artifactDigest": "f8881439f577169ca4b44e41d7d073ee51ed18292b58080f8cf4ec8cd7b57171",
+    "inputFingerprint": "902d2e4d572a5c94e8487e131692e71105e495ab2b3da903302487435151f382",
+    "evidence": [
+      {
+        "kind": "run",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-O3OrwQhAkj.json",
+        "digest": "89f98c415a497bf0785862e630a758df31a3b4f0c6c110395614f583aada92ca"
+      },
+      {
+        "kind": "summary",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-O3OrwQhAkj-summary.md",
+        "digest": "3e7baa3fdc13b41bc49df2fa915db90f94847ab104c4262706aa3758c88cfe8e"
+      }
+    ],
+    "lastAttempt": {
+      "id": "smoke-manual-reconcile-20260816",
+      "status": "completed",
+      "startedAt": "2026-08-16T13:55:04.219439528Z",
+      "heartbeatAt": "2026-08-16T13:55:04.219439528Z",
+      "ownerPid": 826571,
+      "completedAt": "2026-08-16T13:55:04.219439528Z"
+    },
+    "lastComplete": {
+      "verdict": "pass",
+      "artifact": "projects/ultraplan-go/sprints/30-web-foundations/smoke.md",
+      "artifactDigest": "f8881439f577169ca4b44e41d7d073ee51ed18292b58080f8cf4ec8cd7b57171",
+      "inputFingerprint": "902d2e4d572a5c94e8487e131692e71105e495ab2b3da903302487435151f382",
+      "completedAt": "2026-08-16T13:55:04.040323789Z",
+      "runId": "run-O3OrwQhAkj",
+      "authorRunId": "manual-codex-2026-08-16-sprint-30",
+      "authorModel": "openai/gpt-5.6-sol",
+      "authorChangedPaths": [
+        "package-lock.json",
+        "package.json",
+        "src/cli.ts",
+        "src/protocol.ts",
+        "src/scenarios/workspace-factory.ts",
+        "src/tests/sprint-30-web-foundations.ts",
+        "tsconfig.json"
+      ],
+      "evidenceId": "89f98c415a497bf0785862e630a758df31a3b4f0c6c110395614f583aada92ca",
+      "evidence": [
+        {
+          "kind": "target",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-O3OrwQhAkj-summary.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-O3OrwQhAkj.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/ultraplan-smoke.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/30-web-foundations/review.md"
+        },
+        {
+          "kind": "fact",
+          "path": "harness",
+          "digest": "ultraplan-go-smoke:1.0"
+        },
+        {
+          "kind": "fact",
+          "path": "prerequisites"
+        },
+        {
+          "kind": "fact",
+          "path": "review-fingerprint",
+          "digest": "8eed35875b03a4c9bd2823e290f64a6487108ca6d8647648efbec1c19caceacb"
+        },
+        {
+          "kind": "fact",
+          "path": "review-verdict",
+          "digest": "pass_with_findings"
+        },
+        {
+          "kind": "fact",
+          "path": "scope",
+          "digest": "suite:sprint-30"
+        },
+        {
+          "kind": "fact",
+          "path": "timeout",
+          "digest": "30m0s:manifest"
         }
       ]
     }

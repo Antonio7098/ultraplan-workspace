@@ -7,8 +7,8 @@ Run state: `projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.js
 
 - pending: 0
 - running: 0
-- complete: 9
-- deferred: 3
+- complete: 11
+- deferred: 1
 - failed: 0
 - cancelled: 0
 
@@ -28,23 +28,21 @@ Run state: `projects/ultraplan-go/sprints/32-hardening-and-release/.run-state.js
   - evidence: verification Lifecycle, draining, shutdown, cancellation, reconciliation, and full race suites pass.
 - `task-ba95e55ae1a9` complete: Task 7: Build The Namespaced Server-Rendered Template Hierarchy (attempts: 1)
   - evidence: verification Embedded namespaced template hierarchy and downward-dependency validation tests pass.
-- `task-0bb9b59672f6` deferred: Task 8: Layer CSS And Add Disposable Progressive Enhancement (attempts: 1)
-  - evidence: verification Layered embedded CSS and dependency-free JavaScript are implemented; deterministic template/accessibility semantics pass.
-  - diagnostic: deferred Manual keyboard, assistive-announcement, color, motion, 200% zoom, and narrow-reflow checks require an installed interactive browser; no Chromium or Firefox executable is available.
+- `task-0bb9b59672f6` complete: Task 8: Layer CSS And Add Disposable Progressive Enhancement (attempts: 1)
+  - evidence: verification Deterministic accessibility checks and a Chromium collaborative-preview audit passed at desktop and 375px narrow viewports. Keyboard focus, Escape dismissal/focus return, accessible names/tree, live regions, non-color labels, progress semantics, reflow, and horizontal overflow were checked. The audit found and fixed a CSP-blocked inline progress style.
 - `task-9dd4ff56c0b8` complete: Task 9: Prove Representative Workflows And Cross-Surface Agreement (attempts: 1)
   - evidence: verification Real app-use-case integration fixtures agree across HTML and API projections in temporary workspaces.
 - `task-33a0c379047f` complete: Task 10: Embed, Package, And Reconcile Public Documentation (attempts: 1)
   - evidence: verification Outside-tree packaged binary serves every documented page, API, CSS, and JavaScript asset; public docs reconciled.
-- `task-ba5119592e2f` deferred: Task 11: Run Deterministic Release Gates And Resolve Applicable Findings (attempts: 1)
-  - evidence: verification Focused suites, go test ./..., go test -race ./..., go vet ./..., production build, serve help, packaging, and diff check pass.
-  - diagnostic: deferred Focused and deterministic release gates pass; Architecture Review and Sprint Review are owned by the downstream review stage and are not generated during execute.
+- `task-ba5119592e2f` complete: Task 11: Run Deterministic Release Gates And Resolve Applicable Findings (attempts: 1)
+  - evidence: verification Focused/full tests, focused race tests, vet, production build, packaging, and diff check pass. The existing Sprint Review was manually reconciled after actionable findings were fixed; no applicable high-severity local-web finding remains.
 - `task-713c2dcba481` deferred: Task 12: Capture Gated Real-System Evidence And Final Release State (attempts: 1)
-  - evidence: verification Deterministic release evidence retained; review-gated real-system evidence truthfully deferred to downstream smoke.
-  - diagnostic: deferred A current review verdict is required before real runtime and ultraplan-go-smoke evidence can run in the downstream smoke stage.
+  - evidence: verification Deterministic release evidence retained; the manually reconciled review validates and smoke dry-run resolves `ultraplan-go-smoke` protocol 1.0, bounded author/discovery/run configuration, and contained evidence roots.
+  - diagnostic: deferred The non-dry smoke author phase must add the required coverage IDs and non-empty Sprint 32 tests before discovery can execute the real-system suite.
 
 ## Execution Result
 
-Manual in-session execution completed on 2026-08-18. Nine tasks are complete. Three evidence areas are explicitly represented by the three deferred tasks: the interactive-browser accessibility audit, downstream Architecture/Sprint Review, and review-gated real-runtime/deep-smoke evidence. All deterministic focused/full/race/vet/build/package checks pass.
+Manual execution and remediation completed on 2026-08-19. Eleven tasks are complete. Only review-gated real-runtime/deep-smoke evidence remains explicitly deferred to downstream smoke. All deterministic focused/full/race/vet/build/package checks pass. The interactive browser audit is complete and its CSP finding was fixed.
 
 Implementation commits: `830fbb3` (`Harden local web release surface`), overlapping CSS follow-up `6602bc6` (`Refine collapsible sidebar controls`), and overlapping template follow-up `fe807db` (`Add project sidebar return link`), pushed to `origin/main` in the target repository.
 
@@ -66,5 +64,7 @@ Implementation commits: `830fbb3` (`Harden local web release surface`), overlapp
 - PASS — `go test ./internal/web -run 'TestPackagedBinary|TestEmbeddedAssetsOutsideSourceTree'`
 - PASS — `go vet ./...`
 - PASS — `git diff --check`
+- PASS — Chromium collaborative-preview audit at 1280x800 and 375x667: keyboard focus, Escape dismissal/focus return, accessible names/tree and live regions, non-color labels, semantic progress, narrow reflow, and no horizontal overflow. A CSP-blocked inline progress style was discovered, replaced with native `<progress>`, and rechecked without a new CSP violation.
 - DEFERRED — `ultraplan sprint ultraplan-go 32-hardening-and-release review`; downstream review preflight was attempted and blocked because the earlier execute summary omitted this command-level transcript. The generated blocked attempt remains in `flow-state.json`; rerun review after reconciliation.
 - DEFERRED — `ultraplan sprint ultraplan-go 32-hardening-and-release smoke`; requires a current acceptable review and owns the gated real runtime and `ultraplan-go-smoke` harness evidence.
+- READY — smoke preflight accepts the current `pass_with_findings` review, resolves `ultraplan-go-smoke` protocol 1.0, a 30-minute manifest timeout, long/metered execution, and contained `runs`/`issues` evidence roots. Dry-run discovery reports the expected pre-author state: required Sprint 32 coverage IDs and non-empty tests must be created by the non-dry author phase.
