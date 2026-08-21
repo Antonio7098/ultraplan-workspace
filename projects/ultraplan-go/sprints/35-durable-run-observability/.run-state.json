@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 1,
+  "project": "ultraplan-go",
+  "sprint": "35-durable-run-observability",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go",
+    "source": "project-index.md"
+  },
+  "planPath": "projects/ultraplan-go/sprints/35-durable-run-observability/plan.md",
+  "planFingerprint": "sha256:fa0509d6279aac51033bc950b63aff7d43400b7f4808f00086156c26efa2359a",
+  "createdAt": "2026-08-21T14:10:45.488937555Z",
+  "updatedAt": "2026-08-21T14:44:52.968969224Z",
+  "tasks": [
+    {
+      "id": "task-5b8bb3a12c45",
+      "identity": {
+        "name": "Task 1: Establish The Run-Control Domain And SQLite Contract",
+        "planLine": 64,
+        "requirements": [
+          "AC-1",
+          "AC-10"
+        ],
+        "evidence": [
+          "**Stop condition:** local Linux locking, WAL/FULL policy, transaction isolation, private permissions, reopen integrity, pure-Go Linux/macOS amd64/arm64 builds, and package race tests passed; app integration may proceed without fallback.",
+          "Add and pin a reviewed `modernc.org/sqlite` version compatible with Go 1.26 and the supported release platforms; record binary/build impact in release evidence."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:10:45.488937555Z",
+      "completedAt": "2026-08-21T14:10:45.488937555Z",
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation and planned verification evidence recorded in execute.md before execution-state reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "task-d1571c0d60c5",
+      "identity": {
+        "name": "Task 2: Implement Schema Migration, Configuration, Backup, And Restore",
+        "planLine": 75,
+        "requirements": [
+          "AC-12"
+        ],
+        "evidence": [
+          "Before migration, checkpoint WAL, create a timestamped bounded backup, apply one-way transactional migrations, and run integrity checks before enabling acceptance or mutation.",
+          "Implement tested restore instructions and fixtures that stop all UltraPlan processes and restore both the matching binary and pre-migration database backup; do not dual-write to old/new stores."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:10:45.488937555Z",
+      "completedAt": "2026-08-21T14:10:45.488937555Z",
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation and planned verification evidence recorded in execute.md before execution-state reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "task-ebef2ecb0159",
+      "identity": {
+        "name": "Task 3: Make Durable Acceptance Unavoidable In App Composition",
+        "planLine": 85,
+        "requirements": [
+          "AC-1",
+          "AC-10",
+          "AC-3"
+        ],
+        "evidence": [
+          "Add command-path tests for every inventoried entry and an import/authority test that prevents adapter or run-control ownership drift.",
+          "Preserve current preparation, confirmation, canonical-request, governed-input fingerprint, product-lock, and product-state checks; insert durable acceptance after valid preparation/confirmation and before goroutine creation or product/runtime invocation."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/app/run_control_inventory_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-6c97eedd818e",
+      "identity": {
+        "name": "Task 4: Add Fenced Owner Control, Liveness, And Reconciliation",
+        "planLine": 97,
+        "decisions": [
+          "Decision 4"
+        ],
+        "requirements": [
+          "AC-8",
+          "AC-9"
+        ],
+        "evidence": [
+          "Add fake-clock, clock-jump, owner-stall, owner-kill, PID-reuse, process-birth mismatch, stale-fence, repeated-reconciler, and unsupported-probe tests on Linux and macOS-supported paths.",
+          "Run one bounded startup reconciliation pass before accepting runtime work, then periodic bounded idempotent scans without leader election; expose backlog and decision evidence."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/runcontrol/process_integration_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-2f6d027c9ae8",
+      "identity": {
+        "name": "Task 5: Persist Sanitized Ordered Events Before Delivery",
+        "planLine": 107,
+        "decisions": [
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-11",
+          "AC-12",
+          "AC-4",
+          "AC-6"
+        ],
+        "evidence": [
+          "Test concurrent ordering, commit-before-delivery, duplicate producer/network delivery, polling across two processes, oversize replacement, hostile content, coalescing facts, slow consumers, replay catch-up, and dropped local TUI delivery."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/runcontrol/sqlite.go"
+        }
+      ]
+    },
+    {
+      "id": "task-eb69885d005e",
+      "identity": {
+        "name": "Task 6: Route Durable Cancellation And Arbitrate Terminal Outcomes",
+        "planLine": 118,
+        "decisions": [
+          "Decision 5"
+        ],
+        "requirements": [
+          "AC-8",
+          "AC-9"
+        ],
+        "evidence": [
+          "Test first/duplicate/terminal cancel, persistence failure, owner acknowledgement, unreachable/stale owner, PID reuse, user interrupt, timeout, shutdown, and all cancellation/completion/failure/reconciliation races under the race detector."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/runcontrol/lifecycle_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-f7d2149dafe9",
+      "identity": {
+        "name": "Task 7: Enforce Retention, Compaction, Quota, And Persistence Degradation",
+        "planLine": 128,
+        "decisions": [
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-12",
+          "AC-6"
+        ],
+        "evidence": [
+          "Checkpoint WAL and vacuum incrementally outside acceptance/append transactions; bound compaction and reconciliation batches so foreground work remains observable.",
+          "Refuse acceptance/mutation on corruption or unsupported schema, preserve evidence for support, and never report stale in-memory success when repository reads fail.",
+          "Test deterministic compaction order, replay lower-bound advances, active preservation, tombstone expiry, soft/hard quota/headroom, total disk exhaustion, busy timeout, permission loss, corruption, and failure at acceptance/append/heartbeat/cancel/terminal boundaries."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/runcontrol/fault_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-6e6dca51d394",
+      "identity": {
+        "name": "Task 8: Add Shared Run Queries And CLI Commands",
+        "planLine": 138,
+        "requirements": [
+          "AC-2",
+          "AC-3",
+          "AC-7"
+        ],
+        "evidence": [
+          "Add strict help, text, JSON, pagination/filter, unknown-value, error, diagnostics, support, and CLI/app agreement tests.",
+          "Ensure interrupting `run follow` stops observation only; cancellation remains the explicit `run cancel` command and follows local workspace/OS authority checks."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:10:45.488937555Z",
+      "completedAt": "2026-08-21T14:10:45.488937555Z",
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation and planned verification evidence recorded in execute.md before execution-state reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "task-2709caef2161",
+      "identity": {
+        "name": "Task 9: Add Canonical Run HTTP/SSE APIs And Preserve Operation Compatibility",
+        "planLine": 148,
+        "requirements": [
+          "AC-2",
+          "AC-7",
+          "AC-9"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:10:45.488937555Z",
+      "completedAt": "2026-08-21T14:10:45.488937555Z",
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation and planned verification evidence recorded in execute.md before execution-state reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "task-45a423231494",
+      "identity": {
+        "name": "Task 10: Build Server-Rendered Run List And Detail Pages",
+        "planLine": 161,
+        "decisions": [
+          "Decision 9"
+        ],
+        "requirements": [
+          "AC-2",
+          "AC-7"
+        ],
+        "evidence": [
+          "Add server-rendering, no-JS, hostile-content, responsive, accessibility, bounded-DOM, hidden-tab, cursor-handoff, repeated 512-event catch-up, gap, terminal-refresh, cancellation-race, and two-server browser-engine tests."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/web/run_handlers.go"
+        }
+      ]
+    },
+    {
+      "id": "task-e928aaf45354",
+      "identity": {
+        "name": "Task 11: Make TUI Observation Durable And Cross-Surface Consistent",
+        "planLine": 173,
+        "requirements": [
+          "AC-2",
+          "AC-3",
+          "AC-6",
+          "AC-7"
+        ],
+        "evidence": [
+          "Add TUI model/view tests for active/terminal/stalled/uncertain/gap/tombstone/unknown states, dropped delivery recovery, duplicate events, session-independent detail, and label/result agreement fixtures shared with app/web."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/tui/run_view_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-cf2b316cac25",
+      "identity": {
+        "name": "Task 12: Add Correlated Telemetry, Diagnostics, And Support Evidence",
+        "planLine": 181,
+        "decisions": [
+          "Decision 10"
+        ],
+        "requirements": [
+          "AC-11",
+          "AC-12"
+        ],
+        "evidence": [
+          "Generate a bounded redacted support bundle containing allowlisted snapshots, event headers/omission facts, health, safe config-source facts, reconciliation evidence, and logs; test size, permissions, escaping, and redaction across every included record."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/runcontrol/local_log.go"
+        }
+      ]
+    },
+    {
+      "id": "task-6355d2f7df48",
+      "identity": {
+        "name": "Task 13: Build The Deterministic Failure And Cross-Process Verification Matrix",
+        "planLine": 189,
+        "requirements": [
+          "AC-1",
+          "AC-13"
+        ],
+        "evidence": [
+          "**Stop condition:** any timing-only, PID-only, in-memory-only, provider-required normal test, or test that infers success from artifacts must be replaced with deterministic authority/failure evidence before release work begins.",
+          "Add helper-process integration tests over one temporary local workspace for concurrent CLI owners and two loopback web observers, including session rotation, observer restart, retained replay followed by new events, and identical active/detail projections.",
+          "Prove existing sprint/study locks, flow state, execute state, session checkpoints, cleanup markers, artifacts, Git state, and smoke evidence remain authoritative and are never imported as invented run history or rewritten by run control."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and gated verification evidence completed",
+          "path": "internal/runcontrol/process_integration_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-f5565806afb7",
+      "identity": {
+        "name": "Task 14: Complete Documentation, Reviews, Build, And Gated Dogfood",
+        "planLine": 200,
+        "decisions": [
+          "Decision 10"
+        ],
+        "requirements": [
+          "AC-13"
+        ],
+        "evidence": [
+          "Record the pinned SQLite dependency, supported platform/filesystem evidence, measured polling/write/build impact, binary size, migration backup location/limits, and all intentional compatibility behavior.",
+          "Run Architecture Review and Sprint Review with the authority trace, failure matrix, API compatibility, security/redaction, product-state separation, and verification results.",
+          "Run the normal tests, race tests, focused process/browser/migration suites, CLI build, and documentation checks; retain command output or CI links as execution evidence.",
+          "Update implementation `docs/architecture.md`, `docs/cli-reference.md`, `docs/local-web.md`, `docs/configuration.md`, `docs/recovery.md`, `docs/web-compatibility-baseline.md`, `docs/user-guide.md`, and `docs/release-checklist.md` for run commands/APIs/pages, security, cursor/gap/tombstone behavior, telemetry, support export, migration, backup/restore, rollback, disk recovery, and unsupported multi-host topology."
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-08-21T14:10:45.488937555Z",
+      "updatedAt": "2026-08-21T14:26:11.669844208Z",
+      "startedAt": "2026-08-21T14:44:52.968957713Z",
+      "completedAt": "2026-08-21T14:44:52.968957713Z",
+      "diagnostics": [
+        {
+          "code": "reopened",
+          "message": "User requested completion of the previously deferred task",
+          "at": "2026-08-21T14:26:11.669844208Z"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Implementation, deterministic tests, race checks, cross-builds, documentation, and release measurements completed; review and smoke explicitly declined by user",
+          "path": "docs/release-checklist.md"
+        }
+      ]
+    }
+  ]
+}
