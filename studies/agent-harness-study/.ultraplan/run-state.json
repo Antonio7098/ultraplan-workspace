@@ -3,7 +3,7 @@
   "run_id": "run-20260702T124628Z",
   "study": "agent-harness-study",
   "created_at": "2026-07-02T12:46:28.105235824Z",
-  "updated_at": "2026-08-21T16:53:54.316218923Z",
+  "updated_at": "2026-08-21T16:59:00.308878637Z",
   "filters": {},
   "config_summary": {
     "runtime": "opencode",
@@ -208897,7 +208897,7 @@
     {
       "id": "analysis:agent-harness-study:07.04:timeouts-and-cancellation:crewai:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "failed",
       "study": "agent-harness-study",
       "dimension": "07.04",
       "dimension_ref": "07.04-timeouts-and-cancellation",
@@ -208906,20 +208906,99 @@
       "output_path": "studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/crewai.md",
       "attempts": 4,
       "created_at": "2026-07-02T12:46:28.105235824Z",
-      "updated_at": "2026-08-21T16:53:27.764384719Z",
+      "updated_at": "2026-08-21T16:58:59.031620425Z",
       "started_at": "2026-08-21T16:53:27.764384719Z",
+      "completed_at": "2026-08-21T16:58:59.031620425Z",
+      "retry_after": "2026-08-21T16:59:00.031621547Z",
+      "last_error": {
+        "code": "validation.failed",
+        "message": "opencode run: runtime_exit: OpenCode exited before a successful final result",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/crewai.md"
+      },
       "validation": {
         "status": "failed",
-        "checked_at": "2026-08-21T15:02:52.411063232Z",
+        "checked_at": "2026-08-21T16:58:59.031620425Z",
         "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/crewai.md",
         "passed_checks": 0,
         "failed_checks": 1,
         "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/crewai.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/crewai.md: no such file or directory"
       },
       "agent": {
-        "policy": {},
-        "permissions": {},
-        "cleanup": {},
+        "runtime": "openrouter",
+        "run_id": "opencode-134",
+        "status": "failed",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "attempts": [
+          {
+            "attempt": 1,
+            "attempt_on_target": 1,
+            "run_id": "opencode-128",
+            "status": "failed",
+            "provider": "openrouter",
+            "model": "stealth/ox-alpha",
+            "error_category": "runtime_exit"
+          },
+          {
+            "attempt": 2,
+            "attempt_on_target": 1,
+            "target_index": 1,
+            "run_id": "opencode-131",
+            "status": "failed",
+            "provider": "minimax-coding-plan",
+            "model": "MiniMax-M3",
+            "error_category": "runtime_exit"
+          },
+          {
+            "attempt": 3,
+            "attempt_on_target": 2,
+            "target_index": 1,
+            "run_id": "opencode-134",
+            "status": "failed",
+            "provider": "minimax-coding-plan",
+            "model": "MiniMax-M3",
+            "error_category": "runtime_exit"
+          }
+        ],
+        "policy": {
+          "final_attempt": 3,
+          "final_target_index": 1,
+          "exhausted": true,
+          "exhausted_reason": "retry exhausted",
+          "decisions": [
+            {
+              "attempt": 1,
+              "kind": "fallback",
+              "reason": "runtime exit",
+              "detail": "OpenCode exited before a successful final result"
+            },
+            {
+              "attempt": 2,
+              "target_index": 1,
+              "kind": "retry",
+              "reason": "retryable failure",
+              "detail": "OpenCode exited before a successful final result",
+              "delay": "1s"
+            },
+            {
+              "attempt": 3,
+              "target_index": 1,
+              "kind": "stop",
+              "reason": "retry exhausted",
+              "detail": "OpenCode exited before a successful final result"
+            }
+          ]
+        },
+        "permissions": {
+          "mode": "restricted",
+          "policy_id": "perm_e10fc622c778c442",
+          "default": "allow",
+          "audit_count": 1
+        },
+        "cleanup": {
+          "attempted": true,
+          "completed": true
+        },
         "repair": {},
         "usage": {
           "input_tokens_known": false,
@@ -208929,7 +209008,827 @@
           "cache_read_tokens_known": false,
           "cache_write_tokens_known": false,
           "turns_known": false
-        }
+        },
+        "events": {
+          "total": 238,
+          "retained": 200,
+          "dropped": 38,
+          "limit": 200
+        },
+        "memory": {
+          "start_alloc_bytes": 51240808,
+          "peak_alloc_bytes": 52350632,
+          "end_alloc_bytes": 25856048,
+          "samples": 6
+        },
+        "warnings": [
+          "runtime retained last 200 events and dropped 38 earlier events from in-memory result"
+        ],
+        "omissions": [
+          {
+            "field": "events",
+            "reason": "38 runtime events omitted from study state after retaining last 200"
+          },
+          {
+            "field": "events.opencode-134:31.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:32.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:33.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:34.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:35.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:36.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:37.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:38.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:39.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:40.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:41.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:42.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:43.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:44.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:45.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:46.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:47.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:48.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:49.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:50.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:51.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:52.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:53.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:54.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:55.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:56.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:57.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:58.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:59.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:60.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:61.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:62.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:63.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:64.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:65.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:66.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:67.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:68.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:69.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:70.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:71.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:72.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:73.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:74.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:75.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:76.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:77.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:78.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:79.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:80.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:81.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:82.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:83.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:84.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:85.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:86.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:87.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:88.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:89.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:90.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:91.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:92.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:93.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:94.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:95.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:96.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:97.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:98.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:99.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:100.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:101.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:102.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:103.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:104.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:105.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:106.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:107.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:108.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:109.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:110.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:111.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:112.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:113.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:114.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:115.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:116.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:117.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:118.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:119.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:120.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:121.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:122.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:123.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:124.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:125.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:126.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:127.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:128.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:129.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:130.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:131.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:132.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:133.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:134.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:135.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:136.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:137.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:138.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:139.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:140.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:141.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:142.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:143.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:144.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:145.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:146.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:147.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:148.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:149.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:150.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:151.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:152.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:153.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:154.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:155.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:156.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:157.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:158.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:159.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:160.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:161.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:162.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:163.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:164.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:165.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:166.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:167.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:168.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:169.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:170.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:171.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:172.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:173.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:174.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:175.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:176.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:177.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:178.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:179.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:180.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:181.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:182.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:183.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:184.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:185.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:186.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:187.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:188.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:189.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:190.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:191.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:192.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:193.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:194.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:195.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:196.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:197.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:198.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:199.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:200.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:201.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:202.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:203.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:204.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:205.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:206.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:207.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:208.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:209.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:210.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:211.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:212.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:213.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:214.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:215.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:216.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:217.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:218.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:219.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:220.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:221.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:222.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:223.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:224.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:225.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:226.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:227.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:228.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-134:229.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          }
+        ],
+        "started_at": "2026-08-21T16:53:48.332288856Z",
+        "finished_at": "2026-08-21T16:58:53.760657676Z",
+        "duration_ms": 305428
       }
     },
     {
@@ -208973,7 +209872,7 @@
     {
       "id": "analysis:agent-harness-study:07.04:timeouts-and-cancellation:letta:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "failed",
       "study": "agent-harness-study",
       "dimension": "07.04",
       "dimension_ref": "07.04-timeouts-and-cancellation",
@@ -208982,15 +209881,936 @@
       "output_path": "studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/letta.md",
       "attempts": 4,
       "created_at": "2026-07-02T12:46:28.105235824Z",
-      "updated_at": "2026-08-21T16:53:54.088063411Z",
+      "updated_at": "2026-08-21T16:58:59.505525534Z",
       "started_at": "2026-08-21T16:53:54.088063411Z",
+      "completed_at": "2026-08-21T16:58:59.505525534Z",
+      "retry_after": "2026-08-21T16:59:00.505526106Z",
+      "last_error": {
+        "code": "validation.failed",
+        "message": "opencode run: runtime_exit: OpenCode exited before a successful final result",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/letta.md"
+      },
       "validation": {
         "status": "failed",
-        "checked_at": "2026-08-21T15:02:52.420320871Z",
+        "checked_at": "2026-08-21T16:58:59.505525534Z",
         "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/letta.md",
         "passed_checks": 0,
         "failed_checks": 1,
         "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/letta.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/letta.md: no such file or directory"
+      },
+      "agent": {
+        "runtime": "openrouter",
+        "run_id": "opencode-139",
+        "status": "failed",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "attempts": [
+          {
+            "attempt": 1,
+            "attempt_on_target": 1,
+            "run_id": "opencode-136",
+            "status": "failed",
+            "provider": "openrouter",
+            "model": "stealth/ox-alpha",
+            "error_category": "runtime_exit"
+          },
+          {
+            "attempt": 2,
+            "attempt_on_target": 1,
+            "target_index": 1,
+            "run_id": "opencode-137",
+            "status": "failed",
+            "provider": "minimax-coding-plan",
+            "model": "MiniMax-M3",
+            "error_category": "runtime_exit"
+          },
+          {
+            "attempt": 3,
+            "attempt_on_target": 2,
+            "target_index": 1,
+            "run_id": "opencode-139",
+            "status": "failed",
+            "provider": "minimax-coding-plan",
+            "model": "MiniMax-M3",
+            "error_category": "runtime_exit"
+          }
+        ],
+        "policy": {
+          "final_attempt": 3,
+          "final_target_index": 1,
+          "exhausted": true,
+          "exhausted_reason": "retry exhausted",
+          "decisions": [
+            {
+              "attempt": 1,
+              "kind": "fallback",
+              "reason": "runtime exit",
+              "detail": "OpenCode reported a fatal session error"
+            },
+            {
+              "attempt": 2,
+              "target_index": 1,
+              "kind": "retry",
+              "reason": "retryable failure",
+              "detail": "OpenCode exited before a successful final result",
+              "delay": "1s"
+            },
+            {
+              "attempt": 3,
+              "target_index": 1,
+              "kind": "stop",
+              "reason": "retry exhausted",
+              "detail": "OpenCode exited before a successful final result"
+            }
+          ]
+        },
+        "permissions": {
+          "mode": "restricted",
+          "policy_id": "perm_e10fc622c778c442",
+          "default": "allow",
+          "audit_count": 1
+        },
+        "cleanup": {
+          "attempted": true,
+          "completed": true
+        },
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        },
+        "events": {
+          "total": 266,
+          "retained": 200,
+          "dropped": 66,
+          "limit": 200
+        },
+        "memory": {
+          "start_alloc_bytes": 22822344,
+          "peak_alloc_bytes": 60959760,
+          "end_alloc_bytes": 60959760,
+          "samples": 7
+        },
+        "warnings": [
+          "runtime retained last 200 events and dropped 66 earlier events from in-memory result"
+        ],
+        "omissions": [
+          {
+            "field": "events",
+            "reason": "66 runtime events omitted from study state after retaining last 200"
+          },
+          {
+            "field": "events.opencode-137:61.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:62.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:63.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:64.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:65.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:66.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:67.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:68.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:69.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:70.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:71.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:72.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:73.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:74.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:75.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:76.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:77.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:78.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:79.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:80.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:81.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:82.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:83.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:84.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:85.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:86.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:87.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:88.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:89.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:90.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:91.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:92.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:93.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:94.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:95.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:96.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:97.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:98.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:99.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:100.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:101.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:102.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:103.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:104.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:105.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:106.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:107.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:108.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:109.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:110.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:111.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:112.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:113.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:114.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:115.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:116.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:117.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:118.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:119.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:120.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:121.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:122.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:123.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:124.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:125.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:126.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:127.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:128.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:129.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:130.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:131.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:132.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:133.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:134.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:135.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:136.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:137.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:138.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:139.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:140.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:141.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:142.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:143.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:144.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:145.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:146.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:147.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:148.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:149.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:150.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:151.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:152.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:153.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:154.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:155.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:156.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:157.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:158.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:159.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:160.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:161.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:162.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:163.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:164.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:165.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:166.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:167.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:168.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:169.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:170.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:171.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:172.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:173.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:174.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:175.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:176.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:177.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:178.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:179.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:180.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:181.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:182.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:183.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:184.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:185.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:186.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:187.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:188.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:189.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:190.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:191.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:192.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:193.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:194.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:195.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:196.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:197.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:198.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:199.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:200.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:201.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:202.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:203.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:204.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:205.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:206.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:207.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:208.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:209.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:210.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:211.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:212.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:213.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:214.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:215.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:216.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:217.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:218.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:219.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:220.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:221.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:222.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:223.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:224.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:225.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:226.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:227.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:228.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:229.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:230.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:231.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:232.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:233.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:234.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:235.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:236.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:237.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:238.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:239.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:240.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:241.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:242.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:243.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:244.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:245.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:246.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:247.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:248.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:249.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:250.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:251.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:252.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:253.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:254.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-137:255.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          }
+        ],
+        "started_at": "2026-08-21T16:58:58.160404191Z",
+        "finished_at": "2026-08-21T16:58:59.47344665Z",
+        "duration_ms": 1313
+      }
+    },
+    {
+      "id": "analysis:agent-harness-study:07.04:timeouts-and-cancellation:openai-agents-sdk:directory",
+      "kind": "analysis",
+      "status": "running",
+      "study": "agent-harness-study",
+      "dimension": "07.04",
+      "dimension_ref": "07.04-timeouts-and-cancellation",
+      "source": "openai-agents-sdk",
+      "source_kind": "directory",
+      "output_path": "studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md",
+      "attempts": 3,
+      "created_at": "2026-07-02T12:46:28.105235824Z",
+      "updated_at": "2026-08-21T16:58:59.273214464Z",
+      "started_at": "2026-08-21T16:58:59.273214464Z",
+      "validation": {
+        "status": "failed",
+        "checked_at": "2026-08-21T13:54:04.587204122Z",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md",
+        "passed_checks": 0,
+        "failed_checks": 1,
+        "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md: no such file or directory"
       },
       "agent": {
         "policy": {},
@@ -209009,167 +210829,19 @@
       }
     },
     {
-      "id": "analysis:agent-harness-study:07.04:timeouts-and-cancellation:openai-agents-sdk:directory",
-      "kind": "analysis",
-      "status": "pending",
-      "study": "agent-harness-study",
-      "dimension": "07.04",
-      "dimension_ref": "07.04-timeouts-and-cancellation",
-      "source": "openai-agents-sdk",
-      "source_kind": "directory",
-      "output_path": "studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md",
-      "attempts": 2,
-      "created_at": "2026-07-02T12:46:28.105235824Z",
-      "updated_at": "2026-08-21T15:14:54.78790674Z",
-      "started_at": "2026-08-21T13:50:36.357082295Z",
-      "completed_at": "2026-08-21T15:02:52.589580125Z",
-      "last_error": {
-        "code": "workflow.cancelled",
-        "message": "context canceled"
-      },
-      "validation": {
-        "status": "failed",
-        "checked_at": "2026-08-21T13:54:04.587204122Z",
-        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md",
-        "passed_checks": 0,
-        "failed_checks": 1,
-        "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openai-agents-sdk.md: no such file or directory"
-      },
-      "agent": {
-        "runtime": "openrouter",
-        "run_id": "opencode-144",
-        "status": "failed",
-        "provider": "openrouter",
-        "model": "stealth/ox-alpha",
-        "attempts": [
-          {
-            "attempt": 1,
-            "attempt_on_target": 1,
-            "run_id": "opencode-133",
-            "status": "failed",
-            "provider": "openrouter",
-            "model": "stealth/ox-alpha",
-            "error_category": "runtime_exit"
-          },
-          {
-            "attempt": 2,
-            "attempt_on_target": 1,
-            "target_index": 1,
-            "run_id": "opencode-138",
-            "status": "failed",
-            "provider": "minimax-coding-plan",
-            "model": "MiniMax-M3",
-            "error_category": "runtime_exit"
-          },
-          {
-            "attempt": 3,
-            "attempt_on_target": 2,
-            "target_index": 1,
-            "run_id": "opencode-144",
-            "status": "failed",
-            "provider": "minimax-coding-plan",
-            "model": "MiniMax-M3",
-            "error_category": "runtime_exit"
-          }
-        ],
-        "policy": {
-          "final_attempt": 3,
-          "final_target_index": 1,
-          "exhausted": true,
-          "exhausted_reason": "retry exhausted",
-          "decisions": [
-            {
-              "attempt": 1,
-              "kind": "fallback",
-              "reason": "runtime exit",
-              "detail": "OpenCode reported a fatal session error"
-            },
-            {
-              "attempt": 2,
-              "target_index": 1,
-              "kind": "retry",
-              "reason": "retryable failure",
-              "detail": "OpenCode reported a fatal session error",
-              "delay": "1s"
-            },
-            {
-              "attempt": 3,
-              "target_index": 1,
-              "kind": "stop",
-              "reason": "retry exhausted",
-              "detail": "OpenCode reported a fatal session error"
-            }
-          ]
-        },
-        "permissions": {
-          "mode": "restricted",
-          "policy_id": "perm_e10fc622c778c442",
-          "default": "allow",
-          "audit_count": 1
-        },
-        "cleanup": {
-          "attempted": true,
-          "completed": true
-        },
-        "repair": {},
-        "usage": {
-          "input_tokens_known": false,
-          "output_tokens_known": false,
-          "total_tokens_known": false,
-          "reasoning_tokens_known": false,
-          "cache_read_tokens_known": false,
-          "cache_write_tokens_known": false,
-          "turns_known": false
-        },
-        "events": {
-          "total": 17,
-          "retained": 17,
-          "limit": 200
-        },
-        "memory": {
-          "start_alloc_bytes": 23611688,
-          "peak_alloc_bytes": 49370544,
-          "end_alloc_bytes": 49370544,
-          "samples": 3
-        },
-        "omissions": [
-          {
-            "field": "events.opencode-133:4.raw",
-            "reason": "unsafe raw payload bytes omitted by default"
-          },
-          {
-            "field": "events.opencode-138:4.raw",
-            "reason": "unsafe raw payload bytes omitted by default"
-          },
-          {
-            "field": "events.opencode-144:4.raw",
-            "reason": "unsafe raw payload bytes omitted by default"
-          }
-        ],
-        "started_at": "2026-08-21T13:52:30.371811052Z",
-        "finished_at": "2026-08-21T13:53:59.561393551Z",
-        "duration_ms": 89189
-      }
-    },
-    {
       "id": "analysis:agent-harness-study:07.04:timeouts-and-cancellation:openhands:directory",
       "kind": "analysis",
-      "status": "pending",
+      "status": "running",
       "study": "agent-harness-study",
       "dimension": "07.04",
       "dimension_ref": "07.04-timeouts-and-cancellation",
       "source": "openhands",
       "source_kind": "directory",
       "output_path": "studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openhands.md",
-      "attempts": 2,
+      "attempts": 3,
       "created_at": "2026-07-02T12:46:28.105235824Z",
-      "updated_at": "2026-08-21T15:14:54.78790674Z",
-      "started_at": "2026-08-21T13:50:36.343785714Z",
-      "completed_at": "2026-08-21T15:02:52.742676358Z",
-      "last_error": {
-        "code": "workflow.cancelled",
-        "message": "context canceled"
-      },
+      "updated_at": "2026-08-21T16:59:00.078515452Z",
+      "started_at": "2026-08-21T16:59:00.078515452Z",
       "validation": {
         "status": "failed",
         "checked_at": "2026-08-21T13:53:55.164056345Z",
@@ -209179,81 +210851,9 @@
         "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openhands.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/agent-harness-study/reports/source/07.04-timeouts-and-cancellation/openhands.md: no such file or directory"
       },
       "agent": {
-        "runtime": "openrouter",
-        "run_id": "opencode-142",
-        "status": "failed",
-        "provider": "openrouter",
-        "model": "stealth/ox-alpha",
-        "attempts": [
-          {
-            "attempt": 1,
-            "attempt_on_target": 1,
-            "run_id": "opencode-132",
-            "status": "failed",
-            "provider": "openrouter",
-            "model": "stealth/ox-alpha",
-            "error_category": "runtime_exit"
-          },
-          {
-            "attempt": 2,
-            "attempt_on_target": 1,
-            "target_index": 1,
-            "run_id": "opencode-136",
-            "status": "failed",
-            "provider": "minimax-coding-plan",
-            "model": "MiniMax-M3",
-            "error_category": "runtime_exit"
-          },
-          {
-            "attempt": 3,
-            "attempt_on_target": 2,
-            "target_index": 1,
-            "run_id": "opencode-142",
-            "status": "failed",
-            "provider": "minimax-coding-plan",
-            "model": "MiniMax-M3",
-            "error_category": "runtime_exit"
-          }
-        ],
-        "policy": {
-          "final_attempt": 3,
-          "final_target_index": 1,
-          "exhausted": true,
-          "exhausted_reason": "retry exhausted",
-          "decisions": [
-            {
-              "attempt": 1,
-              "kind": "fallback",
-              "reason": "runtime exit",
-              "detail": "OpenCode reported a fatal session error"
-            },
-            {
-              "attempt": 2,
-              "target_index": 1,
-              "kind": "retry",
-              "reason": "retryable failure",
-              "detail": "OpenCode reported a fatal session error",
-              "delay": "1s"
-            },
-            {
-              "attempt": 3,
-              "target_index": 1,
-              "kind": "stop",
-              "reason": "retry exhausted",
-              "detail": "OpenCode reported a fatal session error"
-            }
-          ]
-        },
-        "permissions": {
-          "mode": "restricted",
-          "policy_id": "perm_e10fc622c778c442",
-          "default": "allow",
-          "audit_count": 1
-        },
-        "cleanup": {
-          "attempted": true,
-          "completed": true
-        },
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
         "repair": {},
         "usage": {
           "input_tokens_known": false,
@@ -209263,35 +210863,7 @@
           "cache_read_tokens_known": false,
           "cache_write_tokens_known": false,
           "turns_known": false
-        },
-        "events": {
-          "total": 17,
-          "retained": 17,
-          "limit": 200
-        },
-        "memory": {
-          "start_alloc_bytes": 38317976,
-          "peak_alloc_bytes": 39390832,
-          "end_alloc_bytes": 19261760,
-          "samples": 3
-        },
-        "omissions": [
-          {
-            "field": "events.opencode-132:4.raw",
-            "reason": "unsafe raw payload bytes omitted by default"
-          },
-          {
-            "field": "events.opencode-136:4.raw",
-            "reason": "unsafe raw payload bytes omitted by default"
-          },
-          {
-            "field": "events.opencode-142:4.raw",
-            "reason": "unsafe raw payload bytes omitted by default"
-          }
-        ],
-        "started_at": "2026-08-21T13:52:27.914119631Z",
-        "finished_at": "2026-08-21T13:53:50.124413317Z",
-        "duration_ms": 82210
+        }
       }
     },
     {
