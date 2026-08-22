@@ -1,0 +1,120 @@
+name: ultraplan-daemon-events-study
+description: Focused architecture study for UltraPlan's durable event system and per-user daemon. Examines execution
+  ownership, identity, idempotent submission, leases/fencing, atomic state + journal persistence, event replay/backpressure,
+  crash recovery, cancellation/process cleanup, and scheduler retry semantics.
+dimensions:
+- number: '01.01'
+  name: daemon-rpc-and-execution-ownership
+  title: Daemon RPC and Execution Ownership
+  purpose: Study how long-lived execution ownership is separated from CLI, web, and TUI clients, including detach
+    semantics, local RPC, authentication, versioning, and explicit workspace context.
+- number: '01.02'
+  name: operation-step-attempt-process-identity
+  title: Operation, Step, Attempt, and Process Identity
+  purpose: Study how systems distinguish durable user intent, checkpointable progress, retry attempts, and concrete
+    runtime/process instances.
+- number: '01.03'
+  name: durable-submission-and-idempotent-acceptance
+  title: Durable Submission and Idempotent Acceptance
+  purpose: Study how work is durably accepted before acknowledgement and how duplicate client submissions are detected
+    and resolved.
+- number: '01.04'
+  name: leases-heartbeats-fencing-stale-worker-rejection
+  title: Leases, Heartbeats, Fencing, and Stale-Worker Rejection
+  purpose: Study ownership leases and fencing mechanisms that prevent expired or superseded workers from mutating
+    authoritative state.
+- number: '01.05'
+  name: atomic-state-transition-and-event-journal
+  title: Atomic State Transition and Event Journal
+  purpose: Study how authoritative state changes, artifacts, and durable operational events are committed atomically
+    without turning the system into full event sourcing.
+- number: '01.06'
+  name: event-envelope-ordering-causation-and-replay
+  title: Event Envelope, Ordering, Causation, and Replay
+  purpose: 'Study durable event contracts: typed facts, schema evolution, per-subject ordering, causation/correlation,
+    replay cursors, and reconnectable observation.'
+- number: '01.07'
+  name: event-delivery-backpressure-and-retention-tiers
+  title: Event Delivery, Backpressure, and Retention Tiers
+  purpose: Study how systems protect durable lifecycle facts while bounding high-volume progress, logs, token/output
+    deltas, and slow consumers.
+- number: '01.08'
+  name: crash-recovery-reconciliation-and-checkpoints
+  title: Crash Recovery, Reconciliation, and Checkpoints
+  purpose: 'Study restart behavior when the long-lived executor dies: reconciliation, safe checkpoints, interrupted
+    attempts, and operation-specific resume semantics.'
+- number: '01.09'
+  name: cancellation-shutdown-and-process-cleanup
+  title: Cancellation, Shutdown, and Process Cleanup
+  purpose: Study cancellation as a durable control request plus bounded runtime cleanup, including graceful daemon
+    shutdown and OS process-tree termination.
+- number: '01.10'
+  name: scheduler-controller-retries-and-at-least-once
+  title: Scheduler Controller, Retries, and At-Least-Once Semantics
+  purpose: Study reconciliation-style scheduling, bounded concurrency, retry ownership, failure classification,
+    and explicit at-least-once execution semantics.
+sources:
+- repo: temporalio/temporal
+  name: temporal
+  description: Gold-standard durable workflow engine; strong reference for histories, task ownership, retries, idempotency,
+    recovery, and worker failure semantics.
+  url: https://github.com/temporalio/temporal
+  applicable_dimensions:
+  - '01.01'
+  - '01.02'
+  - '01.03'
+  - '01.04'
+  - '01.05'
+  - '01.06'
+  - '01.07'
+  - '01.08'
+  - '01.09'
+  - '01.10'
+- repo: containerd/containerd
+  name: containerd
+  description: Elite long-lived daemon and process supervisor; strong reference for client/daemon boundaries, task
+    identity, events, lifecycle ownership, and process cleanup.
+  url: https://github.com/containerd/containerd
+  applicable_dimensions:
+  - '01.01'
+  - '01.02'
+  - '01.03'
+  - '01.04'
+  - '01.05'
+  - '01.06'
+  - '01.07'
+  - '01.08'
+  - '01.09'
+  - '01.10'
+- repo: moby/buildkit
+  name: buildkit
+  description: Mature local/remote build daemon; strong reference for client detach, sessions, progress streaming,
+    cancellation, concurrency, and resilient long-running execution.
+  url: https://github.com/moby/buildkit
+  applicable_dimensions:
+  - '01.01'
+  - '01.02'
+  - '01.03'
+  - '01.04'
+  - '01.05'
+  - '01.06'
+  - '01.07'
+  - '01.08'
+  - '01.09'
+  - '01.10'
+- repo: dagster-io/dagster
+  name: dagster
+  description: Mature orchestration platform with daemons, run coordination, event logs, retries, and durable run
+    state; useful bridge between workflow semantics and product-facing observability.
+  url: https://github.com/dagster-io/dagster
+  applicable_dimensions:
+  - '01.01'
+  - '01.02'
+  - '01.03'
+  - '01.04'
+  - '01.05'
+  - '01.06'
+  - '01.07'
+  - '01.08'
+  - '01.09'
+  - '01.10'
