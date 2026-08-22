@@ -1318,6 +1318,7 @@ Still deferred:
 - interactive terminal/session transport, bidirectional agent chat, or WebSockets
 - general-purpose issue tracking and automatic Git mutation
 
+## Product Phase 4 Wave — Local Server And Browser UI
 ### Sprint 30: Local Web Foundation and Read-Only Dashboard
 
 > Slug: 30-web-foundations
