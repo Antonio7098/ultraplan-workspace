@@ -2,33 +2,33 @@ version: 1
 runtime:
   default: opencode
 models:
-  default: minimax-coding-plan/MiniMax-M3
-  primary: minimax-coding-plan/MiniMax-M3
-  backup: minimax-coding-plan/MiniMax-M3
+  default: openrouter/stealth/ox-alpha
+  primary: openrouter/stealth/ox-alpha
+  backup: openrouter/stealth/ox-alpha
 execution:
   default_variant: high
   default_parallel: 5
   default_timeout: 12m
   default_retries: 1
 planning:
-  requirements_model: openai/gpt-5.6-sol
+  requirements_model: openrouter/stealth/ox-alpha
   requirements_variant: high
-  code_context_model: openai/gpt-5.6-sol
+  code_context_model: openrouter/stealth/ox-alpha
   code_context_variant: low
-  sprint_index_model: openai/gpt-5.6-sol
+  sprint_index_model: openrouter/stealth/ox-alpha
   sprint_index_variant: high
-  technical_handbook_model: openai/gpt-5.6-sol
+  technical_handbook_model: openrouter/stealth/ox-alpha
   technical_handbook_variant: high
-  area_reasoning_model: openai/gpt-5.6-sol
+  area_reasoning_model: openrouter/stealth/ox-alpha
   area_reasoning_variant: high
-  reasoning_model: openai/gpt-5.6-sol
+  reasoning_model: openrouter/stealth/ox-alpha
   reasoning_variant: high
-  plan_model: openai/gpt-5.6-sol
+  plan_model: openrouter/stealth/ox-alpha
   plan_variant: high
-  review_model: minimax-coding-plan/MiniMax-M3
-  smoke_model: openai/gpt-5.6-sol
+  review_model: openrouter/stealth/ox-alpha
+  smoke_model: openrouter/stealth/ox-alpha
   smoke_variant: low
-  execute_model: openai/gpt-5.6-sol
+  execute_model: openrouter/stealth/ox-alpha
   execute_variant: high
 logging:
   format: text

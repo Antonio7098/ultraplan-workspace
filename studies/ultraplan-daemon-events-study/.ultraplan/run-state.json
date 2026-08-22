@@ -1,0 +1,1842 @@
+{
+  "schema_version": 1,
+  "run_id": "run-20260822T115329Z",
+  "study": "ultraplan-daemon-events-study",
+  "created_at": "2026-08-22T11:53:29.015062699Z",
+  "updated_at": "2026-08-22T12:45:18.763341376Z",
+  "filters": {},
+  "config_summary": {
+    "runtime": "opencode",
+    "model": "openrouter/stealth/ox-alpha",
+    "variant": "high",
+    "default_parallel": 5,
+    "default_timeout": "12m",
+    "default_retries": 1,
+    "workspace_version": "1"
+  },
+  "applicability_fingerprint": "sha256:40a899778e16d9cd0f9f5cde1a79fab529eb91e45e235e6ee0e3674ae64341f0",
+  "tasks": [
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:buildkit:directory",
+      "kind": "analysis",
+      "status": "running",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.01",
+      "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md",
+      "attempts": 3,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:45:18.493854151Z",
+      "started_at": "2026-08-22T12:45:18.493854151Z",
+      "validation": {
+        "status": "failed",
+        "checked_at": "2026-08-22T12:18:01.780964152Z",
+        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md",
+        "passed_checks": 0,
+        "failed_checks": 1,
+        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md: no such file or directory"
+      },
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "session": {
+        "session_id": "ses_fd6a2dae2ffe8u2Izpx6TPUwZ1",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "work_dir": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study",
+        "input_fingerprint": "4881f46f16b42323e08d3df20d957a31b4fd31604ab04a4aa8bff973b2ddab46",
+        "updated_at": "2026-08-22T12:18:01.598850799Z"
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:containerd:directory",
+      "kind": "analysis",
+      "status": "running",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.01",
+      "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md",
+      "attempts": 3,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:45:18.492821036Z",
+      "started_at": "2026-08-22T12:45:18.492821036Z",
+      "validation": {
+        "status": "failed",
+        "checked_at": "2026-08-22T12:17:59.393129376Z",
+        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md",
+        "passed_checks": 0,
+        "failed_checks": 1,
+        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md: no such file or directory"
+      },
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "session": {
+        "session_id": "ses_fd6a2e025ffew32Ra9CqO17rs1",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "work_dir": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study",
+        "input_fingerprint": "0191ddb56d29cd8f55b65fbe2936f8ed566c06eddec415d8ea7d3747e7063625",
+        "updated_at": "2026-08-22T12:17:59.265768902Z"
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:dagster:directory",
+      "kind": "analysis",
+      "status": "running",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.01",
+      "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md",
+      "attempts": 2,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:45:18.493851339Z",
+      "started_at": "2026-08-22T12:45:18.493851339Z",
+      "validation": {
+        "status": "failed",
+        "checked_at": "2026-08-22T12:18:01.21501504Z",
+        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md",
+        "passed_checks": 0,
+        "failed_checks": 1,
+        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md: no such file or directory"
+      },
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "session": {
+        "session_id": "ses_fd6a2d733ffeLN19Cl5EQbKe5q",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "work_dir": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study",
+        "input_fingerprint": "964ad075a0c537e7fd806e2ce64c66aa8ce08392c861231ccff07891a8415c5c",
+        "updated_at": "2026-08-22T12:18:01.123750832Z"
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:temporal:directory",
+      "kind": "analysis",
+      "status": "completed",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.01",
+      "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/temporal.md",
+      "attempts": 1,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:45:18.473584751Z",
+      "started_at": "2026-08-22T11:53:29.031400237Z",
+      "completed_at": "2026-08-22T12:26:16.701981952Z",
+      "validation": {
+        "status": "passed",
+        "checked_at": "2026-08-22T12:45:18.473584751Z",
+        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/temporal.md",
+        "passed_checks": 8,
+        "failed_checks": 0
+      },
+      "agent": {
+        "runtime": "openrouter",
+        "run_id": "opencode-16",
+        "status": "completed",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "attempts": [
+          {
+            "attempt": 1,
+            "attempt_on_target": 1,
+            "run_id": "opencode-11",
+            "status": "failed",
+            "provider": "openrouter",
+            "model": "stealth/ox-alpha",
+            "error_category": "timeout",
+            "error_detail": "OpenCode run timed out"
+          },
+          {
+            "attempt": 2,
+            "attempt_on_target": 2,
+            "run_id": "opencode-16",
+            "status": "completed",
+            "provider": "openrouter",
+            "model": "stealth/ox-alpha"
+          }
+        ],
+        "policy": {
+          "final_attempt": 2,
+          "decisions": [
+            {
+              "attempt": 1,
+              "kind": "retry",
+              "reason": "retryable failure",
+              "detail": "OpenCode run timed out",
+              "delay": "1s"
+            }
+          ]
+        },
+        "permissions": {
+          "mode": "restricted",
+          "policy_id": "perm_e10fc622c778c442",
+          "default": "allow",
+          "audit_count": 1
+        },
+        "cleanup": {
+          "attempted": true,
+          "completed": true
+        },
+        "repair": {
+          "configured": true,
+          "attempted": true,
+          "max_attempts": 2,
+          "attempt_count": 1
+        },
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        },
+        "started_at": "2026-08-22T12:23:27.537742215Z",
+        "finished_at": "2026-08-22T12:26:09.532567155Z",
+        "duration_ms": 161994
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:buildkit:directory",
+      "kind": "analysis",
+      "status": "running",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.02",
+      "dimension_ref": "01.02-operation-step-attempt-process-identity",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/buildkit.md",
+      "attempts": 3,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:45:18.493918718Z",
+      "started_at": "2026-08-22T12:45:18.493918718Z",
+      "validation": {
+        "status": "failed",
+        "checked_at": "2026-08-22T12:18:00.173828194Z",
+        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/buildkit.md",
+        "passed_checks": 0,
+        "failed_checks": 1,
+        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/buildkit.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/buildkit.md: no such file or directory"
+      },
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "session": {
+        "session_id": "ses_fd6a2decfffe9xiFrHs414GCKY",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "work_dir": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study",
+        "input_fingerprint": "514c840eb6f7c8db4b30c37b2e3ef9d167806dcfeb4b190f0f2af60a9e8c689b",
+        "updated_at": "2026-08-22T12:17:59.896801478Z"
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:containerd:directory",
+      "kind": "analysis",
+      "status": "running",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.02",
+      "dimension_ref": "01.02-operation-step-attempt-process-identity",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/containerd.md",
+      "attempts": 2,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:45:18.491986674Z",
+      "started_at": "2026-08-22T12:45:18.491986674Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.02",
+      "dimension_ref": "01.02-operation-step-attempt-process-identity",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/dagster.md",
+      "attempts": 1,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T12:43:51.532514921Z",
+      "started_at": "2026-08-22T12:18:00.372094948Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.02",
+      "dimension_ref": "01.02-operation-step-attempt-process-identity",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.03",
+      "dimension_ref": "01.03-durable-submission-and-idempotent-acceptance",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.03",
+      "dimension_ref": "01.03-durable-submission-and-idempotent-acceptance",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.03",
+      "dimension_ref": "01.03-durable-submission-and-idempotent-acceptance",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.03",
+      "dimension_ref": "01.03-durable-submission-and-idempotent-acceptance",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.04",
+      "dimension_ref": "01.04-leases-heartbeats-fencing-stale-worker-rejection",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.04",
+      "dimension_ref": "01.04-leases-heartbeats-fencing-stale-worker-rejection",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.04",
+      "dimension_ref": "01.04-leases-heartbeats-fencing-stale-worker-rejection",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.04",
+      "dimension_ref": "01.04-leases-heartbeats-fencing-stale-worker-rejection",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.05",
+      "dimension_ref": "01.05-atomic-state-transition-and-event-journal",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.05",
+      "dimension_ref": "01.05-atomic-state-transition-and-event-journal",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.05",
+      "dimension_ref": "01.05-atomic-state-transition-and-event-journal",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.05",
+      "dimension_ref": "01.05-atomic-state-transition-and-event-journal",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.06",
+      "dimension_ref": "01.06-event-envelope-ordering-causation-and-replay",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.06",
+      "dimension_ref": "01.06-event-envelope-ordering-causation-and-replay",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.06",
+      "dimension_ref": "01.06-event-envelope-ordering-causation-and-replay",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.06",
+      "dimension_ref": "01.06-event-envelope-ordering-causation-and-replay",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.07",
+      "dimension_ref": "01.07-event-delivery-backpressure-and-retention-tiers",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.07",
+      "dimension_ref": "01.07-event-delivery-backpressure-and-retention-tiers",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.07",
+      "dimension_ref": "01.07-event-delivery-backpressure-and-retention-tiers",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.07",
+      "dimension_ref": "01.07-event-delivery-backpressure-and-retention-tiers",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.08",
+      "dimension_ref": "01.08-crash-recovery-reconciliation-and-checkpoints",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.08",
+      "dimension_ref": "01.08-crash-recovery-reconciliation-and-checkpoints",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.08",
+      "dimension_ref": "01.08-crash-recovery-reconciliation-and-checkpoints",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.08",
+      "dimension_ref": "01.08-crash-recovery-reconciliation-and-checkpoints",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.09",
+      "dimension_ref": "01.09-cancellation-shutdown-and-process-cleanup",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.09",
+      "dimension_ref": "01.09-cancellation-shutdown-and-process-cleanup",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.09",
+      "dimension_ref": "01.09-cancellation-shutdown-and-process-cleanup",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.09",
+      "dimension_ref": "01.09-cancellation-shutdown-and-process-cleanup",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:buildkit:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.10",
+      "dimension_ref": "01.10-scheduler-controller-retries-and-at-least-once",
+      "source": "buildkit",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/buildkit.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:containerd:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.10",
+      "dimension_ref": "01.10-scheduler-controller-retries-and-at-least-once",
+      "source": "containerd",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/containerd.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:dagster:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.10",
+      "dimension_ref": "01.10-scheduler-controller-retries-and-at-least-once",
+      "source": "dagster",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/dagster.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:temporal:directory",
+      "kind": "analysis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.10",
+      "dimension_ref": "01.10-scheduler-controller-retries-and-at-least-once",
+      "source": "temporal",
+      "source_kind": "directory",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/temporal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      }
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.01",
+      "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.01-daemon-rpc-and-execution-ownership.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.02",
+      "dimension_ref": "01.02-operation-step-attempt-process-identity",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.02-operation-step-attempt-process-identity.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.03",
+      "dimension_ref": "01.03-durable-submission-and-idempotent-acceptance",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.03-durable-submission-and-idempotent-acceptance.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.03:durable-submission-and-idempotent-acceptance:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.03-durable-submission-and-idempotent-acceptance/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.04",
+      "dimension_ref": "01.04-leases-heartbeats-fencing-stale-worker-rejection",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.04-leases-heartbeats-fencing-stale-worker-rejection.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.04:leases-heartbeats-fencing-stale-worker-rejection:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.04-leases-heartbeats-fencing-stale-worker-rejection/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.05",
+      "dimension_ref": "01.05-atomic-state-transition-and-event-journal",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.05-atomic-state-transition-and-event-journal.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.05:atomic-state-transition-and-event-journal:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.05-atomic-state-transition-and-event-journal/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.06",
+      "dimension_ref": "01.06-event-envelope-ordering-causation-and-replay",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.06-event-envelope-ordering-causation-and-replay.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.06:event-envelope-ordering-causation-and-replay:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.06-event-envelope-ordering-causation-and-replay/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.07",
+      "dimension_ref": "01.07-event-delivery-backpressure-and-retention-tiers",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.07-event-delivery-backpressure-and-retention-tiers.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.07:event-delivery-backpressure-and-retention-tiers:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.07-event-delivery-backpressure-and-retention-tiers/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.08",
+      "dimension_ref": "01.08-crash-recovery-reconciliation-and-checkpoints",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.08-crash-recovery-reconciliation-and-checkpoints.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.08:crash-recovery-reconciliation-and-checkpoints:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.08-crash-recovery-reconciliation-and-checkpoints/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.09",
+      "dimension_ref": "01.09-cancellation-shutdown-and-process-cleanup",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.09-cancellation-shutdown-and-process-cleanup.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.09:cancellation-shutdown-and-process-cleanup:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.09-cancellation-shutdown-and-process-cleanup/temporal.md"
+        }
+      ]
+    },
+    {
+      "id": "synthesis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once",
+      "kind": "synthesis",
+      "status": "pending",
+      "study": "ultraplan-daemon-events-study",
+      "dimension": "01.10",
+      "dimension_ref": "01.10-scheduler-controller-retries-and-at-least-once",
+      "output_path": "studies/ultraplan-daemon-events-study/reports/final/01.10-scheduler-controller-retries-and-at-least-once.md",
+      "attempts": 0,
+      "created_at": "2026-08-22T11:53:29.015062699Z",
+      "updated_at": "2026-08-22T11:53:29.015062699Z",
+      "agent": {
+        "policy": {},
+        "permissions": {},
+        "cleanup": {},
+        "repair": {},
+        "usage": {
+          "input_tokens_known": false,
+          "output_tokens_known": false,
+          "total_tokens_known": false,
+          "reasoning_tokens_known": false,
+          "cache_read_tokens_known": false,
+          "cache_write_tokens_known": false,
+          "turns_known": false
+        }
+      },
+      "dependencies": [
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:buildkit:directory",
+          "source": "buildkit",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/buildkit.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:containerd:directory",
+          "source": "containerd",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/containerd.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:dagster:directory",
+          "source": "dagster",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/dagster.md"
+        },
+        {
+          "task_id": "analysis:ultraplan-daemon-events-study:01.10:scheduler-controller-retries-and-at-least-once:temporal:directory",
+          "source": "temporal",
+          "source_kind": "directory",
+          "report_path": "studies/ultraplan-daemon-events-study/reports/source/01.10-scheduler-controller-retries-and-at-least-once/temporal.md"
+        }
+      ]
+    }
+  ],
+  "complete": false
+}
