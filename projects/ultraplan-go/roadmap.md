@@ -80,7 +80,13 @@ The new stage gathers implementation evidence once into `code-context.md` and re
 
 ### Sprint 0: Roadmap, Scope, and Template Alignment
 
-**Goal:** remove ambiguity before implementation starts.
+<!-- no sprint workspace directory exists for this roadmap entry -->
+> Status: delivered
+> Depends On:
+
+#### Goal
+
+remove ambiguity before implementation starts.
 
 **Deliverables:**
 
@@ -102,7 +108,7 @@ review.md
 smoke.md
 ```
 
-**Acceptance:**
+#### Acceptance
 
 - Roadmap is accepted.
 - TRD target/sprint references are removed or clearly marked deferred.
@@ -184,9 +190,15 @@ Required then:
 
 ### Sprint 1: Go Module, CLI Shell, and App Composition
 
-**Goal:** establish a buildable Go CLI with module-driven structure.
+> Slug: 01-cli-foundation
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+establish a buildable Go CLI with module-driven structure.
+
+#### Build
 
 - `cmd/ultraplan/main.go`
 - `internal/app`
@@ -205,7 +217,7 @@ internal/codeextract
 - `ultraplan --help`
 - `ultraplan version`
 
-**Evidence:**
+#### Evidence
 
 ```bash
 go test ./...
@@ -214,11 +226,21 @@ ultraplan --help
 ultraplan version
 ```
 
+#### Acceptance
+
+- [ ] `go test ./...`, `go build ./cmd/ultraplan`, `ultraplan --help`, and `ultraplan version` all succeed.
+
 ### Sprint 2: Workspace, Config, Logging, and Health Skeleton
 
-**Goal:** make UltraPlan able to find, initialize, inspect, and validate a workspace.
+> Slug: 02-workspace-config-health
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+make UltraPlan able to find, initialize, inspect, and validate a workspace.
+
+#### Build
 
 - workspace discovery
 - `init-workspace`
@@ -228,7 +250,7 @@ ultraplan version
 - secret redaction
 - text/JSON output foundation
 
-**Commands:**
+#### Commands
 
 ```bash
 ultraplan init-workspace
@@ -238,13 +260,23 @@ ultraplan health
 
 ---
 
+#### Acceptance
+
+- [ ] `ultraplan init-workspace`, `ultraplan config show`, and `ultraplan health` operate against a real workspace.
+
 ## Study Implementation Wave 2 — Study Model and Initialization
 
 ### Sprint 3: Study Domain, Listing, and Resolution
 
-**Goal:** model studies, sources, dimensions, and deterministic listing.
+> Slug: 03-study-listing-resolution
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+model studies, sources, dimensions, and deterministic listing.
+
+#### Build
 
 - `Study`
 - `Source`
@@ -254,18 +286,28 @@ ultraplan health
 - `study list`
 - `study <study> list`
 
-**Commands:**
+#### Commands
 
 ```bash
 ultraplan study list
 ultraplan study <study> list
 ```
 
+#### Acceptance
+
+- [ ] `ultraplan study list` and `ultraplan study <study> list` produce deterministic listings.
+
 ### Sprint 4: Study Initialization From YAML
 
-**Goal:** generate a study structure from `study-init.yml`.
+> Slug: 04-study-init-yaml
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+generate a study structure from `study-init.yml`.
+
+#### Build
 
 - YAML parser
 - dimension file generation
@@ -275,18 +317,28 @@ ultraplan study <study> list
 - force behavior
 - shallow clone support, if included in this sprint
 
-**Command:**
+#### Commands
 
 ```bash
 ultraplan study init <study-init.yml>
 ultraplan study init <study-init.yml> --dry-run
 ```
 
+#### Acceptance
+
+- [ ] `ultraplan study init <study-init.yml>` generates the expected study structure; `--dry-run` reports without writing.
+
 ### Sprint 5: Markdown Document Sources and Applicability
 
-**Goal:** support top-level Markdown document sources with optional `applicable_dimensions` frontmatter.
+> Slug: 05-study-listing-inspection
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+support top-level Markdown document sources with optional `applicable_dimensions` frontmatter.
+
+#### Build
 
 - Markdown source discovery
 - frontmatter parsing
@@ -301,7 +353,7 @@ ultraplan study init <study-init.yml> --dry-run
 GetApplicableSources(sources []Source, dimension Dimension) []Source
 ```
 
-**Acceptance:**
+#### Acceptance
 
 - Directory sources are always applicable.
 - Markdown sources without filters apply to all dimensions.
@@ -314,9 +366,15 @@ GetApplicableSources(sources []Source, dimension Dimension) []Source
 
 ### Sprint 6: Report Validation and Rating Parsing
 
-**Goal:** reports become validated product artifacts, not just runtime output files.
+> Slug: 06-study-run-execution
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+reports become validated product artifacts, not just runtime output files.
+
+#### Build
 
 - per-source report validation
 - final report validation
@@ -324,11 +382,21 @@ GetApplicableSources(sources []Source, dimension Dimension) []Source
 - validation diagnostics
 - Markdown-source validation rules that do not require code citations by default
 
+#### Acceptance
+
+- [ ] Valid reports pass validation; malformed reports fail with actionable validation diagnostics.
+
 ### Sprint 7: Prompt Composition
 
-**Goal:** deterministic prompts for directory analysis, Markdown analysis, and synthesis.
+> Slug: 07-prompt-composition-generation
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+deterministic prompts for directory analysis, Markdown analysis, and synthesis.
+
+#### Build
 
 - base prompt loading
 - report template loading
@@ -337,13 +405,13 @@ GetApplicableSources(sources []Source, dimension Dimension) []Source
 - synthesis prompt builder
 - dry-run prompt preview
 
-**Acceptance:**
+#### Acceptance
 
 - Directory prompts require source isolation and file-line citations.
 - Markdown prompts embed stripped document content and forbid external code/filesystem exploration.
 - Synthesis prompts include selected per-source report manifest.
 
-**Command:**
+#### Commands
 
 ```bash
 ultraplan study <study> prompt analysis <dimension-ref> <source-ref>
@@ -352,9 +420,15 @@ ultraplan study <study> prompt synthesis <dimension-ref>
 
 ### Sprint 8: Run State Persistence and Status
 
-**Goal:** create deterministic durable run-state primitives before executing runtime work.
+> Slug: 08-run-state-persistence
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+create deterministic durable run-state primitives before executing runtime work.
+
+#### Build
 
 - versioned `run-state.json`
 - deterministic analysis and synthesis task construction
@@ -364,7 +438,7 @@ ultraplan study <study> prompt synthesis <dimension-ref>
 - completed-output revalidation on resume
 - runtime-free status summaries
 
-**Command:**
+#### Commands
 
 ```bash
 ultraplan study <study> status
@@ -372,13 +446,23 @@ ultraplan study <study> status
 
 ---
 
+#### Acceptance
+
+- [ ] `ultraplan study <study> status` reflects durable, strictly validated run state.
+
 ## Study Implementation Wave 4 — Runtime and Prompt Execution
 
 ### Sprint 9: Agentwrap/OpenCode Runtime Integration
 
-**Goal:** integrate runtime execution correctly without reimplementing OpenCode supervision.
+> Slug: 09-runtime-integration
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+integrate runtime execution correctly without reimplementing OpenCode supervision.
+
+#### Build
 
 - `agentwrap` runtime wiring
 - `agentwrap/opencode` adapter construction
@@ -396,18 +480,28 @@ study -> platform/runtime -> agentwrap/opencode
 platform/runtime must not know study semantics
 ```
 
+#### Acceptance
+
+- [ ] Runtime health checks pass through the agentwrap/opencode adapter without `platform/runtime` learning study semantics.
+
 ### Sprint 10: Single Analysis and Synthesis
 
-**Goal:** run one source/dimension pair and synthesize one dimension.
+> Slug: 10-single-analysis-synthesis
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+run one source/dimension pair and synthesize one dimension.
+
+#### Build
 
 ```bash
 ultraplan study <study> run <dimension-ref> <source-ref>
 ultraplan study <study> synthesize <dimension-ref>
 ```
 
-**Acceptance:**
+#### Acceptance
 
 - Runtime success alone is insufficient.
 - Expected output must exist.
@@ -420,33 +514,49 @@ ultraplan study <study> synthesize <dimension-ref>
 
 ### Sprint 11: `run-all` Batch Execution
 
-**Goal:** run all applicable analysis tasks with bounded parallelism.
+> Slug: 11-run-all-batch-execution
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+run all applicable analysis tasks with bounded parallelism.
+
+#### Build
 
 ```bash
 ultraplan study <study> run-all
 ```
 
-**Features:**
+#### Build
 
 - filter by source and dimension
 - bounded worker pool
 - synthesis after applicable reports pass
 - summary generation after completion
 
+#### Acceptance
+
+- [ ] `ultraplan study <study> run-all` completes bounded batch execution with synthesis after applicable reports pass.
+
 ### Sprint 12: Durable `run-loop`, Retry, and Cancellation
 
-**Goal:** production-grade resumable orchestration.
+> Slug: 12-durable-run-loop
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+production-grade resumable orchestration.
+
+#### Build
 
 ```bash
 ultraplan study <study> run-loop
 ultraplan study <study> status
 ```
 
-**Features:**
+#### Build
 
 - atomic `run-state.json`
 - task state machine
@@ -455,11 +565,21 @@ ultraplan study <study> status
 - cancellation handling
 - per-study lock file
 
+#### Acceptance
+
+- [ ] An interrupted `run-loop` resumes from atomic `run-state.json`; cancellation leaves recoverable status.
+
 ### Sprint 13: Summary Generation and Code Reference Extraction
 
-**Goal:** make completed study outputs easy to review, compare, and audit.
+> Slug: 13-summary-and-code-extraction
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+make completed study outputs easy to review, compare, and audit.
+
+#### Build
 
 - deterministic `summary.csv`
 - source/dimension score matrix
@@ -473,7 +593,7 @@ ultraplan study <study> status
 - unresolved reference reporting
 - text and JSON output
 
-**Commands:**
+#### Commands
 
 ```bash
 ultraplan study <study> summary
@@ -482,13 +602,23 @@ ultraplan code <report>...
 
 ---
 
+#### Acceptance
+
+- [ ] `ultraplan study <study> summary` and `ultraplan code <report>...` produce deterministic text and JSON outputs.
+
 ## Study Implementation Wave 6 — Hardening and Release
 
 ### Sprint 14: Validation Command, Diagnostics, and JSON Stability
 
-**Goal:** make the CLI inspectable and automatable.
+> Slug: 14-validation-and-diagnostics
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+make the CLI inspectable and automatable.
+
+#### Build
 
 ```bash
 ultraplan study <study> validate
@@ -496,18 +626,28 @@ ultraplan health --json
 ultraplan study <study> status --json
 ```
 
-**Features:**
+#### Build
 
 - stable JSON shapes
 - actionable validation failures
 - redacted diagnostics
 - run metadata summaries
 
+#### Acceptance
+
+- [ ] Documented `--json` surfaces return stable shapes and validation failures remain actionable.
+
 ### Sprint 15: Docs, Packaging, and Smoke Release
 
-**Goal:** first production-ready study-side release.
+> Slug: 15-documentation-and-packaging
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+first production-ready study-side release.
+
+#### Build
 
 - user docs
 - recovery docs
@@ -516,7 +656,7 @@ ultraplan study <study> status --json
 - Linux/macOS builds
 - checksums
 
-**Release gate:**
+#### Release Gate
 
 ```bash
 go test ./...
@@ -607,11 +747,18 @@ Not required in Planning Phase 2:
 - Git mutation
 - cross-sprint implementation run loops
 
+## Planning Implementation Wave — Project, Sprint Planning, And Execute
 ### Sprint 16: Project Domain and Project Index
 
-**Goal:** model `projects/<project>` as a first-class planning root.
+> Slug: 16-project-domain-and-index
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+model `projects/<project>` as a first-class planning root.
+
+#### Build
 
 - `internal/project`
 - project discovery and resolution
@@ -621,7 +768,7 @@ Not required in Planning Phase 2:
 - `ultraplan project list`
 - `ultraplan project <project> status`
 
-**Acceptance:**
+#### Acceptance
 
 - Project commands do not depend on study internals.
 - Project index remains a catalog, not a sprint plan.
@@ -629,9 +776,15 @@ Not required in Planning Phase 2:
 
 ### Sprint 17: Sprint Artifact Domain and Flow State
 
-**Goal:** model planning-stage sprint artifacts and durable stage state.
+> Slug: 17-artifact-domain-and-flow-state
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+model planning-stage sprint artifacts and durable stage state.
+
+#### Build
 
 - `internal/sprint`
 - sprint discovery and resolution
@@ -652,7 +805,7 @@ execute
 - strict flow-state loading
 - `ultraplan sprint <project> <sprint> status`
 
-**Acceptance:**
+#### Acceptance
 
 - Existing artifacts can be inspected and reflected in flow state.
 - Missing, ready, complete, failed, and skipped states are explicit.
@@ -660,9 +813,15 @@ execute
 
 ### Sprint 18: Select Stage
 
-**Goal:** create and validate `sprint-index.md` as the authoritative context selection.
+> Slug: 18-select-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+create and validate `sprint-index.md` as the authoritative context selection.
+
+#### Build
 
 - `ultraplan sprint <project> <sprint> validate sprint-index`
 - `ultraplan sprint <project> <sprint> prompt sprint-index`
@@ -670,7 +829,7 @@ execute
 - subset validation against `project-index.md`
 - selected contracts, evidence reports, reasoning templates, and review protocols
 
-**Acceptance:**
+#### Acceptance
 
 - `sprint-index.md` cannot reference contracts, evidence, templates, or protocols absent from `project-index.md`.
 - Excluded context is explicit.
@@ -678,16 +837,22 @@ execute
 
 ### Sprint 19: Distill Stage
 
-**Goal:** produce `technical-handbook.md` from selected evidence only.
+> Slug: 19-distill-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+produce `technical-handbook.md` from selected evidence only.
+
+#### Build
 
 - technical handbook prompt rendering
 - selected evidence loading
 - handbook validation
 - flow execution through `technical-handbook`
 
-**Acceptance:**
+#### Acceptance
 
 - Handbook content traces to selected studies/reports.
 - It captures relevant patterns, trade-offs, anti-patterns, open questions, and evidence pointers.
@@ -695,16 +860,22 @@ execute
 
 ### Sprint 20: Reason Stage
 
-**Goal:** produce optional area reasoning and final `reasoning.md`.
+> Slug: 20-reason-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+produce optional area reasoning and final `reasoning.md`.
+
+#### Build
 
 - selected reasoning-template detection
 - `reasoning/*.md` generation and validation when selected
 - `reasoning.md` generation and validation
 - flow execution through `reasoning`
 
-**Acceptance:**
+#### Acceptance
 
 - Area reasoning is skipped only when no templates are selected.
 - Final reasoning includes decisions, expected evidence, assumptions, and risks.
@@ -712,16 +883,22 @@ execute
 
 ### Sprint 21: Plan Stage
 
-**Goal:** produce `plan.md` from validated reasoning.
+> Slug: 21-plan-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+produce `plan.md` from validated reasoning.
+
+#### Build
 
 - plan prompt rendering
 - plan validation
 - task/evidence checklist validation
 - flow execution through `plan`
 
-**Acceptance:**
+#### Acceptance
 
 - `plan.md` cites `reasoning.md`.
 - Tasks map to decisions and acceptance evidence.
@@ -730,9 +907,15 @@ execute
 
 ### Sprint 22: Planning Documentation and Release Gate
 
-**Goal:** document and verify the planning-side release through `plan.md`.
+> Slug: 22-documentaiton-and-release
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+document and verify the planning-side release through `plan.md`.
+
+#### Build
 
 - CLI reference for `project` and planning-stage `sprint` commands
 - recovery docs for failed planning stages
@@ -740,7 +923,7 @@ execute
 - offline fixture tests
 - gated real-runtime planning smoke, if environment is available
 
-**Release gate:**
+#### Release Gate
 
 ```bash
 go test ./...
@@ -749,13 +932,17 @@ go build ./cmd/ultraplan
 
 plus gated planning-runtime smoke when environment is available.
 
-**Status:** completed in `sprints/22-documentaiton-and-release/plan.md`.
-
 ### Sprint 23: Execute Stage
 
-**Goal:** execute validated `plan.md` implementation tasks through the generic runtime boundary with durable task state, safe target-repository boundaries, resumability, and clear diagnostics.
+> Slug: 23-execute-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+execute validated `plan.md` implementation tasks through the generic runtime boundary with durable task state, safe target-repository boundaries, resumability, and clear diagnostics.
+
+#### Build
 
 - global and per-stage runtime model selection for sprint flow and execute
 - execute prompt rendering
@@ -765,7 +952,7 @@ plus gated planning-runtime smoke when environment is available.
 - flow execution through `execute`
 - sprint status updates that show execute progress
 
-**Acceptance:**
+#### Acceptance
 
 - `execute` requires valid prerequisites through `plan`.
 - Runtime model selection supports a global/default model and stage-specific overrides for planning stages and execute; stage-specific values win over the global/default value.
@@ -814,11 +1001,18 @@ Not required for TUI sprints:
 - Git mutation
 - smoke/review automation
 
+## TUI Implementation Wave — Local Terminal UI
 ### Sprint 24: TUI Foundation and Read-Only Dashboard
 
-**Goal:** add a read-only TUI that helps users inspect the workspace without changing artifacts or invoking runtimes.
+> Slug: 24-tui-foundations
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+add a read-only TUI that helps users inspect the workspace without changing artifacts or invoking runtimes.
+
+#### Build
 
 - `ultraplan tui`
 - `internal/tui` package, deterministic model/update/render foundation, Bubble Tea event loop, and contained Markdown preview rendering
@@ -834,7 +1028,7 @@ Not required for TUI sprints:
 
 **Dependency note:** Sprint 24 introduces Bubble Tea because `ultraplan tui` is a real interactive terminal command, not a text dump. It also introduces Glamour for terminal Markdown rendering. Both dependencies remain contained inside `internal/tui`; `internal/app` and product packages continue to exchange plain Go result types.
 
-**Acceptance:**
+#### Acceptance
 
 - TUI does not call CLI command handlers or parse stdout.
 - TUI can start from inside a workspace or with `--workspace`.
@@ -847,9 +1041,15 @@ Not required for TUI sprints:
 
 ### Sprint 25: Operational TUI Controls
 
-**Goal:** allow guarded local operation of validation, dry-run, prompt preview, planning flow, execute status, and study run-loop monitoring from the TUI.
+> Slug: 25-operational-tui-controls
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+allow guarded local operation of validation, dry-run, prompt preview, planning flow, execute status, and study run-loop monitoring from the TUI.
+
+#### Build
 
 - guarded action dialogs for mutating or runtime-backed operations
 - project/study/sprint validation actions
@@ -861,7 +1061,7 @@ Not required for TUI sprints:
 - cancellation handling and post-cancel state refresh
 - error detail panes with classified error codes and guidance
 
-**Acceptance:**
+#### Acceptance
 
 - Mutating/runtime actions require explicit confirmation after showing affected workspace paths and stage/task scope.
 - Running workflows update from typed progress/events, not terminal text scraping.
@@ -924,11 +1124,18 @@ Still deferred:
 - hosted review services, browser UI, and multi-user collaboration
 - cross-project or cross-sprint verification scheduling
 
+## Product Phase 3 Wave — Review And Deep Smoke
 ### Sprint 26: Automated Sprint Review
 
-**Goal:** replace the manual sprint review with a product-owned, evidence-grounded review stage that writes the current `review.md` and is fully operable from the TUI.
+> Slug: 26-review-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+replace the manual sprint review with a product-owned, evidence-grounded review stage that writes the current `review.md` and is fully operable from the TUI.
+
+#### Build
 
 - Phase 3 domain additions in `internal/sprint` for review scope, reviewer tasks, findings, verdicts, validation, and flow integration
 - dynamic selected-contract and selected-review-protocol resolution through `project-index.md`
@@ -945,7 +1152,7 @@ Still deferred:
 - text and stable JSON output
 - TUI review readiness/status, dry-run and prompt preview, confirmation, live reviewer progress, cancellation, result display, finding navigation, and `review.md` preview
 
-**Acceptance:**
+#### Acceptance
 
 - Review requires valid prerequisites through `execute`, unless an explicit review-only diagnostic mode is later approved.
 - Every selected contract resolves from the project catalog; missing, duplicate, unknown, or escaping paths fail preflight.
@@ -960,9 +1167,15 @@ Still deferred:
 
 ### Sprint 27: Deep Smoke Harness Integration
 
-**Goal:** run the narrowest sufficient real-system smoke after review, keep raw evidence in the external harness, write the current sprint `smoke.md`, and expose the full operation through the TUI.
+> Slug: 27-deep-smoke
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+run the narrowest sufficient real-system smoke after review, keep raw evidence in the external harness, write the current sprint `smoke.md`, and expose the full operation through the TUI.
+
+#### Build
 
 - a versioned smoke-harness manifest in `ultraplan-go-smoke` describing its entrypoint, supported discovery/run commands, evidence directories, and protocol version
 - project-index discovery of the harness and its manifest
@@ -978,7 +1191,7 @@ Still deferred:
 - text and stable JSON output
 - TUI smoke readiness/status, scope selection, prerequisite display, cost/duration class, confirmation, live suite/test progress, cancellation, result display, issue summary, and `smoke.md` preview
 
-**Acceptance:**
+#### Acceptance
 
 - Smoke runs after a passing or non-blocking review by default; an explicit force flag is required to investigate after a failed review.
 - Harness commands and models are discovered or explicitly configured; no developer-specific absolute command is built into the protocol.
@@ -992,9 +1205,15 @@ Still deferred:
 
 ### Sprint 28: Integrated Review-to-Smoke Verification Flow
 
-**Goal:** make `execute -> review -> smoke` a coherent resumable flow with stale-result detection, focused reruns, clear recovery, and a complete TUI workflow.
+> Slug: 28-review-to-smoke-flow
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+make `execute -> review -> smoke` a coherent resumable flow with stale-result detection, focused reruns, clear recovery, and a complete TUI workflow.
+
+#### Build
 
 - flow ordering and prerequisite enforcement through smoke
 - input fingerprints in flow state for review and smoke freshness
@@ -1005,7 +1224,7 @@ Still deferred:
 - recovery for interruption, stale inputs, malformed artifacts, missing harness evidence, and externally edited review/smoke summaries
 - TUI end-to-end verification action from execute status through review and smoke, with gate explanations, focused rerun controls, linked raw evidence, current overall assessment, and recovery guidance
 
-**Acceptance:**
+#### Acceptance
 
 - `flow --to smoke` and `verify` always apply review before smoke unless the user explicitly selects a diagnostic override.
 - A governed-input or implementation change marks prior review and smoke evidence stale.
@@ -1018,9 +1237,15 @@ Still deferred:
 
 ### Sprint 29: Phase 3 Documentation, Hardening, and Release
 
-**Goal:** stabilize review and smoke as supported CLI and TUI workflows, migrate away from manual artifacts, dogfood the phase, and pass the release gate.
+> Slug: 29-phase-3-documentation-hardening-release
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+stabilize review and smoke as supported CLI and TUI workflows, migrate away from manual artifacts, dogfood the phase, and pass the release gate.
+
+#### Build
 
 - CLI reference, user guide, TUI guide, recovery guide, configuration reference, smoke-harness guide, migration guide, and release checklist updates
 - stable JSON schema documentation for review, smoke, verify, and status
@@ -1031,7 +1256,7 @@ Still deferred:
 - gated real-runtime test of the review stage and gated real smoke-harness test
 - final TUI Phase 3 polish: review/smoke dashboard summaries, evidence links, responsive progress, error and recovery panes, narrow-terminal behavior, keyboard help, and documentation
 
-**Release gate:**
+#### Release Gate
 
 ```bash
 go test ./...
@@ -1095,9 +1320,15 @@ Still deferred:
 
 ### Sprint 30: Local Web Foundation and Read-Only Dashboard
 
-**Goal:** add `ultraplan serve` and a loopback-only, read-only browser dashboard using Go HTTP/templates over existing app use cases.
+> Slug: 30-web-foundations
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+add `ultraplan serve` and a loopback-only, read-only browser dashboard using Go HTTP/templates over existing app use cases.
+
+#### Build
 
 - refactor TUI/interface runner construction from package-global registration to explicit composition in `cmd/ultraplan`
 - `ultraplan serve` with explicit loopback listen address, optional browser opening, signal-aware graceful shutdown, and bounded HTTP timeouts
@@ -1109,7 +1340,7 @@ Still deferred:
 - same-origin, Host/Origin, path-containment, redaction, request-limit, and security-header foundation
 - CLI help, local-web user documentation, architecture reasoning, and API design documentation
 
-**Acceptance:**
+#### Acceptance
 
 - `ultraplan serve` starts from a workspace or with `--workspace`, listens only on loopback, and shuts down cleanly on context cancellation or signal.
 - A browser can inspect the same workspace, project, sprint, study, validation, and artifact state exposed by shared app use cases.
@@ -1121,9 +1352,15 @@ Still deferred:
 
 ### Sprint 31: Guarded Web Operations and SSE Progress
 
-**Goal:** expose the existing guarded local operations through HTTP and stream truthful live progress to the browser without introducing another workflow engine.
+> Slug: 31-web-operations
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+expose the existing guarded local operations through HTTP and stream truthful live progress to the browser without introducing another workflow engine.
+
+#### Build
 
 - browser validation, prompt-preview, dry-run, flow, execute, review, smoke, verify, study run-loop, and cancellation actions as supported by current app use cases
 - `POST /api/v1/operations/prepare` returning scope, paths, runtime/model information, mutation class, input fingerprint, expiry, and a bound confirmation token
@@ -1134,7 +1371,7 @@ Still deferred:
 - product-owned per-sprint mutation locking plus conflict diagnostics; existing study locking remains authoritative
 - structured conflict, stale-confirmation, cancellation, validation, runtime, and internal error responses
 
-**Acceptance:**
+#### Acceptance
 
 - Mutating or runtime-backed work cannot start without a valid current server-issued confirmation matching the normalized request.
 - Commands use HTTP POST/DELETE; SSE carries progress only.
@@ -1169,9 +1406,15 @@ The integrated product roadmap and this workspace roadmap use different phase nu
 
 ### Sprint 32: Local Web Hardening and Observable-Product Release
 
-**Goal:** turn the Sprint 30–31 browser implementation into a supported local interface and prove that the application boundary is ready to accept new stages.
+> Slug: 32-hardening-and-release
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+turn the Sprint 30–31 browser implementation into a supported local interface and prove that the application boundary is ready to accept new stages.
+
+#### Build
 
 - stabilize `/api/v1` JSON responses and typed error envelopes, with documentation and compatibility fixtures
 - complete local-web user, configuration, packaging, security, recovery, and troubleshooting documentation
@@ -1187,7 +1430,7 @@ The integrated product roadmap and this workspace roadmap use different phase nu
 - release packaging and checks confirming templates/static assets are embedded in the single Go binary
 - an interface capability test proving that stage status, artifacts, commands, progress, cancellation, and recovery are exposed through shared application abstractions rather than route-specific workflow logic
 
-**Release gate:**
+#### Release Gate
 
 ```bash
 go test ./...
@@ -1262,11 +1505,18 @@ Required for the grounded-planning track:
 - Runtime success alone is insufficient: the artifact must exist and pass structural validation before the stage completes.
 - No repository index, RAG system, cache subsystem, cache key, provider-specific cache dependency, automatic staleness system, or amendment workflow enters this phase.
 
+## Grounded-Planning Wave — Code Context
 ### Sprint 33: Code-Context Stage Vertical Slice
 
-**Goal:** make `code-context` a fully operational stage capable of inspecting the implementation repository and producing a validated source-context pack.
+> Slug: 33-code-context-stage
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+make `code-context` a fully operational stage capable of inspecting the implementation repository and producing a validated source-context pack.
+
+#### Build
 
 - add `StageCodeContext` immediately after `StageRequirements` in every canonical ordered stage list
 - add artifact-path, readiness, prerequisite, status, cumulative-flow, and flow-state support
@@ -1281,7 +1531,7 @@ Required for the grounded-planning track:
 - surface readiness, progress, validation findings, artifact preview, explicit rerun, cancellation, and recovery through the existing web operation model
 - add focused stage-order, runtime, state, compatibility, CLI, application, web, defaults, and validation tests
 
-**Acceptance:**
+#### Acceptance
 
 - completed valid requirements make `code-context` ready, and a valid context pack makes `sprint-index` ready
 - a fake runtime or gated real runtime can inspect the source repository and produce a valid `code-context.md`
@@ -1294,9 +1544,15 @@ This sprint is useful independently of downstream prompt reuse: users can explic
 
 ### Sprint 34: Shared Context Integration and Grounded-Planning Release
 
-**Goal:** reuse the stored requirements and code-context pack unchanged across every downstream agent operation.
+> Slug: 34-shared-context
+> Status: delivered
+> Depends On:
 
-**Build:**
+#### Goal
+
+reuse the stored requirements and code-context pack unchanged across every downstream agent operation.
+
+#### Build
 
 - add one shared sprint-context renderer
 - compose downstream prompts in this order:
@@ -1320,7 +1576,7 @@ stage-specific instructions
 - dogfood the stage in a temporary representative workspace against a real implementation repository and a gated runtime
 - verify prompt reuse, cancellation, rerun, atomic artifact replacement, and browser recovery end to end
 
-**Release gate:**
+#### Release Gate
 
 - every relevant downstream agent prompt contains the exact stored requirements and context pack
 - the common prefix remains byte-for-byte stable until stage-specific instructions begin
@@ -1368,11 +1624,18 @@ SSE connection                             = transient delivery, never run autho
 
 This is not the later product-persistence decision in Gate C. Sprint 35 may persist operational run records using the smallest mechanism proven by reasoning, but it must not move Markdown, flow outcomes, Git/source state, or smoke evidence into a new canonical store.
 
-## Sprint 35: Durable Run Identity And Cross-Surface Observability
+## Product Phase 5 Wave — Durable Run Identity
+### Sprint 35: Durable Run Identity And Cross-Surface Observability
 
-**Goal:** Make every accepted runtime-backed execution discoverable, inspectable, replayable, cancellable when authorized, and conservatively recoverable from every supported local surface and server instance attached to the workspace.
+> Slug: 35-durable-run-observability
+> Status: active
+> Depends On:
 
-**Build:**
+#### Goal
+
+Make every accepted runtime-backed execution discoverable, inspectable, replayable, cancellable when authorized, and conservatively recoverable from every supported local surface and server instance attached to the workspace.
+
+#### Build
 
 - introduce a stable workspace-scoped run identity before child execution starts
 - record run acceptance, attempts, stage/task correlation, ownership/liveness, sanitized ordered events, and one arbitrated terminal result durably
@@ -1385,7 +1648,7 @@ This is not the later product-persistence decision in Gate C. Sprint 35 may pers
 - preserve compatibility or actionable migration for current operation URLs, locks, flow state, execute state, and runtime checkpoints
 - prove the model with multi-process/server, restart, expiry, crash, PID-reuse, race, slow-subscriber, storage-failure, and retention tests
 
-**Release gate:**
+#### Release Gate
 
 - two CLI-started runs appear as two active runs in the browser without visiting their owning pages
 - a supported second local server can inspect a current run, replay retained history, and receive subsequently committed events
@@ -1439,9 +1702,18 @@ durable workspace-wide execution observation
 -> explicit authority choice, cloud, and Aren integration
 ```
 
-## Sprint 36: Read-Only QA Decomposition And Synthesis
+## Product Phase 5 Wave — Read-Only QA
+### Sprint 36: Read-Only QA Decomposition And Synthesis
 
-**Goal:** Establish safe, observable empirical verification without generated checks, issue promotion, or production mutation.
+> Slug: 36-read-only-qa
+> Status: active
+> Depends On:
+
+#### Goal
+
+Establish safe, observable empirical verification without generated checks, issue promotion, or production mutation.
+
+#### Build
 
 - Keep `review` and `review.md` compatibility while presenting the capability as Conformance Review.
 - Introduce `VerificationPhase` separately from `PlanningStage`.
@@ -1454,11 +1726,21 @@ durable workspace-wide execution observation
 
 QA state may use deterministic schema-versioned identifiers scoped to verification. Those identifiers remain explicitly migratable and are not the final workspace-wide content identity model.
 
-**Exit gate:** unchanged inputs reproduce the same map; every changed path has a bounded primary surface; investigation state is durable and cross-surface visible; no investigator can mutate production or verification code.
+#### Exit Gate
 
-## Sprint 37: Evidence-Producing QA And Smoke Integration
+unchanged inputs reproduce the same map; every changed path has a bounded primary surface; investigation state is durable and cross-surface visible; no investigator can mutate production or verification code.
 
-**Goal:** Move safely from theory to discriminating empirical evidence.
+### Sprint 37: Evidence-Producing QA And Smoke Integration
+
+> Slug: 37-evidence-qa-smoke
+> Status: planned
+> Depends On:
+
+#### Goal
+
+Move safely from theory to discriminating empirical evidence.
+
+#### Build
 
 - Create one validated isolated workspace per writable shard attempt.
 - Permit targeted tests, fixtures, probes, smoke scenarios, and bounded experiments only inside proven isolation.
@@ -1467,11 +1749,21 @@ QA state may use deterministic schema-versioned identifiers scoped to verificati
 - Add canonical `qa.md` plus detailed versioned verification state outside `flow-state.json`.
 - Wrap the existing smoke protocol as a QA suite/executor while preserving `smoke`, `smoke.md`, external evidence, containment, timeout, cancellation, cleanup, diagnostic-only, and canonical-versus-narrow guarantees.
 
-**Exit gate:** evidence-backed issues are distinct from suspicions and failed setups; stale, malformed, flaky, diagnostic, narrow, or uncontained evidence cannot pass; smoke parity is proven before compatibility is retired.
+#### Exit Gate
 
-## Sprint 38: Manual Repair And Bounded Automatic Repair
+evidence-backed issues are distinct from suspicions and failed setups; stale, malformed, flaky, diagnostic, narrow, or uncontained evidence cannot pass; smoke parity is proven before compatibility is retired.
 
-**Goal:** Repair only adjudicated bounded issues and make non-convergence explicit.
+### Sprint 38: Manual Repair And Bounded Automatic Repair
+
+> Slug: 38-bounded-repair
+> Status: planned
+> Depends On:
+
+#### Goal
+
+Repair only adjudicated bounded issues and make non-convergence explicit.
+
+#### Build
 
 - Begin with one confirmed issue and a frozen issue packet containing evidence, violated expectations, allowed paths, acceptance criteria, exact reproducer, and containing checks.
 - Require explicit confirmation before production mutation.
@@ -1481,15 +1773,28 @@ QA state may use deterministic schema-versioned identifiers scoped to verificati
 - Bound cycles, reopenings, scope growth, severity growth, uncertainty, target drift, and cleanup failure.
 - Expose `verified`, `verified_with_findings`, `failed`, `blocked`, `escalated`, and `stalled` distinctly.
 
-**Exit gate:** one real issue is repaired and reverified end to end; automatic repair is resumable and demonstrably bounded; a pass cannot be manufactured by weakening its evidence.
+#### Exit Gate
 
-## Sprint 39: QA And Repair Dogfooding And Hardening
+one real issue is repaired and reverified end to end; automatic repair is resumable and demonstrably bounded; a pass cannot be manufactured by weakening its evidence.
 
-**Goal:** Prove QA evidence quality and repair convergence before designing the global content contract.
+### Sprint 39: QA And Repair Dogfooding And Hardening
 
-Dogfood representative multi-package, boundary, concurrency, cancellation, persistence, recovery, invalid-setup, cross-shard, repair, restart, and cleanup-uncertain cases. Measure shard quality, false-positive and inconclusive rates, evidence validity, isolation reliability, investigation cost, repair convergence, browser usability, and recovery behavior.
+> Slug: 39-qa-repair-dogfooding
+> Status: planned
+> Depends On:
 
-**Exit gate:** read-only and writable boundaries are reliable; adjudication consistently rejects invalid evidence; manual repair succeeds on real work; automatic repair either demonstrates bounded convergence or remains disabled; real QA artifacts exist to inform content identity and provenance.
+#### Goal
+
+Prove QA evidence quality and repair convergence before designing the global content contract.
+
+#### Build
+
+- Dogfood representative multi-package, boundary, concurrency, cancellation, persistence, recovery, invalid-setup, cross-shard, repair, restart, and cleanup-uncertain cases.
+- Measure shard quality, false-positive and inconclusive rates, evidence validity, isolation reliability, investigation cost, repair convergence, browser usability, and recovery behavior.
+
+#### Exit Gate
+
+read-only and writable boundaries are reliable; adjudication consistently rejects invalid evidence; manual repair succeeds on real work; automatic repair either demonstrates bounded convergence or remains disabled; real QA artifacts exist to inform content identity and provenance.
 
 # Gated Direction After Sprint 39
 
@@ -1649,3 +1954,4 @@ Before Product Phase 5 release:
 - [ ] Evidence validity, isolation reliability, false-positive/inconclusive rates, and repair convergence are measured.
 - [ ] Automatic repair either demonstrates bounded convergence or remains disabled.
 - [ ] Representative QA artifacts exist to inform the later content identity and provenance contract.
+
