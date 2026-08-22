@@ -1,168 +1,150 @@
 # Source Analysis: agent-framework
 
-## Package and Module Boundaries
+## Dimension 22.01 — Package and Module Boundaries
 
 ### Source Info
 
 | Field | Value |
 |-------|-------|
-| Name | agent-framework |
+| Name | agent-framework (Microsoft Agent Framework) |
 | Path | `studies/agent-harness-study/sources/agent-framework` |
-| Language / Stack | Python (3.10+) and .NET (multi-TFM), Microsoft Agent Framework |
+| Language / Stack | Multi-language monorepo: C#/.NET (`dotnet/`, 36 projects) and Python (`python/`, 31 uv-workspace packages) |
 | Analyzed | 2026-08-21 |
 
 ## Summary
 
-The repository is a dual-language implementation of the Microsoft Agent Framework: a Python monorepo (`python/packages/*`) and a .NET solution (`dotnet/src/Microsoft.Agents.AI.*`). Both languages separate concerns into distinct packages/projects at the distribution level, but Python keeps everything inside a single `agent_framework` package namespace plus optional provider namespaces, while .NET splits each integration into its own NuGet assembly. The .NET side has a dedicated `Abstractions` assembly that referenced by every other project and contains only interfaces/abstract types — the cleanest layering in the codebase. The Python side uses private-by-convention modules (leading underscore names like `_agents.py`, `_clients.py`, `_workflows/`, `_harness/`) and a carefully curated `__all__` re-export in `__init__.py`, with lazy `__getattr__` namespaces for optional providers (e.g. `azure/`, `openai/`, `foundry/`) so a user can install `agent-framework-core` alone and pull providers only when needed. Dependency direction is mostly one-way: `core` has no deps on providers, providers depend on `core`, and cross-cutting features (e.g. evaluation, workflow inside evaluation) use late imports to avoid cycles. A few "most things import everything" Coupling hotspots exist inside Python's core package because all the call-graph heavyweight modules live in one wheel.
+Microsoft Agent Framework is a two-stack monorepo (`.NET` + `Python`) with an unusually disciplined package-boundary story. Both stacks converge on the same layered model:
+
+- **Abstractions/core at the bottom with near-zero dependencies.** `Microsoft.Agents.AI.Abstractions` references only `Microsoft.Extensions.AI.Abstractions` (`dotnet/src/Microsoft.Agents.AI.Abstractions/Microsoft.Agents.AI.Abstractions.csproj:33`); Python `agent-framework-core` depends only on `typing-extensions`, `pydantic`, `python-dotenv`, and `opentelemetry-api` (`python/packages/core/pyproject.toml:25-30`).
+- **Implementations in the middle.** `Microsoft.Agents.AI` → Abstractions; provider connectors (OpenAI, Anthropic, Foundry, MCP, …) → `Microsoft.Agents.AI`; Workflows sits alongside as a separate assembly. The dependency graph was extracted from all 36 `.csproj` files and verified cycle-free by DFS (see Evidence).
+- **Hosting/UI on top.** `Microsoft.Agents.AI.Hosting*` → Hosting → Workflows+AI; DevUI packages sit above Hosting.
+- **Everything ships as independently versioned packages**, coordinated by central package management on .NET (`dotnet/Directory.Packages.props:4-5`) and a uv workspace on Python (`python/pyproject.toml`, `[tool.uv.workspace] members = ["packages/*"]`), with a meta-package (`agent-framework`, `agent-framework-core[all]`) for users who want the world.
+
+The boundary model is not just convention: it is documented in an accepted ADR (`docs/decisions/0008-python-subpackages.md`), enforced by a dedicated dependency-bounds validation tool that runs each package's test+typecheck suites at both lowest and highest allowed resolutions in isolated environments (`python/scripts/dependencies/validate_dependency_bounds.py:243-244`), guarded by lazy-loading facades so import paths stay stable while code moves between packages (`python/packages/core/agent_framework/azure/__init__.py:11-33`), and tested — there are dedicated tests asserting the facade re-exports are identical to the real package objects (`python/packages/core/tests/core/test_azure_namespace.py:7-9`).
+
+Weaknesses are specific rather than structural: one production `InternalsVisibleTo` across assemblies (Workflows → DurableTask), cross-package imports of *private* Python modules (foundry reaching into `agent_framework_openai._chat_client`), compile-time source sharing via `dotnet/src/Shared` that bypasses package boundaries, and a pinned pre-release cross-dependency in devui's dev extra.
 
 ## Rating
 
-**8 / 10** — Clear, durable model with explicit public/internal separation, lazy loading, and tests that enforce optional-dependency boundaries. Two soft spots keep it from a 9: (a) the Python core package ships a single wheel that re-exports everything from one `__init__.py`, so you cannot install just the runtime sub-tree without the harness/workflow/evaluation modules; (b) one runtime circular import is broken by a late import in `_tools.py` (`_tools.py:1947`), which is a smell even though it is wrapped in a function-local import.
+**8 / 10** — Clear model with explicit interfaces, operational safeguards, and separation tests.
+
+Rationale against the rubric:
+- **Clear model**: layering is uniform across both stacks and codified in ADR 0008 (`docs/decisions/0008-python-subpackages.md:70-84`); packaging defaults are deny-by-default on .NET (`<IsPackable>false</IsPackable>` in `dotnet/Directory.Build.props`).
+- **Explicit interfaces**: public API surface is declared (`__all__` at `python/packages/core/agent_framework/__init__.py:342`; `Abstractions` package on .NET); experimental APIs carry machine-readable stage markers (`[Experimental("MAAI001")]` at `dotnet/src/Microsoft.Agents.AI.Abstractions/AIContextProvider.cs:381`; `ExperimentalFeature` enum at `python/packages/core/agent_framework/_feature_stage.py:55-70`).
+- **Tests/safeguards**: cycle-free graph verified by this analysis; dependency-bound gates run full test suites per package at lower/upper resolutions (`python/scripts/dependencies/validate_dependency_bounds.py:213-287`); lazy facades have dedicated unit tests.
+- Not 9–10 because: private-module imports leak across package boundaries on the Python side, the .NET `Shared` source-injection mechanism creates invisible compile-time coupling between packages, and one production-grade `InternalsVisibleTo` weakens the Workflows/DurableTask seam.
 
 ## Evidence Collected
 
-Every entry includes a file path with line numbers. Format: `path/to/file.py:NN`.
-
 | Area | Evidence | File:Line |
 |------|----------|-----------|
-| Top-level package layout | Python monorepo with 31 packages under `python/packages/` | `python/packages/` (ls) |
-| Top-level package layout | .NET solution with 36 project folders under `dotnet/src/` | `dotnet/src/` (ls) |
-| Single Python core package | All core abstractions, workflows, harness, MCP, skills, evaluation live under one `agent_framework` directory | `python/packages/core/agent_framework/` (ls) |
-| Two-language split | README and Python AGENTS.md describe "agent-framework-core" + providers | `python/AGENTS.md:50-72` |
-| Two-language split | Both languages maintain their own AGENTS.md, skills, test layout | `python/AGENTS.md:1-10`, `dotnet/AGENTS.md:1-30` |
-| Core package only depends on foundation libs | `dependencies` list is 4 entries: typing-extensions, pydantic, python-dotenv, opentelemetry-api | `python/packages/core/pyproject.toml:25-30` |
-| Optional-deps declared as extras, not runtime deps | All providers listed under `[project.optional-dependencies].all` | `python/packages/core/pyproject.toml:32-59` |
-| Core cannot list `tools` as runtime dep (avoids cycle) | `[dependency-groups].dev` carries it for type-check only with explanatory comment | `python/packages/core/pyproject.toml:61-67` |
-| Provider packages depend on core only | e.g. `agent-framework-anthropic` declares `agent-framework-core>=1.9.0,<2` | `python/packages/anthropic/pyproject.toml:25-28` |
-| Provider packages depend on core only | `agent-framework-orchestrations` depends solely on core | `python/packages/orchestrations/pyproject.toml:25-27` |
-| Provider packages depend on core only | `agent-framework-tools` depends on core + psutil (no transitive cycle) | `python/packages/tools/pyproject.toml:24-31` |
-| Lazy provider namespace | `azure/__init__.py` uses `_IMPORTS` table + `__getattr__` + `__dir__` | `python/packages/core/agent_framework/azure/__init__.py:11-41` |
-| Lazy provider namespace | `openai/__init__.py` uses the same pattern | `python/packages/core/agent_framework/openai/__init__.py:17-47` |
-| Lazy provider namespace | `foundry/__init__.py` lazy-loads from 4 packages via single dict | `python/packages/core/agent_framework/foundry/__init__.py:15-59` |
-| Type stubs for lazy namespaces | `azure/__init__.pyi` declares re-exports for static type checkers | `python/packages/core/agent_framework/azure/__init__.pyi:1-36` |
-| Internal modules use single underscore prefix | `_agents.py`, `_clients.py`, `_types.py`, `_tools.py`, `_middleware.py`, `_sessions.py`, `_mcp.py`, `_skills.py`, `_compaction.py`, `_evaluation.py`, `_harness/`, `_workflows/`, `security.py`, `observability.py`, `_serialization.py`, `_settings.py`, `_telemetry.py`, `_feature_stage.py`, `_docstrings.py`, `exceptions.py` | `python/packages/core/agent_framework/` (ls) |
-| Public API defined in `__init__.py` | `from ._agents import Agent, BaseAgent, RawAgent, SupportsAgentRun` | `python/packages/core/agent_framework/__init__.py:20` |
-| Public API defined in `__init__.py` | `__all__` lists 277 names | `python/packages/core/agent_framework/__init__.py:342-618` |
-| Harness module is part of public API | `from ._harness._agent import DEFAULT_HARNESS_INSTRUCTIONS, create_harness_agent` and 8 other harness imports | `python/packages/core/agent_framework/__init__.py:85-147` |
-| Workflows re-exported from public API | 20 imports from `._workflows.*` | `python/packages/core/agent_framework/__init__.py:258-331` |
-| `py.typed` marker present | Empty `py.typed` file marks the package as typed | `python/packages/core/agent_framework/py.typed` |
-| `_harness` is a sibling of `_workflows`, both hidden | `_harness/__init__.py` is empty (0 bytes) | `python/packages/core/agent_framework/_harness/__init__.py` |
-| `_workflows` package namespace | `_workflows/__init__.py` is empty, container only | `python/packages/core/agent_framework/_workflows/__init__.py` |
-| Workflows do not import from `_harness` | `_workflows` only references its own submodules and core (`_agents.py`, `_clients.py`, `_types.py`, `_middleware.py`, `_serialization.py`) | `python/packages/core/agent_framework/_workflows/` (grep) |
-| Harness does not import from `_workflows` | `_harness/_agent.py` imports `.._agents`, `.._clients`, `.._compaction`, `.._feature_stage`, `.._sessions`, `.._skills` only | `python/packages/core/agent_framework/_harness/_agent.py:18-29` |
-| Evaluation uses late imports to avoid cycle | `from ._workflows._agent_executor import AgentExecutorResponse` is inside `TYPE_CHECKING`/function block | `python/packages/core/agent_framework/_evaluation.py:62-63, 950-951, 1900` |
-| One runtime late import in `_tools.py` | `from ._harness._tool_approval import ToolApprovalState` inside `_get_tool_approval_state` | `python/packages/core/agent_framework/_tools.py:1947` |
-| `_harness` modules import upward to core only | e.g. `_tool_approval.py:12-16` imports `_feature_stage`, `_middleware`, `_serialization`, `_sessions`, `_types` | `python/packages/core/agent_framework/_harness/_tool_approval.py:12-16` |
-| `_harness/_memory.py` imports core abstractions only | `.._clients`, `.._compaction`, `.._feature_stage`, `.._sessions`, `.._tools`, `.._types`, `..exceptions` | `python/packages/core/agent_framework/_harness/_memory.py:21-28` |
-| Separation test for optional deps | `test_optional_dependencies.py` hides `opentelemetry.sdk` and `mcp` via monkey-patched `__import__` | `python/packages/core/tests/core/test_optional_dependencies.py:14-181` |
-| Separation test for lazy loader | `test_azure_namespace.py` asserts `azure.CosmosHistoryProvider is CosmosHistoryProvider` | `python/packages/core/tests/core/test_azure_namespace.py:8-10` |
-| Separation test for lazy loader | `test_foundry_namespace.py` (1 KB) sanity-checks `foundry` namespace | `python/packages/core/tests/core/test_foundry_namespace.py` |
-| Separation test for lazy loader | `test_hyperlight_namespace.py` sanity-checks `hyperlight` namespace | `python/packages/core/tests/core/test_hyperlight_namespace.py` |
-| Public/internal split on .NET side | `Microsoft.Agents.AI.Abstractions` is the leaf assembly: only depends on `Microsoft.Extensions.AI.Abstractions` | `dotnet/src/Microsoft.Agents.AI.Abstractions/Microsoft.Agents.AI.Abstractions.csproj:29-35` |
-| Abstractions assembly contains only types, no behavior | `AIAgent.cs`, `AgentSession.cs`, `AIContextProvider.cs`, `ChatHistoryProvider.cs`, `DelegatingAIAgent.cs`, `InMemoryChatHistoryProvider.cs`, `MessageAIContextProvider.cs` | `dotnet/src/Microsoft.Agents.AI.Abstractions/` (ls) |
-| `Microsoft.Agents.AI` (the implementation) only depends on Abstractions + MEAI | `ProjectReference` to Abstractions only; several `PackageReference` to MEAI family | `dotnet/src/Microsoft.Agents.AI/Microsoft.Agents.AI.csproj:21-33` |
-| Internal access is gated with `InternalsVisibleTo` | `Microsoft.Agents.AI.csproj` lists test/peer assemblies | `dotnet/src/Microsoft.Agents.AI/Microsoft.Agents.AI.csproj:49-55` |
-| Internal access is gated with `InternalsVisibleTo` | `Mcp` package exposes internals to `Microsoft.Agents.AI.Mcp.UnitTests` | `dotnet/src/Microsoft.Agents.AI.Mcp/Microsoft.Agents.AI.Mcp.csproj:35-37` |
-| Workflows references both Abstractions and Microsoft.Agents.AI | `ProjectReference` to both | `dotnet/src/Microsoft.Agents.AI.Workflows/Microsoft.Agents.AI.Workflows.csproj:23-26` |
-| Workflows exposes internals to DurableTask and test assemblies | `InternalsVisibleTo` | `dotnet/src/Microsoft.Agents.AI.Workflows/Microsoft.Agents.AI.Workflows.csproj:28-32` |
-| Provider packages depend on Abstractions only (no runtime) | `A2A` references only `Microsoft.Agents.AI.Abstractions` | `dotnet/src/Microsoft.Agents.AI.A2A/Microsoft.Agents.AI.A2A.csproj:27` |
-| Provider packages depend on Abstractions only | `CopilotStudio` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.CopilotStudio/Microsoft.Agents.AI.CopilotStudio.csproj:15` |
-| Provider packages depend on Abstractions only | `GitHub.Copilot` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.GitHub.Copilot/Microsoft.Agents.AI.GitHub.Copilot.csproj:18` |
-| Provider packages depend on Abstractions only | `Mcp` references only `Microsoft.Agents.AI` (implementation) | `dotnet/src/Microsoft.Agents.AI.Mcp/Microsoft.Agents.AI.Mcp.csproj:40` |
-| Provider packages depend on Abstractions only | `Hyperlight` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.Hyperlight/Microsoft.Agents.AI.Hyperlight.csproj:19` |
-| Provider packages depend on Abstractions only | `Mem0` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.Mem0/Microsoft.Agents.AI.Mem0.csproj:24` |
-| Provider packages depend on Abstractions only | `CosmosNoSql` references Abstractions + Workflows | `dotnet/src/Microsoft.Agents.AI.CosmosNoSql/Microsoft.Agents.AI.CosmosNoSql.csproj:27-28` |
-| Provider packages depend on Abstractions only | `LocalCodeAct` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.LocalCodeAct/Microsoft.Agents.AI.LocalCodeAct.csproj:19` |
-| Provider packages depend on Abstractions only | `Valkey` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.Valkey/Microsoft.Agents.AI.Valkey.csproj:28` |
-| Provider packages depend on Abstractions only | `Tools.Shell` references only Abstractions | `dotnet/src/Microsoft.Agents.AI.Tools.Shell/Microsoft.Agents.AI.Tools.Shell.csproj:37` |
-| Harness depends on Microsoft.Agents.AI (+ Tools.Shell on net8.0+) | `Microsoft.Agents.AI.Harness.csproj` | `dotnet/src/Microsoft.Agents.AI.Harness/Microsoft.Agents.AI.Harness.csproj:15-19` |
-| Hosting gives DI the building blocks | Depends on Abstractions + Workflows + Microsoft.Agents.AI | `dotnet/src/Microsoft.Agents.AI.Hosting/Microsoft.Agents.AI.Hosting.csproj:16-18` |
-| Declarative adds on top of core + workflows | `Microsoft.Agents.AI.Declarative.csproj` references Abstractions + Microsoft.Agents.AI | `dotnet/src/Microsoft.Agents.AI.Declarative/Microsoft.Agents.AI.Declarative.csproj:33-34` |
-| Workflows.Declarative adds on top of Workflows | `Microsoft.Agents.AI.Workflows.Declarative.csproj` references only Workflows | `dotnet/src/Microsoft.Agents.AI.Workflows.Declarative/Microsoft.Agents.AI.Workflows.Declarative.csproj:41` |
-| Workflows.Declarative.Foundry composes two leaf projects | References both Foundry and Workflows.Declarative | `dotnet/src/Microsoft.Agents.AI.Workflows.Declarative.Foundry/Microsoft.Agents.AI.Workflows.Declarative.Foundry.csproj:33-34` |
-| Workflows.Declarative.Mcp composes Workflows.Declarative | `Microsoft.Agents.AI.Workflows.Declarative.Mcp.csproj:34` | `dotnet/src/Microsoft.Agents.AI.Workflows.Declarative.Mcp/Microsoft.Agents.AI.Workflows.Declarative.Mcp.csproj:34` |
-| Python docs describe the layering | `Python AGENTS.md` "Package Relationships" notes lazy loading via `__getattr__` in provider folders | `python/AGENTS.md:68-72` |
-| Python docs describe the layering | `core/AGENTS.md` "Module Structure" lists each module's role | `python/packages/core/AGENTS.md:5-21` |
-| Workflows internal-API documented | `output_from` / `intermediate_output_from` allow-list for emissions | `python/AGENTS.md:132-143` (referenced in core/AGENTS.md) |
-| Feature-stage gating for experimental APIs | `ExperimentalFeature` / `experimental` decorator used in `_feature_stage.py` | `python/packages/core/agent_framework/_feature_stage.py` |
-| Package lifecycle is tracked per package | `PACKAGE_STATUS.md` enumerates lifecycle state for every package | `python/PACKAGE_STATUS.md:13-46` |
+| Top-level structure | Monorepo split: `dotnet/src` (36 projects), `python/packages` (31 packages), shared `docs/decisions`, `schemas`, per-language samples | `dotnet/src`, `python/packages` (directory listing) |
+| Python workspace | uv workspace with `members = ["packages/*"]`; all internal packages resolved via `[tool.uv.sources] workspace = true` | `python/pyproject.toml:95-96`, `python/pyproject.toml:118-152` |
+| Meta package | `agent-framework` depends solely on `agent-framework-core[all]==1.9.0` | `python/pyproject.toml:14-16` |
+| Core minimal deps | Core runtime deps limited to typing-extensions, pydantic, python-dotenv, opentelemetry-api | `python/packages/core/pyproject.toml:25-30` |
+| Core `all` extra | All provider packages enumerated as optional deps of core's `all` extra | `python/packages/core/pyproject.toml:32-59` |
+| Provider → core direction | openai/anthropic/a2a/orchestrations/etc. all declare `agent-framework-core>=X,<2` | `python/packages/openai/pyproject.toml:26`, `python/packages/anthropic/pyproject.toml:26`, `python/packages/a2a/pyproject.toml:25` |
+| Second-tier deps | foundry→core+openai; azurefunctions→core+durabletask; azure-contentunderstanding→core+foundry | `python/packages/foundry/pyproject.toml:26-27`, `python/packages/azurefunctions/pyproject.toml:25-26`, `python/packages/azure-contentunderstanding/pyproject.toml:26-27` |
+| Circular-dep avoidance | Comment explains tools→core prevents core listing it at runtime; declared as dev-only group instead | `python/packages/core/pyproject.toml:61-67` |
+| Dependency graph tooling | `_build_internal_graph` maps every package's internal `agent-framework-*` deps into a graph | `python/scripts/dependencies/_dependency_bounds_upper_impl.py:551-574` |
+| Boundary CI gate | Test mode runs `test`+`pyright` per package at `lowest-direct` and `highest` resolutions in isolated uv envs; hard-fails workspace | `python/scripts/dependencies/validate_dependency_bounds.py:243-244`, `python/scripts/dependencies/validate_dependency_bounds.py:152-210` |
+| Transitive closure install | `_resolve_internal_editables` walks graph so a package under test gets its internal deps as editables | `python/scripts/dependencies/_dependency_bounds_upper_impl.py:577-593` |
+| Public API surface | Module docstring "Public API surface"; explicit `__all__` export list | `python/packages/core/agent_framework/__init__.py:2-7`, `python/packages/core/agent_framework/__init__.py:342` |
+| Private implementation modules | Implementation in underscore modules (`_agents.py`, `_clients.py`, `_tools.py`, …) re-exported through the facade; internal cross-imports annotated `# pyright: ignore[reportPrivateUsage]` | `python/packages/core/agent_framework/` (listing), `python/packages/core/agent_framework/_agents.py:28` |
+| Lazy provider facades | `azure/__init__.py` `_IMPORTS` map + module `__getattr__` raising "package X is required… pip install X" | `python/packages/core/agent_framework/azure/__init__.py:11-33` |
+| Facade type stubs | `openai/__init__.pyi` stubs accompany the lazy re-export shim inside core | `python/packages/core/agent_framework/openai/__init__.pyi` |
+| Separation tests (Python) | Tests assert facade attribute identity with real package exports | `python/packages/core/tests/core/test_azure_namespace.py:7-9` (also `test_foundry_namespace.py`, `test_hyperlight_namespace.py`) |
+| Optional heavy deps | `mcp` imported only under TYPE_CHECKING; deferred runtime imports keep core importable without mcp | `python/packages/core/agent_framework/_mcp.py:44-49`, `python/packages/core/agent_framework/_mcp.py:301` |
+| Documented boundary policy (ADR) | Option 7 accepted: subpackages exist to keep non-GA code/deps out of main; stable import paths regardless of which package hosts code; lazy loading with meaningful errors | `docs/decisions/0008-python-subpackages.md:70-84` |
+| Feature-stage visibility | `ExperimentalFeature`/`ReleaseCandidateFeature` enums drive warnings + docstring injection for staged APIs | `python/packages/core/agent_framework/_feature_stage.py:55-70`, `python/packages/core/agent_framework/_feature_stage.py:23-38` |
+| Lab isolation | Experimental `lab` package excluded from root test sweep (`norecursedirs = '**/lab/**'`) | `python/pyproject.toml:173` |
+| .NET project graph | Full ProjectReference extraction: Abstractions×17 consumers, AI×12, Workflows×5, Hosting×5; DFS found zero cycles across 36 projects | `dotnet/src/**/*.csproj` (analysis run, see Answers Q2) |
+| Abstractions purity | Only external ref is `Microsoft.Extensions.AI.Abstractions` PackageReference | `dotnet/src/Microsoft.Agents.AI.Abstractions/Microsoft.Agents.AI.Abstractions.csproj:31-34` |
+| Central package management | `ManagePackageVersionsCentrally=true` + transitive pinning; 135 pinned versions | `dotnet/Directory.Packages.props:4-6` |
+| Packaging opt-in | `<IsPackable>false</IsPackable>` repo-wide default; release filter lists exactly the shippable projects | `dotnet/Directory.Build.props` (IsPackable block), `dotnet/agent-framework-release.slnf` (35 projects) |
+| InternalsVisibleTo policy | Grants overwhelmingly to `*.UnitTests` assemblies (e.g. Abstractions→its UnitTests) | `dotnet/src/Microsoft.Agents.AI.Abstractions/Microsoft.Agents.AI.Abstractions.csproj:34`, `dotnet/src/Microsoft.Agents.AI/Microsoft.Agents.AI.csproj:50-54` |
+| Production IVT exception | Workflows grants internals to DurableTask (non-test) | `dotnet/src/Microsoft.Agents.AI.Workflows/Microsoft.Agents.AI.Workflows.csproj:29` |
+| Shared-source injection | `dotnet/src/Shared/*` compiled into consumer assemblies via MSBuild flags (`InjectSharedThrow`, `InjectSharedWorkflowsExecution`, …) | `dotnet/eng/MSBuild/Shared.props:4-38`, e.g. `dotnet/src/Microsoft.Agents.AI.Abstractions/Microsoft.Agents.AI.Abstractions.csproj:10-19` |
+| Legacy polyfill injection | Polyfill attributes injected only for TFMs lacking them | `dotnet/eng/MSBuild/LegacySupport.props:14-15` |
+| Experimental markers (.NET) | `[Experimental(DiagnosticIds.Experiments.AgentsAIExperiments)]` on public members; IDs centralized, deliberately reusing MEAI001/OPENAI001 so consumers suppress once | `dotnet/src/Microsoft.Agents.AI.Abstractions/AIContextProvider.cs:381`, `dotnet/src/Shared/DiagnosticIds/DiagnosticsIds.cs:16-27` |
+| Test mirroring | One UnitTests (+ IntegrationTests where relevant) project per src package | `dotnet/tests/` (directory listing) |
+| Samples consume via refs | Sample projects reference src projects directly (`ProjectReference` to Foundry) — samples excluded from shipped surface | `dotnet/samples/01-get-started/01_hello_agent/01_hello_agent.csproj:17` |
 
 ## Answers to Dimension Questions
 
-1. **Are modules cleanly separated?**
-   Yes, at the package/namespace level. .NET: 36 distinct projects under `dotnet/src/` with a single `Abstractions` leaf (`Microsoft.Agents.AI.Abstractions.csproj:29-35`). Python: 31 packages plus 23 sub-namespaces under `agent_framework/`. Internal modules are prefixed with `_` (`_agents.py`, `_clients.py`, `_mcp.py`, `_harness/_loop.py`, `_workflows/_edge.py`). The `__init__.py` is the only public surface and it does not export the underscore-prefixed modules directly — they are reached only through the curated 277-name `__all__` (`python/packages/core/agent_framework/__init__.py:342-618`). The clear weak point is runtime: `agent-framework-core` ships all of these in one wheel, so a "smallest possible install" is a wheel boundary, not a module boundary.
+### 1. Are modules cleanly separated?
 
-2. **Do dependencies flow in one direction?**
-   Yes, with two minor exceptions handled with discipline.
-   - Core has no dependency on providers (`python/packages/core/pyproject.toml:25-30`).
-   - Providers depend on core (`python/packages/anthropic/pyproject.toml:25-28`, `python/packages/orchestrations/pyproject.toml:25-27`, `python/packages/tools/pyproject.toml:24-31`).
-   - `_harness` depends on root top-level modules (`_clients.py`, `_compaction.py`, `_sessions.py`, etc.) and never on `_workflows` (`_harness/_agent.py:18-29`).
-   - `_workflows` does not import `_harness` (no grep hit in either direction).
-   - The only cross-cutting late import is `_tools.py:1947` importing `_harness._tool_approval` inside a function; this is a deliberate cycle break, flagged here as a smell.
+Yes, with named exceptions. Both stacks use the same three-tier shape (abstractions/core → implementations → hosting/UI). On .NET, `Abstractions` has no framework-internal references at all (`dotnet/src/Microsoft.Agents.AI.Abstractions/Microsoft.Agents.AI.Abstractions.csproj:33`). On Python, core's only runtime dependencies are four small libraries (`python/packages/core/pyproject.toml:25-30`), and even OpenAI support — historically built into core — now lives behind a lazy facade delegating to the separate `agent-framework-openai` distribution (`python/packages/core/agent_framework/openai/__init__.py:11-24`). Three leaks prevent a perfect score: the `InternalsVisibleTo` from Workflows to DurableTask (`dotnet/src/Microsoft.Agents.AI.Workflows/Microsoft.Agents.AI.Workflows.csproj:29`), foundry importing openai's private `_chat_client` module (`python/packages/foundry/agent_framework_foundry/_agent.py:34`), and MSBuild source-sharing that compiles `src/Shared/Workflows/*` directly into other assemblies (`dotnet/eng/MSBuild/Shared.props:16-22`).
 
-3. **Can modules be used independently?**
-   - .NET: yes. Each provider is its own NuGet package with a focused `<ProjectReference>` set; `A2A` (`Microsoft.Agents.AI.A2A.csproj:27`), `Mem0` (`Microsoft.Agents.AI.Mem0.csproj:24`), `Hyperlight` (`Microsoft.Agents.AI.Hyperlight.csproj:19`), `Valkey` (`Microsoft.Agents.AI.Valkey.csproj:28`) and others only depend on `Abstractions`, so a consumer can ship a single provider without dragging in the core implementation.
-   - Python: providers can be installed independently (`python/packages/anthropic/pyproject.toml:25-28`) and the core `azure`, `openai`, `foundry` namespaces lazy-load providers on first attribute access (`python/packages/core/agent_framework/azure/__init__.py:27-37`). However, the **contents** of `agent-framework-core` are inseparable at runtime — `_harness`, `_workflows`, `_evaluation`, `_mcp`, `_skills`, `_compaction` are all in the same wheel and eagerly imported via `__init__.py` lines 20-340.
+### 2. Do dependencies flow in one direction?
 
-4. **Are public APIs distinguished from internal ones?**
-   - Python: enforced by convention. The leading underscore on every internal module (`_agents.py`, `_clients.py`, `_tools.py`, `_harness/`, `_workflows/`, etc.) is consistent across the core. The public surface is the `__all__` list in `__init__.py` (`python/packages/core/agent_framework/__init__.py:342-618`). The `azure/`, `openai/`, `foundry/` namespaces also use `__dir__` to advertise only the names they can actually resolve (`python/packages/core/agent_framework/openai/__init__.py:46`).
-   - .NET: enforced by language and tooling. `Microsoft.Agents.AI.Abstractions` exists precisely to host interface-only types (`AIAgent.cs`, `AgentSession.cs`, `AIContextProvider.cs`, `ChatHistoryProvider.cs`, `DelegatingAIAgent.cs`). Implementation files live in `Microsoft.Agents.AI/ChatClient/`, `Microsoft.Agents.AI/Harness/`, etc. with `InternalsVisibleTo` exposing internals only to specific test assemblies (`Microsoft.Agents.AI/Microsoft.Agents.AI.csproj:49-55`).
+Yes. This analysis extracted every `ProjectReference` from the 36 `.csproj` files under `dotnet/src` and ran a DFS cycle check: **zero cycles**. The layering is strictly: Abstractions/Generators (no refs) → `Microsoft.Agents.AI` → providers & Workflows → Hosting → Hosting.* / DevUI (e.g., `Microsoft.Agents.AI.Hosting.csproj` references Abstractions, Workflows, AI; `Hosting.AspNetCore` references only Hosting). On Python, every provider package declares exactly `agent-framework-core` plus its vendor SDK (`python/packages/openai/pyproject.toml:26-27`); the only reverse edge would be core↔tools, which is explicitly prevented by making tools a dev-only dependency-group with a documenting comment (`python/packages/core/pyproject.toml:61-67`). Downward-only is additionally policed by the dependency-bounds gate, which builds the internal graph and fails the workspace if any package's suite breaks under strict resolution extremes (`python/scripts/dependencies/validate_dependency_bounds.py:87`, `:130-133`).
+
+### 3. Can modules be used independently?
+
+Yes — this is the strongest dimension answer, and it holds up under the study question *"Can you use the tool system without pulling in the entire runtime?"*. Concretely:
+- Python: `pip install agent-framework-core` pulls only pydantic/dotenv/OTel-api; `@tool`/`FunctionTool` live in core (`python/packages/core/agent_framework/__init__.py` exports `tool`), and MCP support degrades gracefully because `mcp` is imported lazily (`python/packages/core/agent_framework/_mcp.py:301`). The tool system therefore works without any provider or the meta-package. The `agent-framework` meta-package exists purely for opt-in bulk installs (`python/pyproject.toml:14-16`).
+- .NET: `Microsoft.Agents.AI.Abstractions` + `Tools.Shell` (which references only Abstractions, `dotnet/src/Microsoft.Agents.AI.Tools.Shell/Microsoft.Agents.AI.Tools.Shell.csproj`) form a minimal tooling footprint without Workflows, Hosting, or any connector.
+- Independent usability is *tested*: the bounds validator runs each package's test+pyright suite in an isolated uv environment containing only that package plus its internal closure (`--isolated`, `--with-editable` of graph-resolved internals; `python/scripts/dependencies/validate_dependency_bounds.py:153-175`, `python/scripts/dependencies/_dependency_bounds_upper_impl.py:577-593`).
+
+### 4. Are public APIs distinguished from internal ones?
+
+Yes, via multiple complementary mechanisms:
+- Python: single facade `__init__` with explicit `__all__` over underscore-prefixed implementation modules (`python/packages/core/agent_framework/__init__.py:342`; `_agents.py:28` shows internal usage is lint-flagged via `reportPrivateUsage`).
+- Python lifecycle stages: `@experimental`/release-candidate decorators attach warning categories and docstring banners, with feature IDs inventoried in enums (`python/packages/core/agent_framework/_feature_stage.py:55-70`).
+- .NET: the `...Abstractions` package name itself is the public-contract marker (mirroring Microsoft.Extensions.* conventions); unstable APIs carry `[Experimental("MAAI001")]` with centralized diagnostic IDs intentionally aligned with MEAI/OpenAI IDs to reduce consumer suppression burden (`dotnet/src/Microsoft.Agents.AI.Abstractions/AIContextProvider.cs:381`, `dotnet/src/Shared/DiagnosticIds/DiagnosticsIds.cs:18-27`).
+- .NET visibility: `internal` + narrowly scoped `InternalsVisibleTo`, almost exclusively to test assemblies (e.g., `dotnet/src/Microsoft.Agents.AI/Microsoft.Agents.AI.csproj:50-54` grants only to `DynamicProxyGenAssembly2` and four `*.UnitTests`).
+- Ship-surface control: default `IsPackable=false` plus a release solution filter enumerating exactly what publishes (`dotnet/Directory.Build.props`, `dotnet/agent-framework-release.slnf`).
 
 ## Architectural Decisions
 
-- **Single Python core package, curated public surface.** All agent abstractions, workflows, harness, MCP, skills, evaluation, and telemetry live in `agent-framework-core`. The 23 sub-namespaces inside `agent_framework/` are reached via the `__init__.py` re-export tuple, so users get a flat `from agent_framework import Agent, Workflow, SkillsProvider, FileMemoryProvider` API. Trade-off: install size and import cost; gain: ergonomic single import surface.
-- **Dedicated Abstractions assembly on .NET.** `Microsoft.Agents.AI.Abstractions` contains interfaces and abstract classes only (`AIAgent`, `AgentSession`, `AIContextProvider`, `ChatHistoryProvider`, `DelegatingAIAgent`, `InMemoryChatHistoryProvider`, `MessageAIContextProvider`). This is the single graph root that virtually every other package depends on, enabling pluggable providers without depending on the implementation.
-- **Lazy provider namespaces.** `azure/__init__.py`, `openai/__init__.py`, `foundry/__init__.py` use `__getattr__` + an `_IMPORTS` table (`python/packages/core/agent_framework/azure/__init__.py:11-24`) so the optional provider packages do not need to be installed to import `agent_framework`. Errors are surfaced with actionable messages naming the missing package and `pip install` command.
-- **Type stubs alongside lazy loaders.** `azure/__init__.pyi` (`python/packages/core/agent_framework/azure/__init__.pyi:1-36`) re-declares the names for static type checkers, separating runtime behavior from type information. Other namespaces follow the same pattern.
-- **Optional-dependency discipline.** `agent-framework-core` keeps `mcp` and `opentelemetry-sdk` out of runtime deps; tests verify the core remains importable when they are missing (`python/packages/core/tests/core/test_optional_dependencies.py:14-181`).
-- **Cycle avoidance via late imports.** `_evaluation.py` and `_tools.py` use function-local imports to break the would-be cycles (`_evaluation.py:62-63, 950-951, 1900`; `_tools.py:1947`). The `_harness` ↔ `_tools` cycle is the only one that needed a runtime break.
-- **Feature-stage gating.** `_feature_stage.py` defines `ExperimentalFeature` and `ReleaseCandidateFeature` (`python/packages/core/agent_framework/__init__.py:84`) so experimental/rc APIs can be marked without removing them from the public surface. `PACKAGE_STATUS.md` enumerates feature-level staged APIs (`python/PACKAGE_STATUS.md:58-83`).
-- **`InternalsVisibleTo` for friend assemblies.** Both `Microsoft.Agents.AI` and `Microsoft.Agents.AI.Mcp` opt into peer test visibility (`Microsoft.Agents.AI/Microsoft.Agents.AI.csproj:49-55`) while restricting it to specific named assemblies.
+1. **ADR-governed package topology** (`docs/decisions/0008-python-subpackages.md:70-84`). The team evaluated seven options and chose "subpackage existence based on dependency maturity": anything with non-GA deps, preview code, or fast-moving third parties stays a separate distribution; graduation into the main package must preserve import paths (`from agent_framework.google import ...` keeps working). Import-path stability is implemented literally by the facade folders inside core.
+2. **Meta-package aggregation instead of a monolith** — `agent-framework` is a shell over `core[all]` (`python/pyproject.toml:14-16`), keeping the default install lean while preserving one-command onboarding.
+3. **Abstractions-first .NET layout** — a dependency-free contract assembly consumed by 17 projects forces providers and hosting to program against interfaces, enabling independent replacement of clients/hosting.
+4. **Compile-time source sharing over package refs for tiny utilities** — `Throw`, `Redaction`, diagnostic-ID helpers are injected into each assembly via MSBuild flags (`dotnet/eng/MSBuild/Shared.props:4-14`) rather than creating a shared runtime dependency. This avoids an extra published package at the cost of implicit coupling (see Tradeoffs).
+5. **Dev-dependency inversion to break cycles** — core lists `agent-framework-tools` under `[dependency-groups].dev` with an inline rationale comment (`python/packages/core/pyproject.toml:61-67`), so harness integration can be typed/tested without a circular runtime edge.
+6. **Centralized version governance** — CPM with transitive pinning on .NET (`dotnet/Directory.Packages.props:4-5`) and a frozen uv lockfile with security-floor overrides on Python (`python/pyproject.toml`, `constraint-dependencies`/`override-dependencies` blocks).
 
 ## Notable Patterns
 
-- **`_IMPORTS` dictionary + `__getattr__` + `__dir__` triplet.** Each lazy namespace (`azure/`, `openai/`, `foundry/`, `chatkit/`, `a2a/`, etc.) repeats the same shape: `dict[str, tuple[import_path, package_name]]` + module-level `__getattr__` that raises an install hint on `ModuleNotFoundError` + `__dir__` returning the dict keys. This makes the implementation discoverable but also predictable.
-- **Empty `__init__.py` for hidden subpackages.** Both `_harness/__init__.py` (0 bytes) and `_workflows/__init__.py` (1 line) are placeholders, so the subpackages are reachable through explicit dotted paths (`_harness._agent`) and not through wildcard `from _harness import *`.
-- **Eager top-level re-export in `__init__.py`.** Lines 20-340 of `python/packages/core/agent_framework/__init__.py` make every public name available at the top of the package. There is no deprecation gate; `__all__` is the curated allow-list.
-- **Per-package `py.typed` marker.** `python/packages/core/agent_framework/py.typed` is present (verified empty file), signaling to mypy/pyright that the package ships type annotations.
-- **Per-module `AGENTS.md`.** Each major package/core has its own `AGENTS.md` (`python/packages/core/AGENTS.md`, `python/packages/anthropic/AGENTS.md`, `dotnet/AGENTS.md`) that documents the module's role, public classes, and conventions. This is a documentation-as-boundary pattern.
-- **`shared_tasks.toml` for cross-package tooling.** `python/packages/core/pyproject.toml:122-124` references `../../shared_tasks.toml` so the same `poe` tasks (mypy, test, etc.) are reused across every Python package.
+- **Lazy namespace facades with actionable errors**: `_IMPORTS: dict[str, tuple[str, str]]` + module-level `__getattr__` that raises `ModuleNotFoundError` naming the exact pip package to install (`python/packages/core/agent_framework/azure/__init__.py:15-33`). The same pattern backs `openai/`, `anthropic/`, `google/`, etc. inside core, each paired with `.pyi` stubs so static typing still sees the surface.
+- **Boundary identity tests**: `assert azure.CosmosHistoryProvider is CosmosHistoryProvider` proves the facade delegates to the real distribution object rather than a copy (`python/packages/core/tests/core/test_azure_namespace.py:7-9`).
+- **Graph-driven tooling**: the dependency tooling parses all workspace `pyproject.toml`s into an internal graph and reuses it for both editable-closure installation and bound validation (`python/scripts/dependencies/_dependency_bounds_upper_impl.py:551-593`) — boundaries are data, not prose.
+- **Dual-end resolution testing**: running suites at both `lowest-direct` and `highest` resolutions catches both stale lower bounds and future upper-bound breaks (`python/scripts/dependencies/validate_dependency_bounds.py:241-244`).
+- **Diagnostic-ID alignment**: experimental APIs reuse ecosystem IDs (MEAI001, OPENAI001) so consumers already suppressing those diagnostics don't need new entries (`dotnet/src/Shared/DiagnosticIds/DiagnosticsIds.cs:20-27`).
+- **Polyfill injection by TFM**: legacy-targeting projects get `ExperimentalAttribute`/`RequiredMemberAttribute` sources injected only when the target framework lacks them (`dotnet/eng/MSBuild/LegacySupport.props:14-15`), keeping multi-TFM support without shipping polyfill types publicly.
 
 ## Tradeoffs
 
-- **Single Python wheel for core.** Installing `agent-framework-core` imports workflows, harness, MCP, skills, evaluation, telemetry, and observability code at startup (`python/packages/core/agent_framework/__init__.py:20-340`). A user who only wants `Agent` pays the import cost (and accepts runtime types like `Workflow`, `FileMemoryProvider`, `MCPTool`) until the package is split. The codebase hides this behind a curated `__all__`, but the import-time cost is real.
-- **`_harness` shipped in core.** The harness module is `@experimental` and lives in core (`python/packages/core/agent_framework/_harness/_loop.py` is decorated via `_feature_stage.py:ExperimentalFeature` per `python/AGENTS.md` references). This is convenient but couples core to a still-evolving subsystem; the cyclic dependency with `_tools.py` is the price.
-- **No `__all__` in internal modules.** Internal modules (`_agents.py`, `_clients.py`, `_mcp.py`, etc.) do not declare `__all__`, so `from _agents import *` is technically possible. The leading underscore convention is the only enforcement.
-- **One runtime late import.** `_tools.py:1947` is a function-local `from ._harness._tool_approval import ToolApprovalState`. The comment in `pyproject.toml:62-66` and the late-import pattern in `_evaluation.py` together suggest the author expected cycles and accepted them as the cost of single-package core.
-- **Provider packages reference `Microsoft.Agents.AI` (the implementation) rather than only `Abstractions` for some integrations.** `CosmosNoSql` (`Microsoft.Agents.AI.CosmosNoSql.csproj:27-28`) and `Hosting` (`Microsoft.Agents.AI.Hosting/Microsoft.Agents.AI.Hosting.csproj:16-18`) take dependencies on both. This is the right call for richer integrations but does pull the implementation package into more callers than strictly necessary.
-- **Lots of assemblies on .NET.** 36 projects in `dotnet/src/` means every consumer's `dotnet restore` resolves many packages. The `agent-framework-release.slnf` filter (`dotnet/agent-framework-release.slnf`) is the mechanism for keeping release builds reasonable.
+- **Facade maintenance cost vs. import stability**: every provider needs an `__init__.py` shim + `.pyi` stubs inside core; the ADR explicitly accepts "larger overhead in maintaining the `__init__.py` files" (`docs/decisions/0008-python-subpackages.md:69-71`). Moving a connector between packages requires synchronized edits in two places.
+- **Source sharing vs. visible dependencies**: `Shared.props` injection keeps small helpers dependency-free but hides coupling — nothing in a `.csproj` reference graph reveals that an assembly embeds `Shared/Workflows/Execution` sources; version skew between copies is possible since each assembly compiles its own snapshot.
+- **Lean core vs. discoverability**: users must know which extra provides `FoundryChatClient`; mitigated by the error-message pattern, but a wrong-import now fails at first attribute access rather than at import time.
+- **`InternalsVisibleTo` to DurableTask**: pragmatic for durable-execution integration deep in workflow state, but it makes the Workflows internal surface de-facto load-bearing for another shipped package, narrowing future refactoring freedom.
+- **Strict upper bounds (`<2`) everywhere**: protects against major-version drift but means every internal package must be released in lockstep when core hits 2.0; the bounds validator exists precisely to manage this tax.
 
 ## Failure Modes / Edge Cases
 
-- **Late-import fragility.** If someone moves `_get_tool_approval_state` out of `_tools.py` to a top-level module, the cycle break breaks. The `_evaluation.py` late-imports (`python/packages/core/agent_framework/_evaluation.py:62-63`) are similarly fragile.
-- **Lazy-loader error messages.** When a name is missing, the error message tells the user which package to install (`python/packages/core/agent_framework/azure/__init__.py:33-36`). If a user calls a name that does not exist in `_IMPORTS`, the error is "Module `azure` has no attribute `name`" — useful but easy to confuse with the install message.
-- **`py.typed` is empty.** Verified: `python/packages/core/agent_framework/py.typed` is 0 bytes. The `py.typed` marker is what enables downstream type checking; the lack of explicit pointer just means downstream consumers should rely on the wheel's inline annotations on public names.
-- **Test-only `agent-framework-tools` dependency.** `python/packages/core/pyproject.toml:61-67` lists `agent-framework-tools` under `[dependency-groups].dev` only because core cannot list it as a runtime dep. This is a documented design choice but it does mean integration tests under `tests/core/test_harness_*.py` need both packages present.
-- **`InternalsVisibleTo` amplification.** Each project that uses `InternalsVisibleTo` (`Microsoft.Agents.AI.csproj:49-55`, `Microsoft.Agents.AI.Mcp.csproj:35-37`, `Microsoft.Agents.AI.Workflows.csproj:28-32`) widens the surface that friend assemblies can see. If a friend assembly is later repurposed, the exposed internals follow it.
-- **Multiple `Microsoft.Agents.AI.*` namespace roots on .NET.** `Microsoft.Agents.AI.Abstractions.csproj:4` (`<RootNamespace>Microsoft.Agents.AI</RootNamespace>`) shares the root namespace with `Microsoft.Agents.AI` itself. This is intentional (the abstraction types live in `Microsoft.Agents.AI` namespace) but can confuse static analyzers that key off namespace/file path.
+- **Cross-package private-module import**: foundry imports `agent_framework_openai._chat_client` directly (`python/packages/foundry/agent_framework_foundry/_agent.py:34`, `_chat_client.py:22`). Any refactor of openai's private module breaks foundry at import time despite semver compatibility — the exact failure mode underscore-module privacy is meant to prevent. No automated guard (e.g., lint rule banning cross-package `_module` imports) was found in the ruff config (`python/pyproject.toml` lint section selects standard rule sets only).
+- **Version pin skew in extras**: devui's dev optional-dependency pins `agent-framework-orchestrations==1.0.0rc1` while other packages float `>=X,<2` (`python/packages/devui/pyproject.toml:37`) — a pre-release pin inside a floating range family that can produce unsatisfiable resolutions during lockstep releases.
+- **Facade drift**: if a symbol is added to a provider package but not to its core facade map, `import agent_framework.azure` silently misses it; detection relies on the namespace tests being updated by hand (`python/packages/core/tests/core/test_azure_namespace.py` covers one symbol per pattern shown).
+- **Hidden shared-source divergence**: because `Shared/Workflows/*` is compiled per-assembly, a bug fix applied to one consuming project's tree but not the canonical folder produces divergent behavior with no linker error.
+- **Bounds-gate blind spots**: the validator treats any package lacking `test`/`pyright` poe tasks as a hard configuration error (`python/scripts/dependencies/validate_dependency_bounds.py:107-112`), which is good, but the gate validates *declared* bounds — undeclared imports (like the foundry→openai private import) would only surface if openai were absent from foundry's resolved environment.
 
 ## Future Considerations
 
-- **Split `agent-framework-core` Python wheel.** Consider separating `agent-framework-core-runtime` (agents, clients, sessions, tools, middleware) from `agent-framework-core-orchestration` (workflows, harness, evaluation). This would let users opt out of the workflow and harness modules while preserving the same import path via a meta-package.
-- **Formalize module-level `__all__`.** Add `__all__` to every internal module (`_agents.py`, `_clients.py`, `_tools.py`, `_mcp.py`, `_sessions.py`, etc.) so that wildcard imports cannot reach internals even by accident.
-- **Move `_tools.py` late import to a top-level accelerator.** The `_get_tool_approval_state` runtime import of `_harness._tool_approval` (`_tools.py:1947`) could be replaced by a `Protocol` in `_types.py` so the dependency arrow reverses.
-- **Stamp `py.typed` everywhere.** Most Python wheels have `py.typed`; verify each provider package (`agent-framework-anthropic`, `agent-framework-openai`, etc.) ships its own. The `py.typed` file in `agent_framework/` is good but the provider wheel may not have one.
-- **Slim the .NET implementation package.** Several providers that currently reference `Microsoft.Agents.AI` plus `Microsoft.Agents.AI.Abstractions` (e.g. `CosmosNoSql`, `Hosting`) could in principle depend only on the abstractions for read paths and on the implementation for the few types they need. The current state is acceptable but worth re-evaluating.
-- **Single source of truth for module dependency graph.** The Python side documents its layering in `python/AGENTS.md:50-72` and `python/packages/core/AGENTS.md:5-21`. A machine-checked dependency review (e.g. `import-linter` or `pydeps`) would catch the one late-import cycle and any future regressions.
+- Add a lint/CI rule forbidding cross-distribution imports of underscore modules on the Python side (would have caught `foundry→agent_framework_openai._chat_client`), and promote the needed symbols to openai's public surface.
+- Replace high-traffic `Shared` source injection (especially `Shared/Workflows/*`) with an internal shared library or generator-managed linkage so the coupling appears in the reference graph.
+- Re-evaluate the Workflows→DurableTask `InternalsVisibleTo`: extract the required types into `Abstractions` or a `Workflows.Internal` contract package to restore refactor freedom.
+- Automate facade-map synchronization (generate `_IMPORTS` dicts and `.pyi` stubs from provider package exports) to remove the hand-maintained shim failure mode.
+- Normalize cross-package constraint style (float ranges vs. exact pins like `devui`'s orchestrations rc pin) before the next coordinated release.
 
 ## Questions / Gaps
 
-- Is there an automated check that `_harness` and `_workflows` never import each other? The current evidence is grep-based; an enforced CI check would prevent regressions.
-- Does the .NET solution have a `dotnet format`/analyzer rule that fails the build when a new `<ProjectReference>` is added that violates the layering (e.g. a provider depending on `Microsoft.Agents.AI.Hosting`)? No evidence found.
-- Why does `_harness/_tool_approval.py` exist in the core package when `agent-framework-tools` is the "tools" package and core explicitly *cannot* depend on it at runtime? The split between "tools-in-core" (`_harness/_tool_approval.py`) and "tools-in-tools-package" (`agent_framework_tools/shell/`) is documented only in `python/packages/core/AGENTS.md`. The boundary is policy, not enforced.
-- Is the `__init__.py` re-export of every `from ._harness._foo import *` deliberately eager, or is it a place where convertible lazy attributes would shave startup time? No evidence of a benchmark; assumed deliberate.
-- Is the `dotnet/Shared/` directory (which contains `Workflows/`, `Throw/`, `DiagnosticIds/`, `Redaction/`, `StructuredOutput/`) treated as a separate package or is it conditional-included? `dotnet/src/Shared/Workflows/Execution/WorkflowFactory.cs` is referenced under `dotnet/eng` style assets but no `<ProjectReference>` to it was found in the surveyed `src/` projects. **No clear evidence found** of how `Shared` is consumed; further investigation needed.
+- **No dedicated architecture/boundary unit tests on .NET** were found: searches for tests asserting reference constraints or Abstractions purity returned no architectural-test fixtures; enforcement there relies on conventions (package naming, `IsPackable`, analyzers) rather than executable checks. Searched: `dotnet/tests/**` for architecture-style assertions, `grep -r "InternalsVisibleTo"` across props/csproj.
+- **CI wiring of the dependency-bounds gate** could not be confirmed from files in the source snapshot (workflow definitions live under `.github/workflows/`, which contains skill/pull-request templates in this checkout; no workflow file referencing `validate_dependency_bounds` was located). The task definitions exist (`python/pyproject.toml:268-296`), but evidence that they run on every PR is absent.
+- The referenced `.github/skills/python-package-management` guidance cited by `python/AGENTS.md:10` is not present in this snapshot (only `.github/skills/pull-requests` exists), so the documented monorepo conventions could not be verified beyond ADR 0008.
+- Whether the `lab` package is publishable was ambiguous: it participates in core's `all` extra (`python/packages/core/pyproject.toml:52`) yet is excluded from the root test sweep (`python/pyproject.toml:173`); its release status is not stated in the inspected files.
 
 ---
 
-Generated by `22.01-package-module-boundaries` against `agent-framework`.
+Generated by dimension `22.01-package-and-module-boundaries` against `agent-framework`.

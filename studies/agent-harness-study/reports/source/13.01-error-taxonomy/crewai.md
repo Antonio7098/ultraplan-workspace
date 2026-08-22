@@ -1,6 +1,6 @@
 # Source Analysis: crewai
 
-## Dimension 13.01 — Error Taxonomy
+## Dimension 13.01: Error Taxonomy
 
 ### Source Info
 
@@ -8,139 +8,146 @@
 |-------|-------|
 | Name | crewai |
 | Path | `studies/agent-harness-study/sources/crewai` |
-| Language / Stack | Python 3.10+ (multi-package monorepo: `crewai`, `crewai-core`, `crewai-files`, `crewai-tools`, `cli`, `devtools`) |
+| Language / Stack | Python monorepo (`lib/crewai` core framework, `lib/crewai-core`, `lib/crewai-files`, `lib/crewai-tools`, `lib/cli`, `lib/devtools`) |
 | Analyzed | 2026-08-21 |
+
+All citations below are workspace-relative paths rooted at `studies/agent-harness-study/sources/crewai`.
 
 ## Summary
 
-CrewAI distributes error types across roughly seven local taxonomies rather than one central hierarchy. The largest, most rigorous taxonomy lives in the A2A protocol module (`lib/crewai/src/crewai/a2a/errors.py`): a `IntEnum` of 22 codes, a dataclass base, and 22 typed subclasses, plus routing helpers `is_retryable_error` and `is_client_error`. The agent loop in `crew_agent_executor.py` has three distinct dispatch paths (`OutputParserError` → retry, `LLMContextLengthExceededError`/context-length substring → summarize or `SystemExit`, all else → re-raise). LLM provider modules (openai, anthropic, gemini, bedrock, azure) translate their native exceptions into `LLMContextLengthExceededError`, which the loop catches. There is no project-wide base class: every error extends `Exception`, `ValueError`, `RuntimeError`, `ImportError`, or `TypeError` independently. Detection of the most performance-critical error (context overflow) uses substring matching against `CONTEXT_LIMIT_ERRORS`, not `isinstance`. The two A2A routing helpers are exported but never referenced anywhere in the source. The MCP module classifies failures by a free-form `error_type: str` field on its `FailedEvent` types rather than a typed enum.
+CrewAI does not maintain a single, central error taxonomy. Instead, error classification is **federated per subsystem**, and the maturity varies sharply between them:
+
+1. **A2A protocol layer (most mature):** a full JSON-RPC-style taxonomy with an `IntEnum` of error codes, a dataclass exception hierarchy, default message registry, and explicit retry/client-error predicates (`lib/crewai/src/crewai/a2a/errors.py:25-503`).
+2. **File upload subsystem (mature):** a transient/permanent classification hierarchy whose types directly drive an exponential-backoff retry loop vs. stop decision (`lib/crewai-files/src/crewai_files/processing/exceptions.py:86-103`, `lib/crewai-files/src/crewai_files/resolution/resolver.py:337-398`).
+3. **Core agent loop (ad-hoc at the edges):** dispatch is by exception type for a few known classes (`OutputParserError`, context-length errors), but provider errors are classified by **module-name prefix string matching** (`e.__class__.__module__.startswith("litellm")`) and context-length detection by **error-message substring matching** against a hardcoded phrase list (`lib/crewai/src/crewai/utilities/exceptions/context_window_exceeding_exception.py:4-13`, `lib/crewai/src/crewai/agents/crew_agent_executor.py:444-458`).
+4. **Event bus (observability taxonomy):** errors are re-classified *by source* as typed events — LLM call failed, agent execution error, tool usage/validation/selection/execution errors, task failed, crew kickoff failed (`lib/crewai/src/crewai/events/types/llm_events.py:117`, `tool_usage_events.py:72-97`, `crew_events.py:51`).
+
+Tool and validation failures are generally not raised to callers; they are converted into natural-language error strings (i18n templates) fed back into the model's context so the agent can self-correct, with bounded retries.
+
+**Rating: 6 / 10.**
 
 ## Rating
 
-**5/10** — Clear per-domain taxonomies (notably A2A) with explicit codes, subclasses, and tests, plus a real three-branch dispatch in the agent loop. But no central base class, no `utilities/exceptions/__init__.py` exports (just a docstring), substring-based detection for the most important error class, dead routing helpers, and no documented taxonomy page.
+Rating: 6/10
+
+| Score | Meaning |
+|-------|---------|
+| **6** | Present but inconsistent: strong typed taxonomies in A2A and file handling with retry-routing logic and tests for some paths, but the core agent loop relies on fragile string/module-name matching, there is no central exceptions module (the aggregator is empty), and no dedicated documentation page for error categories. |
+
+Rationale: The A2A and crewai-files subsystems alone would score 7–8 (clear model, explicit interfaces, operational safeguards). The core harness drags this down: classification of provider/context errors in the main execution path is message-substring and module-prefix based, which is exactly the "fragile" failure mode the rubric flags.
 
 ## Evidence Collected
 
-Every entry includes a file path with line numbers from the selected source directory.
+Every entry includes a file path with line numbers, relative to `studies/agent-harness-study/sources/crewai`.
 
 | Area | Evidence | File:Line |
 |------|----------|-----------|
-| LLM context error class | `LLMContextLengthExceededError(Exception)` | `lib/crewai/src/crewai/utilities/exceptions/context_window_exceeding_exception.py:16` |
-| Substring-based detection | `CONTEXT_LIMIT_ERRORS: Final[list[str]]` (9 phrases) used by `_is_context_limit_error` | `lib/crewai/src/crewai/utilities/exceptions/context_window_exceeding_exception.py:4-13,33-44` |
-| Empty exceptions package | `utilities/exceptions/__init__.py` contains only a docstring (no `__all__`, no re-exports) | `lib/crewai/src/crewai/utilities/exceptions/__init__.py:1` |
-| Database error base + templates | `DatabaseOperationError(Exception)` plus `DatabaseError` template-holder class | `lib/crewai/src/crewai/utilities/errors.py:10-52` |
-| Agent repository error | `AgentRepositoryError(Exception)` raised at agent lookup | `lib/crewai/src/crewai/utilities/errors.py:55-56` |
-| Agent output parse error | `OutputParserError(Exception)` raised in 3 parse-failure paths | `lib/crewai/src/crewai/agents/parser.py:45-59,117-128` |
-| Converter/validation error | `ConverterError(Exception)` raised from `to_pydantic` fallbacks | `lib/crewai/src/crewai/utilities/converter.py:28-39,77-82` |
-| Tool parsing error | `ToolUsageError(Exception)` raised in 6 tool-call paths | `lib/crewai/src/crewai/tools/tool_usage.py:68-73,834,849,861` |
-| Tool quota error | `ToolUsageLimitExceededError(Exception)` raised by `CrewStructuredTool.invoke`/`ainvoke` | `lib/crewai/src/crewai/tools/structured_tool.py:111-112,315,350` |
-| Embedding dim error | `EmbeddingDimensionMismatchError(ValueError)` — comment explains why it is intentionally not a `RuntimeError` (would be silently swallowed by background-save plumbing) | `lib/crewai/src/crewai/memory/storage/backend.py:11-41` |
-| JSON project error hierarchy | `JSONProjectError(ValueError)` and `JSONProjectValidationError(JSONProjectError)` | `lib/crewai/src/crewai/project/json_loader.py:23-32` |
-| Skill parse error | `SkillParseError(ValueError)` for SKILL.md parse failures | `lib/crewai/src/crewai/skills/parser.py:35-36` |
-| Skills registry error | `SkillNotCachedError(Exception)` for non-interactive cache miss | `lib/crewai/src/crewai/experimental/skills/registry.py:20-28` |
-| Experimental flag error | `ExperimentalFeatureDisabledError(RuntimeError)` | `lib/crewai/src/crewai/experimental/skills/_flag.py:11` |
-| Flow ref error | `InvalidRefError(ValueError)` | `lib/crewai/src/crewai/flow/runtime/_refs.py:11` |
-| Flow expression error | `ExpressionError(ValueError)` | `lib/crewai/src/crewai/flow/expressions.py:50` |
-| Flow script execution error | `FlowScriptExecutionDisabledError(RuntimeError)` | `lib/crewai/src/crewai/flow/runtime/_actions.py:43` |
-| RAG client mismatch | `ClientMethodMismatchError(TypeError)` for sync/async misuse | `lib/crewai/src/crewai/rag/core/exceptions.py:4-26` |
-| Event-context stack errors | `StackDepthExceededError`, `EventPairingError`, `EmptyStackError` driven by `EventContextConfig` + `MismatchBehavior` enum | `lib/crewai/src/crewai/events/event_context.py:12-18,29-38,176-180,202-205,220-223` |
-| Handler-graph cycle error | `CircularDependencyError(Exception)` | `lib/crewai/src/crewai/events/handler_graph.py:15` |
-| Optional dependency error | `OptionalDependencyError(ImportError)` (deprecated wrapper around `require`) | `lib/crewai/src/crewai/utilities/import_utils.py:14-46` |
-| **A2A enum (most complete)** | `A2AErrorCode(IntEnum)` with 22 codes organized into JSON-RPC 2.0 (-32700 to -32603), A2A-specific (-32001 to -32007), and CrewAI custom (-32009 to -32018) | `lib/crewai/src/crewai/a2a/errors.py:25-99` |
-| A2A default messages | `ERROR_MESSAGES: dict[int, str]` keyed by code | `lib/crewai/src/crewai/a2a/errors.py:101-124` |
-| A2A base dataclass | `A2AError(Exception)` carrying `code: int`, `message: str | None`, `data: Any`, with `to_dict`/`to_response` | `lib/crewai/src/crewai/a2a/errors.py:127-162` |
-| A2A subclasses (typed) | 22 `@dataclass` subclasses each pinning `code` via `field(init=False)` with structured fields (`task_id`, `retry_after`, `requested_types`, etc.) | `lib/crewai/src/crewai/a2a/errors.py:166-441` |
-| A2A polling timeout | `A2APollingTimeoutError(A2AClientTimeoutError)` | `lib/crewai/src/crewai/a2a/errors.py:21-22` |
-| A2A error response builder | `create_error_response` produces JSON-RPC envelopes | `lib/crewai/src/crewai/a2a/errors.py:443-461` |
-| **A2A routing helpers (unused)** | `is_retryable_error(code)` returns true for `INTERNAL_ERROR`, `RATE_LIMIT_EXCEEDED`, `TASK_TIMEOUT`; `is_client_error(code)` for parse/validation/resource-not-found | `lib/crewai/src/crewai/a2a/errors.py:464-503` |
-| A2A transport/content negotiation | `TransportNegotiationError`, `ContentTypeNegotiationError` | `lib/crewai/src/crewai/a2a/utils/transport.py:48`; `lib/crewai/src/crewai/a2a/utils/content_type.py:58` |
-| A2A UI validation | `A2UIValidationError(Exception)` for A2UI extensions | `lib/crewai/src/crewai/a2a/extensions/a2ui/validator.py:76` |
-| A2A HTTP exception re-export | Local `HTTPException` redefinition inside `server_schemes.py` | `lib/crewai/src/crewai/a2a/auth/server_schemes.py:52` |
-| **Agent loop dispatch (sync)** | Catches `OutputParserError` → `handle_output_parser_exception`; `Exception` → re-raise litellm, detect context via substring, summarize or `SystemExit`, else re-raise | `lib/crewai/src/crewai/agents/crew_agent_executor.py:434-458` |
-| **Agent loop dispatch (async)** | Same three-branch pattern mirrored | `lib/crewai/src/crewai/agents/crew_agent_executor.py:1272-1296` |
-| Lite-agent dispatch | Mirrors the same three-branch pattern | `lib/crewai/src/crewai/lite_agent.py:932-959` |
-| Experimental agent executor | Uses return-string router keys `"parser_error"`, `"context_error"` from the exception type | `lib/crewai/src/crewai/experimental/agent_executor.py:1435-1449` |
-| Core agent converter catch | `except ConverterError` in `Agent.core` | `lib/crewai/src/crewai/agent/core.py:1770` |
-| LiteAgent converter catch | `except ConverterError as e` | `lib/crewai/src/crewai/lite_agent.py:671` |
-| Training converter catch | `except ConverterError` | `lib/crewai/src/crewai/utilities/training_converter.py:32` |
-| JSON loader catches | Four `except JSONProjectError` sites | `lib/crewai/src/crewai/project/json_loader.py:655,1201,1963,2021` |
-| LLM substring-based reclassify | `LLMContextLengthExceededError._is_context_limit_error(error_msg)` used to wrap arbitrary provider exceptions | `lib/crewai/src/crewai/llm.py:1051-1056`; mirror paths at `1244-1249`, `1395-1400`, `1667-1672`, `1869-1873`, `2004-2005` |
-| Provider-specific raises | OpenAI: `lib/crewai/src/crewai/llms/providers/openai/completion.py:940,1083,1780,2203`; Anthropic: `:920,1413,1470,1831`; Gemini: `:1171,1264`; Bedrock: `:453,581`; Azure: `:462` |
-| Database `sqlite3.Error` wrapping | All 5 storage operations wrap `sqlite3.Error` into `DatabaseOperationError` | `lib/crewai/src/crewai/memory/storage/kickoff_task_outputs_storage.py:64,111,160,201,222` |
-| MCP error events (string `error_type`) | `MCPConnectionFailedEvent.error_type`, `MCPToolExecutionFailedEvent.error_type`, `MCPConfigFetchFailedEvent.error_type` typed as `str | None` with docstring examples like `"timeout"`, `"authentication"`, `"network"` | `lib/crewai/src/crewai/events/types/mcp_events.py:46-98` |
-| MCP emitters | Concrete error_type values: `"not_connected"`, `"connection_failed"`, `"tool_error"` | `lib/crewai/src/crewai/mcp/tool_resolver.py`; `lib/crewai/src/crewai/mcp/client.py` |
-| Failed-event taxonomy on event bus | `LLMCallFailedEvent`, `AgentExecutionErrorEvent`, `LiteAgentExecutionErrorEvent`, `ToolUsageErrorEvent`, `CrewKickoffFailedEvent`, `TaskFailedEvent`, `MethodExecutionFailedEvent`, `FlowFailedEvent`, `Memory*FailedEvent`, `Knowledge*FailedEvent`, `A2A*FailedEvent`, `AgentReasoningFailedEvent`, `AgentEvaluationFailedEvent`, `A2AAuthenticationFailedEvent`, `LiteAgentExecutionErrorEvent` | `lib/crewai/src/crewai/events/types/*.py` |
-| Test coverage — context length | `pytest.raises(LLMContextLengthExceededError)` in `test_llm.py` | `lib/crewai/tests/test_llm.py:383-398` |
-| Test coverage — embedding dim | `EmbeddingDimensionMismatchError` exercised in 8 assertions | `lib/crewai/tests/memory/test_dimension_mismatch.py` |
-| Test coverage — JSON project | `JSONProjectValidationError` used in tests | `lib/crewai/tests/project/test_json_loader.py` |
-| Test coverage — skill parse | `SkillParseError` used in tests | `lib/crewai/tests/skills/test_parser.py` |
-| Test coverage — agent repository | `AgentRepositoryError` used in tests | `lib/crewai/tests/agents/test_agent.py` |
-| Test coverage — tool usage limit | `ToolUsageLimitExceededError` flow with `max_usage_count` | `lib/crewai/tests/tools/test_tool_usage_limit.py` |
-| Test coverage — `is_retryable_error` / `is_client_error` | None found | (no tests reference these helpers) |
-| Top-level utilities re-exports | `utilities/__init__.py` only re-exports `LLMContextLengthExceededError` and `ConverterError` | `lib/crewai/src/crewai/utilities/__init__.py:3-26` |
+| Context/model error type | `LLMContextLengthExceededError` + `CONTEXT_LIMIT_ERRORS` phrase list used to classify provider messages | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/exceptions/context_window_exceeding_exception.py:4-16` |
+| String-based classifier | `_is_context_limit_error()` matches lowercase substrings like `"maximum context length"`, `"context_length_exceeded"` | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/exceptions/context_window_exceeding_exception.py:32-44` |
+| A2A error code enum | `A2AErrorCode(IntEnum)` with JSON-RPC standard (-32700..-32603), A2A-specific (-32001..-32007), CrewAI extensions (-32009..-32018) | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/a2a/errors.py:25-98` |
+| A2A exception hierarchy | Dataclass hierarchy rooted at `A2AError` with per-code subclasses carrying structured fields (`task_id`, `retry_after`, `required_scope`) | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/a2a/errors.py:127-162, 352-365, 369-384` |
+| A2A retry predicate | `is_retryable_error()` → INTERNAL_ERROR, RATE_LIMIT_EXCEEDED, TASK_TIMEOUT are retryable | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/a2a/errors.py:464-478` |
+| A2A client-vs-server split | `is_client_error()` enumerates request-caused codes (parse, invalid params, not-found, unsupported version) | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/a2a/errors.py:481-503` |
+| File error taxonomy | `FileProcessingError` tree: validation (`FileTooLargeError`, `UnsupportedFileTypeError`), dependency, transient/permanent, upload variants via multiple inheritance | `studies/agent-harness-study/sources/crewai/lib/crewai-files/src/crewai_files/processing/exceptions.py:4-103` |
+| Upload error classifier | `classify_upload_error()` maps exception type name (`RateLimit`, `APIConnection`, `Authentication`, `BadRequest`) and `status_code` (>=500 or 429) to Transient vs Permanent | `studies/agent-harness-study/sources/crewai/lib/crewai-files/src/crewai_files/processing/exceptions.py:106-135` |
+| Taxonomy-driven retry routing | `_upload_with_retry`: `PermanentUploadError` → stop immediately; `TransientUploadError`/unknown → exponential backoff up to `UPLOAD_MAX_RETRIES`; error kind recorded in metrics metadata | `studies/agent-harness-study/sources/crewai/lib/crewai-files/src/crewai_files/resolution/resolver.py:361-398` |
+| Provider-specific classifiers | `_classify_gemini_error` (rate limit → transient) and `_classify_s3_error` (throttling → transient) | `studies/agent-harness-study/sources/crewai/lib/crewai-files/src/crewai_files/uploaders/gemini.py:48-64`, `bedrock.py:28-49` |
+| Tool error types | `ToolUsageError` and `ToolUsageLimitExceededError` | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/tools/tool_usage.py:68-73`, `structured_tool.py:111-112` |
+| Tool error → model feedback loop | Exceptions caught, formatted via i18n template, retried until `_max_parsing_attempts` (3, or 2 for large OpenAI models), then returned as `ToolUsageError` string to the LLM ("Moving on then") | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/tools/tool_usage.py:100-118, 422-465` |
+| i18n error-message taxonomy | `"errors"` block keyed by category: `wrong_tool_name`, `tool_arguments_error`, `tool_usage_exception`, `task_repeated_usage`, `validation_error`, `force_final_answer` | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/translations/en.json:45-56` |
+| Agent-loop error dispatch | `except OutputParserError` → re-prompt handler; generic `Exception` → litellm-module check → context-length check → unknown-error log + raise | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/agents/crew_agent_executor.py:434-458` |
+| Module-prefix provider check | `e.__class__.__module__.startswith("litellm")` treats any litellm-raised error as passthrough (no agent-level retry) | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/agents/crew_agent_executor.py:445-446`, also `agent/core.py:695-704` |
+| Context-window escalation policy | `handle_context_length()`: summarize messages if `respect_context_window`, else `SystemExit` with user guidance | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/agent_utils.py:712-749` |
+| Agent retry policy | `_check_execution_error()`: litellm errors re-raised immediately; otherwise retried until `max_retry_limit` exceeded, then emit `AgentExecutionErrorEvent` and raise | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/agent/core.py:685-717` |
+| Provider exception mapping (OpenAI) | `NotFoundError` → `ValueError`, `APIConnectionError` → `ConnectionError`, generic → context-length check or re-raise; each branch emits `LLMCallFailedEvent` first | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/llms/providers/openai/completion.py:923-947` |
+| Provider transport retries delegated | `max_retries: int = 2` forwarded to the OpenAI SDK client config rather than handled in CrewAI code | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/llms/providers/openai/completion.py:209, 342-343` |
+| BaseLLM interface contract | Docstrings declare implementations should raise `ValueError` (invalid format), `TimeoutError` (request timeout), `RuntimeError` (other) | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/llms/base_llm.py:316-318, 353-355` |
+| Validation result type | `GuardrailResult` model with `success`/`result`/`error` and mutual-exclusivity validator | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/guardrail.py:60-103` |
+| Guardrail retry loop | Validation failure becomes retry context via `validation_error` i18n template; after `guardrail_max_retries`, raises plain `Exception` | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/task.py:1292-1324` |
+| Rate limiting | `RPMController.check_or_wait()` blocks (sleeps) before requests instead of classifying a rate-limit error | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/rpm_controller.py:38-64` |
+| Event-bus source taxonomy | Typed error events per source: `LLMCallFailedEvent(error: str)`, `AgentExecutionErrorEvent`, `TaskFailedEvent`, `CrewKickoffFailedEvent` | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/events/types/llm_events.py:117-120`, `agent_events.py:52-67`, `task_events.py:48-51`, `crew_events.py:51-54` |
+| Fine-grained tool error events | `ToolUsageErrorEvent`, `ToolValidateInputErrorEvent`, `ToolSelectionErrorEvent`, `ToolExecutionErrorEvent` distinguish tool-failure subcategories | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/events/types/tool_usage_events.py:72-97` |
+| Storage/auth/tool-lib errors | `DatabaseOperationError`, `AgentRepositoryError`, `AuthError` (core), `BedrockError` tree with `BedrockValidationError` (tools lib) | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/errors.py:10-25, 55-56`, `crewai-core/src/crewai_core/auth/token.py:8`, `crewai-tools/src/crewai_tools/aws/bedrock/exceptions.py:4-17` |
+| Empty central aggregator | `utilities/exceptions/__init__.py` contains only a docstring — no central export of the taxonomy | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/utilities/exceptions/__init__.py:1` |
+| Tests: context-window conversion | `test_context_window_exceeded_error_handling` asserts litellm `ContextWindowExceededError` converts to `LLMContextLengthExceededError` (streaming and non-streaming) | `studies/agent-harness-study/sources/crewai/lib/crewai/tests/test_llm.py:367-401` |
+| Docs: retry & context knobs | `max_retry_limit` documented (default 2); `respect_context_window` and automatic context-window management documented | `studies/agent-harness-study/sources/crewai/docs/edge/en/concepts/agents.mdx:60-61, 374` |
+| Docs: protocol error codes | A2A module docstring documents JSON-RPC code ranges and extension ranges | `studies/agent-harness-study/sources/crewai/lib/crewai/src/crewai/a2a/errors.py:1-10` |
 
 ## Answers to Dimension Questions
 
-1. **Are errors classified by source?** Partially. There is no single central taxonomy, but each subsystem defines its own. The clearest source classification exists in: (a) the A2A protocol with 22 codes segmented into JSON-RPC standard / A2A-specific / CrewAI-custom, (b) the LLM layer where every provider translation funnels into `LLMContextLengthExceededError`, (c) the agent loop which has three buckets — parser (`OutputParserError`), context (substring-detected), unknown (everything else), (d) the event bus with paired `Started`/`Completed`/`Failed` events per subsystem. There is no project-wide base class or enum tying these together.
+**1. Are errors classified by source?**
+Partially. There is no single source-oriented taxonomy; instead each subsystem defines its own:
+- *Model/provider*: `LLMContextLengthExceededError` plus provider-specific mapping in completion handlers (`openai/completion.py:923-947`); litellm-originated errors identified only by module-name prefix (`agent/core.py:695`).
+- *Tool*: `ToolUsageError` (`tools/tool_usage.py:68`) and four distinct tool error event types (`events/types/tool_usage_events.py:72-97`).
+- *Validation*: `GuardrailResult.error` (`utilities/guardrail.py:77-79`), `FileValidationError` subtree (`crewai-files/.../exceptions.py:18-63`), `BedrockValidationError` (`crewai-tools/.../bedrock/exceptions.py:16`).
+- *Policy/auth*: `AuthError` (`crewai-core/src/crewai_core/auth/token.py:8`), `AuthenticationRequiredError` / `AuthorizationFailedError` / `RateLimitExceededError` (`a2a/errors.py:330-365`).
+- *Context*: `LLMContextLengthExceededError`.
+- *Infrastructure*: `DatabaseOperationError` (`utilities/errors.py:10`), `TransientFileError` (`crewai-files/.../exceptions.py:86`).
+- *Timeout*: `TaskTimeoutError` and `A2APollingTimeoutError` (`a2a/errors.py:369-384, 21-22`); `TimeoutError` convention at the `BaseLLM` interface.
+- *User*: No dedicated user-error category was found; user-caused problems surface as validation errors or generic `ValueError`s.
+The event bus is where source classification is most systematic — every error event is namespaced by emitting subsystem.
 
-2. **Is the taxonomy used for handling?** Yes in the agent loop (`crew_agent_executor.py:434-458` and `:1272-1296`), and yes in `lite_agent.py:932-959` and `experimental/agent_executor.py:1435-1449`. The dispatcher branches on `OutputParserError` (recover), context-length (recover-or-abort), and `Exception` (re-raise after logging). The A2A module *defines* the most mature taxonomy but its routing helpers (`is_retryable_error`, `is_client_error`) are unused — no caller branches on them. Storage code uniformly maps `sqlite3.Error` to `DatabaseOperationError` (5 sites in `kickoff_task_outputs_storage.py`). The LLM layer translates every provider's native context exception into the unified `LLMContextLengthExceededError` before bubbling it up.
+**2. Is the taxonomy used for handling?**
+Yes in two subsystems, partially elsewhere. A2A exposes `is_retryable_error()` / `is_client_error()` for programmatic retry-vs-stop decisions (`a2a/errors.py:464-503`). File uploads route on the transient/permanent distinction inside the retry loop itself — permanent errors stop, transient errors back off exponentially (`resolver.py:375-393`). In the core agent loop, handling is driven by exception type for `OutputParserError` and context-length errors, but by fragile heuristics for everything else: litellm module-prefix matching decides passthrough vs retry (`crew_agent_executor.py:444-446`), and substring matching against eight hardcoded phrases decides whether a provider error is a context overflow (`context_window_exceeding_exception.py:4-13`). Tool errors bypass Python exception flow entirely: they become English sentences fed back to the model, bounded by attempt counters (`tools/tool_usage.py:422-465`).
 
-3. **Are error categories documented?** No project-level taxonomy doc. Categories are documented *per file* via docstrings (e.g., `events/event_context.py` describes the `MismatchBehavior` enum; `a2a/errors.py` has a module docstring classifying the JSON-RPC ranges; `memory/storage/backend.py` documents the rationale for `EmbeddingDimensionMismatchError` not being a `RuntimeError`). The Edge docs mention failure events only in the event-listener page (`docs/edge/en/concepts/event-listener.mdx`), listing `ToolUsageErrorEvent`, `LLMCallFailedEvent`, `AgentExecutionErrorEvent`, etc., as bus events without explaining the underlying exception hierarchy. The CLI template generator surfaces `respect_context_window` only as a commented-out JSON key.
+**3. Are error categories documented?**
+Weakly. Documentation exists as scattered docstrings: the BaseLLM contract specifies ValueError/TimeoutError/RuntimeError semantics (`llms/base_llm.py:316-318, 353-355`), the A2A module documents its JSON-RPC code ranges (`a2a/errors.py:1-10`), and every exception class carries a docstring. User-facing docs cover the operational knobs (`max_retry_limit` default 2 and `respect_context_window` summarization, `docs/edge/en/concepts/agents.mdx:60-61, 374`) but I found no page that documents the error taxonomy itself. Searches across `docs/edge/en/**/*.mdx` for "error handling" surfaced only per-tool pages (e.g., `docs/edge/en/concepts/tools.mdx`), none describing error categories.
 
-4. **Can new error types be added without breaking existing handling?** Yes for the agent loop — `except Exception` catches anything new and `handle_unknown_error` logs and re-raises (`lib/crewai/src/crewai/utilities/agent_utils.py:632-657`). This is robust but at the cost of every new error being treated as fatal unless someone also adds a branch to the dispatch. For the A2A module, adding a new code requires: a new enum entry, a default in `ERROR_MESSAGES`, a new dataclass subclass — three sites to touch (`lib/crewai/src/crewai/a2a/errors.py:25-124,166-441`) plus the `is_retryable_error`/`is_client_error` allowlists if the new code needs routing semantics. For MCP, the `error_type` field is free-form (`str | None`) so adding a value is a no-op but no type system catches typos.
+**4. Can new error types be added without breaking existing handling?**
+Mostly yes. Dispatch is by concrete-type checks and fall-through chains: a new exception that is not recognized falls into generic branches (log + raise, or unknown-error bucket in the retry loop, `resolver.py:384-386`). The A2A enum reserves the -32768..-32100 range for implementation-defined codes (`a2a/errors.py:9, 69`), making protocol-code extension safe. Two caveats: (a) new LLM providers must be audited against the hardcoded `CONTEXT_LIMIT_ERRORS` phrases — a provider that words context exhaustion differently will be misclassified as a generic error and escalate instead of summarize; (b) because `utilities/exceptions/__init__.py` exports nothing (`utilities/exceptions/__init__.py:1`), consumers cannot rely on one import surface, so new types tend to be discovered by grep rather than by API.
+
+> **Can you tell from the error type whether to retry, escalate, or stop?**
+> Yes for A2A calls (`is_retryable_error`, `a2a/errors.py:464-478`) and file uploads (`TransientUploadError` → retry with backoff; `PermanentUploadError` → stop; `resolver.py:375-393`). Partially for the agent loop: parse and generic errors retry up to `max_retry_limit` / `_max_parsing_attempts`, litellm errors escalate immediately, unresumable context overflows stop via `SystemExit` (`agent_utils.py:747-749`). For raw provider faults other than context length, no — the type alone does not say whether the fault is retryable; transport retries are delegated to provider SDKs (`openai/completion.py:209`).
 
 ## Architectural Decisions
 
-- **No central base class.** Each domain (`utilities/errors`, `utilities/exceptions/`, `a2a/errors.py`, `tools/`, `memory/storage/`, `flow/`, `rag/core/`, `events/event_context.py`, etc.) defines its own `Exception` subclass directly. The package `utilities/exceptions/__init__.py` is empty (one docstring line). The trade-off is locality: a domain's failure surface is self-explanatory, but cross-domain routing requires manual knowledge of every module.
-- **A2A module is the gold standard** — `A2AErrorCode(IntEnum)` + dataclass base + 22 typed subclasses with structured fields + default-message dictionary + routing helpers + JSON-RPC serialization. This is the only place in the codebase that uses an `IntEnum` for error codes.
-- **Provider abstraction via translation, not inheritance.** Each LLM provider (`openai`, `anthropic`, `gemini`, `bedrock`, `azure`) explicitly raises `LLMContextLengthExceededError` from native exceptions inside `except` blocks. The translation list lives in `CONTEXT_LIMIT_ERRORS` (`lib/crewai/src/crewai/utilities/exceptions/context_window_exceeding_exception.py:4-13`).
-- **Substring detection over isinstance for context length.** The agent loop calls `is_context_length_exceeded(e)` which delegates to `LLMContextLengthExceededError._is_context_limit_error(str(e))` — 9 substring phrases. The rationale (implicit) is that litellm re-exposes many provider exceptions whose Python type is not stable, so string matching is more robust than class matching. The cost is fragility to provider message changes.
-- **Event bus as parallel error surface.** Every async subsystem (LLM, agent, tool, MCP, memory, knowledge, A2A, flow, evaluation) has `Started`/`Completed`/`Failed` events. The agent loop still raises Python exceptions synchronously, but downstream listeners (CLI TUI, tracing, evaluation, telemetry) consume the failed-event stream. The two paths coexist without a unified envelope.
-- **Embedding mismatch is intentionally `ValueError`, not `RuntimeError`.** Explicit comment in `memory/storage/backend.py:18-21` — a `RuntimeError` would be silently swallowed by background-save plumbing. This is a domain-specific override of a sensible default.
+1. **Federated taxonomies instead of a central one.** Each package owns its error model (`a2a/errors.py`, `utilities/errors.py`, `crewai_files/processing/exceptions.py`, `crewai_tools/aws/bedrock/exceptions.py`). The intended central module `utilities/exceptions/` holds only one exception type and an empty `__init__` (`lib/crewai/src/crewai/utilities/exceptions/__init__.py:1`), signaling the center was never consolidated.
+2. **Errors-as-feedback for the reasoning loop.** Tool, parsing, and guardrail failures are deliberately converted to strings injected into the model context (i18n templates at `lib/crewai/src/crewai/translations/en.json:45-56`; wiring at `tools/tool_usage.py:428-437` and `task.py:1310-1324`) so the LLM self-corrects, rather than propagating exceptions to the caller. This is a harness design choice: Python-level taxonomy matters mainly at subsystem boundaries.
+3. **Retry policy concentrated at three layers:** provider SDK (`max_retries=2` passed through, `openai/completion.py:209`), agent (`max_retry_limit`, `agent/core.py:707-717`), and bounded self-correction loops (tool attempts, guardrail retries, RPM blocking in `utilities/rpm_controller.py:38-64`).
+4. **Observability taxonomy via typed events.** Rather than enriching exceptions with source metadata, CrewAI emits source-typed error events (`AgentExecutionErrorEvent`, `LLMCallFailedEvent`, etc.) before re-raising (`crew.py:1054-1063`; `agent/core.py:696-704`), keeping exceptions simple and pushing classification to consumers of the event bus.
+5. **Dataclass-based wire-format errors for protocols.** A2A errors double as JSON-RPC payloads (`to_dict`/`to_response`, `a2a/errors.py:146-162`), so the taxonomy is shaped by the wire protocol rather than by internal handling needs.
 
 ## Notable Patterns
 
-- **Three-branch agent loop dispatch** duplicated across 4+ executors with identical structure (sync, async, lite, experimental). Centralization exists in helpers — `handle_output_parser_exception`, `handle_context_length`, `handle_unknown_error`, `is_context_length_exceeded` — all in `lib/crewai/src/crewai/utilities/agent_utils.py:632-749`.
-- **Dataclass + `field(init=False)`** pattern in A2A to lock each subclass to a specific enum code: `code: int = field(default=A2AErrorCode.X, init=False)` (`lib/crewai/src/crewai/a2a/errors.py:166-441`).
-- **Default messages via dict lookup** instead of conditional `__post_init__` chains, except where structured fields like `task_id` produce a richer message (`lib/crewai/src/crewai/a2a/errors.py:101-124,141-144,186-189,223-226`).
-- **Configurable error policy** in event context: `MismatchBehavior(Enum)` with `WARN | RAISE | SILENT` and `EventContextConfig` (`lib/crewai/src/crewai/events/event_context.py:12-26`) lets deployments choose between strict and permissive.
-- **Free-form `error_type: str` on MCP failure events** rather than a typed enum — the docstring gives examples (`"timeout"`, `"authentication"`, `"network"`, `"not_connected"`, `"api_error"`, `"connection_failed"`, `"tool_error"`, `"validation"`, `"server_error"`) with `etc.` indicating openness.
-- **No base class for failure events** either — every `*FailedEvent` is a `BaseEvent` subclass with `error: str` plus optional `error_type: str | None`.
+- **Classifier functions attached to the exception**: `LLMContextLengthExceededError._is_context_limit_error` is a static method reused both to build and to detect the error (`utilities/exceptions/context_window_exceeding_exception.py:32-44`; called from `utilities/agent_utils.py:698-709`).
+- **Multiple-inheritance mixins for orthogonal dimensions**: `TransientUploadError(UploadError, TransientFileError)` composes operation × permanence axes so catch sites can target either axis (`crewai-files/processing/exceptions.py:98-103`).
+- **Classification recorded in telemetry**: the retry loop tags each failure `transient` / `permanent` / `unknown` into metrics metadata (`resolver.py:376, 382, 385`), making the taxonomy observable in operations.
+- **Per-provider classifier hooks**: Gemini and Bedrock uploaders own their provider→taxonomy mapping functions (`uploaders/gemini.py:48-64`, `uploaders/bedrock.py:28-49`), keeping SDK specifics out of shared code.
+- **Model-dependent tuning of error tolerance**: `_max_parsing_attempts` drops from 3 to 2 when the function-calling LLM is a "bigger" OpenAI model (`tools/tool_usage.py:44-62, 114-119`).
+- **Passthrough allow-list for foreign exceptions**: `_passthrough_exceptions` tuple plus litellm module-prefix check let third-party errors skip agent-level retries (`agent/core.py:133, 695-706`).
 
 ## Tradeoffs
 
-- **Local taxonomies vs. global classification.** Each domain owns its exceptions, which is easy to extend but means callers must know multiple modules. The agent loop's `except Exception` fallback means an unhandled error is never lost but is also never classified.
-- **Substring matching vs. type checking.** Catches unknown provider exception classes but breaks silently if a provider changes its error message text. `CONTEXT_LIMIT_ERRORS` would need a manual update.
-- **A2A helper code is unused.** `is_retryable_error` and `is_client_error` exist but no code branches on them. This is either dead API surface, intended library surface, or work-in-progress; no evidence in source of intent.
-- **Tool quota errors are uncaught.** `ToolUsageLimitExceededError` is raised in `structured_tool.py:315,350` but no `except` clause in the agent loop catches it. The agent will propagate the exception and abort the run.
-- **`SystemExit` as abort signal.** `handle_context_length` raises `SystemExit` when `respect_context_window=False` (`utilities/agent_utils.py:747-749`). This makes the abort hard to catch in user code without `except SystemExit` and ties "should retry vs. stop" to a hard process-exit signal.
+- **String-matching classification (fragility over coverage).** Matching eight English phrases covers major providers today (`context_window_exceeding_exception.py:4-13`) with zero dependency on SDK exception types, but silently degrades when providers reword messages or new providers appear; misclassification escalates instead of summarizes.
+- **Module-prefix provider detection (coupling).** `startswith("litellm")` ties retry policy to a specific provider library's packaging (`crew_agent_executor.py:445`); swapping the LLM stack changes retry semantics invisibly.
+- **Errors-as-strings (recoverability vs information loss).** Feeding formatted text to the model maximizes self-correction ability but discards the typed structure — downstream code cannot programmatically distinguish `wrong_tool_name` from `tool_usage_exception` except by parsing the sentence.
+- **Generic exceptions on exhaustion.** Guardrail retry exhaustion raises bare `Exception` (`task.py:1298-1301`), forcing callers to string-match if they want to handle it specially.
+- **Delegated transport retries (simplicity vs observability).** Letting the OpenAI SDK retry internally (`openai/completion.py:209`) keeps CrewAI simple, but those retries are invisible to CrewAI telemetry and cannot be cancelled by higher-level policies.
 
 ## Failure Modes / Edge Cases
 
-- **Provider message drift.** A new OpenAI/Anthropic/Gemini error message that no longer contains any of the 9 `CONTEXT_LIMIT_ERRORS` substrings will fail to be classified as context-length-exceeded, fall through to `handle_unknown_error`, and abort.
-- **MCP error_type typos.** `error_type="timout"` (typo) on an `MCPToolExecutionFailedEvent` will not match any consumer expecting `"timeout"`. There is no enum to constrain it.
-- **Tool quota collisions.** Two tools with the same name from different sources could double-count `current_usage_count` against `max_usage_count` because the counter is per-`CrewStructuredTool` instance, not per-name. (`lib/crewai/src/crewai/tools/structured_tool.py:138-139`).
-- **Embedding dim silently catches some raises.** Comment at `memory/storage/backend.py:18-21` notes that `RuntimeError` is silently swallowed; the class is therefore `ValueError`. If a future refactor moves it to `RuntimeError`, the actionable migration message disappears.
-- **`A2AError` re-init.** Because `A2AError` is a dataclass but extends `Exception`, Python's dataclass+exception interaction allows construction without args except `code`. Callers must always pass `code`.
-- **Empty exceptions package.** Importing from `crewai.utilities.exceptions` resolves to an empty module, so consumers must import from the leaf modules (`context_window_exceeding_exception`). This is documented but easy to miss.
+- **Misclassified provider error**: a non-OpenAI provider phrasing context exhaustion differently than the eight phrases yields a generic-exception path: logged, re-raised, counted against `max_retry_limit`, potentially killing the run instead of triggering summarization (`crew_agent_executor.py:444-458`).
+- **Silent swallowing of tool failures**: after `_max_parsing_attempts`, the error becomes a "Moving on then" string and execution continues with degraded capability (`tools/tool_usage.py:426-437`); only verbose mode and events reveal it.
+- **Blocking rate limiter**: `RPMController._wait_for_next_minute` sleeps 60s inline (`rpm_controller.py:73-75`) — under async execution this stalls the loop rather than surfacing a retryable rate-limit condition.
+- **Unknown uploader errors retried as transient**: any unrecognized exception in `_upload_with_retry` is treated as retryable and burns all backoff attempts before returning `None` (`resolver.py:384-393`), e.g., a deterministic bug in the uploader wastes `UPLOAD_MAX_RETRIES` cycles.
+- **Empty-taxonomy import trap**: code importing error types from `crewai.utilities.exceptions` gets only what individual modules leak; the near-empty `__init__` invites inconsistent import paths across the codebase.
 
 ## Future Considerations
 
-- The 22-code A2A enum could be the seed for a unified `CrewAIErrorCode` enum plus a `BaseCrewAIError` class so that consumers can `except BaseCrewAIError` and inspect `error.code`.
-- `is_retryable_error` and `is_client_error` should either be called somewhere (most natural place: an HTTP/a2a retry layer) or removed.
-- `ToolUsageLimitExceededError` needs a catch site in the agent loop; the natural place is the same `except Exception` branch in `crew_agent_executor.py:444-458` with a dedicated handler.
-- `CONTEXT_LIMIT_ERRORS` should either be kept current via provider-integration tests or replaced with `isinstance` against a stable union of types.
-- `error_type` on MCP failure events would benefit from a `Literal[...]` (or small `Enum`) to make typos compile-time errors instead of runtime mismatches.
-- A single `docs/errors.mdx` summarizing the dispatch matrix (which error → which handler → which outcome) would close the documentation gap.
+- Introduce a shared base (e.g., `CrewAIError` with a `source: Literal["model","provider","tool","validation","policy","context","user","infrastructure","timeout"]` field) exported from `utilities/exceptions/__init__.py`, and migrate subsystem hierarchies onto it incrementally.
+- Replace message-substring context detection with SDK-typed checks where available (the OpenAI provider already catches typed SDK errors before falling back to the substring check, `openai/completion.py:937-940`); keep the phrase list as last-resort fallback only.
+- Replace the litellm module-prefix test with an explicit configurable passthrough exception list (`_passthrough_exceptions` already exists as a seam at `agent/core.py:133` but defaults to empty).
+- Publish a docs page enumerating error categories and their handling semantics, mirroring what `docs/edge/en/concepts/agents.mdx:60-61` does for retry knobs.
+- Add unit tests for `is_retryable_error` / `is_client_error` and for `classify_upload_error` status-code boundaries (429 vs 500 vs 4xx); no tests were found exercising these predicates (`lib/crewai/tests/a2a/` contains integration tests only).
 
 ## Questions / Gaps
 
-- Is there an intent behind `is_retryable_error`/`is_client_error` being defined but unused? Searched `lib/` for callers: no references found in source or tests.
-- Is the empty `utilities/exceptions/__init__.py` placeholder for a future unified export module, or is the convention "import from leaf modules"?
-- Are MCP `error_type` strings expected to remain free-form or is there an upstream type definition in `crewai-tools`?
-- Is `SystemExit` raised in `handle_context_length` an intentional public contract or an internal abort signal that should be migrated to a typed error?
-- Where is `DatabaseOperationError` caught? Searched: it is raised in `kickoff_task_outputs_storage.py` but no `except DatabaseOperationError` exists in `lib/`. Callers must rely on `except Exception`.
+- **No evidence found** for a documented, repo-level error taxonomy (searched `docs/edge/**` for "error handling", "retry"; inspected `utilities/exceptions/`; checked AGENTS.md). Documentation of categories is limited to inline docstrings and parameter tables.
+- **No evidence found** of tests covering `A2AErrorCode` retryability helpers or `classify_upload_error`; `rg` over `lib/crewai/tests/` and `lib/crewai-files/tests/` for `is_retryable_error` and `TransientUploadError` returned no test-file hits (only production code).
+- Whether the `user` error-source category is intentionally absent (folded into validation) or merely unrealized could not be determined from the code.
+- The `_passthrough_exceptions` tuple is always empty in-repo (`agent/core.py:133`); no configuration path populating it was found, so its intended extension mechanism appears unused or reserved for external embedders.
+- Cross-library consistency (e.g., whether `crewai-tools`' `BedrockValidationError` is ever caught by `lib/crewai` handling code) was not traced end-to-end; within the single-source boundary it appears the tools-lib exceptions propagate uncaught to users.
 
 ---
 
-Generated by `13.01-error-taxonomy` against `crewai`.
+Generated by `dimensions/13.01-error-taxonomy.md` against `crewai`.
