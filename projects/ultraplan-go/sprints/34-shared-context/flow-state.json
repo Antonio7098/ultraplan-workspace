@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "34-shared-context",
-  "updatedAt": "2026-08-21T08:14:24.394494014Z",
+  "updatedAt": "2026-08-21T08:55:02.944359791Z",
   "stages": [
     {
       "stage": "requirements",
@@ -546,6 +546,207 @@
     "authorChangedPaths": [
       "src/tests/sprint-34-shared-context.ts"
     ],
+    "coverageMapping": {
+      "sprint": "34-shared-context",
+      "suites": [
+        "sprint-34"
+      ],
+      "complete": false,
+      "rationale": "real-boundary probes are present, but AC-12, AC-13, and AC-15 remain unassigned: deterministic fake-runtime proof, provider-backed requirements-to-plan dogfood, and the complete release-gate matrix must not be inferred from adjacent probes",
+      "required_coverage": [
+        "AC-01",
+        "AC-02",
+        "AC-03",
+        "AC-04",
+        "AC-05",
+        "AC-06",
+        "AC-07",
+        "AC-08",
+        "AC-09",
+        "AC-10",
+        "AC-11",
+        "AC-12",
+        "AC-13",
+        "AC-14",
+        "AC-15",
+        "AC-16"
+      ],
+      "requirements": [
+        {
+          "id": "AC-01",
+          "description": "`code-context.md` stores references rather than copied source: every selected entry has a repository-relative `Path`, exact `Lines`, optional `Symbol`, and concrete `Rationale`; fenced source content is rejected.",
+          "mapped_tests": [
+            "sprint-34-live-shared-prefix-byte-equality"
+          ]
+        },
+        {
+          "id": "AC-02",
+          "description": "One renderer owned by `internal/sprint` composes downstream prompts in the required stable-to-stage-specific order.",
+          "mapped_tests": [
+            "sprint-34-live-shared-prefix-byte-equality"
+          ]
+        },
+        {
+          "id": "AC-03",
+          "description": "Compatible downstream requests contain a byte-for-byte identical common prefix with exact stored requirements, code context, and deterministic source evidence.",
+          "mapped_tests": [
+            "sprint-34-live-shared-prefix-byte-equality",
+            "sprint-34-live-shared-prefix-dynamic-exclusion",
+            "sprint-34-live-status-agrees-with-shared-prefix-artifact"
+          ]
+        },
+        {
+          "id": "AC-04",
+          "description": "Dynamic execution data does not enter the common prefix and appears only after the stage boundary or in runtime metadata.",
+          "mapped_tests": [
+            "sprint-34-live-shared-prefix-byte-equality",
+            "sprint-34-live-shared-prefix-dynamic-exclusion"
+          ]
+        },
+        {
+          "id": "AC-05",
+          "description": "Every covered agent-backed planning, execute, review, and smoke operation receives the shared context.",
+          "mapped_tests": [
+            "sprint-34-live-shared-prefix-byte-equality",
+            "sprint-34-live-shared-prefix-dynamic-exclusion"
+          ]
+        },
+        {
+          "id": "AC-06",
+          "description": "Resolved snippets are identified as transient prepared evidence and agents may inspect additional live repository files.",
+          "mapped_tests": [
+            "sprint-34-live-shared-prefix-byte-equality",
+            "sprint-34-live-shared-prefix-dynamic-exclusion"
+          ]
+        },
+        {
+          "id": "AC-07",
+          "description": "`flow --to plan` preserves canonical stage order and runs `code-context` exactly once.",
+          "mapped_tests": [
+            "sprint-34-live-cumulative-flow-code-context-once"
+          ]
+        },
+        {
+          "id": "AC-08",
+          "description": "Code-context rerun, failure, validation, and cancellation preserve truthful state transitions, atomic replacement, and the last valid artifact.",
+          "mapped_tests": [
+            "sprint-34-live-atomic-rerun-preserves-valid-artifact"
+          ]
+        },
+        {
+          "id": "AC-09",
+          "description": "CLI, TUI, and browser agree on code-context readiness, progress, state, preview, findings, rerun, cancellation, and recovery.",
+          "mapped_tests": [
+            "sprint-34-live-status-agrees-with-shared-prefix-artifact"
+          ]
+        },
+        {
+          "id": "AC-10",
+          "description": "The manual `ultraplan-code-context` skill delegates execution to the canonical CLI flow operation.",
+          "mapped_tests": [
+            "sprint-34-live-code-context-skill-canonical-delegation"
+          ]
+        },
+        {
+          "id": "AC-11",
+          "description": "Skill dry-run is non-mutating; customization, force restoration, all-skill materialization, content, and metadata remain correct.",
+          "mapped_tests": [
+            "sprint-34-live-code-context-skill-canonical-delegation"
+          ]
+        },
+        {
+          "id": "AC-12",
+          "description": "Deterministic fake-runtime fixtures prove prefix equality, dynamic-data exclusion, exact-once flow, cancellation, failed-rerun preservation, and browser recovery.",
+          "mapped_tests": []
+        },
+        {
+          "id": "AC-13",
+          "description": "A temporary representative workspace completes a real provider-backed requirements-to-plan flow, or records the exact unavailable prerequisite as blocked.",
+          "mapped_tests": []
+        },
+        {
+          "id": "AC-14",
+          "description": "Required documentation agrees with executable behavior and does not claim provider cache hits.",
+          "mapped_tests": [
+            "sprint-34-live-documentation-and-scope-guard"
+          ]
+        },
+        {
+          "id": "AC-15",
+          "description": "The complete Go test, race, vet, build, and diff-check release-gate matrix passes.",
+          "mapped_tests": []
+        },
+        {
+          "id": "AC-16",
+          "description": "No prohibited indexing, retrieval, cache, manifest, staleness, provenance, repair, or related out-of-scope system is introduced.",
+          "mapped_tests": [
+            "sprint-34-live-documentation-and-scope-guard"
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "id": "sprint-34-live-atomic-rerun-preserves-valid-artifact",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-08"
+          ]
+        },
+        {
+          "id": "sprint-34-live-code-context-skill-canonical-delegation",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-10",
+            "AC-11"
+          ]
+        },
+        {
+          "id": "sprint-34-live-cumulative-flow-code-context-once",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-07"
+          ]
+        },
+        {
+          "id": "sprint-34-live-documentation-and-scope-guard",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-14",
+            "AC-16"
+          ]
+        },
+        {
+          "id": "sprint-34-live-shared-prefix-byte-equality",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-01",
+            "AC-02",
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06"
+          ]
+        },
+        {
+          "id": "sprint-34-live-shared-prefix-dynamic-exclusion",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-03",
+            "AC-04",
+            "AC-05",
+            "AC-06"
+          ]
+        },
+        {
+          "id": "sprint-34-live-status-agrees-with-shared-prefix-artifact",
+          "suite": "sprint-34",
+          "coverage": [
+            "AC-03",
+            "AC-09"
+          ]
+        }
+      ]
+    },
     "reviewOverride": false,
     "stale": false,
     "reconciliationRequired": false,

@@ -79,21 +79,25 @@ This carry-forward rule should be copied into the Sprint 2 requirements and spri
 
 ---
 
-# Implementation Wave 1 — Coherent Core Lifecycle
+## Implementation Wave 1 — Coherent Core Lifecycle
 
-## Sprint 1: Core Lifecycle
+### Sprint 1: Core Lifecycle
 
-### Goal
+> Slug: 01-core-lifecycle
+> Status: planned
+> Depends On:
+
+#### Goal
 
 Establish a complete, understandable, non-cancellation execution lifecycle for one in-process work function.
 
 At sprint completion, Aren must be able to create a run, invoke work once, resolve success, returned failure, or panic, publish one coherent terminal outcome, retain basic lifecycle history, and allow multiple callers to wait safely.
 
-### Primary uncertainty
+#### Uncertainty
 
 > Can Aren represent and enforce one lifecycle correctly before cancellation and adversarial concurrency are added?
 
-### Required scope
+#### Build
 
 - opaque Aren-generated run identity;
 - lifecycle states:
@@ -117,7 +121,7 @@ At sprint completion, Aren must be able to create a run, invoke work once, resol
 - contract, negative, panic, waiter, and atomicity tests;
 - initial package architecture and dependency direction.
 
-### Deliberately deferred to Sprint 2
+#### Deferred
 
 - caller cancellation API;
 - cancellation disposition;
@@ -132,7 +136,7 @@ At sprint completion, Aren must be able to create a run, invoke work once, resol
 
 Deferred items must not be predesigned through speculative interfaces. Sprint 1 should leave clear implementation seams only where its own requirements earn them.
 
-### Suggested reasoning areas
+#### Notes
 
 The Sprint 1 index should select only the reasoning documents needed to resolve current uncertainty. Likely candidates are:
 
@@ -145,7 +149,7 @@ The Sprint 1 index should select only the reasoning documents needed to resolve 
 
 The sprint index may merge or omit areas when the distinction does not justify a separate reasoning document.
 
-### Suggested study selection
+#### Evidence
 
 Strong candidates from the agent-harness study:
 
@@ -158,7 +162,7 @@ Strong candidates from the agent-harness study:
 
 Supporting Go reports may include project structure, state/context, concurrency, testing, and philosophy.
 
-### Deliverables
+#### Deliverables
 
 Normal UltraPlan sprint artifacts:
 
@@ -184,7 +188,7 @@ Implementation and evidence should produce, at minimum:
 - comprehensive Sprint 1 tests;
 - review evidence.
 
-### Acceptance
+#### Acceptance
 
 Sprint 1 is complete only when:
 
@@ -199,7 +203,7 @@ Sprint 1 is complete only when:
 - the implementation remains small enough to inspect directly;
 - Sprint 1 review records all realised API and architecture decisions needed by Sprint 2.
 
-### Evidence
+#### Evidence
 
 Expected commands will be finalized by Sprint 1 reasoning, but should include equivalents of:
 
@@ -213,21 +217,25 @@ Any diagnostic command introduced in this sprint must exercise the real lifecycl
 
 ---
 
-# Implementation Wave 2 — Cancellation And Concurrency Hardening
+## Implementation Wave 2 — Cancellation And Concurrency Hardening
 
-## Sprint 2: Cancellation And Concurrency
+### Sprint 2: Cancellation And Concurrency
 
-### Goal
+> Slug: 02-cancellation-and-concurrency
+> Status: planned
+> Depends On: 1
+
+#### Goal
 
 Extend the realised Sprint 1 lifecycle with truthful cooperative cancellation, deterministic terminal resolution, multiple event observers, replay, and adversarial concurrency proof.
 
 At sprint completion, Aren must remain coherent under cancellation-completion races, concurrent waiting, event subscription, parent-context cancellation, slow or abandoned observers, and repeated stress under the Go race detector.
 
-### Primary uncertainty
+#### Uncertainty
 
 > Does the Sprint 1 lifecycle remain truthful, deterministic, and leak-resistant when cancellation and concurrent observation are introduced?
 
-### Mandatory prior inputs
+#### Notes
 
 Sprint 2 must include all completed Sprint 1 planning and review artifacts listed in the cross-sprint carry-forward rule.
 
@@ -244,7 +252,7 @@ That section must state for each relevant Sprint 1 decision whether Sprint 2:
 - supersedes it;
 - leaves it unaffected.
 
-### Required scope
+#### Build
 
 - explicit run-controller cancellation;
 - parent-context cancellation through the same acceptance path;
@@ -274,7 +282,7 @@ That section must state for each relevant Sprint 1 decision whether Sprint 2:
 - final lifecycle contract;
 - phase review and simplification review.
 
-### Suggested reasoning areas
+#### Notes
 
 Likely candidates are:
 
@@ -287,7 +295,7 @@ Likely candidates are:
 
 The sprint index should avoid repeating Sprint 1 area reasoning unchanged. It should create new area documents where Sprint 2 introduces genuine uncertainty and point directly to Sprint 1 reasoning elsewhere.
 
-### Suggested study selection
+#### Evidence
 
 Strong candidates from the agent-harness study:
 
@@ -302,7 +310,7 @@ Strong candidates from the agent-harness study:
 
 Supporting Go reports may include state/context, concurrency, IO abstraction, testing strategy, error handling, and philosophy.
 
-### Deliverables
+#### Deliverables
 
 Normal UltraPlan sprint artifacts plus:
 
@@ -315,7 +323,7 @@ Normal UltraPlan sprint artifacts plus:
 - promoted execution-lifecycle contract;
 - Phase 1 review.
 
-### Required diagnostic scenarios
+#### Commands
 
 ```text
 aren dev run success
@@ -332,7 +340,7 @@ aren dev run parent-cancel
 aren dev run ignore-cancel
 ```
 
-### Acceptance
+#### Acceptance
 
 Sprint 2 is complete only when:
 
@@ -352,7 +360,7 @@ Sprint 2 is complete only when:
 - the final lifecycle contract matches the realised implementation;
 - phase review finds no unresolved foundational ambiguity.
 
-### Evidence
+#### Evidence
 
 Expected commands should include equivalents of:
 
@@ -427,3 +435,4 @@ The following belong to later Aren UltraPlan projects:
 - remote APIs and multi-language clients.
 
 Phase 1 may record questions about these topics but must not design or implement them.
+
