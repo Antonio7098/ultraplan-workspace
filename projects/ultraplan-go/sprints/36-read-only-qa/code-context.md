@@ -2,328 +2,294 @@
 
 ## Sprint Scope
 
-Sprint 36 adds a distinct read-only QA verification capability after execute and alongside, not inside, the planning-stage model. It must deterministically map accepted changed paths into bounded behavioral shards, run mutation-contained investigations, persist falsifiable theory outcomes and bounded follow-up, synthesize all outcomes without issue promotion, and project one durable status across CLI, JSON, TUI, and browser surfaces.
+Sprint 36 introduces deterministic, resumable, read-only QA decomposition and synthesis after execution and Conformance Review. QA must be represented by a verification-phase model independent of `PlanningStage`, map governed inputs and changed behavior into bounded shards, run investigators under enforced non-mutating runtime permissions, retain theory outcomes, and synthesize cross-shard results without creating tests, modifying production code, promoting repair issues, or performing automatic repair.
 
-The implementation must reuse the existing durable run-control authority for run identity, cancellation, replay, terminal arbitration, and recovery while keeping detailed QA maps, attempts, theories, evidence references, and synthesis in verification-owned versioned state. Existing `review` and `review.md` behavior remains compatible but is presented as Conformance Review; existing smoke and verify authority must not change.
+Detailed QA map, shard, theory, attempt, and synthesis state belongs in a schema-versioned atomic artifact outside `flow-state.json`. Flow state may retain only bounded canonical QA summary, freshness, verdict, and pointer data. Runtime-backed QA must reuse the durable run-control authority and remain observable and cancellable through CLI, TUI, and web adapters.
+
+The existing `review` command and `review.md` artifact remain compatible while human-facing terminology changes to Conformance Review. Smoke integration and evidence-producing QA remain Sprint 37 work.
 
 ## Inspected Repository Areas
 
-- `internal/sprint`: planning and verification domain types, flow state, artifact containment, execute changed-path evidence, review preparation/execution/validation, smoke state, verification locking, and recovery behavior.
-- `internal/runcontrol`: generic durable run identities, lifecycle, cancellation, event replay, fencing, terminal arbitration, reconciliation, retention, and cross-process tests.
-- `internal/app`: shared operation vocabulary, governed-input fingerprints, runtime-backed dispatch, durable command integration, summaries, error classification, and adapter-neutral use cases.
-- `internal/platform/runtime`: generic runtime requests, sandbox and permission-policy mapping, structured validation, and safe runtime metadata.
-- `internal/web`: in-memory transport projection, browser operation contracts, bounded events, and the enforced dependency boundary on `internal/app`.
-- CLI, TUI, JSON, and browser compatibility tests relevant to adding QA operations and projections without creating independent workflow semantics.
-- Existing deterministic, malformed-output, stale-state, read-only request, atomic persistence, cancellation, recovery, and cross-process tests that establish patterns for Sprint 36 coverage.
+- Sprint domain types, planning-stage vocabulary, verification summaries, artifact paths, containment, state validation, and atomic persistence.
+- Execute evidence, target identity, changed-path extraction, Conformance Review manifests, deterministic fingerprints, resumable attempts, and freshness checks.
+- Generic runtime sandbox and permission-policy propagation into Agentwrap.
+- App operation kinds, preparation fingerprints, shared runtime dispatch, durable acceptance, cancellation, and run observation.
+- CLI command dispatch and durable runtime-backed command inventory.
+- TUI routes, operation projections, durable run views, and existing verification presentation.
+- Web operation DTOs, allowlisted operation mapping, confirmation flow, compatibility tests, and import boundaries.
+- Configuration surfaces, architecture documentation, QA roadmap, and release gates.
+- No Sprint 36 QA implementation files or generated sprint artifacts were present in this checkout.
 
 ## Selected Source References
 
-### Verification And Planning Domain Boundary
+### Sprint 36 Product Boundary
+- **Path:** `docs/plans/integrated-roadmap.md`
+- **Lines:** `488-554`
+- **Symbol:** `Sprint 36 - Read-only QA decomposition and synthesis`
+- **Rationale:** Defines the repository's terminology, verification-phase separation, deterministic map inputs, investigator permissions, synthesis responsibilities, browser visibility, and exit criteria. It also limits this sprint to read-only QA without generated tests or repair.
 
+### Existing Planning Stage Vocabulary
 - **Path:** `internal/sprint/domain.go`
-- **Lines:** `10-59`
-- **Symbol:** `FlowStateSchemaVersion`, `PlanningStage`, `StageState`
-- **Rationale:** Defines the closed planning-stage vocabulary and versioned flow-state errors. QA lifecycle must not be added as an overloaded planning stage, and schema evolution must preserve the existing migration/error contract.
+- **Lines:** `30-40`
+- **Symbol:** `PlanningStage`
+- **Rationale:** Enumerates the canonical planning stages. The new verification phase must remain a separate type rather than extending this planning sequence.
 
+### Existing Verification State Shape
 - **Path:** `internal/sprint/domain.go`
-- **Lines:** `122-169`
+- **Lines:** `117-169`
 - **Symbol:** `ExecuteRunState`, `FlowState`, `VerificationAttempt`
-- **Rationale:** Shows current ownership boundaries: execute has detailed independent state, while flow state embeds only review and smoke summaries. It also provides the existing bounded attempt vocabulary and illustrates why detailed QA state should have a separate contract.
+- **Rationale:** Shows authoritative execute target identity, the current embedding of detailed review and smoke state in `flow-state.json`, and the shared bounded attempt vocabulary. QA detailed state must not repeat the existing embedding pattern.
 
+### Current Verification Projection
 - **Path:** `internal/sprint/domain.go`
-- **Lines:** `197-244`
+- **Lines:** `186-244`
 - **Symbol:** `VerificationStage`, `VerificationStatus`, `StatusSummary`
-- **Rationale:** This is the current cross-surface verification projection. It presently identifies verification stages with `PlanningStage` and only exposes review and smoke, making it a central compatibility and migration boundary for an independent QA phase.
+- **Rationale:** Defines the canonical freshness, artifact, fingerprint, attempt, verdict, and next-action projection currently limited to review and smoke. This is the compatibility seam for a bounded QA summary and pointer.
 
-- **Path:** `internal/sprint/domain.go`
-- **Lines:** `264-337`
-- **Symbol:** `PlanningStages`, `ValidStage`, `validateAttempt`
-- **Rationale:** Establishes the closed ordered planning-stage invariant and bounded diagnostic validation. QA must remain outside `PlanningStages`, while its own state validation should retain equivalent fail-closed identity, lifecycle, and diagnostic bounds.
+### Sprint Artifact Containment
+- **Path:** `internal/sprint/artifacts.go`
+- **Lines:** `11-74`
+- **Symbol:** `ArtifactRelPath`, `FlowStateRelPath`, `resolveSprintContained`
+- **Rationale:** Centralizes stage artifact names and enforces lexical and canonical sprint-root containment. New QA summary and detailed-state paths must use equivalent containment rather than direct path joins.
 
-### Flow-State Authority And Persistence
-
+### Strict Flow-State Loading
 - **Path:** `internal/sprint/state.go`
 - **Lines:** `20-80`
 - **Symbol:** `LoadFlowState`
-- **Rationale:** Implements database-first loading, strict JSON decoding, supported-version checks, migration, and final semantic validation. It is the model for unsupported, malformed, legacy, and partially compatible state behavior.
+- **Rationale:** Enforces explicit schema versions, rejects unknown fields and trailing JSON, supports a bounded legacy migration, and validates loaded state before use. Any QA summary added to flow state must preserve this fail-closed compatibility behavior.
 
-- **Path:** `internal/sprint/state.go`
-- **Lines:** `150-191`
-- **Symbol:** `migrateFlowStateV1`
-- **Rationale:** Demonstrates the existing one-version migration policy and explicit preservation of historical review/smoke outcomes as stale, unverifiable evidence. QA schema evolution and invalidation should be reasoned against this precedent.
-
+### Atomic Flow-State Persistence
 - **Path:** `internal/sprint/state.go`
 - **Lines:** `201-288`
 - **Symbol:** `SaveFlowState`, `saveFlowStateWithHooks`
-- **Rationale:** Defines preservation of completed verification summaries, database authority, checkpoint behavior, and atomic file replacement with flush and directory sync. Any QA summary pointer committed to flow state must respect this ordering and atomicity boundary.
+- **Rationale:** Preserves prior verification records during planning refreshes and uses validated temporary-file, flush, rename, and directory-sync persistence. Separate detailed QA state should provide the same atomic preservation guarantees without becoming flow-state authority.
 
-- **Path:** `internal/sprint/state.go`
-- **Lines:** `291-358`
-- **Symbol:** `ValidateFlowState`
-- **Rationale:** Enforces exact stage order, path containment, supported outcomes, and review/smoke validation before persistence is accepted. This is the canonical location affected by any additive QA summary and pointer fields.
+### Execute Evidence Authority
+- **Path:** `internal/sprint/execute_state.go`
+- **Lines:** `14-117`
+- **Symbol:** `LoadExecuteRunState`, `SaveExecuteRunState`
+- **Rationale:** Provides the contained, validated, schema-versioned execution record containing target identity, plan fingerprint, task outcomes, and evidence. QA mapping should consume this authority rather than rediscovering execution facts from prose.
 
-- **Path:** `internal/sprint/artifacts.go`
-- **Lines:** `11-74`
-- **Symbol:** `ArtifactRelPath`, `resolveSprintContained`
-- **Rationale:** Centralizes canonical review/smoke compatibility paths and sprint-root containment. A verification-owned QA state layout must use equivalent containment without introducing canonical `qa.md`.
-
-### Execute Evidence And Deterministic Inputs
-
+### Review Manifest Inputs
 - **Path:** `internal/sprint/review.go`
-- **Lines:** `91-165`
-- **Symbol:** `ReviewManifest`, `ReviewCoverageResult`, `ReviewRequest`, `ReviewResult`
-- **Rationale:** Provides the existing frozen-input manifest, changed-path list, bounded coverage-result schema, progress callback, and compatibility result shape used by Conformance Review. QA can reuse evidence-selection lessons without conflating theory outcomes with review findings.
-
-- **Path:** `internal/sprint/review.go`
-- **Lines:** `261-370`
+- **Lines:** `167-290`
 - **Symbol:** `Service.PrepareReview`
-- **Rationale:** Shows how current verification collects execute run state, obtains changed paths, validates target containment/readability, adds selected contracts, sorts inputs and coverage, and computes a deterministic manifest fingerprint. This is the nearest implemented input-governance precedent for the QA mapper.
+- **Rationale:** Demonstrates how requirements, code context, sprint reasoning, plan, execute evidence, project contracts, changed paths, and target revision identity are frozen into a deterministic governed-input manifest. These inputs substantially overlap the required QA map inputs.
 
+### Changed-Path and Manifest Fingerprints
 - **Path:** `internal/sprint/review.go`
-- **Lines:** `1371-1414`
-- **Symbol:** `reviewChangedPaths`, `excludeGovernedReviewPaths`
-- **Rationale:** Defines the currently accepted source of changed paths: execute run-state `files` plus task evidence paths, deduplicated and sorted, with governed workspace artifacts excluded. Sprint reasoning must decide whether this is sufficiently authoritative for QA and how missing or deleted paths block mapping.
+- **Lines:** `1329-1412`
+- **Symbol:** `fingerprintReviewManifest`, `reviewChangedPaths`, `excludeGovernedReviewPaths`
+- **Rationale:** Supplies deterministic hashing and sorted changed-path extraction while excluding governed workspace artifacts from target changes. QA mapping should retain these identity and ordering properties while adding risk and verification-surface decomposition.
 
-- **Path:** `internal/sprint/review_test.go`
-- **Lines:** `130-187`
-- **Symbol:** `TestReview`
-- **Rationale:** Verifies deterministic fingerprints, changed-path filtering, canonical `review.md`, preservation of the last valid artifact after malformed output, and read-only reviewer requests. It is a critical regression test pattern for Conformance Review compatibility and QA determinism.
-
-### Conformance Review Compatibility And Safety
-
+### Enforced Read-Only Reviewer Runtime
 - **Path:** `internal/sprint/review.go`
-- **Lines:** `23-89`
-- **Symbol:** `StageReview`, `ReviewStageState`, `ReviewResumeState`, `ReviewCompletion`
-- **Rationale:** Defines current review lifecycle, verdicts, resumable coverage checkpoints, and last-complete canonical evidence. User-facing relabeling to Conformance Review must preserve these types, statuses, commands, and `review.md` consumers.
-
-- **Path:** `internal/sprint/review.go`
-- **Lines:** `870-924`
+- **Lines:** `870-979`
 - **Symbol:** `Service.runReviewer`
-- **Rationale:** Shows existing reviewer isolation: read-only sandbox, restricted permissions, default-deny tools, required permission capability, structured output validation, session resume, and fail-closed handling when enforcement is unsupported. It is the closest current implementation of read-only investigation, but it does not permit safe command execution or perform post-attempt mutation verification.
+- **Rationale:** Configures `read_only` sandboxing, restricted permissions, default deny, an allowlist of read/list/search tools, required permission capability, cancellation, and fail-closed handling when policy enforcement is unsupported. This is the nearest existing runtime safety boundary for QA investigators.
 
-- **Path:** `internal/sprint/review_runtime_validation.go`
-- **Lines:** `15-110`
-- **Symbol:** `extractValidatedReviewResult`, `reviewValidationSpec`
-- **Rationale:** Demonstrates runtime-success-independent acceptance: structured output is extracted, schema and citations are validated, repair attempts are bounded, and cancellation is retained. QA state must similarly reject successful runtime calls whose persisted domain result is invalid.
+### Read-Only Prompt Contract
+- **Path:** `internal/sprint/review.go`
+- **Lines:** `1509-1541`
+- **Symbol:** `renderReviewerPrompt`, `reviewerInputPacket`
+- **Rationale:** Builds bounded investigator prompts from frozen inputs, prohibits writes and destructive actions, requires structured output and citations, and prevents sibling coverage sources from leaking between independent reviewers.
 
-- **Path:** `internal/sprint/review_runtime_validation.go`
-- **Lines:** `192-238`
-- **Symbol:** `reviewResultProblems`
-- **Rationale:** Provides a concrete fail-closed semantic validator with schema, identity, enum, size, uniqueness, citation, and diagnostic-count bounds. It is a useful precedent for validating theories, evidence references, and synthesis output.
+### Resumable Verification State
+- **Path:** `internal/sprint/review.go`
+- **Lines:** `1127-1250`
+- **Symbol:** `validateReviewStageState`, `Service.saveReviewState`
+- **Rationale:** Validates attempt identity, input fingerprints, models, bounded checkpoints, retained sessions, last-complete evidence, and terminal transitions. It is the established resumability behavior to preserve while moving QA's more detailed shard state into its own artifact.
 
-- **Path:** `internal/sprint/review_runtime_validation.go`
-- **Lines:** `250-303`
-- **Symbol:** `reviewManifestChanges`
-- **Rationale:** Compares frozen inputs at promotion and emits bounded invalidation reasons. QA shard reuse and synthesis freshness require a stronger but analogous governed-fingerprint recheck.
+### Sole Review-to-Smoke Transition
+- **Path:** `internal/sprint/verify.go`
+- **Lines:** `19-95`
+- **Symbol:** `VerifyRequest`, `VerifyResult`, `Service.Verify`
+- **Rationale:** Owns the current execute-evidence to review to smoke sequence and explicitly identifies itself as the sole transition. Sprint 36 must add QA without silently redefining smoke as QA or breaking existing review/smoke compatibility.
 
-### Existing Smoke And Verify Compatibility
+### Verification Freshness Derivation
+- **Path:** `internal/sprint/verify.go`
+- **Lines:** `142-249`
+- **Symbol:** `Service.VerificationStatus`
+- **Rationale:** Derives currentness from input fingerprints, artifact digests, validated content, retained attempts, and external evidence without mutating durable state. QA status should follow the same separation between read-only projection and explicit state transition.
 
-- **Path:** `internal/sprint/smoke_types.go`
-- **Lines:** `11-65`
-- **Symbol:** `StageSmoke`, `SmokeExecutionStatus`, `SmokeVerdict`, `SmokePhase`, `SmokeRequest`
-- **Rationale:** Defines the current empirical smoke protocol and lifecycle. QA must not absorb, rename, or alter these semantics, and the use of `PlanningStage` here highlights an existing coupling that should not be repeated for QA.
+### Sprint Service Composition
+- **Path:** `internal/sprint/service.go`
+- **Lines:** `21-75`
+- **Symbol:** `Service`, `StageRuntime`, `WithoutStatusWrites`
+- **Rationale:** Shows current dependencies, planning-stage-keyed runtime configuration, mutation coordination, process runner, and non-persisting status mode. A verification-phase runtime cannot be represented safely by merely adding QA to `map[PlanningStage]StageRuntime`.
 
-- **Path:** `internal/sprint/smoke_types.go`
-- **Lines:** `162-247`
-- **Symbol:** `SmokeResult`, `SmokeStageState`, `SmokeCompletion`
-- **Rationale:** Captures canonical smoke evidence, issue records, changed paths, freshness fingerprints, active attempts, and last-complete outcomes. QA theories must remain non-canonical and must never populate these issue or evidence-adjudication fields.
+### Generic Runtime Permission Model
+- **Path:** `internal/platform/runtime/runtime.go`
+- **Lines:** `21-75`
+- **Symbol:** `Request`, `PermissionPolicy`, `PermissionPathRule`
+- **Rationale:** Exposes sandbox mode, permission mode, tool actions, path rules, unsupported-policy behavior, required capabilities, and runtime metadata. QA must express its read-only policy through this boundary and reject runtimes that cannot enforce it.
 
-- **Path:** `internal/sprint/smoke_types.go`
-- **Lines:** `288-329`
-- **Symbol:** `validateSmokeStageState`
-- **Rationale:** Shows current smoke state validation for status, verdict, canonical path, containment, diagnostics, attempts, overrides, issues, and last-complete identity. It is a compatibility boundary and a model for strict QA validation.
+### Runtime Permission Adapter Test
+- **Path:** `internal/platform/runtime/runtime_test.go`
+- **Lines:** `444-455`
+- **Symbol:** `TestPermissionPathRulesMapToAdapterPolicy`
+- **Rationale:** Verifies path-level deny rules survive translation into Agentwrap policy. QA safety tests should extend this coverage to the complete investigator policy and unsupported-enforcement failure path.
 
-### Generic Durable Run Control
+### Existing Configuration Surface
+- **Path:** `internal/platform/config/config.go`
+- **Lines:** `13-89`
+- **Symbol:** `Config`, `Planning`, `Smoke`, `Agentwrap`
+- **Rationale:** Contains planning/review/smoke model settings and global Agentwrap permissions but no QA-specific model, concurrency, shard, or budget configuration. Any added fields must fit the existing typed configuration and validation model.
 
-- **Path:** `internal/runcontrol/model.go`
-- **Lines:** `16-118`
-- **Symbol:** `Lifecycle`, `CancellationState`, `TerminalOutcome`
-- **Rationale:** Defines the Sprint 35 lifecycle and terminal vocabulary that QA mapping, shard attempts, follow-up, and synthesis must reuse rather than duplicate.
-
-- **Path:** `internal/runcontrol/model.go`
-- **Lines:** `120-190`
-- **Symbol:** `EventType`, `Target`
-- **Rationale:** Establishes bounded generic event kinds and product-owned target correlation. QA may identify phase and shard work through target fields, but theory and synthesis payloads do not belong in this generic event authority.
-
-- **Path:** `internal/runcontrol/model.go`
-- **Lines:** `224-365`
-- **Symbol:** `Correlation`, `Attempt`, `Fence`, `Event`, `Snapshot`
-- **Rationale:** Defines durable correlation identities, lease-fenced attempts, replayable events, snapshots, and terminal invariants. Verification-owned QA records should point to these run and attempt identities while retaining domain outcomes separately.
-
-- **Path:** `internal/runcontrol/model.go`
-- **Lines:** `444-483`
-- **Symbol:** `Acceptance`, `Claim`, `EventDraft`, `TerminalProposal`
-- **Rationale:** Provides the command-side protocol for acceptance, ownership, event recording, and one terminal proposal, plus operational heartbeat and reconciliation bounds.
-
-- **Path:** `internal/runcontrol/interfaces.go`
-- **Lines:** `41-72`
-- **Symbol:** `Notifier`, `Repository`, `Control`
-- **Rationale:** Explicitly states that notifications are non-authoritative and that product workflow state is absent from the run repository. This is the key architectural constraint against storing QA maps, theories, or synthesis in run-control snapshots or events.
-
-- **Path:** `internal/app/run_control.go`
-- **Lines:** `18-73`
-- **Symbol:** `runControlState.repository`
-- **Rationale:** Owns one SQLite repository per workspace, applies retention policy, and reconciles at startup. QA application operations should enter through this existing composition rather than opening another repository or registry.
-
-- **Path:** `internal/app/run_control.go`
-- **Lines:** `122-302`
-- **Symbol:** `controlledRuntime.StartRun`
-- **Rationale:** Traces durable acceptance, claim and fencing, event persistence, cancellation polling and acknowledgement, heartbeat, reconciliation, persistence-failure handling, and terminal arbitration around every runtime call. This is the operational control plane Sprint 36 must reuse.
-
-- **Path:** `internal/app/run_control.go`
-- **Lines:** `352-374`
-- **Symbol:** `targetFromRuntimeRequest`
-- **Rationale:** Maps product metadata to bounded run-control target fields. QA run, phase, shard, and task correlation must fit this generic contract or extend it compatibly without importing QA semantics into runtime or runcontrol.
-
-- **Path:** `internal/runcontrol/process_integration_test.go`
-- **Lines:** `83-125`
-- **Symbol:** `TestProcessIndependentObserverPersistsCancellation`
-- **Rationale:** Proves cross-process cancellation and event observation through durable storage, which QA surfaces must rely on rather than process-local cancellation state.
-
-- **Path:** `internal/runcontrol/process_integration_test.go`
-- **Lines:** `127-233`
-- **Symbol:** `TestProcessUnclaimedAcceptanceIsReconciledAfterOwnerExit`, `TestProcessClaimedOwnerExitIsInterruptedAndRepeatedReconciliationIsIdempotent`
-- **Rationale:** Establishes recovery of accepted and claimed work after owner exit and idempotent reconciliation. QA recovery tests should cover each domain persistence boundary while relying on these run-level guarantees.
-
-### Shared Application Operations
-
+### App Operation Contract
 - **Path:** `internal/app/operations.go`
-- **Lines:** `22-69`
-- **Symbol:** `OperationalUseCases`, `WebOperations`, `DurableOperationManager`, `OperationReconciler`
-- **Rationale:** Defines the adapter-neutral application boundary shared by terminal and browser surfaces. QA status and commands should be exposed here rather than implemented independently by CLI, TUI, or web packages.
+- **Lines:** `22-140`
+- **Symbol:** `OperationalUseCases`, `WebOperations`, `DurableOperationManager`, `OperationKind`, `OperationRequest`
+- **Rationale:** Defines the surface-neutral operation vocabulary shared by TUI and web, durable acceptance capability, and normalized request DTO. QA status, dry-run, and start operations belong at this boundary rather than in adapter-specific registries.
 
+### Prepared Operation Freshness
 - **Path:** `internal/app/operations.go`
-- **Lines:** `71-167`
-- **Symbol:** `OperationKind`, `OperationState`, `OperationRequest`, `Confirmation`, `OperationEvent`, `OperationResult`
-- **Rationale:** Contains the closed cross-surface operation vocabulary, lifecycle projection, request scope, confirmation fingerprint, progress event, and typed error shapes that QA operations must extend compatibly.
+- **Lines:** `167-294`
+- **Symbol:** `dashboardUseCases.PrepareOperation`, `dashboardUseCases.RunOperation`
+- **Rationale:** Normalizes allowlisted requests, declares runtime and mutation scope, fingerprints canonical governed inputs, and rejects execution when prepared inputs become stale. QA operations should retain this prepare-confirm-revalidate contract.
 
-- **Path:** `internal/app/operations.go`
-- **Lines:** `169-282`
-- **Symbol:** `dashboardUseCases.PrepareOperation`
-- **Rationale:** Classifies runtime use and mutation, generates user-visible scope and warnings, selects governed inputs, and freezes an input fingerprint before execution. QA should be classified as runtime-backed but target-read-only while still acknowledging verification-state writes.
-
-- **Path:** `internal/app/operations.go`
-- **Lines:** `285-410`
-- **Symbol:** `dashboardUseCases.RunOperation`
-- **Rationale:** Rechecks prepared fingerprints, emits shared progress, dispatches read-only queries locally, and routes runtime-backed work through one runner. It is the central application dispatch point for consistent CLI/TUI/browser semantics.
-
-- **Path:** `internal/app/operations.go`
-- **Lines:** `511-592`
-- **Symbol:** `governedOperationInputs`, `fingerprintOperationInputs`
-- **Rationale:** Implements deterministic path ordering, symlink rejection, directory traversal, file hashing, and canonical request fingerprints. QA mapping needs a more complete governed-input set, including execute and review evidence, but should preserve these deterministic and fail-closed properties.
-
-- **Path:** `internal/app/operations.go`
-- **Lines:** `626-669`
-- **Symbol:** `failedOperation`, `operationFailureMessage`
-- **Rationale:** Maps cancellation, malformed state, unsupported schemas, references, stale fingerprints, and conflicts into stable cross-surface error categories. New QA blocked/invalid/corrupt-state errors must integrate here without leaking unsafe details.
-
+### Shared Runtime Dispatch
 - **Path:** `internal/app/operation_runner.go`
 - **Lines:** `15-110`
 - **Symbol:** `sharedOperationRunner`
-- **Rationale:** Is the single runtime-backed implementation used by terminal and browser adapters. It demonstrates how review, smoke, and verify invoke sprint services and project typed progress, and is the correct integration boundary for QA orchestration.
+- **Rationale:** Is the single runtime-backed implementation used by terminal and browser adapters and maps product progress into neutral events. QA execution must be added here to preserve adapter parity and avoid divergent workflow semantics.
 
+### Durable Acceptance and Cancellation Context
+- **Path:** `internal/app/durable_operations.go`
+- **Lines:** `33-121`
+- **Symbol:** `beginDurableCLICommand`, `durableOperationManager.AcceptOperation`
+- **Rationale:** Persists acceptance and owner claim before runtime work, establishes fencing, records the running transition, and supplies the cancellation-aware context. Runtime-backed QA must reuse this authority rather than creating a separate operation owner.
+
+### Runtime-Backed CLI Inventory
 - **Path:** `internal/app/run_control_inventory_test.go`
 - **Lines:** `11-54`
 - **Symbol:** `TestEveryRuntimeBackedCLIEntryUsesDurableAcceptanceInventory`
-- **Rationale:** Guards against runtime-backed CLI entries bypassing durable acceptance. QA CLI commands must be added to this inventory or an equivalent typed mechanism.
+- **Rationale:** Freezes every runtime-backed CLI entry behind durable acceptance. Adding `qa` requires extending this inventory so the command cannot bypass run control.
 
-### Runtime Permission Boundary
+### Existing CLI Verification Commands
+- **Path:** `internal/app/sprint_commands.go`
+- **Lines:** `260-449`
+- **Symbol:** `runSprint`
+- **Rationale:** Shows durable acceptance, cancellation context, JSON envelopes, human rendering, confirmation requirements, and error mapping for verify, execute, review, and smoke. The QA command must follow these established CLI semantics while preserving `review` compatibility.
 
-- **Path:** `internal/platform/runtime/runtime.go`
-- **Lines:** `24-75`
-- **Symbol:** `Request`, `PermissionPolicy`, `PermissionPathRule`
-- **Rationale:** Defines the generic runtime request fields for working directory, timeout, sandbox, permission mode, per-tool and per-path policy, validation, and event observation. QA safety policy should be expressed through this generic boundary rather than adding QA semantics to the runtime package.
+### Durable Run Vocabulary
+- **Path:** `internal/runcontrol/model.go`
+- **Lines:** `9-145`
+- **Symbol:** `Lifecycle`, `CancellationState`, `TerminalOutcome`, `EventType`
+- **Rationale:** Defines bounded event sizes, progress coalescing, canonical lifecycle and cancellation states, and finding/artifact event types. QA shard progress and synthesis events should project through this vocabulary without inventing a second durable lifecycle.
 
-- **Path:** `internal/platform/runtime/agentwrap.go`
-- **Lines:** `75-100`
-- **Symbol:** `mapPermissionPolicy`
-- **Rationale:** Maps and validates default, tool, path, unsupported-feature, and metadata policy into agentwrap. Unsupported or unenforceable command and filesystem restrictions must fail QA closed.
+### Surface-Neutral Run Observation
+- **Path:** `internal/app/run_usecases.go`
+- **Lines:** `9-57`
+- **Symbol:** `RunUseCases`, `repositoryRunUseCases`
+- **Rationale:** Provides sanitized durable run listing, detail, events, cancellation, and health to all adapters. QA observability and cancellation should be exposed through these existing use cases.
 
-- **Path:** `internal/sprint/code_context.go`
-- **Lines:** `292-326`
-- **Symbol:** `Service.CodeContext` runtime request boundary
-- **Rationale:** Provides another implemented target-read-only operation with default-deny inspection tools and explicit capability enforcement. It confirms that read-only target access can coexist with product-owned candidate promotion outside the target.
+### Web Operation Decoder
+- **Path:** `internal/web/operation_handlers.go`
+- **Lines:** `600-689`
+- **Symbol:** `mapOperationRequest`
+- **Rationale:** Maps a closed set of browser operation strings into app-owned operation kinds. QA browser support requires an explicit mapping here and corresponding compatibility-fixture updates.
 
-### Verification Concurrency
+### Web Confirmation Boundary
+- **Path:** `internal/web/operation_handlers.go`
+- **Lines:** `17-150`
+- **Symbol:** `operationOptionsRequest`, `handleOperationPrepare`, `handleOperationStart`
+- **Rationale:** Strictly decodes transport DTOs, prepares operations through app use cases, issues short-lived confirmation tokens, and re-prepares before start. QA must use this flow rather than accepting arbitrary prompts, paths, or runtime policy from the browser.
 
-- **Path:** `internal/sprint/verification_lock.go`
-- **Lines:** `14-101`
-- **Symbol:** `acquireVerificationFileLock`, `verificationFileLock.release`
-- **Rationale:** Existing review/smoke mutual exclusion is a PID-based workspace lock with stale-owner replacement and ownership-checked release. Sprint 36 must determine how this legacy lock collaborates with durable run-control ownership rather than creating conflicting lifecycle authority.
-
-- **Path:** `internal/sprint/verification_lock_test.go`
-- **Lines:** `11-40`
-- **Symbol:** `TestVerificationFileLockRejectsLiveOwnerAndReplacesDeadOwner`
-- **Rationale:** Captures current live-owner rejection and dead-owner recovery behavior that must remain compatible for review/smoke while QA adopts Sprint 35 durable arbitration.
-
-### Cross-Surface Projections
-
-- **Path:** `internal/app/sprint_usecases.go`
-- **Lines:** `16-64`
-- **Symbol:** `SprintSummary`, `ReviewSummary`, `SmokeSummary`
-- **Rationale:** Defines the shared product projection consumed by TUI and web surfaces. QA readiness, run identity, phase, counts, blockers, freshness, and next actions need a corresponding typed summary here rather than surface-specific derivation.
-
-- **Path:** `internal/app/sprint_usecases.go`
-- **Lines:** `260-307`
-- **Symbol:** `validateSprintStage`, `summarizeSmoke`, `summarizeReview`
-- **Rationale:** Shows current stage-based validation and summary construction. QA requires independent validation and summarization rather than another `PlanningStage` switch case.
-
-- **Path:** `internal/web/operations.go`
-- **Lines:** `18-143`
-- **Symbol:** operation limits and `operationHub`
-- **Rationale:** Browser operation memory is deliberately bounded and transport-local, with limits on active operations, events, encoded bytes, subscribers, and retention. Detailed QA state cannot live here; browser views must reload durable application projections.
-
+### Web Import Boundary
 - **Path:** `internal/web/import_boundary_test.go`
-- **Lines:** `12-41`
+- **Lines:** `12-35`
 - **Symbol:** `TestWebImportBoundary`
-- **Rationale:** Enforces that production web code imports only `internal/app` and the standard library. This prevents browser handlers from importing `internal/sprint` to map shards, infer completion, or persist QA truth.
+- **Rationale:** Enforces that production web code imports only `internal/app` and the standard library. QA handlers and projections cannot import sprint, runtime, workspace, or persistence packages directly.
 
+### Browser Operation Compatibility
 - **Path:** `internal/web/operations_contract_test.go`
-- **Lines:** `19-60`
+- **Lines:** `19-59`
 - **Symbol:** `TestBrowserOperationKindContract`
-- **Rationale:** Is the producer/consumer compatibility table for browser operation kinds. Any QA status, map, start, shard, restart, or synthesis operations exposed to the browser must update this contract coherently.
+- **Rationale:** Freezes the producer/consumer operation mapping shared by Go handlers and the embedded browser client. QA operation kinds must update this table together with both producers and consumers.
 
-- **Path:** `internal/web/operations_contract_test.go`
-- **Lines:** `82-151`
-- **Symbol:** `TestBrowserLifecycleDocumentContract`, `TestBrowserSSEEventNameAndFrameContract`
-- **Rationale:** Defines stable browser lifecycle and SSE event contracts, including downgrade of unknown producer events to progress. QA-specific domain outcomes should be fetched from durable summaries rather than smuggled into incompatible transport lifecycle states.
+### TUI State and Operation Model
+- **Path:** `internal/tui/model.go`
+- **Lines:** `27-130`
+- **Symbol:** `RouteKind`, `Model`, `navItem`
+- **Rationale:** Holds only app DTOs, bounded operation events, durable run snapshots, previews, and navigation state. QA presentation should consume app projections and avoid TUI-owned workflow or persistence state.
+
+### TUI Verification Compatibility Test
+- **Path:** `internal/tui/verify_test.go`
+- **Lines:** `11-35`
+- **Symbol:** `TestSprintVerificationActionsAndNarrowSummary`
+- **Rationale:** Captures current review, smoke, verify, diagnostic override, issue, and next-action presentation. QA additions must update this fixture while retaining the existing compatibility actions.
+
+### Determinism and Runtime-Safety Test Pattern
+- **Path:** `internal/sprint/review_test.go`
+- **Lines:** `127-179`
+- **Symbol:** `TestReviewManifestExecutionAndArtifactPreservation`
+- **Rationale:** Tests deterministic fingerprints, filtered changed paths, malformed-output preservation, last-complete authority, read-only sandboxing, default-deny permissions, and bounded prompts. These are direct acceptance-test patterns for QA mapping and investigators.
+
+### Atomic Artifact Failure Test Pattern
+- **Path:** `internal/sprint/review_test.go`
+- **Lines:** `584-609`
+- **Symbol:** `TestAtomicReviewWritePreservesPriorArtifactOnRenameFailure`, `TestReviewFanOutUsesConfiguredBound`
+- **Rationale:** Verifies prior canonical output survives rename failure and fan-out obeys configured concurrency. Detailed QA state and synthesis artifacts require equivalent failure and bound coverage.
+
+### Flow-State Compatibility Test Pattern
+- **Path:** `internal/sprint/sprint_test.go`
+- **Lines:** `98-148`
+- **Symbol:** `TestFlowStateStrictLoadingAndAtomicWritePreservesPrior`
+- **Rationale:** Tests schema rejection, path containment, and preservation of prior state after atomic promotion failure. This is the minimum persistence compatibility behavior for any QA summary added to flow state.
+
+### Adapter and State Ownership Rules
+- **Path:** `docs/architecture.md`
+- **Lines:** `29-81`
+- **Symbol:** `Web Adapter Boundary`, `State And Artifact Ownership`
+- **Rationale:** Documents app-owned workflow semantics, web's lack of direct product/runtime/filesystem authority, bounded ephemeral transport state, and durable workspace/run-control authority. QA must preserve these ownership boundaries.
+
+### Release Gates
+- **Path:** `docs/release-checklist.md`
+- **Lines:** `17-40`
+- **Symbol:** `Release checks`
+- **Rationale:** Establishes mandatory test, race, build, vet, diff, fake-runtime, browser compatibility, security, and import-boundary checks. QA fixtures must remain offline-capable and report unavailable real-runtime prerequisites as blocked rather than pass.
 
 ## Relationships
 
-- `internal/sprint` owns sprint-specific planning, execute, review, smoke, artifact, freshness, and validation semantics. It is the natural existing owner for QA domain state, deterministic mapping, theory policy, follow-up, and synthesis.
-- `internal/app` composes sprint services into typed operations and summaries. CLI, TUI, and browser adapters should invoke these shared operations and consume the same QA projection.
-- `internal/platform/runtime` carries generic sandbox, permission, validation, model, and event capabilities. It must remain unaware of QA shards, theories, or synthesis.
-- `internal/runcontrol` owns durable operational identity and lifecycle. A QA map run, shard attempt, follow-up, or synthesis operation can correlate to run-control IDs, but its domain records remain in verification-owned state.
-- `flow-state.json` currently contains ordered planning state and compact review/smoke records. It may gain only canonical QA summary, freshness, verdict, and pointer data; detailed QA state belongs in a separate contained, versioned store.
-- Execute `.run-state.json` is the current source for accepted changed paths. Conformance Review freezes these paths with requirements, code context, planning artifacts, contracts, execute evidence, and target identity.
-- Existing review requests use a read-only target snapshot and default-deny inspection policy, then validate structured output before preserving `review.md`. QA needs stronger containment because it may execute explicitly safe commands and must verify no mutation occurred.
-- Browser operation memory and SSE events are bounded observations. Durable status is recovered from application use cases and run control, not from operation-hub memory.
-- Existing verification locking protects review/smoke product state, while run control protects operational ownership and terminal arbitration. QA must avoid treating both as competing run authorities.
+- `ExecuteRunState` supplies the approved implementation target, plan fingerprint, task outcomes, evidence, and changed paths consumed by deterministic verification mapping.
+- `PrepareReview` already composes most governed QA inputs and target identity; QA can share these input authorities without sharing `PlanningStage` identity or review verdict ownership.
+- Conformance Review remains an independent analytical verdict. Its findings and recommended checks are QA map inputs, but QA synthesis cannot improve a failed or blocked current review.
+- The QA map fingerprint determines whether saved shard and theory checkpoints are resumable. Changed governed inputs, execute evidence, target identity, map schema, or investigator policy must make incompatible state non-current.
+- Detailed QA state is authoritative for map, shard, theory, attempt, and synthesis progress. `flow-state.json` is only a bounded projection and pointer to the current canonical QA record.
+- Investigator runtime requests pass through `internal/platform/runtime`, which translates product-owned sandbox and permission policy into Agentwrap and reports unsupported enforcement.
+- Product QA execution belongs in `internal/sprint`; operation preparation and shared dispatch belong in `internal/app`; CLI, TUI, and web remain presentation and transport adapters.
+- Runtime-backed QA acceptance, ownership, events, cancellation, and terminal outcomes flow through `durableOperationManager` and `runcontrol.Repository`.
+- Web's operation hub and TUI's in-memory event list are bounded presentation caches. Durable QA progress and recovery derive from QA state plus run control, not from either adapter cache.
+- `review` and `review.md` remain compatibility contracts while labels change to Conformance Review. Smoke remains a separate existing verification stage until Sprint 37 wraps it as a QA suite.
 
 ## Constraints
 
-- `PlanningStages()` is closed and ordered; QA mapping, investigation, synthesis, and later repair cannot be represented as planning stages.
-- `review`, review JSON shapes, runtime behavior, and canonical `projects/<project>/sprints/<sprint>/review.md` must remain compatible while labels explain Conformance Review.
-- Smoke state, `smoke.md`, smoke issues, and verify verdict semantics remain authoritative for their current scope and cannot be populated from QA theories.
-- Detailed QA records must not be stored in `FlowState`, run-control snapshots/events, browser operation memory, or runtime metadata.
-- All persisted QA paths must be workspace-relative, sprint-contained, symlink-safe, schema-validated, and atomically committed.
-- Runtime success is not acceptance; IDs, references, budgets, fingerprints, lifecycle, evidence kinds, and output bounds must validate before state promotion.
-- Run control remains generic and cannot import `internal/sprint` or QA semantics.
-- Web production code may depend on `internal/app`, not directly on sprint or run-control domain packages.
-- Runtime permission support is capability-checked. Unsupported containment must produce a blocked or failed result rather than fall back to prompt-only safety.
-- Existing review read-only policy allows inspection tools only. Safe QA command execution requires an explicit bounded policy and post-attempt mutation detection; the current review policy alone is insufficient.
-- Governed-input normalization, ordering, path collection, IDs, and fingerprints must be deterministic. Current review changed paths are deduplicated and sorted but derive from both run-state `files` and task evidence.
-- Diagnostics and transport payloads are intentionally bounded and sanitized. Raw command output, secrets, unrestricted paths, or arbitrary agent text must not enter durable summaries or cross-surface projections.
-- Cancellation and terminal outcomes must be arbitrated through run control, with valid completed QA domain records preserved and stale or partial work excluded from current synthesis.
-- Process-local locks and browser operation records cannot become alternate recovery or progress authorities.
+- Do not add QA to the canonical `PlanningStages()` sequence or use `PlanningStage` as the verification-phase type.
+- Preserve the `review` command, `review.md`, existing JSON fields, and automation behavior while changing user-facing terminology to Conformance Review.
+- Keep smoke behavior and `smoke.md` unchanged in Sprint 36; smoke-as-QA integration belongs to Sprint 37.
+- Keep detailed QA state out of `flow-state.json`; flow state may contain only canonical summary, freshness, verdict, and a contained pointer.
+- Use explicit schema versions and deterministic, verification-scoped identifiers with defined compatibility behavior.
+- Sort all unordered inputs before hashing or persistence so unchanged inputs produce byte-stable maps and identities.
+- Every changed path must map to a bounded verification surface; unknown or unclassifiable paths must become visible blocked work rather than being silently omitted.
+- Investigator fan-out, shard count, theories, findings, prompt bytes, output bytes, event bytes, concurrency, and follow-up requests must be bounded.
+- Investigators may read approved context, formulate falsifiable theories, record confirmed/refuted/inconclusive outcomes, and recommend checks.
+- Investigators may not create or modify tests, production code, verification code, Git state, governed sprint artifacts, or runtime configuration.
+- The runtime request must use an enforced read-only sandbox and default-deny permission policy. Unsupported permission enforcement is blocked, never degraded to advisory prompt safety.
+- Static QA output must be validated before promotion. Malformed output, cancellation, runtime failure, stale inputs, or atomic rename failure must preserve the prior valid canonical state and summary.
+- Retain refuted and invalid theories in synthesis; investigators cannot promote their own theories into repairable issues.
+- No automatic repair, issue promotion, production mutation, or verification-code mutation belongs in this sprint.
+- Use the existing app operation boundary and durable run-control repository. Do not add adapter-owned queues, operation histories, cancellation registries, or workflow authority.
+- Web production code must continue importing only `internal/app` and standard-library packages.
+- Browser commands remain allowlisted, strictly decoded, confirmation-bound, fingerprint-revalidated, same-origin, and CSRF-protected.
+- CLI, TUI, and web must expose equivalent QA status, progress, blocking reasons, synthesis results, cancellation, and durable recovery through shared app DTOs.
+- Offline fake-runtime tests must prove deterministic mapping, permission denial, malformed output handling, cancellation, resume compatibility, atomic failure preservation, synthesis stability, and adapter parity.
+- Release validation requires `go test ./...`, `go test -race ./...`, `go vet ./...`, `go build ./cmd/ultraplan`, and `git diff --check`.
 
 ## Open Questions
 
-- Whether execute run-state `files` plus task evidence is the final authoritative changed-path contract, especially for deleted paths, renamed paths, absent Git metadata, and evidence paths that are not implementation changes.
-- Whether QA state should use the existing product-state database abstraction, a dedicated contained artifact tree, or a combination of database authority and inspectable checkpoints.
-- How the legacy verification file lock should coexist with run-control fencing for QA without extending PID-lock ownership into a second lifecycle authority.
-- Which runtime and subprocess mechanism can permit only demonstrably non-mutating commands while enforcing filesystem, Git, network, environment, external-system, timeout, cancellation, and output limits.
-- Whether the current runtime permission vocabulary can express all required command restrictions or needs a generic platform-level capability extension.
-- Which QA summary and pointer fields can be added to `FlowState`, `StatusSummary`, and `SprintSummary` without coupling QA to `PlanningStage` or breaking existing JSON consumers.
-- Which human-readable inspectable output is appropriate before canonical `qa.md` is allowed.
-- The exact stable-ID namespaces, schema migration window, fingerprint inputs, shard budgets, follow-up scheduling bounds, and synthesis acceptance rules remain requirements-driven decisions for reasoning.
+- The repository contains no existing QA artifact path, detailed-state filename, schema, or migration implementation. The selected naming must be introduced consistently across sprint containment, previews, status projections, and recovery documentation.
+- The current read-only reviewer policy allows only read, list, and search tools. The source does not yet define a QA-specific allowlist for safe non-mutating checks, command classification, or denial reporting.
+- Current `FlowState` embeds detailed review and smoke state. There is no existing pointer-only verification record that directly demonstrates loading, validating, and reconciling a separate detailed state artifact.
+- The current verification assessment assumes review plus smoke. The source does not yet encode how read-only QA contributes to an overall assessment before Sprint 37 integrates smoke under QA.
+- Prior Sprint 35 governed artifacts were not present in this checkout. Its delivered durable-run behavior is visible in current source and tests, but artifact-specific decisions cannot be cross-checked here.

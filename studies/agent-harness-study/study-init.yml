@@ -1,7 +1,7 @@
 name: agent-harness-study
 description: >
   Comprehensive architecture study of agent harness frameworks and runtimes.
-  Covers 24 study areas decomposed into 121 focused dimensions across execution
+  Covers 24 study areas decomposed into 129 focused dimensions across execution
   semantics, state, agent loops, tools, memory, planning, tool execution, security,
   governance, traceability, context, prompts, failure, supervision, coordination,
   artifacts, isolation, evals, standards, economics, extensibility, org architecture,
@@ -53,6 +53,22 @@ dimensions:
     name: terminal-outcome-arbitration
     title: Terminal Outcome Arbitration
     purpose: Study how competing terminal signals resolve to one authoritative outcome.
+  - number: "01.12"
+    name: run-identity-execution-correlation
+    title: Run Identity and Execution Correlation
+    purpose: Study how run identity is created, scoped, correlated, and kept semantically opaque.
+  - number: "01.13"
+    name: transition-linearization-publication-semantics
+    title: Transition Linearization and Publication Semantics
+    purpose: Study when a lifecycle transition and all of its observable facts become authoritative.
+  - number: "01.14"
+    name: cancellation-acceptance-acknowledgement-semantics
+    title: Cancellation Acceptance and Acknowledgement Semantics
+    purpose: Distinguish cancellation request, acceptance, propagation, acknowledgement, and terminal resolution.
+  - number: "01.15"
+    name: time-semantics-clock-ownership
+    title: Time Semantics and Clock Ownership
+    purpose: Study occurrence time, commit time, monotonic duration, deadlines, and clock ownership.
 
   # 02. State Model
   - number: "02.01"
@@ -261,6 +277,10 @@ dimensions:
     name: tool-failure-escalation
     title: Tool Failure Escalation
     purpose: Study how tool failures propagate through the system.
+  - number: "07.09"
+    name: cleanup-resource-finalization-semantics
+    title: Cleanup and Resource Finalization Semantics
+    purpose: Study cleanup ownership, deadlines, failure, cancellation, and effects on terminal outcomes.
 
   # 08. Capability Security Model
   - number: "08.01"
@@ -319,6 +339,10 @@ dimensions:
     name: event-retention-observer-delivery-backpressure
     title: Event Retention, Observer Delivery, and Backpressure
     purpose: Study retained event replay and non-blocking delivery to multiple observers.
+  - number: "10.06"
+    name: observer-cursor-subscription-lifecycle
+    title: Observer Cursor and Subscription Lifecycle
+    purpose: Study cursor validity, replay boundaries, subscription races, abandonment, and completion.
 
   # 11. Context Engineering
   - number: "11.01"
@@ -373,6 +397,10 @@ dimensions:
     name: recovery-vs-escalation
     title: Recovery vs Escalation
     purpose: Study when the system retries, asks for help, or stops.
+  - number: "13.05"
+    name: panic-invariant-runtime-fault-boundaries
+    title: Panic, Invariant, and Runtime Fault Boundaries
+    purpose: Study how work panics, runtime defects, and invariant violations are separated and reported.
 
   # 14. Human Supervision Model
   - number: "14.01"
@@ -451,6 +479,10 @@ dimensions:
     name: lifecycle-concurrency-invariant-verification
     title: Lifecycle and Concurrency Invariant Verification
     purpose: Study how lifecycle and concurrency invariants are proven under adverse interleavings.
+  - number: "18.06"
+    name: leak-quiescence-verification
+    title: Leak and Quiescence Verification
+    purpose: Study how completed runs prove that owned tasks, observers, timers, processes, and references are released.
 
   # 19. Open Standards Strategy
   - number: "19.01"
