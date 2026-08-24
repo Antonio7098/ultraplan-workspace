@@ -2,7 +2,7 @@
 
 > Project: `ultraplan-go`  
 > Scope: production-grade Go CLI for UltraPlan study workflows, governed sprint planning and execution, Conformance Review, empirical QA, bounded repair, a local terminal UI, and a loopback-only Go-served browser UI over the same workflows.
-> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Sprints 33 and 34 form a delivered grounded-planning track that adds `code-context` through the Phase 4 application and browser boundaries. Product Phase 5 is the Sprints 35–39 durable QA and repair delivery group: durable run observability, read-only QA, evidence-producing QA with smoke integration, bounded repair, then dogfooding and hardening. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, automatic Git mutation, content identity, provenance, retrieval, and alternate product persistence remain deferred beyond Sprint 39.
+> Product Phase 1 completed the study-side release scope. Product Phase 2 added governed project and sprint planning through `plan`, then controlled sprint implementation execution through `execute`. Sprints 24 and 25 delivered the TUI foundation and guarded operational controls as an enabling track. Product Phase 3 adds automated sprint review followed by deep smoke, with the full Phase 3 workflow exposed through both CLI and TUI. Product Phase 4 begins at Sprint 30 and adds a local Go HTTP server, Go-rendered browser UI, guarded HTTP operations, and SSE progress. Sprints 33 and 34 form a delivered grounded-planning track that adds `code-context` through the Phase 4 application and browser boundaries. Product Phase 5 is the Sprints 35–39 durable QA and repair delivery group: durable run observability, read-only QA, evidence-producing QA with smoke integration, bounded repair, then dogfooding and hardening. Controlled stage publication now commits and pushes only stage-owned paths after valid completion. Hosted SaaS, remote exposure, multi-user collaboration, general-purpose issue tracking, general Git automation, content identity, provenance, retrieval, and alternate product persistence remain deferred beyond Sprint 39.
 
 ## Scope Principle
 
@@ -1799,6 +1799,15 @@ read-only and writable boundaries are reliable; adjudication consistently reject
 
 # Gated Direction After Sprint 39
 
+## Delivered cross-cutting capability: Git stage publication
+
+- Workspace config selects `off`, `commit`, or `commit-and-push`; this workspace uses `commit-and-push` with `origin` as the fallback remote.
+- Study tasks publish their report plus matching durable run state and history. Sprint planning stages publish their canonical artifact and flow state.
+- Execute publishes the dedicated sprint worktree before its workspace evidence. Review and smoke publish valid canonical evidence, including failing verdicts.
+- Publication uses exact stage-owned paths and preserves unrelated staged and unstaged changes. Raw smoke run and issue evidence remain external.
+- A push failure leaves the product stage complete and the local commit recoverable. A retry pushes the existing commit without duplication.
+- Agents remain prohibited from Git mutation. UltraPlan owns the post-validation commit and push.
+
 ## Gate A — Content Contract
 
 - Begin with an artifact inventory and at least twenty real retrieval/traceability questions.
@@ -1955,4 +1964,3 @@ Before Product Phase 5 release:
 - [ ] Evidence validity, isolation reliability, false-positive/inconclusive rates, and repair convergence are measured.
 - [ ] Automatic repair either demonstrates bounded convergence or remains disabled.
 - [ ] Representative QA artifacts exist to inform the later content identity and provenance contract.
-

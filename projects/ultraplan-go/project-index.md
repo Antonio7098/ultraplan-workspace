@@ -8,12 +8,12 @@
 - **Project Slug:** `ultraplan-go`
 - **Repository:** `../ultraplan-go/`
 - **Target Implementation Directory:** `/home/antonioborgerees/coding/ultraplan/ultraplan-go`
-- **Primary Goal:** Build a production-grade Go CLI, local TUI, and loopback-only Go-served browser UI for UltraPlan study workflows, governed project/sprint planning and execution, automated conformance review, and deep smoke through `smoke`.
+- **Primary Goal:** Build a production-grade Go CLI, local TUI, and loopback-only Go-served browser UI for UltraPlan study workflows, governed project/sprint planning and execution, automated conformance review, deep smoke through `smoke`, and controlled Git publication after valid stage completion.
 - **Phase 1 Goal:** Study initialization, source analysis, synthesis, code-reference extraction, resumable orchestration, validation, and diagnostics.
 - **Phase 2 Goal:** Project cataloging plus sprint planning and execute artifacts: `requirements.md`, `sprint-index.md`, `technical-handbook.md`, `reasoning/*.md`, `reasoning.md`, `plan.md`, `execute.md`, `flow-state.json`, `.run-state.json`, and configurable global/per-stage models for sprint stages.
 - **Phase 3 Goal:** Automated post-execute `review.md`, sprint-targeted `smoke.md`, external smoke-harness evidence, review-before-smoke flow integration, and complete CLI/TUI operation through smoke.
 - **Phase 4 Goal:** Beginning with Sprint 30, add `ultraplan serve`, a loopback-only Go HTTP server, Go-rendered browser dashboard, guarded HTTP operations, SSE progress, and browser recovery over the same app use cases and workspace state.
-- **Non-Goals:** General-purpose issue tracking, automatic product fixes, hosted SaaS, remote exposure, multi-user collaboration, remote workers, cross-sprint verification scheduling, and automatic Git mutation are explicitly deferred per PRD.
+- **Non-Goals:** General-purpose issue tracking, automatic product fixes, hosted SaaS, remote exposure, multi-user collaboration, remote workers, cross-sprint verification scheduling, and general Git automation beyond stage-owned commit and push are explicitly deferred per PRD.
 - **Documentation Source Of Truth:** `projects/ultraplan-go/docs/` in this planning workspace is the sole authoritative location for the PRD, TRD, and Architecture documents. The implementation repository does not carry duplicate mirrors.
 
 ## Source Documents
@@ -77,7 +77,7 @@ study -> select -> distill -> reason -> plan -> execute -> review -> smoke
 - Raw smoke run JSON, stdout/stderr captures, test artifacts, and open/resolved issue records stay in the smoke harness directories cataloged below.
 - Review runs before smoke. Blocking/high review findings stop default smoke execution.
 - Review and smoke are available through the CLI and the TUI using the same typed app use cases.
-- Review and smoke must not modify product source, product tests, governed planning inputs, or Git state. Smoke may modify only manifest-declared harness authoring/evidence paths plus sprint-owned smoke summary/state.
+- Review and smoke agents must not modify product source, product tests, governed planning inputs, or Git state. After valid canonical output is persisted, UltraPlan may commit and push only the paths owned by that completed stage.
 
 ## Phase 4 Local Web Context
 
@@ -158,5 +158,5 @@ None yet — this is the first project.
 - Every Phase 3 sprint must update the TUI for the CLI/use-case functionality introduced by that sprint.
 - Product Phase 4 starts at Sprint 30 and keeps the browser UI local, Go-rendered, progressively enhanced, and backed by shared app use cases.
 - Built-in prompts and output templates ship embedded in UltraPlan. Workspace `prompts/` and `templates/` paths are optional intentional overrides, never required project inputs.
-- Automatic Git mutation remains prohibited.
+- Agents may not mutate Git. UltraPlan may commit and push stage-owned paths after valid completion when `git.stage_completion` enables publication.
 - TRD requires `github.com/Antonio7098/agentwrap` and `agentwrap/opencode` as the runtime SDK. Do not invent competing runtime contracts.

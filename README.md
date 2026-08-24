@@ -2,6 +2,8 @@
 
 This workspace stores local UltraPlan studies, planning projects, runtime state, and generated artifacts.
 
+Completed study tasks and sprint stages commit and push their owned files automatically. The workspace uses `git.stage_completion: commit-and-push`, pushes the current upstream branch, and falls back to `origin` for branches without an upstream. Unrelated working-tree and index changes stay out of stage commits.
+
 ## Health And Config
 
 ```sh

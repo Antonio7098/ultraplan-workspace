@@ -10,6 +10,10 @@ execution:
   default_parallel: 5
   default_timeout: 12m
   default_retries: 1
+git:
+  stage_completion: commit-and-push
+  remote: origin
+  push_timeout: 2m
 planning:
   requirements_model: openai/gpt-5.6-sol
   requirements_variant: high
