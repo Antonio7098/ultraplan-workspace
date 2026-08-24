@@ -1629,7 +1629,7 @@ This is not the later product-persistence decision in Gate C. Sprint 35 may pers
 ### Sprint 35: Durable Run Identity And Cross-Surface Observability
 
 > Slug: 35-durable-run-observability
-> Status: active
+> Status: delivered
 > Depends On:
 
 #### Goal
