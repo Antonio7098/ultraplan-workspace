@@ -98,6 +98,14 @@ No selected report directly defines canonical `qa.md`, frozen evidence plans, pr
 
 ## Design Pressures
 
+### Writable QA admission and cleanup truth
+
+`internal/sprint.Service.buildQAEvidencePublication` owns the writable admission check. It requires a current acceptable Sprint 37 Conformance Review, current passing containing smoke evidence, complete map ownership, the retained Sprint 36 read-only proof set, and host capability facts for native protected-root denial, descendant cleanup, and workspace removal. A missing or stale prerequisite returns a typed blocked result before workspace creation. The next action names the evidence that must be restored.
+
+Each isolated command records whether descendant cleanup was attempted and completed. Workspace removal is recorded separately. Timeout, cancellation, output truncation, target drift, an unapproved changed path, or uncertain cleanup changes the evidence outcome to `blocked`. Product adjudication rejects blocked evidence, and the canonical assessment cannot pass. Cancellation stops new scheduling but preserves records that completed validation before the stop.
+
+`qa --suite smoke` calls the same `RunSmoke` implementation as the compatibility command. It retains attempt recording, manifest discovery, containing-versus-diagnostic selection, external evidence validation, `smoke.md` publication, flow projection, last-complete preservation, and passing-run roadmap reconciliation. A non-dry run requires explicit `--yes` confirmation.
+
 - Sprint reasoning must separate generic isolation and process mechanics from QA evidence, adjudication, issue, and assessment semantics. The selected reports favor thin boundaries and narrow interfaces, but they do not identify the ownership split for this product.
 - A writable attempt needs reproducible inputs and finite limits. Configuration immutability is a useful analogue, but a frozen evidence plan needs sprint-specific identity, expectation, and approval rules that the reports do not define.
 - Cancellation has two outcomes to represent: work stopped, and cleanup proven. The context and concurrency reports show why one does not imply the other.
