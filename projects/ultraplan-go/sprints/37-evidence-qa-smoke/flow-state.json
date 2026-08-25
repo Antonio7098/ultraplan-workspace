@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "37-evidence-qa-smoke",
-  "updatedAt": "2026-08-25T15:35:15.085567097Z",
+  "updatedAt": "2026-08-25T16:03:06.35795046Z",
   "stages": [
     {
       "stage": "requirements",
@@ -1027,6 +1027,26 @@
           ]
         }
       ]
+    }
+  },
+  "smoke": {
+    "status": "failed",
+    "path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/smoke.md",
+    "reviewOverride": false,
+    "stale": false,
+    "reconciliationRequired": false,
+    "lastAttempt": {
+      "id": "smoke-1787672774315077191",
+      "status": "failed",
+      "startedAt": "2026-08-25T15:46:14.315077191Z",
+      "heartbeatAt": "2026-08-25T15:46:14.315077191Z",
+      "ownerPid": 768729,
+      "completedAt": "2026-08-25T16:03:06.352480346Z",
+      "category": "runtime",
+      "diagnostics": [
+        "smoke runtime: smoke authoring runtime failed: opencode run: timeout: OpenCode run timed out"
+      ],
+      "nextAction": "Inspect the bounded runtime diagnostics and rerun authoring."
     }
   }
 }
