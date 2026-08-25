@@ -3,7 +3,7 @@
   "run_id": "run-20260822T115329Z",
   "study": "ultraplan-daemon-events-study",
   "created_at": "2026-08-22T11:53:29.015062699Z",
-  "updated_at": "2026-08-22T12:45:18.763341376Z",
+  "updated_at": "2026-08-24T12:39:37.380611529Z",
   "filters": {},
   "config_summary": {
     "runtime": "opencode",
@@ -19,30 +19,68 @@
     {
       "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:buildkit:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "failed",
       "study": "ultraplan-daemon-events-study",
       "dimension": "01.01",
       "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
       "source": "buildkit",
       "source_kind": "directory",
       "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md",
-      "attempts": 3,
+      "attempts": 9,
       "created_at": "2026-08-22T11:53:29.015062699Z",
-      "updated_at": "2026-08-22T12:45:18.493854151Z",
-      "started_at": "2026-08-22T12:45:18.493854151Z",
+      "updated_at": "2026-08-24T12:37:41.663684227Z",
+      "started_at": "2026-08-24T12:36:05.125634608Z",
+      "completed_at": "2026-08-24T12:37:41.663684227Z",
+      "last_error": {
+        "code": "runtime.failed",
+        "message": "repair_exhausted: validation repair: repair_exhausted: validation repair attempts exhausted [openrouter/stealth/ox-alpha]",
+        "detail": "validation repair attempts exhausted"
+      },
       "validation": {
         "status": "failed",
-        "checked_at": "2026-08-22T12:18:01.780964152Z",
-        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md",
+        "checked_at": "2026-08-24T12:37:41.663684227Z",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md",
         "passed_checks": 0,
         "failed_checks": 1,
-        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md: no such file or directory"
+        "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/buildkit.md: no such file or directory"
       },
       "agent": {
-        "policy": {},
-        "permissions": {},
-        "cleanup": {},
-        "repair": {},
+        "runtime": "openrouter",
+        "run_id": "opencode-3",
+        "status": "failed",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
+        "attempts": [
+          {
+            "attempt": 1,
+            "attempt_on_target": 1,
+            "run_id": "opencode-3",
+            "status": "completed",
+            "provider": "openrouter",
+            "model": "stealth/ox-alpha"
+          }
+        ],
+        "policy": {
+          "final_attempt": 1
+        },
+        "permissions": {
+          "mode": "restricted",
+          "policy_id": "perm_e10fc622c778c442",
+          "default": "allow",
+          "audit_count": 1
+        },
+        "cleanup": {
+          "attempted": true,
+          "completed": true
+        },
+        "repair": {
+          "configured": true,
+          "attempted": true,
+          "max_attempts": 2,
+          "attempt_count": 2,
+          "exhausted": true,
+          "exhausted_reason": "max repair attempts exhausted"
+        },
         "usage": {
           "input_tokens_known": false,
           "output_tokens_known": false,
@@ -51,40 +89,102 @@
           "cache_read_tokens_known": false,
           "cache_write_tokens_known": false,
           "turns_known": false
-        }
+        },
+        "events": {
+          "total": 39,
+          "retained": 39,
+          "limit": 200
+        },
+        "memory": {
+          "start_alloc_bytes": 6156240,
+          "peak_alloc_bytes": 10190952,
+          "end_alloc_bytes": 10190952,
+          "samples": 3
+        },
+        "omissions": [
+          {
+            "field": "events.opencode-1:4.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-1:5.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-2:4.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-2:5.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-2:6.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-2:7.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-2:8.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-3:4.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-3:5.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          }
+        ],
+        "started_at": "2026-08-24T12:37:24.009631436Z",
+        "finished_at": "2026-08-24T12:37:36.576384952Z",
+        "duration_ms": 12566
       },
       "session": {
-        "session_id": "ses_fd6a2dae2ffe8u2Izpx6TPUwZ1",
+        "session_id": "ses_fccaeb749ffegcwdSdefoSFsL9",
         "provider": "openrouter",
         "model": "stealth/ox-alpha",
-        "work_dir": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study",
-        "input_fingerprint": "4881f46f16b42323e08d3df20d957a31b4fd31604ab04a4aa8bff973b2ddab46",
-        "updated_at": "2026-08-22T12:18:01.598850799Z"
+        "work_dir": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study",
+        "input_fingerprint": "a20d077f840ffd199b9c52c2b0dda86fa2811c86f8439dc5e1e0f7700cbc5607",
+        "updated_at": "2026-08-24T10:37:42.861850097Z"
       }
     },
     {
       "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:containerd:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "cancelled",
       "study": "ultraplan-daemon-events-study",
       "dimension": "01.01",
       "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
       "source": "containerd",
       "source_kind": "directory",
       "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md",
-      "attempts": 3,
+      "attempts": 6,
       "created_at": "2026-08-22T11:53:29.015062699Z",
-      "updated_at": "2026-08-22T12:45:18.492821036Z",
-      "started_at": "2026-08-22T12:45:18.492821036Z",
+      "updated_at": "2026-08-24T12:39:37.361613788Z",
+      "started_at": "2026-08-24T12:37:41.698153409Z",
+      "completed_at": "2026-08-24T12:39:37.361613788Z",
+      "last_error": {
+        "code": "runtime.cancelled",
+        "message": "cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha]",
+        "detail": "validation: cancellation: validation run was cancelled"
+      },
       "validation": {
         "status": "failed",
-        "checked_at": "2026-08-22T12:17:59.393129376Z",
-        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md",
+        "checked_at": "2026-08-24T12:39:37.361613788Z",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md",
         "passed_checks": 0,
         "failed_checks": 1,
-        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md: no such file or directory"
+        "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/containerd.md: no such file or directory"
       },
       "agent": {
+        "runtime": "openrouter",
+        "status": "cancelled",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
         "policy": {},
         "permissions": {},
         "cleanup": {},
@@ -97,7 +197,104 @@
           "cache_read_tokens_known": false,
           "cache_write_tokens_known": false,
           "turns_known": false
-        }
+        },
+        "events": {
+          "total": 24,
+          "retained": 24,
+          "limit": 200
+        },
+        "memory": {
+          "start_alloc_bytes": 4913720,
+          "peak_alloc_bytes": 8743976,
+          "end_alloc_bytes": 6137440,
+          "samples": 3
+        },
+        "omissions": [
+          {
+            "field": "events.opencode-4:4.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:5.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:6.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:7.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:8.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:9.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:10.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:11.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:12.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:13.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:14.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:15.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:16.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:17.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:18.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:19.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:20.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:21.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:22.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:23.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-4:24.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          }
+        ]
       },
       "session": {
         "session_id": "ses_fd6a2e025ffew32Ra9CqO17rs1",
@@ -111,26 +308,36 @@
     {
       "id": "analysis:ultraplan-daemon-events-study:01.01:daemon-rpc-and-execution-ownership:dagster:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "pending",
       "study": "ultraplan-daemon-events-study",
       "dimension": "01.01",
       "dimension_ref": "01.01-daemon-rpc-and-execution-ownership",
       "source": "dagster",
       "source_kind": "directory",
       "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md",
-      "attempts": 2,
+      "attempts": 3,
       "created_at": "2026-08-22T11:53:29.015062699Z",
-      "updated_at": "2026-08-22T12:45:18.493851339Z",
-      "started_at": "2026-08-22T12:45:18.493851339Z",
+      "updated_at": "2026-08-24T12:17:47.512333043Z",
+      "started_at": "2026-08-24T12:10:56.240509888Z",
+      "completed_at": "2026-08-24T12:17:08.015222753Z",
+      "last_error": {
+        "code": "runtime.cancelled",
+        "message": "cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha]",
+        "detail": "validation: cancellation: validation run was cancelled"
+      },
       "validation": {
         "status": "failed",
-        "checked_at": "2026-08-22T12:18:01.21501504Z",
-        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md",
+        "checked_at": "2026-08-24T12:17:08.015222753Z",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md",
         "passed_checks": 0,
         "failed_checks": 1,
-        "message": "read validation artifact: /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md: open /home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md: no such file or directory"
+        "message": "read validation artifact: /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md: open /home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/dagster.md: no such file or directory"
       },
       "agent": {
+        "runtime": "openrouter",
+        "status": "cancelled",
+        "provider": "openrouter",
+        "model": "stealth/ox-alpha",
         "policy": {},
         "permissions": {},
         "cleanup": {},
@@ -143,7 +350,340 @@
           "cache_read_tokens_known": false,
           "cache_write_tokens_known": false,
           "turns_known": false
-        }
+        },
+        "events": {
+          "total": 83,
+          "retained": 83,
+          "limit": 200
+        },
+        "memory": {
+          "start_alloc_bytes": 7486496,
+          "peak_alloc_bytes": 9852288,
+          "end_alloc_bytes": 7388768,
+          "samples": 4
+        },
+        "omissions": [
+          {
+            "field": "events.opencode-7:4.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:5.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:6.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:7.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:8.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:9.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:10.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:11.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:12.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:13.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:14.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:15.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:16.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:17.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:18.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:19.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:20.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:21.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:22.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:23.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:24.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:25.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:26.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:27.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:28.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:29.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:30.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:31.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:32.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:33.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:34.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:35.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:36.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:37.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:38.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:39.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:40.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:41.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:42.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:43.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:44.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:45.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:46.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:47.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:48.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:49.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:50.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:51.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:52.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:53.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:54.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:55.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:56.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:57.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:58.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:59.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:60.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:61.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:62.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:63.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:64.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:65.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:66.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:67.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:68.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:69.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:70.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:71.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:72.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:73.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:74.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:75.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:76.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:77.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:78.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:79.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:80.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:81.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:82.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          },
+          {
+            "field": "events.opencode-7:83.raw",
+            "reason": "unsafe raw payload bytes omitted by default"
+          }
+        ]
       },
       "session": {
         "session_id": "ses_fd6a2d733ffeLN19Cl5EQbKe5q",
@@ -166,13 +706,13 @@
       "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/temporal.md",
       "attempts": 1,
       "created_at": "2026-08-22T11:53:29.015062699Z",
-      "updated_at": "2026-08-22T12:45:18.473584751Z",
+      "updated_at": "2026-08-24T12:36:05.08112034Z",
       "started_at": "2026-08-22T11:53:29.031400237Z",
       "completed_at": "2026-08-22T12:26:16.701981952Z",
       "validation": {
         "status": "passed",
-        "checked_at": "2026-08-22T12:45:18.473584751Z",
-        "path": "/home/antonio/ultraplan-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/temporal.md",
+        "checked_at": "2026-08-24T12:36:05.08112034Z",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/studies/ultraplan-daemon-events-study/reports/source/01.01-daemon-rpc-and-execution-ownership/temporal.md",
         "passed_checks": 8,
         "failed_checks": 0
       },
@@ -247,7 +787,7 @@
     {
       "id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:buildkit:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "pending",
       "study": "ultraplan-daemon-events-study",
       "dimension": "01.02",
       "dimension_ref": "01.02-operation-step-attempt-process-identity",
@@ -256,8 +796,13 @@
       "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/buildkit.md",
       "attempts": 3,
       "created_at": "2026-08-22T11:53:29.015062699Z",
-      "updated_at": "2026-08-22T12:45:18.493918718Z",
+      "updated_at": "2026-08-24T10:29:16.533587Z",
       "started_at": "2026-08-22T12:45:18.493918718Z",
+      "completed_at": "2026-08-24T10:14:10.94577017Z",
+      "last_error": {
+        "code": "workflow.interrupted",
+        "message": "task belonged to a stopped process; inspect durable study state before resuming"
+      },
       "validation": {
         "status": "failed",
         "checked_at": "2026-08-22T12:18:00.173828194Z",
@@ -293,7 +838,7 @@
     {
       "id": "analysis:ultraplan-daemon-events-study:01.02:operation-step-attempt-process-identity:containerd:directory",
       "kind": "analysis",
-      "status": "running",
+      "status": "pending",
       "study": "ultraplan-daemon-events-study",
       "dimension": "01.02",
       "dimension_ref": "01.02-operation-step-attempt-process-identity",
@@ -302,8 +847,13 @@
       "output_path": "studies/ultraplan-daemon-events-study/reports/source/01.02-operation-step-attempt-process-identity/containerd.md",
       "attempts": 2,
       "created_at": "2026-08-22T11:53:29.015062699Z",
-      "updated_at": "2026-08-22T12:45:18.491986674Z",
+      "updated_at": "2026-08-24T10:29:16.533587Z",
       "started_at": "2026-08-22T12:45:18.491986674Z",
+      "completed_at": "2026-08-24T10:14:10.94577017Z",
+      "last_error": {
+        "code": "workflow.interrupted",
+        "message": "task belonged to a stopped process; inspect durable study state before resuming"
+      },
       "agent": {
         "policy": {},
         "permissions": {},

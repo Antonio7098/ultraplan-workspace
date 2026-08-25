@@ -1707,7 +1707,7 @@ durable workspace-wide execution observation
 ### Sprint 36: Read-Only QA Decomposition And Synthesis
 
 > Slug: 36-read-only-qa
-> Status: active
+> Status: delivered
 > Depends On:
 
 #### Goal
