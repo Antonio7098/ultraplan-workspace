@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "37-evidence-qa-smoke",
-  "updatedAt": "2026-08-25T16:03:06.35795046Z",
+  "updatedAt": "2026-08-25T18:02:04.316245902Z",
   "stages": [
     {
       "stage": "requirements",
@@ -1030,23 +1030,669 @@
     }
   },
   "smoke": {
-    "status": "failed",
+    "status": "completed",
+    "verdict": "fail",
     "path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/smoke.md",
+    "lastRunAt": "2026-08-25T16:54:17.341040433Z",
+    "reviewFingerprint": "b6a384c03156477c9ce399aa4fa0f354351a5c1a0f58437752682f9a53bd55a6",
+    "smokeFingerprint": "561186853242f6003ea396b3bed88f8d830c4bca83460c8ef7c5018973436ebd",
+    "runId": "run-snqiEehnlI",
+    "authorRunId": "opencode-1",
+    "authorModel": "openrouter/stealth/ox-alpha",
+    "authorChangedPaths": [
+      "src/cli.ts",
+      "src/protocol.ts",
+      "src/tests/sprint-37-evidence-qa-smoke.ts"
+    ],
+    "coverageMapping": {
+      "sprint": "37-evidence-qa-smoke",
+      "suites": [
+        "sprint-37"
+      ],
+      "complete": true,
+      "rationale": "agent-authored real-boundary suite builds the sprint-37 worktree binary and proves the boundaries deterministic Go tests cannot replace: the real qa CLI keeps one closed suite selector ('smoke' only) with stable rejection of resume-with-suite and unknown suites, gates non-dry external-harness execution behind --yes, and keeps smoke-suite dry-run write-free; writable QA admission fails closed on a real fixture with unvalidated governed inputs via a typed qa.stale_input error before any verification-state or target write; two dry-run maps of the real repository agree byte-stably with one primary owner per changed path, sequential writable concurrency (concurrent_investigators=1), frozen positive limits, and unchanged before/after target Git identity; smoke --dry-run and qa --suite smoke --dry-run resolve one manifest-driven containing-suite authority at the real CLI boundary (same harness identity, non-diagnostic sprint-37 suite scope, contained external evidence roots, identical prepared next action, review gate, and no durable writes from either dry-run); CLI status and a live local server agree on canonical phase and next action with an inert no-JavaScript HTML snapshot, while the live focused evidence/adjudication/issues/assessment/smoke-suite routes are probed strictly and currently expose a real serve-wiring gap (503 unavailable) that must be fixed in the product rather than weakened here; and Task 12's gated release/dogfood evidence remains preserved as deferred blocker evidence rather than claimed coverage. Isolation mechanics, bounded execution/cleanup truth, adjudication quorum rules, state v2 fencing, durable run authority, and cancellation races remain proven deterministically in the product's own fault-injected suites",
+      "required_coverage": [
+        "AC-37-01-writable-admission-fail-closed",
+        "AC-37-09-smoke-parity-single-authority",
+        "AC-37-14-scope-exclusions",
+        "AC-37-08-state-versioning-fencing",
+        "AC-37-03-target-immutability",
+        "AC-37-04-frozen-evidence-plans",
+        "AC-37-06-adjudication-authority",
+        "AC-37-07-canonical-assessment-report",
+        "AC-37-10-cross-surface-agreement",
+        "AC-37-12-cancellation-recovery-truthful",
+        "AC-37-13-browser-security-nojs",
+        "AC-37-15-gated-real-runtime-dogfood"
+      ],
+      "requirements": [
+        {
+          "id": "AC-37-01-writable-admission-fail-closed",
+          "mapped_tests": [
+            "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+            "sprint-37-live-writable-admission-fail-closed-fixture"
+          ]
+        },
+        {
+          "id": "AC-37-09-smoke-parity-single-authority",
+          "mapped_tests": [
+            "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+            "sprint-37-live-smoke-parity-single-authority"
+          ]
+        },
+        {
+          "id": "AC-37-14-scope-exclusions",
+          "mapped_tests": [
+            "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+            "sprint-37-live-smoke-parity-single-authority"
+          ]
+        },
+        {
+          "id": "AC-37-08-state-versioning-fencing",
+          "mapped_tests": [
+            "sprint-37-live-writable-admission-fail-closed-fixture"
+          ]
+        },
+        {
+          "id": "AC-37-03-target-immutability",
+          "mapped_tests": [
+            "sprint-37-live-dry-run-map-stability-target-immutability"
+          ]
+        },
+        {
+          "id": "AC-37-04-frozen-evidence-plans",
+          "mapped_tests": [
+            "sprint-37-live-dry-run-map-stability-target-immutability"
+          ]
+        },
+        {
+          "id": "AC-37-06-adjudication-authority",
+          "mapped_tests": [
+            "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+          ]
+        },
+        {
+          "id": "AC-37-07-canonical-assessment-report",
+          "mapped_tests": [
+            "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+          ]
+        },
+        {
+          "id": "AC-37-10-cross-surface-agreement",
+          "mapped_tests": [
+            "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+          ]
+        },
+        {
+          "id": "AC-37-12-cancellation-recovery-truthful",
+          "mapped_tests": [
+            "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+          ]
+        },
+        {
+          "id": "AC-37-13-browser-security-nojs",
+          "mapped_tests": [
+            "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+          ]
+        },
+        {
+          "id": "AC-37-15-gated-real-runtime-dogfood",
+          "mapped_tests": [
+            "sprint-37-gated-real-runtime-dogfood-blocker-evidence"
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "id": "sprint-37-gated-real-runtime-dogfood-blocker-evidence",
+          "suite": "sprint-37",
+          "coverage": [
+            "AC-37-15-gated-real-runtime-dogfood"
+          ]
+        },
+        {
+          "id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+          "suite": "sprint-37",
+          "coverage": [
+            "AC-37-06-adjudication-authority",
+            "AC-37-07-canonical-assessment-report",
+            "AC-37-10-cross-surface-agreement",
+            "AC-37-12-cancellation-recovery-truthful",
+            "AC-37-13-browser-security-nojs"
+          ]
+        },
+        {
+          "id": "sprint-37-live-dry-run-map-stability-target-immutability",
+          "suite": "sprint-37",
+          "coverage": [
+            "AC-37-03-target-immutability",
+            "AC-37-04-frozen-evidence-plans"
+          ]
+        },
+        {
+          "id": "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+          "suite": "sprint-37",
+          "coverage": [
+            "AC-37-01-writable-admission-fail-closed",
+            "AC-37-09-smoke-parity-single-authority",
+            "AC-37-14-scope-exclusions"
+          ]
+        },
+        {
+          "id": "sprint-37-live-smoke-parity-single-authority",
+          "suite": "sprint-37",
+          "coverage": [
+            "AC-37-09-smoke-parity-single-authority",
+            "AC-37-14-scope-exclusions"
+          ]
+        },
+        {
+          "id": "sprint-37-live-writable-admission-fail-closed-fixture",
+          "suite": "sprint-37",
+          "coverage": [
+            "AC-37-01-writable-admission-fail-closed",
+            "AC-37-08-state-versioning-fencing"
+          ]
+        }
+      ],
+      "matrix": [
+        {
+          "test_id": "sprint-37-gated-real-runtime-dogfood-blocker-evidence",
+          "suite": "sprint-37",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "test_id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+          "suite": "sprint-37",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-37-live-dry-run-map-stability-target-immutability",
+          "suite": "sprint-37",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+          "suite": "sprint-37",
+          "cells": [
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-37-live-smoke-parity-single-authority",
+          "suite": "sprint-37",
+          "cells": [
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-37-live-writable-admission-fail-closed-fixture",
+          "suite": "sprint-37",
+          "cells": [
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    "evidenceId": "8f9654e11728eac8159a1e7553f5505554719202e97f016311cea06b6be2d1bf",
     "reviewOverride": false,
     "stale": false,
     "reconciliationRequired": false,
+    "artifactDigest": "561186853242f6003ea396b3bed88f8d830c4bca83460c8ef7c5018973436ebd",
+    "inputFingerprint": "c202cbbfc5228bf661e91c4b9f9eb60ff8cf69b3c43b33b879cef851fef8954a",
+    "issues": [
+      {
+        "id": "runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+        "status": "open",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot.md",
+        "test_id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+        "severity": "high",
+        "title": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+        "summary": "focused route /adjudication returned 503: {\"error\":{\"code\":\"unavailable\",\"message\":\"The service is unavailable.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"27dcf0329a91ace950cdc15aef9642b7\"}}\n",
+        "theory": "The real-boundary smoke probe 'sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot' did not observe the contracted behavior because: focused route /adjudication returned 503: {\"error\":{\"code\":\"unavailable\",\"message\":\"The service is unavailable.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"27dcf0329a91…",
+        "evidence": "Sprint 37 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint37-bin-4JABjf/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 37 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan sprint ultraplan-go 37-evidence-qa-smoke qa status --json: exit=0\nstdout:\n{\"operation\":\"sprint.qa\",\"result\":{\"schema_version\":1,\"p…",
+        "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+      }
+    ],
+    "evidence": [
+      {
+        "kind": "run",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-snqiEehnlI.json",
+        "digest": "8f9654e11728eac8159a1e7553f5505554719202e97f016311cea06b6be2d1bf"
+      },
+      {
+        "kind": "summary",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-snqiEehnlI-summary.md",
+        "digest": "f94799ac3aa8f09dd6609a7d7c1ea117bb978664cf4ae46cfe1405d01db8a4ac"
+      }
+    ],
     "lastAttempt": {
-      "id": "smoke-1787672774315077191",
-      "status": "failed",
-      "startedAt": "2026-08-25T15:46:14.315077191Z",
-      "heartbeatAt": "2026-08-25T15:46:14.315077191Z",
-      "ownerPid": 768729,
-      "completedAt": "2026-08-25T16:03:06.352480346Z",
-      "category": "runtime",
-      "diagnostics": [
-        "smoke runtime: smoke authoring runtime failed: opencode run: timeout: OpenCode run timed out"
+      "id": "smoke-1787676099509744480",
+      "status": "completed",
+      "startedAt": "2026-08-25T16:41:39.50974448Z",
+      "heartbeatAt": "2026-08-25T16:41:39.50974448Z",
+      "ownerPid": 811192,
+      "completedAt": "2026-08-25T16:54:17.354832337Z"
+    },
+    "lastComplete": {
+      "verdict": "fail",
+      "artifact": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/smoke.md",
+      "artifactDigest": "561186853242f6003ea396b3bed88f8d830c4bca83460c8ef7c5018973436ebd",
+      "inputFingerprint": "c202cbbfc5228bf661e91c4b9f9eb60ff8cf69b3c43b33b879cef851fef8954a",
+      "completedAt": "2026-08-25T16:54:17.341040433Z",
+      "runId": "run-snqiEehnlI",
+      "authorRunId": "opencode-1",
+      "authorModel": "openrouter/stealth/ox-alpha",
+      "authorChangedPaths": [
+        "src/cli.ts",
+        "src/protocol.ts",
+        "src/tests/sprint-37-evidence-qa-smoke.ts"
       ],
-      "nextAction": "Inspect the bounded runtime diagnostics and rerun authoring."
+      "coverageMapping": {
+        "sprint": "37-evidence-qa-smoke",
+        "suites": [
+          "sprint-37"
+        ],
+        "complete": true,
+        "rationale": "agent-authored real-boundary suite builds the sprint-37 worktree binary and proves the boundaries deterministic Go tests cannot replace: the real qa CLI keeps one closed suite selector ('smoke' only) with stable rejection of resume-with-suite and unknown suites, gates non-dry external-harness execution behind --yes, and keeps smoke-suite dry-run write-free; writable QA admission fails closed on a real fixture with unvalidated governed inputs via a typed qa.stale_input error before any verification-state or target write; two dry-run maps of the real repository agree byte-stably with one primary owner per changed path, sequential writable concurrency (concurrent_investigators=1), frozen positive limits, and unchanged before/after target Git identity; smoke --dry-run and qa --suite smoke --dry-run resolve one manifest-driven containing-suite authority at the real CLI boundary (same harness identity, non-diagnostic sprint-37 suite scope, contained external evidence roots, identical prepared next action, review gate, and no durable writes from either dry-run); CLI status and a live local server agree on canonical phase and next action with an inert no-JavaScript HTML snapshot, while the live focused evidence/adjudication/issues/assessment/smoke-suite routes are probed strictly and currently expose a real serve-wiring gap (503 unavailable) that must be fixed in the product rather than weakened here; and Task 12's gated release/dogfood evidence remains preserved as deferred blocker evidence rather than claimed coverage. Isolation mechanics, bounded execution/cleanup truth, adjudication quorum rules, state v2 fencing, durable run authority, and cancellation races remain proven deterministically in the product's own fault-injected suites",
+        "required_coverage": [
+          "AC-37-01-writable-admission-fail-closed",
+          "AC-37-09-smoke-parity-single-authority",
+          "AC-37-14-scope-exclusions",
+          "AC-37-08-state-versioning-fencing",
+          "AC-37-03-target-immutability",
+          "AC-37-04-frozen-evidence-plans",
+          "AC-37-06-adjudication-authority",
+          "AC-37-07-canonical-assessment-report",
+          "AC-37-10-cross-surface-agreement",
+          "AC-37-12-cancellation-recovery-truthful",
+          "AC-37-13-browser-security-nojs",
+          "AC-37-15-gated-real-runtime-dogfood"
+        ],
+        "requirements": [
+          {
+            "id": "AC-37-01-writable-admission-fail-closed",
+            "mapped_tests": [
+              "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+              "sprint-37-live-writable-admission-fail-closed-fixture"
+            ]
+          },
+          {
+            "id": "AC-37-09-smoke-parity-single-authority",
+            "mapped_tests": [
+              "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+              "sprint-37-live-smoke-parity-single-authority"
+            ]
+          },
+          {
+            "id": "AC-37-14-scope-exclusions",
+            "mapped_tests": [
+              "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+              "sprint-37-live-smoke-parity-single-authority"
+            ]
+          },
+          {
+            "id": "AC-37-08-state-versioning-fencing",
+            "mapped_tests": [
+              "sprint-37-live-writable-admission-fail-closed-fixture"
+            ]
+          },
+          {
+            "id": "AC-37-03-target-immutability",
+            "mapped_tests": [
+              "sprint-37-live-dry-run-map-stability-target-immutability"
+            ]
+          },
+          {
+            "id": "AC-37-04-frozen-evidence-plans",
+            "mapped_tests": [
+              "sprint-37-live-dry-run-map-stability-target-immutability"
+            ]
+          },
+          {
+            "id": "AC-37-06-adjudication-authority",
+            "mapped_tests": [
+              "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+            ]
+          },
+          {
+            "id": "AC-37-07-canonical-assessment-report",
+            "mapped_tests": [
+              "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+            ]
+          },
+          {
+            "id": "AC-37-10-cross-surface-agreement",
+            "mapped_tests": [
+              "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+            ]
+          },
+          {
+            "id": "AC-37-12-cancellation-recovery-truthful",
+            "mapped_tests": [
+              "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+            ]
+          },
+          {
+            "id": "AC-37-13-browser-security-nojs",
+            "mapped_tests": [
+              "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot"
+            ]
+          },
+          {
+            "id": "AC-37-15-gated-real-runtime-dogfood",
+            "mapped_tests": [
+              "sprint-37-gated-real-runtime-dogfood-blocker-evidence"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "id": "sprint-37-gated-real-runtime-dogfood-blocker-evidence",
+            "suite": "sprint-37",
+            "coverage": [
+              "AC-37-15-gated-real-runtime-dogfood"
+            ]
+          },
+          {
+            "id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+            "suite": "sprint-37",
+            "coverage": [
+              "AC-37-06-adjudication-authority",
+              "AC-37-07-canonical-assessment-report",
+              "AC-37-10-cross-surface-agreement",
+              "AC-37-12-cancellation-recovery-truthful",
+              "AC-37-13-browser-security-nojs"
+            ]
+          },
+          {
+            "id": "sprint-37-live-dry-run-map-stability-target-immutability",
+            "suite": "sprint-37",
+            "coverage": [
+              "AC-37-03-target-immutability",
+              "AC-37-04-frozen-evidence-plans"
+            ]
+          },
+          {
+            "id": "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+            "suite": "sprint-37",
+            "coverage": [
+              "AC-37-01-writable-admission-fail-closed",
+              "AC-37-09-smoke-parity-single-authority",
+              "AC-37-14-scope-exclusions"
+            ]
+          },
+          {
+            "id": "sprint-37-live-smoke-parity-single-authority",
+            "suite": "sprint-37",
+            "coverage": [
+              "AC-37-09-smoke-parity-single-authority",
+              "AC-37-14-scope-exclusions"
+            ]
+          },
+          {
+            "id": "sprint-37-live-writable-admission-fail-closed-fixture",
+            "suite": "sprint-37",
+            "coverage": [
+              "AC-37-01-writable-admission-fail-closed",
+              "AC-37-08-state-versioning-fencing"
+            ]
+          }
+        ],
+        "matrix": [
+          {
+            "test_id": "sprint-37-gated-real-runtime-dogfood-blocker-evidence",
+            "suite": "sprint-37",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          {
+            "test_id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+            "suite": "sprint-37",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-37-live-dry-run-map-stability-target-immutability",
+            "suite": "sprint-37",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-37-live-qa-cli-suite-contract-and-yes-gate",
+            "suite": "sprint-37",
+            "cells": [
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-37-live-smoke-parity-single-authority",
+            "suite": "sprint-37",
+            "cells": [
+              false,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-37-live-writable-admission-fail-closed-fixture",
+            "suite": "sprint-37",
+            "cells": [
+              true,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        ]
+      },
+      "evidenceId": "8f9654e11728eac8159a1e7553f5505554719202e97f016311cea06b6be2d1bf",
+      "evidence": [
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-snqiEehnlI-summary.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-snqiEehnlI.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/ultraplan-smoke.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/37-evidence-qa-smoke/review.md"
+        },
+        {
+          "kind": "fact",
+          "path": "harness",
+          "digest": "ultraplan-go-smoke:1.0"
+        },
+        {
+          "kind": "fact",
+          "path": "issue:runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+          "digest": "open"
+        },
+        {
+          "kind": "fact",
+          "path": "prerequisites"
+        },
+        {
+          "kind": "fact",
+          "path": "review-fingerprint",
+          "digest": "b6a384c03156477c9ce399aa4fa0f354351a5c1a0f58437752682f9a53bd55a6"
+        },
+        {
+          "kind": "fact",
+          "path": "review-verdict",
+          "digest": "pass_with_findings"
+        },
+        {
+          "kind": "fact",
+          "path": "scope",
+          "digest": "suite:sprint-37"
+        },
+        {
+          "kind": "fact",
+          "path": "timeout",
+          "digest": "30m0s:manifest"
+        }
+      ],
+      "issues": [
+        {
+          "id": "runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+          "status": "open",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot.md",
+          "test_id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+          "severity": "high",
+          "title": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
+          "summary": "focused route /adjudication returned 503: {\"error\":{\"code\":\"unavailable\",\"message\":\"The service is unavailable.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"27dcf0329a91ace950cdc15aef9642b7\"}}\n",
+          "theory": "The real-boundary smoke probe 'sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot' did not observe the contracted behavior because: focused route /adjudication returned 503: {\"error\":{\"code\":\"unavailable\",\"message\":\"The service is unavailable.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"27dcf0329a91…",
+          "evidence": "Sprint 37 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint37-bin-4JABjf/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 37 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan sprint ultraplan-go 37-evidence-qa-smoke qa status --json: exit=0\nstdout:\n{\"operation\":\"sprint.qa\",\"result\":{\"schema_version\":1,\"p…",
+          "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+        }
+      ]
     }
   }
 }
