@@ -16,10 +16,10 @@ This plan executes `reasoning.md`. It does not reopen ownership, isolation, quor
 
 ## Sprint Status
 
-- **Status:** not started
+- **Status:** implemented; post-execution dogfood and reviews deferred
 - **Owner:** implementation agent under UltraPlan execute control
-- **Start Date:** pending
-- **Completion Date:** pending
+- **Start Date:** 2026-08-25
+- **Completion Date:** 2026-08-25 (offline implementation boundary)
 
 ## Decisions To Execute
 
@@ -62,7 +62,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
 
 ## Tasks
 
-- [ ] **Task 1: Enforce the Sprint 36 writable-admission gate and freeze policy limits**
+- [x] **Task 1: Enforce the Sprint 36 writable-admission gate and freeze policy limits**
   > Executes: `D-02`, `D-08`, `D-09`; `ENTRY`, `BOUNDS`, `SCOPE`
   - [ ] Extend `internal/sprint/qa_types.go`, `internal/sprint/qa_map.go`, and `internal/sprint/service.go` with typed Sprint 37 settings, limits, admission facts, and stable error categories. Keep `VerificationPhase` separate from `PlanningStage`.
   - [ ] Require current validated Sprint 36 Conformance Review, deterministic map coverage, read-only investigation evidence, cancellation/resume/invalidation/synthesis proof, and required containing smoke evidence before enabling a writable evidence plan.
@@ -72,7 +72,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Add admission and budget tests to `internal/sprint/qa_test.go`, `internal/sprint/qa_state_test.go`, and configuration/app fixtures.
   - [ ] Stop condition: no later task may enable writable child work until all admission and limit tests pass.
 
-- [ ] **Task 2: Add product-neutral local isolation mechanics**
+- [x] **Task 2: Add product-neutral local isolation mechanics**
   > Executes: `D-01`, `D-03`, `D-08`, `D-09`; `ISO`, `IMMUTABLE`, `EXEC`, `BOUNDS`
   - [ ] Add `internal/platform/process/isolation.go` with request and result types for private workspace creation, bounded local copy, source identity facts, protected roots, contained cwd, explicit process execution, change capture, descendant cleanup, and workspace removal.
   - [ ] Keep the package free of sprint types, requirement IDs, evidence verdicts, issue semantics, and smoke selection.
@@ -85,7 +85,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Add race coverage for simultaneous cancellation and process exit. Gate platform-specific proof where the operating system lacks the required primitive.
   - [ ] Stop condition: unsupported native write denial, descendant cleanup, or removal proof must keep writable QA blocked on that platform.
 
-- [ ] **Task 3: Define private QA v2 evidence, patch, adjudication, issue, and assessment records**
+- [x] **Task 3: Define private QA v2 evidence, patch, adjudication, issue, and assessment records**
   > Executes: `D-02`, `D-04`, `D-05`, `D-09`; `PLAN`, `EVIDENCE`, `ADJ`, `ASSESS`, `STATE`
   - [ ] Extend `internal/sprint/qa_types.go` and `internal/sprint/qa_state.go` with schema v2 records for frozen plans, generated checks, workspace and target identities, command results, evidence, patches, repeatability, containment, cleanup, adjudication, root-cause groups, promoted issues, regression candidates, assessment, canonical report references, and current failure.
   - [ ] Add deterministic scoped IDs for evidence, patch, adjudication, issue, and assessment without changing existing `qa-v1` attempt, map, shard, theory, challenge, and synthesis identities or claiming global content identity.
@@ -97,7 +97,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Stage canonical replacements and restore the prior `qa.md`, state pointer, and flow projection if a later commit step fails. Recheck the writer fence before each canonical change. Recovery must expose the failed current attempt without inventing success.
   - [ ] Expand `internal/sprint/qa_state_test.go` for v1 compatibility, v2 strictness, immutable records, bounds, digests, atomic failure, stale writers, path escapes, symlinks, retention, invalidation, and recovery.
 
-- [ ] **Task 4: Implement isolated evidence-producing investigation**
+- [x] **Task 4: Implement isolated evidence-producing investigation**
   > Executes: `D-02`, `D-03`, `D-04`, `D-08`, `D-09`; `ISO`, `IMMUTABLE`, `PLAN`, `EXEC`, `EVIDENCE`, `BOUNDS`
   - [ ] Add `internal/sprint/qa_investigation.go` as the product policy layer over the generic isolation mechanics.
   - [ ] Implement the closed check kinds fixed by reasoning: fact, negative, behavioral, semantic, and adversarial. Require declared direct observations for every kind and exactly three fresh model analyzers only where semantic or adversarial interpretation is required.
@@ -110,7 +110,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Treat missing, malformed, stale, escaped, truncated where completeness is required, cancelled, timed-out, permission-denied, provider-failed, or cleanup-uncertain evidence as blocked and non-promotable.
   - [ ] Add `internal/sprint/qa_investigation_test.go` for copy and non-Git targets, dirty/untracked content, identity and containment, path and symlink escape, original-path leakage, denied target and governed-input writes, Git denial, bounded execution, cancellation, descendants, cleanup failure, drift attribution, and evidence survival.
 
-- [ ] **Task 5: Add deterministic global adjudication and bounded issue promotion**
+- [x] **Task 5: Add deterministic global adjudication and bounded issue promotion**
   > Executes: `D-02`, `D-04`, `D-08`, `D-09`; `ADJ`, `ASSESS`, `EVIDENCE`, `BOUNDS`
   - [ ] Add `internal/sprint/qa_adjudication.go` as a pure product operation over the frozen plan and admitted evidence. It must not execute commands, inspect live files, or trust prose outside validated fields.
   - [ ] Validate expectation grounding, current fingerprints, setup validity, containment, confirmation-condition fidelity, repeatability or deterministic sufficiency, flakiness, external identities, severity, root-cause grouping, and evidence sufficiency.
@@ -123,7 +123,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Bound issue, rejection, group, follow-up, and model-call counts. Sort all persisted outputs deterministically.
   - [ ] Add `internal/sprint/qa_adjudication_test.go` with promotion, rejection, deterministic pass, majority, disagreement, incomplete calls, flakiness, stale identity, invalid setup, uncontained evidence, cleanup uncertainty, external evidence mismatch, root-cause grouping, severity, dissent, and hostile model-output cases.
 
-- [ ] **Task 6: Extend QA orchestration, resume, cancellation, assessment, and canonical `qa.md`**
+- [x] **Task 6: Extend QA orchestration, resume, cancellation, assessment, and canonical `qa.md`**
   > Executes: `D-02`, `D-03`, `D-04`, `D-05`, `D-08`, `D-09`; `RUN`, `ASSESS`, `REPORT`, `STATE`, `SURFACES`
   - [ ] Extend `internal/sprint/qa.go` to run admission, sequential isolated attempts, evidence publication, adjudication, assessment, and canonical publication under one Sprint 35 writer token and mutation boundary.
   - [ ] Stop new scheduling on cancellation. Propagate cancellation to active runtime and process work, run bounded cleanup with an independent cleanup context, and preserve already completed valid evidence.
@@ -136,7 +136,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Expand `internal/sprint/qa_test.go` for writable bounds, read-only compatibility, current publication, assessment matrices, cancellation, timeout, resume, stale evidence, cleanup uncertainty, report preservation, no repair, and no Git mutation.
   - [ ] Add golden tests for `qa.md` and cross-check every authority-bearing value against the assessment and state records.
 
-- [ ] **Task 7: Wrap canonical smoke as the QA `smoke` suite without forking behavior**
+- [x] **Task 7: Wrap canonical smoke as the QA `smoke` suite without forking behavior**
   > Executes: `D-01`, `D-05`, `D-06`, `D-08`; `SMOKE`, `RUN`, `ASSESS`, `SURFACES`
   - [ ] Add the narrow sprint-owned smoke executor adapter in `internal/sprint/smoke.go` and related QA files. Both entry points must call the same existing authoring, static preparation, discovery, selection, process, evidence-validation, verdict, `smoke.md`, flow, roadmap-reconciliation, and publication code.
   - [ ] Avoid calling `RunSmoke` beneath an already held sprint mutation lock. Factor only the minimum shared top-level execution seam needed to guarantee one lock, one harness invocation, one `smoke.md` write, one flow update, and one roadmap reconciliation.
@@ -147,7 +147,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Expand `internal/sprint/smoke_test.go` with paired compatibility and QA-suite fixtures comparing selection, containing tests, argv, environment, timeout, cancellation, cleanup, external run ID, evidence links, verdict, flow projection, `smoke.md`, and failure preservation.
   - [ ] Add tests for blocked review, missing coverage, unavailable prerequisites, diagnostic scope, narrow rerun, malformed external evidence, authoring escape, and no nested operation.
 
-- [ ] **Task 8: Extend adapter-independent app use cases and durable operations**
+- [x] **Task 8: Extend adapter-independent app use cases and durable operations**
   > Executes: `D-01`, `D-05`, `D-06`, `D-07`, `D-08`, `D-09`; `RUN`, `SURFACES`, `BOUNDS`
   - [ ] Extend `internal/app/sprint_usecases.go` with the closed QA suite field and bounded focused queries for evidence, adjudication, issues, assessment, and smoke-suite status.
   - [ ] Add request fields for evidence ID, issue ID, opaque issue cursor, and page limit. Validate each method's exact accepted fields. Default issue pages to 50 and reject limits over 200.
@@ -158,7 +158,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Preserve authorization-independent observation while requiring current authority for mutation and cancellation.
   - [ ] Expand `internal/app/sprint_usecases_test.go` and durable-operation tests for bounded projections, hostile text, current-pointer-only IDs, cursor invalidation, adapter-independent results, one-run smoke routing, fencing, cancellation, and consistent next actions.
 
-- [ ] **Task 9: Add CLI text/JSON controls and compatibility tests**
+- [x] **Task 9: Add CLI text/JSON controls and compatibility tests**
   > Executes: `D-06`, `D-07`, `D-08`, `D-09`; `SURFACES`, `SMOKE`, `DOCS`
   - [ ] Extend `internal/app/sprint_commands.go` to accept `--suite smoke` only for run and dry-run while preserving existing action words, `--shard`, `--run`, `--json`, compatibility aliases, and argument order.
   - [ ] Stop describing all QA as read-only. Explain normal isolated writable evidence, target immutability, and external smoke evidence ownership in help and text output.
@@ -167,7 +167,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Make status and focused read queries return success when they truthfully report a blocked or failed product assessment. Execution exit behavior must follow the deterministic assessment and cleanup result.
   - [ ] Expand `internal/app/sprint_commands_test.go` with help, old-call compatibility, suite parsing, invalid combinations, dry-run, no-resume smoke, JSON goldens, stdout/stderr separation, exits, cancellation, blockers, and app/CLI agreement.
 
-- [ ] **Task 10: Extend TUI and browser QA presentation over app facts**
+- [x] **Task 10: Extend TUI and browser QA presentation over app facts**
   > Executes: `D-01`, `D-07`, `D-08`, `D-09`; `SURFACES`, `RUN`, `REPORT`, `SMOKE`
   - [ ] Extend `internal/tui/qa_view.go` to show identity and freshness, assessment, current failure versus last complete report, operation and cleanup, coverage, bounded evidence, rejected evidence, adjudication, issues, regression candidates, smoke suite, blockers, cancellation, recovery, and next action.
   - [ ] Preserve verdict-neutral phase language. Render control bytes and ANSI input inert before width calculations. Keep status text visible without color and stack authority-bearing fields at narrow widths.
@@ -179,7 +179,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] Escape all hostile evidence through existing template and preview boundaries. Never place evidence in raw HTML, scripts, styles, or unvalidated URLs.
   - [ ] Expand `internal/tui/qa_view_test.go`, `internal/web/qa_handlers_test.go`, operation contract tests, and template tests for keyboard use, narrow/mobile layouts, no-JavaScript completeness, focus, hostile text, bounded rendering, cancellation, dropped delivery, reconnect, restart, session rotation, confirmation staleness, and parity fixtures.
 
-- [ ] **Task 11: Document the supported workflow, schemas, limits, and recovery**
+- [x] **Task 11: Document the supported workflow, schemas, limits, and recovery**
   > Executes: `D-06`, `D-07`, `D-08`, `D-09`, `D-10`; `DOCS`, `SCOPE`
   - [ ] Update `../ultraplan-go/docs/cli-reference.md` for isolated QA, `qa --suite smoke`, dry-run, focused shards, status, cancellation, resume restrictions, JSON outcomes, exits, blockers, and compatibility commands.
   - [ ] Update `../ultraplan-go/docs/architecture.md` for product/platform ownership, copy and native-isolation guarantees, evidence authority, quorum limits, adjudication, state v2, publication order, run control, and smoke reuse.
@@ -191,7 +191,7 @@ The trace IDs below are plan-local names for groups of acceptance criteria in `r
   - [ ] State the limits honestly. Copy workspaces are not a general hostile multi-tenant sandbox, majority is not proof of independent truth, and unsupported native isolation blocks writable work.
   - [ ] Verify that docs add no repair, patch application, permanent test promotion, issue-management, Git mutation, content identity, retrieval, or remote execution instructions.
 
-- [ ] **Task 12: Complete deterministic, race, parity, and gated release evidence**
+- [/] **Task 12: Complete deterministic, race, parity, and gated release evidence** — Deferred: offline, race, parity, vet, build, and hygiene gates passed; Architecture Review, Sprint Review, Deep Smoke, and real external-harness dogfood belong to the post-execution stages, and `ULTRAPLAN_REAL_SMOKE` is not enabled.
   > Executes: `D-10`; `ISO`, `IMMUTABLE`, `PLAN`, `EXEC`, `EVIDENCE`, `ADJ`, `ASSESS`, `REPORT`, `STATE`, `SMOKE`, `RUN`, `SURFACES`, `DOGFOOD`, `SCOPE`
   - [ ] Build one canonical fixture and inspect it through private verification state, `qa.md`, `smoke.md`, app DTOs, CLI text/JSON, TUI, browser HTML/JSON, and durable run detail. Compare semantic fields rather than prose layout.
   - [ ] Run all package-focused unit and fault-injection suites for process isolation, investigation, state, adjudication, orchestration, smoke, app, CLI, TUI, and web.
@@ -244,8 +244,8 @@ All implementation commands run from `../ultraplan-go` unless noted otherwise.
 
 | Risk / Blocker | Source | Mitigation | Status |
 | --- | --- | --- | --- |
-| Native protected-root write denial or descendant cleanup cannot be proven on a supported platform | `reasoning.md`, D-03 | Expose capability facts, test each supported OS, and block writable QA where proof is unavailable. Do not weaken the guarantee silently. | open |
-| Sprint 36 admission evidence is missing, stale, or unacceptable | `requirements.md`, Dependencies and first acceptance criterion | Fail before workspace creation or runtime work. Rerun the earlier governed review and containing smoke outside this sprint plan. | open |
+| Native protected-root write denial or descendant cleanup cannot be proven on a supported platform | `reasoning.md`, D-03 | Expose capability facts, test each supported OS, and block writable QA where proof is unavailable. Do not weaken the guarantee silently. | resolved on recorded Linux host; unsupported hosts block |
+| Sprint 36 admission evidence is missing, stale, or unacceptable | `requirements.md`, Dependencies and first acceptance criterion | Fail before workspace creation or runtime work. Rerun the earlier governed review and containing smoke outside this sprint plan. | resolved for entry: current pass-with-findings review and passing containing smoke |
 | Original target path leaks through prompt, argv, environment, cwd metadata, logs, or events | `reasoning.md`, Risk register | Construct child requests from copy-relative paths, strip environment, scan every retained channel in adversarial tests, and block admission on leakage. | open |
 | Copying large dirty trees exceeds practical limits | `reasoning.md`, D-03 and D-09 | Validate file, byte, duration, and state budgets before copy. Block oversized targets and measure dogfood before considering optimization. | open |
 | Fresh model calls share provider bias | `reasoning.md`, Known technical debt | Keep direct evidence primary, validate outputs locally, preserve disagreement, require current Conformance Review, and describe majority limits honestly. | open |
@@ -255,7 +255,7 @@ All implementation commands run from `../ultraplan-go` unless noted otherwise.
 | Narrow or diagnostic smoke is presented as canonical | `requirements.md`, smoke criteria | Retain containing-suite and diagnostic facts in product state and every renderer. Assessment rejects narrow-only evidence. | open |
 | Bounded DTOs omit audit-critical reasons | `reasoning/api-design.md`, Risks | Always retain reason codes and exact evidence IDs, expose focused queries, and report omitted counts and truncation. | open |
 | Cancellation races completion, cleanup, or stale ownership | `reasoning.md`, D-05 and D-08 | Use Sprint 35 terminal arbitration and fences, preserve completed evidence, and project the authoritative terminal result after refresh. | open |
-| Dogfood prerequisites are unavailable | `requirements.md`, Release and dogfood gate | Record `blocked` and do not satisfy the sprint gate. Normal deterministic checks still run. | open |
+| Dogfood prerequisites are unavailable | `requirements.md`, Release and dogfood gate | Record `blocked` and do not satisfy the sprint gate. Normal deterministic checks still run. | blocked: real harness opt-in is not enabled; reviews are downstream |
 
 ## Review Inputs
 
@@ -281,8 +281,8 @@ The review must inspect all changed package boundaries and all commits included 
 | Date / Step | Action | Evidence / Notes |
 | --- | --- | --- |
 | 2026-08-25 / planning | Created the implementation plan from governed Sprint 37 reasoning and area decisions. | No implementation, smoke, review automation, Git operation, or flow-state edit was performed during planning. |
-| pending / implementation | Execute Tasks 1 through 12 in dependency order. | Record implementation commits, focused test results, deviations, and blockers here during execute. |
-| pending / verification | Run offline, race, vet, build, diff, review, and gated dogfood checks. | Record exact commands, run IDs, evidence digests, and any blocked prerequisite. |
+| 2026-08-25 / implementation | Implemented Tasks 1 through 11 in the recorded worktree. | Added native disposable-copy isolation, v2 evidence/state/publication, adjudication and assessment, canonical report rollback, smoke-suite reuse, app/CLI/TUI/web projections, focused APIs, limits, tests, and docs. No Git operation or production repair path was added. |
+| 2026-08-25 / verification | Ran focused, full offline, race, vet, build, JavaScript syntax, and diff-hygiene checks. | All deterministic gates passed. `TestRealSmokeHarness` skipped with the explicit blocker `ULTRAPLAN_REAL_SMOKE=1` not set. Actual review and smoke stages were not launched during execute. |
 
 ## Completion Criteria
 
