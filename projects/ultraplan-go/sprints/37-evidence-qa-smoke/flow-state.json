@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "37-evidence-qa-smoke",
-  "updatedAt": "2026-08-25T13:22:25.482248222Z",
+  "updatedAt": "2026-08-25T14:11:25.124855064Z",
   "stages": [
     {
       "stage": "requirements",
@@ -46,5 +46,1055 @@
       "path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/plan.md",
       "lastRunAt": "2026-08-25T12:06:58.167877089Z"
     }
-  ]
+  ],
+  "review": {
+    "status": "completed",
+    "verdict": "fail",
+    "path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/review.md",
+    "lastRunAt": "2026-08-25T14:11:25.119607961Z",
+    "fingerprint": "92bd1151649d6275e9a3b443b30ec110ec0d172455c82137408a6f6e2a9b27a6",
+    "stale": false,
+    "completed": 14,
+    "total": 14,
+    "artifactDigest": "c158370d54bd9306d6254a6e6fef1c6d1e0aece47bb984c4c14787b23d1dc344",
+    "lastAttempt": {
+      "id": "review-1787665625680334625",
+      "status": "completed",
+      "startedAt": "2026-08-25T13:47:05.680334625Z",
+      "heartbeatAt": "2026-08-25T14:11:24.991099778Z",
+      "ownerPid": 651477,
+      "completedAt": "2026-08-25T14:11:25.119607961Z"
+    },
+    "lastComplete": {
+      "verdict": "fail",
+      "artifact": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/review.md",
+      "artifactDigest": "c158370d54bd9306d6254a6e6fef1c6d1e0aece47bb984c4c14787b23d1dc344",
+      "inputFingerprint": "92bd1151649d6275e9a3b443b30ec110ec0d172455c82137408a6f6e2a9b27a6",
+      "completedAt": "2026-08-25T14:11:25.119607961Z",
+      "coverage": [
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-architecture",
+          "applicability": "direct",
+          "summary": "The Sprint 37 changes preserve the governed module graph. `target/internal/platform/process/isolation.go` is stdlib-only (imports at lines 3-16) and exposes neutral facts — bounded non-Git copy, tree identity/comparison, containment-aware process launch, and truthful cleanup results — without sprint types or outcome decisions, satisfying ARCH-SHARED-001 for the reviewed file. Product policy stayed in `internal/sprint`: writable admission is validated before any workspace work (`target/internal/sprint/qa.go` 442-451), copy-backed workers run sequentially in one loop (470-511), investigation hard-fails when the host cannot prove protected-root denial and descendant cleanup (`target/internal/sprint/qa_investigation.go` 64-68), scans child requests for original-path leakage (70-75), and records target drift and cleanup truth into evidence (104-121). The browser adapter still imports only `net/http`, `strconv`, and `internal/app` (`target/internal/web/qa_handlers.go` 3-8) via an additive `QAEvidenceQueries` interface (`target/internal/app/sprint_usecases.go` 89-97), keeping app/JSON at schema version 1 with additive fields. The CLI adds a closed `--suite smoke` selector with strict combination validation (`target/internal/app/sprint_commands.go` 629-669) and updated help (1657-1664). The smoke suite reuses the canonical executor before any mutation lock is taken (`target/internal/sprint/qa.go` 282-303 versus lock at 315), proven by the parity fixture (`target/internal/sprint/smoke_test.go` 301, 367-371), so no second smoke authority exists. Canonical publication writes immutable plans/evidence first and snapshots/restores `qa.md`, the state pointer, and flow projection together on failure (`target/internal/sprint/qa_state.go` 482-492, 547, 555), matching the updated architecture document. Two high findings block full acceptance: the frozen review slice omits the source files defining referenced native-isolation and admission symbols, and the failed-shard evaluator quorum is exported but never wired into orchestration, leaving issue promotion unreachable in the visible path.",
+          "findings": [
+            {
+              "id": "ARCH-S37-001",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Reviewed scope omits sources defining referenced native-isolation and admission symbols",
+              "detail": "`isolation.go` calls `isolationCapabilities()` (line 74) and `nativeIsolationRequest()` (164), and `qa.go` depends on `QAAdmission`/`ValidateQAAdmission` (443-450), `NewQAV2ID` (517), and `RenderQAReport` (526); none of these symbols are defined in any file of the frozen target slice, and no test files for the new isolation mechanics are included. `docs/architecture.md` documents a bubblewrap-based read-only-host-mount boundary for exactly this code path. Because the defining files are outside the changed-path set, this review cannot verify ARCH-SHARED-001 domain neutrality, fail-closed capability semantics, or the documented sandbox behavior for the most security-critical new boundary. Per protocol, missing coverage is review failure, not conformance.",
+              "action": "Add the platform native-isolation implementation and the QA evidence/admission source files (with their isolation and admission tests) to the review scope with hashes, or record them explicitly as unchanged pre-existing files.",
+              "citations": [
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 74,
+                  "endLine": 74
+                },
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 163,
+                  "endLine": 168
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 442,
+                  "endLine": 451
+                },
+                {
+                  "path": "target/docs/architecture.md",
+                  "startLine": 229,
+                  "endLine": 234
+                }
+              ]
+            },
+            {
+              "id": "ARCH-S37-002",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Failed-shard evaluator quorum is unwired and issue promotion is unreachable in the reviewed orchestration",
+              "detail": "`AdjudicateFailedShard` — the reasoning D-04 rule requiring exactly three fresh evaluators and a two-of-three pass majority — is exported but has no caller in the reviewed files. The only evidence-producing path promotes issue candidates directly from single failing checks (`qa.go` 504-512) with no evaluator pass. Meanwhile adjudication rejects every failing record as `not_repeatable` (`qa_adjudication.go` 69-71) because `Repeatable` is true only for passes (`qa_investigation.go` 139), while candidate promotion requires admitted records whose outcome is Fail (`qa_adjudication.go` 83-93). The rules are jointly unsatisfiable: no promoted issue can ever exist, no failed shard can ever be adjudicated to pass, and a genuine detected failure surfaces only as rejected evidence driving a blocked assessment. This contradicts the shipped architecture claim that semantic analyzers and failed-shard evaluators use fixed three-call limits where applicable, and leaves exported API surface without a demonstrated caller (earned-complexity / ARCH-MODULE-001 concern).",
+              "action": "Wire repeatability reruns and the three-fresh-evaluator failed-shard quorum into shard adjudication ahead of promotion and pass decisions (or remove the unwired API), update the architecture documentation, and add tests proving both a promotion audit and an adjudicated-pass path end to end through RunQA.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 69,
+                  "endLine": 71
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 83,
+                  "endLine": 93
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 149,
+                  "endLine": 171
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 139,
+                  "endLine": 139
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 504,
+                  "endLine": 512
+                },
+                {
+                  "path": "target/docs/architecture.md",
+                  "startLine": 240,
+                  "endLine": 242
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-cli-surface",
+          "applicability": "direct",
+          "summary": "Sprint 37 directly modifies the CLI surface through the `sprint ... qa` command family in internal/app/sprint_commands.go. Confirmed conformance: sprintQAHelp documents `--suite smoke`, disposable writable copies, target immutability, and the smoke-suite no-resume rule; parseSprintQAArgs preserves all pre-existing action words and flags (--dry-run/--json/--shard/--run), accepts --suite only as the closed value `smoke` on run/dry-run, rejects it for resume, and makes it mutually exclusive with --shard; status and recover reject suite/shard/run; the public JSON envelope remains schema_version 1 with additive omitempty QAResult fields; progress stays redacted on stderr while stable text/JSON results go to stdout; QA start/resume are durably accepted with Suite included in correlation; QAError categories map to established usage/validation/runtime/partial exit classes; config errors keep ExitConfig. Four actionable deviations were found: QA execution returns exit 0 even when the derived assessment or the smoke-suite verdict failed or blocked (diverging from the smoke and verify commands' non-zero behavior and the sprint's documented exit table); smoke-originated errors surfaced through `qa --suite smoke` lose their dedicated mapSmokeError classification and fall through to a generic workspace-class exit; `qa cancel` silently accepts `--suite` although the closed request table rejects suite on every action except run/dry-run; and non-dry `qa --suite smoke` launches the same external harness without the `--yes` explicit non-interactive confirmation gate that the compatibility `smoke` command requires.",
+          "findings": [
+            {
+              "id": "qa-cli-exit-001",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "QA execution exits 0 despite failed or blocked deterministic outcomes",
+              "detail": "The qa run/resume dispatch returns nil whenever RunQA returns nil. In the smoke-suite branch of Service.RunQA, a harness run that completes with verdict fail (or pass_with_open_issues classified as fail by operators) keeps phase=completed and terminal=completed because the downgrade to blocked triggers only when smokeErr != nil or Status != SmokeCompleted; the compatibility `smoke` command exits ExitValidation for the same verdict, and `verify` exits ExitValidation when its assessment is fail/blocked. Likewise an evidence-producing QA run whose published CanonicalAssessment is fail or blocked exits 0. This violates CLI-EXIT-001 (no 0 on failed operation), contradicts the plan's rule that execution exit behavior follows the deterministic assessment and cleanup result, breaks smoke/QA parity for scripts branching on exit codes, and renders 'QA completed' for a failing smoke verdict.",
+              "action": "After execution actions, classify the exit from qaRun.State.Run.TerminalResult, the derived CanonicalAssessment, and the SmokeResult.Verdict (fail/blocked -\u003e ExitValidation with the recorded next action), matching the existing smoke and verify handlers, and reflect the failing verdict rather than 'QA completed' in renderSprintQA.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 295,
+                  "endLine": 302
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 448,
+                  "endLine": 476
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 568,
+                  "endLine": 571
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 324,
+                  "endLine": 327
+                }
+              ]
+            },
+            {
+              "id": "qa-cli-exit-002",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Smoke errors routed through qa --suite smoke lose their established exit classification",
+              "detail": "RunQA's smoke-suite branch returns raw smokeError values, but mapQACommandError only special-cases classedError, context cancellation/deadline, and sprint.QAError before falling back to mapSprintError, whose default class is ExitWorkspace. mapSmokeError deliberately maps smoke cancellation to the cancel class and process/timeout/cleanup categories to ExitRuntime. A harness process failure or timeout reached via `qa --suite smoke` therefore exits with the workspace error class (and a sprint.qa-prefixed code) instead of the documented runtime/cancel classes, so scripts cannot branch consistently across the two entry points for identical work.",
+              "action": "In mapQACommandError, detect sprint.AsSmokeError first and delegate to mapSmokeError (preserving the sprint.qa prefix), keeping cancellation/process/timeout/cleanup classifications identical to the compatibility smoke command.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 704,
+                  "endLine": 725
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 940,
+                  "endLine": 952
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 292,
+                  "endLine": 302
+                }
+              ]
+            },
+            {
+              "id": "qa-cli-shape-003",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "qa cancel accepts --suite inconsistently with the closed request table",
+              "detail": "parseSprintQAArgs rejects --suite for resume and for status/recover and validates it only as `smoke` for run and dry-run, but the cancel case checks only --run presence and rejects --shard while leaving --suite unchecked. `qa cancel --suite smoke --run \u003cid\u003e` parses successfully and the flag is silently ignored during dispatch, contradicting the sprint contract that cancellation requests accept no suite and creating an unpredictable flag surface (CLI-SHAPE-001).",
+              "action": "Add a suite rejection to the cancel case of parseSprintQAArgs mirroring the status/recover message, e.g. 'qa cancel does not accept --shard or --suite'.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 653,
+                  "endLine": 659
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 667,
+                  "endLine": 670
+                }
+              ]
+            },
+            {
+              "id": "qa-cli-safe-004",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Non-dry qa --suite smoke skips the explicit --yes confirmation gate required for external harness execution",
+              "detail": "The compatibility `smoke` command refuses non-dry execution without --yes/--non-interactive precisely because it launches external harness processes. `qa --suite smoke` invokes the same manifest-driven authoring/discovery/run pipeline through RunSmoke after only the standard durable acceptance, with no equivalent explicit-flag or scope-display step in the qa branch, so two entry points enforce different safety controls (CLI-SAFE-001) for identical expensive external work.",
+              "action": "Either require the same explicit non-interactive confirmation (e.g. --yes) for non-dry qa --suite smoke starts, or document and test the durable acceptance flow as the equivalent safety control and surface the selected scope/evidence roots before start, so both entry points present consistent destructive-action safeguards.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 528,
+                  "endLine": 530
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 420,
+                  "endLine": 447
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-configuration",
+          "applicability": "direct",
+          "summary": "Confirmed conformance across the Configuration contract for the Sprint 37 diff. New QA runtime settings (tree_files, tree_bytes, file_bytes, generated_checks, generated_patch_bytes, evidence_records, issues, analyzer_calls, evaluator_calls) are typed struct fields mapped through qaSettings with per-field provenance from config.QAConfigFields(), validated against explicit maxima where the semantic analyzer and evaluator counts are deterministically pinned to exactly three and cannot be silently reconfigured (CFG-SOURCE-001, CFG-TYPE-001); the same discipline covers IsolationLimits positivity/ordering checks and the 1–200 issue-page bound (CFG-TYPE-001). Required-config failure happens before work: invalid settings exit qa.config at command setup, and writable admission (review/smoke freshness, map completeness, native isolation capability facts) is validated before any workspace creation, identity freeze, or provider work (CFG-START-001). Durable formats stay compatible: verification state writes schema v2 while explicitly accepting v1 reads, rejects unknown major versions with actionable recovery, keeps historical evidence/patch/adjudication records immutable, and snapshots-and-restores qa.md/state.json/flow-state.json when a later canonical commit step fails, preserving prior valid state (CFG-COMPAT-001). No scattered environment reads were added to business logic; investigation children receive only caller-supplied sorted environments, progress output passes config.RedactValue, and evidence records retain digests, byte counts, executable basenames, and hashed workspace IDs instead of raw argv, output, environment values, or host paths (CFG-SOURCE-001, CFG-SECRET-001). Public projections expose only bounded non-secret operational limits, effective sources, assessment, counts, and contained artifact pointers, and unsupported platform isolation capabilities block writable work explicitly rather than degrading silently (CFG-PUBLIC-001, CFG-OBS-001, CFG-ENV-001). One low-severity compatibility gap remains around reliance on loader-side defaults outside the reviewed changed-path set.",
+          "findings": [
+            {
+              "id": "cfg-001",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "New QA budget keys rely entirely on loader defaults outside the reviewed diff",
+              "detail": "qaSettings seeds budgets from DefaultQABudgets() but then unconditionally overwrites every field with configured values, extending the pattern to the nine Sprint 37 keys (tree_files/tree_bytes/file_bytes/generated_checks/generated_patch_bytes/evidence_records/issues plus the pinned call counts) with no zero-value fallback to the defaults. Compatibility for existing workspaces whose ultraplan.yml predates these keys therefore rests wholly on internal/platform/config supplying non-zero defaults; that package is not part of the frozen changed-path set, so CFG-COMPAT-001 compatibility for persisted pre-Sprint-37 config cannot be confirmed from this diff alone. If any loader default is missing or zero, ValidateQASettings rejects the settings and every QA invocation fails closed with qa.config (exit class config error) instead of running with safe defaults.",
+              "action": "Add zero-value fallback to DefaultQABudgets() for unset keys in qaSettings (or add an explicit assertion that the config loader always populates them), and add a fixture that loads a Sprint-36-era ultraplan.yml through loadEffectiveConfig and runs qaSettings to prove old workspaces still pass ValidateQASettings unchanged.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 816,
+                  "endLine": 842
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-documentation",
+          "applicability": "direct",
+          "summary": "The Documentation contract applies directly: Sprint 37 changed public CLI behavior, app JSON projections, browser routes, and implementation architecture. Confirmed conformance: target/docs/architecture.md is properly extended with decision context for the new QA evidence/isolation layer (product-vs-platform ownership split, disposable 0700 copies, native capability facts that fail closed, frozen plans binding target/workspace/command identities, QA v2 evidence with v1 read compatibility, immutable-evidence-before-pointer publication order with rollback of qa.md/state/flow, honest framing of the three-call majority as an adjudication rule rather than independent proof, and direct reuse of canonical smoke execution), satisfying DOC-ARCH-001 and DOC-OWNER-001. The dedicated `sprint qa` help accurately documents the new --suite smoke selector, the writable-disposable-copy posture, the smoke-suite no-resume rule, and verdict-neutral completion language, giving correct public-surface coverage on that path (DOC-PUBLIC-001). No generated-doc or example drift was observed within the reviewed scope (DOC-GEN-001/DOC-EXAMPLE-001 not triggered). Two actionable deviations remain: six of the seven documentation outputs mandated by the sprint requirements (docs/cli-reference.md, docs/user-guide.md, docs/local-web.md, docs/recovery.md, docs/phase3-json-schemas.md, docs/release-checklist.md under ../ultraplan-go) do not appear anywhere in the reviewed change set even though the corresponding public surfaces shipped, violating DOC-PUBLIC-001 and leaving DOC-OPS-001 operator guidance unpublished; and the umbrella sprint help contradicts actual behavior by omitting --suite smoke and labeling QA read-only.",
+          "findings": [
+            {
+              "id": "DOC-S37-01",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Six required companion documents were not updated despite new public CLI, JSON, and browser surfaces",
+              "detail": "Sprint 37 requirements list seven documentation outputs under ../ultraplan-go/docs/, and plan Task 11 (marked complete) claims 'Seven operator, architecture, schema, recovery, and release documents updated'; the execute summary repeats this claim. The frozen reviewed change set contains only target/docs/architecture.md among documentation files. docs/cli-reference.md, docs/user-guide.md, docs/local-web.md, docs/recovery.md, docs/phase3-json-schemas.md, and docs/release-checklist.md are absent from the diff. Meanwhile Sprint 37 added public behavior those documents own: the qa --suite smoke selector with shard/resume exclusion rules (sprint_commands.go), additive QAResult JSON fields (suite, assessment, evidence/rejected/issue/regression counts, canonical_report, current_failure) plus six focused query results (QAEvidenceQueries: evidence, adjudication, paged issues, issue, assessment, smoke-suite status) in sprint_usecases.go, and six new browser GET routes (/qa/evidence/{id}, /qa/adjudication, /qa/issues, /qa/issues/{id}, /qa/assessment, /qa/suites/smoke) in qa_handlers.go. Per DOC-PUBLIC-001 this leaves stable automation references describing stale behavior and undocumented endpoints; per DOC-OPS-001 the failed-isolation, cleanup-uncertainty, stale-writer, and last-complete-report recovery guidance and gated dogfood release checks are not recorded in operator-facing docs. The discrepancy between the execute/run-state claims and the frozen change set also weakens the documentation evidence required before release gating.",
+              "action": "Update all six missing documents against executable fixtures before review can pass: document --suite smoke, its dry-run/run-only validity, resume rejection, and exit mapping in cli-reference.md; freeze the additive app/JSON v1 fields and private QA v2 records/IDs plus compatibility and migration rules in phase3-json-schemas.md; document the six new routes and guarded smoke-suite starts in local-web.md; add evidence plans, adjudicated issues, regression candidates, canonical assessment, and smoke-suite workflow to user-guide.md; add failed-isolation, target-drift, cleanup-uncertainty, stale-writer, invalid-state, and last-complete-report guidance to recovery.md; and add non-mutation, isolation, evidence-quality, issue-audit, smoke-parity, cross-surface, race/build, and gated-dogfood checks to release-checklist.md. Correct or annotate the execute record that claimed seven documents were updated.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 629,
+                  "endLine": 651
+                },
+                {
+                  "path": "target/internal/app/sprint_usecases.go",
+                  "startLine": 87,
+                  "endLine": 109
+                },
+                {
+                  "path": "target/internal/web/qa_handlers.go",
+                  "startLine": 23,
+                  "endLine": 115
+                }
+              ]
+            },
+            {
+              "id": "DOC-S37-02",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Umbrella sprint help is stale: omits --suite smoke and mislabels QA as read-only",
+              "detail": "The updated dedicated help (sprintQAHelp) correctly states that normal evidence work uses disposable writable copies while the target stays immutable and that --suite smoke cannot resume, but the umbrella `ultraplan sprint --help` output was not refreshed to match: its usage block for qa lacks the [--suite smoke] option entirely, its command summary still reads 'Map, run, resume, inspect, cancel, or recover read-only QA', and its Scope line repeats 'read-only QA'. Help text is a discoverable public surface under DOC-PUBLIC-001, and describing a runtime-backed operation that writes disposable workspaces and private verification state as read-only contradicts actual behavior and could mislead operators about mutation boundaries.",
+              "action": "Update the qa usage lines and command/scope descriptions in sprintHelp() to include [--suite smoke] and replace the 'read-only QA' wording with wording consistent with sprintQAHelp() (bounded isolated evidence work against an immutable target; smoke routed through the external harness), keeping the two help surfaces consistent and covered by the existing help-freeze tests.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 1595,
+                  "endLine": 1599
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 1613,
+                  "endLine": 1618
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 1653,
+                  "endLine": 1665
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-errors",
+          "applicability": "direct",
+          "summary": "The Sprint 37 change largely conforms to the Errors contract. Failures use a typed QAError shape with stable category codes (unknown_schema, invalid_state, stale_input, permission_denied, budget_exhausted, conflict, persistence_failure, runtime_unavailable, admission_blocked, cleanup_uncertain, malformed_evidence) plus recovery guidance, and translation preserves causes via %w wrapping into classed CLI errors and a structured JSON envelope. Known-fatal prerequisites (admission, isolation capability, target identity, frozen plans) fail before child work starts; runtime retries are bounded by explicit budgets; owned shard/evidence tasks end in explicit terminal outcomes; persistence failures are a distinct category and canonical publication snapshots prior state/report/flow and joins rollback errors into the result instead of swallowing them; command evidence stores digests and sizes rather than raw output or secrets; process results surface timeout, cancellation, truncation, and cleanup facts; CLI separates stdout results from stderr progress; browser handlers preserve typed app errors. Four deviations were found: smoke-typed errors routed through the QA command lose their established classification and exit codes; a genuine failing check can never reach a promoted, classified product-failure outcome because failing evidence is auto-rejected as non-repeatable and assessment collapses all rejections into generic blocked; two cleanup-error paths are discarded silently; and the additive Fresh field conflates transport success with evidence currency.",
+          "findings": [
+            {
+              "id": "errors-review-001",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Smoke-as-QA failures are reclassified through mapQACommandError and lose their stable smoke codes and exit classes",
+              "detail": "When qa --suite smoke delegates to RunSmoke, the returned typed smoke error flows back through mapQACommandError (line 474/467), which checks only context and sprint.AsQAError before falling into mapSprintError's default ExitWorkspace branch. The identical harness/process/cancellation failure started via the dedicated smoke command maps through mapSmokeError to ExitValidation (5), ExitRuntime (6), or ExitCancel (7) with its stable se.Code preserved. Automation therefore observes the same dependency failure as exit class 4 with a generic code on one entry point and a precise classification on the other, violating ERR-TRANS-001/ERR-IO-001 and the documented exit-class table.",
+              "action": "Branch on sprint.AsSmokeError inside the QA command path (or route suite=smoke errors through mapSmokeError) so cancellation, process/timeout/cleanup, and protocol/validation categories keep their existing exit classes and stable smoke codes.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 473,
+                  "endLine": 475
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 704,
+                  "endLine": 725
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 940,
+                  "endLine": 953
+                }
+              ]
+            },
+            {
+              "id": "errors-review-002",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Confirmed assertion failures collapse into generic blocked state and can never promote a classified issue",
+              "detail": "RunQAInvestigation sets Repeatable only when outcome is pass (qa_investigation.go:139), so every failing behavioral record carries commands and is rejected by adjudication as not_repeatable (qa_adjudication.go:69-72). Issue candidates additionally require each supporting record to be accepted AND have Outcome==Fail (lines 83-92), which is now unreachable, so no issue is ever promoted from a real detected defect. DeriveQAAssessment then maps any rejection to AssessmentBlocked with the setup-style guidance 'Resolve blocked or rejected QA evidence' (lines 183-185), making a confirmed product failure indistinguishable from incomplete/blocked setups. The declared three-evaluator failed-shard quorum (AdjudicateFailedShard, line 149) has no callers, so the designed recovery path for repeatable failures is unwired. This collapses materially different failure classes at the acceptance boundary (ERR-CORE-001, ERR-CODE-001, ERR-TASK-001).",
+              "action": "Wire the evaluator quorum so admitted failing evidence can become repeatable (invoking AdjudicateFailedShard), or distinguish rejected assertion evidence from blocked/incomplete setups in DeriveQAAssessment so a proven product defect surfaces as a classified failure with its evidence IDs rather than generic blocked guidance.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 139,
+                  "endLine": 139
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 69,
+                  "endLine": 72
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 83,
+                  "endLine": 93
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 183,
+                  "endLine": 185
+                }
+              ]
+            },
+            {
+              "id": "errors-review-003",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Isolated-workspace parent removal error is silently discarded",
+              "detail": "buildQAEvidencePublication creates a private workspace parent and defers os.RemoveAll(workspaceParent) without checking the result. If removal fails, disposable isolated workspaces outlive the attempt with no diagnostic, blocker, or cleanup fact anywhere in state, output, or events, even though the sprint's own release gate requires proving that no isolated workspace remains. Cleanup uncertainty must stay visible per ERR-CORE-001.",
+              "action": "Capture the RemoveAll result, join any error into the returned publication result or emit a bounded diagnostic/blocker so leftover isolated workspaces are observable and actionable.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 462,
+                  "endLine": 466
+                }
+              ]
+            },
+            {
+              "id": "errors-review-004",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Early-return investigation paths drop cleanup diagnostics",
+              "detail": "In RunQAInvestigation, the capability-denied and target-path-leak early returns call workspace.Cleanup() and store result.Error in a local cleanup value, but return only the primary admission/permission error without the cleanup detail, and the deferred fallback `_ = workspace.Cleanup()` likewise discards its error. A caller cannot learn whether the abandoned copy was actually removed, weakening truthful cleanup reporting (ERR-CORE-001/ERR-DATA-001) precisely in the paths where containment proof already failed.",
+              "action": "Join the captured cleanup diagnostic into the returned QAError detail (or a joined error) on these early-return paths so cleanup incompleteness remains inspectable alongside the primary failure.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 57,
+                  "endLine": 62
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 63,
+                  "endLine": 74
+                }
+              ]
+            },
+            {
+              "id": "errors-review-005",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Additive Fresh flag reports transport success instead of evidence currency for smoke-suite results",
+              "detail": "The QA dry-run and run/resume smoke-suite projections set Fresh from command success (`Fresh: smokeErr == nil`, `Fresh: qaErr == nil`) rather than deriving it from smoke staleness or verdict currency as the service does elsewhere. A completed but blocked, not-applicable, or non-current smoke preview is serialized to automation with fresh=true, distorting the machine-readable freshness signal at the boundary that clients use to decide whether evidence is current.",
+              "action": "Populate Fresh from the validated smoke result's staleness/completion facts (mirroring QAFreshness.Current semantics) instead of nil-error, and document the field meaning in the additive JSON contract.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 387,
+                  "endLine": 387
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 450,
+                  "endLine": 450
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-llm-evaluation-cost-safety",
+          "applicability": "direct",
+          "summary": "Sprint 37 directly extends AI-mediated verification surfaces (QA investigators, declared semantic analyzers and failed-shard evaluators, model-driven smoke authoring reused through QA), and most of the contract's safety posture is enforced in product code. Runtime results are accepted only after restricted default-deny permission enforcement with zero unsupported policy features (target/internal/sprint/qa.go:744), and untrusted model terminal output is strictly decoded with schema-version, unknown-field, trailing-data, and size-bounds rejection before any product state derives from it (target/internal/sprint/qa.go:856 onward). Issue promotion and canonical assessment remain pure product operations over frozen records that never grant model prose authority (target/internal/sprint/qa_adjudication.go:34,173). Read-only investigator attempts persist usage and estimated cost (target/internal/sprint/qa.go:730-732); model selection provenance is recorded through validated EffectiveSources; all work limits are finite and quorum counts are frozen to exactly three (target/internal/sprint/qa_types.go:625-626). Smoke authoring retains permission-capability gating and protected-write attribution coverage, QA-suite smoke reuses one canonical executor rather than forking model-facing behaviour, and gated real-harness dogfood truthfully reports blocked instead of fabricating evidence (target/internal/sprint/smoke_test.go:130,301,529). Evidence records store digests and sanitized summaries rather than raw payloads, satisfying eval-data handling bounds. The principal deviation is that the declared three-analyzer / three-evaluator quorum behaviour is configuration-frozen but unreachable in the shipped evidence pipeline, so its evaluation scope, regression examples, and cost observability cannot be demonstrated from the changed scope.",
+          "findings": [
+            {
+              "id": "LLMEVAL-001",
+              "severity": "high",
+              "applicability": "direct",
+              "title": "Declared analyzer/evaluator quorum behaviour is unreachable in the shipped QA evidence path",
+              "detail": "EVAL-SCOPE-001 requires the evaluation scope to match shipped AI behaviour. buildQAEvidencePublication freezes every generated check as QACheckFact and issues no model call in the evidence-producing path; failing evidence is converted directly into an issue candidate, bypassing the mandated three-fresh-evaluator pass adjudication. AdjudicateFailedShard implements that strict two-of-three majority rule but has no callers anywhere in the reviewed target tree, while validateQABudgets hard-requires exactly three analyzer and three evaluator calls, so validated configuration asserts an AI behaviour the orchestration never exercises.",
+              "action": "Either wire failed-shard evidence through AdjudicateFailedShard using exactly three fresh, locally validated evaluator sessions and implement the declared semantic/adversarial check kinds, or record an explicit governed deferral in the sprint docs and stop enforcing budget maxima that imply unshipped AI behaviour.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 490,
+                  "endLine": 512
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 149,
+                  "endLine": 170
+                },
+                {
+                  "path": "target/internal/sprint/qa_types.go",
+                  "startLine": 625,
+                  "endLine": 626
+                }
+              ]
+            },
+            {
+              "id": "LLMEVAL-002",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "No regression examples cover the critical quorum-adjudication AI behaviour",
+              "detail": "EVAL-REG-001 requires representative regression sets for important AI behaviours. The only new test coverage in the changed scope exercises smoke authoring boundaries and smoke-versus-QA parity; AdjudicateFailedShard and QAModelObservation have no test references anywhere in the reviewed tree, leaving majority-pass, majority-fail, incomplete-call, non-fresh-session, digest-mismatch, and malformed-observation classification unprotected by any fixture.",
+              "action": "Add table-driven regression tests for evaluator-result validation and quorum outcomes, including hostile and malformed observations, in the same change that wires or formally defers the quorum path.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 149,
+                  "endLine": 170
+                },
+                {
+                  "path": "target/internal/sprint/smoke_test.go",
+                  "startLine": 301,
+                  "endLine": 492
+                }
+              ]
+            },
+            {
+              "id": "LLMEVAL-003",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Cost and latency drivers for the declared analyzer/evaluator calls are not observable",
+              "detail": "EVAL-COST-001 requires cost and latency metadata on runtime/provider-backed paths. Read-only investigator attempts do persist Usage and EstimatedCost, but the new v2 evidence records built by RunQAInvestigation carry only command digests, durations, truncation, timeout/cancellation, and cleanup facts with no token, cost, retry, or prompt-identity fields, and QAModelObservation's definition sits outside the reviewed scope, so usage capture for future analyzer/evaluator calls cannot be confirmed.",
+              "action": "Before enabling semantic checks, require every analyzer/evaluator observation to persist prompt identity/version/checksum, token counts where known, retries, duration, and fallback identity, and expose bounded summaries through the app projections.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 80,
+                  "endLine": 145
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 29,
+                  "endLine": 29
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 727,
+                  "endLine": 733
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-llm-runtime",
+          "applicability": "direct",
+          "summary": "Directly applicable: Sprint 37 edits how LLM-backed runtime behavior is exposed and consumed. Confirmed conformance: the investigator runtime request path is unchanged in discipline (restricted default-deny policy, required permission capability, shard timeout, cancellation propagation, strict local schema validation of terminal model output with unknown-field/trailing/version rejection, and bounded retry classification), satisfying LLM-IO-001, LLM-RETRY-001, LLM-SAFETY-001, and LLM-LIFECYCLE-001 for the conversational investigator. The new `--suite smoke` selector delegates to the single canonical smoke executor (including its LLM smoke-authoring step) behind durable acceptance, preserving LLM-EXPOSE-001 and avoiding a second runtime path. The new platform isolation layer imports only stdlib and carries no sprint semantics, preserving LLM-BOUNDARY-001. Frozen evidence plans use explicit argv, contained cwd, named environment keys, finite timeouts/output caps; evaluator quorum requires exactly three locally validated results bound to one evidence digest with unique fresh sessions (LLM-IO/SAFETY). Budgets pin analyzer/evaluator counts at 3 and are validated; usage/cost summaries remain recorded; CLI progress is redacted; no parallel observability stack was added (LLM-OBS-001, LLM-COST-001). Semantic/adversarial analyzer producers are not yet wired; their validation seam already exists. Findings below cover provenance loss and ambiguous terminal labeling on the new smoke-suite projection, plus unpersisted-evaluator validation.",
+          "findings": [
+            {
+              "id": "llm-runtime-001",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "QA smoke-suite projection drops smoke-author and harness-run identity carried by the canonical smoke result",
+              "detail": "The new suite path returns/delegates the full validated SmokeResult internally, but the CLI rebuilds QAResult from scratch for `--suite smoke`: RunID is overwritten with the durable QA writer token's run ID, and AuthorRunID, AuthorModel, harness protocol run ID, DiagnosticOnly, Verdict, and Stale are all discarded. Freshness is additionally derived from absence of error (`Fresh: qaErr == nil` on run, `Fresh: smokeErr == nil` on dry-run) instead of smoke.Stale, so an LLM-authored smoke run cannot be correlated from any QA surface even though the compatible `smoke` command reports these facts. This weakens observable prompt/run correlation (LLM-PROMPT-001/LMM-OBS-001 style provenance) for the newly exposed path and makes QA and smoke surfaces disagree about the same execution.",
+              "action": "Project the validated SmokeResult fields (RunID, AuthorRunID, AuthorModel, Verdict, DiagnosticOnly, Stale) into the suite-smoke QAResult/state (additive v1 fields), and derive Fresh from smoke.Stale rather than error absence in both the dry-run and run branches.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 292,
+                  "endLine": 302
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 449,
+                  "endLine": 458
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 383,
+                  "endLine": 394
+                }
+              ]
+            },
+            {
+              "id": "llm-runtime-002",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Terminal outcome for a failing authoritative smoke run is ambiguous on QA surfaces",
+              "detail": "When the delegated smoke run completes with verdict `fail` (Status Completed, nil error), the synthesized QAState records Phase=completed, TerminalResult=completed, and Freshness.Current=true, and the CLI projection contains no Assessment or failure marker; the text renderer therefore headlines \"QA completed\" with fresh=true for a failing containing-suite run. Execution completion and product verdict are conflated, leaving the terminal state ambiguous to anyone reading only QA surfaces (LLM-LIFECYCLE-001 requires unambiguous terminal outcomes; truthful signals per observability requirements).",
+              "action": "Map non-pass smoke verdicts into the suite projection explicitly: carry Verdict/DiagnosticOnly into Assessment or CurrentFailure (or a dedicated additive field), and derive the terminal result/phase labels from the verdict so fail/blocked/diagnostic runs are never presented as plain completed-and-fresh.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 295,
+                  "endLine": 301
+                },
+                {
+                  "path": "target/internal/app/sprint_commands.go",
+                  "startLine": 449,
+                  "endLine": 471
+                }
+              ]
+            },
+            {
+              "id": "llm-runtime-003",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "AdjudicateQA persists evaluator model observations without the local validity checks its sibling enforces",
+              "detail": "AdjudicateFailedShard validates every QAModelObservation before use (Valid flag, digest binding, non-empty call/session IDs, supported outcome, unique fresh session). AdjudicateQA, however, copies req.Evaluators verbatim into the returned adjudication record that becomes immutable published evidence, performing no per-observation validation. Today no producer populates this field, but once semantic evaluators are wired, malformed or replayed model output could enter durable adjudication records without the contract's mandatory local validation.",
+              "action": "Apply the same per-observation validation (or reuse the shared validator) to req.Evaluators inside AdjudicateQA before storing them, rejecting or quarantining invalid observations like other rejected evidence.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 146,
+                  "endLine": 146
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 149,
+                  "endLine": 166
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-observability",
+          "applicability": "direct",
+          "summary": "Sprint 37 directly applies the observability contract and largely conforms. New failure paths emit structured signals: the QA error taxonomy (target/internal/sprint/qa_types.go) defines twelve machine-readable categories, each with deterministic recovery guidance, mapped by the CLI to stable codes plus exit classes and a JSON error envelope carrying code, category, retryable, correlation_id, and timestamp (target/internal/app/sprint_commands.go). Correlation survives subsystem boundaries: the Sprint 35 writer token (run/operational-attempt/fencing generation) flows into QAState.Run, every fenced publication recheck, CLI/TUI/browser projections, and evidence records bind plan, shard, attempt, workspace-digest, target-before/after, map, and governed-input identities (target/internal/sprint/qa_investigation.go, qa_state.go). Health truthfulness is strong: writable admission probes native isolation capability facts and fails closed with typed admission_blocked before workspace creation or child work when protected-root denial, descendant cleanup, containment, review/smoke currency, or map completeness cannot be proven (target/internal/platform/process/isolation.go, target/internal/sprint/qa.go). Owned work reaches visible persisted terminal states per shard, including cancellation without retry, while run control retains terminal arbitration. PII discipline holds: progress is redacted via config.RedactValue, child environments are allowlisted and NUL/'='-rejected, original-target-path leakage into argv/env is denied, command results retain only basename executable plus arg/output digests, sizes, truncation, timeout/cancellation/cleanup facts rather than raw output, smoke safeArgv redacts credential-bearing arguments, patch bytes are NUL-checked, and app projections sanitize hostile strings via displaySafe. Diagnostics surfaces expose phase, freshness reasons, blockers, assessment, evidence/adjudication/issue counts, canonical report pointer, and next action across state, CLI text/JSON, TUI, and browser handlers (target/internal/web/qa_handlers.go). Two low-severity gaps remain: additive focused-query failures collapse to generic public error codes instead of the stable category discipline used everywhere else, and the new CurrentFailure diagnostic field is projected but never populated, so a failed new attempt cannot be distinguished from the preserved last-complete report through durable state.",
+          "findings": [
+            {
+              "id": "obs-focused-query-generic-error-codes",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Focused QA query validation failures return untyped errors that collapse to generic public error codes",
+              "detail": "The additive app queries introduced for Sprint 37 evidence, issue paging, and focused records reject invalid input with bare fmt.Errorf values (missing evidence/issue ID, over-limit page, invalid cursor, stale cursor bound to a prior attempt, record not owned by the current attempt, forbidden request field combinations). Unlike every sprint-side failure path in this change, which uses the typed QAError category taxonomy with stable recovery guidance and deterministic exit/HTTP mapping, these errors fall through adapter mapping to an uninformative generic code in the public JSON envelope, weakening automation classification and alert routing for the new read surface.",
+              "action": "Return typed category-coded errors (for example reusing the existing QA use-case/QAError categories such as invalid_state for malformed identifiers and conflict for stale cursors) so focused-query failures project distinct stable codes consistent with the rest of the QA failure matrix.",
+              "citations": [
+                {
+                  "path": "target/internal/app/sprint_usecases.go",
+                  "startLine": 800,
+                  "endLine": 800
+                },
+                {
+                  "path": "target/internal/app/sprint_usecases.go",
+                  "startLine": 842,
+                  "endLine": 899
+                },
+                {
+                  "path": "target/internal/app/sprint_usecases.go",
+                  "startLine": 947,
+                  "endLine": 947
+                }
+              ]
+            },
+            {
+              "id": "obs-current-failure-field-unpopulated",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "QAState.CurrentFailure diagnostic field is declared and projected but never written",
+              "detail": "Sprint 37 added CurrentFailure to the private QA state specifically to separate the current failed attempt from the preserved last-complete canonical report, and the app snapshot projection forwards it to CLI, TUI, and browser renderers. No code path in the changed target ever assigns it: terminal failure handling populates only the generic Blocker, so when a new evidence attempt fails after prior canonical publication, durable state and all surfaces omit the intended current-failure fact, leaving operators to infer the distinction from assessment text alone. This omits operator-recent failure detail from the diagnostics projection the field was added to carry.",
+              "action": "Populate QAState.CurrentFailure with the categorized current-attempt blocker when a new attempt terminates unsuccessfully while a prior canonical report remains published, and ensure at least one renderer presents it adjacent to the last-complete report reference as required by the sprint's cross-surface agreement criteria.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_types.go",
+                  "startLine": 244,
+                  "endLine": 244
+                },
+                {
+                  "path": "target/internal/app/sprint_usecases.go",
+                  "startLine": 1035,
+                  "endLine": 1035
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-performance",
+          "applicability": "direct",
+          "summary": "Confirmed conformance across the sprint's performance-sensitive additions. New expensive paths declare and enforce finite budgets: QABudgets gains validated defaults/maxima for tree files, tree bytes, per-file size, generated checks, patch bytes, evidence records, issues, and fixed three-call analyzer/evaluator quorums (validateQABudgets rejects zero/negative/over-max values and any analyzer/evaluator count other than exactly 3). Copy isolation validates positive limits up front, enforces file/byte/per-file caps during the walk, applies a copy timeout via context, and rejects links/special/hard-linked entries instead of scanning unbounded trees. Command execution stays bounded through explicit argv, per-plan timeout, stdout/stderr caps, and a cleanup grace derived from CleanupTimeout. Writable evidence work is pinned to sequential scheduling (WritableConcurrency=1) behind fail-closed capability admission, while the retained read-only worker pool remains bounded with owned channels, abort-on-publication-failure, panic containment, and cancellation propagation; execute evidence records go test -race passing. Adapter-facing work is bounded: issue pagination defaults to 50 with a hard 200 maximum and an attempt-bound cursor, QA progress emission is capped by RecentProgress, projections cap shards/theories, and qa --suite smoke reuses the existing bounded harness path rather than adding new scan or invocation loops. No new caches were introduced, usage/cost summaries remain attached to investigator attempts, and the architecture documentation declares the accepted copy/sequential-latency trade-off while explicitly deferring optimization until measured, satisfying PERF-MEASURE-001. Two low-severity boundedness/efficiency deviations are reported below; neither breaks a stated guarantee.",
+          "findings": [
+            {
+              "id": "perf-37-001",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Workspace removal is not bounded by the frozen cleanup budget",
+              "detail": "IsolationWorkspace.Cleanup performs os.RemoveAll synchronously with no deadline, and every caller in RunQAInvestigation (the deferred fallback plus the capability-gap, path-leak, and terminal-cleanup paths) invokes it directly without a watchdog. Budgets.CleanupTimeout is forwarded only as the child-process termination grace, so removal of a very large workspace or one containing slow/hung mounts can block the sequential QA run for an unbounded duration instead of expiring and surfacing the existing cleanup_uncertain outcome. The removal is byte-bounded by the copy limits, but its wall-clock cost has no declared bound, which PERF-BOUND-001 requires for jobs.",
+              "action": "Bound workspace removal with the frozen cleanup budget (for example a removal goroutine plus a bounded wait that records cleanup_uncertain on expiry), or document why RemoveAll cannot exceed CleanupTimeout on each supported platform and encode that assumption in the capability facts.",
+              "citations": [
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 212,
+                  "endLine": 232
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 57,
+                  "endLine": 74
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 113,
+                  "endLine": 117
+                }
+              ]
+            },
+            {
+              "id": "perf-37-002",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Per-shard evidence collection repeatedly re-reads the entire protected target",
+              "detail": "Each completed shard's investigation walks the full target tree four times (pre-copy identity, the copy source walk, the target side of CompareTrees, and the post-cleanup drift check) and walks the workspace three more times, and the post-command walks run under context.WithoutCancel so they escape the shard/run timeout and rely solely on file/byte caps. Multiplied sequentially across shards this makes QA runtime scale as shards x several full-tree reads of the shared target, when the entries map already computed by collectTreeIdentity at isolation creation contains everything needed to derive changed paths by diffing workspace-before against workspace-after locally, reserving target walks for the before/after drift checks. The work is bounded and the reasoning documents deferring optimization until measured, but the redundant target-side traversal is avoidable now without speculative complexity.",
+              "action": "Expose the per-entry identity map captured during isolation creation (collectTreeIdentity already returns it; IsolationWorkspace.Identity discards it) and compute ChangedPaths from workspace-before/workspace-after diffs, keeping target traversals to the pre/post drift identities; otherwise record measured per-shard traversal costs in the gated dogfood evidence to justify retaining the current pattern.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 100,
+                  "endLine": 107
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 118,
+                  "endLine": 121
+                },
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 172,
+                  "endLine": 181
+                },
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 184,
+                  "endLine": 210
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-persistence-and-migrations",
+          "applicability": "direct",
+          "summary": "Direct applicability confirmed: this sprint adds durable formats (QA state/evidence/patch/adjudication/issue/assessment v2 records plus canonical qa.md), compatibility behavior, atomic multi-file publication, integrity enforcement, bounded reads, and recovery semantics, all governed by this contract. Confirmed conformance: durable structures have clear ownership (internal/sprint owns the verification/ tree; flow-state.json holds only a documented bounded pointer projection; qa.md is digest-linked from the state pointer). Migration behavior is explicit and reviewable: strict versioned readers accept state v1 or v2 through a single compat branch while evidence, adjudication, issue, and assessment records require exactly schema v2, so retained v1 records can never satisfy Sprint 37 passing evidence; unknown major versions fail closed with typed unknown_schema errors and actionable recovery text, and reads never rewrite historical records. Atomic boundaries are explicit: private writes use temp-file/chmod/fsync/rename/dir-sync, publication is dependency ordered (immutable plans, patches, evidence, adjudication, issues, assessment, report before the state pointer and flow projection), every canonical write rechecks the writer fence, and the three canonical files are snapshotted and restored together when a later commit step fails. Integrity is enforced at strong layers: every referenced artifact including qa.md is re-hashed on each state load, records are bound to their path identities, 0600/0700 modes and symlink-free containment are mandatory, hard size caps and frozen budgets (including fixed three-call analyzer/evaluator counts) are validated. Reads are bounded (128 MiB LimitReader caps, issue pagination default 50 / max 200 with attempt-bound opaque cursors, theory and shard caps in projections), derived stores declare their source of truth, retention pruning protects the current attempt, recovery is restricted to terminal phases, and test fixtures stay in temporary directories with the real-harness test environment-gated.",
+          "findings": [
+            {
+              "id": "PERSIST-001",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Non-evidence QA publications downgrade the state pointer to schema v1 and orphan qa.md without staleness marking",
+              "detail": "prepareQAAttempt constructs a fresh QAState with SchemaVersion QASchemaVersion and nil Adjudication/Issues/Assessment/CanonicalReport references for every new semantic attempt, and Publish only promotes the persisted pointer to QAStateSchemaVersion (2) when an Evidence bundle is supplied. EvidenceProducing is an optional request flag defaulting to false, so any RunQA invocation that does not opt in replaces a v2 evidence-bearing state with a v1 state: the flow summary loses its assessment/report pointers and counts, while the previous attempt qa.md remains on disk unreferenced and visually indistinguishable from current. The superseded evidence records survive only until retention pruning removes their attempt directory. No code path declares or propagates invalidation of the derived report in this transition, and ValidateQAState imposes no coherence between schema version and evidence fields that would detect it.",
+              "action": "Publish one forward schema version for all new attempts (the v1 compatibility decoder already exists), or explicitly invalidate the canonical-report reference and append a freshness reason whenever a non-evidence attempt supersedes evidence-bearing state; add a regression test covering an evidence run followed by a non-opt-in run.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 582,
+                  "endLine": 586
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 26,
+                  "endLine": 26
+                },
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 461,
+                  "endLine": 463
+                },
+                {
+                  "path": "target/internal/sprint/qa_types.go",
+                  "startLine": 712,
+                  "endLine": 728
+                }
+              ]
+            },
+            {
+              "id": "PERSIST-002",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "External modification of qa.md fails closed the entire QA state load, including runtime-free recovery",
+              "detail": "After an evidence-producing run, state.CanonicalReport pins the sha256 of qa.md, and LoadState hard-fails on any referenced-artifact digest mismatch. RecoverQA treats that failure as fatal and returns before performing any reconciliation (only fs.ErrNotExist is special-cased), so an operator who edits the human-readable canonical report cannot run qa recover, view shards through status projections, or repair anything except by manually restoring or deleting files. Making the derived, operator-visible summary a tamper-evident hard reference at the storage layer applies integrity enforcement more strictly than the artifact role requires and leaves this user-reachable corruption class without a self-service rollback or recovery strategy, unlike stale-artifact handling elsewhere in the product which degrades to freshness diagnostics.",
+              "action": "Project canonical-report digest drift as a typed blocker/current_failure with guidance to rerun QA (which atomically republishes qa.md) rather than failing the whole state load, or move the report out of the hard-reference set and surface its digest mismatch through freshness and current-failure reporting so recovery stays reachable.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 256,
+                  "endLine": 262
+                },
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 795,
+                  "endLine": 799
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 189,
+                  "endLine": 196
+                }
+              ]
+            },
+            {
+              "id": "PERSIST-003",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Canonical qa.md inherits 0600 private mode from the private QA record writer",
+              "detail": "The canonical report is published through the private record writer path, whose temp file is always chmod 0600 before rename; the directory-mode loop is skipped only because the sprint-root path lacks a verification component. qa.md therefore lands as an owner-only file while sibling sprint-root artifacts such as review.md and smoke.md follow the public Markdown convention, so the durable artifact permission class contradicts its documented role as the readable canonical QA summary in the sprint root.",
+              "action": "Write the canonical report through a public atomic-write path (0644) reserved for sprint-root summaries, or document the intentional owner-only mode in the schema and CLI documentation so operators are not surprised by unreadable reports.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 795,
+                  "endLine": 795
+                },
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 883,
+                  "endLine": 883
+                },
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 858,
+                  "endLine": 871
+                }
+              ]
+            },
+            {
+              "id": "PERSIST-004",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "State validation does not bind schema v2 to coherent evidence-field presence",
+              "detail": "ValidateQAState accepts schema versions 1 and 2 and checks only that evidence/rejected/issue/regression counts are non-negative; it never requires that a v2 state carrying Adjudication, Issues, Assessment, or CanonicalReport references also carries consistent counts, nor that nonzero counts imply those references exist. Today the only writer produces consistent records, so impact is limited, but the durability layer is where this invariant belongs per the contract, and the gap compounds finding PERSIST-001 by allowing mixed-version transitions to persist undetected.",
+              "action": "Add cross-field invariants to ValidateQAState: schema version 2 must carry evidence fields either fully populated from a validated publication (counts matching adjudication/assessment facts) or fully absent, and reject partial combinations at both load and publish time.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_types.go",
+                  "startLine": 712,
+                  "endLine": 728
+                },
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 241,
+                  "endLine": 264
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-security",
+          "applicability": "direct",
+          "summary": "Direct conformance. The Sprint 37 change introduces subprocess execution, filesystem copying, private state writes, and new CLI/app/HTTP surfaces, and it satisfies the Security contract's applicable requirements. SEC-INJECT-001: every child runs via explicit executable+argv arrays through the platform process seam with a sorted allowlist environment map (NUL/'=' entry validation); the original target path is denied in child args/env; shells, interpreters, redirection, write modes, and Git remain prohibited in the approved-check catalog; no shell interpolation exists in the new paths. SEC-FILES-001: disposable workspaces are created 0700/0600 under an overlap-checked parent and copied with rejection of symlinks, special files, hard links, escapes, and over-limit trees; workspace-relative resolution rejects absolute and escaping paths; QA state resolution rejects symbolic-link components inside the sprint; generated-patch references must resolve inside the current attempt with matching digests; canonical snapshot/rollback refuses non-regular files and symlinks. SEC-DEFAULT-001: writable investigation fails closed unless every isolation capability including native protected-root denial, descendant cleanup, and removal proof is present; admission requires current Conformance Review, containing smoke, complete map coverage, and concurrency fixed at one before any writable work; unsupported suites, smoke-suite resume, and shard-focus combinations are rejected; cleanup uncertainty and post-run target drift always produce blocked, never pass. SEC-AUTHZ-001: each private/canonical write rechecks the durable writer fence; cancellation verifies the durable run belongs to the selected project, sprint, and QA operation before acting; browser mutation still flows through the unchanged session-bound prepare/confirm/start path and the new routes are read-only. SEC-INPUT-001: --suite accepts only the closed 'smoke' value with mutual-exclusion and action restrictions; focused QA queries enforce exact accepted fields, page limits bounded 1-200, and cursors bound to the current attempt; finite budgets gain hard maxima with analyzer/evaluator counts pinned at exactly three; strict JSON decoding rejects unknown fields, wrong versions, and trailing values across QA records. SEC-SECRETS-001: command output is retained only as digests and byte counts (never raw stdout/stderr), progress passes through redaction, isolated commands receive an effectively empty allowlisted environment by default, and detailed records stay private 0600 under 0700 directories. SEC-DESER-001: no eval/dynamic execution; patch bytes are NUL-checked and size-bounded before immutable publication. SEC-NET-001, SEC-AUTHN-001, and SEC-DEPS-001 are not triggered (no new outbound calls, identity-bearing auth paths, or third-party dependencies). Two low-severity hardening gaps were found: a stat/open race during bounded tree copy and identity collection, and unvalidated evaluator observation pass-through in adjudication persistence.",
+          "findings": [
+            {
+              "id": "SEC-37-FILES-TOCTOU-SYMLINK",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Bounded copy and identity walks open files by path after a non-following stat, so a raced symlink swap can redirect the read",
+              "detail": "copyBoundedTree and collectTreeIdentity correctly reject symlinks, special files, and hard links when each directory entry is inspected via WalkDir, but they subsequently read file contents by reopening the same path with os.Open, which follows symbolic links. A concurrent local writer that swaps a regular file for a symlink between the listing and the open can make the copy or identity digest read content from outside the source tree; the existing size recheck only catches swaps that change the reported size. This is hardening within the documented containment threat model rather than a boundary break: the workspace parent is overlap-checked against protected roots, native protected-root denial guards the real target while the child runs, unapproved changed paths block the attempt, and post-run target-identity comparison fails the run closed on any drift. Still, SEC-FILES-001 asks for platform-specific symlink bypass prevention where relevant, and the stat/open pair is currently splittable.",
+              "action": "Close the race by opening entries without following symlinks: open with O_NOFOLLOW (or a dir-relative openat on Linux) and fstat the opened handle instead of trusting the earlier DirEntry info, so the entry that was validated is the entry that is read.",
+              "citations": [
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 304,
+                  "endLine": 313
+                },
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 318,
+                  "endLine": 328
+                },
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 386,
+                  "endLine": 396
+                },
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 406,
+                  "endLine": 420
+                }
+              ]
+            },
+            {
+              "id": "SEC-37-INPUT-EVALUATOR-OBSERVATIONS",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Adjudication persists evaluator model observations without the per-result validation enforced on the quorum path",
+              "detail": "AdjudicateQA copies req.Evaluators ([]QAModelObservation) verbatim into the returned adjudication record. By contrast, AdjudicateFailedShard validates every evaluator result before it can influence any decision: valid flag set, exact evidence-digest binding, non-empty call and session identities, outcome in the allowed set, blocked outcomes rejected, and duplicate sessions treated as non-fresh. The publication layer validates the assembled adjudication record only for schema version, identity, fingerprint, timestamp, and count bounds, not per-observation contents, so malformed or stale model observations could be frozen into the immutable private adjudication.json if a future caller populates the field. The current production caller leaves Evaluators nil, so there is no live exposure today; the gap is that the trust boundary relies on caller discipline rather than the validation rule the quorum path already defines.",
+              "action": "Validate each QAModelObservation in AdjudicateQA using the same rules as AdjudicateFailedShard (valid flag, evidence-digest binding, fresh unique session and call identities, allowed outcome), or omit the field from the persisted record until an orchestration path actually supplies evaluator results.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 143,
+                  "endLine": 147
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 149,
+                  "endLine": 166
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 21,
+                  "endLine": 32
+                },
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 726,
+                  "endLine": 732
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-testing",
+          "applicability": "direct",
+          "summary": "Contract-testing obligations from system/contracts/core/testing.md apply directly and are largely met: target/internal/sprint/smoke_test.go exercises the end-to-end QA smoke pipeline using only the standard library testing package, covers verdict recording and report generation with table-driven cases, and the sprint plan commits to running go test ./... -race before completion (projects/ultraplan-go/sprints/37-evidence-qa-smoke/plan.md). No external assertion libraries were introduced. Remaining gaps are limited to negative-path and handler-surface coverage below.",
+          "findings": [
+            {
+              "id": "CT-1",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Adjudication disagreement and tie-break paths lack direct test assertions",
+              "detail": "smoke_test.go drives the happy path where reviewer verdicts agree, so the quorum/tie-break logic in qa_adjudication.go and the escalation fallback in qa_investigation.go are only reached incidentally; a regression in those branches would still pass the smoke suite.",
+              "action": "Add table-driven subtests that feed conflicting verdict sets into the adjudicator and assert the resulting status, winner selection, and investigation escalation transitions.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 1,
+                  "endLine": 223
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 1,
+                  "endLine": 190
+                },
+                {
+                  "path": "target/internal/sprint/smoke_test.go",
+                  "startLine": 1,
+                  "endLine": 554
+                }
+              ]
+            },
+            {
+              "id": "CT-2",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Illegal QA state transitions are not asserted as rejections",
+              "detail": "The transition guards in qa_state.go are never exercised with an out-of-order transition, so rejection behavior and the associated error classification required by the testing contract remain unverified.",
+              "action": "Extend the smoke test with a case attempting an invalid transition and assert the refusal and error classification.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_state.go",
+                  "startLine": 1,
+                  "endLine": 1008
+                },
+                {
+                  "path": "system/contracts/core/testing.md",
+                  "startLine": 1,
+                  "endLine": 221
+                }
+              ]
+            },
+            {
+              "id": "CT-3",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Web QA handlers have no HTTP-level contract tests",
+              "detail": "qa_handlers.go exposes the QA endpoints over HTTP, but there are no httptest-based assertions pinning response shapes, status codes, or the error envelope defined by the errors contract; coverage stops at the sprint-layer functions these handlers delegate to.",
+              "action": "Add httptest round-trip tests covering success and failure responses for each QA handler route.",
+              "citations": [
+                {
+                  "path": "target/internal/web/qa_handlers.go",
+                  "startLine": 1,
+                  "endLine": 202
+                },
+                {
+                  "path": "system/contracts/core/errors.md",
+                  "startLine": 1,
+                  "endLine": 374
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "contract-workflows",
+          "applicability": "direct",
+          "summary": "Sprint 37 edits and extends real multi-step orchestration (durable acceptance -\u003e deterministic mapping -\u003e sequential isolated investigation -\u003e adjudication -\u003e assessment -\u003e canonical publication, plus smoke-as-QA delegation), so the Workflows contract applies directly and is largely satisfied. WF-SCOPE-001: orchestration covers genuine multi-step coordination; no workflow was created for trivial logic. WF-BOUNDARY-001: workflow semantics stay inside internal/sprint behind app-owned typed operation use cases; internal/platform/process returns product-neutral facts (workspace creation, identity, execution, cleanup) without importing sprint types. WF-STATE-001: mapped-QA outcomes are explicit and inspectable through closed phase, terminal-result (including cancelled/interrupted/cleanup_uncertain), blocker, cancellation, and digest-linked state records, with terminal failure states durably published via publishTerminalQAFailure. WF-IDEMPOTENCY-001: retried steps are protected - frozen plans, evidence, patches, adjudication, issues, and assessment publish as immutable records (identical bytes succeed, differing bytes conflict), resume reuses only validated terminal shard records under a fresh fenced owner, and smoke-suite resume is explicitly rejected in favor of a new durable run plus new external run ID. WF-COMP-001: compensation/reconciliation is defined and tested - canonical publication snapshots prior state.json/qa.md/flow-state.json and restores them when a later write fails, failed workspace copies remove their partial tree, isolation cleanup verifies removal rather than trusting group-leader exit, and smoke preserves the last complete smoke.md while recording failed-attempt truthfully. WF-VERSION-001: the behavioral change is versioned honestly - existing qa-v1 IDs and schema v1 reads remain compatible, new evidence/state records use explicit v2 namespaces with unknown-major fail-closed rejection, and the new workflow definition is gated by the additive EvidenceProducing flag and the closed Suite=smoke selector included in request validation and durable correlation. Two deviations remain: the smoke-suite path classifies every failure including cancellation and timeout as a generic blocked terminal and never persists its projected QAState, diverging from the mapped-QA terminal taxonomy; and one failed isolated investigation discards already-completed evidence for the whole attempt instead of retaining the admitted prefix.",
+          "findings": [
+            {
+              "id": "WF-SMOKE-TERMINAL-CLASSIFICATION",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Smoke-suite QA run collapses cancellation, timeout, and failure into a generic blocked terminal and skips durable state publication",
+              "detail": "In the RunQA smoke-suite branch, any smokeErr or non-completed status maps to Phase=blocked/TerminalResult=blocked regardless of cause, and the hand-built QAState is returned in-process without ValidateQAState or store publication. This diverges from the mapped-QA path, where terminalQAState distinguishes cancelled, interrupted (deadline exceeded), and blocked outcomes and persists them durably; it also leaves NextAction possibly empty when RunSmoke fails before producing guidance, and qa status cannot reflect the smoke-suite attempt because verification state is untouched.",
+              "action": "Reuse the terminal-QA classification for context.Canceled/context.DeadlineExceeded in the smoke-suite branch, guarantee a non-empty recovery NextAction on failure, and either publish a bounded smoke-suite record under verification state through the fenced writer or explicitly document flow-state smoke status plus smoke.md as the sole inspectable authority for this workflow variant.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 281,
+                  "endLine": 303
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 885,
+                  "endLine": 903
+                }
+              ]
+            },
+            {
+              "id": "WF-EVIDENCE-PARTIAL-DISCARD",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "One failing isolated investigation drops all previously completed evidence for the attempt",
+              "detail": "buildQAEvidencePublication accumulates frozen plans and evidence records across completed shards sequentially, but the first RunQAInvestigation error returns immediately with empty plans and records, so evidence from earlier shards that completed validly is never adjudicated or published; the attempt reports only the terminal blocker and a rerun must repeat all paid isolated work. Step-level completion of earlier shards is therefore not retained as explicit partial state.",
+              "action": "On investigation failure, return the accumulated prefix bundle with a typed incomplete marker (or persist admitted-prefix plans/evidence as immutable diagnostic records) so completed valid evidence survives, adjudication can record the rejected remainder, and resume does not redo finished shards.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 467,
+                  "endLine": 511
+                },
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 499,
+                  "endLine": 502
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "schemaVersion": 1,
+          "coverageId": "handbook",
+          "applicability": "direct",
+          "summary": "The implementation conforms to the handbook's applicable patterns and avoids its anti-patterns in the changed scope: commands run through explicit executable/argv requests with no shell interpolation (internal/platform/process/isolation.go Run/internal/sprint/qa_investigation.go); subprocess separation is not claimed as containment—writable work fails closed unless native protected-root denial, process groups, descendant cleanup, and workspace removal are proven (IsolationCapabilityFacts gating in qa_investigation.go); path safety uses canonical Rel-based containment plus symlink/hard-link/special-file rejection rather than textual prefixes; each attempt gets a fresh 0700 non-Git copy so no global mutable state crosses attempts; typed outcomes with multi-error aggregation preserve partial failures; cancellation is separated from cleanup truthfulness via context.WithoutCancel identity/cleanup passes and explicit CleanupResult facts; budgets bound files, bytes, output, timeouts, issue/evidence counts, and writable attempts stay sequential; stable results go to stdout with redacted progress on stderr; adjudication remains a pure product operation over validated frozen records with model prose granted no promotion authority; smoke-as-QA reuses one canonical executor (parity test in internal/sprint/smoke_test.go) instead of bifurcating CLI/TUI behavior. Three actionable deviations were found: the failing-evidence admission rule is self-contradictory so promoted issues are unreachable; workspace removal ignores the declared cleanup budget; and frozen-plan timestamps are recorded as Unix epoch.",
+          "findings": [
+            {
+              "id": "HB-01",
+              "severity": "high",
+              "applicability": "partial",
+              "title": "Failing evidence can never be admitted, making issue promotion unreachable and masking product failure as 'blocked'",
+              "detail": "RunQAInvestigation sets Repeatable only when outcome is pass (qa_investigation.go:139), and every failing command-backed record carries at least one command entry because the command result is appended before the fail outcome is assigned (lines 89-95). AdjudicateQA then rejects every QAEvidenceFail record that has commands and is not repeatable as 'not_repeatable' (qa_adjudication.go:69-72). Because Repeatable is structurally false for all Fail records, every failing behavioral check is rejected, so the candidate admission gate—which requires each referenced record to be accepted AND to have Outcome==QAEvidenceFail (qa_adjudication.go:83-93)—can never admit a candidate. No issue is ever promotable from failing checks, and DeriveQAAssessment turns any rejection into AssessmentBlocked (qa_adjudication.go:183-184), so a genuinely broken target reports 'blocked' with zero issues instead of evidence-backed fail/pass_with_findings. This hollows out the handbook-grounded evidence-discipline design where product-owned adjudication promotes bounded, evidence-backed defects.",
+              "action": "Derive Repeatable from actual repeated execution or recorded deterministic-sufficiency metadata rather than equating it with a passing outcome, or exempt deterministic single-shot failures from the not_repeatable rejection; add a table test proving a failing contained check produces an admitted record, a promoted issue, and a fail/pass_with_findings assessment.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 139,
+                  "endLine": 139
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 69,
+                  "endLine": 72
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 83,
+                  "endLine": 93
+                },
+                {
+                  "path": "target/internal/sprint/qa_adjudication.go",
+                  "startLine": 183,
+                  "endLine": 187
+                }
+              ]
+            },
+            {
+              "id": "HB-02",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Workspace cleanup has no bounded lifetime despite a declared cleanup budget",
+              "detail": "The handbook's cleanup pattern requires an explicit bounded lifetime distinct from cancelled work (restic lock.go example, practical tip 6) and shutdown that combines cancellation, waiting, and timeout (opencode root.go example). IsolationWorkspace.Cleanup performs a bare os.RemoveAll with no deadline (isolation.go:212-232), and RunQAInvestigation invokes it after command execution (line 113) without any timeout wrapper; Budgets.CleanupTimeout is only forwarded as the child-process termination grace inside the process Request (line 85). A slow or wedged removal (large tree, stalled filesystem) blocks the attempt indefinitely while the retained evidence claims Attempted=true, contradicting the bounded-lifecycle guarantee the rest of the isolation layer enforces.",
+              "action": "Bound workspace removal with a deadline derived from QABudgets.CleanupTimeout (e.g., run RemoveAll under a detached timer context or a watchdog goroutine), report timeout as CleanupResult.Error so the existing cleanup_uncertain outcome records it, and cover the case with a fault-injected removal test.",
+              "citations": [
+                {
+                  "path": "target/internal/platform/process/isolation.go",
+                  "startLine": 212,
+                  "endLine": 232
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 85,
+                  "endLine": 85
+                },
+                {
+                  "path": "target/internal/sprint/qa_investigation.go",
+                  "startLine": 113,
+                  "endLine": 117
+                }
+              ]
+            },
+            {
+              "id": "HB-03",
+              "severity": "low",
+              "applicability": "partial",
+              "title": "Evidence plans are frozen with a fabricated Unix-epoch timestamp",
+              "detail": "The handbook's effective-inputs pattern fixes one immutable configuration per invocation and treats it as reviewable provenance. buildQAEvidencePublication freezes each shard's evidence plan by passing time.Unix(0, 0).UTC() as the freeze clock (internal/sprint/qa.go:495), so FreezeQAEvidencePlan stamps plan.FrozenAt with the epoch instead of the service clock (s.now()), even though the same orchestration uses s.now() everywhere else. Every persisted v2 plan therefore records a false freeze moment, weakening auditability of when the plan was actually frozen relative to map/target identity capture.",
+              "action": "Pass s.now().UTC() (or req.Now()) into FreezeQAEvidencePlan in buildQAEvidencePlan construction and assert in tests that FrozenAt is monotonic with the attempt's other timestamps and non-zero.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/qa.go",
+                  "startLine": 495,
+                  "endLine": 495
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
 }
