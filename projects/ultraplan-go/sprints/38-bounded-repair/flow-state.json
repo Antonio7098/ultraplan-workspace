@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "38-bounded-repair",
-  "updatedAt": "2026-08-26T13:12:57.917694779Z",
+  "updatedAt": "2026-08-26T13:27:17.065096172Z",
   "stages": [
     {
       "stage": "requirements",
@@ -48,27 +48,137 @@
     }
   ],
   "review": {
-    "status": "running",
+    "status": "cancelled",
+    "verdict": "blocked",
     "path": "projects/ultraplan-go/sprints/38-bounded-repair/review.md",
-    "lastRunAt": "2026-08-26T13:12:57.911668924Z",
+    "lastRunAt": "2026-08-26T13:27:17.064099255Z",
     "fingerprint": "d3d183c1ffd3976448e286881d2f44bda661f1e22d44602afc261e617de34d06",
     "stale": false,
-    "completed": 0,
+    "completed": 14,
     "total": 14,
-    "activeAttempt": {
-      "id": "review-1787749977911668924",
-      "status": "running",
-      "startedAt": "2026-08-26T13:12:57.911668924Z",
-      "heartbeatAt": "2026-08-26T13:12:57.911668924Z",
-      "ownerPid": 314886
-    },
+    "diagnostics": [
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-documentation"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-errors"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-llm-evaluation-cost-safety"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-llm-runtime"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-observability"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-performance"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-persistence-and-migrations"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-security"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-testing"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "contract-workflows"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "context canceled",
+        "coverage_id": "handbook"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-documentation"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-errors"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-llm-evaluation-cost-safety"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-llm-runtime"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-observability"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-performance"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-persistence-and-migrations"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-security"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-testing"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-workflows"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "handbook"
+      },
+      {
+        "code": "cancelled",
+        "message": "context canceled"
+      }
+    ],
     "lastAttempt": {
-      "id": "review-1787747954936761466",
+      "id": "review-1787749977911668924",
       "status": "cancelled",
-      "startedAt": "2026-08-26T12:39:14.936761466Z",
-      "heartbeatAt": "2026-08-26T12:47:37.4730757Z",
-      "ownerPid": 284163,
-      "completedAt": "2026-08-26T12:47:37.479888734Z",
+      "startedAt": "2026-08-26T13:12:57.911668924Z",
+      "heartbeatAt": "2026-08-26T13:27:17.055979836Z",
+      "ownerPid": 328115,
+      "completedAt": "2026-08-26T13:27:17.064099255Z",
       "diagnostics": [
         "reviewer-failed: context canceled",
         "reviewer-failed: context canceled",
@@ -81,12 +191,6 @@
         "reviewer-failed: context canceled",
         "reviewer-failed: context canceled",
         "reviewer-failed: context canceled",
-        "reviewer-failed: context canceled",
-        "reviewer-failed: context canceled",
-        "reviewer-failed: context canceled",
-        "missing-coverage: required reviewer result missing",
-        "missing-coverage: required reviewer result missing",
-        "missing-coverage: required reviewer result missing",
         "missing-coverage: required reviewer result missing",
         "missing-coverage: required reviewer result missing",
         "missing-coverage: required reviewer result missing",
@@ -105,77 +209,271 @@
       "attemptId": "review-1787749977911668924",
       "inputFingerprint": "d3d183c1ffd3976448e286881d2f44bda661f1e22d44602afc261e617de34d06",
       "model": "openrouter/stealth/ox-alpha",
-      "updatedAt": "2026-08-26T13:12:57.917322594Z",
+      "updatedAt": "2026-08-26T13:27:17.04977498Z",
       "coverage": [
         {
           "coverageId": "contract-architecture",
-          "status": "failed",
-          "updatedAt": "2026-08-26T12:47:37.468128551Z"
+          "status": "completed",
+          "updatedAt": "2026-08-26T13:25:25.797527655Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-architecture",
+            "applicability": "direct",
+            "summary": "Confirmed conformance: repair remains a sprint-owned VerificationPhase implemented inside internal/sprint without creating a parallel package tree or workflow framework; dependency direction holds throughout (internal/sprint consumes internal/platform/process and internal/platform/runtime as generic fact/mechanism APIs, internal/app composes sprint+runcontrol behind shared operations, and TUI/web tests consume only app DTOs with no reverse imports); platform packages gained no repair semantics or product policy (ARCH-SHARED-001, ARCH-CORE-002); production byte mutation is concentrated in one documented helper gated on lease+fence ownership (target/internal/sprint/qa_repair.go:1929-1933) with strict persistence extending the existing QAStore pattern rather than introducing an alternate store; composition remains additive through option constructors (WithQAWriterFence etc.) with no globals, registries, or plugin surfaces; the exported internal/sprint surface is intentional and reached only via internal/app. Two actionable deviations were found: the CLI entrypoint re-implements the accept-\u003econfirm-\u003edispatch-\u003elaunch sequence (and even product budget policy) instead of delegating to the single shared durable runner used by the browser path, duplicating the most security-sensitive lifecycle knowledge across two launch sites; and OS-specific link-count introspection was embedded inside the product module with a fail-open fallback that silently disables the hard-link guard where the syscall struct field is absent.",
+            "findings": [
+              {
+                "id": "arch-repair-cli-duplicate-launch-path",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "CLI entrypoint duplicates the durable repair launch sequence instead of delegating to the single shared runner",
+                "detail": "runSprintRepairStart performs the full security-critical lifecycle inline in the command handler: it constructs its own durable operation manager and accepts the operation (lines 917-931), publishes confirmation and dispatches itself (lines 936-938), then constructs a fresh runtime service and invokes Service.RunRepair directly (lines 941-956) before finishing the operation (lines 960-961). runSprintRepairPrepare likewise hand-rolls accept/claim/finish (lines 881-913) and additionally encodes product policy in the adapter by forcing manual budgets to one cycle (lines 903-904) even though the domain already clamps manual mode budgets identically (target/internal/sprint/qa_repair.go:137-139). This bypasses internal/app/operation_runner.go, which remains the shared dispatch path used by the browser operation hub (proven by the accept,confirm,dispatch,run ordering asserted in target/internal/web/operations_test.go), so the highest-consequence mutation now has two independently maintained launch sequences that can drift in confirmation, fencing, cancellation, and terminal handling. This contradicts ARCH-ENTRY-001 (entrypoints validate input, resolve context, and delegate to one facade), the plan's own D-01/D-09 decision that the shared runner is the only repair launch site serving CLI/TUI/HTTP, and DRY treatment of authorization rules.",
+                "action": "Route CLI repair start/resume/recover through the same shared durable-runner use case the web hub uses (or extract one app-level use case both adapters call), keeping the accept-\u003econfirm-before-dispatch ordering in exactly one place; delete the adapter-side budget clamp and rely on the domain's manual-mode clamp.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 916,
+                    "endLine": 973
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 881,
+                    "endLine": 905
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 137,
+                    "endLine": 139
+                  }
+                ]
+              },
+              {
+                "id": "arch-os-introspection-fail-open-in-domain",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "OS-specific hard-link detection lives in the product module with a fail-open fallback",
+                "detail": "ensureRepairRegularPath enforces the packet's hard-link prohibition by calling linkCountForRepair (line 2053), which reaches into fs.FileInfo.Sys() via reflection and probes for an 'Nlink' struct field (target/internal/sprint/qa_repair.go:2060-2069). When reflection cannot find the field - e.g., non-Unix syscall structs or future Go platform changes - the helper returns 1 (line 2071), meaning the guard silently treats every file as unlinked and the apply boundary proceeds instead of failing closed. Embedding vendor/syscall layout knowledge in internal/sprint violates the layering rule that volatile platform details sit behind a narrow seam (ARCH-LAYER-002, ARCH-SHARED-001): internal/platform/process already implements authoritative link rejection during bounded isolation copies, so the fact belongs there. A capability this protocol treats as mandatory ('unsupported isolation blocks repair') must report 'unsupported' rather than defaulting to safe-looking.",
+                "action": "Move link-count/regular-file fact extraction into internal/platform/process (returning an explicit unsupported result alongside the count) and make ensureRepairRegularPath block the apply when the fact is unavailable, mirroring the existing isolation-capability fail-closed pattern.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 2035,
+                    "endLine": 2058
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 2060,
+                    "endLine": 2072
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "coverageId": "contract-cli-surface",
-          "status": "failed",
-          "updatedAt": "2026-08-26T12:47:37.444294944Z"
+          "status": "completed",
+          "updatedAt": "2026-08-26T13:24:27.640953863Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-cli-surface",
+            "applicability": "direct",
+            "summary": "The new `sprint \u003cproject\u003e \u003csprint\u003e repair` family conforms to most CLI Surface requirements. Command shape and flags are predictable and strictly allowlisted per action (unknown actions/args rejected as usage errors); dedicated help documents every action, examples, and the explicit-confirmation behavior. Destructive safety is strong: prepare refuses `--yes`, start requires `--run`, `--confirmer`, and `--yes`, automatic mode is hard-rejected at parse time until qualifying manual proof, and no interactive prompts exist anywhere (non-interactive-safe). Stdout/stderr discipline holds: JSON mode emits one versioned document (`schema_version`, `operation`, `status`, `result`, optional stable `error`) to stdout with stable snake_case DTO fields, while repair progress goes to stderr through redaction. Lifecycle is explicit: prepare/start/recover run inside durable operations with detached 30s bounded finish contexts, idempotent `Existing` dedupe returns canonical status, cancel routes canonical run-control cancellation, and accept→confirm→dispatch ordering plus no-dispatch-on-confirmation-failure are covered by tests. Read-only status/packet/cycles/result queries exit 0 even when reporting a non-success outcome. Two deviations remain: exit-class granularity collapses all non-verified outcomes (including cancellation-absorbed runs) into one validation class, and the text renderer prints unsanitized model/operator-controlled strings.",
+            "findings": [
+              {
+                "id": "cli-repair-exit-class-collapse",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "All non-verified repair outcomes, including cancelled runs, exit through one validation-class error",
+                "detail": "runSprintRepairStart synthesizes a generic QAErrorInvalidState ('repair ended without a verified outcome') whenever RunRepair returns nil with a non-verified outcome, and RunRepair deliberately absorbs user cancellation into a published `blocked` result returned with a nil error. Consequently verified-vs-everything-else is distinguishable, but failed/blocked/escalated/stalled and cancelled runs all share ExitValidation with code qa.invalid_state and JSON status \"failed\"; mapQACommandError only promotes RuntimeUnavailable/PersistenceFailure to the runtime class, and the stale --run guard also raises an untyped error. This forfeits the documented distinction between validation, runtime, cancellation, and partial-completion exit classes that scripts need to branch on for a production-mutation command.",
+                "action": "Derive the exit class from persisted product facts (result.Outcome/StopReason) or typed categories: map blocked-after-cancellation to the partial/cancellation class, keep runtime-unavailable and persistence failures in the runtime class, and classify stale-request mismatches as validation rather than falling through the default mapper.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 967,
+                    "endLine": 971
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 814,
+                    "endLine": 816
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1050,
+                    "endLine": 1056
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 444,
+                    "endLine": 453
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1108,
+                    "endLine": 1112
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1592,
+                    "endLine": 1596
+                  }
+                ]
+              },
+              {
+                "id": "cli-repair-hostile-text-unescaped",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Text renderer echoes model-authored and operator-supplied strings without sanitization",
+                "detail": "renderSprintRepair prints Packet.IssueTitle (originating from model-written adjudication claims) and Confirmation.Confirmer (a free-text flag value) straight to stdout with no bounding or control-character neutralization, unlike repair progress messages which pass through config.RedactValue. Retained issue text containing ANSI escapes, carriage returns, or newlines can overwrite or forge status lines in the operator's terminal during the highest-consequence repair flow; the browser escapes this same field and the TUI bounds its rendering, so the CLI text surface is the unguarded path, contrary to the sprint requirement that hostile retained text be escaped and redacted on every interface.",
+                "action": "Run Packet.IssueTitle, Confirmation.Confirmer (and any future free-text fields) through the existing app-level redaction/bounding helper used for repair progress before writing them to stdout, matching the treatment already applied to progress messages.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 989,
+                    "endLine": 1006
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 949,
+                    "endLine": 955
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "coverageId": "contract-configuration",
-          "status": "failed",
-          "updatedAt": "2026-08-26T12:47:37.429976677Z"
+          "status": "completed",
+          "updatedAt": "2026-08-26T13:23:44.437920178Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-configuration",
+            "applicability": "partial",
+            "summary": "The shipped manual repair path handles configuration largely within contract: effective settings are resolved once up front and invalid policy fails closed with ExitConfig before any side effect (CFG-TYPE-001, CFG-START-001); repair budgets are strongly typed and validated strictly against immutable product maxima with explicit lower-only semantics before packet freeze; CLI flags are strictly allowlisted with per-action validation; progress text is redacted through config.RedactValue before stderr; JSON stdout stays one versioned envelope; effective limits are rendered in both text and JSON projections (CFG-OBS-001); and no hidden or unprefixed environment reads were introduced. Two gaps keep applicability partial: repair limits are not represented in the configuration system at all (no fields, environment names, workspace precedence, or effective-source reporting), so operators have no explicit source that can lower them as AC-7 and the Required Outputs demand, though this is fail-safe today because automatic execution is rejected everywhere and the governed plan defers that wiring behind the current-manual-proof gate; and two smaller inconsistencies exist around an unusable --max-cycles flag and unredacted cause text in terminal result reasons.",
+            "findings": [
+              {
+                "id": "cfg-repair-limits-not-in-config-system",
+                "severity": "medium",
+                "applicability": "partial",
+                "title": "Repair limits bypass the configuration system entirely",
+                "detail": "The sprint's Required Outputs assign lower-only repair limits with safe defaults, immutable maxima, ULTRAPLAN_QA_* environment names, workspace precedence, and complete effective-source reporting to internal/platform/config/qa.go, and AC-7 requires workspace and environment configuration to be able to lower every repair budget. No file under internal/platform/config changed in this sprint, so none of that exists. Instead, repair budgets live as product constants inside the sprint package, and the prepare command constructs them inline with cycles pinned to 1 rather than reading merged effective configuration. Operators therefore cannot lower repair limits through any documented source, and no precedence, environment-name, invalid-value, maximum, or lower-only override tests exist for any repair field. This is currently fail-safe: automatic preparation and start are rejected on every surface and plan Task 15 explicitly defers config wiring behind the qualifying manual proof, but the deviation should be visible in review evidence rather than silent.",
+                "action": "When the proof-gated automatic phase begins (plan Task 15), add every repair limit to internal/platform/config/qa.go with defaults, immutable maxima, deterministic env mappings, workspace/environment precedence, and effective-source reporting plus exhaustive config_test coverage, and change prepare/start to read merged effective budgets instead of hardcoded defaults. Until then, record this explicitly as a deferred requirement in the sprint's execution log and release checklist so the gap cannot be mistaken for satisfied AC-7.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 903,
+                    "endLine": 904
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 134,
+                    "endLine": 141
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 933,
+                    "endLine": 962
+                  }
+                ]
+              },
+              {
+                "id": "cfg-dead-max-cycles-flag",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "--max-cycles is parsed by every repair action but accepted by none",
+                "detail": "parseSprintRepairArgs accepts and validates --max-cycles as a positive integer, yet prepare, resume, cancel, and all read actions reject it outright, and start rejects it with 'repair start cannot alter the frozen issue or limits'. The flag is therefore permanently dead CLI surface that is also absent from the repair help text. It was intended as the future request-level lower-only override for automatic cycle counts; shipping it in an always-rejected state invites user confusion and will need re-validation against lower-only merging once it becomes live.",
+                "action": "Either remove --max-cycles from the parser until automatic mode ships, or document it as reserved in help; when activated, merge it lower-only against the effective ceiling during operation preparation so the confirmation freezes the lowered effective value with its source.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 734,
+                    "endLine": 756
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 770,
+                    "endLine": 776
+                  }
+                ]
+              },
+              {
+                "id": "cfg-result-reason-unredacted-cause",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Terminal result reasons embed raw cause error text without the redaction boundary used elsewhere",
+                "detail": "Repair progress messages are passed through config.RedactValue before leaving the process, but blocked/escalated terminal results build their Reason by appending boundRepairText(cause.Error(), 512), which only strips control characters and truncates length. These reasons are persisted into the immutable result record and projected through public status surfaces, so underlying failures from process execution, isolation, or persistence could carry absolute paths, environment-derived values, or runtime diagnostics into public output, contrary to the secret-redaction discipline applied to every other repair emission point.",
+                "action": "Apply the same redaction helper used for repair progress when constructing result and blocker reason strings, before publication, and add a hostile-cause fixture test asserting that the public CLI/JSON/TUI/browser projections contain no raw environment values, provider payloads, or unrestricted command output.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1608,
+                    "endLine": 1620
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 950,
+                    "endLine": 956
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "coverageId": "contract-documentation",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.395477734Z"
+          "updatedAt": "2026-08-26T13:27:17.035119727Z"
         },
         {
           "coverageId": "contract-errors",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:37.45625215Z"
+          "updatedAt": "2026-08-26T13:27:17.04977498Z"
         },
         {
           "coverageId": "contract-llm-evaluation-cost-safety",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.433750503Z"
+          "updatedAt": "2026-08-26T13:27:12.012913386Z"
         },
         {
           "coverageId": "contract-llm-runtime",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.458270372Z"
+          "updatedAt": "2026-08-26T13:27:12.088379322Z"
         },
         {
           "coverageId": "contract-observability",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.480302419Z"
+          "updatedAt": "2026-08-26T13:27:17.020634887Z"
         },
         {
           "coverageId": "contract-performance",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.505827725Z"
+          "updatedAt": "2026-08-26T13:27:12.047198979Z"
         },
         {
           "coverageId": "contract-persistence-and-migrations",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.529739903Z"
+          "updatedAt": "2026-08-26T13:27:12.127087766Z"
         },
         {
           "coverageId": "contract-security",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.56326939Z"
+          "updatedAt": "2026-08-26T13:27:12.156053605Z"
         },
         {
           "coverageId": "contract-testing",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.610874584Z"
+          "updatedAt": "2026-08-26T13:27:12.182161043Z"
         },
         {
           "coverageId": "contract-workflows",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.658673379Z"
+          "updatedAt": "2026-08-26T13:27:12.203391101Z"
         },
         {
           "coverageId": "handbook",
           "status": "failed",
-          "updatedAt": "2026-08-26T12:47:32.696877494Z"
+          "updatedAt": "2026-08-26T13:27:12.218252527Z"
         }
       ]
     }
