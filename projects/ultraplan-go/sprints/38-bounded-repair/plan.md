@@ -16,9 +16,9 @@ This plan executes `reasoning.md`. It does not reopen repair ownership, confirma
 
 ## Sprint Status
 
-- **Status:** not started
+- **Status:** in progress
 - **Owner:** implementation agent
-- **Start Date:** pending
+- **Start Date:** 2026-08-26
 - **Completion Date:** pending
 
 ## Decisions To Execute
@@ -58,86 +58,86 @@ This plan executes `reasoning.md`. It does not reopen repair ownership, confirma
 
 ## Tasks
 
-- [ ] **Task 1: Verify Sprint 37 And Host Admission Gates**
+- [/] **Task 1: Verify Sprint 37 And Host Admission Gates** — Deferred: the user approved implementation without current Sprint 37 QA, smoke, and real-runtime evidence; packet admission remains blocked.
   > Executes: `D-01`, `D-02`; `AC-1`, `AC-3`, dependency and promotion gates
-  - [ ] Confirm Sprint 37 has a current evidence-producing QA attempt, current repair-eligible adjudicated issue, accepted exact reproducer, complete mapped containing smoke result of `pass` or `pass_with_open_issues`, and current real-runtime evidence; record the selected issue and all dependency fingerprints in the execution log.
-  - [ ] Confirm the implementation repository exposes protected-root denial, bounded isolation, process-tree cleanup, full target identity, mutation leases, durable operations, writer fencing, and startup reconciliation; treat any absent capability as a blocker rather than weakening the protocol.
-  - [ ] Confirm the selected issue supplies unambiguous production paths and frozen descriptors for every required reverification gate; do not start implementation against an issue that requires caller-authored scope or commands.
-  - [ ] Stop the sprint before source changes if any dependency is stale, blocked, mismatched, or lacks real-runtime evidence; identify the exact Sprint 37 recovery action.
+  - [/] Confirm Sprint 37 has a current evidence-producing QA attempt, current repair-eligible adjudicated issue, accepted exact reproducer, complete mapped containing smoke result of `pass` or `pass_with_open_issues`, and current real-runtime evidence; record the selected issue and all dependency fingerprints in the execution log. Deferred by explicit user approval on 2026-08-26; no evidence is inferred or fabricated.
+  - [x] Confirm the implementation repository exposes protected-root denial, bounded isolation, process-tree cleanup, full target identity, mutation leases, durable operations, writer fencing, and startup reconciliation; treat any absent capability as a blocker rather than weakening the protocol.
+  - [/] Confirm the selected issue supplies unambiguous production paths and frozen descriptors for every required reverification gate; do not start implementation against an issue that requires caller-authored scope or commands. Deferred with the missing current Sprint 37 issue; packet admission must still fail closed until real evidence exists.
+  - [/] Stop the sprint before source changes if any dependency is stale, blocked, mismatched, or lacks real-runtime evidence; identify the exact Sprint 37 recovery action. The user explicitly approved continuing manual implementation despite this gate on 2026-08-26.
 
-- [ ] **Task 2: Add Repair Domain Types And Pure Policy**
+- [/] **Task 2: Add Repair Domain Types And Pure Policy** — Deferred: core manual policy is implemented, but exhaustive automatic stop matrices require the proof-gated automatic phase.
   > Executes: `D-01`, `D-02`, `D-05`, `D-06`, `D-07`; `AC-1`, `AC-2`, `AC-5`, `AC-7`, `AC-8`
-  - [ ] Extend `internal/sprint/qa_types.go` with strict versioned types for packet, confirmation, cycle, scope, apply journal, progress, freshness, blocker, cleanup, reverification gates, semantic outcome, manual proof, consumed counters, absolute deadline, and lower-only budgets; keep repair under `VerificationPhaseRepair` and out of `PlanningStage`.
-  - [ ] Implement deterministic normalization and pure validation for IDs, fingerprints, finite sorted path sets, closed enums, gate order, confirmation digest inputs, progress facts, automatic stop reasons, and outcome derivation in `internal/sprint/qa_repair.go`.
-  - [ ] Define the complete protected-path classifier for governed sprint inputs, review/smoke/QA/repair evidence, flow and workspace state, implementation plans, configuration, Git control/hooks/ignore policy, tests, snapshots, baselines, generated evidence, links, special files, and non-production data.
-  - [ ] Add table tests in `internal/sprint/qa_repair_test.go` for every valid and invalid enum, budget, path class, progress fact, stop rule, and all six outcomes; prove manual mode cannot emit `stalled` and no model string can change policy.
+  - [x] Extend `internal/sprint/qa_types.go` with strict versioned types for packet, confirmation, cycle, scope, apply journal, progress, freshness, blocker, cleanup, reverification gates, semantic outcome, manual proof, consumed counters, absolute deadline, and lower-only budgets; keep repair under `VerificationPhaseRepair` and out of `PlanningStage`.
+  - [x] Implement deterministic normalization and pure validation for IDs, fingerprints, finite sorted path sets, closed enums, gate order, confirmation digest inputs, progress facts, automatic stop reasons, and outcome derivation in `internal/sprint/qa_repair.go`.
+  - [x] Define the complete protected-path classifier for governed sprint inputs, review/smoke/QA/repair evidence, flow and workspace state, implementation plans, configuration, Git control/hooks/ignore policy, tests, snapshots, baselines, generated evidence, links, special files, and non-production data.
+  - [/] Add table tests in `internal/sprint/qa_repair_test.go` for every valid and invalid enum, budget, path class, progress fact, stop rule, and all six outcomes; prove manual mode cannot emit `stalled` and no model string can change policy. Core budget/path/progress/outcome tables pass; exhaustive enum and automatic stop matrices remain gated with automatic work.
 
-- [ ] **Task 3: Extend Strict Repair Persistence And Flow Projection**
+- [/] **Task 3: Extend Strict Repair Persistence And Flow Projection** — Deferred: strict manual persistence is implemented; complete retention and failure-injection coverage remains open.
   > Executes: `D-04`, `D-07`, `D-08`; `AC-1`, `AC-4`, `AC-8`, `AC-9`
-  - [ ] Extend `internal/sprint/qa_state.go` with exact paths and strict readers/writers for `verification/repair-state.json`, immutable packet and confirmation, per-cycle proposal/scope/reverification/cleanup, immutable result, apply journal, and `verification/manual-repair-proof.json`.
-  - [ ] Publish detail before current pointers, check the current run-control writer before every write and rename, enforce `0700` directories and `0600` files, reject links and path escapes, verify digests, and use immutable create-or-compare semantics for packet, confirmation, cycle evidence, result, and proof.
-  - [ ] Extend `internal/sprint/state.go` and flow validation with one bounded repair summary and an explicit flow-state schema migration; preserve review, smoke, QA, and repair summaries during unrelated writes and keep all detailed collections out of `flow-state.json`.
+  - [x] Extend `internal/sprint/qa_state.go` with exact paths and strict readers/writers for `verification/repair-state.json`, immutable packet and confirmation, per-cycle proposal/scope/reverification/cleanup, immutable result, apply journal, and `verification/manual-repair-proof.json`.
+  - [x] Publish detail before current pointers, check the current run-control writer before every write and rename, enforce `0700` directories and `0600` files, reject links and path escapes, verify digests, and use immutable create-or-compare semantics for packet, confirmation, cycle evidence, result, and proof.
+  - [x] Extend `internal/sprint/state.go` and flow validation with one bounded repair summary and an explicit flow-state schema migration; preserve review, smoke, QA, and repair summaries during unrelated writes and keep all detailed collections out of `flow-state.json`.
   - [ ] Extend retention and verification-byte accounting without deleting current packet/result/proof evidence; expose explicit retained lower boundaries for cycle queries.
-  - [ ] Add `internal/sprint/qa_state_test.go` coverage for schemas, unknown fields/versions, permissions, containment, symlink and hard-link attacks where supported, digest mismatch, stale writers, partial writes, pointer-last publication, rollback failure, immutable conflict, migration, retention, and bounded summary projection.
+  - [/] Add `internal/sprint/qa_state_test.go` coverage for schemas, unknown fields/versions, permissions, containment, symlink and hard-link attacks where supported, digest mismatch, stale writers, partial writes, pointer-last publication, rollback failure, immutable conflict, migration, retention, and bounded summary projection. Core persistence, fencing, permissions, immutable records, digest checks, journal preimages, and v2 database migration pass; the complete failure-injection/retention matrix remains open.
 
-- [ ] **Task 4: Split Durable Acceptance From Dispatch**
+- [/] **Task 4: Split Durable Acceptance From Dispatch** — Deferred: ordering and no-child failure behavior are implemented; the full restart and terminal-race matrix remains open.
   > Executes: `D-02`, `D-04`, `D-07`, `D-08`; `AC-2`, `AC-4`, `AC-8`, `AC-9`
-  - [ ] Refactor `internal/app/durable_operations.go` so durable accept/claim allocates run identity, operational attempt, and fencing generation without starting ownership control, a goroutine, or runtime work; add an explicit dispatch transition that starts ownership only after confirmation publication.
-  - [ ] Add closed `repair-prepare`, `repair-start`, `repair-resume`, and `repair-recover` operation kinds, canonical request fields, confirmation facts, governed inputs, and mutation classes in `internal/app/operations.go`; keep automatic mode a field of the shared start operation.
-  - [ ] Update `internal/app/operation_runner.go` so it is the only repair launch site, installs the current writer fence, correlates repair and operation runs, and maps operational completion independently from repair outcome.
-  - [ ] Preserve existing operation behavior and server shutdown semantics; an accepted but unconfirmed run must terminalize as a persistence/blocked failure and never dispatch.
-  - [ ] Extend `internal/app/durable_operations_test.go` with acceptance-before-goroutine, confirm-before-dispatch, acceptance/confirmation failure, restart at the unconfirmed boundary, single owner, stale generation, duplicate confirmation, cancellation, late completion, and exactly-one operational terminal tests.
+  - [x] Refactor `internal/app/durable_operations.go` so durable accept/claim allocates run identity, operational attempt, and fencing generation without starting ownership control, a goroutine, or runtime work; add an explicit dispatch transition that starts ownership only after confirmation publication.
+  - [x] Add closed `repair-prepare`, `repair-start`, `repair-resume`, and `repair-recover` operation kinds, canonical request fields, confirmation facts, governed inputs, and mutation classes in `internal/app/operations.go`; keep automatic mode a field of the shared start operation.
+  - [x] Update `internal/app/operation_runner.go` so it is the only repair launch site, installs the current writer fence, correlates repair and operation runs, and maps operational completion independently from repair outcome.
+  - [x] Preserve existing operation behavior and server shutdown semantics; an accepted but unconfirmed run must terminalize as a persistence/blocked failure and never dispatch.
+  - [/] Extend `internal/app/durable_operations_test.go` with acceptance-before-goroutine, confirm-before-dispatch, acceptance/confirmation failure, restart at the unconfirmed boundary, single owner, stale generation, duplicate confirmation, cancellation, late completion, and exactly-one operational terminal tests. Acceptance/dispatch and synchronous prepare tests pass; web integration proves accept-confirm-dispatch ordering and no runtime on confirmation failure, while the full restart/race matrix remains open.
 
-- [ ] **Task 5: Freeze Current Issue Packets And Bind Confirmation**
+- [/] **Task 5: Freeze Current Issue Packets And Bind Confirmation** — Deferred: deterministic packet and confirmation paths are implemented but cannot be dogfooded without a current admissible issue.
   > Executes: `D-02`, `D-04`; `AC-1`, `AC-2`, `AC-4`
   - [ ] Implement synchronous writer-fenced packet preparation in `internal/sprint/qa_repair.go` and integrate current QA reads in `internal/sprint/qa.go`: load and digest-validate the current attempt, issue, root-cause group, evidence, plans, map, shards, theories, assessment, review, containing smoke, checks, policy, implementation, governed inputs, and full target identity as one snapshot.
   - [ ] Derive all required packet fields from product records only, including violated requirements/criteria, exact reproducer, expected failing condition, affected and follow-up shards, theory IDs, allowed/forbidden paths, containing checks, repair acceptance criteria, and frozen budgets; caller input may select only the current issue ID and requested mode.
   - [ ] Make identical preparation idempotently reuse the same current packet while a confirmed or terminal attempt receives a new repair-run identity; prove preparation never initializes a runtime or changes the target, tests, QA evidence, or governed artifacts.
-  - [ ] Persist single-use `confirmation.json` only after durable acceptance, binding packet digest, full target, canonical request, mode, automatic opt-in, effective limits, governed/policy fingerprints, operation run, operational attempt, fencing generation, confirmer, and timestamp.
+  - [x] Persist single-use `confirmation.json` only after durable acceptance, binding packet digest, full target, canonical request, mode, automatic opt-in, effective limits, governed/policy fingerprints, operation run, operational attempt, fencing generation, confirmer, and timestamp.
   - [ ] Add `internal/sprint/qa_repair_test.go` and `internal/sprint/qa_test.go` coverage for every admission rejection, cross-attempt or digest mismatch, stale review/QA/smoke/target, missing exact reproducer/check, issue identity, deterministic packet bytes, changed confirmation field, replay, and no-mutation preparation.
 
-- [ ] **Task 6: Build Isolated Proposal And Strict Patch Evidence**
+- [/] **Task 6: Build Isolated Proposal And Strict Patch Evidence** — Deferred: the isolated proposal path is implemented; exhaustive adversarial runtime and retained-proposal reparse coverage remains open.
   > Executes: `D-03`, `D-04`; `AC-3`, `AC-4`
-  - [ ] Add the repair runtime request and service dependency in `internal/sprint/service.go` and `internal/sprint/qa_repair.go`; grant bounded packet-approved reads and isolated-copy writes only, deny writable production and verification roots, and reject unsupported isolation capabilities before runtime start.
-  - [ ] Reuse `internal/platform/process` bounded isolation, tree identity, comparison, process-group cancellation, output limits, and verified removal as factual mechanisms without moving repair eligibility or outcome decisions into the platform package.
-  - [ ] Derive a canonical bounded unified text proposal from isolated before/after trees and publish `proposal.patch` before production mutation; reject NUL/binary content, malformed hunks, unsupported encoding, links, hard links, special files, implicit renames, unapproved delete/add, unsafe modes, file/byte/patch excess, and production-root leakage.
+  - [x] Add the repair runtime request and service dependency in `internal/sprint/service.go` and `internal/sprint/qa_repair.go`; grant bounded packet-approved reads and isolated-copy writes only, deny writable production and verification roots, and reject unsupported isolation capabilities before runtime start.
+  - [x] Reuse `internal/platform/process` bounded isolation, tree identity, comparison, process-group cancellation, output limits, and verified removal as factual mechanisms without moving repair eligibility or outcome decisions into the platform package.
+  - [x] Derive a canonical bounded unified text proposal from isolated before/after trees and publish `proposal.patch` before production mutation; reject NUL/binary content, malformed hunks, unsupported encoding, links, hard links, special files, implicit renames, unapproved delete/add, unsafe modes, file/byte/patch excess, and production-root leakage.
   - [ ] Reparse and revalidate the retained proposal independently from runtime claims; a safely retainable violating proposal becomes rejected evidence and cannot reach apply.
   - [ ] Add real-filesystem and fake-runtime tests for allowed isolated edits, direct production-write attempts, traversal, absolute paths, link and hard-link replacement, special files, malformed patches, limits, cancellation, runtime descendants, output truncation, and cleanup failure.
 
-- [ ] **Task 7: Implement Product-Owned Apply, Journal, And Scope Enforcement**
+- [/] **Task 7: Implement Product-Owned Apply, Journal, And Scope Enforcement** — Deferred: journaled apply and conservative compensation are implemented; the complete crash/failure-injection matrix remains open.
   > Executes: `D-03`, `D-04`, `D-08`; `AC-3`, `AC-4`, `AC-9`
-  - [ ] Implement the direct contained apply boundary in `internal/sprint/qa_repair.go`: recheck packet, confirmation, target identity, mutation lease, run-control fence, path classes, changed-file/byte totals, and expected pre-image digests before staging any production bytes.
-  - [ ] Stage same-directory private replacements, record pre-images and an apply journal, apply only parsed product operations, and never invoke Git, shell, command substitution, hooks, formatters, runtime tools, or repository cleanup.
-  - [ ] Attempt in-process compensation after partial failure, record completed and restored operations, and classify rollback failure or crash-uncertain state as escalation with no automatic retry or second apply.
-  - [ ] Recompute full target identity and actual changed paths/bytes after apply; require actual operations to equal the intended set, remain within `allowed_paths`, avoid all forbidden classes, and leave unrelated pre-existing changes untouched.
+  - [x] Implement the direct contained apply boundary in `internal/sprint/qa_repair.go`: recheck packet, confirmation, target identity, mutation lease, run-control fence, path classes, changed-file/byte totals, and expected pre-image digests before staging any production bytes.
+  - [x] Stage same-directory private replacements, record pre-images and an apply journal, apply only parsed product operations, and never invoke Git, shell, command substitution, hooks, formatters, runtime tools, or repository cleanup.
+  - [x] Attempt in-process compensation after partial failure, record completed and restored operations, and classify rollback failure or crash-uncertain state as escalation with no automatic retry or second apply.
+  - [x] Recompute full target identity and actual changed paths/bytes after apply; require actual operations to equal the intended set, remain within `allowed_paths`, avoid all forbidden classes, and leave unrelated pre-existing changes untouched.
   - [ ] Add failure injection before and after each replacement and compensation step, target-drift races at every identity checkpoint, expected-preimage mismatch, lost lease/fence, stale owner, side-effect escape, partial apply, rollback failure, crash-journal recovery, and unrelated-change tests.
 
-- [ ] **Task 8: Add Sequential Reverification And Outcome Derivation**
+- [/] **Task 8: Add Sequential Reverification And Outcome Derivation** — Deferred: ordered executable gates fail closed, but repaired-target containing smoke and independent review-delta verifiers are not implemented.
   > Executes: `D-05`, `D-07`; `AC-5`, `AC-8`
   - [ ] Implement the frozen ordered ladder in `internal/sprint/qa_repair.go` and `internal/sprint/qa.go`: exact reproducer, primary shards, linked theory confirmation/refutation, boundary/neighbor/parent follow-up shards, containing QA and mapped smoke suites, then focused Conformance Review delta.
-  - [ ] Execute only immutable packet descriptors through explicit executable/argv, contained workdir, allowlisted environment, frozen timeout/output limits, cancellation, target checks, and process-tree cleanup; do not permit runtime-selected substitutions.
-  - [ ] Stop after the first required non-pass, stale state, cancellation, or cleanup uncertainty and record every wider gate as skipped with reason and required next action.
+  - [x] Execute only immutable packet descriptors through explicit executable/argv, contained workdir, allowlisted environment, frozen timeout/output limits, cancellation, target checks, and process-tree cleanup; do not permit runtime-selected substitutions.
+  - [x] Stop after the first required non-pass, stale state, cancellation, or cleanup uncertainty and record every wider gate as skipped with reason and required next action.
   - [ ] Record current issue-set, reopening, severity, scope, contradiction, new-failure, and review-delta facts; leave `review.md`, its verdict, QA adjudication, smoke evidence, and checks unchanged.
   - [ ] Derive the six semantic outcomes only from persisted product facts and publish one immutable result; add order, skip, timeout, truncation, missing executable, drift, issue-delta, contradiction, review-independence, outcome, and late-terminal tests in `internal/sprint/qa_repair_test.go` and `internal/sprint/qa_test.go`.
 
-- [ ] **Task 9: Complete Manual Cycle, Cleanup, Resume, Recovery, And Proof**
+- [/] **Task 9: Complete Manual Cycle, Cleanup, Resume, Recovery, And Proof** — Deferred: the cycle, recovery, and proof rules exist; exact resume authority and real manual proof remain blocked.
   > Executes: `D-04`, `D-06`, `D-07`, `D-08`; `AC-3`, `AC-6`, `AC-8`, `AC-9`
   - [ ] Compose one visible manual cycle in `internal/sprint/qa_repair.go` from confirmation validation through proposal, apply, actual scope, reverification, cleanup, terminalization, result, and flow publication; enforce exactly one proposal and at most one production apply.
-  - [ ] Propagate work cancellation to runtime, approved commands, waits, and process trees, then use a separate frozen cleanup deadline to prove descendants terminated, isolated workspace removed, compensation state known, target current, and owned lease released.
-  - [ ] Publish writer-fenced `terminalizing` state while holding the mutation lease, verify owned lease release before terminal result/current-state publication, and make every new mutation reject a current terminalizing barrier.
+  - [x] Propagate work cancellation to runtime, approved commands, waits, and process trees, then use a separate frozen cleanup deadline to prove descendants terminated, isolated workspace removed, compensation state known, target current, and owned lease released.
+  - [x] Publish writer-fenced `terminalizing` state while holding the mutation lease, verify owned lease release before terminal result/current-state publication, and make every new mutation reject a current terminalizing barrier.
   - [ ] Implement resume and startup recovery from the latest immutable proven boundary, preserving counters and deadline, reusing valid evidence, never repeating a committed apply, never adopting a dead worker, and never inferring success from process absence, patch presence, or target bytes.
-  - [ ] Implement qualifying manual-proof publication only from a real shared durable manual run with production apply, complete ladder, current target, proven cleanup, and `verified` or `verified_with_findings`; expose no fixture, dry-run, isolated-only, hand-authored, or administrative creation path.
+  - [x] Implement qualifying manual-proof publication only from a real shared durable manual run with production apply, complete ladder, current target, proven cleanup, and `verified` or `verified_with_findings`; expose no fixture, dry-run, isolated-only, hand-authored, or administrative creation path.
   - [ ] Add cancellation timing, cleanup timeout, lock-release uncertainty, terminalizing crash, stale lock/owner, apply-committed resume, proof qualification/rejection, proof publication failure, and recovery idempotency tests.
 
-- [ ] **Task 10: Add Manual App DTOs, Shared Operations, And CLI**
+- [/] **Task 10: Add Manual App DTOs, Shared Operations, And CLI** — Deferred: bounded shared status and commands exist; dedicated cursor-bound cycle/detail DTOs and executable resume remain open.
   > Executes: `D-02`, `D-07`, `D-09`; `AC-2`, `AC-3`, `AC-8`, `AC-10`
   - [ ] Add additive `RepairUseCases` and bounded prepare, confirm/start integration, status, packet, cycle page/detail, result, resume, cancel, and recover DTOs in `internal/app/sprint_usecases.go`; keep private records, patch bodies, production contents, prompts, raw payloads, unsafe environment, and unrestricted output out of public results.
   - [ ] Bind opaque cursors to project, sprint, repair run, packet digest, collection kind, and retention boundary; return explicit stale and retention-gap results with canonical next actions.
   - [ ] Add manual `repair prepare`, `start --yes`, `status`, `packet`, `cycles`, `result`, `resume --yes`, `cancel`, and `recover` parsing/rendering in `internal/app/sprint_commands.go`; keep progress on stderr, JSON stdout as one versioned document, and start/resume exit zero only for verified outcomes.
-  - [ ] Correlate repair run and durable operation run explicitly, reload canonical status after execution, and preserve semantic outcome separately from operational lifecycle in every app result.
+  - [x] Correlate repair run and durable operation run explicitly, reload canonical status after execution, and preserve semantic outcome separately from operational lifecycle in every app result.
   - [ ] Extend `internal/app/sprint_usecases_test.go`, `internal/app/sprint_commands_test.go`, `internal/app/durable_operations_test.go`, and `internal/testdata/qa-canonical-v1.json` for admission, redaction, cursor bounds, help/flags, explicit confirmation, stale input, replay, cancellation, resume, all outcomes/exits, and canonical projection parity.
 
-- [ ] **Task 11: Add Manual TUI Routes And Guarded Actions**
+- [/] **Task 11: Add Manual TUI Routes And Guarded Actions** — Deferred: the guarded manual route and current status projection exist; paging and the full lifecycle matrix remain open.
   > Executes: `D-09`; `AC-2`, `AC-3`, `AC-8`, `AC-10`
   - [ ] Extend `internal/tui/model.go` with typed repair summary, packet, confirmation, cycle, result, resume, cancel, and recovery routes/actions that call app use cases only; keep durable execution in the shared operation runner.
   - [ ] Extend `internal/tui/qa_view.go` with packet identity, warning, mode, confirmation state, target freshness, bounded scope, limits, current cycle/gate, fixed reverification ladder, cleanup, lifecycle, outcome, blocker, next action, and paginated history.
@@ -145,31 +145,31 @@ This plan executes `reasoning.md`. It does not reopen repair ownership, confirma
   - [ ] Bound and sanitize hostile text and terminal controls, preserve narrow-terminal operation and keyboard access, and keep read-only inspection/recovery available when mutation controls are disabled.
   - [ ] Extend `internal/tui/qa_view_test.go` and `internal/tui/model_test.go` for routes, actions, durable run correlation, confirmation, cancellation, resume, recovery, paging, reconnect, status refresh, hostile text, narrow terminals, and all manual terminal states.
 
-- [ ] **Task 12: Add Manual Browser Resources And No-JavaScript Operation**
+- [/] **Task 12: Add Manual Browser Resources And No-JavaScript Operation** — Deferred: the guarded no-JavaScript workbench and bounded resources exist; dedicated paged detail and full reconnect matrix remain open.
   > Executes: `D-09`; `AC-2`, `AC-3`, `AC-8`, `AC-9`, `AC-10`
   - [ ] Add bounded repair status, packet, cycle page/detail, and result query handlers in `internal/web/qa_handlers.go` and routes in `internal/web/handlers.go`; handlers use app DTOs only and semantic terminal resource reads return `200`.
   - [ ] Extend `internal/web/templates/sprint.html` with a separate packet review and explicit `Confirm manual repair` page/form, current authority and scope, ladder, cleanup, outcome, blocker, next action, recovery, and paginated evidence that remains complete without JavaScript.
   - [ ] Extend `internal/web/static/js/operations.js` only for progressive form submission, durable event observation, and canonical refresh; browser disconnect, refresh, history replay, or SSE loss must never confirm, cancel, complete, or fail repair.
-  - [ ] Reuse existing guarded operation endpoints, same-origin session, CSRF, authorization, body limits, durable run observation, cancellation, shutdown draining, and replay-gap behavior; do not add a repair-only mutation engine or server-owned product state.
+  - [x] Reuse existing guarded operation endpoints, same-origin session, CSRF, authorization, body limits, durable run observation, cancellation, shutdown draining, and replay-gap behavior; do not add a repair-only mutation engine or server-owned product state.
   - [ ] Extend `internal/web/qa_handlers_test.go` and shared web operation tests for methods, authorization, CSRF, confirmation, duplicate/stale posts, escaping, bounded responses, no-JavaScript completion, reconnect, replay gaps, browser disconnect, shutdown cancellation, and all manual lifecycle/outcome combinations.
 
-- [ ] **Task 13: Complete Manual Offline Gates And Operator Documentation**
+- [/] **Task 13: Complete Manual Offline Gates And Operator Documentation** — Deferred: offline, race, vet, build, documentation, and diff gates pass; formal reviews and complete adversarial matrices remain open.
   > Executes: `D-10`; `AC-1` through `AC-11`
   - [ ] Run focused repair tests after each layer, then the complete implementation-repository unit, integration, failure-injection, cancellation, recovery, migration, hostile-input, and race suites; resolve every failure without weakening assertions or protected scope.
   - [ ] Audit every production mutation path from packet digest through confirmation, writer ownership, isolation, proposal, apply, actual diff, reverification, cleanup, result, and proof; reject alternate CLI, TUI, web, runtime, resume, or recovery paths.
-  - [ ] Update `docs/architecture.md`, `docs/cli-reference.md`, `docs/user-guide.md`, `docs/phase3-json-schemas.md`, `docs/recovery.md`, `docs/local-web.md`, and `docs/release-checklist.md` for the complete manual protocol, exact commands and fields, outcomes/exits, strict records, cancellation/shutdown, no-JavaScript operation, proof gate, and escalation.
+  - [x] Update `docs/architecture.md`, `docs/cli-reference.md`, `docs/user-guide.md`, `docs/phase3-json-schemas.md`, `docs/recovery.md`, `docs/local-web.md`, and `docs/release-checklist.md` for the complete manual protocol, exact commands and fields, outcomes/exits, strict records, cancellation/shutdown, no-JavaScript operation, proof gate, and escalation.
   - [ ] Verify documentation examples against executable command and JSON fixtures; record the manual proof gate as unavailable until Task 14 produces qualifying retained evidence.
   - [ ] Run Architecture Review and Sprint Review against the manual implementation and stop before any automatic implementation if admission, confirmation, apply, cleanup, durability, or interface parity has an unresolved finding.
 
-- [ ] **Task 14: Produce The Real Manual Four-Interface Proof Gate**
+- [/] **Task 14: Produce The Real Manual Four-Interface Proof Gate** — Deferred: Sprint 37 has no current admissible issue, containing smoke, or real-runtime QA evidence, so no truthful production proof can run.
   > Executes: `D-10`; `AC-3`, `AC-6`, `AC-9`, `AC-10`, `AC-11`
   - [ ] Select one current real repair-eligible QA issue and prepare its packet through the shared synchronous operation; inspect the same packet and authority facts through CLI text, CLI JSON, TUI, browser HTML without JavaScript, and enhanced browser JSON/event views.
   - [ ] Confirm and start exactly one manual production mutation through the guarded shared durable operation; prove all interfaces correlate the same packet, repair run, operation run, cycle, scope, gates, cleanup, result, and next action without duplicating mutation.
   - [ ] Exercise the full exact-to-review-delta ladder, canonical reconnect/status reload, production target identity checks, process/workspace/lock cleanup, exactly-one result, and qualifying `manual-repair-proof.json` publication.
   - [ ] Retain run IDs, protocol and proof fingerprints, runtime/provider/model identity, durations/costs, artifact digests, actual changed paths, cleanup facts, interface captures, and review evidence required by Deep Smoke Sprint.
-  - [ ] Stop the sprint with automatic mode unavailable if the run does not end `verified` or `verified_with_findings`, cleanup is not proven, proof publication fails, any interface differs semantically, or any manual review finding remains unresolved.
+  - [x] Stop the sprint with automatic mode unavailable if the run does not end `verified` or `verified_with_findings`, cleanup is not proven, proof publication fails, any interface differs semantically, or any manual review finding remains unresolved. Automatic preparation/start is rejected on every surface while the current real manual proof is absent.
 
-- [ ] **Task 15: Implement Lower-Only Automatic Policy After Manual Proof**
+- [/] **Task 15: Implement Lower-Only Automatic Policy After Manual Proof** — Deferred: the required current qualifying manual proof does not exist; automatic execution remains rejected.
   > Executes: `D-06`, `D-07`, `D-08`, `D-10`; `AC-6`, `AC-7`, `AC-8`, `AC-9`
   - [ ] Begin this task only after Task 14 leaves a current qualifying proof; add no administrative bypass, test-fixture proof, or configuration shortcut if the proof is absent or stale.
   - [ ] Extend `internal/platform/config/qa.go` with safe repair defaults, immutable maxima, complete `ULTRAPLAN_QA_*` environment mappings, workspace precedence, effective-source reporting, and lower-only validation for every AC-7 cycle, mutation, reopening, stagnation, file, byte, patch, wall-time, runtime, turn, command, output, retention, and cleanup limit.
@@ -178,7 +178,7 @@ This plan executes `reasoning.md`. It does not reopen repair ownership, confirma
   - [ ] Loop the existing shared cycle only while confirmation, proof, target, governed inputs, policy, ownership, deadline, cleanup, and every budget remain valid; persist consumed counters and absolute deadline before every next-cycle scheduling decision and restore them unchanged on restart/resume.
   - [ ] Add deterministic progress, stagnation, repeated-patch/target, unchanged issue set, reopening, exhaustion, scope/severity growth, design decision, contradiction, unknown schema, uncertain evidence, unsupported test change, drift, and cleanup stop tests; prove every stop occurs before another mutation and yields the correct closed outcome.
 
-- [ ] **Task 16: Expose Automatic Opt-In, Finish Release Evidence, And Close The Sprint**
+- [/] **Task 16: Expose Automatic Opt-In, Finish Release Evidence, And Close The Sprint** — Deferred: automatic opt-in, dogfood, and release evidence cannot begin before Task 14 qualifies.
   > Executes: `D-06`, `D-09`, `D-10`; `AC-6`, `AC-7`, `AC-10`, `AC-11`
   - [ ] Extend app operations and CLI with explicit automatic mode and separate opt-in, allowing only a lower `--max-cycles`; reject manual confirmation reuse, implicit config enablement, changed proof, stale packet/target, or editable resume authority.
   - [ ] Extend TUI and browser with an always-visible automatic availability section, component-level proof reasons, separate `Prepare automatic repair` and `Confirm automatic repair` actions, consumed/remaining limits, progress fact, stagnation/reopening/repetition state, and canonical status refresh.
@@ -223,16 +223,16 @@ This plan executes `reasoning.md`. It does not reopen repair ownership, confirma
 
 | Risk / Blocker | Source | Mitigation | Status |
 | --- | --- | --- | --- |
-| Sprint 37 evidence or containing smoke is not current | `reasoning.md#assumptions` and AC-1 dependencies | Task 1 blocks implementation and names the exact prerequisite recovery action. | open |
+| Sprint 37 evidence or containing smoke is not current | `reasoning.md#assumptions` and AC-1 dependencies | User approved manual implementation to continue on 2026-08-26. Runtime packet admission remains fail-closed, and manual proof plus automatic work remain blocked until current evidence exists. | accepted implementation deviation; proof gate open |
 | Packet joins inconsistent current records | `reasoning.md#risks` | Validate every parent identity and digest as one snapshot; reject missing or ambiguous facts. | open |
-| Accepted operation is stranded before confirmation | D-02 | Split accept from dispatch, terminalize publication failure, and test restart with no worker start. | open |
-| Multi-file apply is interrupted | D-03, D-04 | Journal intended/completed operations, retain pre-images, compensate in process, and escalate uncertain crash state without reapply. | open |
-| Link, side-effect, or protected-class escape | D-03 | Combine strict patch parsing, path class denial, link checks, pre-images, process isolation, and actual target comparison. | open |
-| Writer fence and mutation lease disagree | D-04 | Check both at every applicable boundary and use `terminalizing` to close release/publication races. | open |
-| Frozen descriptors cannot cover the full ladder | D-05 | Block packet admission; never permit runtime-selected replacement commands. | open |
+| Accepted operation is stranded before confirmation | D-02 | Split accept from dispatch, terminalize publication failure, and test restart with no worker start. | implemented; extended restart matrix open |
+| Multi-file apply is interrupted | D-03, D-04 | Journal intended/completed operations, retain pre-images, compensate in process, and escalate uncertain crash state without reapply. | implemented; full crash injection matrix open |
+| Link, side-effect, or protected-class escape | D-03 | Combine strict patch parsing, path class denial, link checks, pre-images, process isolation, and actual target comparison. | implemented; adversarial matrix open |
+| Writer fence and mutation lease disagree | D-04 | Check both at every applicable boundary and use `terminalizing` to close release/publication races. | implemented; terminalizing crash proof open |
+| Frozen descriptors cannot cover the full ladder | D-05 | Block packet admission; never permit runtime-selected replacement commands. | blocked: smoke and review-delta product verifiers are not yet executable against the repaired target; pre-repair authority now fails closed |
 | Cleanup timeout is mistaken for cleanup proof | D-08 | Require affirmative process, workspace, compensation, and lock facts; map uncertainty to escalation. | open |
 | Manual proof is weak or over-sensitive | D-06 | Version named fingerprint components, test each invalidation, and report component-level mismatch. | open |
-| Automatic mode is implemented before manual proof | D-10 | Treat Task 14 as a hard gate; no Task 15 or 16 source change begins without current qualifying retained proof. | open |
+| Automatic mode is implemented before manual proof | D-10 | Treat Task 14 as a hard gate; no Task 15 or 16 source change begins without current qualifying retained proof. | controlled: schema/pure policy vocabulary exists, but preparation and every CLI/TUI/browser execution surface reject automatic mode |
 | Public adapters or progress events drift from canonical truth | D-09 | Use one app DTO fixture, canonical reload, bounded queries, and semantic parity tests. | open |
 | Detailed automatic state exceeds retention bounds | D-06, D-09 | Check per-record/cycle/run bounds before writes, prune only unprotected cycles, and expose retention gaps. | open |
 
@@ -257,6 +257,8 @@ Review should use:
 | Date / Step | Action | Evidence / Notes |
 | --- | --- | --- |
 | 2026-08-25 / planning | Materialized the Sprint 38 implementation plan from validated governed inputs. | Plan stage only; no implementation, smoke, review, Git, or downstream artifact mutation performed. |
+| 2026-08-26 / admission | Verified the recorded Sprint 38 worktree and prior Sprint 37 implementation. Sprint 37 review and smoke are stale, QA state is absent, and retained harness evidence says real-runtime QA dogfood was deferred. | User explicitly approved skipping the host evidence prerequisite and continuing implementation. This does not satisfy AC-1, Task 14, the manual-proof gate, or D-10. Production packet admission must continue to reject missing evidence. |
+| 2026-08-26 / manual implementation | Added the repair domain/persistence protocol, accept-confirm-dispatch durability split, deterministic packet and confirmation, isolated proposal, journaled product apply with private preimages and conservative recovery, ordered fail-closed reverification, manual result/proof rules, CLI/TUI/browser surfaces, flow schema v3 migration, and seven documentation updates. | `go test ./...`, `go test -race ./...`, `go vet ./...`, `go build ./cmd/ultraplan`, and `git diff --check` pass. A live local server returned the repair page at HTTP 200 and exposed/fixed database-backed v2 flow migration plus repair-summary preservation. The Impeccable detector ran degraded because parser modules were absent and reported legacy stylesheet advisories; Playwright screenshots were blocked because browser binaries were not installed. Full repaired-target containing-smoke and independent review-delta execution, exact resume authority, paginated cycle/detail DTOs, exhaustive failure injection, current manual dogfood, and reviews remain open. |
 
 ## Completion Criteria
 
@@ -264,8 +266,8 @@ Review should use:
 - [ ] Every Required Output path in `requirements.md` is implemented and covered by the evidence assigned above.
 - [ ] Manual repair is proven first from one current adjudicated issue through packet, confirmation, production mutation, full ladder, cleanup, result, proof, and all four interfaces.
 - [ ] Automatic repair is implemented and exposed only after that proof is current, reuses the same protocol, and demonstrates one bounded stop with restart/resume-preserved authority.
-- [ ] `go test ./...`, `go test -race ./...`, and `go build ./cmd/ultraplan` pass.
-- [ ] Documentation and canonical public schemas match executable behavior.
+- [x] `go test ./...`, `go test -race ./...`, and `go build ./cmd/ultraplan` pass.
+- [x] Documentation and canonical public schemas match executable behavior.
 - [ ] Architecture Review, Sprint Review, and Deep Smoke Sprint evidence satisfy the selected protocols.
 - [ ] Evidence satisfies `reasoning.md` without reopening or bypassing D-01 through D-10.
 - [ ] `review.md` can evaluate AC-1 through AC-11 without guessing implementation intent.
