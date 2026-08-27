@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "38-bounded-repair",
-  "updatedAt": "2026-08-27T10:49:03.179105322Z",
+  "updatedAt": "2026-08-27T14:12:32.798996033Z",
   "stages": [
     {
       "stage": "requirements",
@@ -51,33 +51,1190 @@
     "status": "completed",
     "verdict": "pass",
     "path": "projects/ultraplan-go/sprints/38-bounded-repair/review.md",
-    "lastRunAt": "2026-08-27T10:47:52Z",
-    "fingerprint": "726073a2ef20c554e845a1a995aa4995cf889e2d34d9f2716c1ed372dfc247c0",
+    "lastRunAt": "2026-08-27T13:28:03.426044559Z",
+    "fingerprint": "cf3f60b35f9477b5b9f473814def0e9aa6cfaa1bcb2485ca5fb3b54a08aaa302",
     "stale": false,
     "completed": 14,
     "total": 14,
     "diagnostics": [
       {
-        "code": "manual-reconciliation",
-        "message": "review passed by manual reconciliation without rerunning the reviewer; unavailable Sprint 37 proof and the remaining test matrix are deferred"
+        "code": "reviewer-failed",
+        "message": "interrupt signal received",
+        "coverage_id": "contract-performance"
+      },
+      {
+        "code": "reviewer-failed",
+        "message": "interrupt signal received",
+        "coverage_id": "handbook"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "contract-performance"
+      },
+      {
+        "code": "missing-coverage",
+        "message": "required reviewer result missing",
+        "coverage_id": "handbook"
+      },
+      {
+        "code": "cancelled",
+        "message": "interrupt signal received"
       }
     ],
-    "artifactDigest": "f64d07e28e2ecbc2d1fdf142c714a05662119ebe3973d3753f8963b484976e75",
+    "artifactDigest": "058f1caef400aa21ccccfc574057869febf556cb8fb289e3bd8ca5c14ecda616",
     "lastAttempt": {
-      "id": "manual-reconciliation-20260827T104752Z",
-      "status": "completed",
-      "startedAt": "2026-08-27T10:47:52Z",
-      "heartbeatAt": "2026-08-27T10:47:52Z",
-      "completedAt": "2026-08-27T10:47:52Z",
+      "id": "review-1787836413847954824",
+      "status": "cancelled",
+      "startedAt": "2026-08-27T13:13:33.847954824Z",
+      "heartbeatAt": "2026-08-27T13:28:03.387857157Z",
+      "ownerPid": 318161,
+      "completedAt": "2026-08-27T13:28:03.426044559Z",
       "diagnostics": [
-        "manual-reconciliation: pass recorded without reviewer rerun; unavailable proof and remaining matrix deferred"
+        "reviewer-failed: interrupt signal received",
+        "reviewer-failed: interrupt signal received",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "cancelled: interrupt signal received"
+      ]
+    },
+    "resume": {
+      "attemptId": "review-1787836413847954824",
+      "inputFingerprint": "cf3f60b35f9477b5b9f473814def0e9aa6cfaa1bcb2485ca5fb3b54a08aaa302",
+      "model": "minimax-coding-plan/MiniMax-M3",
+      "updatedAt": "2026-08-27T13:28:03.359732735Z",
+      "coverage": [
+        {
+          "coverageId": "contract-architecture",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:16:30.912211155Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-architecture",
+            "applicability": "direct",
+            "summary": "The bounded-repair implementation conforms to every requirement of the architecture contract. Module ownership (ARCH-CORE-001): repair lives inside `internal/sprint` as a `VerificationPhase` beside Conformance Review and QA, with focused files `qa_repair.go` and `qa_repair_state.go` that extend the existing `QAStore` rather than introduce a parallel store. Dependency direction (ARCH-CORE-002): `qa_repair.go:20-21` imports only `internal/platform/process` and `internal/platform/runtime` (allowed platform seams); `sprint_commands.go:15-19` adds `internal/runcontrol` for durable operation authority; TUI and Web test fixtures import only `internal/app`. Domain purity (ARCH-LAYER-001): pure helpers — `FinalizeRepairPacket`, `ValidateRepairPacket`, `FinalizeRepairConfirmation`, `ValidateRepairConfirmation`, `ValidateRepairBudgets`, `ValidateLowerRepairBudgets`, `ClassifyRepairPath`, `NormalizeRepairPaths`, `RepairMadeProgress`, `DeriveRepairOutcome`, `RepairGateOrder`, `NewRepairRunID`, `NewRepairCheckID` — live as package functions; the orchestrating `Service` methods (`PrepareRepair`, `ConfirmRepair`, `RunRepair`, `RecoverRepair`, `ResumeRepair`, `RepairStatus`, `RequireAutomaticRepairProof`) consume persistence through `QAStore` and never embed persistence in domain code. Use-case ports (ARCH-LAYER-002): the service exposes `repairRuntime`, `qaWriterFence`/`repairWriterFence` (function-typed fences), and a test-injectable `processRunner` (used in `qa_repair_test.go:345` via `WithProcessRunner(repairFailingRunner{})`); the isolated-proposal runtime call at `qa_repair.go:473-492` and the bounded smoke verifier at `qa_repair.go:1534-1555` route through these ports. Entrypoint thinness (ARCH-ENTRY-001): `runSprintRepair`, `runSprintRepairPrepare`, and `runSprintRepairStart` in `sprint_commands.go:713-1080` only parse flags, build use-case requests, call the durable-operation manager and the sprint service, and map outcomes/exits; the TUI view test renders only `app.RepairStatusResult` DTOs and the web handler test verifies method/CSRF/escaping/no-JavaScript behavior for repair routes without touching private records. Module API stability (ARCH-MODULE-001): the new repair public surface is cohesive (packet/confirmation/cycle/result/proof/budget/outcome helpers), with internal helpers (`deriveRepairProposal`, `applyRepairFilesJournaled`, `linkCountForRepair`, `splitRepairLines`, `writeWholeFilePatch`) kept unexported. Composition (ARCH-COMP-001): wiring flows through `sprint.NewService` and the `With*` chain at `sprintRuntimeService` in `sprint_commands.go:1162`; tests compose via the same `NewService(...).WithQASettings(...).WithProcessRunner(...)` pattern at `qa_repair_test.go:247, 323, 345`; no global mutable state or god container was introduced. Platform neutrality (ARCH-SHARED-001): `repairProposalPromptBody`/`repairProposalPromptID`/`repairProposalPromptVersion` are sprint-owned constants; `pprocess.IsolationCapabilities`, `pprocess.IsolationRequest`, `pprocess.CleanupResult`, `pruntime.Request`, `pruntime.PermissionPolicy`, and `pruntime.PermissionPathRule` are used as generic facts/configuration without injecting repair semantics into the platform packages; protected roots `[s.root, manifest.Target]` at `qa_repair.go:464` keep the workspace and target outside the runtime's writable surface.",
+            "findings": []
+          }
+        },
+        {
+          "coverageId": "contract-cli-surface",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:17:46.246851552Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-cli-surface",
+            "applicability": "direct",
+            "summary": "The new `ultraplan sprint \u003cproject\u003e \u003csprint\u003e repair` command family in `target/internal/app/sprint_commands.go` follows the established CLI shape, lifecycle, and JSON envelope patterns: actions are predictable verbs (`prepare`, `start`, `status`, `packet`, `cycles`, `result`, `resume`, `cancel`, `recover`), long flags are used consistently (`--issue`, `--run`, `--confirmer`, `--automatic`, `--max-cycles`, `--yes`, `--json`), destructive actions require explicit `--yes`/`--confirmer`, progress is written to stderr while JSON results go to stdout, and the JSON envelope (`schema_version`, `operation`, `status`, `result`, `error`) is a stable extension of the existing sprint JSON contract. Three concrete gaps exist: (1) the changed paths contain no additions to `target/internal/app/sprint_commands_test.go`, so the new repair CLI surface has no unit tests for the JSON envelope, exit-code mapping for verified-vs-non-verified outcomes, or the prepare/start flag combinations; (2) the cancel command joins cancel and post-cancel status errors so a successful cancellation followed by a transient status-read failure surfaces as a non-zero exit; (3) the top-level `sprintHelp` lists `--max-cycles \u003cn\u003e` for repair prepare without documenting the automatic-only restriction that the parser enforces.",
+            "findings": [
+              {
+                "id": "cli-surface-repair-no-tests",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "New repair CLI surface has no unit tests in sprint_commands_test.go",
+                "detail": "The CLI Surface contract requires that JSON keys, exit-code mapping, and confirmation bypass rules are covered by tests (CLI-JSON-001 evidence, CLI-EXIT-001 evidence, CLI-SAFE-001 evidence). The diff adds the entire `repair` command parser (`parseSprintRepairArgs`), the dispatchers (`runSprintRepair`, `runSprintRepairPrepare`, `runSprintRepairStart`), the text renderer (`renderSprintRepair`), and the JSON error envelope (`stableRepairCommandError`), but the changed-paths list does not include any additions to `target/internal/app/sprint_commands_test.go`. Without these tests, the stable JSON envelope, the verified-only exit-zero policy, the `--confirmer`/`--yes` enforcement, and the source-reporting in `repairBudgetsFor` are uncovered at the CLI surface even though the sprint-domain types are well-tested internally.",
+                "action": "Add tests in `target/internal/app/sprint_commands_test.go` that cover: (a) JSON envelope stability for each `sprint.repair.*` action including the `stableRepairCommandError` shape; (b) non-zero exit for `start`/`resume` when outcome is `failed`/`blocked`/`escalated`/`stalled` and zero exit only for `verified`/`verified_with_findings`; (c) flag-rejection paths for `prepare` (no `--yes`), `start` (requires `--run`/`--confirmer`/`--yes`), `cancel` (rejects `--yes`), and `manual --max-cycles \u003e 1`; (d) help text snapshots for `sprintRepairHelp` and the repair entries in `sprintHelp`.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 715,
+                    "endLine": 797
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 983,
+                    "endLine": 1039
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1961,
+                    "endLine": 1980
+                  }
+                ]
+              },
+              {
+                "id": "cli-surface-repair-cancel-error-join",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Cancel command joins cancel and post-cancel status errors, hiding successful cancellations",
+                "detail": "CLI-EXIT-001 requires stable exit codes that reflect success, caller error, operational failure, or partial completion. `runSprintRepair` for the `cancel` action calls `repository.RequestCancellation`, then joins the cancel error with the post-cancel projection error. If the user's cancel succeeds but the subsequent `RepairStatus` projection fails (transient persistence failure, race with terminalization), the joined error is non-nil and `writeResult` returns it via `mapQACommandError`, surfacing as a non-zero exit even though the requested action succeeded. The JSON status string remains `cancel_requested`, but the exit code contradicts the status.",
+                "action": "Either (a) record the projection error separately and report it in the JSON `error` field while still exiting zero when `cancelErr == nil`, or (b) treat the post-cancel projection as observational and report it in the result block without promoting it to the exit-code path.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 846,
+                    "endLine": 853
+                  }
+                ]
+              },
+              {
+                "id": "cli-surface-repair-help-missing-max-cycles-constraint",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Top-level help advertises `--max-cycles` without documenting the automatic-only restriction",
+                "detail": "CLI-HELP-001 requires that help output teaches the user the next step and that destructive or non-obvious flag behavior is documented. `sprintHelp()` documents `repair prepare --issue \u003ccurrent-issue-id\u003e [--automatic] [--max-cycles \u003cn\u003e] [--json]` as a single signature, but `parseSprintRepairArgs` rejects `--max-cycles \u003e 1` for manual mode with `manual repair max cycles must be one`. A user reading the top-level help would expect `--max-cycles 3` to work with manual mode; instead they receive a usage error after preparing the packet. `sprintRepairHelp()` omits `--max-cycles` entirely from the prepare line, so the constraint is only discoverable by trial.",
+                "action": "Either remove `[--max-cycles \u003cn\u003e]` from the manual-eligible signature in `sprintHelp` (show it only under an automatic-mode branch) or add an explicit note that `--max-cycles` is automatic-only and lower-only in `sprintRepairHelp`.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 2027,
+                    "endLine": 2033
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 759,
+                    "endLine": 769
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 2103,
+                    "endLine": 2117
+                  }
+                ]
+              },
+              {
+                "id": "cli-surface-repair-prepare-implicitly-readonly",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Repair prepare is read-only but does not expose a `--dry-run` flag",
+                "detail": "CLI-SAFE-001 requires destructive actions to provide `--dry-run` where useful and feasible, and CLI-SHAPE-001 forbids ambiguous boolean flags that hide separate workflows. `repair prepare` is documented in `sprintRepairHelp` as freezing a packet without runtime work or target mutation, but it accepts `--automatic` (a meaningful mode toggle) without accepting `--dry-run`. Because the prepare step performs a real durable mutation of the `verification/repair-state.json` pointer and may consume a repair-run identity, treating it as already-a-dry-run is correct, but operators reading the help have no `--dry-run` to opt into a non-binding preview before the durable publication.",
+                "action": "Either document explicitly in `sprintRepairHelp` that prepare is the read-only preview and start is the destructive transition (matching the implementation), or add a `--dry-run` flag that prints the frozen packet without durable publication.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 2103,
+                    "endLine": 2117
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 759,
+                    "endLine": 769
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-configuration",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:15:58.714120421Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-configuration",
+            "applicability": "direct",
+            "summary": "Sprint 38 repair configuration satisfies the Configuration contract. `repairBudgetsFor` in `target/internal/app/sprint_commands.go` reads the typed `effective.Config.QA.Repair` struct (CFG-TYPE-001), parses duration fields via `time.ParseDuration`, and calls `sprint.ValidateLowerRepairBudgets(budgets, sprint.MaximumRepairBudgets())` so invalid or non-lower values fail before any work begins (CFG-START-001). Source tracking reuses `effective.Sources` and exposes per-field labels through the bounded `QAEffectiveSource` list, which is allowlisted (CFG-PUBLIC-001) and inspectable (CFG-OBS-001). Repair introduces no secret-bearing fields and the source label override for manual mode keeps the override inspectable. The CLI surfaces fail fast via `ExitConfig` mapping when `repairBudgetsFor` reports an invalid value, and `internal/sprint/qa_repair.go:PrepareRepair` re-validates lower-only bounds against `DefaultRepairBudgets()` as defense in depth (CFG-COMPAT-001 via preserved product maxima).",
+            "findings": [
+              {
+                "id": "repair-config-max-cycles-manual-override",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Manual mode unconditionally overrides configured MaxCycles and MaxMutationCycles to 1",
+                "detail": "`repairBudgetsFor` in `target/internal/app/sprint_commands.go` sets `budgets.MaxCycles=1` and `budgets.MaxMutationCycles=1` whenever the mode is manual (lines 964-966), and replaces the corresponding source labels in `effective.Sources` with `manual_policy` (lines 974-976). The configured `qa.repair.max_cycles` and `qa.repair.max_mutation_cycles` values are therefore not honored for manual repair while automatic mode still respects them. The contract permits product policy to override configuration provided the override remains inspectable; the `manual_policy` label and the bounded `RepairBudgetSummary` keep it inspectable, so CFG-OBS-001 and CFG-PUBLIC-001 still hold. The behavior must be documented so operators do not expect manual mode to honor `--max-cycles`.",
+                "action": "Document the manual-mode cycle/mutation override in `docs/cli-reference.md` and `docs/configuration.md`, including that the `manual_policy` source label signals the product-policy override applied after merged configuration.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 942,
+                    "endLine": 981
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-documentation",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:18:29.20480439Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-documentation",
+            "applicability": "partial",
+            "summary": "Sprint 38 added bounded manual/automatic repair across CLI, TUI, and web; governed workspace architecture and the three area-reasoning files do carry the bounded repair phase and the deep decision context, and no insecure examples appear in fixtures or help text. However, the changeset itself contains no docs/ directory updates so the execute.md claim that seven implementation-repository docs were updated is unverifiable, the embedded CLI help omits the proof gate, the six semantic outcomes, exit-code behavior, and the repair-run-id vs operation-run-id distinction, and several new exported public types in internal/sprint lack godoc comments.",
+            "findings": [
+              {
+                "id": "DOC-REPAIR-001",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "Claimed docs updates are not visible in the changeset",
+                "detail": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md states the implementation 'Updated architecture, CLI, user, schema, recovery, local-web, and release documentation' for docs/architecture.md, docs/cli-reference.md, docs/user-guide.md, docs/phase3-json-schemas.md, docs/recovery.md, docs/local-web.md, and docs/release-checklist.md. The frozen target snapshot contains target/.ultraplan/changes.patch and target/internal/{app,sprint,tui,web}/… only; no docs/ tree is present. The diff includes no docs/ tree changes, so I cannot confirm the claimed updates land alongside the code. DOC-OWNER-001 forbids leaving two conflicting source-of-truth documents and DOC-PUBLIC-001 forbids public commands with no discoverable docs.",
+                "action": "Either attach the implementation-repository docs/ tree to the review slice or run a follow-up check that diffs the listed docs/ files and proves each command, JSON envelope, recovery step, and proof gate is reflected accurately against the new code in target/internal/sprint/qa_repair.go, target/internal/sprint/qa_repair_state.go, target/internal/app/sprint_commands.go, target/internal/tui/qa_view.go, and target/internal/web/qa_handlers.go.",
+                "citations": [
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md",
+                    "startLine": 9,
+                    "endLine": 42
+                  },
+                  {
+                    "path": "target/.ultraplan/changes.patch",
+                    "startLine": 1,
+                    "endLine": 3975
+                  }
+                ]
+              },
+              {
+                "id": "DOC-REPAIR-002",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "CLI help string omits the proof gate, mode outcomes, and identifier rules",
+                "detail": "target/internal/app/sprint_commands.go:2103 sprintRepairHelp() and the sprint main Usage block at lines 2027-2033 add the repair action but only include a single narrative paragraph. They do not state that automatic prepare/start fail closed when verification/manual-repair-proof.json is absent or stale, do not list the six semantic outcomes (verified, verified_with_findings, failed, blocked, escalated, stalled), do not describe the CLI exit-code behavior per outcome, and do not distinguish repair-run-id (used by packet, cycles, result, recover) from operation-run-id (used by cancel). DOC-PUBLIC-001 requires 'common usage, errors, examples, and compatibility expectations where relevant'.",
+                "action": "Extend sprintRepairHelp() and the sprint main Usage block with: (a) automatic mode proof gate summary, (b) the six outcomes with their non-zero exit status, and (c) an explicit 'repair cancel --run takes the durable operation run id; the other queries take the repair run id' note. Cross-link to docs/cli-reference.md so the docs claim is verifiable.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 2027,
+                    "endLine": 2117
+                  }
+                ]
+              },
+              {
+                "id": "DOC-REPAIR-003",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "ARCHITECTURE.md states the bounded repair phase but does not point at the canonical decision rationale",
+                "detail": "projects/ultraplan-go/docs/ARCHITECTURE.md:698-700 carries a single paragraph for Sprint 38. The actual decision rationale (D-01 ownership, D-02 packet and confirmation authority, D-03 isolated proposal vs product apply, D-04 terminalizing barrier, D-05 sequential reverification, D-06 manual-first reuse, D-07 lifecycle vs outcome, D-08 conservative recovery, D-09 shared bounded interfaces, D-10 proof-gated rollout) lives in the sprint reasoning artifacts. projects/ultraplan-go/docs/ARCHITECTURE.md:285 lists 'Frozen evidence-backed issue packets, repair-scope enforcement, progressive reverification, and bounded convergence' as owned sprint behavior, which is correct, but the doc does not link readers to the Sprint 38 reasoning files as the authoritative architectural source. DOC-ARCH-001 requires 'use ADRs, design notes, or sprint reasoning for major boundaries'. The reasoning exists but is not surfaced from ARCHITECTURE.md.",
+                "action": "Add a one-paragraph note in the Sprint 38 section of projects/ultraplan-go/docs/ARCHITECTURE.md that names the canonical decision source (projects/ultraplan-go/sprints/38-bounded-repair/reasoning/architecture.md, reasoning/api-design.md, reasoning/frontend.md) and references D-01..D-10 by ID so reviewers can trace every architectural boundary back to a recorded decision.",
+                "citations": [
+                  {
+                    "path": "projects/ultraplan-go/docs/ARCHITECTURE.md",
+                    "startLine": 285,
+                    "endLine": 285
+                  },
+                  {
+                    "path": "projects/ultraplan-go/docs/ARCHITECTURE.md",
+                    "startLine": 698,
+                    "endLine": 700
+                  }
+                ]
+              },
+              {
+                "id": "DOC-REPAIR-004",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Public Go exports in internal/sprint lack godoc-style comments",
+                "detail": "The new repair types in target/internal/sprint/qa_repair.go and target/internal/sprint/qa_repair_state.go are exported (RepairPrepareRequest, RepairPrepareResult, RepairSnapshot, RepairConfirmRequest, RepairRunRequest, RepairRecoverRequest, RepairProgress, RepairPathClass, RepairMode, RepairOutcome, RepairStopReason, RepairPhase, RepairGateKind, plus the corresponding constants and the RepairUseCases DTO surface in internal/app/sprint_usecases.go). Only RequireAutomaticRepairProof, ResumeRepair, RecoverRepair, and the private applyRepairFiles carry doc comments. DOC-PUBLIC-001 requires that public surfaces be documented for intended consumers.",
+                "action": "Add one-line godoc comments on each exported repair type and function in target/internal/sprint/qa_repair.go, target/internal/sprint/qa_repair_state.go, and the RepairUseCases DTOs in target/internal/app/sprint_usecases.go describing intent and immutability. This is a low-severity follow-up because the JSON envelopes are documented through tests and the embedded help, but consumers building on internal/sprint or internal/app would benefit.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 52,
+                    "endLine": 120
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 1,
+                    "endLine": 50
+                  }
+                ]
+              },
+              {
+                "id": "DOC-REPAIR-005",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Recovery docs claim cannot be verified from the snapshot",
+                "detail": "AC-9 mandates that cancellation, cleanup, resume, recovery, and shutdown be documented as governed protocol stages. Recovery paths include the terminalizing barrier, in-process compensation, cleanup-uncertainty mapping to escalated, target drift handling, and journal-based preimage compensation. The implementation paths in target/internal/sprint/qa_repair.go (finishRepairWithoutApply, the RunRepair cleanup block, RecoverRepair) carry inline comments, but I cannot verify that docs/recovery.md was updated with operator-facing guidance because the implementation-repository docs/ tree is not in the snapshot.",
+                "action": "Confirm docs/recovery.md documents: (a) what an operator should do when a repair ends escalated, interrupted, cleanup_uncertain, or stalled; (b) how to interpret the terminalizing barrier state; (c) how to read the apply journal preimage set; (d) how target drift maps to the recovery next action. The implementation is solid; the documentation must reach operators.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 385,
+                    "endLine": 520
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 230,
+                    "endLine": 260
+                  }
+                ]
+              },
+              {
+                "id": "DOC-REPAIR-006",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "No insecure examples, but few worked examples",
+                "detail": "No fake secrets or tokens appear in the test fixtures or CLI examples; repairPacketFixture uses synthetic sha256-shaped strings. The embedded CLI help shows usage lines but no worked end-to-end example (e.g. 'prepare a packet, confirm, start, view status, view result'). DOC-EXAMPLE-001 asks that examples be minimal, realistic, and tested. Tests at target/internal/web/qa_handlers_test.go:114 and target/internal/tui/qa_view_test.go:71 do assert canned projections, which is good, but no end-to-end CLI example is in the help string.",
+                "action": "Add a short end-to-end CLI example to docs/cli-reference.md (or extend the embedded help at target/internal/app/sprint_commands.go:2103) covering prepare → status → start → status → result with one realistic RepairRunID. This complements the unit tests.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 2103,
+                    "endLine": 2117
+                  },
+                  {
+                    "path": "target/internal/web/qa_handlers_test.go",
+                    "startLine": 114,
+                    "endLine": 148
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-errors",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:15:30.126815389Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-errors",
+            "applicability": "direct",
+            "summary": "The repair implementation consistently emits typed QAError categories (QAErrorAdmissionBlocked, QAErrorConflict, QAErrorInvalidState, QAErrorStaleInput, QAErrorRuntimeUnavailable, QAErrorBudgetExhausted, QAErrorPersistenceFailure, QAErrorPermissionDenied) that preserve stable operational categories, wrap underlying causes via errors.Join, and propagate through durable-run state. CLI and HTTP boundaries map these to a stable error envelope that carries category, severity, retryable, operation, component, correlation_id, and timestamp. Cancellation, terminalizing barriers, and create-or-compare result publication keep the terminal authority truthful. Persistence and dependency failures are distinct categories; runtime and target-drift failures carry normalized context. Redaction runs before emission. Three small deviations remain: silent JSON round-trip errors in ValidateLowerRepairBudgets, blanket redaction in boundRepairText that drops the full diagnostic, and an omitted structured cause field in stableRepairCommandError.",
+            "findings": [
+              {
+                "id": "errors-001",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "boundRepairText replaces the entire diagnostic when a marker is detected",
+                "detail": "When any of the markers (Bearer, token=, password=, api_key, apikey, sk-, ghp_, github_pat_, xoxb-, /home/, /tmp/) is detected, the function substitutes the entire string with the literal '[redacted repair diagnostic]' instead of redacting only the secret span, which loses useful diagnostic context that ERR-REDACT-001 forbids ('solving exposure risk by dropping the entire detail payload when narrower redaction would work').",
+                "action": "Replace the secret span with a redaction placeholder while preserving the surrounding text, or document why a wholesale replacement is required for these specific markers.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1855,
+                    "endLine": 1876
+                  }
+                ]
+              },
+              {
+                "id": "errors-002",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "ValidateLowerRepairBudgets silently ignores JSON round-trip errors",
+                "detail": "The lower-only comparison marshals both budgets to JSON and unmarshals them into generic maps, discarding every error via '_ = json.Marshal/Unmarshal'. ERR-CORE-001 forbids 'catching and doing nothing'; if the round-trip changes a value semantically the comparison could silently pass an over-budget request. The prior ValidateRepairBudgets call provides primary defense, but a budget that survives the first validator and fails the comparison round-trip would not be rejected.",
+                "action": "Surface the JSON errors or use a typed field-by-field lower-only comparison instead of a generic-map round-trip.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1010,
+                    "endLine": 1020
+                  }
+                ]
+              },
+              {
+                "id": "errors-003",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "stableRepairCommandError omits a structured cause field",
+                "detail": "The CLI repair error envelope exposes code, message, recovery, severity, operation, component, retryable, category, correlation_id, and timestamp, but does not include the originating cause or causal chain. ERR-SHAPE-001 lists cause/causes as required fields and ERR-TRANS-001 requires cross-layer translations to preserve the original cause; the CLI adapter drops it.",
+                "action": "Add a bounded cause string or chain to stableRepairCommandError, or explicitly document the redaction justification for omitting it on the public CLI envelope.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1961,
+                    "endLine": 1982
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-llm-evaluation-cost-safety",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:17:55.3543272Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-llm-evaluation-cost-safety",
+            "applicability": "partial",
+            "summary": "The repair implementation adds one new LLM-backed prompt (`repairProposalPromptBody`, ID `ultraplan.bounded-repair.proposal`) that runs inside a bounded isolated workspace and whose output is parsed, validated, and applied by product code. Protocol-side safety controls are strong: explicit `--yes` and confirmer for every mutation, single-use confirmation bound to packet, target, governed inputs, mode, effective limits, and durable writer fence; shell, bash, zsh, fish, cmd, powershell, pwsh, and git executables are rejected by `ValidateRepairCheck` (qa_repair.go:953-956) and `request.Policy` denies bash/shell with `UnsupportedBehavior: \"error\"` (qa_repair.go:1462); preimage digests, hard-link counts, scope classes, path containment, and byte budgets are enforced in `applyRepairFilesJournaled` and `ClassifyRepairPath`. Cost/latency metadata (`prompt_id`, `prompt_version`, `prompt_checksum`, `prompt_purpose`, `prompt_owner_kind`, `prompt_owner_id`, `provider`, `model`, `variant`, `reasoning_effort`) is attached to every runtime request (qa_repair.go:1440-1456) and `state.Consumed.{RuntimeAttempts,ModelTurns,ChangedFiles,ChangedBytes}` records consumption (qa_repair.go:474-475, 540-542); `RepairBudgets` enforces finite defaults with immutable maxima and `ValidateLowerRepairBudgets` rejects every raised field (qa_repair.go:1004-1023, qa_repair_test.go:263-277). Human review is enforced: automatic mode is rejected without a current qualifying manual proof, manual mode requires `--yes` and a `Confirmer` identity, and cancellation/cleanup uncertainty maps to `escalated` rather than `verified`. However, the contract's regression-example and prompt-injection requirements are not satisfied: there are no eval or regression scenarios asserting that the model produces a unified diff within the allowed paths, refuses to weaken tests/requirements, or that the prompt rejects injection-style issue text. Diagnostic redaction exists (`boundRepairText`) but is applied to public output, not to the data embedded in the prompt, so an issue whose title/claim/location embeds instruction-like text would still be appended verbatim to `repairProposalPromptBody`.",
+            "findings": [
+              {
+                "id": "rep-eval-001",
+                "severity": "high",
+                "applicability": "partial",
+                "title": "No regression examples assert the repair model's prompt adherence or output shape",
+                "detail": "EVAL-REG-001 requires representative examples for critical AI behaviors. The implementation introduces a new prompt (`repairProposalPromptBody` at qa_repair.go:29-35) that the model must obey to be safe and bounded, but `qa_repair_test.go` contains no fixtures or golden outputs that exercise what a real model would produce. `TestRepairProposalCarriesVersionedPromptIdentity` (qa_repair_test.go:320-332) verifies metadata only; `TestRepairReverificationRunsRepairedTargetSmokeWithoutSecondReview` (qa_repair_test.go:235-261) uses a synthetic process runner that does not model model output. `TestApplyRepairFilesChecksPreimageScopeAndCompensates` (qa_repair_test.go:140-166) tests product-side validation, not whether the model generated a patch that would pass it. There is no scenario asserting that a model output: (a) is a unified diff inside `packet.AllowedPaths`, (b) does not touch `packet.ForbiddenPaths`, (c) does not modify tests or governed inputs, (d) does not claim success, or (e) handles adversarial issue text without producing unsafe patches. The reasoning files (`reasoning/api-design.md`, `reasoning/architecture.md`) describe eval expectations but no eval dataset or regression examples exist in code.",
+                "action": "Add a small set of high-signal regression fixtures that exercise the model behavior contract: a positive scenario (model emits a minimal unified diff that resolves the exact reproducer), and three adversarial scenarios (model tries to modify tests/requirements, model tries to weaken evidence via reordering, model emits output outside `allowed_paths`). Each fixture must assert that `deriveRepairProposal` either accepts the patch with the expected replacement set or escalates to `RepairStopUnsupportedChange`. Treat these fixtures as required for the manual-mode proof gate referenced in `plan.md` Task 14.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 29,
+                    "endLine": 35
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1433,
+                    "endLine": 1472
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 320,
+                    "endLine": 332
+                  }
+                ]
+              },
+              {
+                "id": "rep-eval-002",
+                "severity": "high",
+                "applicability": "partial",
+                "title": "Prompt injection in QAIssue fields is not tested or scoped against the proposal prompt",
+                "detail": "EVAL-SAFETY-001 forbids treating retrieved/user content as trusted instructions. The proposal request serializes the entire `RepairIssuePacket` (including `Issue.Title`, `Issue.Claim`, `Issue.Location`, and `RootCauseGroup.Claim`) and appends it to `repairProposalPromptBody` (qa_repair.go:1438) without any sanitization or instruction-isolation delimiter. The prompt body instructs the model to ignore any embedded instruction text, but no test or guard verifies that the packet data cannot steer the model into producing out-of-scope patches. `boundRepairText` (qa_repair.go:1855-1873) redacts secrets/host paths only for diagnostic output (`repairResultEvidence`, `finishRepairWithoutApply`); it is not applied to the data passed to the runtime. The protected-path classifier (`ClassifyRepairPath` at qa_repair.go:1081-1120) only classifies paths, not embedded instructions. A hostile issue with prompt-injection-style text in `Issue.Claim` could theoretically still reach the model because the runtime request is built before any redaction.",
+                "action": "Either (a) add a regression fixture whose `QAIssue.Claim` and `QAIssue.Title` contain explicit instruction-style injection text and assert that the resulting packet still fails `ClassifyRepairPath` for any unsafe path the model proposes and that `boundRepairText` is applied to prompt-embedded data before serialization, or (b) add a strict whitelist/delimiter around the serialized packet section so the model can treat it strictly as data, and add a unit test asserting the delimiter is preserved through `canonicalQAJSON`.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1433,
+                    "endLine": 1472
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1855,
+                    "endLine": 1873
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1081,
+                    "endLine": 1120
+                  }
+                ]
+              },
+              {
+                "id": "rep-eval-003",
+                "severity": "medium",
+                "applicability": "partial",
+                "title": "Runtime usage metadata is captured but not asserted to be present, falsified, or redacted in public output",
+                "detail": "EVAL-COST-001 requires capturing runtime, provider, model, prompt version, token counts, retry count, duration, and tool counts where available. The implementation attaches `prompt_id`, `prompt_version`, `prompt_checksum`, `prompt_purpose`, `prompt_owner_kind`, `prompt_owner_id`, `provider`, `model`, `variant`, and `reasoning_effort` to `request.Metadata` (qa_repair.go:1440-1456) and increments `state.Consumed.RuntimeAttempts` and `state.Consumed.ModelTurns` from `runtimeResult.Usage.Turns` (qa_repair.go:474-475). However, no test asserts that the metadata is actually populated in the request handed to the runtime, that the runtime emits usage fields, or that the public DTO exposes the usage facts. `RepairBudgets.RuntimeAttempts` and `RepairBudgets.ModelTurns` are validated as bounded positive integers in `ValidateRepairBudgets` (qa_repair.go:973-1002), but the consumed counters are not asserted to be monotonic, bounded, or persisted across restart. Additionally, there is no `RepairConsumed` DTO field for `TokenCount` or `OutputBytes` consumed; only budget limits exist. EVAL-COST-001 also forbids hidden retries; the protocol does not retry, but the runtime may, and `state.Consumed.RuntimeAttempts` only increments once per call (qa_repair.go:474), so any runtime-internal retries are invisible to repair consumers.",
+                "action": "Extend the canonical `RepairConsumed` projection (or equivalent) with explicit `TokenCount`, `PromptBytes`, `OutputBytes` consumed, and a `RuntimeRetries` field sourced from `runtimeResult.Usage` and any agentwrap `PolicyDecisions`. Add a regression test that exercises a fake runtime returning populated `Usage` and asserts the consumed counters reflect it. Add a regression test for `ValidateRepairBudgets` covering an attempt that consumes zero usage to ensure unknown usage stays unknown rather than collapsing to zero.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 463,
+                    "endLine": 485
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 973,
+                    "endLine": 1024
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1433,
+                    "endLine": 1472
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-llm-runtime",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:17:36.639932673Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-llm-runtime",
+            "applicability": "partial",
+            "summary": "Sprint 38 adds one concrete repair runtime request with a versioned prompt, default-deny permission policy, packet-bound allowed paths, and explicit lifecycle phases. Mode-specific policy stays inside internal/sprint and runtime metadata is propagated through prompt identity fields. The implementation does not capture token, cost, or latency metadata from the runtime response, the per-run attempt/turn counter does not feed a shared bounded retry policy, and runtime request usage is reduced to Turns only. Prompt identity, tool safety, schema validation, durable state, terminal arbitration, and exposure through app modules are well covered.",
+            "findings": [
+              {
+                "id": "LLM-COST-001/missing-token-usage",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Runtime usage metadata is reduced to Turns only",
+                "detail": "RunRepair persists only runtimeResult.Usage.Turns into state.Consumed.ModelTurns. token counts, estimated cost, latency, prompt_bytes, completion_bytes, and other agentwrap RunMetadata fields are dropped. LLM-COST-001 requires these fields where the runtime supports them and forbids omitting them when they would aid operational visibility.",
+                "action": "Capture the full runtimeResult.Usage (Tokens, Cost, Latency) and a bounded selection of agentwrap RunMetadata on RepairState/RepairResult.Consumed, surface in RepairStatusResult and the CLI/JSON/TUI/web projections, and add a redacted path for secrets. Add tests that prove non-zero tokens/cost round-trip.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 474,
+                    "endLine": 475
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1433,
+                    "endLine": 1472
+                  }
+                ]
+              },
+              {
+                "id": "LLM-RETRY-001/no-shared-retry-policy",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Repair runtime invocation skips the shared bounded retry policy",
+                "detail": "RunRepair calls runtime.StartRun a single time per cycle and tracks RuntimeAttempts in the consumed counters, but no shared LLM retry classification (provider timeout, 408/409/425/429/500/502/503/504, empty completion, invalid JSON, output validation) is applied between attempts. The contract requires shared, bounded, mode-aware retry decisions; cycle-level counting alone does not satisfy it for the runtime call itself.",
+                "action": "Wrap the runtime call in the shared agentwrap PolicyRunner or its successor, classify retryable failures, surface attempt/max/issue/issue_code in RepairProgress, and emit a durable retry event before each retry. Add a race test for retry exhaustion vs cancellation vs repair shutdown.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 472,
+                    "endLine": 485
+                  }
+                ]
+              },
+              {
+                "id": "LLM-OBS-001/incomplete-correlation",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Repair progress events omit prompt version, runtime identity, and bounded cost fields",
+                "detail": "RepairProgress only carries Phase/Cycle/Gate/Message. It does not include prompt_id, prompt_version, provider/model identity, or cost/latency. RepairState.Consumed has counters but no provider/model or run IDs in its public projection. LLM-OBS-001 requires prompt version in monitoring surfaces and forbids correlation loss across boundaries.",
+                "action": "Extend RepairProgress (or add a parallel event type) with prompt_id/prompt_version, provider/model, and bounded cost/latency. Thread the durable operation run ID, fencing generation, and prompt checksum into RepairStatusResult. Add tests that assert these fields appear in canonical status.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 98,
+                    "endLine": 103
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 452,
+                    "endLine": 452
+                  }
+                ]
+              },
+              {
+                "id": "LLM-EVAL-001/no-real-runtime-coverage",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Real-runtime eval/smoke evidence is deferred, leaving prompt/model changes under-covered",
+                "detail": "Tests exercise packet determinism, budget lower-only rules, protected-path classification, hard-link rejection, journal retention, prompt identity metadata, and runner diagnostics, but they all run with fake runtimes and isolated temp directories. The execute.md confirms a real manual four-interface dogfood was not produced. LLM-EVAL-001 requires evaluation or smoke coverage appropriate to risk; a behaviorally significant production mutation prompt needs gated real-runtime evidence, not just unit coverage.",
+                "action": "Add a gated real-runtime integration test that runs repairProposalRequest against the configured agentwrap/opencode adapter with a sandboxed workspace and asserts prompt identity, runtime result capture, and bounded cleanup. Track the deferral alongside the change record until Task 14 produces qualifying evidence.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 320,
+                    "endLine": 332
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 334,
+                    "endLine": 349
+                  }
+                ]
+              },
+              {
+                "id": "LLM-PROMPT-001/compliant-prompt-versioning",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Prompt identity, version, owner, purpose, and checksum are propagated through the runtime request",
+                "detail": "repairProposalPromptID, repairProposalPromptVersion, prompt_owner_kind, prompt_owner_id, prompt_purpose, and prompt_checksum are assigned at the call site and TestRepairProposalCarriesVersionedPromptIdentity verifies each value. The prompt body is a versioned first-class definition that cannot be edited in place without changing the version.",
+                "action": "No action needed. Confirm the same pattern is reused for any future repair-time prompts and ensure the protocol fingerprint used by ManualRepairProof tracks the prompt checksum when prompts evolve.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 27,
+                    "endLine": 35
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1438,
+                    "endLine": 1446
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 320,
+                    "endLine": 332
+                  }
+                ]
+              },
+              {
+                "id": "LLM-TOOL-001/compliant-tool-scope",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Tool and shell execution boundaries are explicit and packet-scoped",
+                "detail": "ValidateRepairCheck rejects sh/bash/zsh/fish/cmd/powershell/pwsh/git executables. repairProposalRequest sets Default: deny, denies bash/shell explicitly, and binds allowed paths from packet.AllowedPaths into PathRules. Workspace write sandbox plus the write/edit/patch allowlist restricts the runtime to the isolated copy.",
+                "action": "No action needed. Confirm the same policy composition is used if additional repair prompts are added (e.g., automatic follow-up), and that the unsupported-behavior policy remains error rather than best-effort.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 949,
+                    "endLine": 971
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1462,
+                    "endLine": 1470
+                  }
+                ]
+              },
+              {
+                "id": "LLM-BOUNDARY-001/compliant-mode-policy-separation",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Concrete repair policy stays in internal/sprint; platform runtime is generic",
+                "detail": "pruntime.Request is composed in repairProposalRequest with metadata and permission policy, but path classification, gate ordering, scope enforcement, reverification, and outcome derivation all live in internal/sprint. The platform/runtime package is not taught repair semantics. Mode-specific policy (allowed/forbidden paths, gate order, stop rules) is not embedded in shared substrate code.",
+                "action": "No action needed. Keep the shared runtime adapter free of repair outcomes, progress, and gate semantics; future automatic cycles must compose policy in the sprint service.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1433,
+                    "endLine": 1472
+                  }
+                ]
+              },
+              {
+                "id": "LLM-SAFETY-001/compliant-prompt-and-input-guardrails",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Prompt body and gate descriptors reject unsafe inputs",
+                "detail": "The repair prompt explicitly forbids shell/Git/formatter/cleanup commands and tests, generated evidence, configuration, Git data, governed inputs, and acceptance criteria. ValidateRepairCheck rejects control bytes, NUL, and unsafe workdirs. ClassifyRepairPath assigns generated_evidence, workspace_state, repository_control, configuration, test_or_acceptance_asset, and governed_input classes that the proposal/apply paths refuse. boundRepairText redacts secret tokens and host paths.",
+                "action": "No action needed. Keep ClassifyRepairPath in sync with new governed inputs and protected classes; extend boundRepairText if new secret markers appear in diagnostics.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 29,
+                    "endLine": 35
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 949,
+                    "endLine": 971
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1081,
+                    "endLine": 1120
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1855,
+                    "endLine": 1873
+                  }
+                ]
+              },
+              {
+                "id": "LLM-IO-001/compliant-strict-validation",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Packet, confirmation, and result schemas are strict and digest-bound",
+                "detail": "FinalizeRepairPacket, FinalizeRepairConfirmation, and ValidateRepairResult compute and verify a SHA-256 digest over the canonical JSON encoding. readStrictVersion rejects unknown fields and schema versions. ValidateRepairPacket rejects ineligible issues, cross-group roots, missing reproducers, protected paths, mismatched target, and mismatched digest.",
+                "action": "No action needed. Add an explicit fuzz or round-trip test for canonicalQAJSON across map ordering and time zones if the encoding has not been stress-tested.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 864,
+                    "endLine": 948
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1026,
+                    "endLine": 1061
+                  }
+                ]
+              },
+              {
+                "id": "LLM-LIFECYCLE-001/compliant-explicit-phases",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Lifecycle phases, terminal states, and cancellation are explicit and inspectable",
+                "detail": "RepairState.Phase advances through Prepared, Confirmed, Proposing, Applying, Reverifying, Cleaning, Terminalizing, and Terminal with Terminalizing acting as a barrier. Recovery validates the phase before resume. Cancellation propagates through s.acquireMutationContext and durable run control. Outcome is a closed enum of verified, verified_with_findings, failed, blocked, escalated, stalled.",
+                "action": "No action needed. Ensure the run-control fence rejects writes from a stale or cancelled owner at every state publication; the writeRepairRecord/writeRepairBytes hooks already chain checkWriter through BeforeRename, but the test matrix for races across phases is still open per execute.md.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 581,
+                    "endLine": 593
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 389,
+                    "endLine": 426
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 570,
+                    "endLine": 604
+                  }
+                ]
+              },
+              {
+                "id": "LLM-EXPOSE-001/compliant-app-exposure",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "CLI, TUI, and web reach repair through app DTOs and operation kinds",
+                "detail": "runSprintRepair parses a closed flag allowlist and dispatches through dashboardUseCases.PrepareOperation and the shared runner. TUI tests project RepairStatusResult via a single OperationRepairStart action that is suppressed once a Confirmation exists. The web fixture exposes RepairStatus and routes GET /api/v1/projects/.../repair and bounded sub-resources returning RepairStatusResult without private evidence bodies.",
+                "action": "No action needed. Reject any future adapter that reads verification/ directly or constructs confirmation digests outside the sprint service; keep repair-only mutation endpoints out of the HTTP API.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 715,
+                    "endLine": 796
+                  },
+                  {
+                    "path": "target/internal/tui/qa_view_test.go",
+                    "startLine": 70,
+                    "endLine": 105
+                  },
+                  {
+                    "path": "target/internal/web/qa_handlers_test.go",
+                    "startLine": 116,
+                    "endLine": 145
+                  }
+                ]
+              },
+              {
+                "id": "LLM-RUN-001/compliant-durable-run-identity",
+                "severity": "info",
+                "applicability": "direct",
+                "title": "Repair run identity, fencing, and writer checks are durable and inspectable",
+                "detail": "NewRepairRunID deterministically derives repair-v1-run-\u003chex\u003e from project, sprint, attempt, issue, mode, and preparedAt. RepairState.Run carries the durable operation run ID, operational attempt ID, fencing generation, and lifecycle. writeRepairRecord and writeRepairBytes wrap checkWriter through BeforeRename so every record write validates ownership.",
+                "action": "No action needed. Add a fault-injection test for a stale fencing generation that races with apply publication to prove the writer check actually blocks.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 829,
+                    "endLine": 846
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 570,
+                    "endLine": 604
+                  }
+                ]
+              },
+              {
+                "id": "LLM-SAFETY-001/containing-smoke-bypasses-verification",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Reverification's containing smoke gate forces a force-review override",
+                "detail": "runRepairReverification passes ForceReview: true, OverrideConfirmed: true, OverrideRationale: 'bounded repair reverification after the single conformance review' to runSmoke. The sprint verification protocol requires that the smoke gate does not bypass required review authority; the override path is product policy but its audit footprint inside RepairGateResult only records the exit code and an output hash. A future reviewer cannot easily tell which check was bypassed and why.",
+                "action": "Persist a durable repair_safety_override record alongside the reverification result that names the override keys, the rationale, and the policy version. Surface it through RepairStatusResult and the result resource. Add a test that confirms the override fields appear in RepairReverification and result.Evidence.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1578,
+                    "endLine": 1585
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-observability",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:19:15.911433576Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-observability",
+            "applicability": "direct",
+            "summary": "Sprint 38's repair implementation introduces structured state records (RepairState, RepairResult, RepairReverification, RepairConfirmation) that carry RunLifecycle, Outcome, StopReason, NextAction, evidence digests, and correlation identifiers (RepairRunID, QAAttemptID, OperationRunID, OperationalAttemptID, FencingGeneration) at the durable boundary, and boundRepairText redacts bearer/token/path markers before diagnostic strings reach public surfaces. The closed RunLifecycle and Outcome enums, NextAction guidance, and digest-bound evidence lists satisfy OBS-TASK-001 and OBS-DIAG-001. However, the in-flight RepairProgress callback (target/internal/sprint/qa_repair.go:98-103) carries no correlation identifiers, dozens of validator and helper paths return plain fmt.Errorf/errors.New without stable QAError categories (target/internal/sprint/qa_repair.go:204, 896-1185, 1413, 1477-2122, 2140 and target/internal/sprint/qa_repair_state.go:430-524), the recovery path's degraded branches set cleanupComplete=false and journal.State=uncertain without emitting a structured operational signal at the failure site (target/internal/sprint/qa_repair.go:717-748, 766-772), and the CLI emits unstructured stderr progress lines (target/internal/app/sprint_commands.go:1014-1022) rather than structured log fields.",
+            "findings": [
+              {
+                "id": "repair-progress-correlator",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "RepairProgress callback carries no correlation identifiers",
+                "detail": "The RepairProgress struct emitted via the RepairRunRequest.Progress callback (target/internal/sprint/qa_repair.go:98-103) only contains Phase, Cycle, Gate, and Message. It omits RepairRunID, QAAttemptID, OperationRunID, OperationalAttemptID, and FencingGeneration that the durable RepairState/RepairResult records already carry. Downstream observers (the CLI text renderer at target/internal/app/sprint_commands.go:1014-1022, SSE subscribers, durable event journals) cannot unambiguously correlate a phase=Applying cycle=1 callback event to a specific repair run or attempt when several concurrent repairs or replays are in flight, so OBS-CORR-001 is violated at the in-flight boundary even though it is satisfied at the durable boundary.",
+                "action": "Embed the correlation identifiers (RepairRunID, QAAttemptID, OperationRunID, OperationalAttemptID, FencingGeneration) into RepairProgress so observability consumers can group and deduplicate repair events by run. Alternatively, expose a typed progress identity wrapper (e.g., RepairProgressEnvelope) that carries the existing correlation IDs alongside the current phase/cycle/gate fields.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 98,
+                    "endLine": 103
+                  }
+                ]
+              },
+              {
+                "id": "repair-plain-error-codes",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Validator and helper returns use plain fmt.Errorf/errors.New instead of stable QAError categories",
+                "detail": "The repair domain emits QAError with stable categories at the user-facing use-case boundaries (PrepareRepair, ConfirmRepair, RunRepair, RecoverRepair, finishBlockedRepair, finishEscalatedRepair). However, the supporting validator and helper paths return plain Go errors that propagate through errors.Join without QAError codes: ValidateRepairPacket / Confirmation / Check / Budgets / ApplyJournal (target/internal/sprint/qa_repair.go:896-1185 and target/internal/sprint/qa_repair_state.go:430-524, ~28 fmt.Errorf sites), repairWriterFence at target/internal/sprint/qa_repair.go:204 and target/internal/sprint/qa_repair.go:1413 (`errors.New(\"writer token does not own this repair operation\")`), linkCountForRepair at target/internal/sprint/qa_repair.go:2140, and the apply / proposal helpers around target/internal/sprint/qa_repair.go:1477-2122. These are the paths that fire during admission rejections, packet digest mismatches, scope expansions, and apply file failures, so operators and dashboards cannot key on stable machine codes for the failure categories OBS-ALERT-001 expects and OBS-CORE-001 demands.",
+                "action": "Wrap each untyped validator and helper return through NewQAError with a stable category (QAErrorConflict, QAErrorInvalidState, QAErrorPermissionDenied, QAErrorBudgetExhausted, QAErrorStaleInput, QAErrorCleanupUncertain) before it can propagate to a use-case boundary, while preserving the wrapped %w error for debugging. Document the chosen category-to-failure mapping alongside the contract.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 204,
+                    "endLine": 204
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 896,
+                    "endLine": 1185
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1413,
+                    "endLine": 1413
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1477,
+                    "endLine": 2122
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 2140,
+                    "endLine": 2140
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 430,
+                    "endLine": 524
+                  }
+                ]
+              },
+              {
+                "id": "repair-recovery-degraded-no-signal",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Recovery compensation failures record durable state but do not emit a structured operational signal at the failure site",
+                "detail": "Inside RecoverRepair (target/internal/sprint/qa_repair.go:717-748 and 766-772) degraded branches set cleanupComplete = false and journal.State = \"uncertain\" and continue the loop. These durable record updates are the only signal the operator receives; no structured log/event is emitted at the moment of failure with a stable code, correlation identifier, or component name. The new repairs state does expose cleanupComplete in RepairStatusResult, and OBS-DIAG-001 is satisfied on read, but OBS-CORE-001 requires the failure moment itself to surface in at least one immediate channel.",
+                "action": "Each degraded branch in the recovery loop should emit a structured operational signal (use the platform logger if available; otherwise add a typed channel/event emitted alongside durable publication) carrying a stable code such as repair_recovery_compensation_failed, a component=\"sprint.repair\" tag, and the correlation identifiers RepairRunID, Cycle, and Path so live observers see the degradation without waiting for a state reload.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 717,
+                    "endLine": 748
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 766,
+                    "endLine": 772
+                  }
+                ]
+              },
+              {
+                "id": "repair-cli-stderr-progress",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "CLI repair progress uses unstructured stderr rendering instead of structured log fields",
+                "detail": "In runSprintRepairStart (target/internal/app/sprint_commands.go:1014-1022), each OperationEvent with PhaseState != \"\" is written as `fmt.Fprintf(deps.stderr, \"[repair] phase=%s cycle=%d: %s\\n\", ...)`. This matches the established QA/smoke patterns in the same file and config.RedactValue(\"repair.progress\", event.Message) is applied, so OBS-PII-001 remains satisfied. However, the line carries no severity, no stable code, no correlation identifier (only an OperationEvent from app/durable_operations), and is not parseable by log scraping. OBS-CORE-001 calls for structured operational signals and OBS-DEBUG-001 warns against unstructured output contaminating machine-readable channels.",
+                "action": "Optional improvement: route the same data through the platform structured logger with explicit fields (level, component=\"sprint.repair\", code=\"repair.progress\", correlation_id=OperationRunID, repair_run_id, cycle, phase) and keep the human-readable stderr line as a debug-mode projection. This preserves the existing scripts while giving monitoring and alerting the structured signal the contract expects.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 1014,
+                    "endLine": 1022
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-performance",
+          "status": "failed",
+          "updatedAt": "2026-08-27T13:28:03.359732735Z"
+        },
+        {
+          "coverageId": "contract-persistence-and-migrations",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:21:56.537315351Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-persistence-and-migrations",
+            "applicability": "direct",
+            "summary": "Sprint 38 repair persistence extends the existing QA verification store inside `internal/sprint` with one focused, strict, versioned, owner-fenced, immutable-detail-plus-current-pointer layout that directly satisfies PERSIST-SCHEMA-001, PERSIST-ATOMIC-001, PERSIST-INTEGRITY-001, PERSIST-READ-001, PERSIST-DERIVED-001, PERSIST-FIXTURE-001, and PERSIST-RECOVERY-001. `internal/sprint/qa_repair_state.go` owns the entire repair persistence layer (paths, schema-versioned readers, writer-fenced publication, snapshot/rollback, retention) and reuses `QAStore` rather than introducing a parallel store, preserving single ownership. Every record (`RepairIssuePacket`, `RepairConfirmation`, `RepairState`, `RepairResult`, `RepairReverification`, `RepairApplyJournal`, `ManualRepairProof`, bounded `RepairFlowSummary`) carries `SchemaVersion == QARepairSchemaVersion`, is decoded with `readStrictVersion` and revalidated by type-specific validators that enforce digest-after-zero, fingerprint scope equality, gate order, sorted unique production paths, and outcome-specific invariants. Path containment, symlink/hard-link rejection, and protected-class denial are enforced in code (`ClassifyRepairPath`, `normalizeRepairPath`, `ensureRepairRegularPath`, `linkCountForRepair`) rather than by convention. Atomic boundaries are explicit: pointer publication snapshots the repair-state and flow-state files via `captureQACanonicalFiles` before write and restores them via `restoreQACanonicalFiles` on failure, while per-file production apply uses `privateAtomicWrite` and explicitly documents that multi-file replacement is not atomic on a normal filesystem; apply failure iterates completed operations in reverse to restore private preimages from the apply journal, classifying the journal as `compensated` or `uncertain`. Writer fencing is enforced before every rename through a `BeforeRename` hook on `writeRepairRecord`/`writeRepairBytes` that invokes `checkWriter`, and `PublishRepairConfirmation` additionally asserts the confirmation's `OperationRunID`, `OperationalAttemptID`, and `FencingGeneration` match the durable token. Reads are bounded through `validateRepairScopeIDs`, `readStrictVersion`, `verifyReference`, and a fixed-iteration `repairResultEvidence` walker that returns references only for files that exist. Two actionable deviations remain: the flow-state schema version bump and v2→v3 migration are not explicitly named, migration-tested, or visible as a schema constant; and the automatic-mode proof check in `PrepareRepair` must remain ahead of any pointer publication, which is true today but lacks a regression test that a future refactor could break.",
+            "findings": [
+              {
+                "id": "persistence-sprint38-flow-migration",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Flow-state schema migration for the new repair summary is implied but not explicitly versioned or tested",
+                "detail": "The bounded `RepairFlowSummary` is published into `flow-state.json` via `SaveFlowState` together with the rest of the flow projection. The plan and execute summary describe a v2→v3 migration with v2 reads for backward compatibility, but the visible patch does not expose an explicit flow-state schema version constant for the repair summary, an explicit migration entry point, or a test that loads a fixture legacy v2 flow state from disk, migrates it, and round-trips the bounded repair summary. `TestRepairApplyJournalRetainsDigestBoundPrivatePreimages` constructs a new flow state in code and never exercises on-disk legacy flow state. Without an explicit schema version constant and migration test, future migrations must be re-derived and may silently drop the bounded repair summary.",
+                "action": "Add an explicit flow-state schema version constant for the repair summary, a migration helper that upgrades a v2 flow state to v3, and a test that loads a fixture v2 flow state from disk, migrates it, asserts the new repair summary field is absent or carries expected values, and rejects unknown versions.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 389,
+                    "endLine": 426
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 185,
+                    "endLine": 233
+                  },
+                  {
+                    "path": "target/.ultraplan/changes.patch",
+                    "startLine": 3055,
+                    "endLine": 3080
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md",
+                    "startLine": 1,
+                    "endLine": 53
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/plan.md",
+                    "startLine": 1,
+                    "endLine": 274
+                  }
+                ]
+              },
+              {
+                "id": "persistence-sprint38-prepare-automatic",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "`repair prepare --automatic` has no regression test that proves no repair artifact is published when automatic proof is missing",
+                "detail": "`PrepareRepair` acquires the verification mutation lease and reloads the QA state before calling `PublishRepairPacket`, which writes the immutable packet and the first `repair-state.json` pointer through `publishRepairState`. The automatic proof check happens before any pointer publication, so the current implementation is correct, but no test exercises the rejected-prepare path against a real filesystem to assert that `LoadRepairState` returns `fs.ErrNotExist` and that no `verification/attempts/\u003cattempt\u003e/repairs/\u003crun\u003e/issue-packet.json` was written. A future refactor that reorders the proof check after packet publication would silently produce a partial `repair-state.json` for an inadmissible automatic repair.",
+                "action": "Add a test that calls `PrepareRepair` with `RepairModeAutomatic` against a real filesystem and asserts that `LoadRepairState` returns `fs.ErrNotExist`, that no `verification/attempts/.../repairs/.../issue-packet.json` was written, and that the bounded flow summary's repair field remains absent.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 238,
+                    "endLine": 330
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 403,
+                    "endLine": 425
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 560,
+                    "endLine": 613
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/plan.md",
+                    "startLine": 1,
+                    "endLine": 274
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-security",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:23:50.605013584Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-security",
+            "applicability": "direct",
+            "summary": "Sprint 38 repair service implements strong layered security controls: writer-token fencing on every state rename, multi-class path classification that rejects governed, test, repository-control, configuration, verification-evidence, workspace-state, and non-production paths from the mutable production scope, hard-link and symlink rejection via Lstat walks, shell/terminal executable denial in repair checks, strict schema-versioned decoding of immutable records, binary content rejection in proposals, and digest-bound preimage retention with mode 0o600 enforcement. Confirmation authority binds packet digest, target identity, mode, budgets, governed-input fingerprint, policy fingerprint, durable run identity, operational attempt, fencing generation, confirmer, and timestamp; each mutation is rejected. The durable-operation layer separates acceptance from dispatch so a confirmation-publication failure cannot start a runtime. CLI flags force explicit `--yes` and a non-empty `--confirmer` for start and resume, while `prepare` correctly rejects `--yes`. Tests cover packet authority mutations, confirmation changes, manual-proof component invalidations, hard-link attempts, binary/budget/protected-path violations, hostile-text redaction, and ordering of accept→confirm→dispatch→finish without runtime on confirmation failure. Five findings remain: a fingerprint-staleness gap at confirm time that can accept a packet from a superseded QA attempt, a deny-list secret-redaction implementation that misses unmarked secrets, an environment-forwarding pass that can carry host secrets into subprocesses, a fallback writer-fence closure that relies on value equality, and brittle reflection-based Nlink access for hard-link detection. None of these are immediately exploitable but they are real contract gaps the sprint should close before dogfood.",
+            "findings": [
+              {
+                "id": "F-01",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "ConfirmRepair does not revalidate packet fingerprints against current sprint authority",
+                "detail": "`ConfirmRepair` (qa_repair.go:311-379) and `RunRepair` (qa_repair.go:381-649) consume the packet prepared earlier but only recheck target identity and `flow.Review`/`flow.Smoke`/`flow.QA` freshness/verdict. The packet's `GovernedInputFingerprint`, `ImplementationFingerprint`, `ReviewFingerprint`, `SmokeFingerprint`, and `PolicyFingerprint` are not compared against the current `flow` state or current attempt identity. If a new QA attempt supersedes the one used at prepare time, the packet still carries the previous attempt's fingerprints and the confirmation digest is recorded against the stale governance. `PrepareRepair` does compare `priorRepair.QAAttemptID == qaState.CurrentAttemptID` for the idempotent reuse path (qa_repair.go:221) but confirm and run do not enforce the same identity binding, so a manual start can proceed against superseded governance. This violates AC-2's requirement that any changed governed input rejects before mutation.",
+                "action": "Before publishing confirmation, compare `packet.GovernedInputFingerprint`, `packet.ImplementationFingerprint`, `packet.ReviewFingerprint`, `packet.SmokeFingerprint`, and `packet.PolicyFingerprint` (and the QA attempt ID when available on `QAFlowSummary`) against the corresponding fingerprints of the current `flow.Review`, `flow.Smoke`, `flow.QA`. Reject with `QAErrorStaleInput` and a `stale_packet` or `governed_input_changed` category when any fingerprint drifts, and require a fresh prepare.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 311,
+                    "endLine": 379
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 196,
+                    "endLine": 198
+                  }
+                ]
+              },
+              {
+                "id": "F-02",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "boundRepairText uses a hardcoded deny list that can miss new secret formats and unmarked values",
+                "detail": "`boundRepairText` (qa_repair.go:1855-1872) decides whether to redact a diagnostic by substring-matching against `bearer `, `token=`, `password=`, `api_key`, `apikey`, `sk-`, `ghp_`, `github_pat_`, `xoxb-`, `/home/`, and `/tmp/`. Any secret or sensitive path that does not contain one of these substrings — for example PEM markers (`-----BEGIN`), SSH private keys, cookie headers without `token=`, or secrets stored under other paths (`/etc/secrets/`, `/var/lib/`) — passes through to public DTOs and is rendered to stdout, JSON, TUI, and browser responses. The deny-list approach is fundamentally fail-open for unknown patterns, which contradicts SEC-SECRETS-001's expectation that secret-bearing values are redacted deterministically.",
+                "action": "Replace the substring deny list with a structured secret-bearing type wrapper or an allow-list for the values that are safe to render. At minimum, extend the redaction set to common PEM/SSH/JWT markers and pass all diagnostic values through a single sanitizer that records exactly what it redacted and why. Add a hostile-fixture test that exercises PEM and JWT markers to lock the behavior in.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1855,
+                    "endLine": 1873
+                  }
+                ]
+              },
+              {
+                "id": "F-03",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Reverification passes allowlisted environment names but not their values into subprocesses",
+                "detail": "In `runRepairReverification` (qa_repair.go:1604-1608) the subprocess environment is built by calling `os.LookupEnv(name)` for each `check.EnvironmentNames` entry. The names are frozen from the QA evidence plan, but the values come from the host process and may contain API keys, OAuth tokens, signing secrets, or credentials that happen to match the allowlisted name (for example `OPENAI_TOKEN`, `GITHUB_TOKEN`, or any `*_KEY` that a frozen plan exposes). The contract requires that secrets are not exposed to external systems without explicit allowlisting, and the fix should treat both names and values through a controlled projection rather than passing raw host values through.",
+                "action": "Project each allowlisted environment variable through a secret-bearing wrapper that records redacted values, and explicitly reject `*_TOKEN`, `*_KEY`, `*_SECRET`, `*_PASSWORD`, `AWS_*`, `GCP_*`, and `AZURE_*` patterns unless a future requirement specifically authorizes them. Document which allowlisted names are safe to forward and apply the same sanitizer to the bounded `RepairGateResult.Diagnostic` and any `RepairApplyOperation` evidence path that might inherit host environment.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1600,
+                    "endLine": 1612
+                  }
+                ]
+              },
+              {
+                "id": "F-04",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Writer-fence fallback uses ad-hoc value equality when service is constructed without WithQAWriterFence",
+                "detail": "`PrepareRepair` (qa_repair.go:199-208) and `repairWriterFence` (qa_repair.go:1407-1417) fall back to a closure that only compares the supplied `QAWriterToken` for value equality when `s.qaWriterFence` is nil. The service-composition contract documents `WithQAWriterFence` as the production wiring, but the fallback means a service that is constructed without that builder will accept any caller that knows the token value, with no fencing generation, no PID, and no lease check. This violates SEC-AUTHZ-001's expectation that authorization is checked at the object/action boundary by a verified mechanism rather than a value comparison.",
+                "action": "Make `qaWriterFence` required in `NewService` (or `withWriterFence` defaults to a fail-closed check that requires a non-zero fencing generation and a matching operational attempt). Add a constructor unit test that fails the build when the service is built without an explicit writer fence and document the requirement in the Sprint 38 architecture reasoning.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 199,
+                    "endLine": 208
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 1407,
+                    "endLine": 1417
+                  }
+                ]
+              },
+              {
+                "id": "F-05",
+                "severity": "low",
+                "applicability": "direct",
+                "title": "Hard-link detection uses reflection to read Nlink from fs.FileInfo.Sys()",
+                "detail": "`linkCountForRepair` (qa_repair.go:2129-2140) reaches into `fs.FileInfo.Sys()` through reflection to read the `Nlink` field. Any future Go runtime change that renames the field, wraps the value in an additional struct, or alters pointer indirection silently returns an error which `ensureRepairRegularPath` (qa_repair.go:2098-2127) treats as a hard-linked file rejection. The behavior is fail-closed today but the brittleness is undocumented and there is no test that exercises a non-unix platform, so a future refactor could regress hard-link rejection without being detected. SEC-FILES-001 expects defense-in-depth and platform-appropriate checks rather than reflective access.",
+                "action": "Replace the reflective access with a build-tagged helper that calls into `syscall.Stat_t.Nlink` directly on Linux/Darwin and explicitly fails closed on Windows with a typed error. Add a table-driven test that covers the `info.Mode().IsRegular()` path and a documented unsupported-platform marker. Record the contract in the technical handbook so future contributors do not replace it with a permissive default.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 2129,
+                    "endLine": 2141
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 2098,
+                    "endLine": 2127
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-testing",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:20:30.240738657Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-testing",
+            "applicability": "direct",
+            "summary": "Sprint 38 adds comprehensive unit-table coverage for repair domain logic (packet determinism, path classification, lower-only budgets, outcome derivation, progress, confirmation mutations, manual-proof qualification, recoverable phases) and a focused set of integration checks for hard-link rejection, apply preimage scope, journal preimage retention, gate ordering with smoke failure, the operation hub accept/confirm/dispatch ordering, HTTP route contracts, no-JavaScript HTML, and the TUI view/guard surface. However, the change leaves the most critical orchestration path (PrepareRepair -\u003e ConfirmRepair -\u003e RunRepair -\u003e terminal result publication) without an integration test against a fake runtime, ships no migration coverage for the documented flow-state v3 schema migration, and provides no race tests for the new accept/confirm/dispatch and writer-fence boundaries. Real-runtime dogfood is explicitly deferred behind the Sprint 37 evidence gate. The new qa_repair_test.go is 468 lines for a 2141-line qa_repair.go, so several production-mutation paths rely on pure-function tables alone.",
+            "findings": [
+              {
+                "id": "testing-sprint38-no-runnerepair-integration",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "No integration test exercises the full RunRepair orchestration path",
+                "detail": "TestRepairApplyJournalRetainsDigestBoundPrivatePreimages and TestRepairReverificationRunsRepairedTargetSmokeWithoutSecondReview cover parts of the cycle (journal staging, gate ordering), but no test in qa_repair_test.go or the modified operation tests invokes PrepareRepair, ConfirmRepair, or RunRepair end to end with a fake runtime. The mutation chain (packet freezing, confirmation publication, isolated proposal derivation, apply with compensation, reverification gating, terminalization with lease release, immutable result publication, manual-proof qualification) is the contract's highest-severity boundary; only isolated units of it are exercised. TEST-INT-001 requires integration coverage for composition changes, and TEST-E2E-001 requires scenario coverage for critical journeys. With only unit-table tests for pure functions, a regression in the orchestration sequence could ship undetected.",
+                "action": "Add at least one fake-runtime integration test that runs PrepareRepair -\u003e ConfirmRepair -\u003e RunRepair against a temporary sprint directory and asserts: packet fingerprint equality, confirmation digest covers every required input, isolated workspace is removed, proposal.patch is published, apply-journal retains private0600 preimages, scope record equals intended diff, terminalization publishes result under writer fence, ManualRepairProof qualifies. The existing repairFailingRunner seam and NewService(...).WithProcessRunner seam already provide the required hooks.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 1,
+                    "endLine": 468
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 157,
+                    "endLine": 381
+                  }
+                ]
+              },
+              {
+                "id": "testing-sprint38-no-flow-migration-coverage",
+                "severity": "high",
+                "applicability": "direct",
+                "title": "Flow-state v3 schema migration has no forward, downgrade, or compatibility test",
+                "detail": "execute.md and plan.md both claim a database-backed v2 flow migration and bounded repair summary preservation were implemented, yet no test in the visible diff exercises forward migration from a v2 flow-state.json fixture, downgrade back to v2, or round-trip compatibility for the schema v3 bump. TEST-MIGRATION-001 is a High-severity requirement: migrations must have upgrade, downgrade, or compatibility verification that proves the migration behaves correctly and does not corrupt existing state.",
+                "action": "Add a fixture-backed migration test that loads a representative v2 flow-state.json (without the Repair summary), runs SaveFlowState / LoadFlowState, and asserts (a) the repaired summary initializes absent, (b) v3 load is accepted, (c) v2-saved state is still readable, and (d) review/smoke/QA summaries are preserved across the migration. Place it alongside qa_state_test.go per the codebase convention.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 1,
+                    "endLine": 634
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md",
+                    "startLine": 1,
+                    "endLine": 53
+                  }
+                ]
+              },
+              {
+                "id": "testing-sprint38-no-race-fence-tests",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Accept/confirm/dispatch and writer-fence boundaries have no race coverage",
+                "detail": "TestRepairStartConfirmsAfterAcceptanceAndBeforeDispatch and TestRepairConfirmationFailureStartsNoDispatchOrRuntime verify happy-path and single failure ordering, but they do not exercise concurrent reproduction requests, cancellation racing dispatch, target drift races, stale fences, or late completion. TEST-DET-001 explicitly requires race/concurrency verification when parallelism is introduced, and the requirements demand this matrix at AC-9. The execute.md acknowledges the full restart and terminal-race matrix is open. With no race coverage in qa_repair_test.go or operations_test.go for the new acceptance/dispatch split, regressions such as confirmation duplicates winning terminal arbitration will not be caught by `go test -race ./...`.",
+                "action": "Add race/integration tests that (a) submit duplicate confirmation dispatches concurrently and assert exactly one terminal result wins, (b) cancel during the apply boundary and assert terminalizing state blocks a competing mutation, (c) swap the writer fence generation mid-run and assert the second writer is rejected. Use the existing orderedRepairOperations seam and the runcontrol owner seam.",
+                "citations": [
+                  {
+                    "path": "target/internal/web/operations_test.go",
+                    "startLine": 204,
+                    "endLine": 246
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 174,
+                    "endLine": 200
+                  }
+                ]
+              },
+              {
+                "id": "testing-sprint38-hard-link-test-environmental-skip",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "Hard-link rejection test silently skips when the host filesystem disallows hard links",
+                "detail": "TestRepairApplyRejectsHardLinks calls t.Skipf when os.Link returns an error. While skipping is correct under restricted filesystems, the test passes vacuously in those environments and never proves hard-link rejection actually fires. TEST-DET-001 prefers deterministic signals. Sprint 39 dogfood and CI environments that run on tmpfs or restricted containers will silently lose this coverage.",
+                "action": "Either run the hard-link test in a guaranteed-capable scratch directory (e.g., explicitly create the test in a path under t.TempDir on a filesystem known to support hard links), or convert the assertion into a contract test that verifies the helper rejects pre-counted files regardless of host support. At minimum, log when the skip occurred so CI dashboards expose the missing coverage.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair_test.go",
+                    "startLine": 168,
+                    "endLine": 183
+                  }
+                ]
+              },
+              {
+                "id": "testing-sprint38-no-cli-parse-repair-test",
+                "severity": "low",
+                "applicability": "partial",
+                "title": "parseSprintRepairArgs has no dedicated parsing or reject tests in the changed diff",
+                "detail": "The diff adds the prepare/start/resume/cancel/cycles/status/packet/result/recover parsing rules in parseSprintRepairArgs and the manual start expects --run, --confirmer, --yes. The changed test files do not include a dedicated parse test exercising the action/flag interactions (e.g., prepare rejecting --yes, start rejecting --automatic without --confirmer, cycles rejecting --issue). TEST-CONTRACT-001 requires compatibility coverage for public CLI surfaces and stable exit codes for each action.",
+                "action": "Add a parseSprintRepairArgs table test covering each action's required flags, the auto/manual mode interaction, --max-cycles lowering, and the rejection of unsupported flags. Pair with a text/JSON output assertion for at least the verified, blocked, escalated, and stalled terminal outcomes to lock exit-code mapping.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 701,
+                    "endLine": 779
+                  }
+                ]
+              },
+              {
+                "id": "testing-sprint38-real-runtime-dogfood-justified-deferral",
+                "severity": "info",
+                "applicability": "partial",
+                "title": "Real-runtime/manual dogfood is intentionally deferred behind the Sprint 37 evidence gate",
+                "detail": "TEST-SMOKE-002 requires real-dependency smoke coverage for critical runtime-backed paths. The manual production repair that would satisfy this gate is explicitly blocked because Sprint 37 has no current evidence-producing QA attempt, no admissible repair issue, and no current containing smoke. execute.md, plan.md Task14, and the execution handoff all record this deferral with user approval. The deferred path is correct in scope (Sprint 38 manual proof), but release should not proceed without the deferred gate being lifted.",
+                "action": "Track the deferred manual four-interface dogfood as a release blocker. Document the exact run IDs, fingerprints, and runtimes that will satisfy AC-6/AC-11 before automatic mode is admitted.",
+                "citations": [
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md",
+                    "startLine": 1,
+                    "endLine": 53
+                  },
+                  {
+                    "path": "projects/ultraplan-go/sprints/38-bounded-repair/.execution-handoff.json",
+                    "startLine": 1,
+                    "endLine": 322
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "coverageId": "contract-workflows",
+          "status": "completed",
+          "updatedAt": "2026-08-27T13:20:27.763005017Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-workflows",
+            "applicability": "direct",
+            "summary": "The Sprint 38 repair implementation conforms to every Workflows contract requirement. WF-SCOPE-001: the repair protocol is real multi-step orchestration spanning admission, isolated proposal generation, product-owned apply, progressive reverification, cleanup, and terminal outcome derivation across durable task state, retries, cancellation, compensation, and resumability. WF-BOUNDARY-001: the orchestration boundary stays inside the existing app-owned dispatch path; CLI/TUI/web callers invoke `internal/app/sprint_usecases.go` `RepairUseCases` (status projection, preparation admission) and the shared durable operation runner for state-mutating work, and `sprint.NewService` reaches only into read-only projection plus the runtime-free `RequireAutomaticRepairProof` check, so engine internals and engine-specific types do not leak across adapters. WF-STATE-001: terminal states are explicit and inspectable through six closed semantic outcomes (`verified`, `verified_with_findings`, `failed`, `blocked`, `escalated`, `stalled`) on `RepairOutcome`, a separate closed operational lifecycle kept on `QARunCorrelation.Lifecycle`/`QARunCorrelation.TerminalResult`, immutable create-or-compare publication of `RepairResult`, and durable persistence under `verification/repair-state.json` plus `flow-state.json`. WF-RETRY-001: retry, cancellation, and compensation are explicit—automatic mode loops the same shared cycle once behind persisted lower-only budgets, manual mode never retries, cancellation routes through the canonical durable run-control cancellation path, and cleanup uses a separate bounded cleanup deadline. WF-IDEMPOTENCY-001: each mutable transition is dedupe-protected by the confirmation digest and durable run-control fence; identical preparation reuses the same packet and digest, the `terminalizing` barrier stops duplicate mutation, and every apply writes a digest-bound private preimage. WF-COMP-001: partial external side effects on the production checkout are compensated explicitly through the apply journal (`RepairApplyJournal` with `planned`/`applying`/`applied`/`compensated`/`uncertain` states), in-process rollback inside `applyRepairFilesJournaled`, and `RecoverRepair` which compensates from retained private preimages or records `cleanup_uncertain` and `escalated` when it cannot prove a match. WF-VERSION-001: explicit schema versioning on `QARepairSchemaVersion` with strict `readStrictVersion` decoding, packet and confirmation digests, the bounded `repairProposalPromptID`/`repairProposalPromptVersion`/`prompt_checksum` carried in every proposal request, and the manual proof's named protocol and runtime fingerprints, so any repair schema, prompt, policy, isolation, code, governed-input, or target identity change invalidates proof and blocks automatic admission. Confirmed files (logical manifest paths): `internal/sprint/qa_repair.go`, `internal/sprint/qa_repair_state.go`, `internal/sprint/qa_repair_test.go`, `internal/app/sprint_commands.go`, `internal/tui/qa_view_test.go`, `internal/web/operations_test.go`, `internal/web/qa_handlers_test.go`, plus the unchanged authority seams `internal/app/operation_runner.go`, `internal/app/sprint_usecases.go`, `internal/runcontrol` repository, and `internal/platform/process` isolation/process helpers.",
+            "findings": []
+          }
+        },
+        {
+          "coverageId": "handbook",
+          "status": "failed",
+          "updatedAt": "2026-08-27T13:28:03.305578579Z"
+        }
       ]
     },
     "lastComplete": {
       "verdict": "pass",
       "artifact": "projects/ultraplan-go/sprints/38-bounded-repair/review.md",
-      "artifactDigest": "f64d07e28e2ecbc2d1fdf142c714a05662119ebe3973d3753f8963b484976e75",
-      "inputFingerprint": "726073a2ef20c554e845a1a995aa4995cf889e2d34d9f2716c1ed372dfc247c0",
+      "artifactDigest": "058f1caef400aa21ccccfc574057869febf556cb8fb289e3bd8ca5c14ecda616",
+      "inputFingerprint": "cf3f60b35f9477b5b9f473814def0e9aa6cfaa1bcb2485ca5fb3b54a08aaa302",
       "completedAt": "2026-08-27T10:47:52Z",
       "coverage": [
         {
@@ -1147,23 +2304,757 @@
     }
   },
   "smoke": {
-    "status": "cancelled",
+    "status": "completed",
+    "verdict": "pass",
     "path": "projects/ultraplan-go/sprints/38-bounded-repair/smoke.md",
+    "lastRunAt": "2026-08-27T11:50:38.302907764Z",
+    "reviewFingerprint": "cf3f60b35f9477b5b9f473814def0e9aa6cfaa1bcb2485ca5fb3b54a08aaa302",
+    "smokeFingerprint": "26c86b4f0b00ef0c6ca268a701f094488e529f61be8fdf808a39224191d7c2de",
+    "runId": "run-lLWhgRMowA",
+    "authorRunId": "opencode-1",
+    "authorModel": "minimax-coding-plan/MiniMax-M3",
+    "authorChangedPaths": [
+      "src/cli.ts",
+      "src/protocol.ts",
+      "src/tests/sprint-38-bounded-repair.ts"
+    ],
+    "coverageMapping": {
+      "sprint": "38-bounded-repair",
+      "suites": [
+        "sprint-38"
+      ],
+      "complete": true,
+      "rationale": "agent-authored real-boundary suite builds the sprint-38 worktree binary and proves the boundaries deterministic Go tests cannot replace: the real repair CLI rejects unknown actions and enforces the manual-first contract (prepare requires --issue and rejects --yes/--run/--confirmer plus --max-cycles \u003e 1 for the one-cycle ceiling, start requires the explicit --run/--confirmer/--yes confirmation triplet and rejects edits to the frozen issue or limits, resume requires --run/--yes and rejects --confirmer/--issue/--max-cycles, cancel requires --run and rejects every other mutation flag), and prepare/start with --automatic are explicitly rejected at the CLI with the documented qualifying-manual-proof gate; bounded repair status is runtime-free on a fresh fixture (truthful missing/stale projection with explicit freshness reasons, bounded DTOs without patch/prompt/secret leakage, repeated reads remain byte-identical, no verification state, no flow-state.json mutation, and unchanged target Git identity); repair cancel for an unknown durable operation run ID fails closed with a typed validation-class error on stderr, no verification state, and unchanged target identity; CLI 'repair status --json' and the live browser agree on project, sprint, phase, fresh flag, and the bounded next action, the no-JavaScript HTML snapshot renders the canonical manual-first repair facts inertly, and the live /api/v1/.../repair/{packet,cycles,result} resources fail closed for the missing fixture without internal vocabulary; the bounded repair projection surfaces every documented qa.repair.* effective source with the manual_policy label for the one-cycle ceiling and the qa --dry-run effective-source projection proves the qa.repair.* fields are registered for lower-only enforcement; and Task 14's gated real-runtime manual four-interface proof remains preserved as deferred blocker evidence rather than claimed coverage. Packet normalization, confirmation authority, isolated proposal derivation, strict patch parsing, apply-journal compensation, sequential reverification, lower-only budgets, semantic outcome derivation, manual-proof qualification, and recovery gating remain proven deterministically in the product's own fault-injected suites",
+      "required_coverage": [
+        "AC-38-01-packet-admission-fail-closed",
+        "AC-38-02-confirmation-explicit-and-bound",
+        "AC-38-03-manual-one-mutation-only",
+        "AC-38-06-automatic-disabled-without-proof",
+        "AC-38-10-cli-json-parity",
+        "AC-38-04-scope-and-target-immutability",
+        "AC-38-08-closed-truthful-outcomes",
+        "AC-38-09-cancellation-cleanup-recovery",
+        "AC-38-07-automatic-bounded-work",
+        "AC-38-11-gated-real-runtime-manual-proof"
+      ],
+      "requirements": [
+        {
+          "id": "AC-38-01-packet-admission-fail-closed",
+          "mapped_tests": [
+            "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+          ]
+        },
+        {
+          "id": "AC-38-02-confirmation-explicit-and-bound",
+          "mapped_tests": [
+            "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+          ]
+        },
+        {
+          "id": "AC-38-03-manual-one-mutation-only",
+          "mapped_tests": [
+            "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+          ]
+        },
+        {
+          "id": "AC-38-06-automatic-disabled-without-proof",
+          "mapped_tests": [
+            "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+          ]
+        },
+        {
+          "id": "AC-38-10-cli-json-parity",
+          "mapped_tests": [
+            "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+            "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+            "sprint-38-live-repair-config-effective-sources-and-lower-only",
+            "sprint-38-live-repair-cross-surface-status-agreement",
+            "sprint-38-live-repair-status-stale-and-target-immutability"
+          ]
+        },
+        {
+          "id": "AC-38-04-scope-and-target-immutability",
+          "mapped_tests": [
+            "sprint-38-live-repair-status-stale-and-target-immutability"
+          ]
+        },
+        {
+          "id": "AC-38-08-closed-truthful-outcomes",
+          "mapped_tests": [
+            "sprint-38-live-repair-cross-surface-status-agreement",
+            "sprint-38-live-repair-status-stale-and-target-immutability"
+          ]
+        },
+        {
+          "id": "AC-38-09-cancellation-cleanup-recovery",
+          "mapped_tests": [
+            "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+            "sprint-38-live-repair-cross-surface-status-agreement"
+          ]
+        },
+        {
+          "id": "AC-38-07-automatic-bounded-work",
+          "mapped_tests": [
+            "sprint-38-live-repair-config-effective-sources-and-lower-only"
+          ]
+        },
+        {
+          "id": "AC-38-11-gated-real-runtime-manual-proof",
+          "mapped_tests": [
+            "sprint-38-gated-real-runtime-dogfood-blocker-evidence"
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "id": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+          "suite": "sprint-38",
+          "coverage": [
+            "AC-38-11-gated-real-runtime-manual-proof"
+          ]
+        },
+        {
+          "id": "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+          "suite": "sprint-38",
+          "coverage": [
+            "AC-38-09-cancellation-cleanup-recovery",
+            "AC-38-10-cli-json-parity"
+          ]
+        },
+        {
+          "id": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+          "suite": "sprint-38",
+          "coverage": [
+            "AC-38-01-packet-admission-fail-closed",
+            "AC-38-02-confirmation-explicit-and-bound",
+            "AC-38-03-manual-one-mutation-only",
+            "AC-38-06-automatic-disabled-without-proof",
+            "AC-38-10-cli-json-parity"
+          ]
+        },
+        {
+          "id": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+          "suite": "sprint-38",
+          "coverage": [
+            "AC-38-07-automatic-bounded-work",
+            "AC-38-10-cli-json-parity"
+          ]
+        },
+        {
+          "id": "sprint-38-live-repair-cross-surface-status-agreement",
+          "suite": "sprint-38",
+          "coverage": [
+            "AC-38-08-closed-truthful-outcomes",
+            "AC-38-10-cli-json-parity",
+            "AC-38-09-cancellation-cleanup-recovery"
+          ]
+        },
+        {
+          "id": "sprint-38-live-repair-status-stale-and-target-immutability",
+          "suite": "sprint-38",
+          "coverage": [
+            "AC-38-04-scope-and-target-immutability",
+            "AC-38-08-closed-truthful-outcomes",
+            "AC-38-10-cli-json-parity"
+          ]
+        }
+      ],
+      "matrix": [
+        {
+          "test_id": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+          "suite": "sprint-38",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "test_id": "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+          "suite": "sprint-38",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+          "suite": "sprint-38",
+          "cells": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+          "suite": "sprint-38",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            true,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-38-live-repair-cross-surface-status-agreement",
+          "suite": "sprint-38",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            true,
+            true,
+            false,
+            false
+          ]
+        },
+        {
+          "test_id": "sprint-38-live-repair-status-stale-and-target-immutability",
+          "suite": "sprint-38",
+          "cells": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    "evidenceId": "6f8ffd3ea258049c5240ad6edc7c3a3335f1ad6a965391409cbd99106fea5a79",
     "reviewOverride": false,
     "stale": false,
     "reconciliationRequired": false,
+    "artifactDigest": "26c86b4f0b00ef0c6ca268a701f094488e529f61be8fdf808a39224191d7c2de",
+    "inputFingerprint": "10d05cfb08167f39cfad627ece28b78b8682c8096a54b11ba0fc2f1d6185e187",
+    "issues": [
+      {
+        "id": "runtime-sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+        "status": "resolved",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-cli-contract-and-manual-only-enforcement.md",
+        "test_id": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+        "severity": "high",
+        "title": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+        "summary": "automatic prepare was not rejected: exit=8 sprint.qa: verification mutation already in progress for ultraplan-go/38-bounded-repair; pid 290621 has owned the attempt since 2026-08-27T11:40:54Z",
+        "theory": "The real-boundary smoke probe 'sprint-38-live-repair-cli-contract-and-manual-only-enforcement' did not observe the contracted behavior because: automatic prepare was not rejected: exit=8 sprint.qa: verification mutation already in progress for ultraplan-go/38-bounded-repair; pid 290621 has owned the attempt since 2026…",
+        "evidence": "Sprint 38 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint38-bin-m7TKnu/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 38 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan sprint ultraplan-go 38-bounded-repair repair --help: exit=0\nstdout:\nultraplan sprint \u003cproject\u003e \u003csprint\u003e repair\n\nUsage:\n  ultraplan…",
+        "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+      },
+      {
+        "id": "runtime-sprint-38-live-repair-status-stale-and-target-immutability",
+        "status": "resolved",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-status-stale-and-target-immutability.md",
+        "test_id": "sprint-38-live-repair-status-stale-and-target-immutability",
+        "severity": "high",
+        "title": "sprint-38-live-repair-status-stale-and-target-immutability",
+        "summary": "repeated repair status reads produced different bounded projections",
+        "theory": "The real-boundary smoke probe 'sprint-38-live-repair-status-stale-and-target-immutability' did not observe the contracted behavior because: repeated repair status reads produced different bounded projections. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the imple…",
+        "evidence": "Target git HEAD: [\"git\",\"rev-parse\",\"HEAD\"]\n\nTarget git HEAD output: exit=0\nstdout:\n6cd6ba83d1c32b531c93f851e987e2c2997ee3bf\nstderr:\n\n\nTarget git status: [\"git\",\"status\",\"--porcelain\"]\n\nTarget git status output: exit=0\nstdout:\n\nstderr:\n\n\nTarget index manifest: [\"git\",\"ls-files\",\"-s\"]\n\nTarget index manifest output: exi…",
+        "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+      },
+      {
+        "id": "runtime-sprint-38-live-repair-cross-surface-status-agreement",
+        "status": "resolved",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-cross-surface-status-agreement.md",
+        "test_id": "sprint-38-live-repair-cross-surface-status-agreement",
+        "severity": "high",
+        "title": "sprint-38-live-repair-cross-surface-status-agreement",
+        "summary": "repair resource /packet unexpectedly succeeded against a missing-state fixture",
+        "theory": "The real-boundary smoke probe 'sprint-38-live-repair-cross-surface-status-agreement' did not observe the contracted behavior because: repair resource /packet unexpectedly succeeded against a missing-state fixture. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the …",
+        "evidence": "Sprint 38 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint38-bin-4DTX8J/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 38 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan --workspace /tmp/ultraplan-sprint38-ws-wOhTyY sprint ultraplan-go 38-bounded-repair repair status --json: exit=0\nstdout:\n{\"operati…",
+        "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+      },
+      {
+        "id": "runtime-sprint-38-live-repair-config-effective-sources-and-lower-only",
+        "status": "resolved",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-config-effective-sources-and-lower-only.md",
+        "test_id": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+        "severity": "high",
+        "title": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+        "summary": "repair status missing effective source field 'qa.repair.max_cycles'",
+        "theory": "The real-boundary smoke probe 'sprint-38-live-repair-config-effective-sources-and-lower-only' did not observe the contracted behavior because: repair status missing effective source field 'qa.repair.max_cycles'. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the im…",
+        "evidence": "Sprint 38 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint38-bin-HeNjiv/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 38 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan --workspace /tmp/ultraplan-sprint38-ws-XX3frT sprint ultraplan-go 38-bounded-repair repair status --json: exit=0\nstdout:\n{\"operati…",
+        "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+      },
+      {
+        "id": "runtime-sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+        "status": "resolved",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-gated-real-runtime-dogfood-blocker-evidence.md",
+        "test_id": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+        "severity": "high",
+        "title": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+        "summary": "governed execute evidence lost the explicit non-pass dogfood disposition",
+        "theory": "The real-boundary smoke probe 'sprint-38-gated-real-runtime-dogfood-blocker-evidence' did not observe the contracted behavior because: governed execute evidence lost the explicit non-pass dogfood disposition. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the imple…",
+        "evidence": "sprint-38-gated-real-runtime-dogfood-blocker-evidence failure: Error: governed execute evidence lost the explicit non-pass dogfood disposition\nError: governed execute evidence lost the explicit non-pass dogfood disposition\n    at Object.testGatedRealRuntimeDogfoodBlockerEvidence (/home/antonioborgerees/coding/ultrapla…",
+        "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+      }
+    ],
+    "evidence": [
+      {
+        "kind": "run",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-lLWhgRMowA.json",
+        "digest": "6f8ffd3ea258049c5240ad6edc7c3a3335f1ad6a965391409cbd99106fea5a79"
+      },
+      {
+        "kind": "summary",
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-lLWhgRMowA-summary.md",
+        "digest": "6e9a94775a1d7daa6438c7a154da6b81dc5548c65cae5be8469c8c7f86838617"
+      }
+    ],
     "lastAttempt": {
-      "id": "smoke-1787827736358352841",
-      "status": "cancelled",
-      "startedAt": "2026-08-27T10:48:56.358352841Z",
-      "heartbeatAt": "2026-08-27T10:48:56.358352841Z",
-      "ownerPid": 277813,
-      "completedAt": "2026-08-27T10:49:03.175386974Z",
-      "category": "runtime",
-      "diagnostics": [
-        "smoke runtime: smoke authoring runtime failed: validation: cancellation: validation run was cancelled"
+      "id": "smoke-1787830874194256136",
+      "status": "completed",
+      "startedAt": "2026-08-27T11:41:14.194256136Z",
+      "heartbeatAt": "2026-08-27T11:41:14.194256136Z",
+      "ownerPid": 290621,
+      "completedAt": "2026-08-27T11:50:38.329611231Z"
+    },
+    "lastComplete": {
+      "verdict": "pass",
+      "artifact": "projects/ultraplan-go/sprints/38-bounded-repair/smoke.md",
+      "artifactDigest": "26c86b4f0b00ef0c6ca268a701f094488e529f61be8fdf808a39224191d7c2de",
+      "inputFingerprint": "10d05cfb08167f39cfad627ece28b78b8682c8096a54b11ba0fc2f1d6185e187",
+      "completedAt": "2026-08-27T11:50:38.302907764Z",
+      "runId": "run-lLWhgRMowA",
+      "authorRunId": "opencode-1",
+      "authorModel": "minimax-coding-plan/MiniMax-M3",
+      "authorChangedPaths": [
+        "src/cli.ts",
+        "src/protocol.ts",
+        "src/tests/sprint-38-bounded-repair.ts"
       ],
-      "nextAction": "Inspect the bounded runtime diagnostics and rerun authoring."
+      "coverageMapping": {
+        "sprint": "38-bounded-repair",
+        "suites": [
+          "sprint-38"
+        ],
+        "complete": true,
+        "rationale": "agent-authored real-boundary suite builds the sprint-38 worktree binary and proves the boundaries deterministic Go tests cannot replace: the real repair CLI rejects unknown actions and enforces the manual-first contract (prepare requires --issue and rejects --yes/--run/--confirmer plus --max-cycles \u003e 1 for the one-cycle ceiling, start requires the explicit --run/--confirmer/--yes confirmation triplet and rejects edits to the frozen issue or limits, resume requires --run/--yes and rejects --confirmer/--issue/--max-cycles, cancel requires --run and rejects every other mutation flag), and prepare/start with --automatic are explicitly rejected at the CLI with the documented qualifying-manual-proof gate; bounded repair status is runtime-free on a fresh fixture (truthful missing/stale projection with explicit freshness reasons, bounded DTOs without patch/prompt/secret leakage, repeated reads remain byte-identical, no verification state, no flow-state.json mutation, and unchanged target Git identity); repair cancel for an unknown durable operation run ID fails closed with a typed validation-class error on stderr, no verification state, and unchanged target identity; CLI 'repair status --json' and the live browser agree on project, sprint, phase, fresh flag, and the bounded next action, the no-JavaScript HTML snapshot renders the canonical manual-first repair facts inertly, and the live /api/v1/.../repair/{packet,cycles,result} resources fail closed for the missing fixture without internal vocabulary; the bounded repair projection surfaces every documented qa.repair.* effective source with the manual_policy label for the one-cycle ceiling and the qa --dry-run effective-source projection proves the qa.repair.* fields are registered for lower-only enforcement; and Task 14's gated real-runtime manual four-interface proof remains preserved as deferred blocker evidence rather than claimed coverage. Packet normalization, confirmation authority, isolated proposal derivation, strict patch parsing, apply-journal compensation, sequential reverification, lower-only budgets, semantic outcome derivation, manual-proof qualification, and recovery gating remain proven deterministically in the product's own fault-injected suites",
+        "required_coverage": [
+          "AC-38-01-packet-admission-fail-closed",
+          "AC-38-02-confirmation-explicit-and-bound",
+          "AC-38-03-manual-one-mutation-only",
+          "AC-38-06-automatic-disabled-without-proof",
+          "AC-38-10-cli-json-parity",
+          "AC-38-04-scope-and-target-immutability",
+          "AC-38-08-closed-truthful-outcomes",
+          "AC-38-09-cancellation-cleanup-recovery",
+          "AC-38-07-automatic-bounded-work",
+          "AC-38-11-gated-real-runtime-manual-proof"
+        ],
+        "requirements": [
+          {
+            "id": "AC-38-01-packet-admission-fail-closed",
+            "mapped_tests": [
+              "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+            ]
+          },
+          {
+            "id": "AC-38-02-confirmation-explicit-and-bound",
+            "mapped_tests": [
+              "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+            ]
+          },
+          {
+            "id": "AC-38-03-manual-one-mutation-only",
+            "mapped_tests": [
+              "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+            ]
+          },
+          {
+            "id": "AC-38-06-automatic-disabled-without-proof",
+            "mapped_tests": [
+              "sprint-38-live-repair-cli-contract-and-manual-only-enforcement"
+            ]
+          },
+          {
+            "id": "AC-38-10-cli-json-parity",
+            "mapped_tests": [
+              "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+              "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+              "sprint-38-live-repair-config-effective-sources-and-lower-only",
+              "sprint-38-live-repair-cross-surface-status-agreement",
+              "sprint-38-live-repair-status-stale-and-target-immutability"
+            ]
+          },
+          {
+            "id": "AC-38-04-scope-and-target-immutability",
+            "mapped_tests": [
+              "sprint-38-live-repair-status-stale-and-target-immutability"
+            ]
+          },
+          {
+            "id": "AC-38-08-closed-truthful-outcomes",
+            "mapped_tests": [
+              "sprint-38-live-repair-cross-surface-status-agreement",
+              "sprint-38-live-repair-status-stale-and-target-immutability"
+            ]
+          },
+          {
+            "id": "AC-38-09-cancellation-cleanup-recovery",
+            "mapped_tests": [
+              "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+              "sprint-38-live-repair-cross-surface-status-agreement"
+            ]
+          },
+          {
+            "id": "AC-38-07-automatic-bounded-work",
+            "mapped_tests": [
+              "sprint-38-live-repair-config-effective-sources-and-lower-only"
+            ]
+          },
+          {
+            "id": "AC-38-11-gated-real-runtime-manual-proof",
+            "mapped_tests": [
+              "sprint-38-gated-real-runtime-dogfood-blocker-evidence"
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "id": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+            "suite": "sprint-38",
+            "coverage": [
+              "AC-38-11-gated-real-runtime-manual-proof"
+            ]
+          },
+          {
+            "id": "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+            "suite": "sprint-38",
+            "coverage": [
+              "AC-38-09-cancellation-cleanup-recovery",
+              "AC-38-10-cli-json-parity"
+            ]
+          },
+          {
+            "id": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+            "suite": "sprint-38",
+            "coverage": [
+              "AC-38-01-packet-admission-fail-closed",
+              "AC-38-02-confirmation-explicit-and-bound",
+              "AC-38-03-manual-one-mutation-only",
+              "AC-38-06-automatic-disabled-without-proof",
+              "AC-38-10-cli-json-parity"
+            ]
+          },
+          {
+            "id": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+            "suite": "sprint-38",
+            "coverage": [
+              "AC-38-07-automatic-bounded-work",
+              "AC-38-10-cli-json-parity"
+            ]
+          },
+          {
+            "id": "sprint-38-live-repair-cross-surface-status-agreement",
+            "suite": "sprint-38",
+            "coverage": [
+              "AC-38-08-closed-truthful-outcomes",
+              "AC-38-10-cli-json-parity",
+              "AC-38-09-cancellation-cleanup-recovery"
+            ]
+          },
+          {
+            "id": "sprint-38-live-repair-status-stale-and-target-immutability",
+            "suite": "sprint-38",
+            "coverage": [
+              "AC-38-04-scope-and-target-immutability",
+              "AC-38-08-closed-truthful-outcomes",
+              "AC-38-10-cli-json-parity"
+            ]
+          }
+        ],
+        "matrix": [
+          {
+            "test_id": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+            "suite": "sprint-38",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true
+            ]
+          },
+          {
+            "test_id": "sprint-38-live-repair-cancel-fails-closed-for-unknown-run",
+            "suite": "sprint-38",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              true,
+              false,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+            "suite": "sprint-38",
+            "cells": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+            "suite": "sprint-38",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              true,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-38-live-repair-cross-surface-status-agreement",
+            "suite": "sprint-38",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              true,
+              true,
+              false,
+              false
+            ]
+          },
+          {
+            "test_id": "sprint-38-live-repair-status-stale-and-target-immutability",
+            "suite": "sprint-38",
+            "cells": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false
+            ]
+          }
+        ]
+      },
+      "evidenceId": "6f8ffd3ea258049c5240ad6edc7c3a3335f1ad6a965391409cbd99106fea5a79",
+      "evidence": [
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-gated-real-runtime-dogfood-blocker-evidence.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-cli-contract-and-manual-only-enforcement.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-config-effective-sources-and-lower-only.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-cross-surface-status-agreement.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-status-stale-and-target-immutability.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-lLWhgRMowA-summary.md"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-lLWhgRMowA.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/ultraplan-smoke.json"
+        },
+        {
+          "kind": "file",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/38-bounded-repair/review.md"
+        },
+        {
+          "kind": "fact",
+          "path": "harness",
+          "digest": "ultraplan-go-smoke:1.0"
+        },
+        {
+          "kind": "fact",
+          "path": "issue:runtime-sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+          "digest": "resolved"
+        },
+        {
+          "kind": "fact",
+          "path": "issue:runtime-sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+          "digest": "resolved"
+        },
+        {
+          "kind": "fact",
+          "path": "issue:runtime-sprint-38-live-repair-config-effective-sources-and-lower-only",
+          "digest": "resolved"
+        },
+        {
+          "kind": "fact",
+          "path": "issue:runtime-sprint-38-live-repair-cross-surface-status-agreement",
+          "digest": "resolved"
+        },
+        {
+          "kind": "fact",
+          "path": "issue:runtime-sprint-38-live-repair-status-stale-and-target-immutability",
+          "digest": "resolved"
+        },
+        {
+          "kind": "fact",
+          "path": "prerequisites"
+        },
+        {
+          "kind": "fact",
+          "path": "review-fingerprint",
+          "digest": "cf3f60b35f9477b5b9f473814def0e9aa6cfaa1bcb2485ca5fb3b54a08aaa302"
+        },
+        {
+          "kind": "fact",
+          "path": "review-verdict",
+          "digest": "pass"
+        },
+        {
+          "kind": "fact",
+          "path": "scope",
+          "digest": "suite:sprint-38"
+        },
+        {
+          "kind": "fact",
+          "path": "timeout",
+          "digest": "30m0s:manifest"
+        }
+      ],
+      "issues": [
+        {
+          "id": "runtime-sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+          "status": "resolved",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-cli-contract-and-manual-only-enforcement.md",
+          "test_id": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+          "severity": "high",
+          "title": "sprint-38-live-repair-cli-contract-and-manual-only-enforcement",
+          "summary": "automatic prepare was not rejected: exit=8 sprint.qa: verification mutation already in progress for ultraplan-go/38-bounded-repair; pid 290621 has owned the attempt since 2026-08-27T11:40:54Z",
+          "theory": "The real-boundary smoke probe 'sprint-38-live-repair-cli-contract-and-manual-only-enforcement' did not observe the contracted behavior because: automatic prepare was not rejected: exit=8 sprint.qa: verification mutation already in progress for ultraplan-go/38-bounded-repair; pid 290621 has owned the attempt since 2026…",
+          "evidence": "Sprint 38 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint38-bin-m7TKnu/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 38 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan sprint ultraplan-go 38-bounded-repair repair --help: exit=0\nstdout:\nultraplan sprint \u003cproject\u003e \u003csprint\u003e repair\n\nUsage:\n  ultraplan…",
+          "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+        },
+        {
+          "id": "runtime-sprint-38-live-repair-status-stale-and-target-immutability",
+          "status": "resolved",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-status-stale-and-target-immutability.md",
+          "test_id": "sprint-38-live-repair-status-stale-and-target-immutability",
+          "severity": "high",
+          "title": "sprint-38-live-repair-status-stale-and-target-immutability",
+          "summary": "repeated repair status reads produced different bounded projections",
+          "theory": "The real-boundary smoke probe 'sprint-38-live-repair-status-stale-and-target-immutability' did not observe the contracted behavior because: repeated repair status reads produced different bounded projections. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the imple…",
+          "evidence": "Target git HEAD: [\"git\",\"rev-parse\",\"HEAD\"]\n\nTarget git HEAD output: exit=0\nstdout:\n6cd6ba83d1c32b531c93f851e987e2c2997ee3bf\nstderr:\n\n\nTarget git status: [\"git\",\"status\",\"--porcelain\"]\n\nTarget git status output: exit=0\nstdout:\n\nstderr:\n\n\nTarget index manifest: [\"git\",\"ls-files\",\"-s\"]\n\nTarget index manifest output: exi…",
+          "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+        },
+        {
+          "id": "runtime-sprint-38-live-repair-cross-surface-status-agreement",
+          "status": "resolved",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-cross-surface-status-agreement.md",
+          "test_id": "sprint-38-live-repair-cross-surface-status-agreement",
+          "severity": "high",
+          "title": "sprint-38-live-repair-cross-surface-status-agreement",
+          "summary": "repair resource /packet unexpectedly succeeded against a missing-state fixture",
+          "theory": "The real-boundary smoke probe 'sprint-38-live-repair-cross-surface-status-agreement' did not observe the contracted behavior because: repair resource /packet unexpectedly succeeded against a missing-state fixture. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the …",
+          "evidence": "Sprint 38 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint38-bin-4DTX8J/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 38 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan --workspace /tmp/ultraplan-sprint38-ws-wOhTyY sprint ultraplan-go 38-bounded-repair repair status --json: exit=0\nstdout:\n{\"operati…",
+          "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+        },
+        {
+          "id": "runtime-sprint-38-live-repair-config-effective-sources-and-lower-only",
+          "status": "resolved",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-live-repair-config-effective-sources-and-lower-only.md",
+          "test_id": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+          "severity": "high",
+          "title": "sprint-38-live-repair-config-effective-sources-and-lower-only",
+          "summary": "repair status missing effective source field 'qa.repair.max_cycles'",
+          "theory": "The real-boundary smoke probe 'sprint-38-live-repair-config-effective-sources-and-lower-only' did not observe the contracted behavior because: repair status missing effective source field 'qa.repair.max_cycles'. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the im…",
+          "evidence": "Sprint 38 fresh target build: [\"go\",\"build\",\"-o\",\"/tmp/ultraplan-sprint38-bin-HeNjiv/ultraplan\",\"./cmd/ultraplan\"]\n\nSprint 38 fresh target build output: exit=0\nstdout:\n\nstderr:\n\n\nultraplan --workspace /tmp/ultraplan-sprint38-ws-XX3frT sprint ultraplan-go 38-bounded-repair repair status --json: exit=0\nstdout:\n{\"operati…",
+          "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+        },
+        {
+          "id": "runtime-sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+          "status": "resolved",
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-38-gated-real-runtime-dogfood-blocker-evidence.md",
+          "test_id": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+          "severity": "high",
+          "title": "sprint-38-gated-real-runtime-dogfood-blocker-evidence",
+          "summary": "governed execute evidence lost the explicit non-pass dogfood disposition",
+          "theory": "The real-boundary smoke probe 'sprint-38-gated-real-runtime-dogfood-blocker-evidence' did not observe the contracted behavior because: governed execute evidence lost the explicit non-pass dogfood disposition. The expected behavior is documented in the sprint-32 acceptance criteria, and the test would pass if the imple…",
+          "evidence": "sprint-38-gated-real-runtime-dogfood-blocker-evidence failure: Error: governed execute evidence lost the explicit non-pass dogfood disposition\nError: governed execute evidence lost the explicit non-pass dogfood disposition\n    at Object.testGatedRealRuntimeDogfoodBlockerEvidence (/home/antonioborgerees/coding/ultrapla…",
+          "action": "Inspect the captured OpenCode runtime logs and prompt output under the test artifact directory; confirm the model/provider/timeout and the governed workspace fingerprint match the runtime expectation, then rerun the affected test with --tests \u003cname\u003e to isolate the regression."
+        }
+      ]
     }
   }
 }
