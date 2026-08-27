@@ -106,10 +106,10 @@ The implementation and review must treat these current plans as governed impleme
 
 ### AC-5: reverification follows a fixed widening order
 
-- After mutation, the service runs these gates in order and records each result: exact reproducer; affected primary shard checks; linked theory confirmation and refutation conditions; affected boundary, neighboring, and parent-linked follow-up shard checks; containing approved QA suites including the mapped smoke suite; then a Conformance Review delta focused on the packet expectations and actual changed paths.
+- After mutation, the service runs these gates in order and records each result: exact reproducer; affected primary shard checks; linked theory confirmation and refutation conditions; affected boundary, neighboring, and parent-linked follow-up shard checks; containing approved QA suites; then containing smoke against the repaired target.
 - A gate does not run when a narrower required gate fails, blocks, becomes stale, or reports cleanup uncertainty. The result names the skipped gates and the action needed to continue.
 - The same immutable command descriptors, timeouts, output limits, environment allowlists, evidence rules, and target identity checks used for admission govern reverification. The repair runtime cannot choose replacement commands or reinterpret outcomes.
-- Conformance Review remains independent and authoritative for its own verdict. Repair may request and record a delta review, but cannot edit `review.md`, change a review verdict, or infer global success from the repaired reproducer.
+- Conformance Review runs once before repair admission and remains independent and authoritative for its verdict. Repair does not run a second Conformance Review or edit `review.md`.
 - Reverification must detect and report new failures, reopened issues, issue-set changes, severity changes, scope growth, target drift, and contradictions. It must not discard a finding because the original issue no longer reproduces.
 
 ### AC-6: automatic repair is disabled until manual proof is current
@@ -121,12 +121,12 @@ The implementation and review must treat these current plans as governed impleme
 
 ### AC-7: automatic work is demonstrably bounded
 
-- Automatic mode reuses the manual packet, confirmation, proposal, scope, apply, reverification, cleanup, persistence, and outcome code. It does not add a second mutation engine.
+- Automatic mode reuses the manual packet, confirmation, proposal, scope, apply, reverification, cleanup, persistence, and outcome code. Sprint 38 permits one automatic cycle. It does not add a second mutation engine or retry loop.
 - Product defaults and immutable maxima exist for total cycles, mutation cycles, reopenings of the original issue, unchanged issue-set cycles, changed files per cycle and run, changed bytes per cycle and run, generated patch bytes, wall-clock time, runtime attempts, model turns, command count, command time, output bytes, retained cycles, and cleanup time. Workspace and environment configuration may only lower these values.
-- Each cycle must show measurable progress by removing the exact failure, reducing the current admitted issue set, lowering the highest admitted severity, or producing a new bounded fact that changes the next permitted action. Rewording, reordered evidence, repeated patches, or a new model explanation is not progress.
-- Automatic repair stops before another mutation and ends `stalled` when the issue set and proof state remain unchanged for the configured stagnation limit, when an identical patch or target identity repeats, or when cycle or reopening limits are exhausted without verification.
+- The automatic cycle must show measurable progress by removing the exact failure, reducing the current admitted issue set, or lowering the highest admitted severity. Rewording, reordered evidence, or a model explanation is not progress.
+- Automatic repair ends `stalled` when its single cycle makes no measurable progress. Later sprints may add retries only with a separate governed requirement.
 - Automatic repair ends `escalated` before another mutation on any unconfirmed path or issue scope growth, new issue class, severity growth, design or product decision, contradictory acceptance criteria, target or governed-input drift, unsupported test change, uncertain evidence, unknown schema, or cleanup uncertainty.
-- Limits are checked before scheduling work and again before every proposal, apply, command, publication, retry, and resume. A restart or resume restores consumed counters and deadlines; it never resets them.
+- Limits are checked before scheduling work and again before every proposal, apply, command, publication, and resume. A restart or resume restores consumed counters and deadlines; it never resets them.
 
 ### AC-8: terminal outcomes are closed and truthful
 
