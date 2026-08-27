@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "38-bounded-repair",
+  "status": "completed",
+  "source_branch": "ultraplan/ultraplan-go/38-bounded-repair",
+  "source_commit": "32ffead1d5cbd9315c8580cfd774f6daad206ed9",
+  "target_branch": "main",
+  "target_before": "3686b481fe6253a9c09c6cb8100bac5f8163d616",
+  "merge_base": "5d54525bb6d8f0263723a17e6577f12354c2f569",
+  "merge_commit": "9946038b5e2f3b26c139a603465b0ca1623e6788",
+  "description": {
+    "title": "Merge bounded QA repair and run observability",
+    "summary": [
+      "Introduce a bounded post-execution QA repair loop in internal/sprint via new qa_repair.go, qa_repair_state.go, and qa_types.go, with test coverage in qa_repair_test.go, qa_state_test.go, and verify_test.go.",
+      "Add run observability through internal/app/durable_operations.go, operation_runner.go, and operations.go so the repair flow can inspect and react to operation status.",
+      "Extend the CLI surface in internal/app via sprint_commands.go, sprint_usecases.go, and sprint/smoke.go plus smoke_types.go to expose repair bounds and run observability.",
+      "Wire the bounded repair and run views into internal/web (qa_handlers.go, run_handlers.go, operation_handlers.go, operations.go, routes.go, templates/run_qa.html, templates/sprint.html) and internal/tui (qa_view.go, model.go, app.go, views.go) with handler and view tests.",
+      "Add QA bounds configuration in internal/platform/config/config.go and the new qa.go with config_test.go coverage so bounds are tunable per deployment.",
+      "Refresh DESIGN.md, docs/architecture.md, docs/cli-reference.md, docs/local-web.md, docs/phase3-json-schemas.md, docs/recovery.md, docs/release-checklist.md, docs/user-guide.md, and docs/plans/integrated-roadmap.md plus the new post-execution-qa-and-repair-loop plan to document the flow.",
+      "Tighten quality gates with new tests under internal/app (sprint_commands_test.go, run_control_inventory_test.go), internal/web (operations_test.go, qa_handlers_test.go, run_handlers_test.go), and internal/tui (qa_view_test.go)."
+    ],
+    "verification": [
+      "go build ./... from the merged tree to confirm the new packages in internal/sprint, internal/platform/config, internal/app, internal/tui, and internal/web compile together.",
+      "go vet ./... to catch shadowing or interface drift introduced by the new qa_repair.go and qa_repair_state.go types.",
+      "go test ./internal/sprint/... ./internal/app/... ./internal/tui/... ./internal/web/... ./internal/platform/config/... focusing on qa_repair_test.go, qa_state_test.go, verify_test.go, sprint_commands_test.go, run_control_inventory_test.go, qa_view_test.go, qa_handlers_test.go, run_handlers_test.go,",
+      "operations_test.go, and config_test.go.",
+      "gofmt -l . (or gofmt -d on touched files) to confirm formatting on the many edited files, especially the new TUI and web files.",
+      "Smoke-run the CLI sprint commands touched by sprint_commands.go and sprint_usecases.go against a fixture repo to confirm bounded repair triggers and stops as configured.",
+      "Launch the local web UI per docs/local-web.md and exercise the new /qa and /runs endpoints plus the updated templates (run_qa.html, sprint.html) and static assets (app.css, app.js) for regressions.",
+      "Start the TUI and verify the new QA view alongside existing views to confirm keybindings and rendering for model.go, app.go, views.go, and qa_view.go remain consistent."
+    ],
+    "risk_notes": [
+      "The source worktree is dirty on internal/app/sprint_commands.go, internal/app/sprint_usecases.go, internal/sprint/qa_repair.go, internal/web/handlers.go, and internal/web/qa_handlers.go; these uncommitted edits are NOT in commit 6cd6ba83 and will not be merged — confirm they belong on a follow-up",
+      "branch before merging.",
+      "qa_repair_state.go introduces a new state shape on top of qa_state.go; existing serialized state may lack the new fields, so persistence loading and migrations must be validated end-to-end.",
+      "The bounded repair loop can mask systemic QA failures if config defaults in internal/platform/config/qa.go are too permissive; reviewers should pin and justify the chosen bounds.",
+      "New web routes and handlers (qa_handlers.go, run_handlers.go, operation_handlers.go, operations.go, routes.go) plus updated templates and static assets expand the auth, CSRF, and XSS surface — confirm middleware and CSP still cover them.",
+      "TUI changes touch shared files (model.go, app.go, views.go) used by every screen; a regression here would break unrelated views, so a manual TUI pass is warranted beyond qa_view_test.go.",
+      "The branch carries a single commit (6cd6ba83) on top of merge_base 5d54525; bisection is impossible if a regression appears, so favor a squash or a tight review of the unified change set.",
+      "docs/plans/post-execution-qa-and-repair-loop.md is a new plan file referenced by docs/plans/integrated-roadmap.md; confirm the roadmap links resolve and that no stale plan references the old unbounded loop."
+    ]
+  },
+  "checks": [
+    {
+      "name": "unmerged paths",
+      "passed": true
+    },
+    {
+      "name": "merge head",
+      "passed": true,
+      "detail": "32ffead1d5cbd9315c8580cfd774f6daad206ed9"
+    },
+    {
+      "name": "git diff --check",
+      "passed": true
+    },
+    {
+      "name": "go test ./cmd/... ./internal/...",
+      "passed": true,
+      "detail": "?   \tgithub.com/Antonio7098/ultraplan-go/cmd/ultraplan\t[no test files]\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/app\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/codeextract\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/platform/config\t(cached)\n?   \tgithub.com/Antonio7098/ultraplan-go/internal/platform/filesystem\t[no test files]\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/platform/gitpublish\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/platform/logging\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/platform/process\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/platform/runtime\t(cached)\n?   \tgithub.com/Antonio7098/ultraplan-go/internal/productstate\t[no test files]\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/project\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/runcontrol\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/study\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/tui\t(cached)\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/web\t1.828s\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/workspace\t(cached)"
+    }
+  ],
+  "runtime_run_ids": [
+    "opencode-1",
+    "opencode-2"
+  ],
+  "started_at": "2026-08-27T15:52:48.564709873Z",
+  "updated_at": "2026-08-27T16:03:58.177389445Z",
+  "completed_at": "2026-08-27T16:03:58.177386022Z"
+}
