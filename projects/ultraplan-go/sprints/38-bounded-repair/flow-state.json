@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "38-bounded-repair",
-  "updatedAt": "2026-08-26T15:03:08.477839037Z",
+  "updatedAt": "2026-08-26T15:14:46.126661823Z",
   "stages": [
     {
       "stage": "requirements",
@@ -51,7 +51,7 @@
     "status": "cancelled",
     "verdict": "blocked",
     "path": "projects/ultraplan-go/sprints/38-bounded-repair/review.md",
-    "lastRunAt": "2026-08-26T15:03:08.477198913Z",
+    "lastRunAt": "2026-08-26T15:14:46.125980728Z",
     "fingerprint": "d3d183c1ffd3976448e286881d2f44bda661f1e22d44602afc261e617de34d06",
     "stale": false,
     "completed": 14,
@@ -60,17 +60,7 @@
       {
         "code": "reviewer-failed",
         "message": "context canceled",
-        "coverage_id": "contract-cli-surface"
-      },
-      {
-        "code": "reviewer-failed",
-        "message": "context canceled",
         "coverage_id": "contract-configuration"
-      },
-      {
-        "code": "reviewer-failed",
-        "message": "context canceled",
-        "coverage_id": "contract-documentation"
       },
       {
         "code": "reviewer-failed",
@@ -120,17 +110,7 @@
       {
         "code": "missing-coverage",
         "message": "required reviewer result missing",
-        "coverage_id": "contract-cli-surface"
-      },
-      {
-        "code": "missing-coverage",
-        "message": "required reviewer result missing",
         "coverage_id": "contract-configuration"
-      },
-      {
-        "code": "missing-coverage",
-        "message": "required reviewer result missing",
-        "coverage_id": "contract-documentation"
       },
       {
         "code": "missing-coverage",
@@ -183,12 +163,12 @@
       }
     ],
     "lastAttempt": {
-      "id": "review-1787756362412643073",
+      "id": "review-1787756988109718743",
       "status": "cancelled",
-      "startedAt": "2026-08-26T14:59:22.412643073Z",
-      "heartbeatAt": "2026-08-26T15:03:08.471078867Z",
-      "ownerPid": 39001,
-      "completedAt": "2026-08-26T15:03:08.477198913Z",
+      "startedAt": "2026-08-26T15:09:48.109718743Z",
+      "heartbeatAt": "2026-08-26T15:14:46.1186158Z",
+      "ownerPid": 68213,
+      "completedAt": "2026-08-26T15:14:46.125980728Z",
       "diagnostics": [
         "reviewer-failed: context canceled",
         "reviewer-failed: context canceled",
@@ -200,10 +180,6 @@
         "reviewer-failed: context canceled",
         "reviewer-failed: context canceled",
         "reviewer-failed: context canceled",
-        "reviewer-failed: context canceled",
-        "reviewer-failed: context canceled",
-        "missing-coverage: required reviewer result missing",
-        "missing-coverage: required reviewer result missing",
         "missing-coverage: required reviewer result missing",
         "missing-coverage: required reviewer result missing",
         "missing-coverage: required reviewer result missing",
@@ -218,10 +194,10 @@
       ]
     },
     "resume": {
-      "attemptId": "review-1787756362412643073",
+      "attemptId": "review-1787756988109718743",
       "inputFingerprint": "d3d183c1ffd3976448e286881d2f44bda661f1e22d44602afc261e617de34d06",
       "model": "minimax-coding-plan/MiniMax-M3",
-      "updatedAt": "2026-08-26T15:03:08.465434359Z",
+      "updatedAt": "2026-08-26T15:14:46.113485591Z",
       "coverage": [
         {
           "coverageId": "contract-architecture",
@@ -263,23 +239,123 @@
         },
         {
           "coverageId": "contract-cli-surface",
-          "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.423180624Z"
+          "status": "completed",
+          "updatedAt": "2026-08-26T15:12:15.231753787Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-cli-surface",
+            "applicability": "direct",
+            "summary": "Sprint 38 adds the `ultraplan sprint \u003cproject\u003e \u003csprint\u003e repair` command family to `internal/app/sprint_commands.go` and conforms to every CLI Surface contract requirement. Subcommands (prepare, start, status, packet, cycles, result, resume, cancel, recover) follow the same shape as existing qa/smoke/verify verbs, use consistent flag names (`--json`, `--yes`/`--non-interactive`, `--run`, `--issue`, `--confirmer`, `--max-cycles`, `--automatic`), and place positional `\u003cproject\u003e \u003csprint\u003e` arguments before the verb. Help text is produced via `sprintRepairHelp()` and is also reachable from the bare `repair` invocation and the combined sprint usage block. Stdout carries one bounded text or JSON document per call; runtime progress events for `RunRepair` are written via `fmt.Fprintf(deps.stderr, \"[repair] ...\")` so they never pollute JSON stdout. JSON output uses a stable `schema_version: 1` envelope with `operation`, `status`, and `result`. Exit codes come from `mapQACommandError` plus the start-only check that forces a non-zero exit whenever `result.Outcome` is not `verified` or `verified_with_findings`, matching the AC-10 contract for non-success repair outcomes. Destructive operations are guarded: `prepare` rejects `--yes`, `--run`, `--confirmer`, and `--max-cycles`; `start` requires `--run`, `--confirmer`, and explicit `--yes` and rejects `--issue`/`--max-cycles` to keep frozen authority immutable; `resume` requires `--run` and `--yes` and rejects issue/confirmer/max-cycles edits; `cancel` and the read-only commands reject all mutation flags. Cancel routes through `repository.RequestCancellation(deps.ctx, runcontrol.RunID(command.RunID), \"user_requested\")` and the shared durable-operation lifecycle, satisfying CLI-LIFE-001. The CLI never prompts interactively and fails clearly when required input is missing, satisfying CLI-NONINT-001. Unknown arguments are rejected in `parseSprintRepairArgs`. The `--automatic` flag is parsed but the parser immediately rejects it with `errors.New(\"automatic repair is unavailable until qualifying manual proof exists\")`, which is the documented AC-6 gate rather than a contract deviation. `resume` similarly fails closed with an explicit message until the interrupted-state reconciliation capability lands. Both behaviors are documented in the new help text and in the Sprint 38 plan/execute artifacts.",
+            "findings": []
+          }
         },
         {
           "coverageId": "contract-configuration",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:08.45141823Z"
+          "updatedAt": "2026-08-26T15:14:45.74824223Z"
         },
         {
           "coverageId": "contract-documentation",
-          "status": "failed",
-          "updatedAt": "2026-08-26T15:03:08.465434359Z"
+          "status": "completed",
+          "updatedAt": "2026-08-26T15:12:33.994269744Z",
+          "result": {
+            "schemaVersion": 1,
+            "coverageId": "contract-documentation",
+            "applicability": "direct",
+            "summary": "Sprint 38 introduces a substantial new repair public surface across CLI, JSON, HTTP, TUI, and browser interfaces. The implementation, as observed in the target diff, adds a complete sprint repair command family with bounded JSON DTOs (RepairStatusResult, RepairPacketSummary, RepairBudgetSummary, RepairConfirmSummary), four GET repair resources plus a server-rendered HTML page, escaped no-JavaScript HTML, writer-fenced state, host-path-safe routing, and user-facing template strings, all of which align with the implementation-side obligations of DOC-PUBLIC-001 and DOC-OPS-001. The confirmed conformance items are: implementation produces internal CLI help text via sprintRepairHelp(), bounded JSON serialization with a versioned envelope, no-JavaScript browser operation, escaping of retained text, and redacted public output. The actionable deviations are concentrated in the missing external documentation: docs/cli-reference.md, docs/phase3-json-schemas.md, docs/local-web.md, and docs/recovery.md are listed as Required Outputs in requirements.md and were committed in plan.md, but no files matching those logical paths appear in the changed paths, so the new public behaviour and operational scenarios are not covered by an authoritative update against the contract's required-evidence list.",
+            "findings": [
+              {
+                "id": "DOC-PUBLIC-001-repair-cli-reference",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Public repair CLI command family is not covered by an external CLI reference update",
+                "detail": "The target/internal/app/sprint_commands.go diff adds a complete `sprint \u003cproject\u003e \u003csprint\u003e repair` command family with nine actions (prepare, start, status, packet, cycles, result, resume, cancel, recover) plus strict flag semantics: `prepare` rejects all mutation flags, `start` requires `--run`, `--confirmer`, and explicit `--yes`, `cancel` requires the durable operation run ID rather than the repair run ID, and `--automatic` is rejected until manual proof exists. sprintRepairHelp() provides internal `ultraplan sprint … repair --help` text. The contract forbids public behaviour changes without docs updates, and this sprint materially changes the public CLI surface, so docs/cli-reference.md must record it.",
+                "action": "Add a Repair Commands section to docs/cli-reference.md covering each subcommand, its required flags, the `--yes` confirmation rule, the rejection of `--automatic` until qualifying proof, and the difference between the repair run ID and the durable operation run ID for cancellation.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 704,
+                    "endLine": 1011
+                  },
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 2011,
+                    "endLine": 2033
+                  }
+                ]
+              },
+              {
+                "id": "DOC-PUBLIC-001-repair-json-schemas",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "New repair JSON DTOs are not documented in the JSON schema reference",
+                "detail": "The target diff exposes RepairStatusResult, RepairPacketSummary, RepairBudgetSummary, and RepairConfirmSummary through renderSprintRepair and the new HTTP repair resources, and the target tests construct these DTOs directly with fields such as `repair_run_id`, `earliest_cycle`, `cleanup_complete`, `check_count`, `automatic_unavailable`, and `limits`. CLI JSON output and the HTTP repair resources emit these fields directly. The contract requires every public artifact to have discoverable documentation, and docs/phase3-json-schemas.md is listed as a Required Output in requirements.md but is not present in the changed paths.",
+                "action": "Document the repair public envelope in docs/phase3-json-schemas.md: add RepairStatusResult, RepairPacketSummary, RepairBudgetSummary, RepairConfirmSummary, RepairStopReason, RepairOutcome, RepairPhase, and RepairGateKind, with field-level descriptions, required/optional markers, and the schema-versioning policy already used for QA summaries.",
+                "citations": [
+                  {
+                    "path": "target/internal/app/sprint_commands.go",
+                    "startLine": 919,
+                    "endLine": 944
+                  },
+                  {
+                    "path": "target/internal/tui/qa_view_test.go",
+                    "startLine": 71,
+                    "endLine": 108
+                  },
+                  {
+                    "path": "target/internal/web/qa_handlers_test.go",
+                    "startLine": 114,
+                    "endLine": 148
+                  }
+                ]
+              },
+              {
+                "id": "DOC-PUBLIC-001-repair-http-routes",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "New HTTP repair routes and browser page are not covered by the local-web reference",
+                "detail": "The target/internal/web/qa_handlers_test.go diff exercises four GET repair resources (`/api/v1/projects/{project}/sprints/{sprint}/repair`, `…/repair/packet`, `…/repair/cycles`, `…/repair/result`) and a server-rendered HTML page at `/projects/{project}/sprints/{sprint}/repair`. The browser page renders user-facing copy such as `Bounded repair` and `Automatic mode unavailable` and relies on the existing CSRF, session, and bounded response contract. docs/local-web.md is listed as a Required Output in requirements.md but is not present in the changed paths, so the new routes, methods, JSON responses, the no-JavaScript completion path, and the always-visible manual-proof gating are not externally documented. The contract requires public commands/endpoints to have discoverable docs that match actual runtime behaviour.",
+                "action": "Update docs/local-web.md with the new repair routes (methods, status codes, JSON shapes), the browser page's required no-JavaScript completion, the manual-first automatic availability section, the bounded response envelope, and the redacted hostile-content behavior already covered for the QA pages.",
+                "citations": [
+                  {
+                    "path": "target/internal/web/qa_handlers_test.go",
+                    "startLine": 114,
+                    "endLine": 148
+                  },
+                  {
+                    "path": "target/internal/web/operations_test.go",
+                    "startLine": 45,
+                    "endLine": 92
+                  }
+                ]
+              },
+              {
+                "id": "DOC-OPS-001-repair-recovery-runbook",
+                "severity": "medium",
+                "applicability": "direct",
+                "title": "Repair operational scenarios lack an operator recovery runbook",
+                "detail": "The target/internal/sprint/qa_repair.go diff introduces several operational scenarios with product-defined behavior that must be diagnosable from outside the code: accepted-but-unconfirmed operations when confirmation persistence fails, terminalizing-state lease release, apply-journal compensation after interruption, target drift during reverification, cleanup uncertainty escalation, and manual-proof qualification. RecoverRepair reconciles an interrupted manual apply from retained preimages and PruneRepairCycles applies bounded retention, but the operator-facing diagnostic and remediation steps are not documented anywhere visible in the changed paths. docs/recovery.md is listed as a Required Output in requirements.md but is not present in the changed paths. The contract requires operational changes to ship with operator notes.",
+                "action": "Extend docs/recovery.md with a Repair Recovery section that lists each operational scenario, the diagnostic facts surfaced by RepairStatus, the exact remediation command (cancel/recover/resume), and the explicit outcomes the protocol will publish (`escalated`, `blocked`, `verified_with_findings`) under each condition.",
+                "citations": [
+                  {
+                    "path": "target/internal/sprint/qa_repair.go",
+                    "startLine": 700,
+                    "endLine": 900
+                  },
+                  {
+                    "path": "target/internal/sprint/qa_repair_state.go",
+                    "startLine": 580,
+                    "endLine": 633
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "coverageId": "contract-errors",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:08.427593186Z"
+          "updatedAt": "2026-08-26T15:14:46.113485591Z"
         },
         {
           "coverageId": "contract-llm-evaluation-cost-safety",
@@ -296,42 +372,42 @@
         {
           "coverageId": "contract-llm-runtime",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:08.438539132Z"
+          "updatedAt": "2026-08-26T15:14:45.7806246Z"
         },
         {
           "coverageId": "contract-observability",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.443668458Z"
+          "updatedAt": "2026-08-26T15:14:45.800162976Z"
         },
         {
           "coverageId": "contract-performance",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.468507982Z"
+          "updatedAt": "2026-08-26T15:14:45.764072858Z"
         },
         {
           "coverageId": "contract-persistence-and-migrations",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.489102585Z"
+          "updatedAt": "2026-08-26T15:14:45.815740079Z"
         },
         {
           "coverageId": "contract-security",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.508956858Z"
+          "updatedAt": "2026-08-26T15:14:45.832939672Z"
         },
         {
           "coverageId": "contract-testing",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.527666281Z"
+          "updatedAt": "2026-08-26T15:14:45.847715553Z"
         },
         {
           "coverageId": "contract-workflows",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.54569794Z"
+          "updatedAt": "2026-08-26T15:14:45.861781496Z"
         },
         {
           "coverageId": "handbook",
           "status": "failed",
-          "updatedAt": "2026-08-26T15:03:01.563121038Z"
+          "updatedAt": "2026-08-26T15:14:45.873172788Z"
         }
       ]
     }
