@@ -1,0 +1,727 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-e9efdafa2b6e95a938941dd6",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-e9efdafa2b6e95a938941dd6/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:54:00.079249669Z",
+      "completed_at": "2026-08-26T10:56:40.359731974Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-1",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/service.go",
+            "internal/sprint/domain.go"
+          ],
+          "reason": "verify FlowState QA summary pointer validation and save-then-publish atomicity for stateDigest and ReportDigest",
+          "approved": false
+        },
+        {
+          "id": "ctx-2",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_types.go"
+          ],
+          "reason": "confirm VerificationBytes hard limit, private 0600 permissions, and schema version disallowUnknownFields for state/synthesis",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 52105073,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "fact",
+          "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        },
+        {
+          "kind": "fact",
+          "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+          "paths": [
+            "internal/sprint/verify.go",
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "check",
+          "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-425eec69d347067a2b530ba3",
+      "shard_id": "qa-v1-shard-e9efdafa2b6e95a938941dd6",
+      "claim": "Implementation identity drift during QA sharding may be missed, allowing evidence to be bound to a stale fingerprint",
+      "basis": "internal/sprint/qa.go:803-845 captures before/after targetIdentity via verify.go:349 targetIdentity and compares to qaMap.ImplementationFingerprint; targetIdentity hashes git HEAD, symlink targets, and file contents with escaping-symlink rejection; race between before/after and map revalidation could still publish stale synthesis",
+      "verification_surface": "internal/sprint/verify.go:349 targetIdentity, internal/sprint/qa.go:325 prepareQAAttempt and 242-248 validateCurrentQAMap, internal/sprint/qa_prompt.go:75 ApprovedQAChecks uses WorkingDirectory == target",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "a retained QAShard records ImplementationBefore != ImplementationAfter or differs from qaMap.ImplementationFingerprint yet shard is marked QAPhaseCompleted and published via QAStore.Publish",
+      "refutation_condition": "every shard attempt records identical ImplementationBefore/After matching qaMap.ImplementationFingerprint and governed-input revalidation fails closed with QAErrorStaleInput on mismatch as in qa_test.go:221-257 and qa_prompt_test.go:165 TestTargetIdentityRejectsSymlinkEscapeAndRecordsContainedSymlink",
+      "inconclusive_condition": "target tree is not present or hashFile/stat fails due to I/O error, preventing deterministic identity capture without mutating workspace",
+      "safe_evidence_strategy": "read verify.go targetIdentity, qa.go runOneQAShard identity checks, qa_map.go targetIdentity invocation; inspect symlink handling and hashBytes usage; request no shell or workspace write",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-e9efdafa2b6e95a938941dd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:54:00.079249669Z",
+          "completed_at": "2026-08-26T10:56:40.359731974Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/service.go",
+                "internal/sprint/domain.go"
+              ],
+              "reason": "verify FlowState QA summary pointer validation and save-then-publish atomicity for stateDigest and ReportDigest",
+              "approved": false
+            },
+            {
+              "id": "ctx-2",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go"
+              ],
+              "reason": "confirm VerificationBytes hard limit, private 0600 permissions, and schema version disallowUnknownFields for state/synthesis",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 52105073,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "fact",
+              "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            },
+            {
+              "kind": "fact",
+              "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+              "paths": [
+                "internal/sprint/verify.go",
+                "internal/sprint/qa.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "check",
+              "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "fact",
+          "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        },
+        {
+          "kind": "fact",
+          "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+          "paths": [
+            "internal/sprint/verify.go",
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "check",
+          "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "static code shows before/after checks and symlink escape rejection, but live drift timing under concurrent mutation lease requires isolated execution evidence"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-aafb71f4cc2303bae70bcf82",
+      "shard_id": "qa-v1-shard-e9efdafa2b6e95a938941dd6",
+      "claim": "Cumulative follow-up shard budget may be bypassed by chained synthesis invocations creating more than FollowUpShards total across attempts",
+      "basis": "internal/sprint/qa_synthesis.go:27 SynthesizeQAWithChallenges caps followCandidates to Budgets.FollowUpShards but each call recomputes from current shard set; internal/sprint/qa.go:389 pendingQASynthesisFollowUps and 615 finalizeQASynthesisFollowUps track retained FollowUp count with limit FollowUpShards en route to final ID; if hydrator not used, incremental chains could exceed cumulative budget",
+      "verification_surface": "internal/sprint/qa_synthesis.go:33 SynthesizeQAWithChallenges and 122-136 followUp generation, internal/sprint/qa.go:589 pendingQASynthesisFollowUps and 615 finalizeQASynthesisFollowUps, internal/sprint/qa_synthesis_test.go:117 TestQASynthesisFollowUpsUseOneCumulativeAttemptBudget",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-evaluation-cost-safety",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "retained shard set contains shard.Kind==follow_up count \u003e Budgets.FollowUpShards or synthesis FollowUpShards length grows beyond budget across iterative pending loops",
+      "refutation_condition": "pendingQASynthesisFollowUps computes remaining = limit - followUpCount and terminates when remaining \u003c=0, finalizeQASynthesisFollowUps rejects len\u003ebudget, and test caps chained pending to exactly remaining budget of 1 as in qa_synthesis_test.go:144-153",
+      "inconclusive_condition": "synthesis requires complete shard theories to compute follow-ups; without running shards, follow-up generation cannot be fully exercised",
+      "safe_evidence_strategy": "read qa_synthesis.go and qa.go pending/finalize logic, review qa_synthesis_test.go deterministic and cap tests; trace budget constants in qa_types.go:126 DefaultQABudgets/MaximumQABudgets; no execution or file write",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-e9efdafa2b6e95a938941dd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:54:00.079249669Z",
+          "completed_at": "2026-08-26T10:56:40.359731974Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/service.go",
+                "internal/sprint/domain.go"
+              ],
+              "reason": "verify FlowState QA summary pointer validation and save-then-publish atomicity for stateDigest and ReportDigest",
+              "approved": false
+            },
+            {
+              "id": "ctx-2",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go"
+              ],
+              "reason": "confirm VerificationBytes hard limit, private 0600 permissions, and schema version disallowUnknownFields for state/synthesis",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 52105073,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "fact",
+              "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            },
+            {
+              "kind": "fact",
+              "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+              "paths": [
+                "internal/sprint/verify.go",
+                "internal/sprint/qa.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "check",
+              "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "fact",
+          "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        },
+        {
+          "kind": "fact",
+          "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+          "paths": [
+            "internal/sprint/verify.go",
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "check",
+          "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "code shows per-call cap and cumulative remaining calculation, but end-to-end read-only verification of chained budget exhaustion needs actual shard retention state which was not materialized"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-eac686979d0c83225e48b45c",
+      "shard_id": "qa-v1-shard-e9efdafa2b6e95a938941dd6",
+      "claim": "Deterministic QA map may fail to own every changed path exactly once or may omit coverage for unclassified extensions",
+      "basis": "internal/sprint/qa_map.go:139 BuildQAMap normalizes ChangedPaths, groups by qaBehaviorGroup, chunks by ChangedPathsPerShard, builds PrimaryOwners map and Coverage, validates via ValidateQAMap requiring owners[path]==1; boundary shard uses overlap of first path per primary shard up to ContextPathsPerShard; unknown extension becomes unknown/\u003cpath\u003e with QAPhaseBlocked",
+      "verification_surface": "internal/sprint/qa_map.go:139 BuildQAMap, 294 qaBehaviorGroup, 48 QAMap validation, internal/sprint/qa_map_test.go:9 TestQAMapBuildIsByteStableAndOwnsEveryChangedPathOnce and 53 TestQAMapBuildBlocksUnknownPathsWithoutOmission",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-testing",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "QA map Coverage.ChangedPaths contains a path missing from PrimaryOwners or with count !=1, or BoundaryOverlaps mismatch, or unknown binary path not blocked; Visible in NormalizedQAMapBytes or ValidateQAMap error",
+      "refutation_condition": "map PrimaryOwners size equals ChangedPaths, each counted once, boundary shard overlaps validated, unknown path yields kind primary phase blocked with Coverage.BlockedPaths containing that path as in qa_map_test.go:53",
+      "inconclusive_condition": "ExecuteRunState or Conformance Review inputs unavailable so QAMap cannot be built deterministically without governed manifest (PrepareReview fingerprint)",
+      "safe_evidence_strategy": "read qa_map.go BuildQAMap grouping/chunking and qa_map_test.go fixtures; compare normalized JSON for shuffled input order; inspect qaBehaviorGroup extension allowlist; no filesystem mutation",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-e9efdafa2b6e95a938941dd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:54:00.079249669Z",
+          "completed_at": "2026-08-26T10:56:40.359731974Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/service.go",
+                "internal/sprint/domain.go"
+              ],
+              "reason": "verify FlowState QA summary pointer validation and save-then-publish atomicity for stateDigest and ReportDigest",
+              "approved": false
+            },
+            {
+              "id": "ctx-2",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go"
+              ],
+              "reason": "confirm VerificationBytes hard limit, private 0600 permissions, and schema version disallowUnknownFields for state/synthesis",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 52105073,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "fact",
+              "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            },
+            {
+              "kind": "fact",
+              "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+              "paths": [
+                "internal/sprint/verify.go",
+                "internal/sprint/qa.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "check",
+              "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "fact",
+          "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        },
+        {
+          "kind": "fact",
+          "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+          "paths": [
+            "internal/sprint/verify.go",
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "check",
+          "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "determinism and ownership invariants appear enforced in tests, but full proof requires building map from current governed inputs which requires PrepareReview access not executed here"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f2aab337cd448ee68e6540e3",
+      "shard_id": "qa-v1-shard-e9efdafa2b6e95a938941dd6",
+      "claim": "QA investigator runtime may retain unrestricted tool authority if permission enforcement is downgraded from restricted default-deny",
+      "basis": "internal/sprint/qa_prompt.go:162-195 builds QAInvestigatorRequest with Sandbox read_only, Permissions restricted, Policy Default deny and explicit deny for write/edit/patch/bash/shell, plus path-bounded allow rules; internal/sprint/qa.go:851-877 validates runtime Permissions.Mode/Default after each shard and fails closed on drift",
+      "verification_surface": "internal/sprint/qa_prompt.go:162 QAInvestigatorRequest and internal/sprint/qa.go:803 runOneQAShard permission drift check vs internal/sprint/qa_prompt_test.go:13 TestQAInvestigatorRequestIsReadOnlyDefaultDenyAndPathBounded",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "a runtime Result returns Permissions.Mode != restricted or Default != deny or UnsupportedCount !=0 and shard is incorrectly marked completed, or QAInvestigatorRequest emits Policy with missing deny rules",
+      "refutation_condition": "every retained shard has attempt recording Permissions restricted/deny with allow-listed path rules only for ChangedPaths+ContextPaths, and runOneQAShard returns QAErrorPermissionDenied on any deviation as exercised in qa_test.go:221 TestQAPermissionRejectsFallbackAndTargetDrift",
+      "inconclusive_condition": "runtime adapter is unavailable or investigator output is empty/truncated preventing permission summary capture without filesystem mutation",
+      "safe_evidence_strategy": "read internal/sprint/qa_prompt.go, qa.go, qa_test.go and qa_prompt_test.go; list allowed Paths in Policy.PathRules; do not start a runtime or write files",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-e9efdafa2b6e95a938941dd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:54:00.079249669Z",
+          "completed_at": "2026-08-26T10:56:40.359731974Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/service.go",
+                "internal/sprint/domain.go"
+              ],
+              "reason": "verify FlowState QA summary pointer validation and save-then-publish atomicity for stateDigest and ReportDigest",
+              "approved": false
+            },
+            {
+              "id": "ctx-2",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go"
+              ],
+              "reason": "confirm VerificationBytes hard limit, private 0600 permissions, and schema version disallowUnknownFields for state/synthesis",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 52105073,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "fact",
+              "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            },
+            {
+              "kind": "fact",
+              "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+              "paths": [
+                "internal/sprint/verify.go",
+                "internal/sprint/qa.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "check",
+              "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "fact",
+          "summary": "QA investigator prompt and policy are read-only default-deny with path-bounded allow rules",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        },
+        {
+          "kind": "fact",
+          "summary": "Target identity and implementation fingerprint drift checks with symlink escape rejection",
+          "paths": [
+            "internal/sprint/verify.go",
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "check",
+          "summary": "Approved QA check catalog is deterministic gofmt -d over changed .go paths",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "read-only inspection confirms code enforces restricted default-deny and rejects fallback in tests, but confirmation requires bounded isolated runtime observation of PermissionSummary which cannot be executed in read-only mode"
+    }
+  ]
+}

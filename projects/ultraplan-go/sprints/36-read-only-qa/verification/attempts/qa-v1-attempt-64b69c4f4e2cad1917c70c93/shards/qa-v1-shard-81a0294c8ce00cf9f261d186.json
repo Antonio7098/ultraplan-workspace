@@ -1,0 +1,694 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-81a0294c8ce00cf9f261d186",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "overlap_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-81a0294c8ce00cf9f261d186/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:20:18.025312957Z",
+      "completed_at": "2026-08-26T11:21:30.294320028Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:planning-git-defs"
+        },
+        {
+          "kind": "file_content",
+          "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-commands-output"
+        },
+        {
+          "kind": "file_content",
+          "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ],
+          "output_digest": "sha256:redaction-planning"
+        },
+        {
+          "kind": "file_content",
+          "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ],
+          "output_digest": "sha256:execute-deferred-drop"
+        },
+        {
+          "kind": "file_content",
+          "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/web/handlers.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:tui-web-qa-nav"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-38ece027a86b3b946eeb9912",
+      "shard_id": "qa-v1-shard-81a0294c8ce00cf9f261d186",
+      "claim": "internal/web/handlers.go sprintDTO execute projection drops Deferred (and historical) state from internal/app SprintSummary, causing cross-package loss of execute fidelity",
+      "basis": "internal/app/sprint_usecases.go ExecuteSummary (lines 453-463) includes Available, Total, Pending, Running, Complete, Deferred, Failed, Cancelled, Message. internal/web/handlers.go executeDTO (lines 163-171) defines only Available, Total, Pending, Running, Complete, Failed, Cancelled – no Deferred. mapSprint at handlers.go:1203 constructs executeDTO without Deferred, while internal/app/web_usecases.go webSprint forwards the full ExecuteSummary. Clients via /api/v1 lose deferred count",
+      "verification_surface": "Typed app result projection contract (internal/app -\u003e internal/web) per docs/architecture.md Web Adapter Boundary – compare app QAResult/SprintSummary types against web DTO mapping",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "ExecuteSummary has Deferred field and executeDTO/mapping omits it",
+      "refutation_condition": "Deferred is intentionally not exposed on web surface by documented API contract or is mapped to another field",
+      "inconclusive_condition": "Deferred was removed from domain in this shard's changed_paths rendering the comparison stale",
+      "safe_evidence_strategy": "Read internal/app/sprint_usecases.go ExecuteSummary definition, internal/web/handlers.go type executeDTO and func mapSprint lines 1191-1209, and internal/app/web_usecases.go webSprint; compare field sets",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-81a0294c8ce00cf9f261d186/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:18.025312957Z",
+          "completed_at": "2026-08-26T11:21:30.294320028Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "sha256:planning-git-defs"
+            },
+            {
+              "kind": "file_content",
+              "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+              "paths": [
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:config-commands-output"
+            },
+            {
+              "kind": "file_content",
+              "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ],
+              "output_digest": "sha256:redaction-planning"
+            },
+            {
+              "kind": "file_content",
+              "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/web/handlers.go",
+                "internal/app/web_usecases.go"
+              ],
+              "output_digest": "sha256:execute-deferred-drop"
+            },
+            {
+              "kind": "file_content",
+              "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/web/handlers.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:tui-web-qa-nav"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:planning-git-defs"
+        },
+        {
+          "kind": "file_content",
+          "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-commands-output"
+        },
+        {
+          "kind": "file_content",
+          "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ],
+          "output_digest": "sha256:redaction-planning"
+        },
+        {
+          "kind": "file_content",
+          "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ],
+          "output_digest": "sha256:execute-deferred-drop"
+        },
+        {
+          "kind": "file_content",
+          "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/web/handlers.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:tui-web-qa-nav"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Fields present in app domain (Deferred at sprint_usecases.go:459) absent in web DTO (handlers.go:163-171) and mapping (1203) never assigns it; static comparison proves lossy projection across package boundary"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9efac0970247f1e19f3abaee",
+      "shard_id": "qa-v1-shard-81a0294c8ce00cf9f261d186",
+      "claim": "internal/app/config_commands.go config show omits planning.smoke_model/variant and all git.* fields from effective config projection",
+      "basis": "internal/platform/config/config.go Planning defines 20 model/variant fields including SmokeModel/SmokeVariant (lines 60-61) and Git defines 3 fields (76-79); internal/app/config_commands.go runConfig prints 55-73 covering 18 planning fields (requirements through review) and prints qa, smoke, run_control, logging, agentwrap but emits no fmt.Fprintf for planning.smoke_model, planning.smoke_variant, git.stage_completion, git.remote, git.push_timeout",
+      "verification_surface": "Cross-package parity between platform/config source of truth and app CLI surface (docs/architecture.md composition) – compare config.go struct definitions vs config_commands.go output block lines 45-125",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "config.go Planning contains SmokeModel/SmokeVariant and Git contains StageCompletion/Remote/PushTimeout and config_commands.go contains no corresponding print lines for those fields",
+      "refutation_condition": "config_commands prints smoke_model/variant and git.* or docs explicitly scope CLI to subset with rationale",
+      "inconclusive_condition": "Field set was intentionally reduced in this shard's changed_paths or CLI is versioned to older schema",
+      "safe_evidence_strategy": "Read-only file inspection: read internal/platform/config/config.go lines 40-85 and internal/app/config_commands.go lines 45-126; count defined vs printed fields",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-81a0294c8ce00cf9f261d186/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:18.025312957Z",
+          "completed_at": "2026-08-26T11:21:30.294320028Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "sha256:planning-git-defs"
+            },
+            {
+              "kind": "file_content",
+              "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+              "paths": [
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:config-commands-output"
+            },
+            {
+              "kind": "file_content",
+              "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ],
+              "output_digest": "sha256:redaction-planning"
+            },
+            {
+              "kind": "file_content",
+              "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/web/handlers.go",
+                "internal/app/web_usecases.go"
+              ],
+              "output_digest": "sha256:execute-deferred-drop"
+            },
+            {
+              "kind": "file_content",
+              "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/web/handlers.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:tui-web-qa-nav"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:planning-git-defs"
+        },
+        {
+          "kind": "file_content",
+          "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-commands-output"
+        },
+        {
+          "kind": "file_content",
+          "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ],
+          "output_digest": "sha256:redaction-planning"
+        },
+        {
+          "kind": "file_content",
+          "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ],
+          "output_digest": "sha256:execute-deferred-drop"
+        },
+        {
+          "kind": "file_content",
+          "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/web/handlers.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:tui-web-qa-nav"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static read confirms 18/20 planning fields printed (lines 55-72 miss smoke pair) and zero git lines (no git.* Fprintf) despite definitions at config.go:60-61,76-79; exhaustive line scan of runConfig shows no smoke_model/variant or git coverage"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-cc214a4d4ff7f75175b77889",
+      "shard_id": "qa-v1-shard-81a0294c8ce00cf9f261d186",
+      "claim": "internal/tui/model.go breadcrumb for RouteSprintQATheory omits shard context, diverging from internal/web dispatch which requires shard+theory separation",
+      "basis": "tui/model.go breadcrumb switch at lines 587-589 returns \"... QA \u003e \" + route.Theory for RouteSprintQATheory, ignoring route.Shard. handlers.go dispatch for sprint_qa_theory case (lines 514-515) expects separate shard and theory params via handleSprintQAPage(param0,param1,\"\",param2). Nav items for shard page correctly build theory routes with both Shard and Theory (lines 528-530). Breadcrumb asymmetry creates cross-package navigation confusion between TUI and web",
+      "verification_surface": "Cross-package navigation contract: internal/tui Route kinds vs internal/web routeMatch dispatch and docs/architecture.md single-binary frontend navigation",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "breadcrumb for RouteSprintQATheory concatenates only Theory and omits Shard while dispatch and nav construction require both",
+      "refutation_condition": "Breadcrumb is intentionally theory-only by design or shard is encoded inside theory ID",
+      "inconclusive_condition": "Routing table not available in assigned context_paths to prove param mapping",
+      "safe_evidence_strategy": "Read internal/tui/model.go lines 523-533 and 573-605 and internal/web/handlers.go dispatch lines 509-514; compare Route struct fields vs breadcrumb string construction",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-81a0294c8ce00cf9f261d186/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:18.025312957Z",
+          "completed_at": "2026-08-26T11:21:30.294320028Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "sha256:planning-git-defs"
+            },
+            {
+              "kind": "file_content",
+              "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+              "paths": [
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:config-commands-output"
+            },
+            {
+              "kind": "file_content",
+              "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ],
+              "output_digest": "sha256:redaction-planning"
+            },
+            {
+              "kind": "file_content",
+              "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/web/handlers.go",
+                "internal/app/web_usecases.go"
+              ],
+              "output_digest": "sha256:execute-deferred-drop"
+            },
+            {
+              "kind": "file_content",
+              "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/web/handlers.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:tui-web-qa-nav"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:planning-git-defs"
+        },
+        {
+          "kind": "file_content",
+          "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-commands-output"
+        },
+        {
+          "kind": "file_content",
+          "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ],
+          "output_digest": "sha256:redaction-planning"
+        },
+        {
+          "kind": "file_content",
+          "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ],
+          "output_digest": "sha256:execute-deferred-drop"
+        },
+        {
+          "kind": "file_content",
+          "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/web/handlers.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:tui-web-qa-nav"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "File reads show breadcrumb line 589 uses route.Theory alone while RouteSprintQATheory struct has both Shard and Theory fields (lines 52-53) and handlers expect separate IDs; static text proves inconsistency without needing execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-cd7e0b42430d4dbfdaf2b0f0",
+      "shard_id": "qa-v1-shard-81a0294c8ce00cf9f261d186",
+      "claim": "internal/platform/config/redaction.go incompletely redacts Planning variant and other secret-capable fields before app/web/TUI display",
+      "basis": "Redact via config.Redact is used by app for both CLI and web (internal/app/config_commands.go:41). redactPlanning in internal/platform/config/redaction.go:54-69 only calls RedactValue for RequirementsModel, CodeContextModel/Variant, SprintIndexModel, TechnicalHandbookModel, AreaReasoningModel, ReasoningModel, PlanModel, ExecuteModel/Variant, ReviewModel/Variant, SmokeModel/Variant – it skips RequirementsVariant, SprintIndexVariant, TechnicalHandbookVariant, AreaReasoningVariant, ReasoningVariant, PlanVariant entirely, so those 6 fields never pass Sensitive check. Similarly redactAgentwrap only covers Executable and Env, not ExtraArgs/Permission fields, and QA only redacts Model not Variant",
+      "verification_surface": "Contract-security and contract-observability redaction boundary shared by internal/platform/config and internal/app (and indirectly web/TUI projections)",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "redaction.go redactPlanning lists only 10 of 20 Planning fields and misses the 6 variant fields named above, provable by text search",
+      "refutation_condition": "All Planning variant fields are either not secret-capable by design or are redacted via generic path not visible in this snapshot",
+      "inconclusive_condition": "Variant fields are proven to never hold user-supplied secrets in this product version",
+      "safe_evidence_strategy": "Read-only inspection of internal/platform/config/redaction.go lines 54-77 and internal/platform/config/config.go Planning struct; diff field names; verify each variant has RedactValue call",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-81a0294c8ce00cf9f261d186/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:18.025312957Z",
+          "completed_at": "2026-08-26T11:21:30.294320028Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "sha256:planning-git-defs"
+            },
+            {
+              "kind": "file_content",
+              "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+              "paths": [
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:config-commands-output"
+            },
+            {
+              "kind": "file_content",
+              "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ],
+              "output_digest": "sha256:redaction-planning"
+            },
+            {
+              "kind": "file_content",
+              "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/web/handlers.go",
+                "internal/app/web_usecases.go"
+              ],
+              "output_digest": "sha256:execute-deferred-drop"
+            },
+            {
+              "kind": "file_content",
+              "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/web/handlers.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:tui-web-qa-nav"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "config.go Planning and Git struct definitions showing smoke and git fields",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:planning-git-defs"
+        },
+        {
+          "kind": "file_content",
+          "summary": "config_commands.go runConfig output block missing smoke_model/variant and git.* prints",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-commands-output"
+        },
+        {
+          "kind": "file_content",
+          "summary": "redaction.go redactPlanning coverage showing 6 variant fields never redacted",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ],
+          "output_digest": "sha256:redaction-planning"
+        },
+        {
+          "kind": "file_content",
+          "summary": "ExecuteSummary with Deferred vs handlers executeDTO and mapSprint without Deferred",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ],
+          "output_digest": "sha256:execute-deferred-drop"
+        },
+        {
+          "kind": "file_content",
+          "summary": "TUI RouteSprintQATheory breadcrumb vs web dispatch param separation",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/web/handlers.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:tui-web-qa-nav"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "File content shows redactPlanning covers 14 assignments (10 models + 4 variants) leaving RequirementsVariant, SprintIndexVariant, TechnicalHandbookVariant, AreaReasoningVariant, ReasoningVariant, PlanVariant uncovered; QA Variant and agentwrap ExtraArgs also uncovered, breaking parity with Sensitive heuristic"
+    }
+  ]
+}

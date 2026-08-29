@@ -8,86 +8,100 @@
 |-------|-------|
 | Name | reports |
 | Path | `studies/agent-harness-study/sources/reports` |
-| Language / Stack | N/A — the source contains no code, manifests, or configuration files of any language |
-| Analyzed | 2026-08-22 |
+| Language / Stack | None detected — the source contains no files of any language or build system |
+| Analyzed | 2026-08-23 |
+
+**Citation note.** The selected source contains zero files, so no source-side symbol can be cited as `path/to/file.go:42`. To keep every claim traceable at line granularity, this report cites its own audited lines using the workspace-relative form `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:NN`. Each such anchor resolves to the Search Audit Record (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101`), where the full command and its result are restated. Bare directory paths elsewhere in this report describe what was inspected; they are context, not code citations, because directories carry no line numbers.
 
 ## Summary
 
-The selected source is an empty directory tree. A full recursive enumeration of `studies/agent-harness-study/sources/reports` returned exactly two entries, both directories, and zero files:
+The selected source is a directory (`studies/agent-harness-study/sources/reports`, source kind: `directory`) that contains **zero analyzable material**. An exhaustive traversal found no files, no symlinks, no hidden entries, and no package manifests anywhere inside the boundary (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101`, `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:102`). The only content is a single empty subdirectory, `studies/agent-harness-study/sources/reports/source/07.04-timeouts-and-cancellation`, confirmed empty by recursive listing (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:103`).
 
-- `studies/agent-harness-study/sources/reports/source` (empty of files)
-- `studies/agent-harness-study/sources/reports/source/24.01-public-api-surface` (completely empty)
+Because there is no code, no module graph, and no configuration to inspect, none of the dimension's five steps (top-level package structure, dependency direction, independent usability, circular-dependency checks, public-vs-internal API distinction) can be executed against real artifacts. This report therefore documents the absence of evidence explicitly, distinguishes the one observable structural fact from inference, and rates the source at the floor of the rubric.
 
-There is no package structure, no module graph, no manifests (`package.json`, `go.mod`, `pyproject.toml`, `Cargo.toml`, or equivalents), no source files, no tests, and no configuration to evaluate against the dimension. Because the study operates under strict single-source isolation, no substitute material was drawn from elsewhere in the workspace; the analysis below records the absence itself and the search boundary used to establish it.
+Searches performed strictly within the source boundary (full commands in the Search Audit Record):
 
-Consequently, the dimension question — "Can you use the tool system without pulling in the entire runtime?" — is unanswerable for this source: there is no tool system and no runtime present to test.
+1. Recursive enumeration of files, symlinks, fifos, and sockets → no results (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101`).
+2. Hidden-entry scan → no hidden files or directories (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:102`).
+3. Recursive listing → only two directories total, both empty: `source` and `source/07.04-timeouts-and-cancellation` (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:103`).
+4. Git status/history probes → path has never been committed; git tracks no content here (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:104`).
+
+No cross-source filesystem access was performed (Hard Rule 1 respected); sibling sources were not read.
 
 ## Rating
 
-**1 / 10 — Absent.**
+**Score: 1 / 10**
 
-Rationale: The rubric's lowest band ("Absent, implicit, ad-hoc, or unsafe") applies literally: there is no package or module structure in the source at all. No dependency direction can be checked, no public/internal API distinction exists, and no separation tests exist. This is not a judgment about design quality — it is a statement that the artifact under study contains nothing to design with. If the source directory was intended to be populated with generated report artifacts before this study ran, that population step did not occur (see Questions / Gaps).
+Rationale: The rubric's 1–3 band covers "Absent, implicit, ad-hoc, or unsafe" boundaries. Here there is literally nothing to bound (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101`): no packages, no modules, no manifests, no interfaces. A score of 1 reflects that package/module separation as a property of this source does not exist in any observable form. No higher score is defensible because even "implicit" separation implies some structure to be implicit about, and none exists.
 
 ## Evidence Collected
 
-Every claim traces to direct filesystem inspection of the selected source on 2026-08-22. Because the selected source contains zero files, no source-side `file.go:42` anchors exist inside it; each citation below therefore points either to the dimension definition that specifies the evidence target or to the line of this report where the inspection and its observed result are recorded.
+Every entry MUST include a file path with line numbers. Format: `path/to/file.ts:NN`.
+
+Because the source holds zero files, each anchor below points into this report's Search Audit Record instead of into a source file; the inspected location and result are preserved in the Evidence column (see the Citation note above).
 
 | Area | Evidence | File:Line |
 |------|----------|-----------|
-| Package structure | No evidence found — `find` over the full source tree returned 0 files; only directories `source/` and `source/24.01-public-api-surface/` exist | `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:17`; inventory recorded at `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:16-19` |
-| Module dependency graphs | No evidence found — no manifests or import-bearing files exist to construct a graph | `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:18`; see search boundary `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:45-46` |
-| Module boundaries | No evidence found — no packages, namespaces, or directories with code content exist | `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:19`; empty skeleton recorded at `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:19` |
-| API visibility annotations | No evidence found — no source files exist to carry export/visibility markers | `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:20`; see search boundary `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:45-46` |
-| Separation tests | No evidence found — no test files or CI configuration exist | `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:21`; see search boundary `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:45-46` |
-
-Search boundary (for reproducibility):
-
-1. Recursive file listing of the entire source root — 0 files found.
-2. Recursive directory listing including hidden entries (`ls -laR`, `find -mindepth 1`) — only the two empty directories named above; no dotfiles, no symlinks, no manifests.
-3. No other workspace location was inspected for substitute evidence, per the single-source isolation rule.
+| Package structure | No files exist; no `go.mod`, `package.json`, `Cargo.toml`, `pyproject.toml`, or equivalent manifest was found (search 1 above) | `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101` |
+| Only artifact present | Single empty subdirectory named for a different study dimension (07.04), not this one (22.01) | `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:103` |
+| Module dependency graphs | Nothing to graph; no imports, modules, or build units exist — search root `studies/agent-harness-study/sources/reports` returned zero files | `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101` |
+| API visibility annotations | No symbols, exports, decorators, or visibility keywords exist — search root `studies/agent-harness-study/sources/reports` returned zero files | `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101` |
+| Separation tests | No test files exist anywhere in the tree — search root `studies/agent-harness-study/sources/reports` returned zero files | `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101` |
 
 ## Answers to Dimension Questions
 
-1. **Are modules cleanly separated?**
-   No clear evidence found. The source contains no modules to separate. The only structure present is an empty directory `studies/agent-harness-study/sources/reports/source/24.01-public-api-surface/`, which carries a dimension-style naming convention but no content (recorded at `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:19`).
+**1. Are modules cleanly separated?**
+No clear evidence found. The source contains no modules. Searched: full recursive file/symlink/hidden-entry enumeration within `studies/agent-harness-study/sources/reports`; all four probes listed in the Summary returned empty (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:101`, `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:103`).
 
-2. **Do dependencies flow in one direction?**
-   No clear evidence found. With zero files, there are no imports, requires, or module references, so dependency direction cannot be assessed — vacuously or otherwise. Search boundary: `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:45-46`.
+**2. Do dependencies flow in one direction?**
+No clear evidence found. There are no files and therefore no import edges or dependency declarations to evaluate directionality on.
 
-3. **Can modules be used independently?**
-   No clear evidence found. There are no modules, so independent usability cannot be demonstrated or refuted. The dimension's guiding question ("Can you use the tool system without pulling in the entire runtime?", `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:39`) has no object to evaluate here.
+**3. Can modules be used independently?**
+Not applicable / no evidence. Independence cannot be assessed without at least one consumable unit (a package root with a manifest). None exists.
 
-4. **Are public APIs distinguished from internal ones?**
-   No clear evidence found. No API surfaces, export statements, `__all__` definitions, `pub` markers, or documentation of visibility exist in the source. Evidence target defined at `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:20`; search boundary at `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:45-46`.
+**4. Are public APIs distinguished from internal ones?**
+No clear evidence found. No source files, type definitions, or export surfaces are present to distinguish public from internal.
 
 ## Architectural Decisions
 
-No clear evidence found. No files exist from which architectural decisions could be inferred. The only observable decision is at the study-workspace level: the source was registered as a directory-kind source with a `source/<dimension>/` layout (`studies/agent-harness-study/sources/reports/source/24.01-public-api-surface/`, skeleton recorded at `studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:19`), suggesting an intent to study generated reports as a corpus — but that intent is inferred from the directory name alone and is not backed by any file.
+- **Directory-as-report-slot convention (observed structure, inferred intent):** The layout `sources/<source-name>/source/<dimension-id>-<dimension-slug>/` is visible from `studies/agent-harness-study/sources/reports/source/07.04-timeouts-and-cancellation` (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:103`). This suggests the harness materializes one directory per (source, dimension) pair as a report destination. This is *inferred intent* from naming, not implemented behavior — the directory is empty, so no writer code exists inside this boundary to confirm it.
+- **Dimension mismatch observation:** The sole existing slot belongs to dimension `07.04` while this task studies `22.01`. Either the expected output for 07.04 was never produced/cleaned, or slots pre-exist their reports. Cannot be resolved from within this boundary ("No evidence found").
 
 ## Notable Patterns
 
-No clear evidence found. The single pattern worth recording is the empty-but-nested directory layout itself: a `source/` layer plus a dimension-keyed subdirectory (`24.01-public-api-surface`), mirroring the naming convention of the study's dimension catalog. This suggests a planned-but-unexecuted population of per-dimension report snapshots.
+- No patterns can be extracted from an empty tree. The only pattern-like observation is the dimension-id-prefixed directory naming convention noted under Architectural Decisions (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:103`). Treat it as weak signal until confirmed by writer-side code, which lives outside this study's isolation boundary and was deliberately not inspected.
 
 ## Tradeoffs
 
-No clear evidence found. With no implementation present, there are no realized tradeoffs to analyze. One meta-observation: studying generated reports as a "source" couples this study's validity to an upstream generation step; when that step does not run (as here), the study degrades to an emptiness audit rather than an architecture analysis.
+- **Empty-slot convention vs. provenance clarity:** Pre-creating per-dimension directories (if that is what happened) makes destinations predictable but leaves no self-describing content; an empty directory carries zero evidence of what will populate it or who owns the write. As observed, the tradeoff currently resolves entirely toward ambiguity.
+- **Isolation strictness vs. verifiability:** Because Hard Rule 1 forbids reading sibling sources, this analysis *cannot* corroborate whether other sources' report trees share the same layout. The cost of isolation here is that the strongest available evidence lies outside the permitted boundary — correctly left unread, but worth stating.
 
 ## Failure Modes / Edge Cases
 
-- **Empty-source failure mode (observed).** The pipeline allowed a study task to be dispatched against a source containing zero files. Nothing in the task inputs flagged the source as unpopulated; the emptiness was only discoverable by direct inspection. Any downstream aggregation that consumes this report should treat rating 1 + "No evidence found" as a signal of a pipeline gap, not a negative architectural verdict.
-- **Temptation to substitute evidence (avoided).** Fully populated report directories for other dimensions exist in the workspace output tree. Citing them would have violated the single-source isolation rule; this report deliberately does not read or cite them.
+- **Studying a non-code source with a code-oriented dimension:** Dimension 22.01 assumes a runtime/tooling codebase. Applied to an output directory, every step degenerates to "nothing to inspect." Harnesses should either skip code-boundary dimensions for directory-of-reports sources or auto-degrade them to structural/layout checks.
+- **Empty-directory blindness in tooling:** Standard discovery tools (`ls` without `-a`, glob-based file matchers) return "not found" rather than "found-but-empty," which can mask the difference between a misconfigured path and an intentionally empty slot. The `find ... -mindepth 1` enumeration used here disambiguates those cases.
+- **Git invisibility of empty directories:** Git does not track empty directories (`git status --short` and `git log` return nothing for this path), so the slot cited at `studies/agent-harness-study/sources/reports/source/07.04-timeouts-and-cancellation` would silently vanish for any consumer relying solely on a clone — a reproducibility hazard for downstream report aggregation (`studies/agent-harness-study/reports/source/22.01-package-module-boundaries/reports.md:104`).
 
 ## Future Considerations
 
-- Populate `studies/agent-harness-study/sources/reports` with the intended report corpus before re-running this dimension, so the analysis can evaluate real boundaries (e.g., how generated reports group by repository vs. dimension).
-- Add a pre-flight guard to the study runner: refuse to dispatch a dimension against a source with 0 files, or emit an explicit "source unpopulated" status instead of a rated report.
-- If empty sources are legitimate (placeholder studies), encode that in source metadata so reports can distinguish "absent by design" from "absent by pipeline failure."
+- Populate the target slot for this dimension before scheduling dimension 22.01 against a *code* source where the rubric can actually discriminate between scores 1–10.
+- Add a harness-level precondition check: if a selected source contains fewer than N files or no recognized manifest, emit an explicit "source not analyzable for this dimension" result instead of a full template pass, so low-information studies are cheaply identifiable.
+- If empty report slots are intentional placeholders, drop a `.keep`-style marker so they survive git round-trips and communicate ownership.
 
 ## Questions / Gaps
 
-- Was `studies/agent-harness-study/sources/reports` supposed to be populated (e.g., by copying generated reports into `source/24.01-public-api-surface/` and sibling directories) before this study ran? The empty directory skeleton suggests yes; no evidence in-source confirms it.
-- What was the intended granularity of the corpus — one file per repo per dimension, or a merged corpus? Unanswerable from the source; the sibling output directory naming (`reports.md`, `<repo>.md`) hints at per-repo files but is outside this source's boundary and was not inspected.
-- All five evidence areas from the dimension (package structure, dependency graphs, boundaries, API visibility, separation tests; `studies/agent-harness-study/dimensions/22.01-package-module-boundaries.md:17-21`) are unpopulated. This is a complete evidence gap, explicitly recorded rather than papered over.
+- Why does the only existing slot reference dimension `07.04-timeouts-and-cancellation` when this task targets `22.01`? Unanswerable within the isolation boundary ("No evidence found").
+- Is the emptiness of this source a pipeline failure (report generation never ran/was cleaned) or the intended initial state? Unanswerable within the boundary; requires inspecting the generating process outside this source.
+- What populates these directories — the UltraPlan execute/reconcile stages, or the study tasks themselves? No manifest, README, or script exists inside the source to answer.
+
+### Search Audit Record
+
+All commands were run from the workspace root against the selected source only:
+
+1. `find studies/agent-harness-study/sources/reports -mindepth 1 \( -type f -o -type l -o -type p -o -type s \)` → no results.
+2. `find studies/agent-harness-study/sources/reports -name '.*' -mindepth 1` → no hidden files or directories.
+3. Recursive `ls -laR` → exactly two directories total: `studies/agent-harness-study/sources/reports/source` and `studies/agent-harness-study/sources/reports/source/07.04-timeouts-and-cancellation`; both are empty.
+4. `git status --short -- <path>` and `git log -- <path>` → path has never been committed; git tracks no content here.
 
 ---
 

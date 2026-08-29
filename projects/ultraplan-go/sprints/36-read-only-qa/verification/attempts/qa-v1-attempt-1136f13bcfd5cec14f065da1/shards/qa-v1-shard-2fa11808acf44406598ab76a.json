@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-2fa11808acf44406598ab76a",
+  "attempt_id": "qa-v1-attempt-1136f13bcfd5cec14f065da1",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-2fa11808acf44406598ab76a",
+    "summary": "investigator used 6 turns; limit is 4",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_44ld2s3gdane6h7mrxkmyc5u6i/qa-v1-shard-2fa11808acf44406598ab76a/1",
+      "number": 1,
+      "started_at": "2026-08-25T13:07:56.592715112Z",
+      "completed_at": "2026-08-25T13:12:13.949834719Z",
+      "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 60342,
+        "output_tokens_known": true,
+        "output_tokens": 8151,
+        "total_tokens_known": true,
+        "total_tokens": 222029,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 153536,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 6
+      },
+      "estimated_cost": {
+        "amount": 0,
+        "currency": "USD",
+        "estimate": false
+      },
+      "stop_reason": "investigator iteration limit exceeded"
+    }
+  ]
+}

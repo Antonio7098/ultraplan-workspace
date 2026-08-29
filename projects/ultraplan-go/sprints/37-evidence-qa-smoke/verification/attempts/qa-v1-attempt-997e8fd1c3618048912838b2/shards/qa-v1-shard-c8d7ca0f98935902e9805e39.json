@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-c8d7ca0f98935902e9805e39",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "primary",
+  "title": "docs",
+  "changed_paths": [
+    "docs/architecture.md"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in docs"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-c8d7ca0f98935902e9805e39/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:16:18.700114512Z",
+      "completed_at": "2026-08-28T11:17:44.487725088Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "ctx-architecture-impl-verify",
+          "paths": [
+            "internal/app/web_usecases.go",
+            "internal/web/router.go",
+            "internal/sprint/map.go"
+          ],
+          "reason": "Need to compare docs claims against implementation to confirm or refute documentation drift",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read-only inspection of docs/architecture.md (250 lines) covering composition, web boundary, QA verification, run-control; no semantic diff observable without Git; no execution performed",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:not-computed-readonly-inspection"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 29,
+      "retained_events": 29,
+      "observed_tool_calls": 2,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-46eafbf11b6fdddc3b7986ee",
+      "shard_id": "qa-v1-shard-c8d7ca0f98935902e9805e39",
+      "claim": "QA verification phase sections in docs/architecture.md diverge from current QA contracts/implementation",
+      "basis": "File contains extensive QA-specific section at docs/architecture.md:134-250 covering VerificationPhase, deterministic maps/shards, v1/v2 state, runcontrol fencing, and isolation; documentation edit here risks handbook and contract drift",
+      "verification_surface": "docs/architecture.md:134-250 textual review against contract-llm-evaluation-cost-safety, contract-testing, and related QA contracts",
+      "expectation_refs": [
+        "contract-llm-evaluation-cost-safety",
+        "contract-observability",
+        "contract-testing",
+        "handbook"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "QA/run-control assertions contradict approved contracts or show stale limits/paths versus current implementation",
+      "refutation_condition": "QA section accurately reflects v1/v2 schema and run-control semantics and edit is clerical with no semantic drift",
+      "inconclusive_condition": "Cannot compare prior revision or inspect internal/sprint and internal/runcontrol code within single-path read-only shard",
+      "safe_evidence_strategy": "Read-only file read of docs/architecture.md with bounded grep for QA terminology; compare to expectation refs text if present; no execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-c8d7ca0f98935902e9805e39/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:16:18.700114512Z",
+          "completed_at": "2026-08-28T11:17:44.487725088Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-architecture-impl-verify",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/web/router.go",
+                "internal/sprint/map.go"
+              ],
+              "reason": "Need to compare docs claims against implementation to confirm or refute documentation drift",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Read-only inspection of docs/architecture.md (250 lines) covering composition, web boundary, QA verification, run-control; no semantic diff observable without Git; no execution performed",
+              "paths": [
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:not-computed-readonly-inspection"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 29,
+          "retained_events": 29,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read-only inspection of docs/architecture.md (250 lines) covering composition, web boundary, QA verification, run-control; no semantic diff observable without Git; no execution performed",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:not-computed-readonly-inspection"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "No Git history/shell to isolate semantic diff; implementation files not in assigned paths so code-to-doc validation is blocked"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8f4235e4dbe12e9b28c4a23d",
+      "shard_id": "qa-v1-shard-c8d7ca0f98935902e9805e39",
+      "claim": "docs/architecture.md change introduces inaccuracy vs implemented module boundaries (Local Interface Composition / Web Adapter Boundary / State Ownership)",
+      "basis": "Packet assigns single changed path docs/architecture.md with behavioral concern 'changed behavior in docs'; file at docs/architecture.md:1-250 makes normative claims about cmd/ultraplan -\u003e internal/app / internal/tui / internal/web composition, prohibited cycle avoidance, web preflight, and state retention that must align with contract-architecture and code",
+      "verification_surface": "docs/architecture.md:1-82 textual review against contract-architecture and contract-documentation",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation",
+        "handbook"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Current docs/architecture.md text contradicts contract-architecture or observable code invariants (e.g., claims no internal/app -\u003e internal/web -\u003e internal/app cycle while code has it)",
+      "refutation_condition": "Sampled normative assertions in docs/architecture.md:6-81 match contract-architecture and diff is editorial/formatting only",
+      "inconclusive_condition": "Diff versus prior revision and cross-file code comparison unavailable within read-only shard limited to docs/architecture.md without shell/Git",
+      "safe_evidence_strategy": "Read-only read/list/grep of assigned path docs/architecture.md only; textual comparison to expectation refs where available; no shell or execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-c8d7ca0f98935902e9805e39/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:16:18.700114512Z",
+          "completed_at": "2026-08-28T11:17:44.487725088Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-architecture-impl-verify",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/web/router.go",
+                "internal/sprint/map.go"
+              ],
+              "reason": "Need to compare docs claims against implementation to confirm or refute documentation drift",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Read-only inspection of docs/architecture.md (250 lines) covering composition, web boundary, QA verification, run-control; no semantic diff observable without Git; no execution performed",
+              "paths": [
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:not-computed-readonly-inspection"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 29,
+          "retained_events": 29,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read-only inspection of docs/architecture.md (250 lines) covering composition, web boundary, QA verification, run-control; no semantic diff observable without Git; no execution performed",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:not-computed-readonly-inspection"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Shard limited to docs/architecture.md; cannot obtain Git diff or read internal/* implementation files to validate composition/boundary claims without expanded context"
+    }
+  ]
+}

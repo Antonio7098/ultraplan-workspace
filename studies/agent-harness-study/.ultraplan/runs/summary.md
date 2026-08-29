@@ -1,7 +1,7 @@
 # Study Run Summary
 
 - Study: `agent-harness-study`
-- Updated: `2026-08-22T13:22:06Z`
+- Updated: `2026-08-29T18:23:49Z`
 - Study progress state: `.ultraplan/run-state.json`
 - Ledger: `.ultraplan/runs/tasks.jsonl`
 
@@ -9,910 +9,458 @@
 
 | Metric | Value |
 | --- | ---: |
-| Runs recorded | 306 |
-| Completed | 289 |
-| Failed | 4 |
-| Cancelled | 13 |
+| Runs recorded | 1730 |
+| Completed | 1482 |
+| Failed | 113 |
+| Cancelled | 135 |
 | Skipped | 0 |
-| Remaining tasks | 761 |
-| Dimensions seen | 41 |
-| Sources seen | 11 |
+| Remaining tasks | 0 |
+| Dimensions seen | 118 |
+| Sources seen | 10 |
 
 ## Remaining Work
 
-| Dimension | Source | Kind | Status |
-| --- | --- | --- | --- |
-| 01.01-execution-model-taxonomy | reports | analysis | pending |
-| 01.02-control-flow-ownership | reports | analysis | pending |
-| 01.03-step-turn-task-atomicity | reports | analysis | pending |
-| 01.04-termination-and-loop-bounds | reports | analysis | pending |
-| 01.05-pause-resume-interrupt-semantics | reports | analysis | pending |
-| 01.06-scheduling-and-trigger-semantics | reports | analysis | pending |
-| 01.07-concurrency-and-parallel-advancement | reports | analysis | pending |
-| 01.08-streaming-execution-semantics | reports | analysis | pending |
-| 01.09-delivery-guarantees-idempotency | reports | analysis | pending |
-| 01.10-replay-and-determinism | reports | analysis | pending |
-| 01.11-terminal-outcome-arbitration | reports | analysis | pending |
-| 02.01-state-taxonomy-and-ownership | reports | analysis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | reports | analysis | pending |
-| 02.03-event-sourcing-and-replay-state | reports | analysis | pending |
-| 02.04-mutation-discipline-and-state-transitions | reports | analysis | pending |
-| 02.05-persistence-durability-tiers | reports | analysis | pending |
-| 02.06-schema-versioning-and-migration | reports | analysis | pending |
-| 02.07-session-thread-user-boundaries | reports | analysis | pending |
-| 02.08-crash-recovery-and-reconstruction | reports | analysis | pending |
-| 02.09-state-pruning-compaction-retention | reports | analysis | pending |
-| 03.01-llm-turn-loop-structure | reports | analysis | pending |
-| 03.02-reason-act-observe-cadence | reports | analysis | pending |
-| 03.03-tool-calling-roundtrip-control | reports | analysis | pending |
-| 03.04-planner-executor-separation | reports | analysis | pending |
-| 03.05-reflection-reask-self-correction | reports | analysis | pending |
-| 03.06-stuck-doom-loop-detection | reports | analysis | pending |
-| 03.07-context-refresh-inside-loop | reports | analysis | pending |
-| 03.08-subagent-forked-loop-design | reports | analysis | pending |
-| 03.09-completion-and-finalization-semantics | reports | analysis | pending |
-| 04.01-tool-definition-and-registration | reports | analysis | pending |
-| 04.02-tool-schema-generation-validation | reports | analysis | pending |
-| 04.03-tool-catalog-discovery-routing | reports | analysis | pending |
-| 04.04-tool-context-dependency-injection | reports | analysis | pending |
-| 04.05-tool-permissions-approval-metadata | reports | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | openai-agents-sdk | analysis | pending |
-| 04.06-tool-result-contract-error-envelope | reports | analysis | pending |
-| 04.07-external-tool-protocols-mcp | agent-framework | analysis | pending |
-| 04.07-external-tool-protocols-mcp | langgraph | analysis | pending |
-| 04.07-external-tool-protocols-mcp | openai-agents-sdk | analysis | pending |
-| 04.07-external-tool-protocols-mcp | openhands | analysis | pending |
-| 04.07-external-tool-protocols-mcp | pydantic-ai | analysis | pending |
-| 04.07-external-tool-protocols-mcp | reports | analysis | pending |
-| 04.08-agent-as-tool-composition | agent-framework | analysis | pending |
-| 04.08-agent-as-tool-composition | crewai | analysis | pending |
-| 04.08-agent-as-tool-composition | langgraph | analysis | pending |
-| 04.08-agent-as-tool-composition | openai-agents-sdk | analysis | pending |
-| 04.08-agent-as-tool-composition | openhands | analysis | pending |
-| 04.08-agent-as-tool-composition | pydantic-ai | analysis | pending |
-| 04.08-agent-as-tool-composition | reports | analysis | pending |
-| 05.01-short-term-conversation-memory | agent-framework | analysis | pending |
-| 05.01-short-term-conversation-memory | crewai | analysis | pending |
-| 05.01-short-term-conversation-memory | langgraph | analysis | pending |
-| 05.01-short-term-conversation-memory | letta | analysis | pending |
-| 05.01-short-term-conversation-memory | openai-agents-sdk | analysis | pending |
-| 05.01-short-term-conversation-memory | openhands | analysis | pending |
-| 05.01-short-term-conversation-memory | pydantic-ai | analysis | pending |
-| 05.01-short-term-conversation-memory | reports | analysis | pending |
-| 05.02-working-memory-scratchpad | agent-framework | analysis | pending |
-| 05.02-working-memory-scratchpad | crewai | analysis | pending |
-| 05.02-working-memory-scratchpad | langgraph | analysis | pending |
-| 05.02-working-memory-scratchpad | letta | analysis | pending |
-| 05.02-working-memory-scratchpad | openai-agents-sdk | analysis | pending |
-| 05.02-working-memory-scratchpad | openhands | analysis | pending |
-| 05.02-working-memory-scratchpad | pydantic-ai | analysis | pending |
-| 05.02-working-memory-scratchpad | reports | analysis | pending |
-| 05.03-long-term-user-project-domain-memory | agent-framework | analysis | pending |
-| 05.03-long-term-user-project-domain-memory | crewai | analysis | pending |
-| 05.03-long-term-user-project-domain-memory | letta | analysis | pending |
-| 05.03-long-term-user-project-domain-memory | openhands | analysis | pending |
-| 05.03-long-term-user-project-domain-memory | reports | analysis | pending |
-| 05.04-retrieval-augmented-memory | agent-framework | analysis | pending |
-| 05.04-retrieval-augmented-memory | crewai | analysis | pending |
-| 05.04-retrieval-augmented-memory | langgraph | analysis | pending |
-| 05.04-retrieval-augmented-memory | letta | analysis | pending |
-| 05.04-retrieval-augmented-memory | openhands | analysis | pending |
-| 05.04-retrieval-augmented-memory | pydantic-ai | analysis | pending |
-| 05.04-retrieval-augmented-memory | reports | analysis | pending |
-| 05.05-memory-write-policy | agent-framework | analysis | pending |
-| 05.05-memory-write-policy | crewai | analysis | pending |
-| 05.05-memory-write-policy | letta | analysis | pending |
-| 05.05-memory-write-policy | openhands | analysis | pending |
-| 05.05-memory-write-policy | reports | analysis | pending |
-| 05.06-memory-compression-summarization | agent-framework | analysis | pending |
-| 05.06-memory-compression-summarization | crewai | analysis | pending |
-| 05.06-memory-compression-summarization | langgraph | analysis | pending |
-| 05.06-memory-compression-summarization | letta | analysis | pending |
-| 05.06-memory-compression-summarization | openhands | analysis | pending |
-| 05.06-memory-compression-summarization | reports | analysis | pending |
-| 05.07-memory-privacy-scope-deletion | agent-framework | analysis | pending |
-| 05.07-memory-privacy-scope-deletion | crewai | analysis | pending |
-| 05.07-memory-privacy-scope-deletion | letta | analysis | pending |
-| 05.07-memory-privacy-scope-deletion | openhands | analysis | pending |
-| 05.07-memory-privacy-scope-deletion | reports | analysis | pending |
-| 05.08-memory-evaluation-freshness | letta | analysis | pending |
-| 05.08-memory-evaluation-freshness | reports | analysis | pending |
-| 06.01-planning-location-responsibility | agent-framework | analysis | pending |
-| 06.01-planning-location-responsibility | crewai | analysis | pending |
-| 06.01-planning-location-responsibility | langgraph | analysis | pending |
-| 06.01-planning-location-responsibility | letta | analysis | pending |
-| 06.01-planning-location-responsibility | openai-agents-sdk | analysis | pending |
-| 06.01-planning-location-responsibility | openhands | analysis | pending |
-| 06.01-planning-location-responsibility | pydantic-ai | analysis | pending |
-| 06.01-planning-location-responsibility | reports | analysis | pending |
-| 06.02-task-decomposition-representation | agent-framework | analysis | pending |
-| 06.02-task-decomposition-representation | crewai | analysis | pending |
-| 06.02-task-decomposition-representation | langgraph | analysis | pending |
-| 06.02-task-decomposition-representation | openai-agents-sdk | analysis | pending |
-| 06.02-task-decomposition-representation | openhands | analysis | pending |
-| 06.02-task-decomposition-representation | pydantic-ai | analysis | pending |
-| 06.02-task-decomposition-representation | reports | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | agent-framework | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | crewai | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | langgraph | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | letta | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | openai-agents-sdk | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | openhands | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | pydantic-ai | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | reports | analysis | pending |
-| 06.03-plan-lifecycle-and-revision | temporal | analysis | pending |
-| 06.04-planner-executor-contract | agent-framework | analysis | pending |
-| 06.04-planner-executor-contract | crewai | analysis | pending |
-| 06.04-planner-executor-contract | langgraph | analysis | pending |
-| 06.04-planner-executor-contract | openai-agents-sdk | analysis | pending |
-| 06.04-planner-executor-contract | openhands | analysis | pending |
-| 06.04-planner-executor-contract | pydantic-ai | analysis | pending |
-| 06.04-planner-executor-contract | reports | analysis | pending |
-| 06.05-objective-progress-tracking | agent-framework | analysis | pending |
-| 06.05-objective-progress-tracking | crewai | analysis | pending |
-| 06.05-objective-progress-tracking | langgraph | analysis | pending |
-| 06.05-objective-progress-tracking | letta | analysis | pending |
-| 06.05-objective-progress-tracking | openai-agents-sdk | analysis | pending |
-| 06.05-objective-progress-tracking | openhands | analysis | pending |
-| 06.05-objective-progress-tracking | pydantic-ai | analysis | pending |
-| 06.05-objective-progress-tracking | reports | analysis | pending |
-| 06.05-objective-progress-tracking | temporal | analysis | pending |
-| 06.06-search-backtracking-alternatives | agent-framework | analysis | pending |
-| 06.06-search-backtracking-alternatives | crewai | analysis | pending |
-| 06.06-search-backtracking-alternatives | langgraph | analysis | pending |
-| 06.06-search-backtracking-alternatives | openhands | analysis | pending |
-| 06.06-search-backtracking-alternatives | reports | analysis | pending |
-| 06.07-plan-observability-evaluation | agent-framework | analysis | pending |
-| 06.07-plan-observability-evaluation | crewai | analysis | pending |
-| 06.07-plan-observability-evaluation | langgraph | analysis | pending |
-| 06.07-plan-observability-evaluation | openai-agents-sdk | analysis | pending |
-| 06.07-plan-observability-evaluation | openhands | analysis | pending |
-| 06.07-plan-observability-evaluation | pydantic-ai | analysis | pending |
-| 06.07-plan-observability-evaluation | reports | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | agent-framework | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | crewai | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | langgraph | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | letta | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | openai-agents-sdk | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | openhands | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | pydantic-ai | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | reports | analysis | pending |
-| 07.01-tool-scheduling-and-dispatch | temporal | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | agent-framework | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | crewai | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | langgraph | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | openai-agents-sdk | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | openhands | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | pydantic-ai | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | reports | analysis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | temporal | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | agent-framework | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | crewai | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | langgraph | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | openhands | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | pydantic-ai | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | reports | analysis | pending |
-| 07.03-idempotency-and-retry-semantics | temporal | analysis | pending |
-| 07.04-timeouts-and-cancellation | agent-framework | analysis | pending |
-| 07.04-timeouts-and-cancellation | crewai | analysis | pending |
-| 07.04-timeouts-and-cancellation | langgraph | analysis | pending |
-| 07.04-timeouts-and-cancellation | letta | analysis | pending |
-| 07.04-timeouts-and-cancellation | openai-agents-sdk | analysis | pending |
-| 07.04-timeouts-and-cancellation | openhands | analysis | pending |
-| 07.04-timeouts-and-cancellation | pydantic-ai | analysis | pending |
-| 07.04-timeouts-and-cancellation | reports | analysis | pending |
-| 07.04-timeouts-and-cancellation | temporal | analysis | pending |
-| 07.05-resource-locking-and-isolation | agent-framework | analysis | pending |
-| 07.05-resource-locking-and-isolation | langgraph | analysis | pending |
-| 07.05-resource-locking-and-isolation | openhands | analysis | pending |
-| 07.05-resource-locking-and-isolation | reports | analysis | pending |
-| 07.05-resource-locking-and-isolation | temporal | analysis | pending |
-| 07.06-side-effect-ledger-transaction-boundaries | agent-framework | analysis | pending |
-| 07.06-side-effect-ledger-transaction-boundaries | openhands | analysis | pending |
-| 07.06-side-effect-ledger-transaction-boundaries | reports | analysis | pending |
-| 07.06-side-effect-ledger-transaction-boundaries | temporal | analysis | pending |
-| 07.07-tool-output-streaming | agent-framework | analysis | pending |
-| 07.07-tool-output-streaming | crewai | analysis | pending |
-| 07.07-tool-output-streaming | langgraph | analysis | pending |
-| 07.07-tool-output-streaming | openai-agents-sdk | analysis | pending |
-| 07.07-tool-output-streaming | openhands | analysis | pending |
-| 07.07-tool-output-streaming | pydantic-ai | analysis | pending |
-| 07.07-tool-output-streaming | reports | analysis | pending |
-| 07.07-tool-output-streaming | temporal | analysis | pending |
-| 07.08-tool-failure-escalation | agent-framework | analysis | pending |
-| 07.08-tool-failure-escalation | crewai | analysis | pending |
-| 07.08-tool-failure-escalation | langgraph | analysis | pending |
-| 07.08-tool-failure-escalation | openai-agents-sdk | analysis | pending |
-| 07.08-tool-failure-escalation | openhands | analysis | pending |
-| 07.08-tool-failure-escalation | pydantic-ai | analysis | pending |
-| 07.08-tool-failure-escalation | reports | analysis | pending |
-| 07.08-tool-failure-escalation | temporal | analysis | pending |
-| 08.01-capability-model-trust-boundaries | agent-framework | analysis | pending |
-| 08.01-capability-model-trust-boundaries | langfuse | analysis | pending |
-| 08.01-capability-model-trust-boundaries | letta | analysis | pending |
-| 08.01-capability-model-trust-boundaries | opa | analysis | pending |
-| 08.01-capability-model-trust-boundaries | openai-agents-sdk | analysis | pending |
-| 08.01-capability-model-trust-boundaries | openhands | analysis | pending |
-| 08.01-capability-model-trust-boundaries | reports | analysis | pending |
-| 08.01-capability-model-trust-boundaries | temporal | analysis | pending |
-| 08.02-permission-policy-approval-gates | agent-framework | analysis | pending |
-| 08.02-permission-policy-approval-gates | langfuse | analysis | pending |
-| 08.02-permission-policy-approval-gates | opa | analysis | pending |
-| 08.02-permission-policy-approval-gates | openai-agents-sdk | analysis | pending |
-| 08.02-permission-policy-approval-gates | openhands | analysis | pending |
-| 08.02-permission-policy-approval-gates | reports | analysis | pending |
-| 08.02-permission-policy-approval-gates | temporal | analysis | pending |
-| 08.03-secrets-identity-environment | agent-framework | analysis | pending |
-| 08.03-secrets-identity-environment | langfuse | analysis | pending |
-| 08.03-secrets-identity-environment | letta | analysis | pending |
-| 08.03-secrets-identity-environment | opa | analysis | pending |
-| 08.03-secrets-identity-environment | openai-agents-sdk | analysis | pending |
-| 08.03-secrets-identity-environment | openhands | analysis | pending |
-| 08.03-secrets-identity-environment | reports | analysis | pending |
-| 08.03-secrets-identity-environment | temporal | analysis | pending |
-| 08.04-security-auditability | agent-framework | analysis | pending |
-| 08.04-security-auditability | langfuse | analysis | pending |
-| 08.04-security-auditability | letta | analysis | pending |
-| 08.04-security-auditability | opa | analysis | pending |
-| 08.04-security-auditability | openai-agents-sdk | analysis | pending |
-| 08.04-security-auditability | openhands | analysis | pending |
-| 08.04-security-auditability | reports | analysis | pending |
-| 08.04-security-auditability | temporal | analysis | pending |
-| 09.01-policy-injection-points | agent-framework | analysis | pending |
-| 09.01-policy-injection-points | langfuse | analysis | pending |
-| 09.01-policy-injection-points | opa | analysis | pending |
-| 09.01-policy-injection-points | openai-agents-sdk | analysis | pending |
-| 09.01-policy-injection-points | openhands | analysis | pending |
-| 09.01-policy-injection-points | reports | analysis | pending |
-| 09.02-risk-taxonomy-control-mapping | agent-framework | analysis | pending |
-| 09.02-risk-taxonomy-control-mapping | langfuse | analysis | pending |
-| 09.02-risk-taxonomy-control-mapping | opa | analysis | pending |
-| 09.02-risk-taxonomy-control-mapping | openai-agents-sdk | analysis | pending |
-| 09.02-risk-taxonomy-control-mapping | openhands | analysis | pending |
-| 09.02-risk-taxonomy-control-mapping | reports | analysis | pending |
-| 09.03-governance-ux-operator-workflow | agent-framework | analysis | pending |
-| 09.03-governance-ux-operator-workflow | langfuse | analysis | pending |
-| 09.03-governance-ux-operator-workflow | opa | analysis | pending |
-| 09.03-governance-ux-operator-workflow | openai-agents-sdk | analysis | pending |
-| 09.03-governance-ux-operator-workflow | openhands | analysis | pending |
-| 09.03-governance-ux-operator-workflow | reports | analysis | pending |
-| 09.04-governance-evidence-generation | agent-framework | analysis | pending |
-| 09.04-governance-evidence-generation | langfuse | analysis | pending |
-| 09.04-governance-evidence-generation | opa | analysis | pending |
-| 09.04-governance-evidence-generation | openai-agents-sdk | analysis | pending |
-| 09.04-governance-evidence-generation | openhands | analysis | pending |
-| 09.04-governance-evidence-generation | reports | analysis | pending |
-| 10.01-span-hierarchy-run-tree | agent-framework | analysis | pending |
-| 10.01-span-hierarchy-run-tree | crewai | analysis | pending |
-| 10.01-span-hierarchy-run-tree | langfuse | analysis | pending |
-| 10.01-span-hierarchy-run-tree | langgraph | analysis | pending |
-| 10.01-span-hierarchy-run-tree | letta | analysis | pending |
-| 10.01-span-hierarchy-run-tree | openai-agents-sdk | analysis | pending |
-| 10.01-span-hierarchy-run-tree | openhands | analysis | pending |
-| 10.01-span-hierarchy-run-tree | pydantic-ai | analysis | pending |
-| 10.01-span-hierarchy-run-tree | reports | analysis | pending |
-| 10.01-span-hierarchy-run-tree | temporal | analysis | pending |
-| 10.02-event-schema-lifecycle-events | agent-framework | analysis | pending |
-| 10.02-event-schema-lifecycle-events | crewai | analysis | pending |
-| 10.02-event-schema-lifecycle-events | langfuse | analysis | pending |
-| 10.02-event-schema-lifecycle-events | langgraph | analysis | pending |
-| 10.02-event-schema-lifecycle-events | letta | analysis | pending |
-| 10.02-event-schema-lifecycle-events | opa | analysis | pending |
-| 10.02-event-schema-lifecycle-events | openai-agents-sdk | analysis | pending |
-| 10.02-event-schema-lifecycle-events | openhands | analysis | pending |
-| 10.02-event-schema-lifecycle-events | pydantic-ai | analysis | pending |
-| 10.02-event-schema-lifecycle-events | reports | analysis | pending |
-| 10.02-event-schema-lifecycle-events | temporal | analysis | pending |
-| 10.03-causal-links-lineage | agent-framework | analysis | pending |
-| 10.03-causal-links-lineage | langfuse | analysis | pending |
-| 10.03-causal-links-lineage | langgraph | analysis | pending |
-| 10.03-causal-links-lineage | letta | analysis | pending |
-| 10.03-causal-links-lineage | opa | analysis | pending |
-| 10.03-causal-links-lineage | openai-agents-sdk | analysis | pending |
-| 10.03-causal-links-lineage | openhands | analysis | pending |
-| 10.03-causal-links-lineage | pydantic-ai | analysis | pending |
-| 10.03-causal-links-lineage | reports | analysis | pending |
-| 10.03-causal-links-lineage | temporal | analysis | pending |
-| 10.04-export-interoperability-observability | agent-framework | analysis | pending |
-| 10.04-export-interoperability-observability | langfuse | analysis | pending |
-| 10.04-export-interoperability-observability | openai-agents-sdk | analysis | pending |
-| 10.04-export-interoperability-observability | openhands | analysis | pending |
-| 10.04-export-interoperability-observability | reports | analysis | pending |
-| 10.04-export-interoperability-observability | temporal | analysis | pending |
-| 10.05-event-retention-observer-delivery-backpressure | reports | analysis | pending |
-| 11.01-context-selection-policy | agent-framework | analysis | pending |
-| 11.01-context-selection-policy | crewai | analysis | pending |
-| 11.01-context-selection-policy | langgraph | analysis | pending |
-| 11.01-context-selection-policy | letta | analysis | pending |
-| 11.01-context-selection-policy | openai-agents-sdk | analysis | pending |
-| 11.01-context-selection-policy | openhands | analysis | pending |
-| 11.01-context-selection-policy | pydantic-ai | analysis | pending |
-| 11.01-context-selection-policy | reports | analysis | pending |
-| 11.02-token-budgeting-and-compression | agent-framework | analysis | pending |
-| 11.02-token-budgeting-and-compression | crewai | analysis | pending |
-| 11.02-token-budgeting-and-compression | langgraph | analysis | pending |
-| 11.02-token-budgeting-and-compression | letta | analysis | pending |
-| 11.02-token-budgeting-and-compression | openai-agents-sdk | analysis | pending |
-| 11.02-token-budgeting-and-compression | openhands | analysis | pending |
-| 11.02-token-budgeting-and-compression | pydantic-ai | analysis | pending |
-| 11.02-token-budgeting-and-compression | reports | analysis | pending |
-| 11.03-repository-workspace-context-maps | agent-framework | analysis | pending |
-| 11.03-repository-workspace-context-maps | langgraph | analysis | pending |
-| 11.03-repository-workspace-context-maps | openhands | analysis | pending |
-| 11.03-repository-workspace-context-maps | reports | analysis | pending |
-| 11.04-context-provenance-integrity | agent-framework | analysis | pending |
-| 11.04-context-provenance-integrity | crewai | analysis | pending |
-| 11.04-context-provenance-integrity | langfuse | analysis | pending |
-| 11.04-context-provenance-integrity | langgraph | analysis | pending |
-| 11.04-context-provenance-integrity | letta | analysis | pending |
-| 11.04-context-provenance-integrity | opa | analysis | pending |
-| 11.04-context-provenance-integrity | openai-agents-sdk | analysis | pending |
-| 11.04-context-provenance-integrity | openhands | analysis | pending |
-| 11.04-context-provenance-integrity | pydantic-ai | analysis | pending |
-| 11.04-context-provenance-integrity | reports | analysis | pending |
-| 12.01-prompt-storage-versioning | agent-framework | analysis | pending |
-| 12.01-prompt-storage-versioning | crewai | analysis | pending |
-| 12.01-prompt-storage-versioning | langfuse | analysis | pending |
-| 12.01-prompt-storage-versioning | langgraph | analysis | pending |
-| 12.01-prompt-storage-versioning | letta | analysis | pending |
-| 12.01-prompt-storage-versioning | openai-agents-sdk | analysis | pending |
-| 12.01-prompt-storage-versioning | openhands | analysis | pending |
-| 12.01-prompt-storage-versioning | pydantic-ai | analysis | pending |
-| 12.01-prompt-storage-versioning | reports | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | agent-framework | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | crewai | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | langfuse | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | langgraph | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | letta | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | openai-agents-sdk | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | openhands | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | pydantic-ai | analysis | pending |
-| 12.02-prompt-templating-variable-contracts | reports | analysis | pending |
-| 12.03-prompt-evaluation-experiments | agent-framework | analysis | pending |
-| 12.03-prompt-evaluation-experiments | crewai | analysis | pending |
-| 12.03-prompt-evaluation-experiments | langfuse | analysis | pending |
-| 12.03-prompt-evaluation-experiments | langgraph | analysis | pending |
-| 12.03-prompt-evaluation-experiments | openai-agents-sdk | analysis | pending |
-| 12.03-prompt-evaluation-experiments | openhands | analysis | pending |
-| 12.03-prompt-evaluation-experiments | pydantic-ai | analysis | pending |
-| 12.03-prompt-evaluation-experiments | reports | analysis | pending |
-| 12.04-prompt-rollback-change-control | agent-framework | analysis | pending |
-| 12.04-prompt-rollback-change-control | langfuse | analysis | pending |
-| 12.04-prompt-rollback-change-control | reports | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | agent-framework | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | crewai | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | langfuse | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | langgraph | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | letta | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | opa | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | openai-agents-sdk | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | openhands | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | pydantic-ai | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | reports | analysis | pending |
-| 13.02-retry-fallback-degraded-mode | temporal | analysis | pending |
-| 13.03-failure-visibility | agent-framework | analysis | pending |
-| 13.03-failure-visibility | crewai | analysis | pending |
-| 13.03-failure-visibility | langfuse | analysis | pending |
-| 13.03-failure-visibility | langgraph | analysis | pending |
-| 13.03-failure-visibility | letta | analysis | pending |
-| 13.03-failure-visibility | opa | analysis | pending |
-| 13.03-failure-visibility | openai-agents-sdk | analysis | pending |
-| 13.03-failure-visibility | openhands | analysis | pending |
-| 13.03-failure-visibility | pydantic-ai | analysis | pending |
-| 13.03-failure-visibility | reports | analysis | pending |
-| 13.03-failure-visibility | temporal | analysis | pending |
-| 13.04-recovery-vs-escalation | agent-framework | analysis | pending |
-| 13.04-recovery-vs-escalation | crewai | analysis | pending |
-| 13.04-recovery-vs-escalation | langgraph | analysis | pending |
-| 13.04-recovery-vs-escalation | letta | analysis | pending |
-| 13.04-recovery-vs-escalation | opa | analysis | pending |
-| 13.04-recovery-vs-escalation | openai-agents-sdk | analysis | pending |
-| 13.04-recovery-vs-escalation | openhands | analysis | pending |
-| 13.04-recovery-vs-escalation | pydantic-ai | analysis | pending |
-| 13.04-recovery-vs-escalation | reports | analysis | pending |
-| 13.04-recovery-vs-escalation | temporal | analysis | pending |
-| 14.01-human-in-the-loop-trigger-policy | agent-framework | analysis | pending |
-| 14.01-human-in-the-loop-trigger-policy | crewai | analysis | pending |
-| 14.01-human-in-the-loop-trigger-policy | langgraph | analysis | pending |
-| 14.01-human-in-the-loop-trigger-policy | openai-agents-sdk | analysis | pending |
-| 14.01-human-in-the-loop-trigger-policy | openhands | analysis | pending |
-| 14.01-human-in-the-loop-trigger-policy | reports | analysis | pending |
-| 14.02-approval-session-design | agent-framework | analysis | pending |
-| 14.02-approval-session-design | crewai | analysis | pending |
-| 14.02-approval-session-design | langgraph | analysis | pending |
-| 14.02-approval-session-design | openai-agents-sdk | analysis | pending |
-| 14.02-approval-session-design | openhands | analysis | pending |
-| 14.02-approval-session-design | reports | analysis | pending |
-| 14.03-human-intervention-takeover | agent-framework | analysis | pending |
-| 14.03-human-intervention-takeover | crewai | analysis | pending |
-| 14.03-human-intervention-takeover | langgraph | analysis | pending |
-| 14.03-human-intervention-takeover | letta | analysis | pending |
-| 14.03-human-intervention-takeover | openai-agents-sdk | analysis | pending |
-| 14.03-human-intervention-takeover | openhands | analysis | pending |
-| 14.03-human-intervention-takeover | reports | analysis | pending |
-| 14.03-human-intervention-takeover | temporal | analysis | pending |
-| 15.01-coordination-topology | agent-framework | analysis | pending |
-| 15.01-coordination-topology | crewai | analysis | pending |
-| 15.01-coordination-topology | langgraph | analysis | pending |
-| 15.01-coordination-topology | openai-agents-sdk | analysis | pending |
-| 15.01-coordination-topology | openhands | analysis | pending |
-| 15.01-coordination-topology | pydantic-ai | analysis | pending |
-| 15.01-coordination-topology | reports | analysis | pending |
-| 15.02-message-routing-termination | agent-framework | analysis | pending |
-| 15.02-message-routing-termination | crewai | analysis | pending |
-| 15.02-message-routing-termination | langgraph | analysis | pending |
-| 15.02-message-routing-termination | openai-agents-sdk | analysis | pending |
-| 15.02-message-routing-termination | openhands | analysis | pending |
-| 15.02-message-routing-termination | pydantic-ai | analysis | pending |
-| 15.02-message-routing-termination | reports | analysis | pending |
-| 15.03-shared-state-conflict-resolution | agent-framework | analysis | pending |
-| 15.03-shared-state-conflict-resolution | crewai | analysis | pending |
-| 15.03-shared-state-conflict-resolution | langgraph | analysis | pending |
-| 15.03-shared-state-conflict-resolution | openai-agents-sdk | analysis | pending |
-| 15.03-shared-state-conflict-resolution | openhands | analysis | pending |
-| 15.03-shared-state-conflict-resolution | pydantic-ai | analysis | pending |
-| 15.03-shared-state-conflict-resolution | reports | analysis | pending |
-| 16.01-artifact-lifecycle | agent-framework | analysis | pending |
-| 16.01-artifact-lifecycle | langgraph | analysis | pending |
-| 16.01-artifact-lifecycle | openhands | analysis | pending |
-| 16.01-artifact-lifecycle | reports | analysis | pending |
-| 16.01-artifact-lifecycle | temporal | analysis | pending |
-| 16.02-diff-review-rollback | agent-framework | analysis | pending |
-| 16.02-diff-review-rollback | langgraph | analysis | pending |
-| 16.02-diff-review-rollback | openhands | analysis | pending |
-| 16.02-diff-review-rollback | reports | analysis | pending |
-| 16.03-artifact-provenance-reproducibility | agent-framework | analysis | pending |
-| 16.03-artifact-provenance-reproducibility | langgraph | analysis | pending |
-| 16.03-artifact-provenance-reproducibility | openhands | analysis | pending |
-| 16.03-artifact-provenance-reproducibility | reports | analysis | pending |
-| 16.03-artifact-provenance-reproducibility | temporal | analysis | pending |
-| 17.01-sandbox-boundary | agent-framework | analysis | pending |
-| 17.01-sandbox-boundary | opa | analysis | pending |
-| 17.01-sandbox-boundary | openhands | analysis | pending |
-| 17.01-sandbox-boundary | reports | analysis | pending |
-| 17.02-filesystem-network-process-controls | agent-framework | analysis | pending |
-| 17.02-filesystem-network-process-controls | opa | analysis | pending |
-| 17.02-filesystem-network-process-controls | openhands | analysis | pending |
-| 17.02-filesystem-network-process-controls | reports | analysis | pending |
-| 17.02-filesystem-network-process-controls | temporal | analysis | pending |
-| 17.03-isolation-observability-escape-handling | agent-framework | analysis | pending |
-| 17.03-isolation-observability-escape-handling | opa | analysis | pending |
-| 17.03-isolation-observability-escape-handling | openhands | analysis | pending |
-| 17.03-isolation-observability-escape-handling | reports | analysis | pending |
-| 17.03-isolation-observability-escape-handling | temporal | analysis | pending |
-| 18.01-dataset-golden-task-management | agent-framework | analysis | pending |
-| 18.01-dataset-golden-task-management | crewai | analysis | pending |
-| 18.01-dataset-golden-task-management | langfuse | analysis | pending |
-| 18.01-dataset-golden-task-management | langgraph | analysis | pending |
-| 18.01-dataset-golden-task-management | letta | analysis | pending |
-| 18.01-dataset-golden-task-management | openai-agents-sdk | analysis | pending |
-| 18.01-dataset-golden-task-management | openhands | analysis | pending |
-| 18.01-dataset-golden-task-management | pydantic-ai | analysis | pending |
-| 18.01-dataset-golden-task-management | reports | analysis | pending |
-| 18.02-trajectory-evaluation | agent-framework | analysis | pending |
-| 18.02-trajectory-evaluation | crewai | analysis | pending |
-| 18.02-trajectory-evaluation | langfuse | analysis | pending |
-| 18.02-trajectory-evaluation | langgraph | analysis | pending |
-| 18.02-trajectory-evaluation | letta | analysis | pending |
-| 18.02-trajectory-evaluation | openai-agents-sdk | analysis | pending |
-| 18.02-trajectory-evaluation | openhands | analysis | pending |
-| 18.02-trajectory-evaluation | pydantic-ai | analysis | pending |
-| 18.02-trajectory-evaluation | reports | analysis | pending |
-| 18.03-regression-gating-ci-integration | agent-framework | analysis | pending |
-| 18.03-regression-gating-ci-integration | langfuse | analysis | pending |
-| 18.03-regression-gating-ci-integration | langgraph | analysis | pending |
-| 18.03-regression-gating-ci-integration | opa | analysis | pending |
-| 18.03-regression-gating-ci-integration | openhands | analysis | pending |
-| 18.03-regression-gating-ci-integration | reports | analysis | pending |
-| 18.03-regression-gating-ci-integration | temporal | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | agent-framework | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | crewai | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | langfuse | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | openai-agents-sdk | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | openhands | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | pydantic-ai | analysis | pending |
-| 18.04-cost-latency-quality-evaluation | reports | analysis | pending |
-| 18.05-lifecycle-concurrency-invariant-verification | reports | analysis | pending |
-| 19.01-protocol-compatibility | agent-framework | analysis | pending |
-| 19.01-protocol-compatibility | crewai | analysis | pending |
-| 19.01-protocol-compatibility | langfuse | analysis | pending |
-| 19.01-protocol-compatibility | langgraph | analysis | pending |
-| 19.01-protocol-compatibility | letta | analysis | pending |
-| 19.01-protocol-compatibility | opa | analysis | pending |
-| 19.01-protocol-compatibility | openai-agents-sdk | analysis | pending |
-| 19.01-protocol-compatibility | openhands | analysis | pending |
-| 19.01-protocol-compatibility | pydantic-ai | analysis | pending |
-| 19.01-protocol-compatibility | reports | analysis | pending |
-| 19.01-protocol-compatibility | temporal | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | agent-framework | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | langfuse | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | langgraph | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | openai-agents-sdk | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | openhands | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | pydantic-ai | analysis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | reports | analysis | pending |
-| 19.03-adapter-interop-boundary-design | agent-framework | analysis | pending |
-| 19.03-adapter-interop-boundary-design | crewai | analysis | pending |
-| 19.03-adapter-interop-boundary-design | langfuse | analysis | pending |
-| 19.03-adapter-interop-boundary-design | langgraph | analysis | pending |
-| 19.03-adapter-interop-boundary-design | letta | analysis | pending |
-| 19.03-adapter-interop-boundary-design | opa | analysis | pending |
-| 19.03-adapter-interop-boundary-design | openai-agents-sdk | analysis | pending |
-| 19.03-adapter-interop-boundary-design | openhands | analysis | pending |
-| 19.03-adapter-interop-boundary-design | pydantic-ai | analysis | pending |
-| 19.03-adapter-interop-boundary-design | reports | analysis | pending |
-| 19.03-adapter-interop-boundary-design | temporal | analysis | pending |
-| 20.01-token-cost-accounting | agent-framework | analysis | pending |
-| 20.01-token-cost-accounting | crewai | analysis | pending |
-| 20.01-token-cost-accounting | langfuse | analysis | pending |
-| 20.01-token-cost-accounting | langgraph | analysis | pending |
-| 20.01-token-cost-accounting | openai-agents-sdk | analysis | pending |
-| 20.01-token-cost-accounting | openhands | analysis | pending |
-| 20.01-token-cost-accounting | pydantic-ai | analysis | pending |
-| 20.01-token-cost-accounting | reports | analysis | pending |
-| 20.02-caching-batching-reuse | agent-framework | analysis | pending |
-| 20.02-caching-batching-reuse | crewai | analysis | pending |
-| 20.02-caching-batching-reuse | langfuse | analysis | pending |
-| 20.02-caching-batching-reuse | langgraph | analysis | pending |
-| 20.02-caching-batching-reuse | openai-agents-sdk | analysis | pending |
-| 20.02-caching-batching-reuse | openhands | analysis | pending |
-| 20.02-caching-batching-reuse | pydantic-ai | analysis | pending |
-| 20.02-caching-batching-reuse | reports | analysis | pending |
-| 20.03-quality-cost-routing | agent-framework | analysis | pending |
-| 20.03-quality-cost-routing | crewai | analysis | pending |
-| 20.03-quality-cost-routing | langfuse | analysis | pending |
-| 20.03-quality-cost-routing | langgraph | analysis | pending |
-| 20.03-quality-cost-routing | openai-agents-sdk | analysis | pending |
-| 20.03-quality-cost-routing | openhands | analysis | pending |
-| 20.03-quality-cost-routing | pydantic-ai | analysis | pending |
-| 20.03-quality-cost-routing | reports | analysis | pending |
-| 21.01-plugin-extension-points | agent-framework | analysis | pending |
-| 21.01-plugin-extension-points | crewai | analysis | pending |
-| 21.01-plugin-extension-points | langfuse | analysis | pending |
-| 21.01-plugin-extension-points | langgraph | analysis | pending |
-| 21.01-plugin-extension-points | letta | analysis | pending |
-| 21.01-plugin-extension-points | opa | analysis | pending |
-| 21.01-plugin-extension-points | openai-agents-sdk | analysis | pending |
-| 21.01-plugin-extension-points | openhands | analysis | pending |
-| 21.01-plugin-extension-points | pydantic-ai | analysis | pending |
-| 21.01-plugin-extension-points | reports | analysis | pending |
-| 21.01-plugin-extension-points | temporal | analysis | pending |
-| 21.02-provider-backend-adapters | agent-framework | analysis | pending |
-| 21.02-provider-backend-adapters | crewai | analysis | pending |
-| 21.02-provider-backend-adapters | langfuse | analysis | pending |
-| 21.02-provider-backend-adapters | langgraph | analysis | pending |
-| 21.02-provider-backend-adapters | letta | analysis | pending |
-| 21.02-provider-backend-adapters | opa | analysis | pending |
-| 21.02-provider-backend-adapters | openai-agents-sdk | analysis | pending |
-| 21.02-provider-backend-adapters | openhands | analysis | pending |
-| 21.02-provider-backend-adapters | pydantic-ai | analysis | pending |
-| 21.02-provider-backend-adapters | reports | analysis | pending |
-| 21.02-provider-backend-adapters | temporal | analysis | pending |
-| 21.03-extension-compatibility-testing | agent-framework | analysis | pending |
-| 21.03-extension-compatibility-testing | crewai | analysis | pending |
-| 21.03-extension-compatibility-testing | langfuse | analysis | pending |
-| 21.03-extension-compatibility-testing | langgraph | analysis | pending |
-| 21.03-extension-compatibility-testing | letta | analysis | pending |
-| 21.03-extension-compatibility-testing | opa | analysis | pending |
-| 21.03-extension-compatibility-testing | openai-agents-sdk | analysis | pending |
-| 21.03-extension-compatibility-testing | openhands | analysis | pending |
-| 21.03-extension-compatibility-testing | pydantic-ai | analysis | pending |
-| 21.03-extension-compatibility-testing | reports | analysis | pending |
-| 21.03-extension-compatibility-testing | temporal | analysis | pending |
-| 22.02-configuration-deployment-shape | agent-framework | analysis | pending |
-| 22.02-configuration-deployment-shape | crewai | analysis | pending |
-| 22.02-configuration-deployment-shape | langfuse | analysis | pending |
-| 22.02-configuration-deployment-shape | langgraph | analysis | pending |
-| 22.02-configuration-deployment-shape | letta | analysis | pending |
-| 22.02-configuration-deployment-shape | opa | analysis | pending |
-| 22.02-configuration-deployment-shape | openai-agents-sdk | analysis | pending |
-| 22.02-configuration-deployment-shape | openhands | analysis | pending |
-| 22.02-configuration-deployment-shape | pydantic-ai | analysis | pending |
-| 22.02-configuration-deployment-shape | reports | analysis | pending |
-| 22.02-configuration-deployment-shape | temporal | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | agent-framework | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | crewai | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | langfuse | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | langgraph | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | letta | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | opa | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | openai-agents-sdk | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | openhands | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | pydantic-ai | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | reports | analysis | pending |
-| 22.03-docs-examples-contributor-workflow | temporal | analysis | pending |
-| 23.01-autonomy-boundary | agent-framework | analysis | pending |
-| 23.01-autonomy-boundary | crewai | analysis | pending |
-| 23.01-autonomy-boundary | langgraph | analysis | pending |
-| 23.01-autonomy-boundary | letta | analysis | pending |
-| 23.01-autonomy-boundary | openai-agents-sdk | analysis | pending |
-| 23.01-autonomy-boundary | openhands | analysis | pending |
-| 23.01-autonomy-boundary | pydantic-ai | analysis | pending |
-| 23.01-autonomy-boundary | reports | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | agent-framework | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | crewai | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | langgraph | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | letta | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | openai-agents-sdk | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | openhands | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | reports | analysis | pending |
-| 23.02-persistence-vs-escalation-philosophy | temporal | analysis | pending |
-| 23.03-responsibility-accountability-model | agent-framework | analysis | pending |
-| 23.03-responsibility-accountability-model | crewai | analysis | pending |
-| 23.03-responsibility-accountability-model | langgraph | analysis | pending |
-| 23.03-responsibility-accountability-model | letta | analysis | pending |
-| 23.03-responsibility-accountability-model | openai-agents-sdk | analysis | pending |
-| 23.03-responsibility-accountability-model | openhands | analysis | pending |
-| 23.03-responsibility-accountability-model | pydantic-ai | analysis | pending |
-| 23.03-responsibility-accountability-model | reports | analysis | pending |
-| 24.02-interface-contract-design | openhands | analysis | pending |
-| 24.03-api-versioning-compatibility | agent-framework | analysis | pending |
-| 24.03-api-versioning-compatibility | crewai | analysis | pending |
-| 24.03-api-versioning-compatibility | langfuse | analysis | pending |
-| 24.03-api-versioning-compatibility | langgraph | analysis | pending |
-| 24.03-api-versioning-compatibility | letta | analysis | pending |
-| 24.03-api-versioning-compatibility | opa | analysis | pending |
-| 24.03-api-versioning-compatibility | openai-agents-sdk | analysis | pending |
-| 24.03-api-versioning-compatibility | openhands | analysis | pending |
-| 24.03-api-versioning-compatibility | pydantic-ai | analysis | pending |
-| 24.03-api-versioning-compatibility | reports | analysis | pending |
-| 24.03-api-versioning-compatibility | temporal | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | agent-framework | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | crewai | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | langfuse | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | langgraph | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | letta | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | opa | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | openai-agents-sdk | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | openhands | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | pydantic-ai | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | reports | analysis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | temporal | analysis | pending |
-| 01.01-execution-model-taxonomy | (synthesis) | synthesis | pending |
-| 01.02-control-flow-ownership | (synthesis) | synthesis | pending |
-| 01.03-step-turn-task-atomicity | (synthesis) | synthesis | pending |
-| 01.04-termination-and-loop-bounds | (synthesis) | synthesis | pending |
-| 01.05-pause-resume-interrupt-semantics | (synthesis) | synthesis | pending |
-| 01.06-scheduling-and-trigger-semantics | (synthesis) | synthesis | pending |
-| 01.07-concurrency-and-parallel-advancement | (synthesis) | synthesis | pending |
-| 01.08-streaming-execution-semantics | (synthesis) | synthesis | pending |
-| 01.09-delivery-guarantees-idempotency | (synthesis) | synthesis | pending |
-| 01.10-replay-and-determinism | (synthesis) | synthesis | pending |
-| 01.11-terminal-outcome-arbitration | (synthesis) | synthesis | pending |
-| 02.01-state-taxonomy-and-ownership | (synthesis) | synthesis | pending |
-| 02.02-snapshot-and-checkpoint-architecture | (synthesis) | synthesis | pending |
-| 02.03-event-sourcing-and-replay-state | (synthesis) | synthesis | pending |
-| 02.04-mutation-discipline-and-state-transitions | (synthesis) | synthesis | pending |
-| 02.05-persistence-durability-tiers | (synthesis) | synthesis | pending |
-| 02.06-schema-versioning-and-migration | (synthesis) | synthesis | pending |
-| 02.07-session-thread-user-boundaries | (synthesis) | synthesis | pending |
-| 02.08-crash-recovery-and-reconstruction | (synthesis) | synthesis | pending |
-| 02.09-state-pruning-compaction-retention | (synthesis) | synthesis | pending |
-| 03.01-llm-turn-loop-structure | (synthesis) | synthesis | pending |
-| 03.02-reason-act-observe-cadence | (synthesis) | synthesis | pending |
-| 03.03-tool-calling-roundtrip-control | (synthesis) | synthesis | pending |
-| 03.04-planner-executor-separation | (synthesis) | synthesis | pending |
-| 03.05-reflection-reask-self-correction | (synthesis) | synthesis | pending |
-| 03.06-stuck-doom-loop-detection | (synthesis) | synthesis | pending |
-| 03.07-context-refresh-inside-loop | (synthesis) | synthesis | pending |
-| 03.08-subagent-forked-loop-design | (synthesis) | synthesis | pending |
-| 03.09-completion-and-finalization-semantics | (synthesis) | synthesis | pending |
-| 04.01-tool-definition-and-registration | (synthesis) | synthesis | pending |
-| 04.02-tool-schema-generation-validation | (synthesis) | synthesis | pending |
-| 04.03-tool-catalog-discovery-routing | (synthesis) | synthesis | pending |
-| 04.04-tool-context-dependency-injection | (synthesis) | synthesis | pending |
-| 04.05-tool-permissions-approval-metadata | (synthesis) | synthesis | pending |
-| 04.06-tool-result-contract-error-envelope | (synthesis) | synthesis | pending |
-| 04.07-external-tool-protocols-mcp | (synthesis) | synthesis | pending |
-| 04.08-agent-as-tool-composition | (synthesis) | synthesis | pending |
-| 05.01-short-term-conversation-memory | (synthesis) | synthesis | pending |
-| 05.02-working-memory-scratchpad | (synthesis) | synthesis | pending |
-| 05.03-long-term-user-project-domain-memory | (synthesis) | synthesis | pending |
-| 05.04-retrieval-augmented-memory | (synthesis) | synthesis | pending |
-| 05.05-memory-write-policy | (synthesis) | synthesis | pending |
-| 05.06-memory-compression-summarization | (synthesis) | synthesis | pending |
-| 05.07-memory-privacy-scope-deletion | (synthesis) | synthesis | pending |
-| 05.08-memory-evaluation-freshness | (synthesis) | synthesis | pending |
-| 06.01-planning-location-responsibility | (synthesis) | synthesis | pending |
-| 06.02-task-decomposition-representation | (synthesis) | synthesis | pending |
-| 06.03-plan-lifecycle-and-revision | (synthesis) | synthesis | pending |
-| 06.04-planner-executor-contract | (synthesis) | synthesis | pending |
-| 06.05-objective-progress-tracking | (synthesis) | synthesis | pending |
-| 06.06-search-backtracking-alternatives | (synthesis) | synthesis | pending |
-| 06.07-plan-observability-evaluation | (synthesis) | synthesis | pending |
-| 07.01-tool-scheduling-and-dispatch | (synthesis) | synthesis | pending |
-| 07.02-sequential-vs-parallel-tool-execution | (synthesis) | synthesis | pending |
-| 07.03-idempotency-and-retry-semantics | (synthesis) | synthesis | pending |
-| 07.04-timeouts-and-cancellation | (synthesis) | synthesis | pending |
-| 07.05-resource-locking-and-isolation | (synthesis) | synthesis | pending |
-| 07.06-side-effect-ledger-transaction-boundaries | (synthesis) | synthesis | pending |
-| 07.07-tool-output-streaming | (synthesis) | synthesis | pending |
-| 07.08-tool-failure-escalation | (synthesis) | synthesis | pending |
-| 08.01-capability-model-trust-boundaries | (synthesis) | synthesis | pending |
-| 08.02-permission-policy-approval-gates | (synthesis) | synthesis | pending |
-| 08.03-secrets-identity-environment | (synthesis) | synthesis | pending |
-| 08.04-security-auditability | (synthesis) | synthesis | pending |
-| 09.01-policy-injection-points | (synthesis) | synthesis | pending |
-| 09.02-risk-taxonomy-control-mapping | (synthesis) | synthesis | pending |
-| 09.03-governance-ux-operator-workflow | (synthesis) | synthesis | pending |
-| 09.04-governance-evidence-generation | (synthesis) | synthesis | pending |
-| 10.01-span-hierarchy-run-tree | (synthesis) | synthesis | pending |
-| 10.03-causal-links-lineage | (synthesis) | synthesis | pending |
-| 10.04-export-interoperability-observability | (synthesis) | synthesis | pending |
-| 10.05-event-retention-observer-delivery-backpressure | (synthesis) | synthesis | pending |
-| 11.01-context-selection-policy | (synthesis) | synthesis | pending |
-| 11.02-token-budgeting-and-compression | (synthesis) | synthesis | pending |
-| 11.03-repository-workspace-context-maps | (synthesis) | synthesis | pending |
-| 11.04-context-provenance-integrity | (synthesis) | synthesis | pending |
-| 12.01-prompt-storage-versioning | (synthesis) | synthesis | pending |
-| 12.02-prompt-templating-variable-contracts | (synthesis) | synthesis | pending |
-| 12.03-prompt-evaluation-experiments | (synthesis) | synthesis | pending |
-| 12.04-prompt-rollback-change-control | (synthesis) | synthesis | pending |
-| 13.02-retry-fallback-degraded-mode | (synthesis) | synthesis | pending |
-| 13.03-failure-visibility | (synthesis) | synthesis | pending |
-| 13.04-recovery-vs-escalation | (synthesis) | synthesis | pending |
-| 14.01-human-in-the-loop-trigger-policy | (synthesis) | synthesis | pending |
-| 14.02-approval-session-design | (synthesis) | synthesis | pending |
-| 14.03-human-intervention-takeover | (synthesis) | synthesis | pending |
-| 15.01-coordination-topology | (synthesis) | synthesis | pending |
-| 15.02-message-routing-termination | (synthesis) | synthesis | pending |
-| 15.03-shared-state-conflict-resolution | (synthesis) | synthesis | pending |
-| 16.01-artifact-lifecycle | (synthesis) | synthesis | pending |
-| 16.02-diff-review-rollback | (synthesis) | synthesis | pending |
-| 16.03-artifact-provenance-reproducibility | (synthesis) | synthesis | pending |
-| 17.01-sandbox-boundary | (synthesis) | synthesis | pending |
-| 17.02-filesystem-network-process-controls | (synthesis) | synthesis | pending |
-| 17.03-isolation-observability-escape-handling | (synthesis) | synthesis | pending |
-| 18.01-dataset-golden-task-management | (synthesis) | synthesis | pending |
-| 18.02-trajectory-evaluation | (synthesis) | synthesis | pending |
-| 18.04-cost-latency-quality-evaluation | (synthesis) | synthesis | pending |
-| 18.05-lifecycle-concurrency-invariant-verification | (synthesis) | synthesis | pending |
-| 19.01-protocol-compatibility | (synthesis) | synthesis | pending |
-| 19.02-portable-trace-eval-prompt-schemas | (synthesis) | synthesis | pending |
-| 19.03-adapter-interop-boundary-design | (synthesis) | synthesis | pending |
-| 20.01-token-cost-accounting | (synthesis) | synthesis | pending |
-| 20.02-caching-batching-reuse | (synthesis) | synthesis | pending |
-| 20.03-quality-cost-routing | (synthesis) | synthesis | pending |
-| 21.01-plugin-extension-points | (synthesis) | synthesis | pending |
-| 21.02-provider-backend-adapters | (synthesis) | synthesis | pending |
-| 21.03-extension-compatibility-testing | (synthesis) | synthesis | pending |
-| 22.02-configuration-deployment-shape | (synthesis) | synthesis | pending |
-| 22.03-docs-examples-contributor-workflow | (synthesis) | synthesis | pending |
-| 23.01-autonomy-boundary | (synthesis) | synthesis | pending |
-| 23.02-persistence-vs-escalation-philosophy | (synthesis) | synthesis | pending |
-| 23.03-responsibility-accountability-model | (synthesis) | synthesis | pending |
-| 24.03-api-versioning-compatibility | (synthesis) | synthesis | pending |
-| 24.04-embedding-and-host-integration-ergonomics | (synthesis) | synthesis | pending |
+No remaining tasks in the current run state.
 
 ## Dimensions
 
 | Dimension | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 01.01-execution-model-taxonomy | 8 | 8 | 0 | 6m45s | - | - |
-| 01.02-control-flow-ownership | 8 | 8 | 0 | 13m10s | - | - |
-| 01.03-step-turn-task-atomicity | 8 | 8 | 0 | 12m50s | - | - |
-| 01.04-termination-and-loop-bounds | 8 | 8 | 0 | 32m40s | - | - |
-| 01.05-pause-resume-interrupt-semantics | 5 | 5 | 0 | 9m56s | - | - |
-| 01.06-scheduling-and-trigger-semantics | 5 | 5 | 0 | 14m33s | - | - |
-| 01.07-concurrency-and-parallel-advancement | 7 | 7 | 0 | 9m48s | - | - |
-| 01.08-streaming-execution-semantics | 7 | 7 | 0 | 11m14s | - | - |
-| 01.09-delivery-guarantees-idempotency | 4 | 4 | 0 | 10m21s | - | - |
-| 01.10-replay-and-determinism | 2 | 2 | 0 | 14m34s | - | - |
-| 02.01-state-taxonomy-and-ownership | 6 | 6 | 0 | 7m58s | - | - |
-| 02.02-snapshot-and-checkpoint-architecture | 5 | 5 | 0 | 8m08s | - | - |
-| 02.03-event-sourcing-and-replay-state | 2 | 2 | 0 | 16m52s | - | - |
-| 02.04-mutation-discipline-and-state-transitions | 5 | 5 | 0 | 11m43s | - | - |
-| 02.05-persistence-durability-tiers | 6 | 6 | 0 | 15m40s | - | - |
-| 02.06-schema-versioning-and-migration | 5 | 5 | 0 | 12m32s | - | - |
-| 02.07-session-thread-user-boundaries | 6 | 6 | 0 | 11m35s | - | - |
-| 02.08-crash-recovery-and-reconstruction | 5 | 5 | 0 | 16m24s | - | - |
-| 02.09-state-pruning-compaction-retention | 6 | 6 | 0 | 247m33s | 9182246 | 0.0000 USD |
-| 03.01-llm-turn-loop-structure | 7 | 7 | 0 | 7m53s | - | - |
-| 03.02-reason-act-observe-cadence | 7 | 7 | 0 | 7m40s | - | - |
-| 03.03-tool-calling-roundtrip-control | 7 | 7 | 0 | 158m17s | - | - |
-| 03.04-planner-executor-separation | 6 | 6 | 0 | 14m51s | - | - |
-| 03.05-reflection-reask-self-correction | 7 | 7 | 0 | 14m12s | 13267339 | 0.0000 USD |
-| 03.06-stuck-doom-loop-detection | 7 | 7 | 0 | 10m57s | 11332757 | 0.0000 USD |
-| 03.07-context-refresh-inside-loop | 7 | 7 | 0 | 12m07s | 10665613 | 0.0000 USD |
-| 03.08-subagent-forked-loop-design | 6 | 6 | 0 | 10m14s | 8669596 | 0.0000 USD |
-| 03.09-completion-and-finalization-semantics | 7 | 7 | 0 | 10m19s | 23056032 | 0.0000 USD |
-| 04.01-tool-definition-and-registration | 7 | 7 | 0 | 11m00s | - | - |
-| 04.02-tool-schema-generation-validation | 8 | 8 | 0 | 8m20s | - | - |
-| 04.03-tool-catalog-discovery-routing | 7 | 7 | 0 | 8m07s | 23815093 | 0.0000 USD |
-| 04.04-tool-context-dependency-injection | 7 | 7 | 0 | 9m39s | 10124106 | 0.0000 USD |
-| 04.05-tool-permissions-approval-metadata | 7 | 7 | 0 | 10m46s | - | - |
-| 04.06-tool-result-contract-error-envelope | 6 | 6 | 0 | 9m39s | 345185 | 0.0000 USD |
-| 04.07-external-tool-protocols-mcp | 1 | 1 | 0 | 7m13s | - | - |
-| 10.02-event-schema-lifecycle-events | 4 | 0 | 1 | 614m12s | - | - |
-| 13.01-error-taxonomy | 23 | 23 | 0 | 17m36s | - | - |
-| 18.03-regression-gating-ci-integration | 1 | 0 | 1 | - | - | - |
-| 22.01-package-module-boundaries | 23 | 23 | 0 | 55m12s | - | - |
-| 24.01-public-api-surface | 23 | 21 | 1 | 35m53s | - | - |
-| 24.02-interface-contract-design | 20 | 10 | 1 | 74m11s | - | - |
+| 01.01-execution-model-taxonomy | 11 | 11 | 0 | 6811m36s | - | - |
+| 01.02-control-flow-ownership | 11 | 11 | 0 | 6811m32s | - | - |
+| 01.03-step-turn-task-atomicity | 18 | 11 | 7 | 4169m19s | - | - |
+| 01.04-termination-and-loop-bounds | 11 | 11 | 0 | 6820m48s | - | - |
+| 01.05-pause-resume-interrupt-semantics | 8 | 8 | 0 | 9354m17s | - | - |
+| 01.06-scheduling-and-trigger-semantics | 13 | 6 | 3 | 114m43s | - | - |
+| 01.07-concurrency-and-parallel-advancement | 11 | 8 | 0 | 67m38s | - | - |
+| 01.08-streaming-execution-semantics | 8 | 8 | 0 | 10m22s | - | - |
+| 01.09-delivery-guarantees-idempotency | 7 | 5 | 2 | 7m02s | - | - |
+| 01.10-replay-and-determinism | 3 | 3 | 0 | 10m58s | - | - |
+| 02.01-state-taxonomy-and-ownership | 29 | 7 | 12 | 4m01s | - | - |
+| 02.02-snapshot-and-checkpoint-architecture | 6 | 6 | 0 | 7m21s | - | - |
+| 02.03-event-sourcing-and-replay-state | 3 | 3 | 0 | 12m05s | - | - |
+| 02.04-mutation-discipline-and-state-transitions | 8 | 6 | 0 | 10m58s | - | - |
+| 02.05-persistence-durability-tiers | 13 | 7 | 0 | 14m28s | - | - |
+| 02.06-schema-versioning-and-migration | 10 | 6 | 0 | 6m56s | - | - |
+| 02.07-session-thread-user-boundaries | 10 | 7 | 2 | 10m14s | - | - |
+| 02.08-crash-recovery-and-reconstruction | 8 | 6 | 2 | 12m01s | - | - |
+| 02.09-state-pruning-compaction-retention | 9 | 7 | 0 | 177m02s | 9182246 | 0.0000 USD |
+| 03.01-llm-turn-loop-structure | 9 | 8 | 0 | 16m12s | - | - |
+| 03.02-reason-act-observe-cadence | 9 | 8 | 1 | 124m02s | - | - |
+| 03.03-tool-calling-roundtrip-control | 10 | 8 | 0 | 187m54s | - | - |
+| 03.04-planner-executor-separation | 9 | 7 | 0 | 14m50s | - | - |
+| 03.05-reflection-reask-self-correction | 8 | 8 | 0 | 104m27s | 13267339 | 0.0000 USD |
+| 03.06-stuck-doom-loop-detection | 10 | 8 | 0 | 83m55s | 11559601 | 0.0000 USD |
+| 03.07-context-refresh-inside-loop | 8 | 8 | 0 | 11m36s | 10665613 | 0.0000 USD |
+| 03.08-subagent-forked-loop-design | 10 | 7 | 0 | 7m21s | 8669596 | 0.0000 USD |
+| 03.09-completion-and-finalization-semantics | 9 | 8 | 1 | 10m30s | 23056032 | 0.0000 USD |
+| 04.01-tool-definition-and-registration | 10 | 8 | 1 | 11m03s | - | - |
+| 04.02-tool-schema-generation-validation | 12 | 9 | 1 | 8m37s | - | - |
+| 04.03-tool-catalog-discovery-routing | 10 | 8 | 1 | 8m39s | 24001024 | 0.0000 USD |
+| 04.04-tool-context-dependency-injection | 10 | 8 | 0 | 92m14s | 10124106 | 0.0000 USD |
+| 04.05-tool-permissions-approval-metadata | 12 | 8 | 0 | 147m35s | - | - |
+| 04.06-tool-result-contract-error-envelope | 10 | 9 | 1 | 8m09s | 345185 | 0.0000 USD |
+| 04.07-external-tool-protocols-mcp | 10 | 9 | 0 | 300m40s | - | - |
+| 04.08-agent-as-tool-composition | 14 | 14 | 0 | 1280m14s | - | - |
+| 05.01-short-term-conversation-memory | 17 | 16 | 1 | 2249m02s | - | - |
+| 05.02-working-memory-scratchpad | 17 | 16 | 1 | 2300m45s | - | - |
+| 05.03-long-term-user-project-domain-memory | 11 | 10 | 1 | 2028m18s | - | - |
+| 05.04-retrieval-augmented-memory | 15 | 14 | 1 | 2173m30s | - | - |
+| 05.05-memory-write-policy | 11 | 10 | 1 | 2287m56s | - | - |
+| 05.06-memory-compression-summarization | 12 | 12 | 0 | 2113m13s | - | - |
+| 05.07-memory-privacy-scope-deletion | 11 | 10 | 1 | 2033m19s | - | - |
+| 05.08-memory-evaluation-freshness | 4 | 4 | 0 | 1271m01s | - | - |
+| 06.01-planning-location-responsibility | 21 | 16 | 1 | 2628m37s | - | - |
+| 06.02-task-decomposition-representation | 33 | 14 | 1 | 1011m03s | - | - |
+| 06.03-plan-lifecycle-and-revision | 20 | 18 | 0 | 4m00s | - | - |
+| 06.04-planner-executor-contract | 14 | 14 | 0 | 1m27s | - | - |
+| 06.05-objective-progress-tracking | 19 | 18 | 1 | 4m52s | - | - |
+| 06.06-search-backtracking-alternatives | 10 | 10 | 0 | 1m26s | - | - |
+| 06.07-plan-observability-evaluation | 14 | 14 | 0 | 1m30s | - | - |
+| 07.01-tool-scheduling-and-dispatch | 19 | 18 | 1 | 4m18s | - | - |
+| 07.02-sequential-vs-parallel-tool-execution | 16 | 16 | 0 | 6m05s | - | - |
+| 07.03-idempotency-and-retry-semantics | 15 | 14 | 1 | 3m59s | - | - |
+| 07.04-timeouts-and-cancellation | 16 | 16 | 0 | 994m27s | - | - |
+| 07.05-resource-locking-and-isolation | 8 | 8 | 0 | 732m30s | - | - |
+| 07.06-side-effect-ledger-transaction-boundaries | 8 | 8 | 0 | 6m37s | - | - |
+| 07.07-tool-output-streaming | 17 | 16 | 1 | 6m50s | - | - |
+| 07.08-tool-failure-escalation | 17 | 16 | 1 | 4m07s | - | - |
+| 08.01-capability-model-trust-boundaries | 16 | 16 | 0 | 7m29s | - | - |
+| 08.02-permission-policy-approval-gates | 14 | 14 | 0 | 5m45s | - | - |
+| 08.03-secrets-identity-environment | 17 | 16 | 1 | 5m26s | - | - |
+| 08.04-security-auditability | 16 | 16 | 0 | 5m58s | - | - |
+| 09.01-policy-injection-points | 12 | 12 | 0 | 4m25s | - | - |
+| 09.02-risk-taxonomy-control-mapping | 25 | 12 | 3 | 4m10s | - | - |
+| 09.03-governance-ux-operator-workflow | 24 | 12 | 2 | 3m02s | - | - |
+| 09.04-governance-evidence-generation | 27 | 12 | 9 | 2m28s | - | - |
+| 10.01-span-hierarchy-run-tree | 29 | 20 | 8 | 45m08s | - | - |
+| 10.02-event-schema-lifecycle-events | 23 | 22 | 1 | 791m53s | - | - |
+| 10.03-causal-links-lineage | 21 | 20 | 1 | 6m11s | - | - |
+| 10.04-export-interoperability-observability | 6 | 6 | 0 | 2m43s | - | - |
+| 11.01-context-selection-policy | 16 | 16 | 0 | 4m39s | - | - |
+| 11.02-token-budgeting-and-compression | 16 | 16 | 0 | 4m39s | - | - |
+| 11.03-repository-workspace-context-maps | 8 | 8 | 0 | 4m42s | - | - |
+| 11.04-context-provenance-integrity | 21 | 20 | 1 | 5m50s | - | - |
+| 12.01-prompt-storage-versioning | 19 | 18 | 1 | 3m49s | - | - |
+| 12.02-prompt-templating-variable-contracts | 21 | 18 | 1 | 5m53s | - | - |
+| 12.03-prompt-evaluation-experiments | 8 | 8 | 0 | 2m24s | 960072 | - |
+| 12.04-prompt-rollback-change-control | 3 | 3 | 0 | 1m46s | 392198 | - |
+| 13.01-error-taxonomy | 22 | 22 | 0 | 13m03s | - | - |
+| 13.02-retry-fallback-degraded-mode | 23 | 22 | 1 | 6m18s | - | - |
+| 13.03-failure-visibility | 25 | 23 | 2 | 6m44s | - | - |
+| 13.04-recovery-vs-escalation | 21 | 20 | 1 | 6m35s | - | - |
+| 14.01-human-in-the-loop-trigger-policy | 12 | 12 | 0 | 6m23s | - | - |
+| 14.02-approval-session-design | 12 | 12 | 0 | 4m13s | - | - |
+| 14.03-human-intervention-takeover | 22 | 16 | 0 | 5m42s | - | - |
+| 15.01-coordination-topology | 15 | 14 | 1 | 4m07s | - | - |
+| 15.02-message-routing-termination | 15 | 14 | 1 | 6m52s | - | - |
+| 15.03-shared-state-conflict-resolution | 14 | 14 | 0 | 7m11s | - | - |
+| 16.01-artifact-lifecycle | 7 | 5 | 0 | 5m18s | - | - |
+| 16.02-diff-review-rollback | 4 | 4 | 0 | 3m03s | - | - |
+| 16.03-artifact-provenance-reproducibility | 5 | 5 | 0 | 2m46s | - | - |
+| 17.01-sandbox-boundary | 8 | 8 | 0 | 4m26s | - | - |
+| 17.02-filesystem-network-process-controls | 11 | 10 | 1 | 4m00s | - | - |
+| 17.03-isolation-observability-escape-handling | 6 | 5 | 0 | 2m05s | 495267 | - |
+| 18.01-dataset-golden-task-management | 19 | 18 | 1 | 4m24s | - | - |
+| 18.02-trajectory-evaluation | 9 | 9 | 0 | 1m57s | 1060258 | - |
+| 18.03-regression-gating-ci-integration | 15 | 14 | 1 | 1043m04s | - | - |
+| 18.04-cost-latency-quality-evaluation | 15 | 14 | 1 | 3m19s | - | - |
+| 19.01-protocol-compatibility | 33 | 22 | 8 | 2m32s | - | - |
+| 19.02-portable-trace-eval-prompt-schemas | 7 | 7 | 0 | 12m58s | - | - |
+| 19.03-adapter-interop-boundary-design | 33 | 22 | 1 | 4m36s | - | - |
+| 20.01-token-cost-accounting | 17 | 16 | 1 | 5m06s | - | - |
+| 20.02-caching-batching-reuse | 17 | 16 | 1 | 5m07s | - | - |
+| 20.03-quality-cost-routing | 27 | 16 | 9 | 3m25s | - | - |
+| 21.01-plugin-extension-points | 11 | 11 | 0 | 2m45s | - | - |
+| 21.02-provider-backend-adapters | 23 | 22 | 1 | 5m39s | - | - |
+| 21.03-extension-compatibility-testing | 26 | 22 | 0 | 4m44s | - | - |
+| 22.01-package-module-boundaries | 22 | 22 | 0 | 31m56s | - | - |
+| 22.02-configuration-deployment-shape | 22 | 22 | 0 | 5m23s | - | - |
+| 22.03-docs-examples-contributor-workflow | 23 | 22 | 1 | 4m17s | - | - |
+| 23.01-autonomy-boundary | 17 | 16 | 1 | 3m37s | - | - |
+| 23.02-persistence-vs-escalation-philosophy | 17 | 16 | 1 | 6m41s | - | - |
+| 23.03-responsibility-accountability-model | 8 | 8 | 0 | 2m18s | 1128066 | - |
+| 24.01-public-api-surface | 22 | 22 | 0 | 9m56s | - | - |
+| 24.02-interface-contract-design | 23 | 22 | 1 | 71m14s | - | - |
+| 24.03-api-versioning-compatibility | 22 | 22 | 0 | 1m56s | - | - |
+| 24.04-embedding-and-host-integration-ergonomics | 26 | 22 | 3 | 5m47s | - | - |
 
 ## Sources
 
 | Source | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| agent-framework | 41 | 39 | 0 | 25m45s | 15537994 | 0.0000 USD |
-| crewai | 32 | 30 | 0 | 66m43s | - | - |
-| langfuse | 13 | 12 | 0 | 107m30s | 9182246 | 0.0000 USD |
-| langgraph | 41 | 41 | 0 | 13m16s | 35979503 | 0.0000 USD |
-| letta | 32 | 32 | 0 | 47m02s | 12264464 | 0.0000 USD |
-| opa | 11 | 9 | 0 | 20m22s | - | - |
-| openai-agents-sdk | 29 | 27 | 0 | 10m24s | 19387549 | 0.0000 USD |
-| openhands | 40 | 37 | 0 | 54m13s | 345185 | 0.0000 USD |
-| pydantic-ai | 28 | 28 | 0 | 23m10s | 17761026 | 0.0000 USD |
-| reports | 4 | 4 | 0 | 12m08s | - | - |
-| temporal | 26 | 25 | 0 | 46m49s | - | - |
+| agent-framework | 223 | 186 | 11 | 300m10s | 16196051 | 0.0000 USD |
+| crewai | 161 | 139 | 5 | 401m13s | 320501 | - |
+| langfuse | 97 | 79 | 8 | 32m58s | 9666408 | 0.0000 USD |
+| langgraph | 169 | 154 | 5 | 293m14s | 36374024 | 0.0000 USD |
+| letta | 135 | 114 | 8 | 447m48s | 12479429 | 0.0000 USD |
+| opa | 71 | 62 | 3 | 78m29s | 143511 | - |
+| openai-agents-sdk | 160 | 145 | 7 | 229m51s | 19841523 | 0.0000 USD |
+| openhands | 211 | 183 | 7 | 307m51s | 776818 | 0.0000 USD |
+| pydantic-ai | 133 | 123 | 2 | 247m21s | 18236003 | 0.0000 USD |
+| temporal | 107 | 95 | 1 | 91m45s | 67313 | - |
 
 ## Runtime And Model
 
 | Runtime / Provider / Model | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 212 | 212 | 0 | 23m20s | 110457967 | 0.0000 USD |
-| opencode / - / openrouter/stealth/ox-alpha | 7 | 0 | 4 | 12m55s | - | - |
-| openrouter / openrouter / stealth/ox-alpha | 87 | 77 | 0 | 72m59s | - | - |
+| minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 390 | 314 | 24 | 995m05s | 110870742 | 0.0000 USD |
+| opencode / - / minimax-coding-plan/MiniMax-M3 | 55 | 1 | 49 | 5s | - | - |
+| opencode / - / openrouter/stealth/ox-alpha | 452 | 449 | 3 | 11m33s | - | - |
+| opencode / opencode / muse-spark-1.2-contributor-free | 215 | 178 | 0 | 6m27s | 4035861 | - |
+| openrouter / openrouter / minimax/minimax-m3:free | 2 | 1 | 0 | 8m10s | - | - |
+| openrouter / openrouter / stealth/ox-alpha | 616 | 539 | 37 | 612m41s | - | - |
 
 ## Recent Runs
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
-| 2026-08-22T13:21:33Z | 24.02-interface-contract-design | openhands | analysis | cancelled | 19m39s | openrouter/stealth/ox-alpha | - | - |
-| 2026-08-22T13:12:28Z | 24.02-interface-contract-design | openhands | analysis | cancelled | 10m34s | stealth/ox-alpha | - | - |
-| 2026-08-22T13:12:28Z | 10.02-event-schema-lifecycle-events | crewai | analysis | cancelled | 1221m28s | stealth/ox-alpha | - | - |
-| 2026-08-22T13:12:28Z | 10.02-event-schema-lifecycle-events | langfuse | analysis | cancelled | 1221m26s | stealth/ox-alpha | - | - |
-| 2026-08-22T13:12:27Z | 10.02-event-schema-lifecycle-events | agent-framework | analysis | cancelled | 13m55s | stealth/ox-alpha | - | - |
-| 2026-08-22T13:09:23Z | 24.02-interface-contract-design | temporal | analysis | completed | 10m51s | stealth/ox-alpha | - | - |
-| 2026-08-22T13:01:54Z | 24.02-interface-contract-design | pydantic-ai | analysis | completed | 31m35s | stealth/ox-alpha | - | - |
-| 2026-08-22T12:45:32Z | 24.02-interface-contract-design | reports | analysis | completed | 12m28s | stealth/ox-alpha | - | - |
-| 2026-08-22T12:33:04Z | 24.02-interface-contract-design | openai-agents-sdk | analysis | completed | 23m08s | stealth/ox-alpha | - | - |
-| 2026-08-22T12:30:18Z | 24.02-interface-contract-design | opa | analysis | completed | 20m22s | stealth/ox-alpha | - | - |
-| 2026-08-22T12:09:09Z | 24.02-interface-contract-design | openai-agents-sdk | analysis | cancelled | 34m53s | openrouter/stealth/ox-alpha | - | - |
-| 2026-08-22T12:09:09Z | 24.02-interface-contract-design | opa | analysis | cancelled | 35m49s | openrouter/stealth/ox-alpha | - | - |
-| 2026-08-22T11:59:27Z | 24.02-interface-contract-design | opa | analysis | cancelled | 26m07s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:59:27Z | 24.02-interface-contract-design | openai-agents-sdk | analysis | cancelled | 25m11s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:59:27Z | 24.02-interface-contract-design | openhands | analysis | cancelled | 13m59s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:45:28Z | 24.02-interface-contract-design | letta | analysis | completed | 30m43s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:34:15Z | 24.02-interface-contract-design | langgraph | analysis | completed | 23m12s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:33:20Z | 24.02-interface-contract-design | langfuse | analysis | completed | 34m08s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:14:44Z | 24.02-interface-contract-design | agent-framework | analysis | completed | 32m39s | stealth/ox-alpha | - | - |
-| 2026-08-22T11:11:02Z | 24.02-interface-contract-design | crewai | analysis | completed | 28m40s | stealth/ox-alpha | - | - |
+| 2026-08-29T10:52:01Z | 18.02-trajectory-evaluation | (synthesis) | synthesis | completed | 2m50s | muse-spark-1.2-contributor-free | 110588 | - |
+| 2026-08-29T10:49:11Z | 18.02-trajectory-evaluation | pydantic-ai | analysis | completed | 1m37s | muse-spark-1.2-contributor-free | 124720 | - |
+| 2026-08-29T10:47:34Z | 18.02-trajectory-evaluation | openhands | analysis | completed | 1m21s | muse-spark-1.2-contributor-free | 93467 | - |
+| 2026-08-29T10:46:13Z | 18.02-trajectory-evaluation | openai-agents-sdk | analysis | completed | 1m57s | muse-spark-1.2-contributor-free | 144389 | - |
+| 2026-08-29T10:44:15Z | 18.02-trajectory-evaluation | letta | analysis | completed | 1m49s | muse-spark-1.2-contributor-free | 102002 | - |
+| 2026-08-29T10:42:24Z | 18.02-trajectory-evaluation | langgraph | analysis | completed | 3m22s | muse-spark-1.2-contributor-free | 120288 | - |
+| 2026-08-29T10:39:02Z | 18.02-trajectory-evaluation | langfuse | analysis | completed | 1m39s | muse-spark-1.2-contributor-free | 147617 | - |
+| 2026-08-29T10:37:22Z | 18.02-trajectory-evaluation | crewai | analysis | completed | 1m17s | muse-spark-1.2-contributor-free | 91692 | - |
+| 2026-08-29T10:36:04Z | 18.02-trajectory-evaluation | agent-framework | analysis | completed | 1m38s | muse-spark-1.2-contributor-free | 125495 | - |
+| 2026-08-29T10:34:26Z | 12.04-prompt-rollback-change-control | (synthesis) | synthesis | completed | 1m38s | muse-spark-1.2-contributor-free | 76278 | - |
+| 2026-08-29T10:32:46Z | 12.04-prompt-rollback-change-control | langfuse | analysis | completed | 2m16s | muse-spark-1.2-contributor-free | 153233 | - |
+| 2026-08-29T10:30:29Z | 12.04-prompt-rollback-change-control | agent-framework | analysis | completed | 1m23s | muse-spark-1.2-contributor-free | 162687 | - |
+| 2026-08-29T10:29:05Z | 12.03-prompt-evaluation-experiments | (synthesis) | synthesis | completed | 2m06s | muse-spark-1.2-contributor-free | 71821 | - |
+| 2026-08-29T10:26:58Z | 12.03-prompt-evaluation-experiments | pydantic-ai | analysis | completed | 1m20s | muse-spark-1.2-contributor-free | 169017 | - |
+| 2026-08-29T10:25:37Z | 12.03-prompt-evaluation-experiments | openhands | analysis | completed | 1m59s | muse-spark-1.2-contributor-free | 95614 | - |
+| 2026-08-29T10:23:37Z | 12.03-prompt-evaluation-experiments | openai-agents-sdk | analysis | completed | 1m25s | muse-spark-1.2-contributor-free | 97642 | - |
+| 2026-08-29T10:22:10Z | 12.03-prompt-evaluation-experiments | langgraph | analysis | completed | 1m34s | muse-spark-1.2-contributor-free | 112571 | - |
+| 2026-08-29T10:20:35Z | 12.03-prompt-evaluation-experiments | langfuse | analysis | completed | 2m26s | muse-spark-1.2-contributor-free | 183312 | - |
+| 2026-08-29T10:18:08Z | 12.03-prompt-evaluation-experiments | crewai | analysis | completed | 6m04s | muse-spark-1.2-contributor-free | 99166 | - |
+| 2026-08-29T10:12:04Z | 12.03-prompt-evaluation-experiments | agent-framework | analysis | completed | 2m13s | muse-spark-1.2-contributor-free | 130929 | - |
 
 ## Slowest Runs
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
-| 2026-07-13T18:27:54Z | 02.09-state-pruning-compaction-retention | openhands | analysis | completed | 1421m21s | MiniMax-M3 | - | - |
-| 2026-08-22T13:12:28Z | 10.02-event-schema-lifecycle-events | crewai | analysis | cancelled | 1221m28s | stealth/ox-alpha | - | - |
-| 2026-08-22T13:12:28Z | 10.02-event-schema-lifecycle-events | langfuse | analysis | cancelled | 1221m26s | stealth/ox-alpha | - | - |
-| 2026-07-14T14:41:36Z | 03.03-tool-calling-roundtrip-control | letta | analysis | completed | 1065m50s | MiniMax-M3 | - | - |
-| 2026-08-22T09:47:10Z | 24.01-public-api-surface | temporal | analysis | cancelled | 539m38s | stealth/ox-alpha | - | - |
-| 2026-08-22T09:47:10Z | 24.02-interface-contract-design | agent-framework | analysis | cancelled | 535m29s | stealth/ox-alpha | - | - |
-| 2026-08-22T09:47:10Z | 24.02-interface-contract-design | crewai | analysis | cancelled | 534m18s | stealth/ox-alpha | - | - |
-| 2026-08-22T00:07:08Z | 22.01-package-module-boundaries | pydantic-ai | analysis | completed | 180m25s | stealth/ox-alpha | - | - |
-| 2026-08-22T00:07:08Z | 22.01-package-module-boundaries | pydantic-ai | analysis | completed | 180m25s | stealth/ox-alpha | - | - |
-| 2026-08-22T00:02:49Z | 22.01-package-module-boundaries | temporal | analysis | completed | 175m33s | stealth/ox-alpha | - | - |
+| 2026-08-23T17:39:50Z | 01.01-execution-model-taxonomy | (synthesis) | synthesis | completed | 74865m00s | MiniMax-M3 | - | - |
+| 2026-08-23T18:59:17Z | 01.02-control-flow-ownership | (synthesis) | synthesis | completed | 74812m19s | MiniMax-M3 | - | - |
+| 2026-08-23T18:22:27Z | 01.05-pause-resume-interrupt-semantics | (synthesis) | synthesis | completed | 74775m29s | MiniMax-M3 | - | - |
+| 2026-08-23T18:08:32Z | 01.04-termination-and-loop-bounds | (synthesis) | synthesis | completed | 74761m34s | MiniMax-M3 | - | - |
+| 2026-08-23T17:59:49Z | 01.03-step-turn-task-atomicity | (synthesis) | synthesis | completed | 74677m54s | MiniMax-M3 | - | - |
+| 2026-08-27T10:46:15Z | 06.02-task-decomposition-representation | openai-agents-sdk | analysis | completed | 8409m13s | stealth/ox-alpha | - | - |
+| 2026-08-27T10:40:51Z | 06.02-task-decomposition-representation | crewai | analysis | completed | 8403m49s | stealth/ox-alpha | - | - |
+| 2026-08-27T10:38:06Z | 06.02-task-decomposition-representation | agent-framework | analysis | completed | 8401m04s | stealth/ox-alpha | - | - |
+| 2026-08-27T10:25:40Z | 06.01-planning-location-responsibility | openhands | analysis | completed | 8388m38s | stealth/ox-alpha | - | - |
+| 2026-08-27T00:19:30Z | 06.01-planning-location-responsibility | agent-framework | analysis | completed | 7789m04s | stealth/ox-alpha | - | - |
 
 ## Failed Or Cancelled Runs
 
 | Completed | Dimension | Source | Status | Error |
 | --- | --- | --- | --- | --- |
-| 2026-08-22T13:21:33Z | 24.02-interface-contract-design | openhands | cancelled | task belonged to a stopped process; inspect durable study state before resuming |
-| 2026-08-22T13:12:28Z | 24.02-interface-contract-design | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
-| 2026-08-22T13:12:28Z | 10.02-event-schema-lifecycle-events | crewai | cancelled | context canceled |
-| 2026-08-22T13:12:28Z | 10.02-event-schema-lifecycle-events | langfuse | cancelled | context canceled |
-| 2026-08-22T13:12:27Z | 10.02-event-schema-lifecycle-events | agent-framework | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
-| 2026-08-22T12:09:09Z | 24.02-interface-contract-design | openai-agents-sdk | cancelled | task belonged to a stopped process; inspect durable study state before resuming |
-| 2026-08-22T12:09:09Z | 24.02-interface-contract-design | opa | cancelled | task belonged to a stopped process; inspect durable study state before resuming |
-| 2026-08-22T11:59:27Z | 24.02-interface-contract-design | opa | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
-| 2026-08-22T11:59:27Z | 24.02-interface-contract-design | openai-agents-sdk | cancelled | cancellation: persist owner heartbeat: heartbeat_begin: begin owner heartbeat failed [openrouter/stealth/ox-alpha] |
-| 2026-08-22T11:59:27Z | 24.02-interface-contract-design | openhands | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
-| 2026-08-22T09:47:10Z | 24.02-interface-contract-design | crewai | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
-| 2026-08-22T09:47:10Z | 24.02-interface-contract-design | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
-| 2026-08-22T09:47:10Z | 24.01-public-api-surface | temporal | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
-| 2026-08-21T17:59:41Z | 24.01-public-api-surface | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-28T17:00:43Z | 17.03-isolation-observability-escape-handling | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T15:08:38Z | 16.01-artifact-lifecycle | langgraph | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/minimax/minimax-m3:free] |
+| 2026-08-27T14:27:51Z | 16.01-artifact-lifecycle | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 06.01-planning-location-responsibility | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 06.02-task-decomposition-representation | crewai | cancelled | cancellation: persist runtime event: context canceled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 06.02-task-decomposition-representation | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 06.03-plan-lifecycle-and-revision | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 06.02-task-decomposition-representation | agent-framework | cancelled | cancellation: persist runtime event: context canceled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 06.02-task-decomposition-representation | pydantic-ai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T09:59:12Z | 21.03-extension-compatibility-testing | (synthesis) | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:45Z | 06.02-task-decomposition-representation | pydantic-ai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:45Z | 06.02-task-decomposition-representation | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:45Z | 06.01-planning-location-responsibility | openhands | cancelled | cancellation: persist runtime event: context canceled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:45Z | 06.02-task-decomposition-representation | openai-agents-sdk | cancelled | cancellation: persist runtime event: context canceled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:44Z | 21.03-extension-compatibility-testing | (synthesis) | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:44Z | 06.02-task-decomposition-representation | crewai | cancelled | cancellation: persist runtime event: context canceled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:46:43Z | 06.02-task-decomposition-representation | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 06.02-task-decomposition-representation | pydantic-ai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 06.02-task-decomposition-representation | agent-framework | cancelled | cancellation: persist runtime event: context canceled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 06.02-task-decomposition-representation | openai-agents-sdk | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 21.03-extension-compatibility-testing | (synthesis) | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 06.02-task-decomposition-representation | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 06.01-planning-location-responsibility | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:34:11Z | 06.02-task-decomposition-representation | crewai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 06.02-task-decomposition-representation | pydantic-ai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 21.03-extension-compatibility-testing | (synthesis) | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 06.02-task-decomposition-representation | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 06.03-plan-lifecycle-and-revision | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 06.02-task-decomposition-representation | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 06.01-planning-location-responsibility | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-27T08:14:09Z | 06.02-task-decomposition-representation | crewai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 20.03-quality-cost-routing | (synthesis) | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 19.03-adapter-interop-boundary-design | langgraph | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 19.01-protocol-compatibility | pydantic-ai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 19.03-adapter-interop-boundary-design | letta | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 19.03-adapter-interop-boundary-design | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 19.03-adapter-interop-boundary-design | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T18:54:46Z | 19.03-adapter-interop-boundary-design | crewai | cancelled | cancellation: validation: cancellation: validation run was cancelled [opencode/muse-spark-1.2-contributor-free] |
+| 2026-08-26T14:13:08Z | 19.03-adapter-interop-boundary-design | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:13:07Z | 19.03-adapter-interop-boundary-design | letta | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:13:03Z | 19.03-adapter-interop-boundary-design | crewai | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:13:03Z | 19.03-adapter-interop-boundary-design | langgraph | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:13:03Z | 19.03-adapter-interop-boundary-design | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:13:03Z | 19.01-protocol-compatibility | pydantic-ai | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:13:02Z | 19.03-adapter-interop-boundary-design | opa | cancelled | context canceled |
+| 2026-08-26T14:13:02Z | 19.01-protocol-compatibility | temporal | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:12:58Z | 19.01-protocol-compatibility | openhands | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:12:12Z | 19.01-protocol-compatibility | openai-agents-sdk | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:12:12Z | 19.01-protocol-compatibility | opa | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:12:11Z | 19.01-protocol-compatibility | letta | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:12:11Z | 19.01-protocol-compatibility | langgraph | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:12:03Z | 19.01-protocol-compatibility | langfuse | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:11:46Z | 19.01-protocol-compatibility | crewai | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:11:32Z | 19.01-protocol-compatibility | agent-framework | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:31Z | 20.03-quality-cost-routing | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-26T14:10:31Z | 20.03-quality-cost-routing | openai-agents-sdk | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:31Z | 20.03-quality-cost-routing | langgraph | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:30Z | 20.03-quality-cost-routing | openhands | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:30Z | 20.03-quality-cost-routing | pydantic-ai | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:29Z | 20.03-quality-cost-routing | langfuse | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:18Z | 20.03-quality-cost-routing | crewai | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:10:12Z | 20.03-quality-cost-routing | agent-framework | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:33Z | 09.02-risk-taxonomy-control-mapping | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-26T14:08:33Z | 09.02-risk-taxonomy-control-mapping | langfuse | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:33Z | 09.04-governance-evidence-generation | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-26T14:08:31Z | 09.03-governance-ux-operator-workflow | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-26T14:08:31Z | 09.04-governance-evidence-generation | agent-framework | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:29Z | 09.04-governance-evidence-generation | openai-agents-sdk | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:29Z | 09.03-governance-ux-operator-workflow | openhands | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:28Z | 09.04-governance-evidence-generation | langfuse | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:25Z | 09.04-governance-evidence-generation | opa | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:08:22Z | 09.04-governance-evidence-generation | openhands | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.) → openrouter/stealth/ox-alpha:runtime_exit (Thank you for participating in the Stealth Ox Alpha testing period. This model will be revealed today, August 26th.)] |
+| 2026-08-26T14:06:58Z | 09.02-risk-taxonomy-control-mapping | langfuse | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:06:56Z | 20.03-quality-cost-routing | agent-framework | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:06:55Z | 09.04-governance-evidence-generation | langfuse | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:06:54Z | 09.04-governance-evidence-generation | opa | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:06:51Z | 09.04-governance-evidence-generation | openhands | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T14:06:48Z | 09.04-governance-evidence-generation | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:11Z | 09.04-governance-evidence-generation | agent-framework | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:11Z | 09.02-risk-taxonomy-control-mapping | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:11Z | 09.03-governance-ux-operator-workflow | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:11Z | 09.04-governance-evidence-generation | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:11Z | 09.04-governance-evidence-generation | openai-agents-sdk | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:11Z | 09.04-governance-evidence-generation | opa | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:22:07Z | 20.03-quality-cost-routing | agent-framework | cancelled | context canceled |
+| 2026-08-26T13:22:06Z | 09.04-governance-evidence-generation | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.03-governance-ux-operator-workflow | opa | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.03-governance-ux-operator-workflow | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.02-risk-taxonomy-control-mapping | openhands | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.03-governance-ux-operator-workflow | openai-agents-sdk | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.03-governance-ux-operator-workflow | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.02-risk-taxonomy-control-mapping | langfuse | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.03-governance-ux-operator-workflow | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:10:36Z | 09.02-risk-taxonomy-control-mapping | openai-agents-sdk | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:08:59Z | 09.02-risk-taxonomy-control-mapping | openai-agents-sdk | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:08:59Z | 09.03-governance-ux-operator-workflow | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:08:59Z | 09.02-risk-taxonomy-control-mapping | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:08:59Z | 09.03-governance-ux-operator-workflow | agent-framework | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:08:54Z | 09.02-risk-taxonomy-control-mapping | openhands | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:08:54Z | 09.03-governance-ux-operator-workflow | opa | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:04:00Z | 09.02-risk-taxonomy-control-mapping | langfuse | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T13:03:56Z | 09.02-risk-taxonomy-control-mapping | openhands | cancelled | context canceled |
+| 2026-08-26T13:03:56Z | 09.03-governance-ux-operator-workflow | agent-framework | cancelled | context canceled |
+| 2026-08-26T13:03:55Z | 09.02-risk-taxonomy-control-mapping | openai-agents-sdk | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T11:43:42Z | 14.03-human-intervention-takeover | crewai | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T11:43:42Z | 14.03-human-intervention-takeover | agent-framework | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T11:40:32Z | 14.03-human-intervention-takeover | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T11:40:32Z | 14.03-human-intervention-takeover | crewai | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T11:36:24Z | 14.03-human-intervention-takeover | agent-framework | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-26T11:36:24Z | 14.03-human-intervention-takeover | crewai | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-25T22:16:03Z | 12.02-prompt-templating-variable-contracts | langgraph | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-25T22:16:03Z | 12.02-prompt-templating-variable-contracts | langfuse | cancelled | cancellation: persist runtime event: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-25T13:08:50Z | 10.01-span-hierarchy-run-tree | langfuse | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:timeout (OpenCode run timed out) → openrouter/stealth/ox-alpha:runtime_exit ([Stealth] stealth/ox-alpha is temporarily rate-limited upstream. Please retry shortly.)] |
+| 2026-08-25T12:54:46Z | 10.01-span-hierarchy-run-tree | agent-framework | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit ([Stealth] stealth/ox-alpha is temporarily rate-limited upstream. Please retry shortly.) → openrouter/stealth/ox-alpha:runtime_exit ({"code":429,"message":"Provider returned error","metadata":{"error_type":"rate_limit_exceeded"}})] |
+| 2026-08-25T12:52:51Z | 24.04-embedding-and-host-integration-ergonomics | (synthesis) | failed | opencode event: runtime_exit: OpenCode reported a fatal session error [openrouter/stealth/ox-alpha:runtime_exit ([Stealth] stealth/ox-alpha is temporarily rate-limited upstream. Please retry shortly.) → openrouter/stealth/ox-alpha:runtime_exit ([Stealth] stealth/ox-alpha is temporarily rate-limited upstream. Please retry shortly.)] |
+| 2026-08-25T12:51:15Z | 10.01-span-hierarchy-run-tree | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T10:09:07Z | 24.04-embedding-and-host-integration-ergonomics | opa | cancelled | cancellation: validation: cancellation: validation run was cancelled [openrouter/stealth/ox-alpha] |
+| 2026-08-25T10:09:06Z | 10.01-span-hierarchy-run-tree | crewai | cancelled | context canceled |
+| 2026-08-25T10:09:06Z | 10.01-span-hierarchy-run-tree | agent-framework | failed | durable run acceptance failed: context canceled [openrouter/stealth/ox-alpha] |
+| 2026-08-25T10:08:59Z | 10.01-span-hierarchy-run-tree | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T10:08:59Z | 13.03-failure-visibility | openai-agents-sdk | failed | opencode run: runtime_exit: OpenCode exited before a successful final result [openrouter/stealth/ox-alpha:runtime_exit (exit_code=1 stderr=[91m[1mError: [0mUnexpected error  unable to open database file ) → openrouter/stealth/ox-alpha:runtime_exit (exit_code=1 stderr=[91m[1mError: [0mUnexpected error  unable to open database file )] |
+| 2026-08-25T10:08:51Z | 24.04-embedding-and-host-integration-ergonomics | agent-framework | failed | durable run acceptance failed: quota_read: inspect run-control storage usage failed [openrouter/stealth/ox-alpha] |
+| 2026-08-25T10:08:45Z | 24.04-embedding-and-host-integration-ergonomics | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T10:08:45Z | 13.03-failure-visibility | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T10:05:22Z | 15.02-message-routing-termination | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T10:00:04Z | 06.05-objective-progress-tracking | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T08:50:44Z | 15.01-coordination-topology | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T05:44:40Z | 05.07-memory-privacy-scope-deletion | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T05:30:54Z | 05.05-memory-write-policy | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T05:16:59Z | 05.03-long-term-user-project-domain-memory | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T04:55:53Z | 05.04-retrieval-augmented-memory | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T04:25:23Z | 05.02-working-memory-scratchpad | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T03:37:29Z | 20.02-caching-batching-reuse | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T01:46:46Z | 05.01-short-term-conversation-memory | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-25T00:32:02Z | 11.04-context-provenance-integrity | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T23:52:03Z | 23.02-persistence-vs-escalation-philosophy | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T22:29:04Z | 23.01-autonomy-boundary | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T20:28:26Z | 08.03-secrets-identity-environment | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T19:56:54Z | 17.02-filesystem-network-process-controls | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T18:12:44Z | 07.01-tool-scheduling-and-dispatch | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T17:29:20Z | 20.01-token-cost-accounting | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T17:10:02Z | 07.03-idempotency-and-retry-semantics | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T17:08:10Z | 18.01-dataset-golden-task-management | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T17:05:45Z | 12.01-prompt-storage-versioning | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T17:03:17Z | 12.02-prompt-templating-variable-contracts | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T17:00:52Z | 10.03-causal-links-lineage | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:58:17Z | 21.02-provider-backend-adapters | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:55:11Z | 18.04-cost-latency-quality-evaluation | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:53:19Z | 07.07-tool-output-streaming | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:51:03Z | 13.02-retry-fallback-degraded-mode | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:47:59Z | 13.04-recovery-vs-escalation | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:45:17Z | 07.08-tool-failure-escalation | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T16:34:26Z | 22.03-docs-examples-contributor-workflow | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-24T15:19:56Z | 10.01-span-hierarchy-run-tree | openai-agents-sdk | failed | repair_exhausted: validation repair: repair_exhausted: validation repair attempts exhausted [openrouter/stealth/ox-alpha] |
+| 2026-08-24T14:58:24Z | 10.01-span-hierarchy-run-tree | langfuse | failed | repair_exhausted: validation repair: repair_exhausted: validation repair attempts exhausted [openrouter/stealth/ox-alpha] |
+| 2026-08-24T14:47:34Z | 10.01-span-hierarchy-run-tree | crewai | failed | repair_exhausted: validation repair: repair_exhausted: validation repair attempts exhausted [openrouter/stealth/ox-alpha] |
+| 2026-08-23T13:37:17Z | 06.02-task-decomposition-representation | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-23T13:31:44Z | 06.01-planning-location-responsibility | (synthesis) | failed | synthesis dependencies failed or were cancelled |
 | 2026-08-21T16:53:39Z | 18.03-regression-gating-ci-integration | (synthesis) | failed | synthesis dependencies failed or were cancelled |
 | 2026-08-21T16:52:47Z | 10.02-event-schema-lifecycle-events | (synthesis) | failed | synthesis dependencies failed or were cancelled |
 | 2026-08-21T16:51:02Z | 24.02-interface-contract-design | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-08-15T15:53:10Z | 04.07-external-tool-protocols-mcp | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-08-15T15:29:18Z | 04.06-tool-result-contract-error-envelope | openai-agents-sdk | failed | validation_failed |
+| 2026-07-28T08:56:28Z | 04.05-tool-permissions-approval-metadata | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:56:25Z | 04.05-tool-permissions-approval-metadata | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:56:25Z | 04.04-tool-context-dependency-injection | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:48:45Z | 04.04-tool-context-dependency-injection | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-28T08:48:45Z | 04.05-tool-permissions-approval-metadata | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-22T19:08:30Z | 04.03-tool-catalog-discovery-routing | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-22T19:07:19Z | 04.03-tool-catalog-discovery-routing | langgraph | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | opa | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-19T22:22:23Z | 04.01-tool-definition-and-registration | pydantic-ai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-19T22:22:23Z | 04.02-tool-schema-generation-validation | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-19T20:47:08Z | 04.02-tool-schema-generation-validation | agent-framework | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-19T18:38:09Z | 04.01-tool-definition-and-registration | agent-framework | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-19T18:38:09Z | 03.09-completion-and-finalization-semantics | pydantic-ai | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-15T11:11:32Z | 03.08-subagent-forked-loop-design | openai-agents-sdk | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T11:11:32Z | 03.08-subagent-forked-loop-design | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T11:11:32Z | 03.08-subagent-forked-loop-design | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T09:38:16Z | 03.06-stuck-doom-loop-detection | pydantic-ai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-15T08:58:47Z | 03.06-stuck-doom-loop-detection | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T16:07:00Z | 03.03-tool-calling-roundtrip-control | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T16:07:00Z | 03.04-planner-executor-separation | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T15:59:38Z | 03.03-tool-calling-roundtrip-control | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T15:59:38Z | 03.04-planner-executor-separation | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-14T14:31:13Z | 03.02-reason-act-observe-cadence | (synthesis) | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-13T18:45:17Z | 02.07-session-thread-user-boundaries | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-13T18:45:17Z | 02.09-state-pruning-compaction-retention | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-12T18:22:05Z | 02.09-state-pruning-compaction-retention | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-12T18:22:01Z | 03.01-llm-turn-loop-structure | crewai | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-12T16:30:06Z | 02.07-session-thread-user-boundaries | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-11T10:11:04Z | 02.08-crash-recovery-and-reconstruction | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T20:40:00Z | 02.08-crash-recovery-and-reconstruction | openhands | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-10T19:54:25Z | 02.07-session-thread-user-boundaries | letta | failed | opencode run: runtime_exit: OpenCode exited before a successful final result |
+| 2026-07-10T16:21:57Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T16:21:57Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-10T14:47:30Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:47:30Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:47:30Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:56Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:56Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:56Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:27Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:27Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:43:27Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:41:19Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:41:19Z | 02.06-schema-versioning-and-migration | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:41:19Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:39:29Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:36:28Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:35:43Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:29:50Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T14:29:36Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:19:18Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T14:19:18Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-10T14:10:50Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T14:08:32Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T14:07:58Z | 02.05-persistence-durability-tiers | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T10:37:58Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-10T10:37:58Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-10T09:04:15Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:58:32Z | 02.01-state-taxonomy-and-ownership | letta | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:57:30Z | 02.04-mutation-discipline-and-state-transitions | langgraph | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:57:30Z | 02.04-mutation-discipline-and-state-transitions | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-10T08:19:53Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-06T21:14:53Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-06T17:27:11Z | 02.01-state-taxonomy-and-ownership | (synthesis) | failed | synthesis dependencies failed or were cancelled |
+| 2026-07-06T17:24:45Z | 02.01-state-taxonomy-and-ownership | letta | failed | validation_failed |
+| 2026-07-04T13:04:29Z | 01.09-delivery-guarantees-idempotency | (synthesis) | failed | validation: validation: required output validation failed |
+| 2026-07-03T16:44:39Z | 01.09-delivery-guarantees-idempotency | (synthesis) | failed | validation: validation: required output validation failed |
+| 2026-07-03T08:52:04Z | 01.07-concurrency-and-parallel-advancement | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-03T08:52:04Z | 01.06-scheduling-and-trigger-semantics | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-02T17:54:38Z | 01.07-concurrency-and-parallel-advancement | crewai | cancelled | context canceled |
+| 2026-07-02T17:54:38Z | 01.06-scheduling-and-trigger-semantics | temporal | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-02T17:54:38Z | 01.07-concurrency-and-parallel-advancement | agent-framework | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-02T17:54:38Z | 01.06-scheduling-and-trigger-semantics | openhands | cancelled | validation: cancellation: validation run was cancelled |
+| 2026-07-02T17:48:33Z | 01.06-scheduling-and-trigger-semantics | langgraph | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T17:47:43Z | 01.06-scheduling-and-trigger-semantics | crewai | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T17:47:15Z | 01.06-scheduling-and-trigger-semantics | agent-framework | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T16:49:10Z | 01.03-step-turn-task-atomicity | temporal | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T15:00:12Z | 01.03-step-turn-task-atomicity | openai-agents-sdk | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T15:00:12Z | 01.03-step-turn-task-atomicity | openhands | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T14:48:14Z | 01.03-step-turn-task-atomicity | letta | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T14:36:03Z | 01.03-step-turn-task-atomicity | langgraph | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T14:36:03Z | 01.03-step-turn-task-atomicity | crewai | failed | opencode run: timeout: OpenCode run timed out |
+| 2026-07-02T14:24:05Z | 01.03-step-turn-task-atomicity | agent-framework | failed | opencode run: timeout: OpenCode run timed out |
 

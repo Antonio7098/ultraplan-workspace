@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-a764edd2b98f4ebc271bf039",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/qa_handlers.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-a764edd2b98f4ebc271bf039/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:21:38.092551544Z",
+      "completed_at": "2026-08-28T11:23:07.27618588Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "ctx-handle-query-error",
+          "paths": [
+            "internal/web/handlers.go"
+          ],
+          "reason": "Need the implementation of (*handler).handleQueryError and (*handler).writeSuccess to verify how raw errors (including *strconv.NumError and app errors with no stable code) are mapped to HTTP responses; this is the linchpin for theories about stable public codes and the boolean third argument.",
+          "approved": true
+        },
+        {
+          "id": "ctx-app-qa-types",
+          "paths": [
+            "internal/app"
+          ],
+          "reason": "Need app.QAEvidenceQueries interface, app.QARequest struct, app.QAUseCaseError definition, and the NewHandler/HandlerOptions constructor to verify nil/typed-nil safety and error mapping beyond the call sites in qa_handlers.go.",
+          "approved": false,
+          "denied_reason": "requested context path is not a regular file"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 20,
+      "retained_events": 20,
+      "observed_tool_calls": 5,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-733a556f906a5362f6b7ab7c",
+      "shard_id": "qa-v1-shard-a764edd2b98f4ebc271bf039",
+      "claim": "Every handleSprintQA* method in qa_handlers.go follows an identical contract: nil h.qa ⇒ ErrWebUnavailable via handleQueryError; non-nil call to the underlying QA method; on error propagate via handleQueryError with boolean=true (API surface); on success writeSuccess(http.StatusOK, result, nil).",
+      "basis": "Direct read of qa_handlers.go:10-166. Eleven handlers (handleSprintQA, handleSprintQAEvidence, handleSprintQAAdjudication, handleSprintQAIssues, handleSprintQAIssue, handleSprintQAAssessment, handleSprintQASmokeSuite, handleSprintQAMap, handleSprintQAShard, handleSprintQATheory, handleSprintQASynthesis) repeat the same shape; only handleSprintQAPage deviates by also calling h.queries.Sprint and rendering via h.render.",
+      "verification_surface": "internal/web/qa_handlers.go:10-166.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Static reading shows uniform error/success handling across the eleven API handlers, with consistent booleans (true for API errors, false for page errors in handleSprintQAPage).",
+      "refutation_condition": "A handler deviates from the pattern (e.g., handles the error inline, returns a different status, or writes the body directly without handleQueryError/writeSuccess).",
+      "inconclusive_condition": "The semantics of handleQueryError's third boolean parameter and writeSuccess's collection argument cannot be fully resolved without reading handlers.go (outside the assigned paths).",
+      "safe_evidence_strategy": "Pure source reading of qa_handlers.go; no execution. Existing qa_handlers_test.go:38-57 partially exercises handleQueryError's stable-code mapping.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-a764edd2b98f4ebc271bf039/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:21:38.092551544Z",
+          "completed_at": "2026-08-28T11:23:07.27618588Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-handle-query-error",
+              "paths": [
+                "internal/web/handlers.go"
+              ],
+              "reason": "Need the implementation of (*handler).handleQueryError and (*handler).writeSuccess to verify how raw errors (including *strconv.NumError and app errors with no stable code) are mapped to HTTP responses; this is the linchpin for theories about stable public codes and the boolean third argument.",
+              "approved": true
+            },
+            {
+              "id": "ctx-app-qa-types",
+              "paths": [
+                "internal/app"
+              ],
+              "reason": "Need app.QAEvidenceQueries interface, app.QARequest struct, app.QAUseCaseError definition, and the NewHandler/HandlerOptions constructor to verify nil/typed-nil safety and error mapping beyond the call sites in qa_handlers.go.",
+              "approved": false,
+              "denied_reason": "requested context path is not a regular file"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 20,
+          "retained_events": 20,
+          "observed_tool_calls": 5,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Uniformity is observable in the source; the meaning of the third argument to handleQueryError and the contract of writeSuccess are not visible within the assigned paths."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9eb71d9f48e49237494202f8",
+      "shard_id": "qa-v1-shard-a764edd2b98f4ebc271bf039",
+      "claim": "handleSprintQAIssues forwards a raw *strconv.NumError from strconv.Atoi to handleQueryError when the limit query parameter is not parseable, without converting it to an app.QAUseCaseError. If handleQueryError does not normalize arbitrary errors to a stable public code, the response would violate contract-errors' stable-code requirement for this endpoint.",
+      "basis": "qa_handlers.go:58-65. strconv.Atoi error is passed as the fourth argument to handleQueryError; no wrapping into app.QAUseCaseError.",
+      "verification_surface": "internal/web/qa_handlers.go:57-65.",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "GET /api/v1/projects/\u003cp\u003e/sprints/\u003cs\u003e/qa/issues?limit=abc returns 4xx with a stable code under contract-errors (e.g., 'qa.invalid_request') and never leaks Go runtime/strconv details.",
+      "refutation_condition": "TestQAQueryErrorsUseStablePublicCodes-shaped assertion (qa_handlers_test.go:54) for this route would catch a leak if one existed.",
+      "inconclusive_condition": "Without knowing what handleQueryError does with a non-QAUseCaseError, both outcomes are possible.",
+      "safe_evidence_strategy": "Read handleQueryError signature/source (outside assigned paths).",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-a764edd2b98f4ebc271bf039/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:21:38.092551544Z",
+          "completed_at": "2026-08-28T11:23:07.27618588Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-handle-query-error",
+              "paths": [
+                "internal/web/handlers.go"
+              ],
+              "reason": "Need the implementation of (*handler).handleQueryError and (*handler).writeSuccess to verify how raw errors (including *strconv.NumError and app errors with no stable code) are mapped to HTTP responses; this is the linchpin for theories about stable public codes and the boolean third argument.",
+              "approved": true
+            },
+            {
+              "id": "ctx-app-qa-types",
+              "paths": [
+                "internal/app"
+              ],
+              "reason": "Need app.QAEvidenceQueries interface, app.QARequest struct, app.QAUseCaseError definition, and the NewHandler/HandlerOptions constructor to verify nil/typed-nil safety and error mapping beyond the call sites in qa_handlers.go.",
+              "approved": false,
+              "denied_reason": "requested context path is not a regular file"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 20,
+          "retained_events": 20,
+          "observed_tool_calls": 5,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Cannot confirm without inspecting handleQueryError; contract-errors risk is plausible from static reading."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f134156971778f409c1b3be4",
+      "shard_id": "qa-v1-shard-a764edd2b98f4ebc271bf039",
+      "claim": "The Evidence/Adjudication/Issues/Issue/Assessment/SmokeSuite handlers skip the h.qa == nil guard and rely solely on a type assertion to app.QAEvidenceQueries, whereas handleSprintQA and related older handlers check nil before calling. If a future wiring ever injects a typed-nil QA service implementing QAEvidenceQueries, the type assertion succeeds and method calls would dispatch on a nil receiver.",
+      "basis": "qa_handlers.go:24 vs qa_handlers.go:11. The newer six handlers do 'queries, ok := h.qa.(app.QAEvidenceQueries)' without first checking h.qa == nil; the older five API handlers check nil then call h.qa.\u003cMethod\u003e directly.",
+      "verification_surface": "internal/web/qa_handlers.go:11,24,38,52,75,89,103,117,130,143,156.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Default wiring (h.qa nil interface ⇒ type assertion fails ⇒ ErrWebUnavailable) and unit-test coverage exist; qaQueryFixture in qa_handlers_test.go embeds *fakeQueries so QAEvidenceQueries assertion fails to find the methods unless the fixture provides them — confirming the failure path returns ErrWebUnavailable.",
+      "refutation_condition": "A wiring scenario sets h.qa to a typed-nil concrete type that implements QAEvidenceQueries; calls into QAEvidence/QAAdjudication/etc. would NPE inside the app layer.",
+      "inconclusive_condition": "Type-assertion safety under typed-nil is a real Go footgun; whether NewHandler/HandlerOptions rejects typed-nil injections is not visible in the assigned paths.",
+      "safe_evidence_strategy": "Static reading only; the qaQueryFixture in qa_handlers_test.go:17-33 shows the QAEvidenceQueries interface has at least six methods and the fixture implements them, so the type-assertion success path is exercised.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-a764edd2b98f4ebc271bf039/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:21:38.092551544Z",
+          "completed_at": "2026-08-28T11:23:07.27618588Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-handle-query-error",
+              "paths": [
+                "internal/web/handlers.go"
+              ],
+              "reason": "Need the implementation of (*handler).handleQueryError and (*handler).writeSuccess to verify how raw errors (including *strconv.NumError and app errors with no stable code) are mapped to HTTP responses; this is the linchpin for theories about stable public codes and the boolean third argument.",
+              "approved": true
+            },
+            {
+              "id": "ctx-app-qa-types",
+              "paths": [
+                "internal/app"
+              ],
+              "reason": "Need app.QAEvidenceQueries interface, app.QARequest struct, app.QAUseCaseError definition, and the NewHandler/HandlerOptions constructor to verify nil/typed-nil safety and error mapping beyond the call sites in qa_handlers.go.",
+              "approved": false,
+              "denied_reason": "requested context path is not a regular file"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 20,
+          "retained_events": 20,
+          "observed_tool_calls": 5,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Source shows the inconsistency; cannot verify constructor defenses without reading handlers.go (context request needed)."
+    }
+  ]
+}

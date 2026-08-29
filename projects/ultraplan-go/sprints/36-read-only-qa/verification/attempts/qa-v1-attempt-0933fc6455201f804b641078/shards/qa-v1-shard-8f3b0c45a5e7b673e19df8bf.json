@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-8f3b0c45a5e7b673e19df8bf",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-8f3b0c45a5e7b673e19df8bf",
+    "summary": "investigator output retry limit exhausted after 2 attempts",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-8f3b0c45a5e7b673e19df8bf/1",
+      "number": 1,
+      "started_at": "2026-08-26T07:59:04.250322938Z",
+      "completed_at": "2026-08-26T08:00:13.738745919Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 97267,
+        "output_tokens_known": true,
+        "output_tokens": 4512,
+        "total_tokens_known": true,
+        "total_tokens": 170976,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 5291,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 63906,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 3
+      },
+      "estimated_cost": {
+        "amount": 0.011815112000000001,
+        "currency": "USD",
+        "estimate": false
+      },
+      "failure_kind": "invalid_output",
+      "retryable": true,
+      "stop_reason": "investigator output rejected"
+    },
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-8f3b0c45a5e7b673e19df8bf/2",
+      "number": 2,
+      "started_at": "2026-08-26T08:00:14.05959203Z",
+      "completed_at": "2026-08-26T08:00:30.713144451Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 8084,
+        "output_tokens_known": true,
+        "output_tokens": 1297,
+        "total_tokens_known": true,
+        "total_tokens": 106958,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 376,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 97201,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 1
+      },
+      "estimated_cost": {
+        "amount": 0.001337402,
+        "currency": "USD",
+        "estimate": false
+      },
+      "failure_kind": "invalid_output",
+      "retryable": true,
+      "stop_reason": "investigator output rejected"
+    }
+  ]
+}

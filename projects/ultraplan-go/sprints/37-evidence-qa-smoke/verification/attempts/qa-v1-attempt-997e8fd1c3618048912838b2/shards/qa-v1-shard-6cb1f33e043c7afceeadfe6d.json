@@ -1,0 +1,652 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-6cb1f33e043c7afceeadfe6d",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "primary",
+  "title": "internal/platform",
+  "changed_paths": [
+    "internal/platform/process/isolation.go"
+  ],
+  "context_paths": [
+    "internal/platform/process/isolation_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/platform"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "runtime"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6cb1f33e043c7afceeadfe6d/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:14:51.236281144Z",
+      "completed_at": "2026-08-28T11:15:38.403168756Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "ctx-req-001",
+          "paths": [
+            "internal/platform/process/linkcount_linux.go",
+            "internal/platform/process/linkcount_windows.go",
+            "internal/platform/process/capabilities.go",
+            "internal/platform/process/native_isolation.go"
+          ],
+          "reason": "linkCount and isolationCapabilities and nativeIsolationRequest definitions needed to verify hard-link rejection and NativeProtectedRootDeny behavior; outside assigned changed_paths/context_paths budgets",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        },
+        {
+          "id": "ctx-req-002",
+          "paths": [
+            "docs/handbook.md",
+            "docs/contracts/architecture.md",
+            "internal/platform/process/README.md"
+          ],
+          "reason": "Product policy on directory vs file permission masking and digest determinism needed to judge if \u00260o700 and unsorted hash are regressions",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+        },
+        {
+          "kind": "file_content",
+          "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:test-135-lines-unchanged"
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:static-observation-no-execution"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 2,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-94e7f1e3137538c8e83f9d06",
+      "shard_id": "qa-v1-shard-6cb1f33e043c7afceeadfe6d",
+      "claim": "Directory permission masking is inconsistent with file permission preservation and may violate least-privilege or test expectations",
+      "basis": "internal/platform/process/isolation.go:345-346 creates directories with os.Mkdir(destination, info.Mode().Perm()\u00260o700) masking to owner-only, while 357 writes files with info.Mode().Perm() unmasked. Test at isolation_test.go:34-39 asserts file perm 0o644 is preserved exactly. Directory 0o755 source becomes 0o700 in isolation. This divergence may hide a changed behavior in internal/platform isolation where prior code preserved dir modes or masked both, affecting contract-security and contract-architecture expectations.",
+      "verification_surface": "internal/platform/process/isolation.go:copyBoundedTree, internal/platform/process/isolation_test.go:TestIsolationCopiesNonGitTreeRunsAndCleans",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Diff against prior revision shows directory mode handling changed from full Perm to \u00260o700, or policy requires directories preserve exact mode or mask files similarly",
+      "refutation_condition": "Show \u00260o700 masking for directories is intended containment hardening and file preservation is intended, both documented and consistent with ProtectedRoots policy",
+      "inconclusive_condition": "No baseline diff provided and cannot inspect git history or run permission assertions beyond static TestIsolationCopiesNonGitTreeRunsAndCleans check which only asserts file mode",
+      "safe_evidence_strategy": "Read-only compare isolation.go dir vs file mode lines and test expectations; request context expansion for handbook/architecture docs on workspace permission policy if approved",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6cb1f33e043c7afceeadfe6d/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.236281144Z",
+          "completed_at": "2026-08-28T11:15:38.403168756Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-req-001",
+              "paths": [
+                "internal/platform/process/linkcount_linux.go",
+                "internal/platform/process/linkcount_windows.go",
+                "internal/platform/process/capabilities.go",
+                "internal/platform/process/native_isolation.go"
+              ],
+              "reason": "linkCount and isolationCapabilities and nativeIsolationRequest definitions needed to verify hard-link rejection and NativeProtectedRootDeny behavior; outside assigned changed_paths/context_paths budgets",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            },
+            {
+              "id": "ctx-req-002",
+              "paths": [
+                "docs/handbook.md",
+                "docs/contracts/architecture.md",
+                "internal/platform/process/README.md"
+              ],
+              "reason": "Product policy on directory vs file permission masking and digest determinism needed to judge if \u00260o700 and unsorted hash are regressions",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ],
+              "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+            },
+            {
+              "kind": "file_content",
+              "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+              "paths": [
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:test-135-lines-unchanged"
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:static-observation-no-execution"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+        },
+        {
+          "kind": "file_content",
+          "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:test-135-lines-unchanged"
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:static-observation-no-execution"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static read shows masking asymmetry but cannot determine if intentional hardening or regression without historical diff or product policy docs; execution to stat directory mode not permitted"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-a2b0c816055c00b6937c69ab",
+      "shard_id": "qa-v1-shard-6cb1f33e043c7afceeadfe6d",
+      "claim": "Tree identity digest in copyBoundedTree and collectTreeIdentity is order-dependent because filepath.WalkDir order is filesystem-dependent and hashes are accumulated in walk order without sorting",
+      "basis": "internal/platform/process/isolation.go:317-371 copyBoundedTree hashes rel+data in WalkDir callback order; 373-433 collectTreeIdentity does same. No sort before hashing. Digest is hex of sha256 of concatenated entries. CompareTrees and ChangedPaths rely on digest equality; CreateIsolation verifies copy identity digest == re-collected digest (125). If walk order differs between copy and collect, or across runs, digest mismatch can cause spurious 'isolated copy identity does not match its source' cleanup even for valid trees.",
+      "verification_surface": "internal/platform/process/isolation.go:copyBoundedTree, collectTreeIdentity, CreateIsolation",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Demonstrate two successive IdentifyTree/CreateIsolation digests differ for same content due to differing WalkDir order, or show WalkDir order not guaranteed sorted and hash not sorted, or reproduce flaky TestIsolationCopiesNonGitTreeRunsAndCleans failure on inconsistent digest",
+      "refutation_condition": "Show code sorts entries before hashing or WalkDir is proven deterministically sorted on all supported platforms/filesystems, or digest comparison is stable in tests",
+      "inconclusive_condition": "Cannot execute filesystem-order variation or run reproduction without execution; static read alone does not prove runtime ordering variance",
+      "safe_evidence_strategy": "Read-only inspection of copyBoundedTree and collectTreeIdentity hashing loops; compare to SortedEnvironment and compareTreeEntries which do sort; request go-source-integrity check without execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6cb1f33e043c7afceeadfe6d/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.236281144Z",
+          "completed_at": "2026-08-28T11:15:38.403168756Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-req-001",
+              "paths": [
+                "internal/platform/process/linkcount_linux.go",
+                "internal/platform/process/linkcount_windows.go",
+                "internal/platform/process/capabilities.go",
+                "internal/platform/process/native_isolation.go"
+              ],
+              "reason": "linkCount and isolationCapabilities and nativeIsolationRequest definitions needed to verify hard-link rejection and NativeProtectedRootDeny behavior; outside assigned changed_paths/context_paths budgets",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            },
+            {
+              "id": "ctx-req-002",
+              "paths": [
+                "docs/handbook.md",
+                "docs/contracts/architecture.md",
+                "internal/platform/process/README.md"
+              ],
+              "reason": "Product policy on directory vs file permission masking and digest determinism needed to judge if \u00260o700 and unsorted hash are regressions",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ],
+              "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+            },
+            {
+              "kind": "file_content",
+              "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+              "paths": [
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:test-135-lines-unchanged"
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:static-observation-no-execution"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+        },
+        {
+          "kind": "file_content",
+          "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:test-135-lines-unchanged"
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:static-observation-no-execution"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static inspection confirms unsorted hash accumulation and missing sort, but cannot observe runtime WalkDir order variance or reproduce flaky digest without execution; no shell or test execution allowed per read-only QA investigator constraints"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e4ba7949f8600c755bf1478d",
+      "shard_id": "qa-v1-shard-6cb1f33e043c7afceeadfe6d",
+      "claim": "Hard-link and special-file rejection relies on linkCount(info) via info.Sys() which is platform-specific and may silently allow hard-links on non-Unix builds, weakening isolation security guarantee",
+      "basis": "internal/platform/process/isolation.go:341-342 and 408-409 check if info.Sys()!=nil \u0026\u0026 linkCount(info)\u003e1 then reject. linkCount implementation not in assigned paths (likely platform file). If Sys is nil or linkCount stub returns 1 on Windows/other, hard-linked entries would be copied as separate files, violating 'rejects links, special files, hard links' comment at 77-79 and TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets expectation at 76-80 that hard links are rejected.",
+      "verification_surface": "internal/platform/process/isolation.go:copyBoundedTree, collectTreeIdentity, linkCount",
+      "expectation_refs": [
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Find linkCount is no-op on target platform or Sys==nil path bypasses check, allowing os.Link created fixture to pass CreateIsolation without 'hard-linked' error",
+      "refutation_condition": "Show linkCount correctly extracts nlink on all supported GOOS and Sys nil case is unreachable for regular files, and test’s conditional 'if err==nil' skip is the only platform variance",
+      "inconclusive_condition": "Cannot inspect linkCount definition (outside changed_paths budgets) and cannot execute hard-link test on this host without shell",
+      "safe_evidence_strategy": "Read-only grep for linkCount definition within assigned paths; bounded context request for platform-specific linkCount file if outside shard",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6cb1f33e043c7afceeadfe6d/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.236281144Z",
+          "completed_at": "2026-08-28T11:15:38.403168756Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-req-001",
+              "paths": [
+                "internal/platform/process/linkcount_linux.go",
+                "internal/platform/process/linkcount_windows.go",
+                "internal/platform/process/capabilities.go",
+                "internal/platform/process/native_isolation.go"
+              ],
+              "reason": "linkCount and isolationCapabilities and nativeIsolationRequest definitions needed to verify hard-link rejection and NativeProtectedRootDeny behavior; outside assigned changed_paths/context_paths budgets",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            },
+            {
+              "id": "ctx-req-002",
+              "paths": [
+                "docs/handbook.md",
+                "docs/contracts/architecture.md",
+                "internal/platform/process/README.md"
+              ],
+              "reason": "Product policy on directory vs file permission masking and digest determinism needed to judge if \u00260o700 and unsorted hash are regressions",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ],
+              "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+            },
+            {
+              "kind": "file_content",
+              "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+              "paths": [
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:test-135-lines-unchanged"
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:static-observation-no-execution"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+        },
+        {
+          "kind": "file_content",
+          "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:test-135-lines-unchanged"
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:static-observation-no-execution"
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "linkCount definition not in assigned changed_paths or context_paths; verification requires context expansion beyond shard budgets; shell execution to create hard link not allowed"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ed72eb6b2ea44b6f062d2705",
+      "shard_id": "qa-v1-shard-6cb1f33e043c7afceeadfe6d",
+      "claim": "Context cancellation error propagation in CreateIsolation may be masked by cleanup errors via errors.Join, potentially obscuring contract-errors handling for timeout/cancel",
+      "basis": "internal/platform/process/isolation.go:113-122 copyBoundedTree with copyCtx derived from req.Limits.Timeout; if ctx already canceled, WalkDir returns context.Canceled, then cleanup RemoveAll may also error and errors.Join obscures primary cause. Test at isolation_test.go:97-101 expects errors.Is(err, context.Canceled) to hold even after cancellation. If Join wraps, errors.Is may still pass but string matching or error type assertions in callers could break. Also Timeout zero is rejected at validateIsolationRequest, but copyCtx timeout path not tested for DeadlineExceeded vs Canceled distinction.",
+      "verification_surface": "internal/platform/process/isolation.go:CreateIsolation, copyBoundedTree, internal/platform/process/isolation_test.go:TestIsolationRejectsOverlappingParentAndCancellation",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Reproduce canceled context CreateIsolation where RemoveAll fails and observe returned error no longer unwraps to context.Canceled via errors.Is, or Timeout deadline error is wrapped inconsistently",
+      "refutation_condition": "Show errors.Join preserves unwrap for errors.Is and test passes with canceled context even with induced cleanup failure",
+      "inconclusive_condition": "Cannot execute cancellation path or inject RemoveAll failure without execution/mutation",
+      "safe_evidence_strategy": "Static inspection of error Join sites (118-119,130-131) and TestIsolationRejectsOverlappingParentAndCancellation assertion; request go-source-integrity check",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6cb1f33e043c7afceeadfe6d/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.236281144Z",
+          "completed_at": "2026-08-28T11:15:38.403168756Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-req-001",
+              "paths": [
+                "internal/platform/process/linkcount_linux.go",
+                "internal/platform/process/linkcount_windows.go",
+                "internal/platform/process/capabilities.go",
+                "internal/platform/process/native_isolation.go"
+              ],
+              "reason": "linkCount and isolationCapabilities and nativeIsolationRequest definitions needed to verify hard-link rejection and NativeProtectedRootDeny behavior; outside assigned changed_paths/context_paths budgets",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            },
+            {
+              "id": "ctx-req-002",
+              "paths": [
+                "docs/handbook.md",
+                "docs/contracts/architecture.md",
+                "internal/platform/process/README.md"
+              ],
+              "reason": "Product policy on directory vs file permission masking and digest determinism needed to judge if \u00260o700 and unsorted hash are regressions",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ],
+              "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+            },
+            {
+              "kind": "file_content",
+              "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+              "paths": [
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:test-135-lines-unchanged"
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "sha256:static-observation-no-execution"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "Read isolation.go shows copyBoundedTree and collectTreeIdentity hash accumulation in WalkDir order without sorting; directory Mkdir masks \u00260o700 while file Write preserves Perm; hard-link check gates on Sys!=nil; CreateIsolation joins cleanup errors",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "sha256:d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2"
+        },
+        {
+          "kind": "file_content",
+          "summary": "Read isolation_test.go shows expectations: digest non-empty and file count, file mode 0o644 preserved, symlink/oversize rejection, hard-link rejection conditional on os.Link success, path escape rejected, overlapping parent rejected, cancellation expects context.Canceled, native protected-root deny skipped when capability false",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:test-135-lines-unchanged"
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Grep within assigned paths confirms linkCount referenced twice but not defined in shard; SortedEnvironment and compareTreeEntries do sort, highlighting inconsistent sorting for digest; safePrefix and rejectRootOverlap handle protected roots overlap",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "sha256:static-observation-no-execution"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static analysis shows Join usage which does preserve Is in Go 1.20+ but cannot confirm runtime behavior without execution; read-only inspection inconclusive"
+    }
+  ]
+}

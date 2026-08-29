@@ -1,0 +1,874 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-3746d7d9ae60fe16758db688",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-3746d7d9ae60fe16758db688/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:53:30.56742535Z",
+      "completed_at": "2026-08-26T09:55:47.762106403Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "context_requests": [
+        {
+          "id": "qa-ctx-1",
+          "paths": [
+            "internal/project/catalog.go",
+            "internal/workspace/workspace.go"
+          ],
+          "reason": "confirm catalogEntry resolution and ResolveInside containment used by PrepareReview and BuildQAMap inputRefs governs stale-input vs permission-denied classification",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 60140096,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+          "paths": [
+            "internal/sprint/domain.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+          "paths": [
+            "internal/sprint/qa_synthesis.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8317dcf08d2ae9585c16acff",
+      "shard_id": "qa-v1-shard-3746d7d9ae60fe16758db688",
+      "claim": "BuildQAMap boundary shard overlap includes first path of blocked unknown-extension shards, leaking unclassified paths into cross-package integration context",
+      "basis": "qa_map.go:195-245 groups unknown extensions as blocked primary shards (unknown/\u003cpath\u003e with PhaseBlocked) then builds boundary overlap by taking shards[i].ChangedPaths[0] from every primary shard without filtering blocked shards; unknown path could enter BoundaryOverlaps and follow-up context normalization",
+      "verification_surface": "internal/sprint/qa_map.go:231-245",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "map built with mixed known (.go) and unknown (.weird) changed paths contains unknown path in boundary shard OverlapPaths/ContextPaths",
+      "refutation_condition": "boundary shard construction explicitly excludes shards where Phase==Blocked or Blocker!=nil, or unknown shards are omitted from overlap",
+      "inconclusive_condition": "no deterministic map build executed; inspection is read-only and fixture not reproduced in isolated workspace",
+      "safe_evidence_strategy": "read qa_map.go and qa_map_test.go, construct QAMapInput with one unknown path plus two known paths and inspect resulting Coverage.BoundaryOverlaps without writing",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-3746d7d9ae60fe16758db688/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:30.56742535Z",
+          "completed_at": "2026-08-26T09:55:47.762106403Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "qa-ctx-1",
+              "paths": [
+                "internal/project/catalog.go",
+                "internal/workspace/workspace.go"
+              ],
+              "reason": "confirm catalogEntry resolution and ResolveInside containment used by PrepareReview and BuildQAMap inputRefs governs stale-input vs permission-denied classification",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 60140096,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+              "paths": [
+                "internal/sprint/domain.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+              "paths": [
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+              "paths": [
+                "internal/sprint/locks.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+              "paths": [
+                "internal/sprint/qa_synthesis.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+          "paths": [
+            "internal/sprint/domain.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+          "paths": [
+            "internal/sprint/qa_synthesis.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "read-only inspection observed code path but did not execute BuildQAMap with controlled fixture; cannot confirm runtime grouping without execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b70f0cd08000bb480fdd6f66",
+      "shard_id": "qa-v1-shard-3746d7d9ae60fe16758db688",
+      "claim": "ReconcileInterruptedMutation and RecoverQA transition QA to Interrupted/Stale without holding QA writer fence, allowing race where concurrent RunQA Publish overwrites recovered state after Reconcile reads flow but before SaveRecoveredState",
+      "basis": "locks.go:25-97 acquires sprint mutation lease via acquireMutationContext but uses empty fence (store created with default nil fence for SaveRecoveredState); qa.go:178-248 RecoverQA also uses acquireMutationContext and then store.SaveRecoveredState which does not call checkWriter, unlike Publish which requires fence; concurrent RunQA holds same lease type but lease is per-Service instance in-memory plus file lock so cross-process race depends on file lock timing",
+      "verification_surface": "internal/sprint/locks.go:26-33",
+      "expectation_refs": [
+        "contract-concurrency",
+        "contract-observability",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "concurrent RecoverQA and RunQA on same sprint with file lock contention shows recovered state overwritten after RunQA Publish or SaveRecoveredState succeeds while RunQA holds lease",
+      "refutation_condition": "acquireMutationContext serializes all mutations via file lock acquisition; RecoverQA retry returns ErrVerificationConflict and does not write, or SaveRecoveredState validates fencingGeneration and aborts",
+      "inconclusive_condition": "no concurrent mutation executed; single-threaded read-only inspection only",
+      "safe_evidence_strategy": "read locks.go, qa_state.go SaveRecoveredState, service.go acquireMutation; inspect lock acquisition order and whether SaveRecoveredState calls checkWriter; search for fence usage without executing concurrent workers",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-3746d7d9ae60fe16758db688/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:30.56742535Z",
+          "completed_at": "2026-08-26T09:55:47.762106403Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "qa-ctx-1",
+              "paths": [
+                "internal/project/catalog.go",
+                "internal/workspace/workspace.go"
+              ],
+              "reason": "confirm catalogEntry resolution and ResolveInside containment used by PrepareReview and BuildQAMap inputRefs governs stale-input vs permission-denied classification",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 60140096,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+              "paths": [
+                "internal/sprint/domain.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+              "paths": [
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+              "paths": [
+                "internal/sprint/locks.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+              "paths": [
+                "internal/sprint/qa_synthesis.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+          "paths": [
+            "internal/sprint/domain.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+          "paths": [
+            "internal/sprint/qa_synthesis.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "observed lease sharing and fence absence via code read; concurrency behavior not exercised without running parallel investigators"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-c9fd1abced386187e5c35feb",
+      "shard_id": "qa-v1-shard-3746d7d9ae60fe16758db688",
+      "claim": "QAInvestigatorRequest path allowlist is constructed from normalized shard ChangedPaths+ContextPaths but does not bound duplicate or excessive path rules; large context expansion could exceed PromptBytes after policy serialization though prompt itself is checked",
+      "basis": "qa_prompt.go:182-193 loops over normalized paths and appends PermissionPathRule per entry; qa_map.go caps ContextPathsPerShard at Budgets limit but investigator output later allows ContextRequests up to ContextExpansions*PathsPerExpansion which are not pre-validated against runtime policy size; RenderQAInvestigatorPrompt checks prompt bytes but not policy rule count bytes",
+      "verification_surface": "internal/sprint/qa_prompt.go:182-193",
+      "expectation_refs": [
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "shard with maximum ContextPathsPerShard (64) plus follow-up expansions creates policy with \u003e128 allow rules and serialized runtime request exceeds PromptBytes or runtime rejects request",
+      "refutation_condition": "runtime Request serialization size is bounded by same Budgets.PromptBytes or service truncates/rejects excessive path rules before StartRun",
+      "inconclusive_condition": "no runtime request serialization measured; read-only prompt and policy inspection only",
+      "safe_evidence_strategy": "read qa_prompt.go and qa_types.go DefaultQABudgets; count max path rules from Default vs Maximum budgets and inspect runtimeRequest metadata assembly without invoking runtime",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-3746d7d9ae60fe16758db688/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:30.56742535Z",
+          "completed_at": "2026-08-26T09:55:47.762106403Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "qa-ctx-1",
+              "paths": [
+                "internal/project/catalog.go",
+                "internal/workspace/workspace.go"
+              ],
+              "reason": "confirm catalogEntry resolution and ResolveInside containment used by PrepareReview and BuildQAMap inputRefs governs stale-input vs permission-denied classification",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 60140096,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+              "paths": [
+                "internal/sprint/domain.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+              "paths": [
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+              "paths": [
+                "internal/sprint/locks.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+              "paths": [
+                "internal/sprint/qa_synthesis.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+          "paths": [
+            "internal/sprint/domain.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+          "paths": [
+            "internal/sprint/qa_synthesis.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "code inspection shows separate limits for prompt vs policy; size interaction not measured without execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e5c88d7903fa2926f3baf4e0",
+      "shard_id": "qa-v1-shard-3746d7d9ae60fe16758db688",
+      "claim": "RunQA evidence publication builds plans and runs ApprovedQAChecks for every Completed shard but does not verify shard ApprovedChecks ownership before descriptor selection, allowing stale check catalog to be used if target grows new .go files between map and evidence phase",
+      "basis": "qa.go:476-504 ApprovedQAChecks is recomputed from current target and changedPaths inside buildQAEvidencePublication and again per shard; descriptor fingerprint is taken from live filesystem (gofmt -d \u003ccurrent go list\u003e) while map holds frozen CheckCatalogFingerprint; ValidateQAEvidencePlan checks attempt binding but not that descriptor matches shard.ApprovedChecks set",
+      "verification_surface": "internal/sprint/qa.go:488-503",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "adding a new .go file to target after QAMap but before evidence phase changes ApprovedQAChecks descriptor (different Args/fingerprint) yet evidence plan is still frozen and accepted",
+      "refutation_condition": "FreezeQAEvidencePlan or publishEvidence rejects descriptor whose fingerprint is not in qaMap.CheckCatalogFingerprint and shard.ApprovedChecks, causing admission error",
+      "inconclusive_condition": "no live target mutation executed; read-only file listing only",
+      "safe_evidence_strategy": "read qa.go, qa_prompt.go, qa_state.go publishEvidence; list target go files before and after map without mutating; compare ApprovedQAChecks fingerprint to map CheckCatalogFingerprint",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-3746d7d9ae60fe16758db688/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:30.56742535Z",
+          "completed_at": "2026-08-26T09:55:47.762106403Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "qa-ctx-1",
+              "paths": [
+                "internal/project/catalog.go",
+                "internal/workspace/workspace.go"
+              ],
+              "reason": "confirm catalogEntry resolution and ResolveInside containment used by PrepareReview and BuildQAMap inputRefs governs stale-input vs permission-denied classification",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 60140096,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+              "paths": [
+                "internal/sprint/domain.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+              "paths": [
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+              "paths": [
+                "internal/sprint/locks.go"
+              ]
+            },
+            {
+              "kind": "code_read",
+              "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+              "paths": [
+                "internal/sprint/qa_synthesis.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "read domain.go validates VerificationAttempt identity, heartbeat and diagnostic size limits",
+          "paths": [
+            "internal/sprint/domain.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_map.go deterministic grouping, boundary shard creation and coverage ownership validation",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_prompt.go ApprovedQAChecks gofmt descriptor, shell/git/write/escape/environment denylist and investigator prompt budgets",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa.go RunQA shard batch worker pool, panic recovery, bounded progress, target identity drift checks and strict JSON decode",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_state.go private 0600 atomic publish, pointer-last flow summary, immutable map, canonical report rollback and symlink checks",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read locks.go ReconcileInterruptedMutation DRY handling for execute/flow/qa interrupted states and mutationLeaseContext reuse",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code_read",
+          "summary": "read qa_synthesis.go pure deduplication, contradiction detection, follow-up shard budgeting and challenger validation",
+          "paths": [
+            "internal/sprint/qa_synthesis.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "observed recomputation and fingerprint logic via code read; no isolated check execution or target mutation performed"
+    }
+  ]
+}

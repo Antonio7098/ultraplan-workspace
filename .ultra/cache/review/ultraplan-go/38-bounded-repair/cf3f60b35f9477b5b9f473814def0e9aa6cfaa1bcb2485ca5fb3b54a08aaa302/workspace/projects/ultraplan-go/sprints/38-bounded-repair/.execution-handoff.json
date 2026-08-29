@@ -1,0 +1,321 @@
+{
+  "schemaVersion": 1,
+  "planFingerprint": "sha256:782ba36ff2f1eadfde05604b282ad4b884ae6c5cb192625ce7725ebd68d2ab2f",
+  "changedPaths": [
+    "internal/app/sprint_commands.go",
+    "internal/sprint/qa_repair.go",
+    "internal/sprint/qa_repair_state.go",
+    "internal/sprint/qa_repair_test.go",
+    "internal/tui/qa_view_test.go",
+    "internal/web/operations_test.go",
+    "internal/web/qa_handlers_test.go"
+  ],
+  "tasks": [
+    {
+      "id": "task-e0531ba8993b",
+      "name": "Task 1: Verify Sprint 37 And Host Admission Gates",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "execution-summary",
+          "summary": "Host capabilities verified; missing Sprint 37 evidence recorded without fabrication.",
+          "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "The user approved implementation without current Sprint 37 QA, smoke, and real-runtime evidence; packet admission remains blocked.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-a8ded5228c68",
+      "name": "Task 2: Add Repair Domain Types And Pure Policy",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "implementation",
+          "summary": "Strict repair types, policy, paths, budgets, outcomes, and core tables implemented.",
+          "path": "internal/sprint/qa_repair.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Core manual policy is implemented, but exhaustive automatic stop matrices require the proof-gated automatic phase.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-4131a13c80ea",
+      "name": "Task 3: Extend Strict Repair Persistence And Flow Projection",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "implementation",
+          "summary": "Private digest-bound records, writer fencing, flow v3 migration, and summary preservation implemented.",
+          "path": "internal/sprint/qa_repair_state.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Strict manual persistence is implemented; complete retention and failure-injection coverage remains open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-ffbfb462255d",
+      "name": "Task 4: Split Durable Acceptance From Dispatch",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "test",
+          "summary": "Accept-confirm-dispatch ordering and no runtime after confirmation failure pass.",
+          "path": "internal/web/operations_test.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Ordering and no-child failure behavior are implemented; the full restart and terminal-race matrix remains open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-b4d3c36a7580",
+      "name": "Task 5: Freeze Current Issue Packets And Bind Confirmation",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "implementation",
+          "summary": "Current issue packet and durable confirmation binding implemented.",
+          "path": "internal/sprint/qa_repair.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Deterministic packet and confirmation paths are implemented but cannot be dogfooded without a current admissible issue.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-09806516fcb6",
+      "name": "Task 6: Build Isolated Proposal And Strict Patch Evidence",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "implementation",
+          "summary": "Bounded isolated proposal derivation and protected change rejection implemented.",
+          "path": "internal/sprint/qa_repair.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "The isolated proposal path is implemented; exhaustive adversarial runtime and retained-proposal reparse coverage remains open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-1454737f4fa0",
+      "name": "Task 7: Implement Product-Owned Apply, Journal, And Scope Enforcement",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "test",
+          "summary": "Preimage, scope, compensation, hard-link, and private journal tests pass.",
+          "path": "internal/sprint/qa_repair_test.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Journaled apply and conservative compensation are implemented; the complete crash/failure-injection matrix remains open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-7df1f8027435",
+      "name": "Task 8: Add Sequential Reverification And Outcome Derivation",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "test",
+          "summary": "Pre-repair product authority blocks and wider gates skip.",
+          "path": "internal/sprint/qa_repair_test.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Ordered executable gates fail closed, but repaired-target containing smoke and independent review-delta verifiers are not implemented.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-0d5c396ccbb0",
+      "name": "Task 9: Complete Manual Cycle, Cleanup, Resume, Recovery, And Proof",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "implementation",
+          "summary": "Terminalizing barrier, cleanup, conservative journal recovery, and proof qualification implemented.",
+          "path": "internal/sprint/qa_repair.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "The cycle, recovery, and proof rules exist; exact resume authority and real manual proof remain blocked.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-076617bb08a1",
+      "name": "Task 10: Add Manual App DTOs, Shared Operations, And CLI",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "implementation",
+          "summary": "Manual repair CLI family, shared DTO, and operation runner wiring implemented.",
+          "path": "internal/app/sprint_commands.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Bounded shared status and commands exist; dedicated cursor-bound cycle/detail DTOs and executable resume remain open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-f0509b68fc38",
+      "name": "Task 11: Add Manual TUI Routes And Guarded Actions",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "test",
+          "summary": "Repair route and exactly one guarded start action pass.",
+          "path": "internal/tui/qa_view_test.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "The guarded manual route and current status projection exist; paging and the full lifecycle matrix remain open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-e1085e050a0a",
+      "name": "Task 12: Add Manual Browser Resources And No-JavaScript Operation",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "test",
+          "summary": "Bounded escaped repair HTML/JSON and durable confirmation ordering tests pass.",
+          "path": "internal/web/qa_handlers_test.go"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "The guarded no-JavaScript workbench and bounded resources exist; dedicated paged detail and full reconnect matrix remain open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-0fb565ff89f3",
+      "name": "Task 13: Complete Manual Offline Gates And Operator Documentation",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Full unit, race, vet, build, and diff checks pass.",
+          "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Offline, race, vet, build, documentation, and diff gates pass; formal reviews and complete adversarial matrices remain open.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-3be65c9c743c",
+      "name": "Task 14: Produce The Real Manual Four-Interface Proof Gate",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "blocker",
+          "summary": "Missing current Sprint 37 evidence recorded; no proof fabricated.",
+          "path": "projects/ultraplan-go/sprints/38-bounded-repair/plan.md"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Sprint 37 has no current admissible issue, containing smoke, or real-runtime QA evidence, so no truthful production proof can run.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-fc0a71e72c45",
+      "name": "Task 15: Implement Lower-Only Automatic Policy After Manual Proof",
+      "status": "deferred",
+      "attempts": 0,
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "The required current qualifying manual proof does not exist; automatic execution remains rejected.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    },
+    {
+      "id": "task-a428d062f158",
+      "name": "Task 16: Expose Automatic Opt-In, Finish Release Evidence, And Close The Sprint",
+      "status": "deferred",
+      "attempts": 0,
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Automatic opt-in, dogfood, and release evidence cannot begin before Task 14 qualifies.",
+          "at": "2026-08-26T11:49:39Z"
+        }
+      ]
+    }
+  ]
+}

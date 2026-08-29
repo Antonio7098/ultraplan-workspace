@@ -1,0 +1,104 @@
+{{define "page/run"}}{{template "layout/top" .}}{{$csrf := .CSRF}}
+<div class="run-page">
+<nav aria-label="Breadcrumb" class="run-breadcrumb"><a href="/">Dashboard</a><span aria-hidden="true">/</span><a href="/runs">Runs</a><span aria-hidden="true">/</span><a href="" aria-current="page">Run</a></nav>
+{{with .Run}}
+<section class="run-state-panel" aria-labelledby="run-state-heading" data-run-id="{{.RunID}}" data-last-sequence="{{.LastSequence}}" data-run-lifecycle="{{.Lifecycle.Value}}" data-run-outcome="{{.TerminalOutcome}}">
+  <header class="run-heading">
+    <div class="run-identity"><p class="eyebrow">{{if .Scope}}{{.Scope}}{{else}}Agent activity{{end}}</p><h2 id="run-state-heading">{{.Title}}</h2><p class="run-id">Run <code>{{.RunID}}</code></p></div>
+    <div class="run-heading-side"><div class="run-status-pills">{{template "component/run-state" .Lifecycle}}{{template "component/run-state" .Liveness}}{{template "component/run-state" .Cancellation}}</div>
+    {{if .IsActive}}<form method="post" action="/runs/{{.RunID}}/cancel" data-confirm="Request durable cancellation for this run?"><input type="hidden" name="_csrf" value="{{$csrf}}"><button type="submit">Request cancellation</button></form>{{end}}
+    </div>
+  </header>
+  <dl class="metadata run-state-primary"><div><dt>Outcome</dt><dd>{{if .TerminalOutcome}}{{.TerminalOutcome}}{{else}}{{.Lifecycle.Value}}{{end}}</dd></div><div><dt>Duration</dt><dd>{{.Duration}}</dd></div><div><dt>Runtime attempts</dt><dd><span data-run-attempt-count>0</span></dd></div><div><dt>Product status</dt><dd>{{.Product}}</dd></div></dl>
+  <dl class="run-state-secondary"><div><dt>Target</dt><dd>{{.Target}}</dd></div><div><dt>Owner attempt</dt><dd>{{.CurrentAttempt}}</dd></div><div><dt>Replay boundary</dt><dd>oldest {{.OldestRetainedSequence}}, last {{.LastSequence}}, omitted {{.OmissionTotal}}</dd></div><div><dt>History</dt><dd>{{.History}}</dd></div></dl>
+</section>
+{{end}}
+<section class="run-journey" aria-labelledby="run-journey-heading">
+  <header class="run-section-header"><div><p class="eyebrow">Run journey</p><h2 id="run-journey-heading">What is happening</h2><p class="group-description">Select a step to inspect the durable events behind it.</p></div></header>
+  <ol class="run-journey-steps" data-run-journey>
+    <li><button type="button" data-run-phase="queued" data-phase-state="complete"><span class="run-phase-mark" aria-hidden="true">✓</span><span><strong>Queued</strong><small>Run accepted</small></span></button></li>
+    <li><button type="button" data-run-phase="running" data-phase-state="pending"><span class="run-phase-mark" aria-hidden="true">2</span><span><strong>Running</strong><small>Agents and tools</small></span></button></li>
+    <li><button type="button" data-run-phase="checking" data-phase-state="pending"><span class="run-phase-mark" aria-hidden="true">3</span><span><strong>Checking</strong><small>Validation and repair</small></span></button></li>
+    <li><button type="button" data-run-phase="finished" data-phase-state="pending"><span class="run-phase-mark" aria-hidden="true">4</span><span><strong>Finished</strong><small>Final outcome</small></span></button></li>
+  </ol>
+  <p class="run-journey-status" data-run-journey-status role="status" aria-live="polite">Reading committed run progress…</p>
+  {{with .Run}}{{if and .TerminalReason (ne .TerminalOutcome "succeeded")}}<aside class="run-stop-summary" data-run-stop-summary><p class="eyebrow">Where it stopped</p><h3>{{.TerminalOutcome}}</h3><p>{{.TerminalReason}}</p><button type="button" data-run-show-failure>Inspect failure events</button></aside>{{end}}{{end}}
+</section>
+{{with .QAInsights}}{{template "component/run-qa" .}}{{end}}
+<div class="run-workspace">
+  <div class="run-main">
+    <section class="run-events-panel" aria-labelledby="run-events-heading">
+      <header class="run-section-header"><div><h2 id="run-events-heading">Retained events</h2><p data-run-live-status role="status" aria-live="polite">Snapshot loaded. Live observation starts when available.</p></div><a class="run-events-api" href="/api/v1/runs/{{.Run.RunID}}/events?after={{.Run.LastSequence}}">Event API ↗</a></header>
+      <details class="run-events-disclosure" data-run-events-disclosure><summary>Show durable event evidence · {{len .RunEvents}} retained</summary>
+      {{if .RunEvents}}<ol class="operation-timeline" data-run-timeline>{{range .RunEvents}}<li data-run-sequence="{{.Sequence}}" data-run-attempt="{{.AttemptID}}" data-run-type="{{.Type}}" data-run-stage="{{.Stage}}" data-run-task="{{.Task}}" data-run-phase-state="{{.PhaseState}}" data-run-summary="{{.Summary}}" data-run-state="{{.DetailState}}" data-run-action="{{.Action}}" data-run-reason="{{.Reason}}" data-run-count="{{.DetailCount}}"{{with .Time}} data-run-time="{{.}}"{{end}} data-run-kind="{{.DetailKind}}" data-run-type-detail="{{.DetailType}}" data-run-tool="{{.DetailTool}}" data-run-tool-call-id="{{.ToolCallID}}" data-run-tool-status="{{.ToolStatus}}" data-run-tool-arguments="{{.ToolArguments}}" data-run-tool-result="{{.ToolResult}}" data-run-tool-error="{{.ToolError}}"{{with .DetailText}} data-run-text="{{.}}"{{end}}><strong>{{.Sequence}} · {{.Type}}</strong>{{with .Stage}} <span>{{.}}</span>{{end}}{{with .Task}} <span>{{.}}</span>{{end}}{{with .PhaseState}} <small>state={{.}}</small>{{end}}{{with .Action}} <small>action={{.}}</small>{{end}}{{with .Reason}} <small>result={{.}}</small>{{end}}{{with .DetailCount}} <small>progress={{.}}</small>{{end}}{{with .DetailKind}} <small>kind={{.}}</small>{{end}}{{with .DetailTool}} <small>tool={{.}}</small>{{end}}{{with .ToolStatus}} <small>status={{.}}</small>{{end}}{{with .ToolCallID}} <small>call={{.}}</small>{{end}}{{with .Summary}}<p class="run-event-summary">{{.}}</p>{{else}}{{with .DetailText}}<p class="run-event-detail">{{.}}</p>{{end}}{{end}}{{if or .ToolArguments .ToolResult .ToolError}}<details class="run-tool-observation"><summary>Inspect tool call</summary>{{with .ToolArguments}}<section><h4>Arguments</h4><pre>{{.}}</pre></section>{{end}}{{with .ToolResult}}<section><h4>Result</h4><pre>{{.}}</pre></section>{{end}}{{with .ToolError}}<section><h4>Error</h4><pre>{{.}}</pre></section>{{end}}</details>{{end}}{{with .Omission}}<p>{{.}}</p>{{end}}</li>{{end}}</ol>{{else}}<ol class="operation-timeline" data-run-timeline><li class="empty">No retained events.</li></ol>{{end}}
+      <div class="run-events-links">{{with .NextEventsURL}}<a href="{{.}}">Continue retained event replay →</a>{{end}}</div>
+      </details>
+    </section>
+    {{if not .QAInsights}}<section aria-labelledby="run-agents-heading" data-run-agents hidden>
+      <header class="run-section-header"><div><h2 id="run-agents-heading">Agents in this run</h2><p class="group-description">Running agents occupy the live parallelism slots. Select any card for its detailed summary and full event stream.</p></div></header>
+      <ul id="run-agent-grid" class="reviewer-grid run-agent-grid" data-run-slots aria-label="Live parallelism slots"></ul>
+      <p id="run-agent-grid-empty" class="empty">No per-agent activity has been committed yet.</p>
+      <div class="run-agent-tabs" role="tablist" aria-label="Agent rosters">
+        <button id="run-tab-history" type="button" role="tab" aria-selected="true" aria-controls="run-agent-history" data-run-tab="history">History <span class="run-tab-count" data-run-tab-count="history">0</span></button>
+        <button id="run-tab-planned" type="button" role="tab" aria-selected="false" aria-controls="run-agent-planned" data-run-tab="planned">Planned <span class="run-tab-count" data-run-tab-count="planned">0</span></button>
+      </div>
+      <ul id="run-agent-history" class="reviewer-grid run-agent-grid" role="tabpanel" aria-labelledby="run-tab-history"></ul>
+      <p id="run-agent-history-empty" class="empty" hidden>No settled agents yet.</p>
+      <ul id="run-agent-planned" class="reviewer-grid run-agent-grid" role="tabpanel" aria-labelledby="run-tab-planned" hidden></ul>
+      <p id="run-agent-planned-empty" class="empty" hidden>No planned agents are waiting to start.</p>
+    </section>{{end}}
+  </div>
+  <aside class="run-rail">
+    {{with .SprintUsage}}{{if .HasMetrics}}<section aria-labelledby="run-sprint-usage-heading">
+      <header class="run-section-header"><div><h2 id="run-sprint-usage-heading">Sprint usage · {{.Scope}}</h2><p class="group-description">Tokens and estimated API cost across recent stage runs.</p></div></header>
+      {{template "component/run-usage" .}}
+      <details class="run-insight"><summary>Recent stage runs · {{len .Rows}}</summary>
+        <div class="table-wrap"><table><thead><tr><th>Stage</th><th>Task</th><th>Status</th><th>Tokens</th><th>Cache R/W</th><th>Cost</th></tr></thead><tbody>{{range .Rows}}<tr><td>{{.Stage}}</td><td>{{.Task}}</td><td>{{.Status}}</td><td>{{.Tokens}}</td><td>{{.CacheRead}} / {{.CacheWrite}}</td><td>{{.Cost}}</td></tr>{{end}}</tbody></table></div>
+      </details>
+    </section>{{end}}{{end}}
+    {{with .StudyInsights}}<section aria-labelledby="run-insights-heading">
+      <header class="run-section-header"><div><h2 id="run-insights-heading">Study insights · {{.Study}}</h2><p class="group-description">{{.Study}}</p></div></header>
+      <dl class="metadata run-insights-summary"><div><dt>Status</dt><dd>{{.Status}}</dd></div><div><dt>Completed</dt><dd>{{.Completed}}</dd></div><div><dt>Pending</dt><dd>{{.Pending}}</dd></div><div><dt>Active tasks</dt><dd>{{.ActiveTasks}}</dd></div><div><dt>Failed</dt><dd>{{.Failed}}</dd></div><div><dt>Cancelled</dt><dd>{{.Cancelled}}</dd></div>{{if .RunID}}<div><dt>Run ID</dt><dd>{{.RunID}}</dd></div>{{end}}</dl>
+      <details class="run-insight"><summary>Retries · {{.Retries.TotalRetries}} across {{.Retries.RetriedTasks}} task(s)</summary>
+        <dl class="metadata"><div><dt>Total retries</dt><dd>{{.Retries.TotalRetries}}</dd></div><div><dt>Tasks retried</dt><dd>{{.Retries.RetriedTasks}}</dd></div><div><dt>Same session</dt><dd>{{.Retries.SameSession}}</dd></div><div><dt>Fresh session</dt><dd>{{.Retries.FreshSession}}</dd></div>{{if .Retries.Waiting}}<div><dt>Waiting to retry</dt><dd>{{.Retries.Waiting}}</dd></div>{{end}}{{with .Retries.NextRetryAt}}<div><dt>Next retry</dt><dd>{{.Format "15:04:05 MST"}}</dd></div>{{end}}</dl>
+        {{if .Failures}}<h3>Failure reasons</h3><ul class="run-agent-failures">{{range .Failures}}<li><code>{{.Task}}</code>{{if .Code}} <span class="failure-code">{{.Code}}</span>{{end}}<p>{{.Message}}</p></li>{{end}}</ul>{{end}}
+      </details>
+      <details class="run-insight">{{if .Parallelism}}<summary>Parallelism · {{if .Parallelism.Decreased}}decreased to {{.Parallelism.EffectiveParallelism}} of {{.Parallelism.RequestedParallelism}}{{else if .Parallelism.Events}}recovered after {{.Parallelism.Events}} throttle event(s){{else}}not decreased{{end}}</summary>{{if .Parallelism.Decreased}}<p>Memory pressure reduced parallelism from {{.Parallelism.RequestedParallelism}} to {{.Parallelism.EffectiveParallelism}} agent(s).</p>{{else if .Parallelism.Events}}<p>Parallelism was throttled by memory pressure {{.Parallelism.Events}} time(s), but is back at the requested level.</p>{{else}}<p>Parallelism has not been decreased because of memory.</p>{{end}}{{else}}<summary>Parallelism · unknown</summary><p>No run-loop diagnostics recorded for this study.</p>{{end}}</details>
+      {{with .Usage}}{{if .HasUsage}}<details class="run-insight" open><summary>Token usage &amp; cost{{if .TotalKnown}} · {{.Total}} tokens{{end}}</summary>
+        {{template "component/run-usage" .}}
+      </details>{{end}}{{end}}
+      <details class="run-insight"><summary>Performance · {{len .Tasks}} task(s)</summary>
+        {{if .Tasks}}<div class="table-wrap"><table><thead><tr><th>Task</th><th>Status</th><th>Duration</th><th>Turns</th><th>Tokens</th><th>In/Out</th><th>Cache R/W</th><th>Cost</th><th>Retries</th><th>Session</th></tr></thead><tbody>{{range .Tasks}}<tr><td>{{.ID}}</td><td>{{.Status}}</td><td>{{.Duration}}</td><td>{{.Turns}}</td><td>{{.Tokens}}</td><td>{{.Input}}/{{.Output}}</td><td>{{.CacheRead}}/{{.CacheWrite}}</td><td>{{.Cost}}</td><td>{{.Retries}}</td><td>{{if eq .SessionReuse "same"}}same{{else if eq .SessionReuse "fresh"}}fresh{{else}}-{{end}}</td></tr>{{end}}</tbody></table></div>{{else}}<p class="empty">No task performance recorded.</p>{{end}}
+      </details>
+      {{if .Failures}}<script type="application/json" data-run-agent-failures data-study="{{.Study}}">{{.Failures}}</script>{{end}}
+    </section>{{end}}
+  </aside>
+</div>
+{{with .StudyInsights}}
+<script type="application/json" data-run-agent-tasks>{{.SeedTasks}}</script>
+{{with .Parallelism}}<script type="application/json" data-run-parallelism>{{.}}</script>{{end}}
+<link rel="stylesheet" href="/static/resource-monitor.css">
+<section class="resource-monitor" data-study-resources="/api/v1/studies/{{.Study}}/resources" aria-label="Live resource diagnostics">
+<header><div><h3>Resource usage</h3><p class="group-description">Live diagnostics</p></div><span class="resource-monitor-state" data-resource-state>Loading</span></header>
+<dl class="resource-metrics"><div><dt>Available memory</dt><dd data-resource="available">-</dd></div><div><dt>UltraPlan RSS</dt><dd data-resource="parent-rss">-</dd></div><div><dt>Workers RSS</dt><dd data-resource="child-rss">-</dd></div><div><dt>Swap</dt><dd data-resource="swap">-</dd></div><div><dt>Parallelism</dt><dd data-resource="parallelism">-</dd></div><div><dt>Workers</dt><dd data-resource="workers">-</dd></div><div><dt>Disk available</dt><dd data-resource="disk-available">-</dd></div><div><dt>Runtime storage</dt><dd data-resource="store-bytes">-</dd></div></dl>
+<p class="runtime-admission" data-runtime-admission role="status">Worker admission status has not been sampled yet.</p>
+<div class="resource-monitor-body">
+<div class="resource-chart"><svg viewBox="0 0 720 180" role="img" aria-label="Memory usage over time"><polyline data-resource-line="children" class="resource-line resource-line-children" points=""></polyline><polyline data-resource-line="parent" class="resource-line resource-line-parent" points=""></polyline></svg><div class="resource-legend"><span><i class="children"></i>Workers RSS</span><span><i class="parent"></i>UltraPlan RSS</span></div></div>
+<div class="resource-events"><h4>Resource controls</h4><ul data-resource-events><li>No control events recorded.</li></ul></div>
+</div>
+<p class="resource-empty" data-resource-empty hidden>No run-loop diagnostics have been recorded for this study.</p>
+<div class="table-wrap"><table class="resource-processes"><thead><tr><th>PID</th><th>Task</th><th>RSS</th><th>Swap</th><th>CPU time</th><th>Elapsed</th></tr></thead><tbody data-resource-processes></tbody></table></div>
+<details class="runtime-stores" open><summary>Task-owned runtime stores · <span data-runtime-store-count>0</span></summary><p class="group-description">Successful task stores disappear immediately. Retained stores preserve interrupted work and expire under the recovery policy.</p><div class="table-wrap"><table><thead><tr><th>Owner</th><th>State</th><th>Size</th><th>Updated</th></tr></thead><tbody data-runtime-stores><tr><td colspan="4" class="empty">No task-owned runtime stores.</td></tr></tbody></table></div></details>
+</section>
+<script src="/static/resource-monitor.js" defer></script>
+{{end}}
+</div>
+<dialog id="run-agent-dialog" class="reviewer-result-dialog run-agent-dialog" aria-labelledby="run-agent-dialog-title">
+  <div class="reviewer-result-heading">
+    <div><h2 id="run-agent-dialog-title"></h2><p id="run-agent-dialog-subtitle" class="group-description"></p></div>
+    <button id="run-agent-dialog-close" type="button" aria-label="Close agent details">×</button>
+  </div>
+  <dl class="agent-dialog-summary" id="run-agent-dialog-summary"></dl>
+  <ol class="operation-timeline run-agent-dialog-timeline" id="run-agent-dialog-timeline" aria-label="Agent event stream"></ol>
+</dialog>
+{{template "layout/bottom" .}}{{end}}

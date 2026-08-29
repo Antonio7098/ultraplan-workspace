@@ -1,0 +1,640 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b10259cb8a2e4f495b4f1e3e",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/sprint_commands.go",
+    "internal/platform/process/isolation.go",
+    "internal/sprint/qa.go",
+    "internal/web/qa_handlers.go"
+  ],
+  "overlap_paths": [
+    "docs/architecture.md",
+    "internal/app/sprint_commands.go",
+    "internal/platform/process/isolation.go",
+    "internal/sprint/qa.go",
+    "internal/web/qa_handlers.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "runtime"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-b10259cb8a2e4f495b4f1e3e/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:16:03.885917118Z",
+      "completed_at": "2026-08-28T11:17:16.890014805Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "ctx-qa-admission-validation",
+          "paths": [
+            "internal/sprint/qa_admission.go",
+            "internal/sprint/qa_store.go",
+            "internal/sprint/qa_map.go",
+            "internal/platform/process/isolation_linux.go"
+          ],
+          "reason": "Need ValidateQAAdmission implementation to confirm that IsolationProven=false actually blocks writable evidence, and nativeIsolationRequest platform logic to confirm protected-root denial enforcement; assigned paths show plumbing but not the adjudication predicate or linux bubblewrap mount logic",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-source-integrity",
+          "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+          "exit_code": 0,
+          "duration": 0,
+          "output_bytes": 0,
+          "truncated": false
+        },
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+          "exit_code": 0,
+          "duration": 16059005,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 23,
+      "retained_events": 23,
+      "observed_tool_calls": 8,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6e4f37a8326a9b785f7a23ae",
+      "shard_id": "qa-v1-shard-b10259cb8a2e4f495b4f1e3e",
+      "claim": "QA evidence production proceeds without native protected-root denial, process-group/descendant cleanup or workspace removal proven, violating isolation guarantees between internal/sprint and internal/platform/process",
+      "basis": "docs/architecture.md:229-242 states QA policy belongs to internal/sprint and reusable copy/identity/process/cleanup mechanics belong to internal/platform/process; each writable check gets 0700 non-Git copy and on Linux bubblewrap remounts host root read-only, and platforms that cannot prove protected-root denial/process-group/cleanup report missing capability and QA blocks before writable work",
+      "verification_surface": "internal/sprint/qa.go:449-470 buildQAEvidencePublication admission construction and pprocess.IsolationCapabilityFacts usage; internal/platform/process/isolation.go:38-65 IsolationCapabilities struct, 158-183 Run nativeIsolationRequest branch, 75 isolationCapabilities capability facts, 80-137 CreateIsolation/Run validation",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "buildQAEvidencePublication sets IsolationProven false yet still writes plans/records or ValidateQAAdmission does not reject false NativeProtectedRootDeny/DescendantCleanup/WorkspaceRemoval, or IsolationWorkspace.Run skips nativeIsolationRequest when NativeProtectedRootDeny true",
+      "refutation_condition": "IsolationProven is computed as NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval and ValidateQAAdmission rejects false, and Run applies nativeIsolationRequest only when capability true and otherwise relies on capability-gated admission to fail closed before any writable isolation",
+      "inconclusive_condition": "ValidateQAAdmission and nativeIsolationRequest implementations are platform-specific and outside assigned context paths (internal/sprint/qa_admission.go, qa_store.go, internal/platform/process/isolation_linux.go) so blocking behavior cannot be verified from assigned files alone",
+      "safe_evidence_strategy": "read-only inspection of IsolationCapabilities definition and buildQAEvidencePublication lines 458-469 and Run method branching; no process execution; request context expansion for admission validation logic and request go-source-integrity to verify no forbidden imports",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-b10259cb8a2e4f495b4f1e3e/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:16:03.885917118Z",
+          "completed_at": "2026-08-28T11:17:16.890014805Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-qa-admission-validation",
+              "paths": [
+                "internal/sprint/qa_admission.go",
+                "internal/sprint/qa_store.go",
+                "internal/sprint/qa_map.go",
+                "internal/platform/process/isolation_linux.go"
+              ],
+              "reason": "Need ValidateQAAdmission implementation to confirm that IsolationProven=false actually blocks writable evidence, and nativeIsolationRequest platform logic to confirm protected-root denial enforcement; assigned paths show plumbing but not the adjudication predicate or linux bubblewrap mount logic",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 16059005,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 23,
+          "retained_events": 23,
+          "observed_tool_calls": 8,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Assigned files show correct capability plumbing — isolation.go exposes NativeProtectedRootDeny/ProcessGroup/DescendantCleanup/WorkspaceRemoval and Run conditionally calls nativeIsolationRequest (176-181), and qa.go computes IsolationProven as conjunction of three caps and calls ValidateQAAdmission (459-467) — but ValidateQAAdmission body and nativeIsolationRequest implementation are not in assigned paths, so whether false capabilities actually block writable evidence cannot be confirmed or refuted without additional context"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-71bb45ec31344317651045eb",
+      "shard_id": "qa-v1-shard-b10259cb8a2e4f495b4f1e3e",
+      "claim": "internal/app/sprint_commands.go CLI QA parsing and dispatch diverges from sprint service contract for suite/shard/run token semantics, creating cross-package CLI/workflow integration mismatch",
+      "basis": "sprint_commands.go:369-496 dispatches qa map/status/recover/cancel/run/resume and 617-696 parseSprintQAArgs enforces --suite/--shard/--run/--yes interlocks; behavioral_concerns cross-package integration requires CLI surface to match internal/sprint QARunRequest Suite/FocusShard/WriterToken expectations",
+      "verification_surface": "internal/app/sprint_commands.go:369-496 runSprint qa case (map/status/recover/cancel/run|resume, QAWriterToken fence, QARunRequest construction) and 617-696 parseSprintQAArgs mutual-exclusion checks; internal/sprint/qa.go:22-30 QARunRequest struct and 288-320 RunQA suite guard",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-errors",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "CLI accepts --suite+--shard, allows qa resume with --suite, or allows --run with run/resume, or dispatches QARunRequest with Suite and FocusShard simultaneously, or omits --yes requirement for smoke suite, contrary to sprint service validation",
+      "refutation_condition": "parseSprintQAArgs rejects --suite+--shard, rejects qa resume with --suite, rejects --run outside cancel, requires --yes for smoke suite, and RunQA rejects Suite!=smoke and Suite with Resume|FocusShard; CLI and service error paths both map through mapQACommandError/stableQACommandError",
+      "inconclusive_condition": "cannot locate parseSprintQAArgs or sprint QARunRequest validation logic",
+      "safe_evidence_strategy": "read-only read and grep of sprint_commands.go for parseSprintQAArgs and QARunRequest construction, compare against internal/sprint/qa.go suite/focus guards; validate with go-source-integrity and go-format-diff checks without execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-b10259cb8a2e4f495b4f1e3e/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:16:03.885917118Z",
+          "completed_at": "2026-08-28T11:17:16.890014805Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-qa-admission-validation",
+              "paths": [
+                "internal/sprint/qa_admission.go",
+                "internal/sprint/qa_store.go",
+                "internal/sprint/qa_map.go",
+                "internal/platform/process/isolation_linux.go"
+              ],
+              "reason": "Need ValidateQAAdmission implementation to confirm that IsolationProven=false actually blocks writable evidence, and nativeIsolationRequest platform logic to confirm protected-root denial enforcement; assigned paths show plumbing but not the adjudication predicate or linux bubblewrap mount logic",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 16059005,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 23,
+          "retained_events": 23,
+          "observed_tool_calls": 8,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "parseSprintQAArgs explicitly enforces suite==''||suite=='smoke' (664-665,688-690), suite+shard mutual exclusion (667-668), resume+suite rejection (671-672), --yes required for smoke run (673-675), cancel requires --run and forbids shard/suite/yes (678-683), and runSprint RunQA path validates Suite!='smoke' inner guards (290-294); sprint_commands and sprint/qa.go guards align, no divergence observed in assigned paths"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7244f9e148bd641441b3f390",
+      "shard_id": "qa-v1-shard-b10259cb8a2e4f495b4f1e3e",
+      "claim": "internal/web/qa_handlers.go bypasses internal/app and imports internal/sprint or reads verification files directly, violating the web -\u003e app -\u003e sprint boundary",
+      "basis": "docs/architecture.md:11-156 states composition is internal/web -\u003e internal/app -\u003e product/platform and web does not import sprint, inspect verification files, build prompts, or decide outcomes; cross-package integration concern requires verifying handler imports and delegation",
+      "verification_surface": "internal/web/qa_handlers.go:1-201 imports and all handler bodies; docs/architecture.md:6-28,30-55,155-156 boundary description",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security",
+        "handbook"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "qa_handlers.go imports github.com/Antonio7098/ultraplan-go/internal/sprint or directly reads verification state, calls sprint.Service, or constructs prompts/runtimes outside app types",
+      "refutation_condition": "qa_handlers.go imports only github.com/Antonio7098/ultraplan-go/internal/app, uses app.QARequest/app.ErrWebUnavailable and delegates via h.qa (and optional app.QAEvidenceQueries assertion) with no sprint/workspace/runtime/process imports and no filesystem/Git/prompt logic",
+      "inconclusive_condition": "qa_handlers.go not readable, or app interface definitions unavailable to prove typed-projection containment",
+      "safe_evidence_strategy": "read-only read of internal/web/qa_handlers.go and docs/architecture.md plus grep for '^import' and 'internal/sprint' within assigned paths; request go-source-integrity check to mechanically verify no cycle/import violation",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-b10259cb8a2e4f495b4f1e3e/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:16:03.885917118Z",
+          "completed_at": "2026-08-28T11:17:16.890014805Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-qa-admission-validation",
+              "paths": [
+                "internal/sprint/qa_admission.go",
+                "internal/sprint/qa_store.go",
+                "internal/sprint/qa_map.go",
+                "internal/platform/process/isolation_linux.go"
+              ],
+              "reason": "Need ValidateQAAdmission implementation to confirm that IsolationProven=false actually blocks writable evidence, and nativeIsolationRequest platform logic to confirm protected-root denial enforcement; assigned paths show plumbing but not the adjudication predicate or linux bubblewrap mount logic",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 16059005,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 23,
+          "retained_events": 23,
+          "observed_tool_calls": 8,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "docs/architecture.md composition and QA verification phase defines web-\u003eapp-\u003esprint direction, no global registry, QA policy vs platform/process isolation separation, and deterministic map/shard/synthesis ownership",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/web/qa_handlers.go imports only internal/app and delegates every sprint QA route via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite with typed app.QARequest",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities/IsolationLimits/IsolationWorkspace, validates requests, copies bounded tree with digest, and Run applies nativeIsolationRequest only when NativeProtectedRootDeny is true",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/app/sprint_commands.go parseSprintQAArgs mutual exclusions and runSprint qa dispatch with durable CLI fence, QAWriterToken validation, QARunRequest construction and error mapping consistent with sprint service guards",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "internal/sprint/qa.go QARunRequest Suite/FocusShard guards, buildQAEvidencePublication admission IsolationProven conjunction and ValidateQAAdmission call, and RunQA shard batch/synthesis flow showing cross-package isolation limit propagation",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "File contains single import of internal/app only (line 7) and every handler delegates via h.qa.QAStatus/QAMap/QAShard/QATheory/QASynthesis or via type assertion to app.QAEvidenceQueries for evidence/adjudication/issues/assessment/smoke-suite; no sprint, workspace, runtime, process, or file-system imports and no direct verification-file handling, consistent with architecture.md:11-18,38-55,155"
+    }
+  ]
+}

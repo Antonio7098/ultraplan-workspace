@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-678496f97446dadf80dafef2",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "primary",
+  "title": "docs",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in docs"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-678496f97446dadf80dafef2/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:52:00.378618674Z",
+      "completed_at": "2026-08-26T10:53:30.240309258Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-qa-impl-alignment-01",
+          "paths": [
+            "internal/app/**",
+            "internal/web/**",
+            "internal/sprint/**",
+            "internal/platform/**"
+          ],
+          "reason": "Docs describe new QA CLI envelope, /api/v1 QA routes, v1/v2 verification layout and policy fingerprints. Changed_paths alone cannot confirm impl serves those surfaces or enforces documented bounds/isolation. Bounded read of app DTOs/web handlers/sprint state would verify contract-cli-surface, contract-persistence-and-migrations, contract-security alignment.",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ],
+          "output_digest": "sha256:doc-read-7files-v1"
+        },
+        {
+          "kind": "cross_doc_comparison",
+          "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1d7aea90854277fd5d2a27dc",
+      "shard_id": "qa-v1-shard-678496f97446dadf80dafef2",
+      "claim": "Changed docs omit required safety disclaimers for read-only QA, local-web trust boundary, or repair authority, creating contract-security/contract-llm-runtime expectation drift",
+      "basis": "QA expansion and local-web sections describe guarded operations, writable copies, isolation and browser execution; omission of 'no repair/patch apply','loopback not auth boundary','API not public' would misrepresent contract-security and contract-llm-runtime",
+      "verification_surface": "docs/architecture.md:227-243 (isolated writable copies, bubblewrap, cleanup), docs/local-web.md:86-115 (loopback-only, Host/Origin/CSRF, no auth boundary), docs/cli-reference.md:348-362 (theories are diagnostic not issues, QA cannot change Conformance Review verdict), docs/user-guide.md:349-360 (frozen plans, no copy changes, no issue promotion), docs/recovery.md:181-197 (QA recovery semantics)",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "any of: missing 'loopback is not authentication/isolation' warning, claims QA repairs code/applies patches/mutates Git, or presents /api/v1 QA resources as promised public integration API without compatibility-controlled disclaimer",
+      "refutation_condition": "docs explicitly state: loopback not auth boundary against same-user process (local-web 111-115), no hosted/LAN exposure, QA retains patches as evidence only and exposes no apply/repair operation (release-checklist 204-205, user-guide 398-401), API is compatibility-controlled for bundled browser not yet promised public API (local-web 124-126), synthesis has no issue/repair/qa.md verdict authority (architecture 153)",
+      "inconclusive_condition": "disclaimer present but wording ambiguous and would require implementation confirmation of enforcement",
+      "safe_evidence_strategy": "read-only keyword/phrase search within changed_paths for 'not.*authentication','loopback.*not.*authentication','no.*repair','not.*sandbox','compatibility-controlled','not yet a promised public','never.*mutate Git','patches as evidence only','no issue.*promotion' and verify line-anchored presence",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-678496f97446dadf80dafef2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.378618674Z",
+          "completed_at": "2026-08-26T10:53:30.240309258Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-alignment-01",
+              "paths": [
+                "internal/app/**",
+                "internal/web/**",
+                "internal/sprint/**",
+                "internal/platform/**"
+              ],
+              "reason": "Docs describe new QA CLI envelope, /api/v1 QA routes, v1/v2 verification layout and policy fingerprints. Changed_paths alone cannot confirm impl serves those surfaces or enforces documented bounds/isolation. Bounded read of app DTOs/web handlers/sprint state would verify contract-cli-surface, contract-persistence-and-migrations, contract-security alignment.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ],
+              "output_digest": "sha256:doc-read-7files-v1"
+            },
+            {
+              "kind": "cross_doc_comparison",
+              "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ],
+          "output_digest": "sha256:doc-read-7files-v1"
+        },
+        {
+          "kind": "cross_doc_comparison",
+          "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Disclaimers are present and consistent: architecture 227-243 and user-guide 349 state read-only, default-deny, no shell/Git/interpreter/write, disposable copies are not hostile sandbox and majority not proof; local-web 111-115 explicitly says loopback is not auth boundary and do not proxy/port-forward; local-web 124-126 marks API as compatibility-controlled not promised public; cli-reference 361 and architecture 153 state completed != pass and no issue/repair promotion"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-3283fa75672e780e61703b99",
+      "shard_id": "qa-v1-shard-678496f97446dadf80dafef2",
+      "claim": "Documentation change alone alters observable consumer behavior contract (CLI text/JSON, browser API, file layout) without implementation change, risking contract-cli-surface/contract-persistence-and-migrations drift if docs promise fields not yet served",
+      "basis": "Implementation fingerprint 9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5 unchanged; 7 docs now detail QA CLI envelopes, /api/v1 QA routes, and verification/attempts/\u003cid\u003e/plans|evidence|patches layout; if consumers rely on docs before code ships, persistence/migration and CLI surface contracts diverge",
+      "verification_surface": "docs/cli-reference.md:357-364 and 496-498 (sprint.qa envelope), docs/local-web.md:292-303 and 342-354 (GET /api/v1/.../qa, map, shards, theories, synthesis, evidence/issue resources), docs/phase3-json-schemas.md:37-62 and 84-102 (state v1 vs v2 paths, flow-state schema v2 qa member), docs/recovery.md:192-197 (verification/\u003cattempt\u003e/ layout)",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-documentation",
+        "contract-observability",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "docs promise a stable JSON field, route, or on-disk path that has no corresponding implementation artifact in this build and would cause consumer parse/persistence failure",
+      "refutation_condition": "docs correctly scope new fields as additive within schema_version 1, mark detailed filesystem state as private/path-contained/digest-checked, note flow-state v2 qa member breaks pre-Sprint-36 strict decoding (phase3-json-schemas 59-61) and require compatible binary before publishing, and state public CLI/app JSON stays at schema_version 1 (phase3-json-schemas 99)",
+      "inconclusive_condition": "changed_paths inspection alone cannot prove implementation serves the documented surfaces; requires context_paths (internal/app DTOs, internal/web handlers, internal/sprint state) unavailable in this shard",
+      "safe_evidence_strategy": "read-only doc inspection only: note additive-field language, unknown-field reject, digest/path containment, and compatibility warnings; do not read implementation; request bounded context expansion if essential",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-678496f97446dadf80dafef2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.378618674Z",
+          "completed_at": "2026-08-26T10:53:30.240309258Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-alignment-01",
+              "paths": [
+                "internal/app/**",
+                "internal/web/**",
+                "internal/sprint/**",
+                "internal/platform/**"
+              ],
+              "reason": "Docs describe new QA CLI envelope, /api/v1 QA routes, v1/v2 verification layout and policy fingerprints. Changed_paths alone cannot confirm impl serves those surfaces or enforces documented bounds/isolation. Bounded read of app DTOs/web handlers/sprint state would verify contract-cli-surface, contract-persistence-and-migrations, contract-security alignment.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ],
+              "output_digest": "sha256:doc-read-7files-v1"
+            },
+            {
+              "kind": "cross_doc_comparison",
+              "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ],
+          "output_digest": "sha256:doc-read-7files-v1"
+        },
+        {
+          "kind": "cross_doc_comparison",
+          "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Within changed_paths, docs do describe additive compatibility (e.g., phase3-json-schemas 1-4,58-61: additive fields may be introduced without version change, unknown major/version fails closed, v2 state additive to v1, flow-state v2 breaks old strict decoder) and explicitly warn mixed-version workspace requires upgrade before publishing. Enforcement that implementation actually exposes those envelopes/routes cannot be verified from docs alone; shard has null context_paths and cannot read internal/app, internal/web, internal/sprint DTOs."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-74ec1036fc6cc05dd796f14b",
+      "shard_id": "qa-v1-shard-678496f97446dadf80dafef2",
+      "claim": "Changed docs introduce contradictory QA lifecycle/phase and theory-outcome definitions across architecture, cli-reference, phase3-json-schemas and local-web",
+      "basis": "behavioral_concerns notes 'changed behavior in docs'; QA is described in 7 docs with overlapping phase lists, theory outcome enums and state paths; contradiction would violate contract-documentation and contract-architecture",
+      "verification_surface": "docs/architecture.md:134-155 (VerificationPhase, state root, budgets), docs/cli-reference.md:346-404 (qa subcommands, phase/result fields, theory outcomes), docs/phase3-json-schemas.md:26-62 (closed phase values, theory outcomes, state paths), docs/local-web.md:280-303 (QA page routes mirroring same phase/freshness vocabulary)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "different docs list disjoint or conflicting closed sets for phase (e.g., missing/blocked/cancelled) or theory outcomes (confirmed/refuted/invalid/inconclusive/blocked/cross_shard/not_applicable) or assign different state paths to same artifact",
+      "refutation_condition": "all docs enumerate identical closed vocabularies — phases missing,mapped,queued,running,synthesizing,completed,blocked,cancelled,interrupted,stale,invalid and outcomes confirmed,refuted,invalid,inconclusive,blocked,cross_shard,not_applicable — with consistent state.json/map/shard/synthesis paths under projects/\u003cproject\u003e/sprints/\u003csprint\u003e/verification/",
+      "inconclusive_condition": "docs are partially truncated or reference external implementation constants unavailable in changed_paths, preventing full set comparison",
+      "safe_evidence_strategy": "read-only inspection of changed_paths only: extract phase/outcome tables and path strings from each doc, normalize and compare sets, record line-anchored excerpts; no shell, no write, no implementation read",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-678496f97446dadf80dafef2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.378618674Z",
+          "completed_at": "2026-08-26T10:53:30.240309258Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-alignment-01",
+              "paths": [
+                "internal/app/**",
+                "internal/web/**",
+                "internal/sprint/**",
+                "internal/platform/**"
+              ],
+              "reason": "Docs describe new QA CLI envelope, /api/v1 QA routes, v1/v2 verification layout and policy fingerprints. Changed_paths alone cannot confirm impl serves those surfaces or enforces documented bounds/isolation. Bounded read of app DTOs/web handlers/sprint state would verify contract-cli-surface, contract-persistence-and-migrations, contract-security alignment.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ],
+              "output_digest": "sha256:doc-read-7files-v1"
+            },
+            {
+              "kind": "cross_doc_comparison",
+              "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ],
+          "output_digest": "sha256:doc-read-7files-v1"
+        },
+        {
+          "kind": "cross_doc_comparison",
+          "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Read-only cross-doc comparison shows consistent vocabularies: cli-reference 362 lists completed vs pass-verdict distinction and 32-33 lists phase freshness/run lifecycle split, phase3-json-schemas 33-34 lists closed phases missing,mapped,queued,running,synthesizing,completed,blocked,cancelled,interrupted,stale,invalid and theory outcomes confirmed etc., architecture 145-153 lists completed/synthesis has no issue/patch authority, local-web 290 repeats same fields; no contradictory definition found in changed_paths"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-aa7dbab9631547ca854858ca",
+      "shard_id": "qa-v1-shard-678496f97446dadf80dafef2",
+      "claim": "Changed docs describe QA/web surfaces with undocumented or unbounded limits, implying performance/observability contract drift versus documented maxima",
+      "basis": "Assigned packet budgets list changed_paths 512, primary_shards 32, etc.; docs add QA configuration table and web operation bounds; if docs omitted maxima or described unbounded collections, contract-performance and contract-observability would be incomplete",
+      "verification_surface": "docs/cli-reference.md:366-404 (QA config table with Default/Hard maximum and 'cannot exceed' language), docs/local-web.md:182-217 (Operation bounds table, collection truncation at 200 entries, performance expectations table), docs/phase3-json-schemas.md:92-97 (state_bytes, tree_bytes, file_bytes limits), docs/architecture.md:148-152 (numeric limits, ID namespace)",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-documentation",
+        "contract-observability",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "QA config table missing hard maxima or states limits are advisory only, or web docs describe unbounded collections, pagination, or missing in-flight/retained-event caps",
+      "refutation_condition": "docs list explicit bounded values: QA table gives each key's Default and Hard maximum (e.g., changed_paths 512/512, primary_shards 32/32) with 'cannot exceed hard maximum' and lower-only workspace policy (cli-reference 405-407, user-guide 96-107); local-web 64-65 states collections at most 200 entries with truncated counts, 183-195 table gives JSON body 64 KiB, active ops 8, preparations 128/2m, retained events 256/256 KiB, subscribers 8/32 etc., and 202-217 gives bounded performance targets as expectations not hard deadlines",
+      "inconclusive_condition": "Table values present but cannot be verified against implementation defaults without context_paths (internal/sprint config)",
+      "safe_evidence_strategy": "read-only extraction of all bound tables in cli-reference, local-web, phase3-json-schemas; compare column headers and numeric caps to architecture budgets; note 'lower-only','cannot exceed','at most' phrasing; no execution",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-678496f97446dadf80dafef2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.378618674Z",
+          "completed_at": "2026-08-26T10:53:30.240309258Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-alignment-01",
+              "paths": [
+                "internal/app/**",
+                "internal/web/**",
+                "internal/sprint/**",
+                "internal/platform/**"
+              ],
+              "reason": "Docs describe new QA CLI envelope, /api/v1 QA routes, v1/v2 verification layout and policy fingerprints. Changed_paths alone cannot confirm impl serves those surfaces or enforces documented bounds/isolation. Bounded read of app DTOs/web handlers/sprint state would verify contract-cli-surface, contract-persistence-and-migrations, contract-security alignment.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ],
+              "output_digest": "sha256:doc-read-7files-v1"
+            },
+            {
+              "kind": "cross_doc_comparison",
+              "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Read 7 changed docs totaling 7 files; architecture 250 lines, cli-reference 548 lines, local-web 354 lines, phase3-json-schemas 103 lines, recovery 264 lines, release-checklist 205 lines, user-guide 407 lines; extracted QA phase/theory vocabularies, safety disclaimers, and bound tables",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ],
+          "output_digest": "sha256:doc-read-7files-v1"
+        },
+        {
+          "kind": "cross_doc_comparison",
+          "summary": "Cross-compared closed phase values and theory outcomes across cli-reference 33, phase3-json-schemas 33-34, architecture 153 and local-web 148-154 — sets match; verified presence of loopback-not-auth (local-web 111), no-repair/patch-as-evidence-only (release-checklist 204-205, user-guide 398-401), and compatibility-controlled API disclaimer (local-web 124); verified QA limits tables with hard maxima and operation bounds (cli-reference 366-403, local-web 183-195)",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:cross-doc-qa-vocab-bounds-01"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Bounds are explicitly documented and consistently marked as maxima/lower-only: cli-reference QA table 367-403 includes every budget key from packet with hard maximum, local-web 64,183-195 and 204-212 gives collection, operation, event and heartbeat bounds plus revalidation headers, phase3-json-schemas 99-102 lists remaining finite limits; no unbounded surface introduced in docs"
+    }
+  ]
+}

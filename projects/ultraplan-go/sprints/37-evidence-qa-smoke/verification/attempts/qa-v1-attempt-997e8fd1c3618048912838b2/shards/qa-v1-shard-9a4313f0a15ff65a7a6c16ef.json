@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-9a4313f0a15ff65a7a6c16ef",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-9a4313f0a15ff65a7a6c16ef/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:15:39.817849319Z",
+      "completed_at": "2026-08-28T11:16:17.848585937Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "evidence": [
+        {
+          "kind": "file",
+          "summary": "inspected changed file internal/app/sprint_commands.go:617-695 parseSprintQAArgs still contains explicit rejections for unsupported flags and suite/shard exclusivity; qaSettings 782-871 copies all budget fields and validates",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "inspected context tests confirming bounded expectations: TestParseSprintQAArgsUsesOnlyPublicBoundedControls, TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource, TestQAProjectionIsAdapterIndependentBoundedAndSanitized show required invariants but require execution to confirm against new fingerprint",
+          "paths": [
+            "internal/app/sprint_commands_test.go",
+            "internal/app/sprint_usecases_test.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "inspected projection sanitization and bounds: qaShardProjection caps theories at 24, uses displaySafe for terminal controls, qaLimitsProjection stringifies durations; consistent with handbook sanitization but not executed",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 24,
+      "retained_events": 24,
+      "observed_tool_calls": 7,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-85560a8b0b0e2d9104d2e795",
+      "shard_id": "qa-v1-shard-9a4313f0a15ff65a7a6c16ef",
+      "claim": "parseSprintQAArgs bounded CLI surface regression: unsupported QA flags become accepted",
+      "basis": "changed_paths are internal/app/sprint_commands.go and sprint_usecases.go with behavioral concern 'changed behavior in internal/app'. The sole gate for public bounded QA controls is parseSprintQAArgs in sprint_commands.go:617-695 which currently rejects --model/--budget/--command/--path/--restart per lines 660-665 and sprint_commands_test.go:636-670, but diff is not observable in read-only inspection so preservation cannot be confirmed without execution.",
+      "verification_surface": "approved check go-source-integrity plus existing test internal/app/sprint_commands_test.go:636 TestParseSprintQAArgsUsesOnlyPublicBoundedControls (and TestParseSprintQAArgsUsesOnlyPublicBoundedControls validation of --suite/--shard exclusivity)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "handbook"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "parseSprintQAArgs returns nil error for any of: --model openai/qa, --budget 99, --command go test, --path internal, --restart when action is run/status, or --suite smoke without --yes is accepted",
+      "refutation_condition": "parseSprintQAArgs returns error containing 'unsupported'/'does not accept' for all vectors in sprint_commands_test.go:664 and --suite smoke without --yes is rejected and diff shows no relaxation of the switch in sprint_commands.go:647-694",
+      "inconclusive_condition": "no execution permitted and implementation_fingerprint diff not provided, so acceptance/rejection cannot be observed; inspection alone shows current file contains rejection but not whether recent change altered it",
+      "safe_evidence_strategy": "read-only inspection of sprint_commands.go:617-695 already done; safe next is to request approved check go-source-integrity and, if approved, run go test ./internal/app -run TestParseSprintQAArgsUsesOnlyPublicBoundedControls -count=1 plus targeted parseSprintQAArgs table tests with illegal flag vectors via approved harness; do not invoke unapproved executables",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-9a4313f0a15ff65a7a6c16ef/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:15:39.817849319Z",
+          "completed_at": "2026-08-28T11:16:17.848585937Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file",
+              "summary": "inspected changed file internal/app/sprint_commands.go:617-695 parseSprintQAArgs still contains explicit rejections for unsupported flags and suite/shard exclusivity; qaSettings 782-871 copies all budget fields and validates",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "inspected context tests confirming bounded expectations: TestParseSprintQAArgsUsesOnlyPublicBoundedControls, TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource, TestQAProjectionIsAdapterIndependentBoundedAndSanitized show required invariants but require execution to confirm against new fingerprint",
+              "paths": [
+                "internal/app/sprint_commands_test.go",
+                "internal/app/sprint_usecases_test.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "inspected projection sanitization and bounds: qaShardProjection caps theories at 24, uses displaySafe for terminal controls, qaLimitsProjection stringifies durations; consistent with handbook sanitization but not executed",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 24,
+          "retained_events": 24,
+          "observed_tool_calls": 7,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file",
+          "summary": "inspected changed file internal/app/sprint_commands.go:617-695 parseSprintQAArgs still contains explicit rejections for unsupported flags and suite/shard exclusivity; qaSettings 782-871 copies all budget fields and validates",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "inspected context tests confirming bounded expectations: TestParseSprintQAArgsUsesOnlyPublicBoundedControls, TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource, TestQAProjectionIsAdapterIndependentBoundedAndSanitized show required invariants but require execution to confirm against new fingerprint",
+          "paths": [
+            "internal/app/sprint_commands_test.go",
+            "internal/app/sprint_usecases_test.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "inspected projection sanitization and bounds: qaShardProjection caps theories at 24, uses displaySafe for terminal controls, qaLimitsProjection stringifies durations; consistent with handbook sanitization but not executed",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "read-only file inspection confirms current code rejects the vectors but without diff or execution we cannot confirm the recent changed behavior preserved or broke the gate; violates rule that outcome must be evidence-backed, so inconclusive pending approved check execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-a5c321f8acd7318a93940923",
+      "shard_id": "qa-v1-shard-9a4313f0a15ff65a7a6c16ef",
+      "claim": "qaSettings budget/config propagation drifts from DefaultQABudgets or drops effective sources, violating cost/safety and configuration contracts",
+      "basis": "sprint_commands.go:782-871 constructs sprint.QASettings by field-by-field copy from config.QA into sprint.QABudgets and rebuilds effective sources from config.QAConfigFields(). Changed behavior in internal/app could have altered budget assignment (e.g., TreeFiles/TreeBytes/FileBytes casting at lines 863-864 or missing AnalyzerCalls/EvaluatorCalls) or QA model fallback chain at lines 784-802. sprint_usecases.go:1104-1120 projects budgets verbatim so drift would propagate to observability. Test QASettingsUseDedicatedModelAndKeepEveryEffectiveSource at sprint_commands_test.go:698-719 asserts equality to DefaultQABudgets and source retention.",
+      "verification_surface": "approved check go-source-integrity plus existing tests internal/app/sprint_commands_test.go:698 TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit and internal/app/sprint_usecases_test.go:74 TestQAProjectionIsAdapterIndependentBoundedAndSanitized",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-llm-evaluation-cost-safety",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "qaSettings returns Budgets != sprint.DefaultQABudgets() for default config, or len(Sources) != len(QAConfigFields()), or ValidateQASettings fails for default effective, or Projected Limits differ from input budgets",
+      "refutation_condition": "qaSettings for defaults returns Budgets equal to DefaultQABudgets() and Sources length equals QAConfigFields() with qa.model fallback correctly attributed (sprint_commands_test.go:707-720 passes) and no diff alters assignment block at 839-871",
+      "inconclusive_condition": "inspection shows current assignment block still copies all fields and tests exist, but without execution and without diff of the changed lines we cannot confirm recent edit did not introduce truncation, type conversion, or omitted field",
+      "safe_evidence_strategy": "already inspected sprint_commands.go:839-871 and sprint_usecases.go:1104-1120; safe next is approved check go-source-integrity then go test ./internal/app -run TestQASettings -count=1; do not run unapproved commands or mutate config",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-9a4313f0a15ff65a7a6c16ef/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:15:39.817849319Z",
+          "completed_at": "2026-08-28T11:16:17.848585937Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file",
+              "summary": "inspected changed file internal/app/sprint_commands.go:617-695 parseSprintQAArgs still contains explicit rejections for unsupported flags and suite/shard exclusivity; qaSettings 782-871 copies all budget fields and validates",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "inspected context tests confirming bounded expectations: TestParseSprintQAArgsUsesOnlyPublicBoundedControls, TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource, TestQAProjectionIsAdapterIndependentBoundedAndSanitized show required invariants but require execution to confirm against new fingerprint",
+              "paths": [
+                "internal/app/sprint_commands_test.go",
+                "internal/app/sprint_usecases_test.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "inspected projection sanitization and bounds: qaShardProjection caps theories at 24, uses displaySafe for terminal controls, qaLimitsProjection stringifies durations; consistent with handbook sanitization but not executed",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 24,
+          "retained_events": 24,
+          "observed_tool_calls": 7,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file",
+          "summary": "inspected changed file internal/app/sprint_commands.go:617-695 parseSprintQAArgs still contains explicit rejections for unsupported flags and suite/shard exclusivity; qaSettings 782-871 copies all budget fields and validates",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "inspected context tests confirming bounded expectations: TestParseSprintQAArgsUsesOnlyPublicBoundedControls, TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource, TestQAProjectionIsAdapterIndependentBoundedAndSanitized show required invariants but require execution to confirm against new fingerprint",
+          "paths": [
+            "internal/app/sprint_commands_test.go",
+            "internal/app/sprint_usecases_test.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "inspected projection sanitization and bounds: qaShardProjection caps theories at 24, uses displaySafe for terminal controls, qaLimitsProjection stringifies durations; consistent with handbook sanitization but not executed",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "file content matches expected propagation and sanitization (qaShardProjection limits to 24 theories, displaySafe usage at sprint_usecases.go:1122-1131) but read-only inspection cannot substitute for execution of the new implementation_fingerprint d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2; blocked from shell/run verification"
+    }
+  ]
+}

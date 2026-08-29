@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-f8a2559bc6b8c0a1b02a3155",
+  "attempt_id": "qa-v1-attempt-4e001e19113ee8875053845b",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-f8a2559bc6b8c0a1b02a3155",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_bvrojsdlicgso74rblpw6r5z5i/qa-v1-shard-f8a2559bc6b8c0a1b02a3155/1",
+      "number": 1,
+      "started_at": "2026-08-25T12:52:31.118726471Z",
+      "completed_at": "2026-08-25T12:52:34.0513947Z",
+      "implementation_before": "0583280751fc5bcd051d3ec4ddceea6e372e8cbbc2758f8fcacec3d69e7dbaaa",
+      "implementation_after": "0583280751fc5bcd051d3ec4ddceea6e372e8cbbc2758f8fcacec3d69e7dbaaa",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

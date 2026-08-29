@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-0baf3ef35d65747a0e60d41c",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "primary",
+  "title": "internal/platform",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/qa.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "context_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/platform"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0baf3ef35d65747a0e60d41c/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:51:55.413493621Z",
+      "completed_at": "2026-08-26T09:52:49.584053852Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 55072677,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/qa.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/config_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-40724d8760670cc714f531b5",
+      "shard_id": "qa-v1-shard-0baf3ef35d65747a0e60d41c",
+      "claim": "Planning variant fields are incompletely redacted, allowing potential secret material in variant values to leak via Redacted projection",
+      "basis": "internal/platform/config/redaction.go:54-69 redactPlanning redacts CodeContextVariant, ExecuteVariant, ReviewVariant, SmokeVariant but omits RequirementsVariant, SprintIndexVariant, TechnicalHandbookVariant, AreaReasoningVariant, ReasoningVariant, PlanVariant; all variants are model-adjacent free-form strings that may contain tokens/keys and are stored alongside redacted model fields",
+      "verification_surface": "static comparison of Planning struct definition in config.go:41-62 vs redactPlanning allowlist in redaction.go:54-69 and Sensitive/RedactValue logic",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Source shows at least one Planning variant field with no RedactValue call while its paired Model field is redacted, confirmed by line-by-line diff of struct fields vs redaction function",
+      "refutation_condition": "All Planning.*Model/*Variant pairs are passed through RedactValue or variant fields are proven non-sensitive by design contract and documentation",
+      "inconclusive_condition": "Redaction would require runtime value inspection to determine sensitivity and static allowlist alone is insufficient",
+      "safe_evidence_strategy": "Read-only code review of config.go Planning struct and redaction.go redactPlanning; no execution; cross-check with TestRedactSensitiveValues in config_test.go:79-99 for coverage",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0baf3ef35d65747a0e60d41c/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.413493621Z",
+          "completed_at": "2026-08-26T09:52:49.584053852Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 55072677,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/qa.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/config_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/qa.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/config_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static evidence confirms gap: 6 variant fields (requirements_variant, sprint_index_variant, technical_handbook_variant, area_reasoning_variant, reasoning_variant, plan_variant) have no redaction call while 4 variant fields do, demonstrating inconsistent policy"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-5c1fb39b9d7971abbe5a3699",
+      "shard_id": "qa-v1-shard-0baf3ef35d65747a0e60d41c",
+      "claim": "Workspace YAML parser may mis-handle QA duration/integer fields with quoting or inline comments, leading to parse errors or silent misconfiguration",
+      "basis": "config.go:197-268 loadFile uses naive strings.SplitN(line, \":\",2) and Trim( value, '\"') without stripping inline comments; QA timeout fields accept durations like \"5m\" and integer fields use strconv.Atoi; malformed env handling test at config_test.go:333-345 expects proper error wrapping but workspace file path has limited error context",
+      "verification_surface": "review of loadFile scanner loop, setQAField dispatch, setQAInteger error messages, and Validate vs Load precedence tests",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-errors",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Static parser demonstrably fails on workspace yaml examples with quoted durations, trailing comments, or extra whitespace that user docs might encourage",
+      "refutation_condition": "Parser correctly handles all YAML forms used in documentation/tests and Validate provides clear field-specific errors for all QA fields",
+      "inconclusive_condition": "Requires actual Load() execution with crafted ultraplan.yml fixtures to observe parsing behavior",
+      "safe_evidence_strategy": "Read-only analysis of loadFile parsing logic and existing tests TestQAConfigWorkspaceAndEnvironmentPrecedence and TestLoadPrecedenceAndValidation; no file mutation or execution",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0baf3ef35d65747a0e60d41c/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.413493621Z",
+          "completed_at": "2026-08-26T09:52:49.584053852Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 55072677,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/qa.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/config_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/qa.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/config_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static review shows simplistic parser with known limitations (no comment stripping after value, quoted-colon handling) but no workspace fixture execution allowed to confirm user-visible impact; existing tests pass with simple values"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-eecacc798df944e2ce36dc44",
+      "shard_id": "qa-v1-shard-0baf3ef35d65747a0e60d41c",
+      "claim": "Agentwrap ExtraArgs and QA Variant are not redacted despite capable of carrying secrets via --key / token patterns",
+      "basis": "redaction.go:22-26 and 72-77 Redact only processes QA.Model and Agentwrap.Executable+Env; QA.Variant and Agentwrap.ExtraArgs are copied verbatim; Sensitive() explicitly flags '--key', '-key', ' key=', 'secret', 'token', etc. which commonly appear in extra_args and variant strings",
+      "verification_surface": "static review of Redact() and redactAgentwrap() vs Config struct fields Agentwrap.ExtraArgs, QA.Variant and Sensitive marker list",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Code shows Agentwrap.ExtraArgs and QA.Variant never passed through RedactValue while Sensitive() would flag representative secret-bearing values for those keys",
+      "refutation_condition": "Evidence shows extra_args/variant are validated or stripped elsewhere before logging, or product contract explicitly excludes them from redaction scope",
+      "inconclusive_condition": "Requires runtime log output review to confirm actual exposure and no static proof of field contents",
+      "safe_evidence_strategy": "Read-only inspection of redaction.go Sensitive markers vs Redacted struct population; compare to Models and Planning redaction patterns; no execution",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0baf3ef35d65747a0e60d41c/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.413493621Z",
+          "completed_at": "2026-08-26T09:52:49.584053852Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 55072677,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/qa.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/config_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "redactPlanning omits 6 variant fields while redacting 4 variants and all paired models; verified by diffing Planning struct fields (config.go:41-62) against redactPlanning body (redaction.go:54-69)",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact() only redacts QA.Model (redaction.go:24) and redactAgentwrap only handles Executable+Env (72-77), leaving QA.Variant and Agentwrap.ExtraArgs unredacted despite Sensitive markers for --key/token/secret",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/qa.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "TestRedactSensitiveValues asserts redaction for Models.Default, Agentwrap.Env, Planning.CodeContextModel but does not cover Planning variants, QA.Variant, or Agentwrap.ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load precedence and QA max bounds defined in qa.go:68-83 maxQA vs DefaultQA and validateQA limits match test expectations for 35 QA fields; lower-only enforcement is bounded by product max not strictly default",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/config_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static code confirms omission: Redact copies QA.Variant unchanged and redactAgentwrap ignores ExtraArgs (and RequiredHealth/Capabilities) while test at config_test.go:79-99 only asserts Models, Agentwrap.Env and Planning.CodeContextModel redaction"
+    }
+  ]
+}

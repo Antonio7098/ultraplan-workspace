@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-6551870e972e6821caac92b5",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-2f1b8b23d684bf12c1c936df",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: ReconcileInterruptedMutation leaves QAPhaseMapped without terminal conversion while RecoverQA converts Mapped to Interrupted, creating divergent recovery paths"
+  ],
+  "expectation_refs": [
+    "contract-errors",
+    "contract-persistence-and-migrations",
+    "contract-workflows"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-2f1b8b23d684bf12c1c936df"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-6551870e972e6821caac92b5/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:23:33.546949723Z",
+      "completed_at": "2026-08-26T11:24:19.371330268Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "ReconcileInterruptedMutation QA phase switch omits QAPhaseMapped",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RecoverQA explicitly converts QAPhaseMapped to Interrupted",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState allowlist confirms Mapped is active and must be converted before durable save",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fafe9967eeb95406c99f0cef",
+      "shard_id": "qa-v1-shard-6551870e972e6821caac92b5",
+      "claim": "ReconcileInterruptedMutation leaves QAPhaseMapped without terminal conversion while RecoverQA converts QAPhaseMapped to Interrupted, creating divergent recovery paths",
+      "basis": "locks.go:83-95 handles only Queued/Running/Synthesizing -\u003e Interrupted; qa.go:215-227 handles same three plus an explicit case QAPhaseMapped -\u003e Interrupted with distinct NextAction. SaveRecoveredState allowlist (qa_state.go:583-587) rejects active phases including Mapped, so conversion is required for durable recovery.",
+      "verification_surface": "Read-only inspection of internal/sprint/locks.go:22-110 (ReconcileInterruptedMutation switch) vs internal/sprint/qa.go:176-249 (RecoverQA switch) and internal/sprint/qa_state.go:578-604 (SaveRecoveredState phase allowlist) plus internal/sprint/qa_types.go:26-38 phase enum",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Code shows ReconcileInterruptedMutation omits QAPhaseMapped case and RecoverQA explicitly converts Mapped to Interrupted with NextAction 'Run qa resume to claim and execute the mapped shards.'",
+      "refutation_condition": "ReconcileInterruptedMutation also converts QAPhaseMapped to a terminal phase, or RecoverQA leaves QAPhaseMapped unchanged on recovery",
+      "inconclusive_condition": "Assigned paths unreadable or phase constants redefined outside inspected shard",
+      "safe_evidence_strategy": "Read-only file reads of locks.go, qa.go, qa_state.go, qa_types.go; compare switch statement case lists and SaveRecoveredState validation without execution",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-6551870e972e6821caac92b5/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.546949723Z",
+          "completed_at": "2026-08-26T11:24:19.371330268Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "ReconcileInterruptedMutation QA phase switch omits QAPhaseMapped",
+              "paths": [
+                "internal/sprint/locks.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RecoverQA explicitly converts QAPhaseMapped to Interrupted",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState allowlist confirms Mapped is active and must be converted before durable save",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "ReconcileInterruptedMutation QA phase switch omits QAPhaseMapped",
+          "paths": [
+            "internal/sprint/locks.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RecoverQA explicitly converts QAPhaseMapped to Interrupted",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState allowlist confirms Mapped is active and must be converted before durable save",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "File reads confirm divergence: locks.go:83 switch covers only Queued,Running,Synthesizing -\u003e Interrupted; qa.go:223 case QAPhaseMapped converts to Interrupted; no Mapped handling exists in ReconcileInterruptedMutation, violating unified terminalization expected by contract-workflows persistence recovery"
+    }
+  ]
+}

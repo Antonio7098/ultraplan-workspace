@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-1ff0cfd2e63183c59606ce3b",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-0a593baebcfc73686bfe9c0f",
+  "context_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "follow up: docs/local-web.md QA API routes, SSE and operation bounds may drift from actual web adapter without implementation context"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-documentation",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-0a593baebcfc73686bfe9c0f"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-1ff0cfd2e63183c59606ce3b/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:43:56.049387248Z",
+      "completed_at": "2026-08-26T09:44:42.606033431Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "context_requests": [
+        {
+          "id": "ctx-qa-web-impl-001",
+          "paths": [
+            "internal/web/**",
+            "internal/app/web_usecases.go",
+            "internal/app/operations.go"
+          ],
+          "reason": "Behavioral concern states docs/local-web.md QA routes/SSE/operation bounds may drift without implementation context. Changed_paths is null and current context_paths are docs-only, so router registration, SSE/hub constants, and security middleware cannot be compared read-only to verify documentation accuracy (contract-documentation, contract-architecture, contract-security). Need bounded read-only expansion to implementation adapter files.",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-243fc15dacd87ef6554a6177",
+      "shard_id": "qa-v1-shard-1ff0cfd2e63183c59606ce3b",
+      "claim": "SSE event names, operation stable states, and observation semantics in docs/local-web.md match implementation",
+      "basis": "docs/local-web.md:148-153 lists stable states accepted,running,cancelling,succeeded,failed,cancelled,interrupted,cleanup_uncertain and stable SSE names snapshot,progress,warning,finding,artifact,cancel_requested,recovery_required,terminal with decimal monotonic IDs, progress-only, disconnect semantics, and reconciliation text; architecture.md:57-66 describes bounded ephemeral hub (at most eight active owners, 256 events/256KiB per operation, 10-minute retention). Drift would break TUI/browser compatibility and contract-documentation/contract-architecture.",
+      "verification_surface": "docs/local-web.md:148-181 vs internal/web SSE hub, event projection, hub bounds in docs/local-web.md:182-195, internal/web Sse/hub constants, and app operation result projection; compare enum values, event name strings, ID monotonicity, replay_gap/recovery_required handling",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Implementation emits exactly the documented state enum and SSE names, monotonic decimal IDs, progress-only semantics (disconnect does not cancel), replay_gap emits recovery_required plus snapshot without fabrication, and startup reconciliation semantics match docs/local-web.md:178-180",
+      "refutation_condition": "Code emits additional/renamed/missing states or event names, non-monotonic or non-decimal IDs, different disconnect/cancel semantics, fabricated missing progress after gap, or different startup lease reconciliation than documented",
+      "inconclusive_condition": "Cannot inspect internal/web event/hub code or app operation types within assigned docs-only packet; docs alone are internally consistent but insufficient to prove implementation parity",
+      "safe_evidence_strategy": "Read-only string/enum extraction from docs then read-only comparison to Go constants/types in internal/web and internal/app (states, event names, hub limits) and existing SSE/operation tests if granted; no server start or network calls",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-1ff0cfd2e63183c59606ce3b/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:43:56.049387248Z",
+          "completed_at": "2026-08-26T09:44:42.606033431Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-web-impl-001",
+              "paths": [
+                "internal/web/**",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Behavioral concern states docs/local-web.md QA routes/SSE/operation bounds may drift without implementation context. Changed_paths is null and current context_paths are docs-only, so router registration, SSE/hub constants, and security middleware cannot be compared read-only to verify documentation accuracy (contract-documentation, contract-architecture, contract-security). Need bounded read-only expansion to implementation adapter files.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+              "paths": [
+                "docs/local-web.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+              "paths": [
+                "docs/architecture.md",
+                "docs/phase3-json-schemas.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md"
+          ]
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "Implementation SSE/hub files not in assigned context; docs/local-web.md:148-153 and docs/local-web.md:182-195 reviewed for internal consistency only – no code evidence available to confirm or refute drift, requires implementation context request."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6f2299a2c3a583ac9ec7c26a",
+      "shard_id": "qa-v1-shard-1ff0cfd2e63183c59606ce3b",
+      "claim": "docs/local-web.md QA API routes and operation lifecycle routes match the actual internal/web adapter implementation (no documentation drift)",
+      "basis": "Assigned packet is read-only with changed_paths:null and context_paths limited to docs/; docs/local-web.md:119-146 defines versioned /api/v1 operations (prepare, POST /operations, GET /operations, GET /operations/{id}, GET /operations/{id}/events SSE, DELETE /operations/{id}) and docs/local-web.md:284-299 defines QA pages /projects/{project}/sprints/{sprint}/qa and JSON /api/v1/projects/{project}/sprints/{sprint}/qa[/map|/shards/{id}|/theories/{id}|/synthesis] plus docs/local-web.md:318-324 durable runs /api/v1/runs. Without implementation files, drift cannot be ruled out – this is the explicit follow-up concern.",
+      "verification_surface": "docs/local-web.md:129-146, 182-196, 284-300, 318-326 vs internal/web router registration (e.g., internal/web/*.go), internal/app/web_usecases.go facade, OpenAPI/DTO definitions, and compatibility tests; exact path string match, method, versioning, and envelope comparison",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Every documented QA and operation route exists in the web router with identical method/path/param names, version prefix /api/v1 preserved, and no undocumented QA/operation routes are exposed; docs envelope {data,meta}/{error,meta} and durable run Link header match implementation DTOs",
+      "refutation_condition": "Documentation lists a route/method that has no handler, omits a handler that is registered, mismatches param names (project/sprint/qa-v1-*), or describes compatibility/transport envelopes differently than code; or /api/v1 versioning/health behavior differs",
+      "inconclusive_condition": "Implementation context not in assigned packet (changed_paths null, context_paths only docs/), so route-to-code comparison cannot be performed read-only; or fingerprint 3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6 has no mapped source to inspect",
+      "safe_evidence_strategy": "Read-only, no execution: list/read assigned docs to extract claimed routes; if granted, read-only compare to internal/web routing table and app facade type signatures; compute digests and normalize paths for exact string match; do not run server, mutate files, or invoke shell",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-1ff0cfd2e63183c59606ce3b/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:43:56.049387248Z",
+          "completed_at": "2026-08-26T09:44:42.606033431Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-web-impl-001",
+              "paths": [
+                "internal/web/**",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Behavioral concern states docs/local-web.md QA routes/SSE/operation bounds may drift without implementation context. Changed_paths is null and current context_paths are docs-only, so router registration, SSE/hub constants, and security middleware cannot be compared read-only to verify documentation accuracy (contract-documentation, contract-architecture, contract-security). Need bounded read-only expansion to implementation adapter files.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+              "paths": [
+                "docs/local-web.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+              "paths": [
+                "docs/architecture.md",
+                "docs/phase3-json-schemas.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md"
+          ]
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "Read-only QA shard has no implementation files (changed_paths null, context_paths = 7 docs). Doc-internal consistency checked, but actual web adapter code (internal/web, internal/app/web_usecases.go) is out of scope per packet, so route drift cannot be confirmed or refuted without bounded context expansion."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9b62f23e7797196dc00b47e9",
+      "shard_id": "qa-v1-shard-1ff0cfd2e63183c59606ce3b",
+      "claim": "Operation bounds table and security/transport limits in docs/local-web.md match implemented web adapter limits",
+      "basis": "docs/local-web.md:86-101 and docs/local-web.md:182-196 document loopback-only binding, Host/Origin/CSRF/session checks, request-target 8KiB/body 64KiB/identifier 128B, concurrency 32 in-flight/8 active ops/128 preparations (2m), 256 events/256KiB per op, 16KiB encoded event, 256KiB terminal, 8 per-op/32 server-wide subscribers with 32-event queue, 10-minute terminal retention, 15s heartbeat/30m lifetime, 429 vs 503 on capacity/draining; architecture.md:39-48 and cli-reference.md:444-475 describe same guards. Undocumented deviation is contract-security risk.",
+      "verification_surface": "docs/local-web.md:31-35,86-101,182-213 vs internal/web middleware, handler limits, hub config, server timeouts, and security header middleware; compare numeric bounds, duration constants, error codes (operation_capacity, subscriber_capacity, server_draining, etc. at docs/local-web.md:168-173) and response headers (Cache-Control, CSP, etc.)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "All numeric bounds, queue sizes, retention durations, and error-code mappings equal implementation constants and middleware configuration; security headers and loopback/host validation exactly as described, with slow subscribers disconnected without blocking product work and no queuing",
+      "refutation_condition": "Any bound mismatched (e.g., JSON body not 64KiB, active ops not 8, retained events not 256/256KiB, subscriber limits not 8/32, queue not 32, retention not 10m, heartbeat not 15s), different 429/503 semantics, or security limit not enforced as documented",
+      "inconclusive_condition": "Implementation limits live in internal/web and internal/app constants/middleware not included in packet; docs cross-checked for self-consistency but code comparison blocked",
+      "safe_evidence_strategy": "Read-only document extraction of bounds table then read-only inspection of Go constants/config structs and middleware in internal/web (and related checks in internal/app) if expansion granted; digest both sides; no execution, patch, or live server probe",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-1ff0cfd2e63183c59606ce3b/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:43:56.049387248Z",
+          "completed_at": "2026-08-26T09:44:42.606033431Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-web-impl-001",
+              "paths": [
+                "internal/web/**",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Behavioral concern states docs/local-web.md QA routes/SSE/operation bounds may drift without implementation context. Changed_paths is null and current context_paths are docs-only, so router registration, SSE/hub constants, and security middleware cannot be compared read-only to verify documentation accuracy (contract-documentation, contract-architecture, contract-security). Need bounded read-only expansion to implementation adapter files.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+              "paths": [
+                "docs/local-web.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+              "paths": [
+                "docs/architecture.md",
+                "docs/phase3-json-schemas.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Reviewed docs/local-web.md full API and bounds surface: served at 127.0.0.1:8080 (lines 8-15), loopback validation (31-35), guarded operation lifecycle POST /api/v1/operations/prepare -\u003e POST /api/v1/operations (202+Location) -\u003e GET /operations -\u003e GET /operations/{id} -\u003e GET /operations/{id}/events (SSE) -\u003e DELETE /operations/{id} (129-146), stable states and SSE names (148-153), operation bounds table (182-195), performance expectations (200-217), health semantics (219-223), QA pages/routes GET /projects/.../qa... and /api/v1/projects/.../qa... (282-300), durable runs /api/v1/runs (318-324). Internally consistent across doc.",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Cross-checked supporting docs for consistency: docs/architecture.md web adapter boundary (internal/web -\u003e internal/app, no forbidden cycle, hub holds at most 8 owners/256 events/10m retention, no arbitrary filesystem reader), docs/phase3-json-schemas.md QA state v1/v2 strict schemas and ID namespace, docs/cli-reference.md serve flags/listen policy (--listen numeric loopback literal, rejections), docs/user-guide.md QA lower-only policy, docs/recovery.md QA recovery flow, docs/release-checklist.md local-web gates. No doc-vs-doc contradiction found, but no implementation source to prove fidelity.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md"
+          ]
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "No implementation paths assigned; changed_paths null and budgets allow only docs context. docs/local-web.md:182-195, docs/architecture.md:31-66, and docs/cli-reference.md:444-475 are self-consistent, but verification against web adapter code requires additional read-only context that was not granted in this shard."
+    }
+  ]
+}

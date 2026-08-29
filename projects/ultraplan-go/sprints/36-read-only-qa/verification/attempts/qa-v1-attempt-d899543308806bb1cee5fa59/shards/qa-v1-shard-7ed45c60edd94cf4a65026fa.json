@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+  "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "invalid_state",
+    "scope": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+    "summary": "terminal output is not one strict QA JSON object",
+    "next_action": "Inspect the detailed state and run explicit QA recovery."
+  }
+}

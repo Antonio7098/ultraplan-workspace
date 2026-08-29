@@ -1,0 +1,719 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-map-0dd3edd660015d48bc457d0c",
+  "project": "ultraplan-go",
+  "sprint": "38-bounded-repair",
+  "semantic_attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+  "governed_input_fingerprint": "cc2044dcfe778da93fabb2079524430eb6a3fdbdb06a427663de934ecff11434",
+  "implementation_fingerprint": "67633d4125cfd1e5dfb1eb7b3fc6c1ef72277ab72f424a3600bff3c34b2af9a6",
+  "review_fingerprint": "e1b5c35845a0daf592cf123e160dbd32d6c1206368b63db45f3ec11197cd341d",
+  "policy_fingerprint": "58d6f132c12570b55aa163221757d085c1b0db12dc7e13cd41ed79fe7ec0ff52",
+  "check_catalog_fingerprint": "57bb3244b23bdbf87ad7f7637d17e5e603aebc01abad7d2f61a57e71fd496580",
+  "budgets": {
+    "changed_paths": 512,
+    "primary_shards": 32,
+    "boundary_shards": 8,
+    "follow_up_shards": 4,
+    "total_shards": 44,
+    "pending_entries": 44,
+    "changed_paths_per_shard": 12,
+    "context_paths_per_shard": 64,
+    "context_expansions": 2,
+    "paths_per_expansion": 16,
+    "behavioral_concerns_per_shard": 12,
+    "theories_per_shard": 12,
+    "iterations_per_attempt": 4,
+    "commands_per_attempt": 8,
+    "output_repair_attempts": 1,
+    "concurrent_investigators": 3,
+    "command_timeout": 300000000000,
+    "shard_timeout": 1200000000000,
+    "run_timeout": 3600000000000,
+    "cleanup_timeout": 30000000000,
+    "command_output_bytes": 262144,
+    "shard_output_bytes": 1048576,
+    "prompt_bytes": 524288,
+    "recent_progress": 100,
+    "retained_attempts": 8,
+    "state_bytes": 134217728,
+    "tree_files": 200000,
+    "tree_bytes": 2147483648,
+    "file_bytes": 33554432,
+    "generated_checks": 88,
+    "generated_patch_bytes": 2097152,
+    "evidence_records": 256,
+    "issues": 200,
+    "analyzer_calls": 3,
+    "evaluator_calls": 3
+  },
+  "effective_sources": [
+    {
+      "field": "qa.behavioral_concerns_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.boundary_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.changed_paths",
+      "source": "default"
+    },
+    {
+      "field": "qa.changed_paths_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.cleanup_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.command_output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.command_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.commands_per_attempt",
+      "source": "default"
+    },
+    {
+      "field": "qa.concurrent_investigators",
+      "source": "default"
+    },
+    {
+      "field": "qa.context_expansions",
+      "source": "default"
+    },
+    {
+      "field": "qa.context_paths_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.evidence_records",
+      "source": "default"
+    },
+    {
+      "field": "qa.file_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.follow_up_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.generated_checks",
+      "source": "default"
+    },
+    {
+      "field": "qa.generated_patch_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.issues",
+      "source": "default"
+    },
+    {
+      "field": "qa.iterations_per_attempt",
+      "source": "default"
+    },
+    {
+      "field": "qa.model",
+      "source": "env"
+    },
+    {
+      "field": "qa.output_repair_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.paths_per_expansion",
+      "source": "default"
+    },
+    {
+      "field": "qa.pending_entries",
+      "source": "default"
+    },
+    {
+      "field": "qa.primary_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.prompt_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.recent_progress",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.cleanup_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_count",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_mutation_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_patch_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_reopenings",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.model_turns",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.retained_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.runtime_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.stagnation_limit",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.wall_time",
+      "source": "default"
+    },
+    {
+      "field": "qa.retained_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.run_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.shard_output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.shard_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.state_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.theories_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.total_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.tree_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.tree_files",
+      "source": "default"
+    },
+    {
+      "field": "qa.variant",
+      "source": "workspace"
+    }
+  ],
+  "target": {
+    "fingerprint": "67633d4125cfd1e5dfb1eb7b3fc6c1ef72277ab72f424a3600bff3c34b2af9a6",
+    "scope": "current_checkout",
+    "git_head": "32ffead1d5cbd9315c8580cfd774f6daad206ed9",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "2e85a468ad4fe94e5aef8f22edbbc7b377159479f0a871d8f91367ddbe2b9da3",
+    "workspace_branch": "ultraplan/ultraplan-go/38-bounded-repair",
+    "workspace_baseline": "5d54525bb6d8f0263723a17e6577f12354c2f569",
+    "baseline_relation": "ahead_of_baseline",
+    "commits_since_baseline": 2
+  },
+  "coverage": {
+    "changed_paths": [
+      "internal/app/sprint_commands.go",
+      "internal/sprint/qa_repair.go",
+      "internal/sprint/qa_repair_state.go",
+      "internal/sprint/qa_repair_test.go",
+      "internal/tui/qa_view_test.go",
+      "internal/web/operations_test.go",
+      "internal/web/qa_handlers_test.go"
+    ],
+    "primary_owners": {
+      "internal/app/sprint_commands.go": "qa-v1-shard-cdcb2e227f29a9f5f696d60b",
+      "internal/sprint/qa_repair.go": "qa-v1-shard-43196bfeccfb3aa109847c05",
+      "internal/sprint/qa_repair_state.go": "qa-v1-shard-43196bfeccfb3aa109847c05",
+      "internal/sprint/qa_repair_test.go": "qa-v1-shard-43196bfeccfb3aa109847c05",
+      "internal/tui/qa_view_test.go": "qa-v1-shard-b41e4d7d495abc5d0d60d67d",
+      "internal/web/operations_test.go": "qa-v1-shard-07e1fa106142ff11d0ef5ba3",
+      "internal/web/qa_handlers_test.go": "qa-v1-shard-07e1fa106142ff11d0ef5ba3"
+    },
+    "boundary_overlaps": {
+      "qa-v1-shard-f6274939931804a17a925d7d": [
+        "internal/app/sprint_commands.go",
+        "internal/sprint/qa_repair.go",
+        "internal/tui/qa_view_test.go",
+        "internal/web/operations_test.go"
+      ]
+    }
+  },
+  "shards": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-07e1fa106142ff11d0ef5ba3",
+      "attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+      "kind": "primary",
+      "title": "internal/web",
+      "changed_paths": [
+        "internal/web/operations_test.go",
+        "internal/web/qa_handlers_test.go"
+      ],
+      "context_paths": [
+        "internal/web/operations.go",
+        "internal/web/qa_handlers.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/web"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "public-api",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "8efe34050e9235e24061263f11a634eef7f7892bc26187f6b942c54ce945c64b"
+        },
+        {
+          "id": "go-source-integrity",
+          "fingerprint": "4d8232dd40efaf37f2d8ce5bc8d51c2f72e9c986c4c2d8a65dca3faf823e9e99"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-43196bfeccfb3aa109847c05",
+      "attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+      "kind": "primary",
+      "title": "internal/sprint",
+      "changed_paths": [
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_repair_test.go"
+      ],
+      "context_paths": [
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/sprint"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "persistence",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "8efe34050e9235e24061263f11a634eef7f7892bc26187f6b942c54ce945c64b"
+        },
+        {
+          "id": "go-source-integrity",
+          "fingerprint": "4d8232dd40efaf37f2d8ce5bc8d51c2f72e9c986c4c2d8a65dca3faf823e9e99"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-b41e4d7d495abc5d0d60d67d",
+      "attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+      "kind": "primary",
+      "title": "internal/tui",
+      "changed_paths": [
+        "internal/tui/qa_view_test.go"
+      ],
+      "context_paths": [
+        "internal/tui/qa_view.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/tui"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "8efe34050e9235e24061263f11a634eef7f7892bc26187f6b942c54ce945c64b"
+        },
+        {
+          "id": "go-source-integrity",
+          "fingerprint": "4d8232dd40efaf37f2d8ce5bc8d51c2f72e9c986c4c2d8a65dca3faf823e9e99"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-cdcb2e227f29a9f5f696d60b",
+      "attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+      "kind": "primary",
+      "title": "internal/app",
+      "changed_paths": [
+        "internal/app/sprint_commands.go"
+      ],
+      "context_paths": [
+        "internal/app/sprint_commands_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/app"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "public-api"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "8efe34050e9235e24061263f11a634eef7f7892bc26187f6b942c54ce945c64b"
+        },
+        {
+          "id": "go-source-integrity",
+          "fingerprint": "4d8232dd40efaf37f2d8ce5bc8d51c2f72e9c986c4c2d8a65dca3faf823e9e99"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-f6274939931804a17a925d7d",
+      "attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+      "kind": "boundary",
+      "title": "cross-package integration",
+      "context_paths": [
+        "internal/app/sprint_commands.go",
+        "internal/sprint/qa_repair.go",
+        "internal/tui/qa_view_test.go",
+        "internal/web/operations_test.go"
+      ],
+      "overlap_paths": [
+        "internal/app/sprint_commands.go",
+        "internal/sprint/qa_repair.go",
+        "internal/tui/qa_view_test.go",
+        "internal/web/operations_test.go"
+      ],
+      "boundary_reason": "cross-package",
+      "behavioral_concerns": [
+        "cross-package integration"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "public-api",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "8efe34050e9235e24061263f11a634eef7f7892bc26187f6b942c54ce945c64b"
+        },
+        {
+          "id": "go-source-integrity",
+          "fingerprint": "4d8232dd40efaf37f2d8ce5bc8d51c2f72e9c986c4c2d8a65dca3faf823e9e99"
+        }
+      ],
+      "phase": "mapped"
+    }
+  ],
+  "input_refs": [
+    {
+      "path": "projects/ultraplan-go/docs/ARCHITECTURE.md",
+      "digest": "541bbb2f039b8f830551397fd84f2a6be31822be33ece97458087c7bc98e4625"
+    },
+    {
+      "path": "projects/ultraplan-go/docs/PRD.md",
+      "digest": "4c8c6c11da1e596603266256ca2e1d58f92a6a7891d77fe579217d5474e86836"
+    },
+    {
+      "path": "projects/ultraplan-go/docs/TRD.md",
+      "digest": "f1c7c8f6d1ae053c836c49919a3c22bbaa53c0720ddb86396610b500677198bb"
+    },
+    {
+      "path": "projects/ultraplan-go/project-index.md",
+      "digest": "650c49c4e2d08ffc1585d2f8478cd24f5888f858e5f7ba8ad2fa9b350ed26074"
+    },
+    {
+      "path": "projects/ultraplan-go/roadmap.md",
+      "digest": "67c92b2c95dda5e1da56c7997a90c003e5f902e64475aa652b6504de63851ae0"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/.execution-handoff.json",
+      "digest": "15a146d705f9fefdf04a4e22ac6840d40a86e825caa4da49ddf8b683b9d8e7de"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/code-context.md",
+      "digest": "ca1a9776e8c404e54bcc5953f6fd65edaf11dc5eeca04652650ea1eece834770"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/execute.md",
+      "digest": "e8c869ea08040a474c865e4861ad12712d3ad6aa91b280a86cd03dd1e800966c"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/plan.md",
+      "digest": "175e1722cec770d7dc87754e34110bc591a2a03d794bace2e4d5ea0c08ba7d10"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/reasoning.md",
+      "digest": "6319afc269c5be9346b07442c0437d5a47762648a86b636d4a003c3d938276f5"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/reasoning/api-design.md",
+      "digest": "bb8c8bede975f3658ff40851a03c2d22ca250593fe89d199b4d28b8d6608d300"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/reasoning/architecture.md",
+      "digest": "b9745ba049605eea9e6dd0ba044ccee1fd55d84acdbe51cb4195e6444828092c"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/reasoning/frontend.md",
+      "digest": "b5eaffd3d2cc046b3b737bbbbefaaf61b24637eab53fbeadd31dac35643d7f4b"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/requirements.md",
+      "digest": "139678a4f5eedffbecc803b4b9a4bad52c19fb958f56e5dce761f8b134103d10"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/sprint-index.md",
+      "digest": "d91294052d97c8060cf2ddcbf0a287d270b12cbe95d50e6ce42c3c704bbf130d"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/technical-handbook.md",
+      "digest": "f67f3448f1f5cb3837a9d2070de41eb7e7dd35f4f92bce75aeaf190f9d32f393"
+    },
+    {
+      "path": "prompts/review.md",
+      "digest": "66e497732d43b3dbeaaf55b0d972972c46cdec9c81139869e890b8a0eb9584aa"
+    },
+    {
+      "path": "system/contracts/core/architecture.md",
+      "digest": "275e80f72b0127ef1ee92c1f76b02c0e6f2084adaaf97315bdb61ae42c8a7556"
+    },
+    {
+      "path": "system/contracts/core/configuration.md",
+      "digest": "40451fce9c8d33ec214aec8c70d524d2b3c0524a2f23655fa81b49263c634d66"
+    },
+    {
+      "path": "system/contracts/core/documentation.md",
+      "digest": "4624a2876d574313a816d018c68300eae180cda6c526ade0ee5811dbdeeb767d"
+    },
+    {
+      "path": "system/contracts/core/errors.md",
+      "digest": "d802fe296d19932c6e0115625a4df0e5caa987a8b96ccd32fcd5849ced9af9e2"
+    },
+    {
+      "path": "system/contracts/core/observability.md",
+      "digest": "9a48650b90f273955751ef7e833e80436be64e36d6803a6cadc2cf76d6d962fb"
+    },
+    {
+      "path": "system/contracts/core/security.md",
+      "digest": "5af338526c1f0898631c06ca76d651aaa59b391fa5b5d341c899086ff3d3d328"
+    },
+    {
+      "path": "system/contracts/core/testing.md",
+      "digest": "25905e8c5826e9068e4c752cd9ea80997e85cb7a6c53ae1ba72f9a8b78eb42fd"
+    },
+    {
+      "path": "system/contracts/runtime/llm-evaluation-cost-safety.md",
+      "digest": "fd95c7a87d4d244f5f73fa2a69ff948863373d95e783d986644945ca5c203f3d"
+    },
+    {
+      "path": "system/contracts/runtime/llm.md",
+      "digest": "1d81f5a844f9088ac4c1b43305300449bad6b01e83e131ff5964de4f844ccce2"
+    },
+    {
+      "path": "system/contracts/runtime/performance.md",
+      "digest": "c200a47aab06e3b3dfcee59e91f5aa5b9bafdfb6a47bc3d15aed6db51f2a386d"
+    },
+    {
+      "path": "system/contracts/runtime/persistence-and-migrations.md",
+      "digest": "249990b954b05e2274bd9c04febf92184d69f4380386626582adeaaee54974a3"
+    },
+    {
+      "path": "system/contracts/runtime/workflows.md",
+      "digest": "5d0200141beb53f8330a508ec35b90571b546ed56d2419e77b9e1b4d96048b01"
+    },
+    {
+      "path": "system/contracts/surfaces/cli.md",
+      "digest": "1d9023f483e128960de402e4402b6a1eb116cb542f4617910e42c96d9569f243"
+    },
+    {
+      "path": "system/protocols/architecture-review-protocol.md",
+      "digest": "b42fe1ca1376d88a7651ca8cbce3379642ac990ccdd89853a9f22a7d60f8c663"
+    },
+    {
+      "path": "system/protocols/deep-smoke-sprint-protocol.md",
+      "digest": "a72797b3b66d3cc04450b1e9c230941d6ce8dc8d6926e7daa7540379246a84f6"
+    },
+    {
+      "path": "system/protocols/review-sprint-protocol.md",
+      "digest": "98773f6b8d10b16d65e4251de8015a17a1b514e5fbe9071273be9824ad0d6503"
+    },
+    {
+      "path": "target/.identity",
+      "digest": "d752a1f584681a55f260f505bfeb470cbde31d372c79f38025b113af660e8e29"
+    },
+    {
+      "path": "target/.ultraplan/changes.patch",
+      "digest": "8dd6528f8068a64e2940873a7ff0f3a141499b01631cba3fbf276ea9207e89c7"
+    },
+    {
+      "path": "target/internal/app/sprint_commands.go",
+      "digest": "27a3dffd4088157255064fd8ce09a6bbbec63b39ce7f684dfd99828dab57503a"
+    },
+    {
+      "path": "target/internal/sprint/qa_repair.go",
+      "digest": "8c81991d50888d9f09b5e6869c62a5cf1581db8d0c371c2bb2b8aae8a845d222"
+    },
+    {
+      "path": "target/internal/sprint/qa_repair_state.go",
+      "digest": "dd53d8e838f43efc579df69c9b5eb01314ff459d3f5bddd9a03f8fbad5965a71"
+    },
+    {
+      "path": "target/internal/sprint/qa_repair_test.go",
+      "digest": "a7f273f9ecc1f483f19d4837dc37cd0a5c179c5c3a504947f26be73464d5dc4c"
+    },
+    {
+      "path": "target/internal/tui/qa_view_test.go",
+      "digest": "d24938a9adb82865cc971ff7d3a17ddc85f0c85c661e8c5fbddbc28fb89eb9bd"
+    },
+    {
+      "path": "target/internal/web/operations_test.go",
+      "digest": "52b78efe346b19d498197efc47956e896c05d069537dcf07263ac0525e6e7db7"
+    },
+    {
+      "path": "target/internal/web/qa_handlers_test.go",
+      "digest": "5fc361804acda1c8559c127245b7ba7c4e914fca115638abd03088cc282d4da1"
+    },
+    {
+      "path": "templates/review.md",
+      "digest": "b69243e6eb6f1d2312194dede77749a7ad698f456dd36181ce901bdb24680249"
+    }
+  ]
+}

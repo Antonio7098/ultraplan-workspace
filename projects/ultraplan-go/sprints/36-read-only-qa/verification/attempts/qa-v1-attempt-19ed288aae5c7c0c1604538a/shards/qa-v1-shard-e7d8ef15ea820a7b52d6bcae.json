@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-e7d8ef15ea820a7b52d6bcae",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-019140c1f0965540c74b1d7e",
+  "context_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "follow up: docs/recovery.md and docs/phase3-json-schemas.md misrepresent QA recovery phases, stale handling, or schema-version strictness, leading operators to hand-edit private verification state"
+  ],
+  "expectation_refs": [
+    "contract-documentation",
+    "contract-errors",
+    "contract-persistence-and-migrations",
+    "contract-workflows"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-019140c1f0965540c74b1d7e"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-e7d8ef15ea820a7b52d6bcae/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:56:44.410056632Z",
+      "completed_at": "2026-08-26T09:57:24.558333852Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+          "paths": [
+            "docs/recovery.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0e2ac58f62b23746adececb8",
+      "shard_id": "qa-v1-shard-e7d8ef15ea820a7b52d6bcae",
+      "claim": "docs/recovery.md misrepresents QA recovery phases, implying operators should hand-edit private verification state to advance phases",
+      "basis": "Behavioral concern alleges recovery phases are misdescribed leading to hand-edits; recovery.md is the primary operator runbook for phase recovery",
+      "verification_surface": "docs/recovery.md lines 182-195 (Read-only QA recovery), lines 249-264 (QA evidence recovery), docs/phase3-json-schemas.md lines 32-35 closed phase list, docs/architecture.md lines 145-154, docs/cli-reference.md lines 347-364 QA command lifecycle, docs/user-guide.md lines 341-358",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-errors",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Recovery doc omits or misstates closed phases (missing/mapped/queued/running/synthesizing/completed/blocked/cancelled/interrupted/stale/invalid), claims recover adopts workers/rebuilds evidence/replays commands, or instructs hand-editing state.json/flow-state.json/digests to mark complete",
+      "refutation_condition": "Recovery doc enumerates missing/queued/running/synthesizing/stale/invalid/unknown_schema/cancelled/cleanup_uncertain/blocked, states recover is runtime-free, records interrupted, reconciles bounded flow summary, never rebuilds missing theory evidence or adopts worker, and explicitly forbids hand-editing",
+      "inconclusive_condition": "Docs truncated, unreadable, or phase definitions absent from assigned context paths requiring implementation code to disambiguate",
+      "safe_evidence_strategy": "Read-only document_search and direct read of assigned docs/recovery.md, docs/phase3-json-schemas.md, docs/architecture.md, docs/cli-reference.md, docs/user-guide.md comparing phase enumerations and recovery directives; no shell, no file writes",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-e7d8ef15ea820a7b52d6bcae/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:56:44.410056632Z",
+          "completed_at": "2026-08-26T09:57:24.558333852Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+              "paths": [
+                "docs/recovery.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+          "paths": [
+            "docs/recovery.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "docs/recovery.md:182-192 correctly lists missing (dry-run no-op), queued/running/synthesizing-\u003erecover-\u003einterrupted-\u003eresume, stale (inputs/implementation/review/policy/catalog/limits/shard mismatch -\u003e new dry-run/start never reuse stale), invalid/unknown_schema (stop keep state unchanged use compatible binary/migration do not hand-edit version/digest), cancelled/wall-clock exhaustion, cleanup_uncertain/persistence failure, plus blocked gated run; lines 192-194 explicitly state mode 0700/0600 digest-checked state, fail-closed on missing reference/digest mismatch/unsafe mode/symlink/path escape/malformed/trailing JSON/unknown major version, and that recovery can only republish previously validated terminal state to fix flow-state.json summary never rebuild evidence or adopt worker; lines 249-255 repeat runtime-free limits; explicitly forbids hand-edit at lines 66, 188, 195, 264; consistent with phase3-json-schemas.md:33-34 closed phases and architecture.md:145-153"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1a64797d4a42520df2d5ff89",
+      "shard_id": "qa-v1-shard-e7d8ef15ea820a7b52d6bcae",
+      "claim": "docs/phase3-json-schemas.md and docs/recovery.md misrepresent schema-version strictness, implying unknown major versions or unknown fields/trailing JSON can be tolerated or fixed by hand-editing version/digest fields",
+      "basis": "Schema-version strictness is third prong of concern; lenient description would lead operators to hand-edit version to force compatibility",
+      "verification_surface": "docs/phase3-json-schemas.md lines 3-4, 37-44 strict schema v1, lines 55-62 unknown majors/fields/trailing JSON fail-closed and no migration ships, lines 84-98 QA v2 coexistence, docs/recovery.md lines 188, 192-194 invalid/unknown_schema and fail-closed list, docs/architecture.md lines 145-146 strict schema v1/v2 path-contained digest-checked",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-errors",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Docs claim additive fields allowed in filesystem state, unknown majors are ignored, trailing JSON is tolerated, or instruct editing schema_version/digest to downgrade/upgrade",
+      "refutation_condition": "Docs state wire JSON additive tolerance limited to schema_version 1 public envelope, but detailed private filesystem state is strict v1/v2: unknown fields/trailing JSON/unsafe paths/modes/invalid IDs/digest mismatch/unknown major version fail closed, no migration ships, keep files intact use compatible binary, do not hand-edit version/digest",
+      "inconclusive_condition": "Version handling for v1 vs v2 private state coexistence unclear from docs alone",
+      "safe_evidence_strategy": "Read-only compare of schema_version sections in phase3-json-schemas.md and recovery.md invalid handling, plus architecture.md publication ordering; no execution",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-e7d8ef15ea820a7b52d6bcae/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:56:44.410056632Z",
+          "completed_at": "2026-08-26T09:57:24.558333852Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+              "paths": [
+                "docs/recovery.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+          "paths": [
+            "docs/recovery.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "phase3-json-schemas.md:3 states additive fields may be introduced without version change but existing meanings stable for version 1, and :76-82 require rejecting unknown majors, :55-62 state unknown qa-v1 fields/invalid IDs/pointer escape/digest mismatch/schema major other than 1 makes detailed state unreadable until explicit recovery/migration, :57-59 'No QA state migration ships' and keep files intact use compatible binary run qa recover only after binary recognizes major, :59-62 flow-state.json is schema version 2 strict unknown-field decoding, :84-97 QA v2 writes strict schema v2 while retaining v1 reads with fail-closed on unknown majors/fields/symlink/ownership/digest; recovery.md:188 'invalid or unknown_schema: stop. Keep private state unchanged, use compatible binary or documented migration, and do not hand-edit version or digest fields.' and :192-194 lists fail-closed conditions identically; architecture.md:145-146 confirms private path-contained digest-checked atomically written v1/v2; docs consistently forbid hand-editing"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-4c8d6f228b6dd48b88927f76",
+      "shard_id": "qa-v1-shard-e7d8ef15ea820a7b52d6bcae",
+      "claim": "docs/recovery.md and docs/phase3-json-schemas.md misrepresent stale handling, suggesting stale QA outcomes can be reused as current or fixed by hand-editing fingerprints/digests",
+      "basis": "Stale handling is explicit follow-up concern; incorrect guidance would cause operators to treat stale evidence as passing or manually edit state",
+      "verification_surface": "docs/recovery.md lines 186-188 stale bullet, lines 196-197 retention/quota, docs/phase3-json-schemas.md lines 46-56 state/map/shard/synthesis freshness, lines 57-62 migration/stale fencing, docs/architecture.md lines 148-152 map normalization and drift detection, docs/cli-reference.md lines 362-367 error codes and status fields",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Docs state stale outcomes may be reused, omit fingerprint comparison, or direct operators to edit map fingerprints/state digests/flow-state to clear stale",
+      "refutation_condition": "Docs define stale as inputs/implementation/Conformance Review/policy/catalog/limits/shard no longer match, require new dry-run and start, state never reuse stale outcomes, preserve current attempt and use normal recovery/pruning, and expose stale via status freshness/fingerprints",
+      "inconclusive_condition": "Stale reason enumeration incomplete or ambiguous without implementation fingerprint logic",
+      "safe_evidence_strategy": "Document comparison of stale definitions across recovery.md, phase3-json-schemas.md state.json/map.json freshness fields, and architecture.md mapping/drift description; read-only only",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-e7d8ef15ea820a7b52d6bcae/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:56:44.410056632Z",
+          "completed_at": "2026-08-26T09:57:24.558333852Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+              "paths": [
+                "docs/recovery.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "recovery.md Read-only QA recovery correctly enumerates phases and forbids hand-edit, defines stale and invalid handling, fail-closed checks, and runtime-free recovery limits",
+          "paths": [
+            "docs/recovery.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines schema_version 1 additive wire tolerance vs strict private filesystem v1/v2, closed phase/theory outcomes, and no-migration keep-files-intact policy with fail-closed on unknown majors/fields/trailing JSON/digest mismatch",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md and cli-reference.md corroborate: QA maps freeze fingerprints/limits, drift detection before/after, strict v1/v2 publishing order, bounded flow summary, and CLI QA lifecycle with distinct phase/freshness/run lifecycle and qa.* error codes",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "recovery.md:187 defines stale as inputs/implementation/Conformance Review evidence/policy/check catalog/limits/selected shard mismatch and directs 'Run a new dry-run and start; never reuse stale outcomes as current.' phase3-json-schemas.md:31-32, 48-55 defines freshness fingerprints, map frozen budgets/traces/identities, and status result freshness separate from run lifecycle; architecture.md:148-152 confirms every attempt compares full implementation/Git identity before/after and rebuilds deterministic map to detect drift, with resume reusing only current completed/blocked records; cli-reference.md lists qa.stale_input error; no instruction to hand-edit stale away"
+    }
+  ]
+}

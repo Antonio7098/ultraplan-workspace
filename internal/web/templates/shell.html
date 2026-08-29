@@ -1,0 +1,102 @@
+{{define "layout/top"}}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Title}} · UltraPlan</title>
+  <meta name="ultraplan-csrf" content="{{.CSRF}}">
+  <link rel="stylesheet" href="/static/app.css">
+  <script defer src="/static/js/app.js"></script>
+  <script defer src="/static/js/operations.js"></script>
+  <script defer src="/static/js/sse.js"></script>
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <datalist id="ultraplan-model-options"></datalist>
+  {{.SurfaceContract}}
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <a class="brand" href="/">UltraPlan <span class="visually-hidden">home</span></a>
+    <nav aria-label="Primary">
+      <div class="top-nav-item" data-nav-flyout data-endpoint="/api/v1/projects" data-base-path="/projects">
+        <a href="/projects">Projects</a>
+        <div class="top-nav-disclosure">
+          <button type="button" aria-label="Show projects" aria-expanded="false" aria-controls="projects-flyout"><span aria-hidden="true">›</span></button>
+          <div class="top-nav-flyout" id="projects-flyout">
+            <div class="top-nav-flyout-heading"><strong>Projects</strong><a href="/projects">View all</a></div>
+            <ul data-nav-items><li class="top-nav-loading">Loading projects…</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="top-nav-item" data-nav-flyout data-endpoint="/api/v1/studies" data-base-path="/studies">
+        <a href="/studies">Studies</a>
+        <div class="top-nav-disclosure">
+          <button type="button" aria-label="Show studies" aria-expanded="false" aria-controls="studies-flyout"><span aria-hidden="true">›</span></button>
+          <div class="top-nav-flyout" id="studies-flyout">
+            <div class="top-nav-flyout-heading"><strong>Studies</strong><a href="/studies">View all</a></div>
+            <ul data-nav-items><li class="top-nav-loading">Loading studies…</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="running-processes" data-running-processes>
+        <button type="button" aria-label="Running processes: 0" aria-expanded="false" aria-controls="running-processes-flyout">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg>
+          <span data-running-count>0</span>
+        </button>
+        <div class="running-processes-flyout" id="running-processes-flyout">
+          <div class="top-nav-flyout-heading"><strong>Running processes</strong><span data-running-status>Checking…</span><a class="run-history-link" href="/runs" aria-label="Run history"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg></a></div>
+          <ul data-running-items><li class="top-nav-loading">Checking for active work…</li></ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main id="main" tabindex="-1">
+    <div class="heading-row">
+      <div>
+        <h1>{{.Heading}}</h1>
+      </div>
+      <a class="refresh-link" href="" aria-describedby="refresh-status">Refresh</a>
+    </div>
+    <p id="refresh-status" class="visually-hidden" aria-live="polite"></p>
+{{end}}
+
+{{define "layout/bottom"}}
+  </main>
+  <footer>
+    <span class="status status-ok">Server ready</span>
+    <span>Workspace files and product run state remain authoritative.</span>
+  </footer>
+</body>
+</html>{{end}}
+
+{{define "component/artifacts"}}
+{{if .}}
+<ul class="artifact-list">
+  {{range .}}
+  <li><a href="/artifacts/{{.Ref}}">{{.Label}}</a><code>{{.DisplayPath}}</code><span>{{.MediaType}}</span></li>
+  {{end}}
+</ul>
+{{else}}<p class="empty">No previewable artifacts.</p>{{end}}
+{{end}}
+
+{{define "component/operation-console"}}
+<section class="operation-console" aria-labelledby="operation-console-heading">
+  <h2 id="operation-console-heading">Operation status</h2>
+  <p class="operation-guidance">Preparation is side-effect-free. Review the normalized scope before confirming. Closing this page does not cancel accepted work.</p>
+  <div id="operation-confirmation" hidden></div>
+  <div id="operation-live" role="status" aria-live="polite">No operation selected.</div>
+  <ol id="operation-timeline" class="operation-timeline" aria-label="Recent operation progress"></ol>
+  <button id="operation-cancel" type="button" hidden>Cancel operation</button>
+  <noscript><p>JavaScript enables live progress. Active operation pages also provide a normal cancellation form; otherwise use the equivalent <code>ultraplan</code> CLI command and its normal interrupt handling.</p></noscript>
+</section>
+{{end}}
+
+{{define "component/findings"}}
+{{if .}}
+<ul class="findings">
+  {{range .}}
+  <li><span class="status status-{{.Severity}}">{{.Severity}}</span><strong>{{.Problem}}</strong>{{if .Section}} <span>{{.Section}}</span>{{end}}{{if .Suggestion}}<p>{{.Suggestion}}</p>{{end}}</li>
+  {{end}}
+</ul>
+{{else}}<p class="empty">No current findings.</p>{{end}}
+{{end}}

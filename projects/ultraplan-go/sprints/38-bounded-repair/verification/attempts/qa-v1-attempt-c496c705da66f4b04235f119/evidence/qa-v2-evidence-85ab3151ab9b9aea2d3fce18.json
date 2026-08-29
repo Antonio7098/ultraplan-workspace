@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-85ab3151ab9b9aea2d3fce18",
+  "plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c",
+  "attempt_id": "qa-v1-attempt-c496c705da66f4b04235f119",
+  "shard_id": "qa-v1-shard-0c9fa1b26b4fe77b6313cf9a",
+  "workspace_id": "repair-dogfood",
+  "workspace_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "target_identity_before": "1a93acb491a82fff98b18b11006fb181f74768e3f9cfcc0e786a4e936271e628",
+  "target_identity_after": "1a93acb491a82fff98b18b11006fb181f74768e3f9cfcc0e786a4e936271e628",
+  "governed_input_fingerprint": "7777777777777777777777777777777777777777777777777777777777777777",
+  "implementation_fingerprint": "1a93acb491a82fff98b18b11006fb181f74768e3f9cfcc0e786a4e936271e628",
+  "map_fingerprint": "9999999999999999999999999999999999999999999999999999999999999999",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "7cff2edf60e36b788ee6988e226d72d923168203f97c100d5d040bca144eddb4",
+      "exit_code": 1,
+      "duration": 0,
+      "output_bytes": 0,
+      "truncated": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": true,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/repair_dogfood_sentinel.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "compile_failure",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-08-28T14:59:05.320107999Z"
+}

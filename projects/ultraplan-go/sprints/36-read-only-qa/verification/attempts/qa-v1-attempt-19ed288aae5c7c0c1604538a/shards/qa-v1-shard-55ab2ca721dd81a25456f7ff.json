@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-55ab2ca721dd81a25456f7ff",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-5b71e42df8cbf4389009bde9",
+  "context_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QA operation mapping allows caller supplied model/task variations via alternative kinds or omits strict shard ID format validation beyond presence check"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-llm-runtime",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-5b71e42df8cbf4389009bde9"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-55ab2ca721dd81a25456f7ff/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:55:50.326490781Z",
+      "completed_at": "2026-08-26T09:56:43.062745702Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "code_reading",
+          "summary": "QA guard in operation_handlers.go checks only presence/mutual exclusion for Shard, no regex format check; Shard assigned directly to req.Task",
+          "paths": [
+            "internal/web/operation_handlers.go"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Contract test verifies QA rejects model/task/status-shard/recovery-shard but does not test malformed shard format acceptance",
+          "paths": [
+            "internal/web/operations_contract_test.go"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Kind normalization uses ReplaceAll underscore-\u003edash and explicit qa- prefixed cases; QA prefix guard blocks model/task/stage etc. for all QA kinds",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Dispatch identifierPattern is generic ^[A-Za-z0-9][A-Za-z0-9._-]*$ and qa_handlers shard handlers pass raw shard to app layer without web-layer strict validation",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b79a4d1fa9bc3ae55fc278b7",
+      "shard_id": "qa-v1-shard-55ab2ca721dd81a25456f7ff",
+      "claim": "QA start/resume operation mapping omits strict shard ID format validation beyond presence check; arbitrary strings accepted as options.shard",
+      "basis": "Behavioral concern states follow-up about omitting strict shard ID format validation. In internal/web/operation_handlers.go the QA branch only checks presence/mutual-exclusion/kind eligibility for options.Shard, with no regex/length/format check.",
+      "verification_surface": "Read-only inspection of internal/web/operation_handlers.go:734-751 (QA options guard) and internal/web/operations_contract_test.go:68-87 (contract test allows only map-owned shard value qa-v1-shard-… but does not test malformed shard acceptance), plus internal/web/handlers.go:22-23 and dispatch validIdentifier check which is generic.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "mapOperationRequest accepts qa-start/qa-resume with options.shard set to arbitrary value (e.g., 'arbitrary', '../../etc', 'not-a-valid-format') that does not match canonical shard pattern qa-v1-shard-[0-9a-f]{24,} while rejecting only by kind/suite rules",
+      "refutation_condition": "Code performs explicit regex or length/charset validation of shard IDs against canonical pattern (e.g., ^qa-v1-shard-[a-f0-9]{...}$ or opaqueRefPattern with strict prefix) before assigning to req.Task",
+      "inconclusive_condition": "Shard validation is delegated outside assigned paths (app layer) and cannot be verified with web-layer reads alone, or alternative kinds handling is ambiguous",
+      "safe_evidence_strategy": "Read operation_handlers.go QA guard block and grep for shard validation patterns, identifierPattern/opaqueRefPattern usage, and QA shard test coverage without executing code or mutating state",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-55ab2ca721dd81a25456f7ff/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:55:50.326490781Z",
+          "completed_at": "2026-08-26T09:56:43.062745702Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "code_reading",
+              "summary": "QA guard in operation_handlers.go checks only presence/mutual exclusion for Shard, no regex format check; Shard assigned directly to req.Task",
+              "paths": [
+                "internal/web/operation_handlers.go"
+              ]
+            },
+            {
+              "kind": "code_reading",
+              "summary": "Contract test verifies QA rejects model/task/status-shard/recovery-shard but does not test malformed shard format acceptance",
+              "paths": [
+                "internal/web/operations_contract_test.go"
+              ]
+            },
+            {
+              "kind": "code_reading",
+              "summary": "Kind normalization uses ReplaceAll underscore-\u003edash and explicit qa- prefixed cases; QA prefix guard blocks model/task/stage etc. for all QA kinds",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/static/js/operations.js"
+              ]
+            },
+            {
+              "kind": "code_reading",
+              "summary": "Dispatch identifierPattern is generic ^[A-Za-z0-9][A-Za-z0-9._-]*$ and qa_handlers shard handlers pass raw shard to app layer without web-layer strict validation",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_reading",
+          "summary": "QA guard in operation_handlers.go checks only presence/mutual exclusion for Shard, no regex format check; Shard assigned directly to req.Task",
+          "paths": [
+            "internal/web/operation_handlers.go"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Contract test verifies QA rejects model/task/status-shard/recovery-shard but does not test malformed shard format acceptance",
+          "paths": [
+            "internal/web/operations_contract_test.go"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Kind normalization uses ReplaceAll underscore-\u003edash and explicit qa- prefixed cases; QA prefix guard blocks model/task/stage etc. for all QA kinds",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Dispatch identifierPattern is generic ^[A-Za-z0-9][A-Za-z0-9._-]*$ and qa_handlers shard handlers pass raw shard to app layer without web-layer strict validation",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "internal/web/operation_handlers.go:734-751 checks only that Shard is present only for qa-start/qa-resume, that Suite is smoke and mutually exclusive, and that other QA options are empty. No validation of shard format (regex, prefix qa-v1-shard-, length, charset) exists; assignment is req.Task = options.Shard directly via kind switch at 700-705 and forwarded without sanitize. Test at operations_contract_test.go:68-87 verifies model/task rejection and suite/shard mutual exclusion but does not assert malformed shard rejection, leaving arbitrary shard strings accepted at the web boundary."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ef1670f4faedbbb3355fdeb2",
+      "shard_id": "qa-v1-shard-55ab2ca721dd81a25456f7ff",
+      "claim": "QA operation mapping allows caller-supplied model/task variations via alternative kinds to bypass the QA-only options filter",
+      "basis": "Concern hypothesizes alternative kind strings (aliases, underscore vs dash) could route to QA OperationKind without triggering the strings.HasPrefix(req.Kind,\"qa-\") guard that blocks model/task/stage etc.",
+      "verification_surface": "Read-only inspection of internal/web/operation_handlers.go:623-753 (kind normalization and QA guard) and internal/web/operations_contract_test.go:68-87 and static/js/operations.js:5-17",
+      "expectation_refs": [
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "An alternative kind alias exists that maps to app.OperationQAStart/Resume/Status etc. without qa- prefix or the QA guard fails to block options.Model/Task/Stage etc. for that alias",
+      "refutation_condition": "All operation kinds mapping to QA OperationKind are normalized via strings.ReplaceAll(\"_\",\"-\") and trimmed, then matched only to explicit case labels 'qa-start','qa-resume','qa-status','qa-dry-run','qa-recover', and the guard if strings.HasPrefix(string(req.Kind),\"qa-\") blocks Model, Task, Stage, ToStage, Action, DryRun, Resume, Level, Test, Timeout, ForceReview, RestartReview, OverrideRationale, ReviewFocus, Sources, Dimensions, Parallelism for any matched QA kind",
+      "inconclusive_condition": "Additional aliases are defined outside assigned paths or guard is intentionally permissive for future kinds",
+      "safe_evidence_strategy": "Read kind switch and prefix guard, enumerate all QA case labels, verify normalization, and compare against contract test coverage for caller model/task rejection without executing mutations",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-55ab2ca721dd81a25456f7ff/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:55:50.326490781Z",
+          "completed_at": "2026-08-26T09:56:43.062745702Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "code_reading",
+              "summary": "QA guard in operation_handlers.go checks only presence/mutual exclusion for Shard, no regex format check; Shard assigned directly to req.Task",
+              "paths": [
+                "internal/web/operation_handlers.go"
+              ]
+            },
+            {
+              "kind": "code_reading",
+              "summary": "Contract test verifies QA rejects model/task/status-shard/recovery-shard but does not test malformed shard format acceptance",
+              "paths": [
+                "internal/web/operations_contract_test.go"
+              ]
+            },
+            {
+              "kind": "code_reading",
+              "summary": "Kind normalization uses ReplaceAll underscore-\u003edash and explicit qa- prefixed cases; QA prefix guard blocks model/task/stage etc. for all QA kinds",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/static/js/operations.js"
+              ]
+            },
+            {
+              "kind": "code_reading",
+              "summary": "Dispatch identifierPattern is generic ^[A-Za-z0-9][A-Za-z0-9._-]*$ and qa_handlers shard handlers pass raw shard to app layer without web-layer strict validation",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_reading",
+          "summary": "QA guard in operation_handlers.go checks only presence/mutual exclusion for Shard, no regex format check; Shard assigned directly to req.Task",
+          "paths": [
+            "internal/web/operation_handlers.go"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Contract test verifies QA rejects model/task/status-shard/recovery-shard but does not test malformed shard format acceptance",
+          "paths": [
+            "internal/web/operations_contract_test.go"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Kind normalization uses ReplaceAll underscore-\u003edash and explicit qa- prefixed cases; QA prefix guard blocks model/task/stage etc. for all QA kinds",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js"
+          ]
+        },
+        {
+          "kind": "code_reading",
+          "summary": "Dispatch identifierPattern is generic ^[A-Za-z0-9][A-Za-z0-9._-]*$ and qa_handlers shard handlers pass raw shard to app layer without web-layer strict validation",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "All QA OperationKind assignments in operation_handlers.go:696-707 come from explicit normalized cases 'qa-status','qa-dry-run','qa-start','qa-resume','qa-recover' which all carry qa- prefix after ReplaceAll underscore-\u003edash normalization at 623. The subsequent guard at 734-735 checks if strings.HasPrefix(req.Kind,\"qa-\") then rejects any non-empty Model, Task, Stage, ToStage, Action, DryRun, Resume, Level, Test, Timeout, ForceReview, RestartReview, OverrideRationale, ReviewFocus, Sources, Dimensions, Parallelism with error 'QA operations accept only options.shard or options.suite'. Contract test TestBrowserQAOperationContractAllowsOnlyMapOwnedShard at operations_contract_test.go:75-86 confirms model, task, status-shard, recovery-shard are rejected. No alternative kind alias escapes the guard; static/js/operations.js:5-17 also only forwards shard/suite for QA, and model is separately collected but server-side mapping would reject it."
+    }
+  ]
+}

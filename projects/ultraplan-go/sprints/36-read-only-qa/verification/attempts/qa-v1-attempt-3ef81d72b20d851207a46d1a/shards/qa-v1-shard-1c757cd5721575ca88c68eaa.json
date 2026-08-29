@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-1c757cd5721575ca88c68eaa",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-43c6cae1e5eacf08b044eced",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Governed input fingerprint symlink check misses top-level symlink to directory and may allow path escape"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-43c6cae1e5eacf08b044eced"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-1c757cd5721575ca88c68eaa/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:56:42.15114848Z",
+      "completed_at": "2026-08-26T10:57:37.76783847Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "fingerprintOperationInputs final-component-only symlink check vs correct component-wise check; governed inputs share common top-level prefix enabling escape",
+          "paths": [
+            "internal/app/operations.go:699-744",
+            "internal/app/operations.go:663-697",
+            "internal/app/usecases.go:199-212",
+            "internal/app/operations.go:746-754"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "governed inputs include file paths under projects/ and studies/ without separate validation of top-level directory prefixes; docs directory handling shows intended directory hash but inherits same missed intermediate check",
+          "paths": [
+            "internal/app/operations.go:663-697",
+            "internal/app/operations.go:714-736"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fe9abd1f3cb6faebc9370081",
+      "shard_id": "qa-v1-shard-1c757cd5721575ca88c68eaa",
+      "claim": "fingerprintOperationInputs in internal/app/operations.go validates only the final joined governed input path for symlink, not every path prefix, so a top-level directory component such as `projects` or `projects/\u003cproject\u003e` being a symlink to an external directory is followed and WalkDir hashes files outside the workspace (path escape)",
+      "basis": "Read-only inspection: fingerprintOperationInputs (operations.go:699-744) does `info, err := os.Lstat(path)` where `path=filepath.Join(root, rel)` and checks `info.Mode()\u0026os.ModeSymlink`, then for dirs runs `filepath.WalkDir(path, ... entry.Type()\u0026ModeSymlink)`. This checks only the leaf and descendants. `os.Lstat` on a path with a symlinked intermediate directory follows the intermediate (POSIX Lstat follows intermediates, only leaf is not followed), so `Lstat(join(root,\"projects/alpha/docs\"))` where `projects` is a symlink returns the external target's directory info without error. Contrasted with the correct pattern in internal/app/usecases.go:199-212 rejectPreviewSymlink which iterates `for _, part := range split(rel) { path=join(path,part); Lstat(path); check ModeSymlink }`.",
+      "verification_surface": "read-only static code comparison of internal/app/operations.go:699-742 (fingerprintOperationInputs + hashOperationFile) vs internal/app/usecases.go:199-212 (rejectPreviewSymlink) and internal/app/web_usecases.go fingerprint basis; no execution, no file creation",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "code shows Lstat applied only to final `filepath.Join(root,rel)` without per-component iteration, and WalkDir is called on the already-resolved external target, allowing intermediate directory symlink to escape workspace and be hashed via hashOperationFile (which uses os.ReadFile that follows symlinks)",
+      "refutation_condition": "code shows a loop that Lstats every prefix `root/part1`, `root/part1/part2`, ... for each governed rel before hashing and rejects any ModeSymlink, matching rejectPreviewSymlink",
+      "inconclusive_condition": "uncertainty about filepath.WalkDir handling of symlink root without runtime evaluation of Go stdlib behavior",
+      "safe_evidence_strategy": "compare source of fingerprintOperationInputs final-component Lstat and child-entry symlink check against rejectPreviewSymlink component-wise Lstat; inspect governedOperationInputs (operations.go:663-697) to confirm `projects/\u003cproject\u003e/docs` and other file inputs share common `projects` prefix that is not itself a governed input",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-1c757cd5721575ca88c68eaa/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:56:42.15114848Z",
+          "completed_at": "2026-08-26T10:57:37.76783847Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "fingerprintOperationInputs final-component-only symlink check vs correct component-wise check; governed inputs share common top-level prefix enabling escape",
+              "paths": [
+                "internal/app/operations.go:699-744",
+                "internal/app/operations.go:663-697",
+                "internal/app/usecases.go:199-212",
+                "internal/app/operations.go:746-754"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "governed inputs include file paths under projects/ and studies/ without separate validation of top-level directory prefixes; docs directory handling shows intended directory hash but inherits same missed intermediate check",
+              "paths": [
+                "internal/app/operations.go:663-697",
+                "internal/app/operations.go:714-736"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "fingerprintOperationInputs final-component-only symlink check vs correct component-wise check; governed inputs share common top-level prefix enabling escape",
+          "paths": [
+            "internal/app/operations.go:699-744",
+            "internal/app/operations.go:663-697",
+            "internal/app/usecases.go:199-212",
+            "internal/app/operations.go:746-754"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "governed inputs include file paths under projects/ and studies/ without separate validation of top-level directory prefixes; docs directory handling shows intended directory hash but inherits same missed intermediate check",
+          "paths": [
+            "internal/app/operations.go:663-697",
+            "internal/app/operations.go:714-736"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static evidence confirms single-path Lstat at operations.go:703-712 and child-only WalkDir check at 720-721 versus component-wise loop at usecases.go:200-209. Governed inputs (operations.go:663-697) include deep file paths under `projects`/`studies` but not the top-level `projects` directory itself, so a symlink at `projects` (top-level directory) resolves via intermediate path resolution and is not detected, WalkDir then walks external directory and hashOperationFile reads outside files as governed inputs."
+    }
+  ]
+}

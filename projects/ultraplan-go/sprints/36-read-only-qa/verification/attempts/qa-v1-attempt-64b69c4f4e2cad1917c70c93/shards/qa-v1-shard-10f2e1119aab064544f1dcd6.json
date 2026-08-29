@@ -1,0 +1,512 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-10f2e1119aab064544f1dcd6",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-1f6633a01d275c355fa74258",
+  "context_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "follow up: docs/local-web.md and docs/phase3-json-schemas.md document QA browser routes and JSON schemas that are not yet implemented or have different auth/envelope behavior"
+  ],
+  "expectation_refs": [
+    "contract-documentation",
+    "contract-observability",
+    "contract-persistence-and-migrations"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-1f6633a01d275c355fa74258"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-10f2e1119aab064544f1dcd6/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:23:33.562895281Z",
+      "completed_at": "2026-08-26T11:24:24.164878569Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "context_requests": [
+        {
+          "id": "ctx-qa-web-routes-envelope",
+          "paths": [
+            "internal/web/router.go",
+            "internal/web/handlers.go",
+            "internal/web/dto.go",
+            "internal/web/middleware.go",
+            "internal/app/web_usecases.go",
+            "internal/app/operations.go"
+          ],
+          "reason": "Verify whether documented QA browser and JSON routes exist, their exact path literals, and whether they enforce documented Host/Origin/session/CSRF and return {data,meta}/{error,meta} envelopes; essential to confirm/refute theories 1 and 2 about unimplemented or divergent auth/envelope behavior",
+          "approved": false
+        },
+        {
+          "id": "ctx-qa-schemas-persistence",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_map.go",
+            "internal/app/qa.go",
+            "docs/phase3-json-schemas.md",
+            "internal/sprint/verification_state_test.go"
+          ],
+          "reason": "Verify QA CLI envelope schema_version 1 fields, qa.* error codes and HTTP 422/409/503 mappings, and private v2 evidence/assessment files vs public v1 additive fields; needed for theory 2 and 3 and contract-persistence-and-migrations",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-00e95cb9be568e68abe171c2",
+      "shard_id": "qa-v1-shard-10f2e1119aab064544f1dcd6",
+      "claim": "docs/local-web.md:284-299 documents QA browser routes (GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{qa-v1-shard-id}, /qa/theories/{qa-v1-theory-id} and versioned JSON GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis) that are not yet implemented or have different auth/envelope behavior than documented",
+      "basis": "Assigned behavioral concern explicitly flags docs/local-web.md QA browser routes as potentially unimplemented/divergent; doc excerpt at docs/local-web.md:282-302 claims server-rendered QA overview plus shard/theory pages and versioned JSON resources with claims \"All routes call typed app queries; HTTP never reads verification files directly\" and surrounding sections 87-122 define success {data,meta} / error {error,meta} and session/CSRF/Origin requirements; no implementation file is in assigned context_paths so no implementation verification possible in this shard",
+      "verification_surface": "docs/local-web.md route strings vs internal/web router registration (internal/web/**/*.go), internal/app/web_usecases.go facade, middleware for Host/Origin/session/CSRF, and DTO envelope handling; compare path literals, auth guards, and JSON envelope to documented {data,meta}/{error,meta}",
+      "expectation_refs": [
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Implementation router missing one or more documented QA HTML or /api/v1 QA paths, or implements different envelope (no {data,meta}/{error,meta}) or different auth (missing same-origin/Origin/session/CSRF checks described at docs/local-web.md:92-109,338-347)",
+      "refutation_condition": "Router registers exactly documented QA HTML and JSON paths, calls typed app queries, enforces loopback Host + exact Origin + per-process session cookie + CSRF for mutations, and wraps success/error in {data,meta}/{error,meta} with documented 422/409/503 mappings",
+      "inconclusive_condition": "Router partially matches or uses alternate compatibility envelope but intent unclear without examining version negotiation and compatibility tests",
+      "safe_evidence_strategy": "Read-only static inspection only: grep route literals and handler registration in internal/web, inspect internal/app projection types, compare to doc strings; do not start server, invoke shell, or mutate files; request bounded context expansion if needed",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-10f2e1119aab064544f1dcd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.562895281Z",
+          "completed_at": "2026-08-26T11:24:24.164878569Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-web-routes-envelope",
+              "paths": [
+                "internal/web/router.go",
+                "internal/web/handlers.go",
+                "internal/web/dto.go",
+                "internal/web/middleware.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify whether documented QA browser and JSON routes exist, their exact path literals, and whether they enforce documented Host/Origin/session/CSRF and return {data,meta}/{error,meta} envelopes; essential to confirm/refute theories 1 and 2 about unimplemented or divergent auth/envelope behavior",
+              "approved": false
+            },
+            {
+              "id": "ctx-qa-schemas-persistence",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_map.go",
+                "internal/app/qa.go",
+                "docs/phase3-json-schemas.md",
+                "internal/sprint/verification_state_test.go"
+              ],
+              "reason": "Verify QA CLI envelope schema_version 1 fields, qa.* error codes and HTTP 422/409/503 mappings, and private v2 evidence/assessment files vs public v1 additive fields; needed for theory 2 and 3 and contract-persistence-and-migrations",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+            },
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+            },
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md",
+                "docs/release-checklist.md"
+              ],
+              "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "Assigned context is docs-only (changed_paths null, 7 doc files); implementation paths needed to verify route existence and envelope/auth are outside this shard's budget and not inspectable per read-only QA constraints — requires approved context expansion"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-673e1ba93be72f629db62518",
+      "shard_id": "qa-v1-shard-10f2e1119aab064544f1dcd6",
+      "claim": "docs/phase3-json-schemas.md:28-36 documents QA CLI envelope (schema_version 1, operation sprint.qa, status/result/error with qa.* codes) and HTTP wrapper that \"wraps the same typed result in the standard API success/error envelope\" with stable HTTP mappings (invalid state 422, ownership conflict 409, persistence/runtime 503) that may diverge from actual auth/envelope behavior",
+      "basis": "Concern flags JSON schemas with different auth/envelope behavior; docs/phase3-json-schemas.md:28-36 states CLI envelope is stable, HTTP wraps same typed result in standard API envelope, and lists 8 stable qa.* codes with HTTP mappings; docs/local-web.md:119-122 defines generic API envelope behavior which may conflict or be undocumented for QA resources; contract-documentation requires docs match implementation",
+      "verification_surface": "docs/phase3-json-schemas.md envelope spec vs internal/app QA DTOs, CLI JSON rendering (sprint qa --json), and internal/web API envelope rendering and error code mapping; check status codes and public message redaction",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "QA CLI JSON missing/renames schema_version/operation/status/result/error, or HTTP QA JSON does not use {data,meta}/{error,meta}, or returns different status codes/messages than documented (e.g., not 422 for invalid governed state, not 409 for conflict, not 503 for persistence/runtime) or leaks raw cause where bounded public message required",
+      "refutation_condition": "CLI qa --json matches schema_version 1 + operation sprint.qa + status/result/error with closed qa.* codes, and HTTP GET /api/v1/.../qa* returns same typed result wrapped in {data,meta} on success and {error,meta} on error with documented code-to-status mapping and bounded public messages",
+      "inconclusive_condition": "Envelope additive fields present but core fields diverge in optional vs required handling, or error redaction not observable without runtime execution",
+      "safe_evidence_strategy": "Read-only doc-to-code comparison: read phase3-json-schemas.md lines 28-36, cli-reference.md QA JSON description lines 352-363, and compare to app/web DTO source under approved context expansion; no shell execution",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-10f2e1119aab064544f1dcd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.562895281Z",
+          "completed_at": "2026-08-26T11:24:24.164878569Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-web-routes-envelope",
+              "paths": [
+                "internal/web/router.go",
+                "internal/web/handlers.go",
+                "internal/web/dto.go",
+                "internal/web/middleware.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify whether documented QA browser and JSON routes exist, their exact path literals, and whether they enforce documented Host/Origin/session/CSRF and return {data,meta}/{error,meta} envelopes; essential to confirm/refute theories 1 and 2 about unimplemented or divergent auth/envelope behavior",
+              "approved": false
+            },
+            {
+              "id": "ctx-qa-schemas-persistence",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_map.go",
+                "internal/app/qa.go",
+                "docs/phase3-json-schemas.md",
+                "internal/sprint/verification_state_test.go"
+              ],
+              "reason": "Verify QA CLI envelope schema_version 1 fields, qa.* error codes and HTTP 422/409/503 mappings, and private v2 evidence/assessment files vs public v1 additive fields; needed for theory 2 and 3 and contract-persistence-and-migrations",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+            },
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+            },
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md",
+                "docs/release-checklist.md"
+              ],
+              "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "No implementation file in assigned context_paths to inspect envelope construction or status mapping; verification blocked pending context request for internal/app and internal/web DTO/handler code"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b58763acf7b70f974f75ed22",
+      "shard_id": "qa-v1-shard-10f2e1119aab064544f1dcd6",
+      "claim": "docs/local-web.md:349-354 (focused read-only JSON below sprint QA resource for evidence/adjudication/paged issues/current issue/assessment/smoke-suite) is inconsistent with docs/phase3-json-schemas.md:89-103 (v2 adds plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public CLI/app JSON staying schema_version 1 plus additive assessment/evidence/issue/report fields) suggesting undocumented or unimplemented QA evidence browser resources",
+      "basis": "local-web.md:349-354 claims focused JSON for evidence records and adjudication etc. below sprint QA resource; phase3-json-schemas.md:89-103 defines v2 file layout and states public CLI/app JSON stays at v1 with additive fields; architecture.md:145 and user-guide.md:349-350 also describe evidence binding and promotion flow; concern cites documentation of JSON schemas not yet implemented",
+      "verification_surface": "Cross-doc consistency between local-web.md QA evidence browser section, phase3-json-schemas.md v2 evidence records, architecture.md QA verification phase, and cli-reference.md stable JSON surfaces list (482-496) vs actual web API route inventory and QA DTO allowlists",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Docs claim QA evidence JSON resources that have no route/DTO or expose different paths/media types/envelopes, or public JSON schema_version unexpectedly bumped to 2, or private v2 paths exposed directly via HTTP contrary to \"HTTP never reads verification files directly\"",
+      "refutation_condition": "Browser evidence JSON routes are fully documented, versioned as /api/v1/.../qa/* with {data,meta} envelope, map 1:1 to typed app queries over private v2 records, and public CLI JSON remains schema_version 1 with only additive fields as stated",
+      "inconclusive_condition": "Evidence resources exist but are partially implemented behind feature flag/deferred Sprint 37/38 scope (release-checklist.md:141 notes evidence production deferred) making doc technically future-facing without clear version gate",
+      "safe_evidence_strategy": "Read-only cross-reference of doc sections: local-web.md:340-354 vs phase3-json-schemas.md:83-103 vs architecture.md:145 vs cli-reference.md:530-548; request web/app route inventory to confirm implementation status; do not execute or mutate",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-10f2e1119aab064544f1dcd6/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.562895281Z",
+          "completed_at": "2026-08-26T11:24:24.164878569Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-web-routes-envelope",
+              "paths": [
+                "internal/web/router.go",
+                "internal/web/handlers.go",
+                "internal/web/dto.go",
+                "internal/web/middleware.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify whether documented QA browser and JSON routes exist, their exact path literals, and whether they enforce documented Host/Origin/session/CSRF and return {data,meta}/{error,meta} envelopes; essential to confirm/refute theories 1 and 2 about unimplemented or divergent auth/envelope behavior",
+              "approved": false
+            },
+            {
+              "id": "ctx-qa-schemas-persistence",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_map.go",
+                "internal/app/qa.go",
+                "docs/phase3-json-schemas.md",
+                "internal/sprint/verification_state_test.go"
+              ],
+              "reason": "Verify QA CLI envelope schema_version 1 fields, qa.* error codes and HTTP 422/409/503 mappings, and private v2 evidence/assessment files vs public v1 additive fields; needed for theory 2 and 3 and contract-persistence-and-migrations",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+            },
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+            },
+            {
+              "kind": "doc_inspection",
+              "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/user-guide.md",
+                "docs/release-checklist.md"
+              ],
+              "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/local-web.md lines 119-122 defines standard API envelope {data,meta} success and {error,meta} error and docs/local-web.md lines 282-302 plus 349-354 documents QA HTML routes GET /projects/{project}/sprints/{sprint}/qa, /qa/shards/{id}, /qa/theories/{id} and JSON routes GET /api/v1/.../qa, /qa/map, /qa/shards/{id}, /qa/theories/{id}, /qa/synthesis plus focused evidence/ adjudication/issue JSON; surrounding 92-109 and 335-347 define Host/Origin/session/CSRF guards claimed for QA routes; no implementation examined",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256-doc-inspection-local-web-qa-routes-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/phase3-json-schemas.md lines 27-36 claims CLI QA envelope schema_version 1 operation sprint.qa status/result/error with 8 closed qa.* codes and HTTP wrapper using same typed result with 422 invalid state, 409 conflict, 503 persistence/runtime mappings; lines 83-103 defines v2 evidence layout under verification/attempts/\u003cid\u003e/ plans/, evidence/, patches/, adjudication.json, issues.json, assessment.json with public JSON staying v1; potential drift with local-web envelope/auth claims",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256-doc-inspection-phase3-schemas-envelope-v2-no-exec-97fdca9d"
+        },
+        {
+          "kind": "doc_inspection",
+          "summary": "docs/architecture.md lines 138-155 and docs/cli-reference.md lines 347-363 plus docs/user-guide.md lines 339-359 describe QA authorities, mapping budgets, and qa --json schema_version 1 additive fields separating Conformance Review verdict from QA completion; docs/release-checklist.md line 141 explicitly defers Sprint 37 evidence production/smoke integration/adjudication/issues and Sprint 38 repair, indicating documented QA browser/JSON surfaces may be future-facing and not yet implemented",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/user-guide.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-doc-inspection-arch-cli-user-release-deferral-no-exec-97fdca9d"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static doc inspection shows overlapping but not identical descriptions of QA evidence surfaces and explicit deferral notes in release-checklist; without implementation route list cannot confirm whether divergence is true drift vs intentional future docs — bounded context expansion needed for definitive confirmation/refutation"
+    }
+  ]
+}

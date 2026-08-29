@@ -1,0 +1,181 @@
+package study
+
+import runtimepkg "github.com/Antonio7098/ultraplan-go/internal/platform/runtime"
+
+import "github.com/Antonio7098/ultraplan-go/internal/platform/gitpublish"
+
+type TaskKind string
+
+const (
+	TaskKindAnalysis  TaskKind = "analysis"
+	TaskKindSynthesis TaskKind = "synthesis"
+)
+
+type ExecutionStatus string
+
+const (
+	ExecutionStatusCompleted        ExecutionStatus = "completed"
+	ExecutionStatusSkipped          ExecutionStatus = "skipped"
+	ExecutionStatusRuntimeFailed    ExecutionStatus = "runtime_failed"
+	ExecutionStatusValidationFailed ExecutionStatus = "validation_failed"
+	ExecutionStatusPreflightBlocked ExecutionStatus = "preflight_blocked"
+	ExecutionStatusCancelled        ExecutionStatus = "cancelled"
+)
+
+type ExecutionRequest struct {
+	StudyRef     string
+	DimensionRef string
+	SourceRef    string
+	// Model optionally overrides the runtime model (provider/model) for this
+	// task. When empty, study config and workspace defaults apply.
+	Model               string
+	OnEvent             func(runtimepkg.Event)
+	ResumeSession       *TaskSession
+	OnSession           func(TaskSession)
+	DeferSessionCleanup bool
+	DeferPublication    bool
+}
+
+type ExecutionResult struct {
+	Status            ExecutionStatus
+	TaskKind          TaskKind
+	Study             Study
+	Dimension         Dimension
+	Source            Source
+	OutputPath        string
+	SkippedReason     string
+	RuntimeRunID      string
+	RuntimeStatus     string
+	RuntimeError      string
+	RuntimeDetail     string
+	RuntimeErr        error
+	RuntimeCategory   string
+	Agent             AgentMetadata
+	Warnings          []string
+	Validation        ValidationResult
+	PreflightResults  []ValidationResult
+	Blockers          []string
+	CleanupSessionIDs []string
+	Publications      []gitpublish.Result
+}
+
+type SynthesisRequest struct {
+	StudyRef     string
+	DimensionRef string
+	SourceRefs   []string
+	// Model optionally overrides the runtime model (provider/model) for this
+	// task. When empty, study config and workspace defaults apply.
+	Model               string
+	OnEvent             func(runtimepkg.Event)
+	ResumeSession       *TaskSession
+	OnSession           func(TaskSession)
+	DeferSessionCleanup bool
+	DeferPublication    bool
+}
+
+type RunAllRequest struct {
+	StudyRef      string
+	DimensionRefs []string
+	SourceRefs    []string
+	Parallelism   int
+	// Model optionally overrides the runtime model (provider/model) for every
+	// executed task.
+	Model    string
+	Progress func(RunAllProgress)
+}
+
+type RunAllProgress struct {
+	TaskKind     TaskKind
+	DimensionRef string
+	SourceRef    string
+	Event        runtimepkg.Event
+}
+
+type RunAllStatus string
+
+const (
+	RunAllStatusCompleted        RunAllStatus = "completed"
+	RunAllStatusPartial          RunAllStatus = "partial"
+	RunAllStatusValidationFailed RunAllStatus = "validation_failed"
+	RunAllStatusRuntimeFailed    RunAllStatus = "runtime_failed"
+	RunAllStatusCancelled        RunAllStatus = "cancelled"
+)
+
+type RunAllCounts struct {
+	Completed int
+	Failed    int
+	Skipped   int
+	Pending   int
+}
+
+type RunAllWarning struct {
+	Path    string
+	Message string
+}
+
+type RunAllResult struct {
+	Status        RunAllStatus
+	Study         Study
+	Parallelism   int
+	Analysis      []ExecutionResult
+	Synthesis     []ExecutionResult
+	Counts        RunAllCounts
+	Warnings      []RunAllWarning
+	SummaryPath   string
+	SummaryResult SummaryResult
+	Publications  []gitpublish.Result
+}
+
+type RunLoopRequest struct {
+	StudyRef      string
+	DimensionRefs []string
+	SourceRefs    []string
+	Parallelism   int
+	Config        ConfigSummary
+	Command       []string
+	ForceUnlock   bool
+	Continue      bool
+	Reset         bool
+	// Model optionally overrides the runtime model (provider/model) for every
+	// advanced task.
+	Model    string
+	Progress func(RunLoopProgress)
+}
+
+type RunLoopResult struct {
+	Status       RunAllStatus
+	Study        Study
+	Parallelism  int
+	State        RunState
+	StatePath    string
+	LockPath     string
+	Counts       RunAllCounts
+	ScopeCounts  RunAllCounts
+	Warnings     []RunAllWarning
+	Publications []gitpublish.Result
+}
+
+type RunLoopProgress struct {
+	Event                RunLoopProgressEvent
+	Task                 TaskState
+	Counts               StatusSummary
+	ScopeCounts          StatusSummary
+	RuntimeEvent         *runtimepkg.Event
+	RequestedParallelism int
+	EffectiveParallelism int
+	MemoryAvailableBytes uint64
+	Message              string
+}
+
+type RunLoopProgressEvent string
+
+const (
+	RunLoopProgressStarted   RunLoopProgressEvent = "started"
+	RunLoopProgressCompleted RunLoopProgressEvent = "completed"
+	RunLoopProgressFailed    RunLoopProgressEvent = "failed"
+	RunLoopProgressWaiting   RunLoopProgressEvent = "waiting"
+	RunLoopProgressCancelled RunLoopProgressEvent = "cancelled"
+	RunLoopProgressRuntime   RunLoopProgressEvent = "runtime"
+	RunLoopProgressThrottled RunLoopProgressEvent = "throttled"
+	RunLoopProgressRestored  RunLoopProgressEvent = "restored"
+)

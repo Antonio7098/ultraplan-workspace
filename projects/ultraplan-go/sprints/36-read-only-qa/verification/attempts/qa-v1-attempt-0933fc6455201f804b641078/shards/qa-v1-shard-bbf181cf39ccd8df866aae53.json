@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-bbf181cf39ccd8df866aae53",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-bbf181cf39ccd8df866aae53",
+    "summary": "investigator output retry limit exhausted after 2 attempts",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-bbf181cf39ccd8df866aae53/1",
+      "number": 1,
+      "started_at": "2026-08-26T08:00:26.806887894Z",
+      "completed_at": "2026-08-26T08:01:28.478247951Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "failure_kind": "invalid_output",
+      "retryable": true,
+      "stop_reason": "investigator output rejected"
+    },
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-bbf181cf39ccd8df866aae53/2",
+      "number": 2,
+      "started_at": "2026-08-26T08:01:28.954428761Z",
+      "completed_at": "2026-08-26T08:01:55.995554672Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "failure_kind": "invalid_output",
+      "retryable": true,
+      "stop_reason": "investigator output rejected"
+    }
+  ]
+}

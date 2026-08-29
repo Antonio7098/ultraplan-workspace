@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-791326dd5c31c32dbfc5d0f1",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-0a6132fc5a95ac3c05c8eb1a",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: DurableOperationManager.AcceptOperation correctly deduplicates on confirmation digest and fails closed when repository is closed"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-persistence-and-migrations",
+    "contract-testing"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-0a6132fc5a95ac3c05c8eb1a"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-791326dd5c31c32dbfc5d0f1/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:24:20.819826939Z",
+      "completed_at": "2026-08-26T11:25:07.643833869Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "AcceptOperation deduplicates on digest: Accept with OperationAlias=digest, on ErrConflict \u0026\u0026 digest!=\"\" resolves alias and returns Existing:true",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/runcontrol/sqlite.go",
+            "internal/runcontrol/interfaces.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "AcceptOperation fails closed: non-Conflict errors including closed DB fall through to wrapped 'persist confirmed operation acceptance' error",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/runcontrol/sqlite.go",
+            "internal/runcontrol/errors.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing test proves cross-manager deduplication and closed-repo fail-closed: second Existing true same RunID, closed Accept !ErrConflict",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Closed repository fault coverage shows every mutation returns typed ErrUnavailable/ErrBusy, not stale success or conflict",
+          "paths": [
+            "internal/runcontrol/fault_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-09016f52d1c0ac486993232a",
+      "shard_id": "qa-v1-shard-791326dd5c31c32dbfc5d0f1",
+      "claim": "DurableOperationManager.AcceptOperation correctly deduplicates on confirmation digest via operation-alias conflict resolution",
+      "basis": "AcceptOperation in durable_operations.go:97-112 persists Acceptance with OperationAlias=digest and ConfirmationDigest=digest; on ErrConflict and digest!=\"\" it resolves existing alias via Repository.ResolveOperationAlias and returns Existing=true with original RunID without creating second run or claiming ownership",
+      "verification_surface": "static read of internal/app/durable_operations.go:97-138, internal/runcontrol/sqlite.go:378-484, internal/runcontrol/interfaces.go:49-52, and existing test internal/app/durable_operations_test.go:92-113",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Code shows digest-gated ErrConflict branch that calls ResolveOperationAlias and returns AcceptedOperation{RunID:existing.RunID, Existing:true} and does not attempt Claim/Append/control loop; test TestDurableOperationDeduplicatesAcrossManagersAndFailsClosed demonstrates two managers with same digest get second.Existing==true and same RunID",
+      "refutation_condition": "Code omits digest check, does not handle ErrConflict, resolves on wrong key, or returns new RunID/Existing=false on duplicate digest",
+      "inconclusive_condition": "Cannot determine resolution semantics without executing SQLite alias constraint path or observing concurrent Accept race",
+      "safe_evidence_strategy": "Read-only inspection of AcceptOperation, SQLite Accept alias constraint handling and ResolveOperationAlias, plus test assertions; no execution, no mutation",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-791326dd5c31c32dbfc5d0f1/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:24:20.819826939Z",
+          "completed_at": "2026-08-26T11:25:07.643833869Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "AcceptOperation deduplicates on digest: Accept with OperationAlias=digest, on ErrConflict \u0026\u0026 digest!=\"\" resolves alias and returns Existing:true",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/runcontrol/sqlite.go",
+                "internal/runcontrol/interfaces.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "AcceptOperation fails closed: non-Conflict errors including closed DB fall through to wrapped 'persist confirmed operation acceptance' error",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/runcontrol/sqlite.go",
+                "internal/runcontrol/errors.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Existing test proves cross-manager deduplication and closed-repo fail-closed: second Existing true same RunID, closed Accept !ErrConflict",
+              "paths": [
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Closed repository fault coverage shows every mutation returns typed ErrUnavailable/ErrBusy, not stale success or conflict",
+              "paths": [
+                "internal/runcontrol/fault_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "AcceptOperation deduplicates on digest: Accept with OperationAlias=digest, on ErrConflict \u0026\u0026 digest!=\"\" resolves alias and returns Existing:true",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/runcontrol/sqlite.go",
+            "internal/runcontrol/interfaces.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "AcceptOperation fails closed: non-Conflict errors including closed DB fall through to wrapped 'persist confirmed operation acceptance' error",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/runcontrol/sqlite.go",
+            "internal/runcontrol/errors.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing test proves cross-manager deduplication and closed-repo fail-closed: second Existing true same RunID, closed Accept !ErrConflict",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Closed repository fault coverage shows every mutation returns typed ErrUnavailable/ErrBusy, not stale success or conflict",
+          "paths": [
+            "internal/runcontrol/fault_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Implementation matches contract: digest-gated errors.Is(ErrConflict) path, errors.Join on Resolve failure, wrapped persist error otherwise; sqlite.go:445-451 enforces bounded alias insert with ErrConflict on constraint, ResolveOperationAlias:472 validates alias and snapshots run; test at 104-112 proves cross-manager idempotence"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-4aa5e5a29e09dc7c1977d34f",
+      "shard_id": "qa-v1-shard-791326dd5c31c32dbfc5d0f1",
+      "claim": "DurableOperationManager.AcceptOperation fails closed when repository is closed (does not return success or masquerade as ErrConflict)",
+      "basis": "When SQLiteRepository is closed, any Accept attempt hits sql.DB closed path classified as ErrUnavailable/ErrBusy via classifyStoreError, not ErrConflict; AcceptOperation's dedup branch is gated on errors.Is(err,ErrConflict), so closed error falls through to fmt.Errorf(\"persist confirmed operation acceptance: %w\", err) preserving underlying CodeUnavailable for caller to distinguish from idempotence",
+      "verification_surface": "static read of internal/app/durable_operations.go:106-115, internal/runcontrol/sqlite.go:368-376 Close, 378-452 Accept + classifyStoreError:1088-1111, internal/runcontrol/errors.go:14-39, internal/runcontrol/fault_test.go:52-85, internal/app/durable_operations_test.go:116-123",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "On closed repository, Accept returns non-nil error, errors.Is(err,ErrConflict)==false, wrapped with persist prefix, no Existing=true or fake Snapshot; fault test proves closed repo mutations return ErrUnavailable/ErrBusy",
+      "refutation_condition": "Closed Accept returns nil, returns ErrConflict, or returns Existing=true from stale alias resolution",
+      "inconclusive_condition": "Without runtime execution cannot observe exact sqlite driver error code after Close on this platform, but static classification covers busy/unavailable",
+      "safe_evidence_strategy": "Read-only inspection of Close, classifyStoreError constraint mapping, Accept error wrapping, and closed-repo test assertions at durable_operations_test.go:121-123; no execution",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-791326dd5c31c32dbfc5d0f1/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:24:20.819826939Z",
+          "completed_at": "2026-08-26T11:25:07.643833869Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "AcceptOperation deduplicates on digest: Accept with OperationAlias=digest, on ErrConflict \u0026\u0026 digest!=\"\" resolves alias and returns Existing:true",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/runcontrol/sqlite.go",
+                "internal/runcontrol/interfaces.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "AcceptOperation fails closed: non-Conflict errors including closed DB fall through to wrapped 'persist confirmed operation acceptance' error",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/runcontrol/sqlite.go",
+                "internal/runcontrol/errors.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Existing test proves cross-manager deduplication and closed-repo fail-closed: second Existing true same RunID, closed Accept !ErrConflict",
+              "paths": [
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Closed repository fault coverage shows every mutation returns typed ErrUnavailable/ErrBusy, not stale success or conflict",
+              "paths": [
+                "internal/runcontrol/fault_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "AcceptOperation deduplicates on digest: Accept with OperationAlias=digest, on ErrConflict \u0026\u0026 digest!=\"\" resolves alias and returns Existing:true",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/runcontrol/sqlite.go",
+            "internal/runcontrol/interfaces.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "AcceptOperation fails closed: non-Conflict errors including closed DB fall through to wrapped 'persist confirmed operation acceptance' error",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/runcontrol/sqlite.go",
+            "internal/runcontrol/errors.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing test proves cross-manager deduplication and closed-repo fail-closed: second Existing true same RunID, closed Accept !ErrConflict",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Closed repository fault coverage shows every mutation returns typed ErrUnavailable/ErrBusy, not stale success or conflict",
+          "paths": [
+            "internal/runcontrol/fault_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code fails closed as required: closed error not conflated with conflict, alias resolution not attempted, error wrapped for classification; test at 121 asserts err!=nil \u0026\u0026 !errors.Is(err,ErrConflict) after repository.Close()"
+    }
+  ]
+}

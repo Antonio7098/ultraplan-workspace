@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-a6ab23301a733ec0fd5273ec",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-3c0e6ff46a7cf4a536a21159",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: ApprovedQAChecks argument validation allows non-flag arguments that contain no shell metachars but are still outside budgets or escape via cleaned relative paths; attacker-controlled changed-path set could influence descriptor args via goPaths concatenation without per-path normalization check for absolute or .. after FromSlash clean."
+  ],
+  "expectation_refs": [
+    "contract-llm-runtime",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-3c0e6ff46a7cf4a536a21159"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-a6ab23301a733ec0fd5273ec/1",
+      "number": 1,
+      "started_at": "2026-08-26T08:08:01.592365552Z",
+      "completed_at": "2026-08-26T08:09:54.336077378Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+          "paths": [
+            "internal/sprint/qa_map.go",
+            "internal/sprint/artifacts.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7d5041a7984bb2f2fe003244",
+      "shard_id": "qa-v1-shard-a6ab23301a733ec0fd5273ec",
+      "claim": "ApprovedQAChecks descriptor validation allows non-flag arguments that bypass budget containment while attacker-controlled goPaths are concatenated into gofmt argv",
+      "basis": "ApprovedQAChecks at internal/sprint/qa_prompt.go:59-87 builds goPaths from normalizeQAStrings(changedPaths) after validateQAPath and appends all .go paths to descriptor Args -d without per-path budget check; validateQACheckDescriptor at 89-125 for non-flag args only checks ContainsAny \"\\x00\\r\\n|;\u0026\u003e\u003c`$()\" , -w/--write, and inside(target, Join(target,FromSlash(arg))) + IsAbs, but never checks QABudgets.ChangedPaths/ChangedPathsPerShard/PromptBytes/CommandOutputBytes or arg count/length; exploited changed-path set directly controls number and content of gofmt positional arguments",
+      "verification_surface": "internal/sprint/qa_prompt.go:59-87 ApprovedQAChecks goPaths concatenation; internal/sprint/qa_prompt.go:89-125 validateQACheckDescriptor non-flag branch; internal/sprint/qa_map.go:287-292 validateQAPath; internal/sprint/qa_types.go:85-112 QABudgets limits; internal/sprint/artifacts.go:77-83 inside",
+      "expectation_refs": [
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "statically observable that a .go path passes validateQAPath and ContainsAny check and inside==true yet argument list length or total bytes exceeds MaximumQABudgets or map budgets and would still be accepted by validateQACheckDescriptor and executed as gofmt -d positional arg",
+      "refutation_condition": "every non-flag arg is also bounded by an explicit check against QABudgets.ChangedPaths/ChangedPathsPerShard and total arg bytes/prompt bytes before descriptor is accepted, or ApprovedQAChecks truncates goPaths to budget before concatenation",
+      "inconclusive_condition": "static reading shows gap but no runtime RunApprovedQACheck execution observed to prove attacker-supplied path outside budget is actually executed",
+      "safe_evidence_strategy": "read-only grep and read of qa_prompt.go, qa_map.go, qa_types.go, artifacts.go; compare validateQAPath and inside logic to budget enforcement in ValidateQAMap/BuildQAMap without invoking shell, writing files, or running process",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-a6ab23301a733ec0fd5273ec/1",
+          "number": 1,
+          "started_at": "2026-08-26T08:08:01.592365552Z",
+          "completed_at": "2026-08-26T08:09:54.336077378Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+              "paths": [
+                "internal/sprint/qa_map.go",
+                "internal/sprint/artifacts.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+          "paths": [
+            "internal/sprint/qa_map.go",
+            "internal/sprint/artifacts.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code inspection confirms validateQACheckDescriptor has no budget check for non-flag positional args; ApprovedQAChecks concatenates all goPaths (up to budgets.ChangedPaths=512) into Args and fingerprint without length/budget guard, only Timeout/OutputLimit are checked at 101. Static gap is deterministically present."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-cd244dfc2da2a72ce0408c3e",
+      "shard_id": "qa-v1-shard-a6ab23301a733ec0fd5273ec",
+      "claim": "Attacker-controlled changed-path set can escape target via cleaned relative path through FromSlash clean without per-path absolute/.. check after clean in descriptor args",
+      "basis": "Concern alleges goPaths concatenation lacks per-path normalization check for absolute or .. after FromSlash clean, allowing ../-prefixed or absolute path that contains no shell metachars to pass descriptor validation via inside() after Join; must verify whether validateQAPath at qa_map.go:288 using Clean(FromSlash(path)) prefix \"../\" and IsAbs plus validateQACheckDescriptor at qa_prompt.go:114-117 using IsAbs(arg) and !inside(target, Join(target,FromSlash(arg))) together are sufficient",
+      "verification_surface": "internal/sprint/qa_prompt.go:63-71 validateQAPath loop before goPaths append; internal/sprint/qa_prompt.go:113-118 escape check; internal/sprint/qa_map.go:287-292 validateQAPath implementation; internal/sprint/artifacts.go:77-83 inside with Rel Clean",
+      "expectation_refs": [
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "existence of a relative path that passes validateQAPath (prefix ../ false, IsAbs false) yet after Join(target,FromSlash) inside returns true while effective cleaned path references outside target, or an absolute path that bypasses IsAbs due to FromSlash normalization",
+      "refutation_condition": "every absolute path and any path where Clean(FromSlash) has prefix \"../\" is rejected before goPaths append, and every descriptor non-flag arg with IsAbs or !inside is rejected, with no bypass via intermediate \"..\" that normalizes inside target but still escapes",
+      "inconclusive_condition": "read-only inspection shows both checks use Clean/Rel, but corner cases such as Windows volume, double-slash, or symlink-contained paths require runtime inside() evaluation to confirm no bypass",
+      "safe_evidence_strategy": "read-only read of validateQAPath, inside, and descriptor loop; manual trace of candidate paths like \"a/../../b.go\", \"../a.go\", \"/etc/passwd\", \"a//..//b.go\" through Clean-\u003eprefix and Join-\u003einside without executing or creating symlinks",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-a6ab23301a733ec0fd5273ec/1",
+          "number": 1,
+          "started_at": "2026-08-26T08:08:01.592365552Z",
+          "completed_at": "2026-08-26T08:09:54.336077378Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+              "paths": [
+                "internal/sprint/qa_map.go",
+                "internal/sprint/artifacts.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+          "paths": [
+            "internal/sprint/qa_map.go",
+            "internal/sprint/artifacts.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Static inspection refutes clean-path escape: validateQAPath at qa_map.go:288 explicitly checks IsAbs and strings.HasPrefix(ToSlash(Clean(FromSlash(path))),\"../\") and rejects; ApprovedQAChecks applies this before any goPaths append at 65-66; descriptor validation at 114-117 additionally rejects IsAbs(arg) and !inside(target, Join(target,FromSlash(arg))) where inside at artifacts.go:77 uses Rel(Clean(root),Clean(candidate)). Combined checks deterministically reject absolute and escaping cleaned relative paths. Budget gap remains but path-escape via cleaned relative is blocked in current code."
+    }
+  ]
+}

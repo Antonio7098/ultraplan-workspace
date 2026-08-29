@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ee902b08082627dcd691a805",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-4d4155a911aa169be0be4ac1",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: ApprovedQAChecks fingerprint includes WorkingDirectory (absolute target), causing CheckCatalogFingerprint to be target-path dependent and destabilizing QAMap semantic identity"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-persistence-and-migrations"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-4d4155a911aa169be0be4ac1"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-ee902b08082627dcd691a805/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:44:44.000511951Z",
+      "completed_at": "2026-08-26T09:45:30.981289669Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "code-inspection",
+          "summary": "ApprovedQAChecks sets WorkingDirectory to absolute target and hashes it via fingerprintQAValue",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code-inspection",
+          "summary": "QAMap builds CheckCatalogFingerprint as fingerprintQAValue(checks) where checks contain absolute WorkingDirectory descriptors",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code-inspection",
+          "summary": "QATargetIdentity and QAApprovedCheckRef definitions show CheckCatalogFingerprint is persisted and validated but excluded from QASemanticIdentity",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "code-inspection",
+          "summary": "Existing test verifies determinism only within same target (README.md vs internal/a.go ordering) not across different absolute targets",
+          "paths": [
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0a5ea8416556112668f66702",
+      "shard_id": "qa-v1-shard-ee902b08082627dcd691a805",
+      "claim": "ApprovedQAChecks fingerprint includes absolute WorkingDirectory, making CheckCatalogFingerprint target-path dependent and destabilizing QAMap content identity",
+      "basis": "internal/sprint/qa_prompt.go:75 constructs QACheckDescriptor with WorkingDirectory=filepath.Clean(target) (absolute manifest.Target); 79-86 copies descriptor with Fingerprint=\"\" and hashes via fingerprintQAValue which serializes all remaining fields including WorkingDirectory. internal/sprint/qa_map.go:106 calls ApprovedQAChecks(manifest.Target, ...) and 114-115 does CheckCatalogFingerprint=fingerprintQAValue(checks) over slice containing those descriptors, therefore catalog hash embeds absolute path. QAMap stores it at internal/sprint/qa_types.go:328 and validates at 682 but QASemanticIdentity at 478-484 deliberately excludes CheckCatalogFingerprint from attempt/map ID, so map ID stable but serialized QAMap bytes/artifact digests diverge per checkout path, violating reproducible/portable fingerprint expectations.",
+      "verification_surface": "Static read-only inspection of ApprovedQAChecks -\u003e fingerprintQAValue -\u003e QAMap.CheckCatalogFingerprint propagation; compare descriptor JSON hashed for two different absolute targets with same logical goPaths/budgets",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Fingerprint of descriptor for same args/budgets differs when computed with target=/tmp/a vs /tmp/b, or CheckCatalogFingerprint varies solely by absolute target path",
+      "refutation_condition": "Fingerprint computation normalizes or excludes WorkingDirectory (e.g., strips/redacts WorkingDirectory before canonicalQAJSON) so same logical check yields identical digest across absolute targets",
+      "inconclusive_condition": "Fingerprint path inclusion cannot be determined from assigned context paths without additional code outside shard",
+      "safe_evidence_strategy": "Read-only file search for ApprovedQAChecks, WorkingDirectory, fingerprintQAValue, CheckCatalogFingerprint; no writes, process execution, or filesystem mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-ee902b08082627dcd691a805/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:44:44.000511951Z",
+          "completed_at": "2026-08-26T09:45:30.981289669Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "code-inspection",
+              "summary": "ApprovedQAChecks sets WorkingDirectory to absolute target and hashes it via fingerprintQAValue",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code-inspection",
+              "summary": "QAMap builds CheckCatalogFingerprint as fingerprintQAValue(checks) where checks contain absolute WorkingDirectory descriptors",
+              "paths": [
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "code-inspection",
+              "summary": "QATargetIdentity and QAApprovedCheckRef definitions show CheckCatalogFingerprint is persisted and validated but excluded from QASemanticIdentity",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "code-inspection",
+              "summary": "Existing test verifies determinism only within same target (README.md vs internal/a.go ordering) not across different absolute targets",
+              "paths": [
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code-inspection",
+          "summary": "ApprovedQAChecks sets WorkingDirectory to absolute target and hashes it via fingerprintQAValue",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code-inspection",
+          "summary": "QAMap builds CheckCatalogFingerprint as fingerprintQAValue(checks) where checks contain absolute WorkingDirectory descriptors",
+          "paths": [
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "code-inspection",
+          "summary": "QATargetIdentity and QAApprovedCheckRef definitions show CheckCatalogFingerprint is persisted and validated but excluded from QASemanticIdentity",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "code-inspection",
+          "summary": "Existing test verifies determinism only within same target (README.md vs internal/a.go ordering) not across different absolute targets",
+          "paths": [
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code inspection confirms WorkingDirectory (absolute target) is retained in the value passed to fingerprintQAValue and thus incorporated into QACheckDescriptor.Fingerprint and downstream QAMap.CheckCatalogFingerprint. No redaction or relative-path normalization occurs before hashing, so catalog fingerprint is host absolute-path dependent, causing QAMap normalized bytes and digests to differ per clone location, contrary to contract-configuration persistence expectations for deterministic semantic identity."
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-8e0c7b00b1beea6a173e9b70",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-088c9d2828af992aebbd07a8",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: qa_errors.go mapQAUseCaseError preserves retryable only for QAErrorConflict and QAErrorRuntimeUnavailable, diverging from operations.go failedOperation QA mapping which also marks RuntimeUnavailable/PersistenceFailure as retryable runtime vs validation branching (qa_errors.go:52-53 vs operations.go:801-815)"
+  ],
+  "expectation_refs": [
+    "contract-cli-surface",
+    "contract-errors",
+    "contract-observability"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-088c9d2828af992aebbd07a8"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-8e0c7b00b1beea6a173e9b70/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:43:56.06480185Z",
+      "completed_at": "2026-08-26T09:47:19.107831688Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "static_code",
+          "summary": "qa_errors.go:53 Retryable only for QAErrorConflict and QAErrorRuntimeUnavailable",
+          "paths": [
+            "internal/app/qa_errors.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "qa_errors.go:62-63 qaPublicErrorMessage groups persistence_failure with runtime_unavailable as temporarily unavailable",
+          "paths": [
+            "internal/app/qa_errors.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "operations.go:806-807 maps persistence_failure and runtime_unavailable to category runtime; 814 Retryable only for runtime_unavailable||conflict leaving persistence_failure as non-retryable runtime",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "handlers.go:1063-1065 maps qa.persistence_failure and qa.runtime_unavailable to 503 ServiceUnavailable; 1082-1085 forwards QAUseCaseError.Retryable to error body",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "sprint_commands.go:742 maps both persistence_failure and runtime_unavailable to ExitRuntime but 1565 retryable same as qa_errors excludes persistence_failure",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "qa_types.go:914-917 recovery guidance for persistence_failure and runtime_unavailable both imply restore-then-retry transient",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-57f734ea09fa2e0533aebfbd",
+      "shard_id": "qa-v1-shard-8e0c7b00b1beea6a173e9b70",
+      "claim": "mapQAUseCaseError excludes QAErrorPersistenceFailure from Retryable while grouping it with QAErrorRuntimeUnavailable as temporarily unavailable and HTTP 503 / runtime category, producing inconsistent retryable signal across QA adapter layers",
+      "basis": "qa_errors.go:53 Retryable == Conflict || RuntimeUnavailable; qaPublicErrorMessage:62-63 persistence_failure and runtime_unavailable share 'temporarily unavailable' message; operations.go:806-807 persistence_failure =\u003e category runtime but 814 Retryable == RuntimeUnavailable || Conflict (non-retryable runtime); handlers.go:1063-1065 both map to 503 ServiceUnavailable and writeQAError:1085 forwards Retryable from QAUseCaseError; sprint_commands.go:742 both map to ExitRuntime while 1565 mirrors qa_errors retryable exclusion; qa_types.go:914-917 both recoveries imply restore-then-retry",
+      "verification_surface": "read-only static inspection of internal/app/qa_errors.go, internal/app/operations.go, internal/app/sprint_commands.go, internal/web/handlers.go, internal/sprint/qa_types.go without execution",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-errors",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "PersistenceFailure is categorized/message/statused as transient runtime (runtime category, temporarily unavailable message, 503, ExitRuntime) but Retryable is false in QAUseCaseError and/or OperationError",
+      "refutation_condition": "product-intended persistence_failure is non-retryable and 503 with retryable false plus runtime category with retryable false is documented as correct",
+      "inconclusive_condition": "intended retryable semantics for persistence vs runtime unavailable cannot be inferred from code alone and requires product decision",
+      "safe_evidence_strategy": "read listed paths, record line numbers for Retryable assignments, category switch, message switch, HTTP status switch, and CLI exit mapping; compare; no shell, no mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-8e0c7b00b1beea6a173e9b70/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:43:56.06480185Z",
+          "completed_at": "2026-08-26T09:47:19.107831688Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "static_code",
+              "summary": "qa_errors.go:53 Retryable only for QAErrorConflict and QAErrorRuntimeUnavailable",
+              "paths": [
+                "internal/app/qa_errors.go"
+              ]
+            },
+            {
+              "kind": "static_code",
+              "summary": "qa_errors.go:62-63 qaPublicErrorMessage groups persistence_failure with runtime_unavailable as temporarily unavailable",
+              "paths": [
+                "internal/app/qa_errors.go"
+              ]
+            },
+            {
+              "kind": "static_code",
+              "summary": "operations.go:806-807 maps persistence_failure and runtime_unavailable to category runtime; 814 Retryable only for runtime_unavailable||conflict leaving persistence_failure as non-retryable runtime",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "static_code",
+              "summary": "handlers.go:1063-1065 maps qa.persistence_failure and qa.runtime_unavailable to 503 ServiceUnavailable; 1082-1085 forwards QAUseCaseError.Retryable to error body",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "static_code",
+              "summary": "sprint_commands.go:742 maps both persistence_failure and runtime_unavailable to ExitRuntime but 1565 retryable same as qa_errors excludes persistence_failure",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "static_code",
+              "summary": "qa_types.go:914-917 recovery guidance for persistence_failure and runtime_unavailable both imply restore-then-retry transient",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_code",
+          "summary": "qa_errors.go:53 Retryable only for QAErrorConflict and QAErrorRuntimeUnavailable",
+          "paths": [
+            "internal/app/qa_errors.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "qa_errors.go:62-63 qaPublicErrorMessage groups persistence_failure with runtime_unavailable as temporarily unavailable",
+          "paths": [
+            "internal/app/qa_errors.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "operations.go:806-807 maps persistence_failure and runtime_unavailable to category runtime; 814 Retryable only for runtime_unavailable||conflict leaving persistence_failure as non-retryable runtime",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "handlers.go:1063-1065 maps qa.persistence_failure and qa.runtime_unavailable to 503 ServiceUnavailable; 1082-1085 forwards QAUseCaseError.Retryable to error body",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "sprint_commands.go:742 maps both persistence_failure and runtime_unavailable to ExitRuntime but 1565 retryable same as qa_errors excludes persistence_failure",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "static_code",
+          "summary": "qa_types.go:914-917 recovery guidance for persistence_failure and runtime_unavailable both imply restore-then-retry transient",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "inspection at qa_errors.go:53 and operations.go:814 confirms exclusion of persistence_failure from Retryable while message equivalence (62-63), category runtime (806), 503 mapping (handlers.go:1063), and ExitRuntime mapping (sprint_commands.go:742) all imply transient retryable runtime. Divergence matches behavioral concern: runtime vs validation branching is inconsistent with retryable flag, violating contract-errors/observability retryable guidance."
+    }
+  ]
+}

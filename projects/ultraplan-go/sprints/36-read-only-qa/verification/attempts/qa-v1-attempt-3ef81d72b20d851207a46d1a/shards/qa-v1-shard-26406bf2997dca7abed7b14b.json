@@ -1,0 +1,333 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-26406bf2997dca7abed7b14b",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-66d1e85d54cd8a44feaaa076",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: PrepareOperation fingerprint includes derived runtime identity and scope but governed inputs omit runtime-bound smoke catalog and harness discovery artifacts"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-persistence-and-migrations",
+    "contract-workflows"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-66d1e85d54cd8a44feaaa076"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-26406bf2997dca7abed7b14b/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:31:15.880462998Z",
+      "completed_at": "2026-08-26T10:34:44.054234032Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-smoke-harness-1",
+          "paths": [
+            "internal/sprint/smoke.go",
+            "internal/sprint/smoke_discovery.go",
+            "internal/sprint/verification.go",
+            "internal/project/catalog.go"
+          ],
+          "reason": "Resolve Smoke Harnesses catalog and protocol-v1 manifest file locations and verify which harness artifacts determine RunSmoke preview Scope vs file-content hashes; needed to confirm whether catalog/manifest content is identity-hashed outside governedOperationInputs",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_slice",
+          "summary": "PrepareOperation builds fingerprintBasis from canonical + runtime + scope and hashes GovernedInputs via fingerprintOperationInputs",
+          "paths": [
+            "internal/app/operations.go:357-373"
+          ]
+        },
+        {
+          "kind": "code_slice",
+          "summary": "governedOperationInputs for project scope returns fixed planning doc set plus ultraplan.yml; smoke/verify kinds have no harness branch, QA kinds only add execute/review/flow-state",
+          "paths": [
+            "internal/app/operations.go:663-697"
+          ]
+        },
+        {
+          "kind": "code_slice",
+          "summary": "smoke preview Scope for smoke/verify operations derived from RunSmoke DryRun (ScopeKind/Scope, rationale, prerequisites, timeout, SafeArgv, EvidenceRoots) – derived runtime-bound discovery that enters fingerprintBasis but not GovernedInputs",
+          "paths": [
+            "internal/app/operations.go:304-319",
+            "internal/app/sprint_commands.go:898-907",
+            "internal/app/operation_runner.go:79-96"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-39d1087ed7b91f8a8b6133a7",
+      "shard_id": "qa-v1-shard-26406bf2997dca7abed7b14b",
+      "claim": "PrepareOperation fingerprint for smoke-bound operations includes derived runtime identity and harness-discovered scope in fingerprintBasis, while governedOperationInputs hashes only generic planning documents and ultraplan.yml, omitting the Smoke Harnesses catalog resolution, manifest, and harness-discovery artifacts that deterministically produce that scope.",
+      "basis": "internal/app/operations.go:357-358 sets c.ModelSource via operationRuntimeIdentity(req, u.stageRuntime); 304-313 builds c.Scope for OperationSmokeDryRun/OperationSmokeStart via u.sprintService().RunSmoke(DryRun:true) returning preview.ScopeKind, preview.Scope, preview.ScopeRationale, Prerequisites, DurationClass/CostClass, EffectiveTimeout/TimeoutSource, SafeArgv, EvidenceRoots; 363-373 builds canonical via canonicalOperationRequest, assigns GovernedInputs via governedOperationInputs(req), then builds fingerprintBasis = canonical + \"\\nruntime=\"+c.ModelSource+\"\\nscope=\"+strings.Join(c.Scope,\"\\x00\") and hashes with fingerprintOperationInputs(u.root,fingerprintBasis,c.GovernedInputs); 663-697 defines governedOperationInputs for req.Project!=\"\" as ultraplan.yml plus projects/\u003cproject\u003e/project-index.md, roadmap.md, docs, sprints/\u003csprint\u003e/{requirements.md,code-context.md,sprint-index.md,technical-handbook.md,reasoning.md,plan.md} and only for QA kinds appends execute.md,.run-state.json,review.md,flow-state.json – no branch for OperationSmokeStart, OperationSmokeDryRun, OperationVerifyStart, OperationVerifyDryRun, OperationFlow to smoke, or OperationQAStart/Resume with Suite=smoke adds harness paths; internal/app/sprint_commands.go:898-907 shows smokeSettings derives DiscoveryTimeout/RunTimeout/CleanupGrace/StdoutLimit from effective config and manifest but never enters GovernedInputs.",
+      "verification_surface": "static read-only trace of PrepareOperation, operationRuntimeIdentity, governedOperationInputs, fingerprintOperationInputs, and smoke-preview scope construction in assigned context paths; no harness execution or workspace mutation",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "static trace shows fingerprintBasis combines derived runtime and harness-discovered Scope while GovernedInputs for smoke/verify smoke-bound kinds lists only the 9 base planning docs plus ultraplan.yml and excludes Smoke Harnesses catalog entry, protocol-v1 manifest, authoring-path content, and discovered evidence-root/safe-argv artifacts that determine that Scope",
+      "refutation_condition": "governedOperationInputs for smoke/verify kinds includes the catalog/manifest/discovery file identities, or fingerprintOperationInputs traces those files in another layer, or catalog changes are proven always reflected in project-index.md hash and all external harness mutations are proven to always change preview.Scope/SafeArgv/EvidenceRoots so scope-string change alone guarantees stale detection",
+      "inconclusive_condition": "harness discovery file locations or manifest resolution cannot be determined from assigned paths, or RunSmoke preview is proven to identity-hash harness content elsewhere outside PrepareOperation, preventing a definitive omission verdict from context_paths alone",
+      "safe_evidence_strategy": "read-only reads of internal/app/operations.go, internal/app/sprint_commands.go, internal/app/sprint_usecases.go, internal/app/usecases.go; grep for PrepareOperation, governedOperationInputs, fingerprintOperationInputs, RunSmoke, smokeSettings, harness; compare static GovernedInputs lists against documented Smoke Harnesses catalog/manifest and discovery fields without invoking harnesses, runtimes, or mutating files",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-26406bf2997dca7abed7b14b/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:31:15.880462998Z",
+          "completed_at": "2026-08-26T10:34:44.054234032Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-smoke-harness-1",
+              "paths": [
+                "internal/sprint/smoke.go",
+                "internal/sprint/smoke_discovery.go",
+                "internal/sprint/verification.go",
+                "internal/project/catalog.go"
+              ],
+              "reason": "Resolve Smoke Harnesses catalog and protocol-v1 manifest file locations and verify which harness artifacts determine RunSmoke preview Scope vs file-content hashes; needed to confirm whether catalog/manifest content is identity-hashed outside governedOperationInputs",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_slice",
+              "summary": "PrepareOperation builds fingerprintBasis from canonical + runtime + scope and hashes GovernedInputs via fingerprintOperationInputs",
+              "paths": [
+                "internal/app/operations.go:357-373"
+              ]
+            },
+            {
+              "kind": "code_slice",
+              "summary": "governedOperationInputs for project scope returns fixed planning doc set plus ultraplan.yml; smoke/verify kinds have no harness branch, QA kinds only add execute/review/flow-state",
+              "paths": [
+                "internal/app/operations.go:663-697"
+              ]
+            },
+            {
+              "kind": "code_slice",
+              "summary": "smoke preview Scope for smoke/verify operations derived from RunSmoke DryRun (ScopeKind/Scope, rationale, prerequisites, timeout, SafeArgv, EvidenceRoots) – derived runtime-bound discovery that enters fingerprintBasis but not GovernedInputs",
+              "paths": [
+                "internal/app/operations.go:304-319",
+                "internal/app/sprint_commands.go:898-907",
+                "internal/app/operation_runner.go:79-96"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_slice",
+          "summary": "PrepareOperation builds fingerprintBasis from canonical + runtime + scope and hashes GovernedInputs via fingerprintOperationInputs",
+          "paths": [
+            "internal/app/operations.go:357-373"
+          ]
+        },
+        {
+          "kind": "code_slice",
+          "summary": "governedOperationInputs for project scope returns fixed planning doc set plus ultraplan.yml; smoke/verify kinds have no harness branch, QA kinds only add execute/review/flow-state",
+          "paths": [
+            "internal/app/operations.go:663-697"
+          ]
+        },
+        {
+          "kind": "code_slice",
+          "summary": "smoke preview Scope for smoke/verify operations derived from RunSmoke DryRun (ScopeKind/Scope, rationale, prerequisites, timeout, SafeArgv, EvidenceRoots) – derived runtime-bound discovery that enters fingerprintBasis but not GovernedInputs",
+          "paths": [
+            "internal/app/operations.go:304-319",
+            "internal/app/sprint_commands.go:898-907",
+            "internal/app/operation_runner.go:79-96"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static inspection of assigned paths confirms the mismatch: fingerprintBasis explicitly incorporates derived runtime (operationRuntimeIdentity) and harness-derived Scope (RunSmoke dry-run preview), but governedOperationInputs for all project-scoped smoke/verify operations hashes only ultraplan.yml and the fixed planning document set, with no inclusion of smoke catalog/manifest or harness discovery artifacts. Catalog edits inside project-index.md would be caught via that file, but external harness manifest and discovered harness state that feeds Scope is only represented by the derived Scope string, not by governed file content hashes."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-556ce475fc08f1b237c7ac59",
+      "shard_id": "qa-v1-shard-26406bf2997dca7abed7b14b",
+      "claim": "Two harness implementations can produce identical derived Scope strings (ScopeKind/Scope, rationale, prerequisites, timeout, safeArgv, evidenceRoots) while differing in harness binary, manifest-declared authoring content, or evidence-root payloads, allowing governed-input fingerprint to remain stable across a material harness change.",
+      "basis": "same fingerprintBasis/scope construction as above; fingerprintOperationInputs at internal/app/operations.go:699-744 hashes only canonical plus listed GovernedInputs file contents (with symlink/dir walk), not external harness roots referenced by preview.EvidenceRoots/ SafeArgv; docs/planning-smoke.md and docs/cli-reference.md describe harness as external cataloged root with protocol-v1 manifest (executable/argv, discovery/run commands, authoring allowlist, evidence roots) whose content changes may not alter the preview summary fields that enter Scope",
+      "verification_surface": "static inspection of fingerprintOperationInputs hashing and preview-to-Scope mapping plus documentation of external harness location; requires harness implementation files to prove collision feasibility",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "demonstrate a harness mutation (manifest executable, authoring-path script, evidence-root layout) that leaves RunSmoke dry-run preview Scope fields unchanged yet changes executed behavior, and show governedOperationInputs still excludes that file so Prepare→Run stale check would not fire",
+      "refutation_condition": "every harness mutation that affects execution is proven to change at least one of the Scope components that enter fingerprintBasis (ScopeKind/Scope, ScopeRationale, SafeArgv, EvidenceRoots, prerequisites, timeout) or is proven covered by a separate versioned harness identity check outside PrepareOperation",
+      "inconclusive_condition": "external harness file locations and the exact RunSmoke dry-run identity extraction are outside assigned context_paths, so collision feasibility cannot be proven or refuted without inspecting internal/sprint smoke implementation and project harness catalog parsing",
+      "safe_evidence_strategy": "read-only expansion of internal/sprint smoke implementation, project smoke catalog parsing, and manifest protocol-v1 handling to enumerate which harness files contribute to Scope vs file hashes; no harness execution, no workspace mutation",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-26406bf2997dca7abed7b14b/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:31:15.880462998Z",
+          "completed_at": "2026-08-26T10:34:44.054234032Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-smoke-harness-1",
+              "paths": [
+                "internal/sprint/smoke.go",
+                "internal/sprint/smoke_discovery.go",
+                "internal/sprint/verification.go",
+                "internal/project/catalog.go"
+              ],
+              "reason": "Resolve Smoke Harnesses catalog and protocol-v1 manifest file locations and verify which harness artifacts determine RunSmoke preview Scope vs file-content hashes; needed to confirm whether catalog/manifest content is identity-hashed outside governedOperationInputs",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_slice",
+              "summary": "PrepareOperation builds fingerprintBasis from canonical + runtime + scope and hashes GovernedInputs via fingerprintOperationInputs",
+              "paths": [
+                "internal/app/operations.go:357-373"
+              ]
+            },
+            {
+              "kind": "code_slice",
+              "summary": "governedOperationInputs for project scope returns fixed planning doc set plus ultraplan.yml; smoke/verify kinds have no harness branch, QA kinds only add execute/review/flow-state",
+              "paths": [
+                "internal/app/operations.go:663-697"
+              ]
+            },
+            {
+              "kind": "code_slice",
+              "summary": "smoke preview Scope for smoke/verify operations derived from RunSmoke DryRun (ScopeKind/Scope, rationale, prerequisites, timeout, SafeArgv, EvidenceRoots) – derived runtime-bound discovery that enters fingerprintBasis but not GovernedInputs",
+              "paths": [
+                "internal/app/operations.go:304-319",
+                "internal/app/sprint_commands.go:898-907",
+                "internal/app/operation_runner.go:79-96"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_slice",
+          "summary": "PrepareOperation builds fingerprintBasis from canonical + runtime + scope and hashes GovernedInputs via fingerprintOperationInputs",
+          "paths": [
+            "internal/app/operations.go:357-373"
+          ]
+        },
+        {
+          "kind": "code_slice",
+          "summary": "governedOperationInputs for project scope returns fixed planning doc set plus ultraplan.yml; smoke/verify kinds have no harness branch, QA kinds only add execute/review/flow-state",
+          "paths": [
+            "internal/app/operations.go:663-697"
+          ]
+        },
+        {
+          "kind": "code_slice",
+          "summary": "smoke preview Scope for smoke/verify operations derived from RunSmoke DryRun (ScopeKind/Scope, rationale, prerequisites, timeout, SafeArgv, EvidenceRoots) – derived runtime-bound discovery that enters fingerprintBasis but not GovernedInputs",
+          "paths": [
+            "internal/app/operations.go:304-319",
+            "internal/app/sprint_commands.go:898-907",
+            "internal/app/operation_runner.go:79-96"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Assigned context_paths establish the omission and the derived-Scope-only coverage, but they do not expose the full harness discovery implementation or manifest file layout needed to prove or disprove that a material harness change can preserve Scope. Determination requires expansion beyond internal/app reads."
+    }
+  ]
+}

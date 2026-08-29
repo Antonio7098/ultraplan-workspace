@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "primary",
+  "title": "internal/platform",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/qa.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "context_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/platform"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:21:31.768441435Z",
+      "completed_at": "2026-08-26T11:22:27.071830999Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "context_requests": [
+        {
+          "id": "ctx-001",
+          "paths": [
+            "internal/platform/config/README.md",
+            "docs/configuration.md",
+            "handbook/*"
+          ],
+          "reason": "Need product policy for Planning variant sensitivity and workspace config missing-file contract to confirm whether incomplete redaction and strict Load are regressions or intentional",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 66017155,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "observation",
+          "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-346d1857c7a375b37d846c46",
+      "shard_id": "qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8",
+      "claim": "Redact() leaves several Planning variant fields and Agentwrap.ExtraArgs unredacted, allowing secret-bearing values to leak in observability exports",
+      "basis": "Planning struct at internal/platform/config/config.go:42-62 defines 18 model/variant fields; redactPlanning at internal/platform/config/redaction.go:54-70 redacts only 12 of them, omitting RequirementsVariant, SprintIndexVariant, TechnicalHandbookVariant, AreaReasoningVariant, ReasoningVariant, PlanVariant. Agentwrap struct at internal/platform/config/config.go:85-96 includes ExtraArgs []string and Env []string; redactAgentwrap at internal/platform/config/redaction.go:72-78 redacts only Executable and Env, not ExtraArgs which Sensitive() at redaction.go:28-41 explicitly flags for markers like \"--key\", \"api-key\", \"secret\", \"sk-\". Test coverage at internal/platform/config/config_test.go:79-100 only asserts Models.Default, Agentwrap.Env, and CodeContextModel.",
+      "verification_surface": "read-only source comparison between struct definitions and redaction projection; no execution required",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Redacted projection retains raw value where Sensitive(key,value)==true for any omitted variant or ExtraArgs element",
+      "refutation_condition": "Show omitted fields are never user-supplied, never contain credential markers by product contract, or are sanitized by another layer before export",
+      "inconclusive_condition": "Unable to determine product policy for variant field sensitivity without documentation of allowed variant values",
+      "safe_evidence_strategy": "Read-only inspection: list Planning fields vs redactPlanning assignments; list Agentwrap fields vs redactAgentwrap assignments; run go vet/static grep for RedactValue coverage without executing config load",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:21:31.768441435Z",
+          "completed_at": "2026-08-26T11:22:27.071830999Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/platform/config/README.md",
+                "docs/configuration.md",
+                "handbook/*"
+              ],
+              "reason": "Need product policy for Planning variant sensitivity and workspace config missing-file contract to confirm whether incomplete redaction and strict Load are regressions or intentional",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 66017155,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "observation",
+              "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "observation",
+          "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code inspection confirms 6 Planning variant fields and Agentwrap.ExtraArgs have no RedactValue call; contrast with fully-covered siblings and Sensitive markers indicates incomplete coverage. Existing test does not exercise these paths."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-685ed330b21780b6370ecc3d",
+      "shard_id": "qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8",
+      "claim": "Custom YAML-like parser in loadFile can silently misinterpret or drop scalar fields around list boundaries due to leadingWhitespace/section heuristic",
+      "basis": "loadFile at internal/platform/config/config.go:203-264 implements manual scanning: section headers detected via strings.HasSuffix(line,\":\") \u0026\u0026 !strings.HasPrefix(line,\"-\"); list field handling at 213-220 uses leadingWhitespace(raw)\u003e0 \u0026\u0026 section!=\"\" to clear lists, and list items only accepted when strings.HasPrefix(line,\"- \") after TrimSpace. Scalar dispatch at 246-263 uses strings.SplitN(line,\":\",2) without handling indented colons inside quoted values. No test covers reordering of list then scalar fields except TestLoadAgentwrapListThenScalarFields at config_test.go:102-133 which succeeds for the specific order required_health -\u003e sandbox -\u003e permission_default but does not cover smoke.environment interleaving or qa integer fields co-located with lists.",
+      "verification_surface": "read-only parser logic review",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-configuration",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Demonstrate a valid ultraplan.yml ordering where a documented scalar field after a list is ignored, mis-assigned, or causes \"unknown config field\" error per parser rules",
+      "refutation_condition": "Show parser covers all documented YAML forms via exhaustive tests or that workspace config is generated only by code, not hand-edited",
+      "inconclusive_condition": "Cannot execute loadFile with synthetic files in this read-only shard to observe parsing outcome",
+      "safe_evidence_strategy": "Read-only line-by-line audit of scanner loop, whitespace logic, and listField state transitions; search for additional parser tests and handbook YAML examples",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:21:31.768441435Z",
+          "completed_at": "2026-08-26T11:22:27.071830999Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/platform/config/README.md",
+                "docs/configuration.md",
+                "handbook/*"
+              ],
+              "reason": "Need product policy for Planning variant sensitivity and workspace config missing-file contract to confirm whether incomplete redaction and strict Load are regressions or intentional",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 66017155,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "observation",
+              "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "observation",
+          "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Heuristic is fragile by inspection and test coverage is narrow, but without execution or expanded context (example configs, prior parser) the practical impact remains unproven within read-only constraints."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8800957e66cd9d35d8c99acb",
+      "shard_id": "qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8",
+      "claim": "Load returns error when WorkspaceRoot is set but ultraplan.yml is absent, breaking default-only startup",
+      "basis": "Load at internal/platform/config/config.go:159-162 calls loadFile(filepath.Join(WorkspaceRoot,\"ultraplan.yml\"),\u0026e) and returns error unconditionally. loadFile at internal/platform/config/config.go:197-200 does os.Open and returns fmt.Errorf(\"read workspace config: %w\",err) on any error including os.IsNotExist, with no existence check. No fallback to Defaults(). An empty TempDir without file is not tested; all tests write a file first.",
+      "verification_surface": "read-only control-flow inspection of Load and loadFile",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Calling Load with WorkspaceRoot pointing to directory without ultraplan.yml yields error containing \"read workspace config\" instead of Effective{Config:Defaults()}",
+      "refutation_condition": "Show caller contract requires ultraplan.yml to exist whenever WorkspaceRoot != \"\" or show prior implementation also failed on missing file (no regression)",
+      "inconclusive_condition": "Cannot confirm historical expected behavior without diff or product spec for missing-file tolerance within this shard",
+      "safe_evidence_strategy": "Read-only inspection of Load/loadFile error path; bounded context request for prior version of config.go or product spec on workspace config optionality (no shell execution)",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-ba1f2e5c9d32f0643d4a3ed8/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:21:31.768441435Z",
+          "completed_at": "2026-08-26T11:22:27.071830999Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/platform/config/README.md",
+                "docs/configuration.md",
+                "handbook/*"
+              ],
+              "reason": "Need product policy for Planning variant sensitivity and workspace config missing-file contract to confirm whether incomplete redaction and strict Load are regressions or intentional",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 66017155,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "observation",
+              "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+              "paths": [
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            },
+            {
+              "kind": "observation",
+              "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "observation",
+          "summary": "redactPlanning omits 6 Planning variant fields that exist in Config.Planning struct",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "redactAgentwrap does not redact ExtraArgs despite Sensitive detecting --key/api-key markers",
+          "paths": [
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Load-\u003eloadFile returns error on os.Open failure with no IsNotExist bypass",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "TestRedactSensitiveValues only checks Models.Default, Agentwrap.Env, CodeContextModel and dash-form api-key, not omitted variants/ExtraArgs",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        },
+        {
+          "kind": "observation",
+          "summary": "Manual YAML scanner uses leadingWhitespace and listField state; scalar splitting via SplitN(\":\",2) after TrimSpace",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Missing-file error path is present in current code; whether this is a behavioral change vs. intentional strictness cannot be decided from assigned paths alone without historical diff or contract doc."
+    }
+  ]
+}

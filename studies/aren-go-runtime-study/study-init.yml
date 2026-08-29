@@ -1,0 +1,397 @@
+name: aren-go-runtime-study
+description: "Evidence study of elite Go repositories for Aren's roadmap, ordered from the Phase 1 lifecycle contract through providers, tools, bounded agents, persistence, hosting, workflows, and later execution seams."
+repos:
+  count: 9
+  items:
+    - name: conc
+      url: "https://github.com/sourcegraph/conc"
+      description: "Compact structured-concurrency library whose small surface makes goroutine ownership, cancellation, panic propagation, bounded pools, and composition easy to inspect in full."
+      applicable_dimensions:
+        - "01.01"
+        - "01.02"
+        - "01.03"
+        - "01.11"
+    - name: crush
+      url: "https://github.com/charmbracelet/crush"
+      description: "Production Go coding agent with provider adapters, streaming sessions, tool permissions, MCP and LSP integration, context management, and SQLite-backed session state."
+      applicable_dimensions:
+        - "01.01"
+        - "01.04"
+        - "01.05"
+        - "01.06"
+        - "01.08"
+    - name: docker-agent
+      url: "https://github.com/docker/docker-agent"
+      description: "Go agent builder and runtime from Docker with multiple providers, MCP and built-in tools, sandboxing, permissions, structured output, multi-agent composition, and server sessions."
+      applicable_dimensions:
+        - "01.02"
+        - "01.04"
+        - "01.05"
+        - "01.06"
+        - "01.07"
+        - "01.08"
+        - "01.11"
+    - name: ollama
+      url: "https://github.com/ollama/ollama"
+      description: "Widely deployed Go model server with live response streaming, request cancellation, model scheduling, bounded loading, resource accounting, and a long-lived local API."
+      applicable_dimensions:
+        - "01.02"
+        - "01.04"
+        - "01.09"
+        - "01.12"
+        - "01.13"
+    - name: runc
+      url: "https://github.com/opencontainers/runc"
+      description: "Reference OCI runtime implementation in Go, selected for process lifecycle, signal forwarding, namespace and cgroup containment, descendant cleanup, and executor boundaries."
+      applicable_dimensions:
+        - "01.02"
+        - "01.03"
+        - "01.07"
+        - "01.15"
+    - name: nats-server
+      url: "https://github.com/nats-io/nats-server"
+      description: "Mature Go server selected for ordered event delivery, slow-consumer handling, bounded queues, JetStream persistence, restart behaviour, and graceful server ownership."
+      applicable_dimensions:
+        - "01.03"
+        - "01.04"
+        - "01.09"
+        - "01.10"
+        - "01.13"
+    - name: pebble
+      url: "https://github.com/cockroachdb/pebble"
+      description: "Production Go storage engine selected for WAL and commit behaviour, checkpoints, recovery, format evolution, fault injection, metamorphic testing, and bounded storage work."
+      applicable_dimensions:
+        - "01.03"
+        - "01.10"
+    - name: temporal-sdk-go
+      url: "https://github.com/temporalio/sdk-go"
+      description: "Mature Go SDK for durable workflow execution, selected for cancellation states, deterministic replay, retry policy, child ownership, testing, and recovery-facing contracts."
+      applicable_dimensions:
+        - "01.01"
+        - "01.02"
+        - "01.10"
+        - "01.11"
+        - "01.14"
+    - name: nomad
+      url: "https://github.com/hashicorp/nomad"
+      description: "Production Go scheduler selected for evaluation queues, admission, resource feasibility, fairness, Ack and Nack ownership, persisted work, daemon operation, and remote executor seams."
+      applicable_dimensions:
+        - "01.03"
+        - "01.09"
+        - "01.12"
+        - "01.13"
+        - "01.14"
+        - "01.15"
+dimensions:
+  count: 15
+  items:
+    - number: "01.01"
+      name: lifecycle-transition-ownership-and-terminal-arbitration
+      title: "Lifecycle Transition Ownership and Terminal Arbitration"
+      description: "Roadmap priority 1. Supports Aren Phase 1 before any provider, tool, persistence, or daemon design is allowed to broaden the core."
+      purpose: "Determine how elite Go code gives one component authority to commit lifecycle state, timing, event, and outcome coherently, while keeping work errors, runtime failures, panics, and cancellation races distinct."
+      steps:
+        - "Trace the complete path from run creation through running and terminal publication."
+        - "Identify the single owner or gate for terminal transitions and every competing terminal producer."
+        - "Check whether state, outcome, timing, and terminal notification become visible as one coherent commit."
+        - "Inspect how panics and ordinary returned errors cross goroutine or task boundaries."
+        - "Record abstractions that are smaller than Aren's contract as well as abstractions that would over-generalise it."
+      citations:
+        - "Aren requirement: ../../../Aren/docs/phase-1-prd/02-lifecycle-requirements.md"
+        - "Aren scope rule: ../../../Aren/docs/phase-1-prd/01-product-definition-and-scope.md"
+        - "Source definitions for run, task, result, failure, and transition state."
+        - "Tests for simultaneous completion, failure, panic, and cancellation."
+      questions:
+        - "Can two goroutines publish conflicting terminal outcomes, and what prevents it?"
+        - "Is a cancellation request represented separately from confirmed termination?"
+        - "Can observers see a terminal state before its outcome or terminal event is available?"
+        - "Which parts can Aren adopt without importing a framework-sized lifecycle model?"
+    - number: "01.02"
+      name: cancellation-goroutine-ownership-and-cleanup
+      title: "Cancellation, Goroutine Ownership, and Cleanup"
+      description: "Roadmap priority 2. Covers the Phase 1 cancellation contract and the Phase 2 pressure introduced by realistic cleanup and long-lived work."
+      purpose: "Establish practical Go patterns for context propagation, goroutine ownership, bounded shutdown, cleanup ordering, and truthful completion when underlying work is cooperative, blocking, or externally supervised."
+      steps:
+        - "Build an ownership tree for contexts, goroutines, channels, processes, and closers."
+        - "Trace cancellation from caller request to the deepest cancellable operation and back to terminal publication."
+        - "Inspect shutdown ordering, timeout escalation, repeated cancellation, and cleanup failure handling."
+        - "Find detached goroutines, background contexts, unbounded channel operations, and close or send races."
+        - "Examine leak tests and shutdown tests under partial startup and concurrent failure."
+      citations:
+        - "Aren requirement: ../../../Aren/docs/phase-1-prd/02-lifecycle-requirements.md"
+        - "Aren Phase 2: ../../../Aren/docs/phased-roadmap.md#phase-2--controlled-executor-and-failure-laboratory"
+        - "Context creation and cancellation call sites."
+        - "Goroutine start sites, wait groups, errgroups, close paths, and leak tests."
+      questions:
+        - "Who is responsible for waiting for every goroutine started on behalf of a run?"
+        - "What does the API claim when cancellation is requested but work has not stopped?"
+        - "Can cleanup block forever or overwrite the primary failure?"
+        - "How is shutdown made idempotent under concurrent callers?"
+    - number: "01.03"
+      name: adversarial-concurrency-and-failure-verification
+      title: "Adversarial Concurrency and Failure Verification"
+      description: "Roadmap priority 3. Verification is a Phase 1 acceptance concern and remains a gate for every later slice."
+      purpose: "Find repeatable Go techniques for proving invariants under races, panics, partial writes, restarts, resource exhaustion, and scheduling variation instead of relying on happy-path unit tests."
+      steps:
+        - "Inventory race-detector, stress, fuzz, fault-injection, leak, metamorphic, and crash-recovery suites."
+        - "Map each test technique to the invariant it is intended to falsify."
+        - "Inspect test seams for clocks, transports, storage, schedulers, process runners, and randomness."
+        - "Check whether failures are deterministic enough to reproduce and diagnose."
+        - "Identify expensive suites that are separated from fast presubmit tests and how they are gated."
+      citations:
+        - "Aren acceptance matrix: ../../../Aren/docs/phase-1-prd/03-validation-and-acceptance.md"
+        - "Aren failure discipline: ../../../Aren/docs/phased-roadmap.md"
+        - "CI definitions, test harnesses, fuzz targets, fault injectors, and stress scripts."
+        - "Regression tests tied to historical race, deadlock, corruption, or leak fixes."
+      questions:
+        - "Which concurrency failures would ordinary coverage miss?"
+        - "Can the suite force cancellation at every lifecycle boundary?"
+        - "How does it prove absence of duplicate terminal events, leaks, and partial commits?"
+        - "Which techniques are proportionate for Aren Phase 1 rather than infrastructure-scale theatre?"
+    - number: "01.04"
+      name: ordered-observation-live-streaming-and-backpressure
+      title: "Ordered Observation, Live Streaming, and Backpressure"
+      description: "Roadmap priority 4. Extends Phase 1 replayable observation into Phase 4 live model streams and later reconnectable clients."
+      purpose: "Study how Go systems preserve ordering and terminal truth while isolating slow observers, bounding buffers, distinguishing durable facts from lossy deltas, and reconnecting without making observers control execution."
+      steps:
+        - "Trace event creation, sequencing, fan-out, buffering, replay, and subscriber removal."
+        - "Separate lifecycle facts from progress, token deltas, logs, and other high-volume data."
+        - "Inspect the policy for full queues, slow or disconnected consumers, and stream cancellation."
+        - "Check whether producer goroutines perform blocking observer work or callbacks."
+        - "Examine reconnect cursors, terminal delivery, dropped-event accounting, and memory bounds."
+      citations:
+        - "Aren Phase 1 events: ../../../Aren/docs/phase-1-prd/02-lifecycle-requirements.md"
+        - "Aren Phase 4: ../../../Aren/docs/phased-roadmap.md#phase-4--streaming-model-execution"
+        - "Event envelope, sequence, queue, subscription, SSE, and stream parser code."
+        - "Slow-consumer, reconnect, ordering, truncation, and cancellation tests."
+      questions:
+        - "Can one slow observer delay execution or other observers?"
+        - "What is bounded, dropped, coalesced, retained, or replayed under pressure?"
+        - "How is exactly one terminal fact delivered after partial streaming?"
+        - "Does reconnect recover semantics or merely resume best-effort display data?"
+    - number: "01.05"
+      name: provider-boundaries-structured-results-and-retry
+      title: "Provider Boundaries, Structured Results, and Retry"
+      description: "Roadmap priority 5. Covers Aren Phases 3 through 6 without allowing provider SDK details to leak into the lifecycle core."
+      purpose: "Compare provider-neutral Go boundaries for live model requests, stream normalization, usage accounting, structured-output enforcement, validation, retry classification, backoff, and bounded repair."
+      steps:
+        - "Trace one request through provider selection, request translation, transport, stream decoding, validation, and final result."
+        - "Identify the neutral event and error vocabulary and every provider-specific escape hatch."
+        - "Inspect structured-output requests, schema conversion, parse and validation failures, and repair prompts."
+        - "Distinguish transport retry, provider retry, validation repair, and user cancellation."
+        - "Check deadlines, rate limits, retry budgets, jitter, usage data, and partial-output handling."
+      citations:
+        - "Aren Phases 3-6: ../../../Aren/docs/phased-roadmap.md"
+        - "Provider interfaces, request and response translators, stream accumulators, and schema code."
+        - "Fake-server tests for malformed frames, incomplete success bodies, rate limits, and cancellation."
+      questions:
+        - "Is the provider interface shaped by Aren semantics or by one vendor SDK?"
+        - "Can a successful HTTP status still produce a typed execution failure?"
+        - "Which failures are safe to retry, and who owns the attempt budget?"
+        - "Are token usage and partial output preserved when a stream fails late?"
+    - number: "01.06"
+      name: tool-contracts-permissions-and-bounded-results
+      title: "Tool Contracts, Permissions, and Bounded Results"
+      description: "Roadmap priority 6. Covers Phase 7 representation and the Phase 8 rule that permission must be decided before a governed effect starts."
+      purpose: "Study Go tool registries and invocation paths that validate model-selected calls, decide permission before effects, preserve typed failures, and bound or externalise large results without corrupting the conversation."
+      steps:
+        - "Trace tool discovery, schema exposure, call parsing, argument validation, selection, permission, execution, and result assembly."
+        - "Check duplicate names, unknown tools, schema mismatch, malformed model output, and provider-specific call identifiers."
+        - "Identify the exact point at which policy is decided relative to side effects."
+        - "Inspect result size limits, truncation markers, artifact references, secret redaction, and binary content."
+        - "Examine MCP or plugin lifecycle without assuming that protocol support proves safe execution."
+      citations:
+        - "Aren Phases 7-8: ../../../Aren/docs/phased-roadmap.md"
+        - "Aren governance rule: ../../../Aren/docs/phased-roadmap.md#phase-13--policies-and-resource-governance"
+        - "Tool interfaces, registries, JSON schema conversion, permission hooks, and result types."
+        - "Tests proving denied calls have no side effect and oversized output remains explicit."
+      questions:
+        - "Can malformed or ambiguous arguments reach a tool implementation?"
+        - "Is permission checked before process start, network access, or filesystem mutation?"
+        - "How are large results represented without silently discarding evidence?"
+        - "Does the abstraction preserve tool-specific semantics or flatten them into strings?"
+    - number: "01.07"
+      name: subprocess-supervision-and-process-tree-containment
+      title: "Subprocess Supervision and Process-Tree Containment"
+      description: "Roadmap priority 7. Grounds Phase 8 local tools and Phase 17 shell execution in real operating-system cleanup behaviour."
+      purpose: "Determine robust Go patterns for starting, observing, cancelling, timing out, and reaping subprocess trees while bounding descriptors, environment, working directory, output, and privileges."
+      steps:
+        - "Trace process creation, command context, environment construction, working directory, stdin, stdout, stderr, and exit classification."
+        - "Inspect Unix process groups, Windows job objects or equivalents, signal escalation, and descendant termination."
+        - "Check pipe draining, output bounds, descriptor closure, child reaping, and cancellation during startup."
+        - "Examine containment boundaries such as namespaces, cgroups, containers, and explicit non-guarantees."
+        - "Find cross-platform tests for orphaned children, hung pipes, races, timeout, and forced termination."
+      citations:
+        - "Aren Phase 8: ../../../Aren/docs/phased-roadmap.md#phase-8--local-tool-execution"
+        - "Aren Phase 17: ../../../Aren/docs/phased-roadmap.md#phase-17--broader-execution-types"
+        - "Process runner, signal, process-group, cgroup, namespace, and pipe-management code."
+        - "Integration tests that inspect surviving descendants and bounded output."
+      questions:
+        - "Does cancelling the parent guarantee that descendants stop?"
+        - "Can unread output deadlock process completion or exhaust memory?"
+        - "Which containment claims hold on each supported operating system?"
+        - "How are exit status, timeout, cancellation, setup failure, and cleanup failure distinguished?"
+    - number: "01.08"
+      name: bounded-agent-loop-context-and-evidence
+      title: "Bounded Agent Loop, Context, and Evidence"
+      description: "Roadmap priority 8. Targets Aren Phases 9 and 10 using production agent runtimes rather than generic orchestration analogies."
+      purpose: "Compare bounded Go agent loops that keep model turns, tool calls, budgets, context compaction, evidence, and cancellation coherent without turning Aren into a prompt framework."
+      steps:
+        - "Trace the complete loop from user input to model response, tool calls, tool results, subsequent turns, and terminal answer."
+        - "Inventory iteration, token, time, cost, tool-call, output, and context limits and where each is enforced."
+        - "Inspect transcript invariants, especially assistant tool calls paired with tool results during compaction."
+        - "Find provenance, source-reference, artifact, or evidence-preservation mechanisms."
+        - "Check cancellation and failure at every boundary between provider, loop, tool, persistence, and UI."
+      citations:
+        - "Aren Phase 9: ../../../Aren/docs/phased-roadmap.md#phase-9--minimal-bounded-agent-loop"
+        - "Aren context plan: ../../../Aren/docs/coding-agent-context-engineering.md"
+        - "Agent loop, session, message, compaction, budget, and tool-result code."
+        - "End-to-end tests using multiple model turns and real or fake tool calls."
+      questions:
+        - "What guarantees that a loop terminates even when the model keeps requesting tools?"
+        - "Can compaction orphan a tool call or remove the evidence supporting the final result?"
+        - "Which budgets are enforced before work begins and which are only reported afterward?"
+        - "Does cancellation reach an active model stream and active tool at the same time?"
+    - number: "01.09"
+      name: resource-accounting-overload-and-bounded-work
+      title: "Resource Accounting, Overload, and Bounded Work"
+      description: "Roadmap priority 9. Applies Aren's performance discipline continuously and prepares the concrete pressure needed for Phase 13 resource governance."
+      purpose: "Study how Go systems measure and bound goroutines, queued work, memory, disk, model residency, subprocesses, streams, and per-run costs while keeping overload behaviour explicit and testable."
+      steps:
+        - "Identify every queue, pool, semaphore, cache, buffer, and retained-history boundary on the relevant path."
+        - "Trace admission, reservation, actual usage, release, and correction after failure or cancellation."
+        - "Inspect overload responses, fairness, queue deadlines, load shedding, and slow-consumer handling."
+        - "Find metrics that correspond to actionable limits rather than aggregate vanity counters."
+        - "Examine benchmarks and saturation tests for steady state, bursts, and long-lived sessions."
+      citations:
+        - "Aren performance plan: ../../../Aren/docs/performance-engineering.md"
+        - "Aren Phase 13: ../../../Aren/docs/phased-roadmap.md#phase-13--policies-and-resource-governance"
+        - "Queue, pool, semaphore, cache, buffer, quota, metrics, and scheduler code."
+        - "Benchmarks and load tests with stated hardware, workload, repetitions, and retained memory."
+      questions:
+        - "Which resources are bounded per run, per workspace, and process-wide?"
+        - "What happens before memory pressure becomes an out-of-memory crash?"
+        - "Are estimates reconciled with actual use and always released on failure?"
+        - "Can one run monopolise workers, model memory, event buffers, or disk?"
+    - number: "01.10"
+      name: persistence-atomic-recovery-and-schema-evolution
+      title: "Persistence, Atomic Recovery, and Schema Evolution"
+      description: "Roadmap priority 10. Covers Phase 11 only after the in-memory lifecycle and real execution path are understood."
+      purpose: "Find storage patterns that persist Aren-owned state and events coherently, recover honestly after crashes, evolve formats safely, and avoid implying exactly-once external effects."
+      steps:
+        - "Trace write ordering among state, outcome, events, artifacts, checkpoints, and acknowledgements."
+        - "Inspect WAL, transactional, atomic-file, sync, rename, and checkpoint mechanisms and their failure windows."
+        - "Follow startup recovery through corruption handling, incomplete writes, interrupted work, and reconciliation."
+        - "Examine schema and physical-format versioning, migrations, rollback limits, and compatibility tests."
+        - "Find crash, fault-injection, replay, and durability tests, noting what storage guarantees they actually establish."
+      citations:
+        - "Aren Phase 11: ../../../Aren/docs/phased-roadmap.md#phase-11--persistence-and-recovery"
+        - "Commit pipeline, WAL, manifest, checkpoint, migration, recovery, and corruption code."
+        - "Tests that terminate or fault writes between each durable step."
+      questions:
+        - "What is the atomic unit, and does it match Aren-owned lifecycle state rather than external effects?"
+        - "After restart, how is interrupted work distinguished from failed or completed work?"
+        - "Can recovery duplicate a tool or remote side effect, and is that stated honestly?"
+        - "How does a newer binary refuse, migrate, or safely open older data?"
+    - number: "01.11"
+      name: execution-composition-and-child-ownership
+      title: "Execution Composition and Child Ownership"
+      description: "Roadmap priority 11. Covers Phase 12 composition while retaining the lifecycle and cancellation rules already earned."
+      purpose: "Compare structured Go composition models for child creation, sibling failure, cancellation propagation, bounded parallelism, result collection, panic handling, and parent terminal semantics."
+      steps:
+        - "Map parent-child identity, context, event, result, and ownership relationships."
+        - "Trace sequential, fail-fast parallel, collect-all, and bounded-pool execution where present."
+        - "Inspect sibling cancellation, cleanup completion, panic propagation, and deterministic result ordering."
+        - "Check whether child events remain attributable without forcing one global event bus."
+        - "Identify composition helpers that preserve concrete executor semantics instead of erasing them."
+      citations:
+        - "Aren Phase 12: ../../../Aren/docs/phased-roadmap.md#phase-12--execution-composition"
+        - "Parent, child, group, future, pool, and result-aggregation code."
+        - "Tests for simultaneous child failure, cancellation, panic, and bounded concurrency."
+      questions:
+        - "When is a parent allowed to become terminal relative to child cleanup?"
+        - "Does one child failure cancel siblings, and is that policy explicit?"
+        - "Are results ordered by submission, start, or completion?"
+        - "Can a child outlive or mutate state after its parent is terminal?"
+    - number: "01.12"
+      name: policy-admission-scheduling-and-fairness
+      title: "Policy, Admission, Scheduling, and Fairness"
+      description: "Roadmap priority 12. Covers Phase 13 governance before daemon hosting makes resource mistakes shared and long-lived."
+      purpose: "Study pre-effect policy decisions, bounded admission, queue ownership, feasibility checks, reservations, fairness, retries, and observable rejection in mature Go schedulers and model servers."
+      steps:
+        - "Trace a request from admission through queueing, feasibility, reservation, dispatch, completion, and resource release."
+        - "Distinguish policy denial, capacity rejection, transient wait, scheduling failure, and execution failure."
+        - "Inspect priority, fairness, starvation protection, per-tenant or per-workspace limits, and queue bounds."
+        - "Examine Ack, Nack, retry, blocked-work, and stale-plan behaviour."
+        - "Check whether every governed effect has an observable decision made before it starts."
+      citations:
+        - "Aren Phase 13: ../../../Aren/docs/phased-roadmap.md#phase-13--policies-and-resource-governance"
+        - "Admission, broker, scheduler, planner, quota, reservation, and resource-release code."
+        - "Tests for saturation, starvation, stale state, duplicate dispatch, denial, and cancellation while queued."
+      questions:
+        - "Can a request start before its policy and resources are committed?"
+        - "What prevents starvation when long and short runs share capacity?"
+        - "Who owns retry after a rejected or stale scheduling plan?"
+        - "Are queue depth and waiting time bounded and visible to callers?"
+    - number: "01.13"
+      name: daemon-local-api-and-multi-client-lifetime
+      title: "Daemon, Local API, and Multi-Client Lifetime"
+      description: "Roadmap priority 13. Covers Phases 14 and 15 only when work must outlive clients or share durable inventory and resource control."
+      purpose: "Compare long-lived Go server ownership, loopback or socket APIs, explicit workspace context, client detach and reconnect, graceful shutdown, versioning, and thin multi-language client contracts."
+      steps:
+        - "Identify the process that owns accepted work and what happens when the submitting client exits."
+        - "Trace local transport setup, caller authentication, protocol versioning, request identity, and workspace scoping."
+        - "Inspect attach, detach, stream reconnect, status recovery, and cancellation from a second client."
+        - "Follow startup, signal handling, graceful drain, forced shutdown, restart, and upgrade paths."
+        - "Separate stable wire contracts from server-internal Go types and implementation details."
+      citations:
+        - "Aren Phases 14-15: ../../../Aren/docs/phased-roadmap.md"
+        - "Related prior study: ../ultraplan-daemon-events-study/"
+        - "Server entrypoints, local API handlers, client code, socket setup, session manager, and shutdown code."
+        - "Tests for disconnect, reconnect, concurrent clients, shutdown under load, and protocol compatibility."
+      questions:
+        - "Does client exit affect the accepted run?"
+        - "Can another client find and observe the same run without sharing process memory?"
+        - "How are local callers authenticated and workspaces identified?"
+        - "What is the smallest stable contract a non-Go client must implement?"
+    - number: "01.14"
+      name: durable-workflows-retry-idempotency-and-replay
+      title: "Durable Workflows, Retry, Idempotency, and Replay"
+      description: "Roadmap priority 14. Covers Phase 16 after persistence and composition, and treats workflow machinery as earned complexity rather than a starting abstraction."
+      purpose: "Study durable Go workflow contracts for deterministic decision replay, activity effects, retries, timeouts, child workflows, cancellation, checkpoints, and idempotency without confusing replayable control flow with exactly-once effects."
+      steps:
+        - "Separate deterministic workflow decisions from effectful activities, executors, or allocations."
+        - "Trace history recording, replay, versioning, retry policy, timers, cancellation, and child ownership."
+        - "Inspect idempotency requirements and deduplication at effect boundaries."
+        - "Examine worker loss, redelivery, duplicate execution, poison work, and operator intervention."
+        - "Identify the minimum subset that would answer an Aren need and the machinery that should remain deferred."
+      citations:
+        - "Aren Phase 16: ../../../Aren/docs/phased-roadmap.md#phase-16--workflows"
+        - "Workflow, activity, history, replay, retry, timer, child, and worker APIs."
+        - "Determinism checker, replay fixtures, worker-loss tests, and duplicate-delivery tests."
+      questions:
+        - "Which code must remain deterministic and which code may perform external effects?"
+        - "What can execute more than once after worker or daemon failure?"
+        - "How are workflow definition changes made compatible with existing histories?"
+        - "What concrete Aren use would justify adopting any of this machinery?"
+    - number: "01.15"
+      name: executor-boundaries-and-remote-readiness
+      title: "Executor Boundaries and Remote Readiness"
+      description: "Roadmap priority 15. Covers Phases 17 and 18 last, preserving Aren's rule that broader and distributed execution must be justified by real use."
+      purpose: "Compare narrow Go executor boundaries that preserve type-specific success, cancellation, output, cleanup, artifact, and identity semantics while allowing later local or remote implementations without pretending they are uniform."
+      steps:
+        - "Identify the stable contract between scheduling or lifecycle ownership and a concrete executor."
+        - "Trace identity and cancellation across process, container, node, or worker boundaries."
+        - "Inspect setup, acknowledgement, streaming, artifacts, terminal reporting, cleanup, and lost-worker reconciliation."
+        - "Check leases, heartbeats, fencing, duplicate dispatch, stale completion, and idempotency where remote work exists."
+        - "Record which remote mechanisms solve demonstrated local constraints and which would be premature for Aren."
+      citations:
+        - "Aren Phase 17: ../../../Aren/docs/phased-roadmap.md#phase-17--broader-execution-types"
+        - "Aren Phase 18: ../../../Aren/docs/phased-roadmap.md#phase-18--distributed-and-remote-execution"
+        - "Executor, driver, task, worker, allocation, RPC, lease, heartbeat, and artifact-transfer code."
+        - "Contract and integration tests for cancellation, daemon or worker loss, duplicate dispatch, and stale completion."
+      questions:
+        - "What remains common across executor types, and what stays deliberately type-specific?"
+        - "When is submitted work durably accepted, and how can a caller know?"
+        - "How are stale workers prevented from publishing authoritative completion?"
+        - "Which distributed mechanisms should Aren explicitly avoid until a measured requirement appears?"

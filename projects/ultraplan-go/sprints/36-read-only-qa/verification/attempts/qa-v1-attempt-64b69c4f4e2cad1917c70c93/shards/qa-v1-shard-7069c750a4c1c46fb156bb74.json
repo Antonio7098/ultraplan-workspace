@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-7069c750a4c1c46fb156bb74",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "primary",
+  "title": "docs",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in docs"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-7069c750a4c1c46fb156bb74/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:20:13.265661266Z",
+      "completed_at": "2026-08-26T11:22:39.154275053Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "context_requests": [
+        {
+          "id": "ctx-qa-impl-01",
+          "paths": [
+            "internal/sprint/**",
+            "internal/app/**",
+            "internal/web/**",
+            "internal/platform/process/**",
+            "internal/runcontrol/**"
+          ],
+          "reason": "Docs-only change claims new QA behavior; need read-only comparison of implementation constants, routes, and state structs to verify contract-documentation parity without executing code",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1f6633a01d275c355fa74258",
+      "shard_id": "qa-v1-shard-7069c750a4c1c46fb156bb74",
+      "claim": "docs/local-web.md and docs/phase3-json-schemas.md document QA browser routes and JSON schemas that are not yet implemented or have different auth/envelope behavior",
+      "basis": "local-web.md:280-354 adds 3 page routes and 5 api routes for qa/map/shards/theories/synthesis plus run observation; phase3-json-schemas.md:26-61 and 83-103 defines closed phase and theory outcome enums and v2 evidence artifacts; docs/recovery.md:181-197 and docs/release-checklist.md:128-142 add recovery/gate prose; any route or field mismatch breaks contract-observability and contract-persistence-and-migrations",
+      "verification_surface": "docs/local-web.md:280-354, docs/phase3-json-schemas.md:26-61,83-103 vs internal/web routing, internal/app QA projections, and verification state JSON marshaling",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-observability",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Web router or app DTOs lack any listed route, return different envelope ({data,meta} vs {error,meta}), or use different closed enum values than documented",
+      "refutation_condition": "Router registers exactly the 8 listed QA/run routes with typed app queries only, and state.json/map.json/shard/synthesis JSON matches schema_version 1/2 definitions verbatim",
+      "inconclusive_condition": "No web/app implementation is in shard scope to inspect routes or DTOs read-only",
+      "safe_evidence_strategy": "Read-only search for /api/v1/projects.*qa and verification state structs; compare enum constants for phase and theory outcomes; do not start server or invoke HTTP",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-7069c750a4c1c46fb156bb74/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:13.265661266Z",
+          "completed_at": "2026-08-26T11:22:39.154275053Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-01",
+              "paths": [
+                "internal/sprint/**",
+                "internal/app/**",
+                "internal/web/**",
+                "internal/platform/process/**",
+                "internal/runcontrol/**"
+              ],
+              "reason": "Docs-only change claims new QA behavior; need read-only comparison of implementation constants, routes, and state structs to verify contract-documentation parity without executing code",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Docs-only shard provides no server code to validate route registration, DTO, or state file generation; parity check is inconclusive without context"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-364c8a8d47012ca5d9aab616",
+      "shard_id": "qa-v1-shard-7069c750a4c1c46fb156bb74",
+      "claim": "docs/cli-reference.md qa command and configuration table misstates effective flags, defaults, maxima, or precedence",
+      "basis": "cli-reference.md:346-405 defines extensive qa\u003ctable\u003e with 32 rows of defaults/maxima, env names, fallback model chain, and exit codes; docs/user-guide.md:96-110 repeats lower-only policy; single numeric drift would break contract-cli-surface and contract-configuration",
+      "verification_surface": "docs/cli-reference.md:346-406, docs/user-guide.md:96-110 vs internal/app qa wiring and config precedence implementation",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Code config struct or flag parsing shows different default/max for any qa key (e.g., changed_paths 512, primary_shards 32, run_timeout 60m), different env prefix, or missing --shard/--suite smoke handling vs documented",
+      "refutation_condition": "Code constants and flag definitions match every table entry, precedence (product default \u003c ultraplan.yml \u003c env), and JSON envelope operation sprint.qa exactly",
+      "inconclusive_condition": "Implementation config and CLI handler files are outside assigned paths and not readable in this shard",
+      "safe_evidence_strategy": "Read-only list and compare docs/cli-reference.md table against config definitions (search qa model/variant/limits) and CLI handler for sprint qa; request context expansion for internal/app and config packages if approved",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-7069c750a4c1c46fb156bb74/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:13.265661266Z",
+          "completed_at": "2026-08-26T11:22:39.154275053Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-01",
+              "paths": [
+                "internal/sprint/**",
+                "internal/app/**",
+                "internal/web/**",
+                "internal/platform/process/**",
+                "internal/runcontrol/**"
+              ],
+              "reason": "Docs-only change claims new QA behavior; need read-only comparison of implementation constants, routes, and state structs to verify contract-documentation parity without executing code",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "Verification requires implementation files not in assigned changed_paths; investigator is blocked from reading context_paths without approved expansion"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-59894b0761d65b8040b561b2",
+      "shard_id": "qa-v1-shard-7069c750a4c1c46fb156bb74",
+      "claim": "docs/architecture.md QA verification phase and isolation description (lines 134-250) diverges from implementation, violating contract-documentation and contract-architecture",
+      "basis": "Assigned packet lists behavioral_concerns 'changed behavior in docs' with 7 docs changed and no code paths; architecture.md adds detailed Sprint 36 v1 read-only and Sprint 37 v2 evidence-producing state, bubblewrap isolation, runcontrol ownership, and cache metadata that cannot be verified in this docs-only shard",
+      "verification_surface": "docs/architecture.md:134-250 (QA verification phase, detailed state root, mapping, runtime QA, evidence isolation) vs internal/sprint, internal/runcontrol, internal/platform/process implementation",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation",
+        "handbook"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Implementation reads of internal/sprint and internal/platform/process show different state paths, ID namespaces, shard limits, or isolation mechanics than documented, or docs claim behavior rejected by code",
+      "refutation_condition": "Implementation files confirm v1/v2 paths, ID determinism, 8-active-owner hub, 0700/0600 modes, and platform/process isolation exactly as written",
+      "inconclusive_condition": "No implementation files are in changed_paths or context_paths for this shard, so docs-code parity cannot be checked read-only",
+      "safe_evidence_strategy": "Read-only compare docs/architecture.md:31-81,134-155,227-250 against internal/sprint map/state/synthesis definitions and internal/platform/process isolation; run approved check go-format-diff for formatting only; do not execute docs-derived commands",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-7069c750a4c1c46fb156bb74/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:20:13.265661266Z",
+          "completed_at": "2026-08-26T11:22:39.154275053Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-01",
+              "paths": [
+                "internal/sprint/**",
+                "internal/app/**",
+                "internal/web/**",
+                "internal/platform/process/**",
+                "internal/runcontrol/**"
+              ],
+              "reason": "Docs-only change claims new QA behavior; need read-only comparison of implementation constants, routes, and state structs to verify contract-documentation parity without executing code",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+              "paths": [
+                "docs/architecture.md",
+                "docs/cli-reference.md",
+                "docs/local-web.md",
+                "docs/phase3-json-schemas.md",
+                "docs/recovery.md",
+                "docs/release-checklist.md",
+                "docs/user-guide.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all 7 assigned docs: architecture.md (Sprint 36/37 QA state, isolation), cli-reference.md (qa command table 32 limits), local-web.md (QA pages/api bounds), phase3-json-schemas.md (v1/v2 schemas), recovery.md (QA recovery 181-197), release-checklist.md (QA gates 128-142), user-guide.md (QA usage 96-110,326-406). No code diff in shard to compare; content is internally consistent but unverified against implementation.",
+          "paths": [
+            "docs/architecture.md",
+            "docs/cli-reference.md",
+            "docs/local-web.md",
+            "docs/phase3-json-schemas.md",
+            "docs/recovery.md",
+            "docs/release-checklist.md",
+            "docs/user-guide.md"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Shard is docs-only (budgets changed_paths 512 but only 7 docs assigned, context_paths null); no implementation evidence reachable to confirm or refute parity, per read-only QA investigator constraints"
+    }
+  ]
+}

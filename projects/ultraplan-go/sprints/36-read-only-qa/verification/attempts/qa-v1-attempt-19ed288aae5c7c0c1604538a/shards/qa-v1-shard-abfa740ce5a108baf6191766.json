@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-abfa740ce5a108baf6191766",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-38fa6f6a21989f9ebf04868e",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Boundary shard overlap truncated to ContextPathsPerShard may omit cross-package integration coverage when many primary shards exist"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-persistence-and-migrations",
+    "contract-testing"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-38fa6f6a21989f9ebf04868e"
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-abfa740ce5a108baf6191766",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_islzv5c5tpbpuy25fbexpgoyeu/qa-v1-shard-abfa740ce5a108baf6191766/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:30:27.110151174Z",
+      "completed_at": "2026-08-26T09:31:32.292581309Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

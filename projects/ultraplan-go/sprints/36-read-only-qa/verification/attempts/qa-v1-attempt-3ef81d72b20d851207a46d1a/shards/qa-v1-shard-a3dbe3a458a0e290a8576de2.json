@@ -1,0 +1,518 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-a3dbe3a458a0e290a8576de2",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-a3dbe3a458a0e290a8576de2/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:53:10.092695312Z",
+      "completed_at": "2026-08-26T10:55:51.811076297Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "cr-qa-app-types",
+          "paths": [
+            "internal/app/qa_types.go",
+            "internal/app/web_types.go"
+          ],
+          "reason": "Confirm QAResult schema_version field and QAUseCaseError stabilization to validate JSON envelope and error projection theories",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 59439961,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/operations_contract_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2acf4006eed86646941ab645",
+      "shard_id": "qa-v1-shard-a3dbe3a458a0e290a8576de2",
+      "claim": "Browser operation contract correctly restricts QA operations to only shard or smoke suite and rejects model/task/parallelism injection",
+      "basis": "operation_handlers.go:734-751 validates QA kinds accept only shard or suite=smoke and rejects model/task/stage/dryRun etc; operations_contract_test.go:68-87 verifies qa-start with shard succeeds and model/task/status-shard/recovery-shard are rejected; static/js/operations.js:13-16 serializes suite",
+      "verification_surface": "mapOperationRequest for qa-start/qa-resume/qa-status/qa-dry-run/qa-recover with varied options",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-evaluation-cost-safety",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "QA request with model/task/parallelism incorrectly accepted or suite != smoke accepted or shard accepted for status/recover",
+      "refutation_condition": "Only shard for qa-start/qa-resume and only suite=smoke for qa-start/qa-dry-run are accepted as implemented",
+      "inconclusive_condition": "Cannot invoke mapOperationRequest without execution",
+      "safe_evidence_strategy": "Read operation_handlers.go QA validation block and operations_contract_test.go browser contract table and static/js/operations.js options serializer",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-a3dbe3a458a0e290a8576de2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:10.092695312Z",
+          "completed_at": "2026-08-26T10:55:51.811076297Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "cr-qa-app-types",
+              "paths": [
+                "internal/app/qa_types.go",
+                "internal/app/web_types.go"
+              ],
+              "reason": "Confirm QAResult schema_version field and QAUseCaseError stabilization to validate JSON envelope and error projection theories",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 59439961,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/operations_contract_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/operations_contract_test.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Static code matches contract tests and restricts QA scope as intended; no bypass found in current changed paths"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-82eb709b47f3631a0470ca99",
+      "shard_id": "qa-v1-shard-a3dbe3a458a0e290a8576de2",
+      "claim": "QA HTML pages escape hostile theory/shard claims and remain noscript-complete",
+      "basis": "sprint.html:60-61 renders {{.Shard.Title}} and {{.Theory.Claim}} via html/template auto-escaping; qa_handlers_test.go:78-82 sets hostile \u003cscript\u003ealert(1)\u003c/script\u003e and asserts response does not contain raw \u003cscript\u003e and does contain \u003cnoscript\u003e and Read-only QA",
+      "verification_surface": "GET /projects/alpha/sprints/30-web/qa, /qa/shards/{id}, /qa/theories/{id} HTML rendering",
+      "expectation_refs": [
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Rendered HTML contains raw \u003cscript\u003ealert or missing \u003cnoscript\u003e/Conformance Review",
+      "refutation_condition": "Rendered HTML escapes to \u0026lt;script\u0026gt; and contains \u003cnoscript\u003e and Read-only QA for all QA pages",
+      "inconclusive_condition": "Cannot render templates without executing handler",
+      "safe_evidence_strategy": "Read templates/sprint.html QA section for template actions and qa_handlers_test.go TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML expectations; check for template.HTML unsafe use",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-a3dbe3a458a0e290a8576de2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:10.092695312Z",
+          "completed_at": "2026-08-26T10:55:51.811076297Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "cr-qa-app-types",
+              "paths": [
+                "internal/app/qa_types.go",
+                "internal/app/web_types.go"
+              ],
+              "reason": "Confirm QAResult schema_version field and QAUseCaseError stabilization to validate JSON envelope and error projection theories",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 59439961,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/operations_contract_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/operations_contract_test.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Code shows default {{}} escaping and existing test fixture expects and verifies escaped output; no template.HTML is used for Claim/Basis in sprint.html:60-61"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-bedb0c199220459bd7ead56a",
+      "shard_id": "qa-v1-shard-a3dbe3a458a0e290a8576de2",
+      "claim": "GET /api/v1/projects/{project}/sprints/{sprint}/qa/issues?limit=... is rejected by central dispatch query guard before reaching QA handler",
+      "basis": "handlers.go:422 allowsQuery only for api_validations, api_runs, api_run_events, runs, api_timeline; qa_handlers.go:58-66 parses limit/cursor from query. routes.go:373-382 defines api_sprint_qa_issues/api_sprint_qa_issue/api_sprint_qa_evidence etc as api routes but they are not allowlisted, so dispatch returns 400 invalid_request for any query string",
+      "verification_surface": "GET /api/v1/projects/alpha/sprints/30-web/qa/issues?limit=10 and ?cursor=xxx\u0026limit=1 via handler dispatch",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Code shows dispatch rejects query on api_sprint_qa_issues while handler expects it, or runtime GET with limit returns 400 code invalid_request",
+      "refutation_condition": "dispatch allowlist includes api_sprint_qa_issues/api_sprint_qa_issue/api_sprint_qa_evidence or handler does not rely on query params",
+      "inconclusive_condition": "Cannot determine dispatch vs handler interaction without runtime request",
+      "safe_evidence_strategy": "Read handlers.go dispatch allowsQuery definition and qa_handlers.go QAIssues query parsing and routes.go matchRoute definitions; compare without executing server",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-a3dbe3a458a0e290a8576de2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:10.092695312Z",
+          "completed_at": "2026-08-26T10:55:51.811076297Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "cr-qa-app-types",
+              "paths": [
+                "internal/app/qa_types.go",
+                "internal/app/web_types.go"
+              ],
+              "reason": "Confirm QAResult schema_version field and QAUseCaseError stabilization to validate JSON envelope and error projection theories",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 59439961,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/operations_contract_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes QA issue routes while QA handler parses limit/cursor query",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint.html QA rendering uses html/template escaping for Claim/Title/Basis",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA operation option validation and browser client serializer restrict to shard/suite=smoke",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/operations_contract_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static reading confirms mismatch: handlers.go:422 excludes QA issue routes from query allowlist while qa_handlers.go:58-66 requires limit/cursor query parsing and routes_test does not cover QA issue query path"
+    }
+  ]
+}

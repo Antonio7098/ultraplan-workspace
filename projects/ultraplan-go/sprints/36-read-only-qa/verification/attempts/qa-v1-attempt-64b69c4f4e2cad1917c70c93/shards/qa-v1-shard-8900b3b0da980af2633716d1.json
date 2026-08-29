@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-8900b3b0da980af2633716d1",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "primary",
+  "title": "internal/tui",
+  "changed_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/tui"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-8900b3b0da980af2633716d1/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:21:14.2514191Z",
+      "completed_at": "2026-08-26T11:23:31.692149159Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "context_requests": [
+        {
+          "id": "ctx-qa-app-types",
+          "paths": [
+            "internal/app/qa.go",
+            "internal/app/dashboard.go",
+            "internal/sprint/qa_state.go"
+          ],
+          "reason": "Confirm bounded QA projection fields, breadcrumb Theory expectations, and whether Theory route without Shard is intentional; needed to resolve inconclusive shard-breadcrumb theory without mutating state",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 43254938,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+          "paths": [
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+          "paths": [
+            "internal/tui/qa_view_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8ee96915c5df0009d1c032c3",
+      "shard_id": "qa-v1-shard-8900b3b0da980af2633716d1",
+      "claim": "Changed model.go navigation hides or miswires QA operations or focused shard/theory deep links",
+      "basis": "Changed paths include internal/tui/model.go navItems and RouteSprintQAShard/Theory. Risk is regression where QA Status/DryRun/Start/Resume/Recover, Run focused shard, durable run link, or theory list disappears or routes incorrectly, breaking bounded operation exposure.",
+      "verification_surface": "Read internal/tui/model.go:501-532 (RouteSprintQA and RouteSprintQAShard navItems) and internal/tui/model_test.go:110-146 and internal/tui/qa_view_test.go:36-68 asserting operation labels",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "navItems for RouteSprintQA missing any of QA Status/QA Dry Run/Start QA/Resume QA/Recover QA/View QA durable run/shard titles, or RouteSprintQAShard returns wrong count/kind or theory Route missing Theory ID",
+      "refutation_condition": "model.go:503-514 returns all 5 QA operations plus conditional durable run and shard routes, 519-532 returns 2 focused operations plus theory routes with RouteKind sprint-qa-theory, and tests enumerate same labels and assert 3 items on focused shard with correct Theory ID",
+      "inconclusive_condition": "Cannot diff prior version to confirm no removal of bounded limits (512/32) or future demand for Theory-specific navItems; RouteSprintQATheory intentionally returns nil navItems as leaf view, need product confirmation that is intended",
+      "safe_evidence_strategy": "Read-only inspection of model.go navItems switch and model_test.go/qa_view_test.go navigation assertions; no command execution",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-8900b3b0da980af2633716d1/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:21:14.2514191Z",
+          "completed_at": "2026-08-26T11:23:31.692149159Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-app-types",
+              "paths": [
+                "internal/app/qa.go",
+                "internal/app/dashboard.go",
+                "internal/sprint/qa_state.go"
+              ],
+              "reason": "Confirm bounded QA projection fields, breadcrumb Theory expectations, and whether Theory route without Shard is intentional; needed to resolve inconclusive shard-breadcrumb theory without mutating state",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 43254938,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+              "paths": [
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+              "paths": [
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+              "paths": [
+                "internal/tui/qa_view_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+          "paths": [
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+          "paths": [
+            "internal/tui/qa_view_test.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Inspection shows all expected QA nav items present with correct OperationRequest kinds and Theory routing; existing tests explicitly cover QA navigation and focused shard theory use as one bounded projection"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-90fbabba565c687b4510257d",
+      "shard_id": "qa-v1-shard-8900b3b0da980af2633716d1",
+      "claim": "Breadcrumb for RouteSprintQATheory omits shard, and theory detail rendering is nested inside shard loop causing potential missing state when shard not found",
+      "basis": "internal/tui/model.go:588-589 breadcrumb for Theory interpolates only Theory ID, and internal/tui/qa_view.go:37-52 loops shards then theories only if route.Shard matches; changed behavior concern is truncated context or silent empty rendering on stale shard ID.",
+      "verification_surface": "Read internal/tui/model.go:588-589 (breadcrumb) and internal/tui/qa_view.go:37-52 (focused shard/theory rendering) and internal/tui/model_test.go:135-145 (theory summary via RouteSprintQATheory)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Navigating directly to Theory route shows breadcrumb without shard and/or focused theory block missing when QA projection stale or shard ID mismatched, causing user-visible context loss",
+      "refutation_condition": "Breadcrumb and rendering match existing tests' expectation (test checks 'Focused theory:' and 'Outcome: refuted' via same path) and loop guard is existing bounded-projection behavior, not a new regression",
+      "inconclusive_condition": "Need product intent for breadcrumb format and whether Theory route should render without Shard; also need diff to know if this was changed in this shard or pre-existing; requires context expansion to app.QA types for shard-theory binding guarantees",
+      "safe_evidence_strategy": "Read-only inspection of breadcrumb switch and renderSprintQAView focused blocks; request app type context if needed, no execution",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-8900b3b0da980af2633716d1/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:21:14.2514191Z",
+          "completed_at": "2026-08-26T11:23:31.692149159Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-app-types",
+              "paths": [
+                "internal/app/qa.go",
+                "internal/app/dashboard.go",
+                "internal/sprint/qa_state.go"
+              ],
+              "reason": "Confirm bounded QA projection fields, breadcrumb Theory expectations, and whether Theory route without Shard is intentional; needed to resolve inconclusive shard-breadcrumb theory without mutating state",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 43254938,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+              "paths": [
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+              "paths": [
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+              "paths": [
+                "internal/tui/qa_view_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+          "paths": [
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+          "paths": [
+            "internal/tui/qa_view_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code does omit shard from theory breadcrumb and nests theory rendering inside shard match, but model_test.go still passes with that structure; without baseline diff and product intent for Theory breadcrumb, cannot confirm regression vs intentional leaf display — bounded context request needed, no execution performed"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9dd97e3b87928dc68bdff2eb",
+      "shard_id": "qa-v1-shard-8900b3b0da980af2633716d1",
+      "claim": "TUI QA view promotes read-only completion to a product verdict or derives outcome from runtime observer events",
+      "basis": "Behavioral concern is 'changed behavior in internal/tui'; qa_view.go is bounded projection that must stay verdict-neutral per docs. Changed paths include internal/tui/qa_view.go and internal/tui/views.go routing to it. Risk is new rendering introducing 'QA passed' or issue verdict, or reading verification persistence.",
+      "verification_surface": "Read internal/tui/qa_view.go:10-54 (renderSprintQAView header and bounded fields) and internal/tui/views.go:371-373 (RouteSprintQA* delegates to renderSprintQAView) and tests internal/tui/qa_view_test.go:13-34 and internal/tui/model_test.go:110-146 that assert neutral text",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-observability",
+        "contract-testing",
+        "handbook"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Rendered QA summary contains 'QA passed', promotes verdict, or reads files outside app.DashboardResult QA projection to derive outcomes",
+      "refutation_condition": "Code renders only qa.Phase with 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' at qa_view.go:17, prints Phase/Fresh/ConformanceReview/Coverage/Shards without verdict promotion, contains no filesystem or event derivation, and tests assert absence of 'QA passed'/'Issues' promotion",
+      "inconclusive_condition": "Diff not available to prove changed vs prior wording, or rendering path bypasses renderSprintQAView for some width/route",
+      "safe_evidence_strategy": "Read-only file inspection of qa_view.go, views.go renderRouteSummary QA branch, and qa_view_test.go/model_test.go assertions; no execution, no filesystem mutation",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-8900b3b0da980af2633716d1/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:21:14.2514191Z",
+          "completed_at": "2026-08-26T11:23:31.692149159Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-qa-app-types",
+              "paths": [
+                "internal/app/qa.go",
+                "internal/app/dashboard.go",
+                "internal/sprint/qa_state.go"
+              ],
+              "reason": "Confirm bounded QA projection fields, breadcrumb Theory expectations, and whether Theory route without Shard is intentional; needed to resolve inconclusive shard-breadcrumb theory without mutating state",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 43254938,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+              "paths": [
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+              "paths": [
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+              "paths": [
+                "internal/tui/qa_view_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "qa_view.go renders only bounded app.QAResult projection with neutral completed text and no persistence/event derivation",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "views.go delegates all QA routes to renderSprintQAView and preserves verification summary separate from QA",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model.go navItems exposes QA Status/Dry Run/Start/Resume/Recover, durable run link, shard and focused-theory routes; breadcrumb Theory omits shard",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "model_test.go asserts QA navigation completeness and that QA theory summary remains verdict-neutral and does not promote issues",
+          "paths": [
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "qa_view_test.go asserts verdict-neutral text at narrow width and focused shard/theory rendering with bounded operations",
+          "paths": [
+            "internal/tui/qa_view_test.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Current qa_view.go:16-20 is verdict-neutral, bounded to app projection with explicit compatibility notice, and both qa_view_test.go and model_test.go explicitly assert no 'QA passed' promotion; no persistence/event derivation seen in changed file"
+    }
+  ]
+}

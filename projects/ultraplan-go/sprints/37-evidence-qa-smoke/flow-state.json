@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "ultraplan-go",
   "sprint": "37-evidence-qa-smoke",
-  "updatedAt": "2026-08-25T18:30:22.194093528Z",
+  "updatedAt": "2026-08-28T11:30:21.793986256Z",
   "stages": [
     {
       "stage": "requirements",
@@ -51,26 +51,44 @@
     "status": "completed",
     "verdict": "pass_with_findings",
     "path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/review.md",
-    "lastRunAt": "2026-08-25T15:33:27.034033608Z",
+    "lastRunAt": "2026-08-26T18:17:09.805475717Z",
     "fingerprint": "b6a384c03156477c9ce399aa4fa0f354351a5c1a0f58437752682f9a53bd55a6",
     "stale": false,
     "completed": 14,
     "total": 14,
-    "diagnostics": [
-      {
-        "code": "manual-reconciliation",
-        "message": "authorized manual reconciliation after implementation fixes; automated review is retained as superseded history in review.md"
-      }
-    ],
     "artifactDigest": "16d2e786eb0612a71c8eb6526e6367a2d81dc39a226f6ab904e141fb406d396e",
     "lastAttempt": {
-      "id": "manual-reconciliation-20260825T153327Z",
-      "status": "completed",
-      "startedAt": "2026-08-25T15:33:27.034033608Z",
-      "heartbeatAt": "2026-08-25T15:33:27.034033608Z",
-      "completedAt": "2026-08-25T15:33:27.034033608Z",
+      "id": "review-1787756907959403715",
+      "status": "failed",
+      "startedAt": "2026-08-26T15:08:27.959403715Z",
+      "heartbeatAt": "2026-08-26T18:17:09.783615003Z",
+      "ownerPid": 66847,
+      "completedAt": "2026-08-26T18:17:09.805475717Z",
       "diagnostics": [
-        "manual-reconciliation: reviewer not rerun; fixes verified and automated findings retained as superseded review.md history"
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "reviewer-failed: structured review result remained invalid after bounded repair: runtime did not return a structured review result",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing",
+        "missing-coverage: required reviewer result missing"
       ]
     },
     "lastComplete": {
@@ -1031,14 +1049,17 @@
   },
   "smoke": {
     "status": "completed",
-    "verdict": "fail",
+    "verdict": "pass",
     "path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/smoke.md",
-    "lastRunAt": "2026-08-25T18:30:22.164935468Z",
+    "lastRunAt": "2026-08-25T18:38:00.989Z",
     "reviewFingerprint": "b6a384c03156477c9ce399aa4fa0f354351a5c1a0f58437752682f9a53bd55a6",
-    "smokeFingerprint": "fb0dd90cc95c045410441ba2ebe945567ec8fd4635f4f90c6f85efe37af92d18",
-    "runId": "run-eo-sf7iKtE",
-    "authorRunId": "opencode-1",
-    "authorModel": "openrouter/stealth/ox-alpha",
+    "smokeFingerprint": "e92a3ac00004eeb52222b084d1a2e9637e1dde598a3653fc2b74fd727adde83b",
+    "runId": "run-WKMV6h36jg",
+    "authorRunId": "manual-reconciliation-20260825T183800Z",
+    "authorModel": "manual",
+    "authorChangedPaths": [
+      "src/tests/sprint-37-evidence-qa-smoke.ts"
+    ],
     "coverageMapping": {
       "sprint": "37-evidence-qa-smoke",
       "suites": [
@@ -1301,16 +1322,16 @@
         }
       ]
     },
-    "evidenceId": "4570e367bf6d073807fa1b95593fc7e3edaa0bc3927028f4bde166160b7d48ac",
+    "evidenceId": "e7379e435678592e915fd5e933ef11fdda45f7420c0fef4bd16360b359ade674",
     "reviewOverride": false,
     "stale": false,
     "reconciliationRequired": false,
-    "artifactDigest": "fb0dd90cc95c045410441ba2ebe945567ec8fd4635f4f90c6f85efe37af92d18",
-    "inputFingerprint": "7af42fbef46383158d52878a9737cd79458892caba6fa02a0fc85a1c6f84f606",
+    "artifactDigest": "e92a3ac00004eeb52222b084d1a2e9637e1dde598a3653fc2b74fd727adde83b",
+    "inputFingerprint": "17af1e3049fdda4fdcaed1037653f6a0e8416bffcdee853465c50453cdcdcd1e",
     "issues": [
       {
         "id": "runtime-sprint-37-live-smoke-parity-single-authority",
-        "status": "open",
+        "status": "resolved",
         "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-smoke-parity-single-authority.md",
         "test_id": "sprint-37-live-smoke-parity-single-authority",
         "severity": "high",
@@ -1322,7 +1343,7 @@
       },
       {
         "id": "runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
-        "status": "open",
+        "status": "resolved",
         "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot.md",
         "test_id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
         "severity": "high",
@@ -1336,32 +1357,27 @@
     "evidence": [
       {
         "kind": "run",
-        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-eo-sf7iKtE.json",
-        "digest": "4570e367bf6d073807fa1b95593fc7e3edaa0bc3927028f4bde166160b7d48ac"
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-WKMV6h36jg.json",
+        "digest": "e7379e435678592e915fd5e933ef11fdda45f7420c0fef4bd16360b359ade674"
       },
       {
         "kind": "summary",
-        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-eo-sf7iKtE-summary.md",
-        "digest": "4ef3fa653efa596fd3d9e71ee12fa53cada3c57269eae5092a2bc12306ba9db8"
+        "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-WKMV6h36jg-summary.md",
+        "digest": "b4ed5028f60d9dbf4694ab6ebdbada78066b4d5f5606210013de3182089b0a15"
       }
     ],
-    "lastAttempt": {
-      "id": "smoke-1787682214241461074",
-      "status": "completed",
-      "startedAt": "2026-08-25T18:23:34.241461074Z",
-      "heartbeatAt": "2026-08-25T18:23:34.241461074Z",
-      "ownerPid": 913228,
-      "completedAt": "2026-08-25T18:30:22.188541072Z"
-    },
     "lastComplete": {
-      "verdict": "fail",
+      "verdict": "pass",
       "artifact": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/smoke.md",
-      "artifactDigest": "fb0dd90cc95c045410441ba2ebe945567ec8fd4635f4f90c6f85efe37af92d18",
-      "inputFingerprint": "7af42fbef46383158d52878a9737cd79458892caba6fa02a0fc85a1c6f84f606",
-      "completedAt": "2026-08-25T18:30:22.164935468Z",
-      "runId": "run-eo-sf7iKtE",
-      "authorRunId": "opencode-1",
-      "authorModel": "openrouter/stealth/ox-alpha",
+      "artifactDigest": "e92a3ac00004eeb52222b084d1a2e9637e1dde598a3653fc2b74fd727adde83b",
+      "inputFingerprint": "17af1e3049fdda4fdcaed1037653f6a0e8416bffcdee853465c50453cdcdcd1e",
+      "completedAt": "2026-08-25T18:38:00.989Z",
+      "runId": "run-WKMV6h36jg",
+      "authorRunId": "manual-reconciliation-20260825T183800Z",
+      "authorModel": "manual",
+      "authorChangedPaths": [
+        "src/tests/sprint-37-evidence-qa-smoke.ts"
+      ],
       "coverageMapping": {
         "sprint": "37-evidence-qa-smoke",
         "suites": [
@@ -1624,7 +1640,7 @@
           }
         ]
       },
-      "evidenceId": "4570e367bf6d073807fa1b95593fc7e3edaa0bc3927028f4bde166160b7d48ac",
+      "evidenceId": "e7379e435678592e915fd5e933ef11fdda45f7420c0fef4bd16360b359ade674",
       "evidence": [
         {
           "kind": "file",
@@ -1636,11 +1652,11 @@
         },
         {
           "kind": "file",
-          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-eo-sf7iKtE-summary.md"
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-WKMV6h36jg-summary.md"
         },
         {
           "kind": "file",
-          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-eo-sf7iKtE.json"
+          "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/runs/run-WKMV6h36jg.json"
         },
         {
           "kind": "file",
@@ -1658,12 +1674,12 @@
         {
           "kind": "fact",
           "path": "issue:runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
-          "digest": "open"
+          "digest": "resolved"
         },
         {
           "kind": "fact",
           "path": "issue:runtime-sprint-37-live-smoke-parity-single-authority",
-          "digest": "open"
+          "digest": "resolved"
         },
         {
           "kind": "fact",
@@ -1693,7 +1709,7 @@
       "issues": [
         {
           "id": "runtime-sprint-37-live-smoke-parity-single-authority",
-          "status": "open",
+          "status": "resolved",
           "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-smoke-parity-single-authority.md",
           "test_id": "sprint-37-live-smoke-parity-single-authority",
           "severity": "high",
@@ -1705,7 +1721,7 @@
         },
         {
           "id": "runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
-          "status": "open",
+          "status": "resolved",
           "path": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-smoke/issues/runtime-sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot.md",
           "test_id": "sprint-37-live-cross-surface-focused-routes-and-no-javascript-snapshot",
           "severity": "high",
@@ -1717,5 +1733,24 @@
         }
       ]
     }
+  },
+  "qa": {
+    "phase": "completed",
+    "fresh": true,
+    "completed_shards": 10,
+    "total_shards": 10,
+    "confirmed": 32,
+    "blocked": 0,
+    "cancellation": {
+      "requested": false
+    },
+    "state_path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/verification/state.json",
+    "state_digest": "88439fecde6ebe6adb4da4f4e38958ccbf94d72d4eb1a55a5e828c602dd527f8",
+    "current_attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+    "next_action": "Review the current Conformance Review findings.",
+    "assessment": "pass_with_findings",
+    "evidence_count": 18,
+    "report_path": "projects/ultraplan-go/sprints/37-evidence-qa-smoke/qa.md",
+    "report_digest": "34ce896c3c14b29a2523806e679ba141bf68718bf0b2777e51a3e8d9e90baeba"
   }
 }

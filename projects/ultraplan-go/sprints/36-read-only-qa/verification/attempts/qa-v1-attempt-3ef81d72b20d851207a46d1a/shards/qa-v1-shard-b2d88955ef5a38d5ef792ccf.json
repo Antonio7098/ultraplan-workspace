@@ -1,0 +1,533 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b2d88955ef5a38d5ef792ccf",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "primary",
+  "title": "internal/tui",
+  "changed_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/tui"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2d88955ef5a38d5ef792ccf/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:53:19.88580456Z",
+      "completed_at": "2026-08-26T10:53:58.43403188Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 50753873,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_read",
+          "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ],
+          "output_digest": "sha256:qa_view-readonly-banner-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+          "paths": [
+            "internal/tui/model.go"
+          ],
+          "output_digest": "sha256:model-nav-dedupe-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+          "paths": [
+            "internal/tui/model_test.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/verify_test.go"
+          ],
+          "output_digest": "sha256:tui-tests-expectations-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+          "paths": [
+            "internal/tui/views.go",
+            "internal/tui/views_test.go"
+          ],
+          "output_digest": "sha256:views-render-delegation-static"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-19d7e9e8a0b81abe7d7e0756",
+      "shard_id": "qa-v1-shard-b2d88955ef5a38d5ef792ccf",
+      "claim": "Read-only QA TUI view promotes QA result as authoritative product verdict (e.g. 'QA passed') instead of compatibility status",
+      "basis": "qa_view.go renders sprint QA as bounded projection and tests assert absence of verdict-promoting text; behavioral concern is changed behavior in internal/tui could reintroduce verdict language",
+      "verification_surface": "internal/tui/qa_view.go:10-22, internal/tui/qa_view_test.go:13-33, internal/tui/model_test.go:135-146, internal/tui/views.go:371-374",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-workflows",
+        "handbook"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Static read finds strings like 'QA passed', 'QA failed' or Issues promoted as verdict in qa_view.go or rendered summary for RouteSprintQATheory",
+      "refutation_condition": "qa_view.go contains only 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' and tests assert no 'QA passed' and summary includes only bounded app.QAResult fields without verdict promotion",
+      "inconclusive_condition": "Cannot read expected files or diff unavailable to determine changed wording",
+      "safe_evidence_strategy": "Read assigned changed files (qa_view.go, views.go, qa_view_test.go, model_test.go) and grep for verdict-promoting literals; no execution",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2d88955ef5a38d5ef792ccf/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:19.88580456Z",
+          "completed_at": "2026-08-26T10:53:58.43403188Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 50753873,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "static_read",
+              "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ],
+              "output_digest": "sha256:qa_view-readonly-banner-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+              "paths": [
+                "internal/tui/model.go"
+              ],
+              "output_digest": "sha256:model-nav-dedupe-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+              "paths": [
+                "internal/tui/model_test.go",
+                "internal/tui/qa_view_test.go",
+                "internal/tui/verify_test.go"
+              ],
+              "output_digest": "sha256:tui-tests-expectations-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+              "paths": [
+                "internal/tui/views.go",
+                "internal/tui/views_test.go"
+              ],
+              "output_digest": "sha256:views-render-delegation-static"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_read",
+          "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ],
+          "output_digest": "sha256:qa_view-readonly-banner-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+          "paths": [
+            "internal/tui/model.go"
+          ],
+          "output_digest": "sha256:model-nav-dedupe-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+          "paths": [
+            "internal/tui/model_test.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/verify_test.go"
+          ],
+          "output_digest": "sha256:tui-tests-expectations-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+          "paths": [
+            "internal/tui/views.go",
+            "internal/tui/views_test.go"
+          ],
+          "output_digest": "sha256:views-render-delegation-static"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Static read shows qa_view.go:16-17 renders neutral 'Read-only QA completed (compatibility status)...' and qa_view_test.go:27-32 explicitly asserts absence of 'QA passed' and presence of 'Read-only QA completed'; model_test.go:143 also asserts no verdict promotion, consistent with bounded projection comment qa_view.go:8-9"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-241f874d9193a98c20e2361c",
+      "shard_id": "qa-v1-shard-b2d88955ef5a38d5ef792ccf",
+      "claim": "Focused shard navigation leaks theories across shards or shows unbounded QA operations",
+      "basis": "model.go navItems for RouteSprintQAShard must filter by route.Shard and expose only shard-specific theories; change could break isolation or expose cross-shard theories",
+      "verification_surface": "internal/tui/model.go:518-533, internal/tui/model_test.go:130-135, internal/tui/qa_view.go:37-51",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "navItems for RouteSprintQAShard iterates theories without checking shard.ID == route.Shard, or test shows theory from different shard appears",
+      "refutation_condition": "Loop at model.go:524-531 filters with if shard.ID != route.Shard continue and inner loop matches theory.ID == route.Theory only within focused shard, and model_test.go expects len 3 with correct RouteSprintQATheory routing",
+      "inconclusive_condition": "Files unreadable or shard structure changed outside assigned paths",
+      "safe_evidence_strategy": "Read model.go navItems implementation and model_test/qa_view_test expectations for shard/theory isolation; no execution",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2d88955ef5a38d5ef792ccf/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:19.88580456Z",
+          "completed_at": "2026-08-26T10:53:58.43403188Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 50753873,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "static_read",
+              "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ],
+              "output_digest": "sha256:qa_view-readonly-banner-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+              "paths": [
+                "internal/tui/model.go"
+              ],
+              "output_digest": "sha256:model-nav-dedupe-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+              "paths": [
+                "internal/tui/model_test.go",
+                "internal/tui/qa_view_test.go",
+                "internal/tui/verify_test.go"
+              ],
+              "output_digest": "sha256:tui-tests-expectations-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+              "paths": [
+                "internal/tui/views.go",
+                "internal/tui/views_test.go"
+              ],
+              "output_digest": "sha256:views-render-delegation-static"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_read",
+          "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ],
+          "output_digest": "sha256:qa_view-readonly-banner-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+          "paths": [
+            "internal/tui/model.go"
+          ],
+          "output_digest": "sha256:model-nav-dedupe-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+          "paths": [
+            "internal/tui/model_test.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/verify_test.go"
+          ],
+          "output_digest": "sha256:tui-tests-expectations-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+          "paths": [
+            "internal/tui/views.go",
+            "internal/tui/views_test.go"
+          ],
+          "output_digest": "sha256:views-render-delegation-static"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "model.go:524-531 correctly filters shard.ID before appending theories and qa_view.go:38-50 same filter; model_test.go:131-133 verifies exactly 3 items with focused theory ID, indicating no cross-shard leak in current snapshot"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9bfac8b7605977eff93c80e6",
+      "shard_id": "qa-v1-shard-b2d88955ef5a38d5ef792ccf",
+      "claim": "PreviewOffset increment on ActionDown lacks upper-bound clamp, allowing unbounded scroll offset beyond content length",
+      "basis": "model.go Update for ActionDown increments PreviewOffset without capping, while ActionUp clamps at 0; views.go viewport uses offset directly which could shift render beyond body lines if changed behavior altered preview handling",
+      "verification_surface": "internal/tui/model.go:282-300, internal/tui/views.go:614-657, internal/tui/model_test.go:45-49",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "ActionDown branch for Preview != nil does m.PreviewOffset++ with no max check, and renderFrame AtOffset could exceed bodyLines length without graceful empty view",
+      "refutation_condition": "Viewport or renderPreview caps offset or preview tests show scrolled view still renders valid lines, or model clamps offset elsewhere",
+      "inconclusive_condition": "Cannot determine viewport clamping without executing renderFrame bounds or seeing prior diff for preview height logic",
+      "safe_evidence_strategy": "Read model.go key handling for preview offset and views.go renderFrame/viewport logic; grep for clamp/max checks",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2d88955ef5a38d5ef792ccf/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:19.88580456Z",
+          "completed_at": "2026-08-26T10:53:58.43403188Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 50753873,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "static_read",
+              "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ],
+              "output_digest": "sha256:qa_view-readonly-banner-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+              "paths": [
+                "internal/tui/model.go"
+              ],
+              "output_digest": "sha256:model-nav-dedupe-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+              "paths": [
+                "internal/tui/model_test.go",
+                "internal/tui/qa_view_test.go",
+                "internal/tui/verify_test.go"
+              ],
+              "output_digest": "sha256:tui-tests-expectations-static"
+            },
+            {
+              "kind": "static_read",
+              "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+              "paths": [
+                "internal/tui/views.go",
+                "internal/tui/views_test.go"
+              ],
+              "output_digest": "sha256:views-render-delegation-static"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_read",
+          "summary": "qa_view.go renders only bounded app projection with neutral compatibility text and respects route.Shard/route.Theory focus filters",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ],
+          "output_digest": "sha256:qa_view-readonly-banner-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model.go navItems for RouteSprintQAShard filters theories by shard.ID and OperationMsg/PreviewMsg guard by currentRoute; dedupeDurableEvents caps at 200 with RunID:Sequence dedup",
+          "paths": [
+            "internal/tui/model.go"
+          ],
+          "output_digest": "sha256:model-nav-dedupe-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "model_test and qa_view_test assert no verdict promotion, shard isolation, and preview offset behavior; verify_test confirms smoke/verify navigation labels",
+          "paths": [
+            "internal/tui/model_test.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/verify_test.go"
+          ],
+          "output_digest": "sha256:tui-tests-expectations-static"
+        },
+        {
+          "kind": "static_read",
+          "summary": "views.go renderRouteSummary delegates QA routes to renderSprintQAView and RenderWithSize uses viewportOffset vs viewportSelection; tabs and preview rendering bounded",
+          "paths": [
+            "internal/tui/views.go",
+            "internal/tui/views_test.go"
+          ],
+          "output_digest": "sha256:views-render-delegation-static"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static read confirms unbounded increment at model.go:293-294 vs clamped decrement at 283-286, but views.go:614-657 creates viewport with AtOffset and slices bodyLines[vp.offset:vp.End()] without visible panic, and views_test.go:145-155 shows expected scroll behavior; read-only static analysis cannot confirm whether exceeding offset causes empty/blank viewport versus error, and diff for changed behavior not available"
+    }
+  ]
+}

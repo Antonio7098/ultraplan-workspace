@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-5fa09bed03b781efb552f022",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/sprint_commands.go",
+    "internal/platform/process/isolation.go",
+    "internal/sprint/qa.go",
+    "internal/web/qa_handlers.go"
+  ],
+  "overlap_paths": [
+    "docs/architecture.md",
+    "internal/app/sprint_commands.go",
+    "internal/platform/process/isolation.go",
+    "internal/sprint/qa.go",
+    "internal/web/qa_handlers.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "runtime"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-5fa09bed03b781efb552f022/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:20:30.764726664Z",
+      "completed_at": "2026-08-28T11:21:36.506640522Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 37,
+      "retained_events": 37,
+      "observed_tool_calls": 16,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-aaeb2c1c55729c026a312d25",
+      "shard_id": "qa-v1-shard-5fa09bed03b781efb552f022",
+      "claim": "handleSprintQAEvidence, handleSprintQAAdjudication, handleSprintQAIssues, handleSprintQAIssue, handleSprintQAAssessment, and handleSprintQASmokeSuite all type-assert h.qa to app.QAEvidenceQueries (qa_handlers.go:24,38,52,75,89,103); if the adapter behind h.qa only implements the older QAQueries interface, all six endpoints return ErrWebUnavailable and the Sprint 37 evidence surface is unreachable through the web boundary.",
+      "basis": "Cross-package contract between internal/web and internal/app: qa_handlers.go depends on the additive app.QAEvidenceQueries interface (sprint_usecases.go:87-96) that adds QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, and QASmokeSuite on top of the base QAQueries. docs/architecture.md states the web layer receives only the closed operation capability supplied by the composition root and must not decide workflow semantics; the additive interface is the documented extension point.",
+      "verification_surface": "internal/web/qa_handlers.go:10-201, internal/app/sprint_usecases.go:79-96, internal/web/handlers.go:653-673",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-web-boundary"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Static reading shows qa_handlers.go makes six QAEvidenceQueries type assertions that all return ErrWebUnavailable on failure; sprint_usecases.go:87-96 declares the additive interface and dashboardUseCases implements all six methods (lines 802,819,837,890,909,929).",
+      "refutation_condition": "Type assertions match a single concrete adapter that always implements the additive surface, OR the composition root injects an adapter that satisfies the union of QAQueries and QAEvidenceQueries.",
+      "inconclusive_condition": "Static reading alone cannot confirm which concrete adapter is injected into h.qa at composition time.",
+      "safe_evidence_strategy": "grep -n \"func (u dashboardUseCases) QA\" internal/app/sprint_usecases.go and grep -n \"QAEvidenceQueries\" internal/app/*.go internal/web/*.go to enumerate every implementation and consumer; confirm the injection site binds the union interface.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-5fa09bed03b781efb552f022/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.764726664Z",
+          "completed_at": "2026-08-28T11:21:36.506640522Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 37,
+          "retained_events": 37,
+          "observed_tool_calls": 16,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Cross-package contract is textually present and the additive interface comment matches the architecture description, but the composition-time binding of h.qa cannot be verified from these read-only context paths."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-be059b1679ffb3bc8ab91afe",
+      "shard_id": "qa-v1-shard-5fa09bed03b781efb552f022",
+      "claim": "buildQAEvidencePublication admits evidence only when pprocess.IsolationCapabilityFacts returns NativeProtectedRootDeny AND DescendantCleanup AND WorkspaceRemoval all true (qa.go:463), and the admission struct is validated by ValidateQAAdmission before any evidence plan is frozen.",
+      "basis": "docs/architecture.md (QA evidence and isolation) states writable checks get a new 0700 non-Git-dependent copy, bubblewrap mounts the host root read-only and remounts only the disposable copy writable, and platforms that cannot prove protected-root denial, process-group cleanup, and workspace removal report the missing capability and QA blocks before writable work. qa.go:458-468 materializes those facts through pprocess.IsolationCapabilityFacts() and binds them into admission.IsolationProven.",
+      "verification_surface": "internal/sprint/qa.go:449-468, internal/platform/process/isolation.go:38-46, docs/architecture.md (QA evidence and isolation section)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Reading the three capability names in admission.IsolationProven matches exactly the three capability names architecture.md lists for platform gating; ValidateQAAdmission is invoked and any false capability blocks evidence publication.",
+      "refutation_condition": "ValidateQAAdmission treats IsolationProven as advisory rather than blocking, OR the three names in code do not equal the three names in architecture.md.",
+      "inconclusive_condition": "Static reading cannot exercise ValidateQAAdmission with each capability toggled off.",
+      "safe_evidence_strategy": "grep -n \"IsolationProven\\|ValidateQAAdmission\" internal/sprint/*.go to enumerate every site that interprets the three capabilities, and read ValidateQAAdmission source.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-5fa09bed03b781efb552f022/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.764726664Z",
+          "completed_at": "2026-08-28T11:21:36.506640522Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 37,
+          "retained_events": 37,
+          "observed_tool_calls": 16,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Names and gating presence are textually consistent across both packages; runtime consequence of a missing capability cannot be observed from the read-only assigned paths."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e683b66696ce0d0344c63307",
+      "shard_id": "qa-v1-shard-5fa09bed03b781efb552f022",
+      "claim": "IsolationWorkspace.Run (isolation.go:158-183) enforces env validation (no NUL byte, must contain =) and applies nativeIsolationRequest only when Capabilities.NativeProtectedRootDeny is true; otherwise the request is passed through unchanged, leaving protected-root enforcement to the caller.",
+      "basis": "Cross-package contract between internal/platform/process.IsolationWorkspace.Run and the consumer (qa.go uses RunQAInvestigation with TargetRoot/WorkspaceParent/ProtectedRoots). Architecture says protected-root denial is the platform's responsibility and a missing capability must block writable work upstream.",
+      "verification_surface": "internal/platform/process/isolation.go:158-183, internal/sprint/qa.go:534",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Run path checks Capabilities.NativeProtectedRootDeny before invoking nativeIsolationRequest and the request is forwarded unchanged otherwise, while env entries are rejected on NUL or missing =.",
+      "refutation_condition": "nativeIsolationRequest is always invoked regardless of capability, OR env validation is skipped.",
+      "inconclusive_condition": "Cannot observe behavior of nativeIsolationRequest or its absence from the read-only paths.",
+      "safe_evidence_strategy": "grep -n \"nativeIsolationRequest\\|NativeProtectedRootDeny\" internal/platform/process/*.go and read the function body.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-5fa09bed03b781efb552f022/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.764726664Z",
+          "completed_at": "2026-08-28T11:21:36.506640522Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 37,
+          "retained_events": 37,
+          "observed_tool_calls": 16,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Conditional bwrap application is textually present and architecture is consistent; the actual Linux behavior of nativeIsolationRequest cannot be exercised from read-only inspection."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e9574f367356c1369f5ff234",
+      "shard_id": "qa-v1-shard-5fa09bed03b781efb552f022",
+      "claim": "handleSprintQAPage (qa_handlers.go:168-201) composes a pageModel that embeds Sprint, QA, QAShard, and QATheory DTOs; the page path is the only route that combines all four projections through the additive interface and is therefore the most surface-rich cross-package integration point.",
+      "basis": "Cross-package composition: handleSprintQAPage calls h.queries.Sprint (legacy surface), h.qa.QAStatus, and conditionally h.qa.QAShard and h.qa.QASynthesis-adjacent QATheory. The other handlers use a single projection each. Architecture says web must not decide workflow semantics and must not import sprint; the page route is the natural boundary test.",
+      "verification_surface": "internal/web/qa_handlers.go:168-201, internal/web/handlers.go:510-515, internal/app/sprint_usecases.go:79-96",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-web-boundary"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "handleSprintQAPage makes exactly four product calls (Sprint, QAStatus, optional QAShard, optional QATheory) and returns a single pageModel; no other handler aggregates that many projections.",
+      "refutation_condition": "Another handler aggregates the same four projections, OR the page path is split across multiple handlers.",
+      "inconclusive_condition": "Cannot inspect the html/template that consumes pageModel to confirm it does not require additional projections.",
+      "safe_evidence_strategy": "grep -n \"pageModel{\\|h.queries\\.Sprint\\|h\\.qa\\.\" internal/web/qa_handlers.go internal/web/handlers.go to enumerate every projection request the page route performs.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-5fa09bed03b781efb552f022/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.764726664Z",
+          "completed_at": "2026-08-28T11:21:36.506640522Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 37,
+          "retained_events": 37,
+          "observed_tool_calls": 16,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Page composition shape is textually present and consistent with architecture; the template contract cannot be verified from these paths."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f575eec8420427ccd7149a7b",
+      "shard_id": "qa-v1-shard-5fa09bed03b781efb552f022",
+      "claim": "RunQA has two cross-package integration paths: the smoke suite short-circuit (qa.go:289-310) bypasses mutation context acquisition, qaMap construction, settings load, and writer fence injection, while the main path (qa.go:311-447) acquires the mutation lease, constructs the writer fence, and binds the store with WithWriterFence; the suite path therefore does not rely on isolation capabilities while the main path does.",
+      "basis": "Cross-package integration of sprint.RunQA with app.sprintRuntimeService (sprint_commands.go:754-780) which builds a controlled runtime and returns a Service bound to a controlled runtime and QA writer fence only on the main run path. Architecture says QA starts only after durable acceptance and owner claim; the smoke suite reuses the canonical smoke execution rather than copying it into a second runner (docs/architecture.md end of QA verification phase).",
+      "verification_surface": "internal/sprint/qa.go:288-447, internal/app/sprint_commands.go:420-471, internal/app/sprint_commands.go:754-780",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Reading the two RunQA branches confirms the smoke path skips mutation context, qaMap load, store writer fence binding, and isolation capability probe, while the main path executes all of them.",
+      "refutation_condition": "The smoke path secretly enters the main path, OR the main path also runs the smoke suite, OR the writer fence is bound on the smoke path through a different mechanism.",
+      "inconclusive_condition": "Static reading cannot prove runtime sequence when qaCommand.Suite is empty versus smoke.",
+      "safe_evidence_strategy": "grep -n \"RunQA\\|WithWriterFence\\|acquireMutationContext\\|RunSmoke\" internal/sprint/qa.go internal/app/sprint_commands.go to enumerate every entry to RunQA and every fence binding site.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-5fa09bed03b781efb552f022/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.764726664Z",
+          "completed_at": "2026-08-28T11:21:36.506640522Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 37,
+          "retained_events": 37,
+          "observed_tool_calls": 16,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Branch separation is textually present and matches the architecture description of smoke reuse; whether any non-suite action still ends up in the suite branch cannot be determined without runtime."
+    }
+  ]
+}

@@ -1,0 +1,442 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-6361c9074607666cf7c21337",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-4533dd4c38ef03d4a8f522fa",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: ValidateQAOperationRequest rejects every caller-owned QA control (model, stage, timeout, parallelism, suite abuse) before PrepareOperation fingerprinting"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-llm-evaluation-cost-safety",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-4533dd4c38ef03d4a8f522fa"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-6361c9074607666cf7c21337/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:23:33.558766258Z",
+      "completed_at": "2026-08-26T11:24:48.63105803Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "evidence": [
+        {
+          "kind": "source",
+          "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+          "paths": [
+            "internal/app/operations.go:376-398"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+          "paths": [
+            "internal/app/operations.go:211-374"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+          "paths": [
+            "internal/app/web_operations_test.go:148-186",
+            "internal/app/operations.go:382-396"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+          "paths": [
+            "internal/app/operations.go:400-410",
+            "internal/app/operation_runner.go:114-126"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-330cf9b6440b16ab602ae60b",
+      "shard_id": "qa-v1-shard-6361c9074607666cf7c21337",
+      "claim": "PrepareOperation fingerprinting (canonicalOperationRequest + fingerprintOperationInputs + governedOperationInputs) is sequenced strictly after validateQAOperationRequest, preventing tampered QA controls from being laundered into InputFingerprint/ExpectedFingerprint",
+      "basis": "operations.go:211-373 defines sequence: clear ExpectedFingerprint -\u003e normalizeOperationRequest -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch to build Confirmation (including QA shard ownership check 259-265) -\u003e operationPrerequisites -\u003e canonicalOperationRequest -\u003e governedOperationInputs -\u003e fingerprintOperationInputs -\u003e set InputFingerprint/ExpectedFingerprint; validation errors return before 360-373",
+      "verification_surface": "read-only ordering inspection of operations.go:211-374 and RunOperation 400-410 which re-calls PrepareOperation and checks staleness",
+      "expectation_refs": [
+        "contract-llm-evaluation-cost-safety",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Any validation failure returns before canonical/fingerprint computation; no fingerprint is cached or returned on error path",
+      "refutation_condition": "Fingerprint or canonical request is computed before validation, or validation is skipped on RunOperation path allowing ExpectedFingerprint to attest tampered request",
+      "inconclusive_condition": "Alternative PrepareOperation implementation in another build tag or unlisted path computes fingerprint earlier",
+      "safe_evidence_strategy": "Read-only sequential read of operations.go PrepareOperation and RunOperation; grep for fingerprintOperationInputs and validateQAOperationRequest ordering; no mutation",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-6361c9074607666cf7c21337/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.558766258Z",
+          "completed_at": "2026-08-26T11:24:48.63105803Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "source",
+              "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+              "paths": [
+                "internal/app/operations.go:376-398"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+              "paths": [
+                "internal/app/operations.go:211-374"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+              "paths": [
+                "internal/app/web_operations_test.go:148-186",
+                "internal/app/operations.go:382-396"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+              "paths": [
+                "internal/app/operations.go:400-410",
+                "internal/app/operation_runner.go:114-126"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source",
+          "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+          "paths": [
+            "internal/app/operations.go:376-398"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+          "paths": [
+            "internal/app/operations.go:211-374"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+          "paths": [
+            "internal/app/web_operations_test.go:148-186",
+            "internal/app/operations.go:382-396"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+          "paths": [
+            "internal/app/operations.go:400-410",
+            "internal/app/operation_runner.go:114-126"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Source order at 216-221 vs 359-372 demonstrates validation gates all QA kinds before fingerprint; RunOperation at 403 re-invokes PrepareOperation and then compares ExpectedFingerprint, preserving same gate; no evidence of pre-validation fingerprinting in assigned paths"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-d544490000482fe5dda3426d",
+      "shard_id": "qa-v1-shard-6361c9074607666cf7c21337",
+      "claim": "QA suite abuse (invalid suite value, suite outside start/dry-run, suite+shard mutual exclusion, shard outside start/resume) is rejected by validateQAOperationRequest",
+      "basis": "operations.go:385-396: if Suite != \"\" \u0026\u0026 Suite != \"smoke\" -\u003e error; if Suite != \"\" \u0026\u0026 Kind not in {OperationQAStart,OperationQADryRun} -\u003e error; if Suite != \"\" \u0026\u0026 Task != \"\" -\u003e mutually exclusive error; if Task != \"\" \u0026\u0026 Kind not in {OperationQAStart,OperationQAResume} -\u003e error; switch at 377-381 gates only QA kinds",
+      "verification_surface": "read-only inspection of operations.go:376-398 and web_operations_test.go:169-184, plus operation_runner.go:114 QAStart/Resume handling of Suite",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-llm-evaluation-cost-safety",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "All suite-abuse variants (Suite=\"other\", Suite on QAResume/QAStatus/QARecover, Suite+Task together, Task on QAStatus/QADryRun/QARecover) return error from validateQAOperationRequest/PrepareOperation",
+      "refutation_condition": "Any suite-abuse combination is accepted (nil error) or reaches fingerprint/runner, enabling caller to select arbitrary harness scope or bypass shard ownership",
+      "inconclusive_condition": "Cannot determine if web/CLI parsers pre-filter suite before validation or if fingerprinting precedes validation",
+      "safe_evidence_strategy": "Read-only read of operations.go, web_operations_test.go, sprint_commands.go parseSprintQAArgs and web/operation_handlers handling; no execution",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-6361c9074607666cf7c21337/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.558766258Z",
+          "completed_at": "2026-08-26T11:24:48.63105803Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "source",
+              "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+              "paths": [
+                "internal/app/operations.go:376-398"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+              "paths": [
+                "internal/app/operations.go:211-374"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+              "paths": [
+                "internal/app/web_operations_test.go:148-186",
+                "internal/app/operations.go:382-396"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+              "paths": [
+                "internal/app/operations.go:400-410",
+                "internal/app/operation_runner.go:114-126"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source",
+          "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+          "paths": [
+            "internal/app/operations.go:376-398"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+          "paths": [
+            "internal/app/operations.go:211-374"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+          "paths": [
+            "internal/app/web_operations_test.go:148-186",
+            "internal/app/operations.go:382-396"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+          "paths": [
+            "internal/app/operations.go:400-410",
+            "internal/app/operation_runner.go:114-126"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code shows explicit 4 suite/task checks; test at 169-184 iterates invalid cases (other suite, suite+shard, suite on resume) and asserts error==nil is false, and valid cases (smoke on start/dry-run) succeed; no code path computes fingerprint before these checks"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ed5469c17a8504892f4780bd",
+      "shard_id": "qa-v1-shard-6361c9074607666cf7c21337",
+      "claim": "validateQAOperationRequest rejects every caller-owned QA control (Model, Stage, Timeout, Parallelism, Study, Level, Test, ForceReview, RestartReview, OverrideRationale, ReviewFocus, Sources, Dimensions) before PrepareOperation fingerprinting",
+      "basis": "operations.go:211-223 clears ExpectedFingerprint, normalizes, then calls validateOperationScope then validateQAOperationRequest before any CanonicalRequest/InputFingerprint computation (lines 359-374); validateQAOperationRequest:376-398 explicitly checks if req.Study!=\"\" || req.Stage!=\"\" || req.Model!=\"\" || req.Level!=\"\" || req.Test!=\"\" || req.Timeout!=\"\" || req.ForceReview || req.RestartReview || req.OverrideRationale!=\"\" || len(ReviewFocus)\u003e0 || len(Sources)\u003e0 || len(Dimensions)\u003e0 || req.Parallelism!=0 then returns 'QA operations accept only project, sprint, and a map-owned shard'",
+      "verification_surface": "read-only inspection of assigned context_paths internal/app/operations.go and internal/app/web_operations_test.go; no execution or mutation",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-llm-evaluation-cost-safety",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Every non-empty Model, Stage, Timeout, Parallelism, Level/Test, ForceReview/RestartReview, OverrideRationale, ReviewFocus, Sources, Dimensions, Study causes PrepareOperation and validateQAOperationRequest to return error and no InputFingerprint/CanonicalRequest is produced",
+      "refutation_condition": "Any listed caller-owned field is accepted by PrepareOperation (nil error) and fingerprinting proceeds, allowing cost/model/timeout/bypass",
+      "inconclusive_condition": "Source truncated, normalization alters field before check, or alternative entry point bypasses validateQAOperationRequest",
+      "safe_evidence_strategy": "Read-only read/grep of assigned paths operations.go, web_operations_test.go, operation_runner.go; no shell, no writes",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-6361c9074607666cf7c21337/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:23:33.558766258Z",
+          "completed_at": "2026-08-26T11:24:48.63105803Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "source",
+              "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+              "paths": [
+                "internal/app/operations.go:376-398"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+              "paths": [
+                "internal/app/operations.go:211-374"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+              "paths": [
+                "internal/app/web_operations_test.go:148-186",
+                "internal/app/operations.go:382-396"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+              "paths": [
+                "internal/app/operations.go:400-410",
+                "internal/app/operation_runner.go:114-126"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source",
+          "summary": "validateQAOperationRequest big-if rejects all caller-owned controls and suite/task abuse before fingerprinting",
+          "paths": [
+            "internal/app/operations.go:376-398"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "PrepareOperation sequence: normalize -\u003e validateOperationScope -\u003e validateQAOperationRequest -\u003e switch -\u003e canonicalOperationRequest -\u003e fingerprintOperationInputs -\u003e InputFingerprint; returns early on validation error",
+          "paths": [
+            "internal/app/operations.go:211-374"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "TestQAOperationPreparationRejectsEveryCallerOwnedControl asserts rejection of stage, model, timeout, parallelism, sources and suite/shard abuse, and acceptance of valid smoke suite",
+          "paths": [
+            "internal/app/web_operations_test.go:148-186",
+            "internal/app/operations.go:382-396"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "RunOperation re-derives preparation and rejects stale fingerprints, preserving validation-before-execution invariant; QAStart/Resume runner uses only Task/Suite after validation",
+          "paths": [
+            "internal/app/operations.go:400-410",
+            "internal/app/operation_runner.go:114-126"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static inspection confirms 376:382 big-if covers model, stage, timeout, parallelism, study, level, test, force/restart review, override rationale, reviewFocus, sources, dimensions; 383-396 covers suite abuse; PrepareOperation invokes validation at 220-221 before 360-372 fingerprinting; web_operations_test.go:148-186 asserts same rejection (stage, model, timeout, parallelism, sources, suite, shard) and would fail if bypass existed"
+    }
+  ]
+}

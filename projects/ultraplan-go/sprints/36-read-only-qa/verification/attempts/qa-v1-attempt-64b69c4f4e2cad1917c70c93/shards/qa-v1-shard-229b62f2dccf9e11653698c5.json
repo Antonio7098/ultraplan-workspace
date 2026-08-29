@@ -1,0 +1,664 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-229b62f2dccf9e11653698c5",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-229b62f2dccf9e11653698c5/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:18:53.75252824Z",
+      "completed_at": "2026-08-26T11:21:12.459027545Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "context_requests": [
+        {
+          "id": "ctx-1",
+          "paths": [
+            "internal/sprint/locks_test.go",
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/review.go"
+          ],
+          "reason": "Confirm expired-attempt reconciliation and review freshness interactions with QA map staleness",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 46187997,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+          "paths": [
+            "internal/sprint/qa_map_test.go",
+            "internal/sprint/qa_prompt_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2f1b8b23d684bf12c1c936df",
+      "shard_id": "qa-v1-shard-229b62f2dccf9e11653698c5",
+      "claim": "ReconcileInterruptedMutation leaves QAPhaseMapped without terminal conversion while RecoverQA converts Mapped to Interrupted, creating divergent recovery paths",
+      "basis": "internal/sprint/locks.go:83-95 only transitions Queued/Running/Synthesizing to Interrupted; QAPhaseMapped case is absent. internal/sprint/qa.go:223-227 explicitly handles Mapped -\u003e Interrupted in RecoverQA. A crash while mapped but before shard execution leaves durable state ambiguous across the two recovery entry points.",
+      "verification_surface": "internal/sprint/locks.go:83-95; internal/sprint/qa.go:216-234",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Read both functions and confirm Mapped is not handled in ReconcileInterruptedMutation, then inspect a persisted QA state with Phase=mapped after injected process death via ReconcileInterruptedMutation returns unchanged",
+      "refutation_condition": "Show ReconcileInterruptedMutation intentionally delegates Mapped to later RecoverQA and that call sequence guarantees eventual Interrupted/Stale via QAMap drift check at locks.go:33-96 and qa.go:228-234",
+      "inconclusive_condition": "Cannot invoke process death or file mutation in read-only mode to observe durable transition",
+      "safe_evidence_strategy": "Read locks.go, qa.go, qa_state.go; list stored verification/state.json fixtures; search for QAPhaseMapped usages; request no writes",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-229b62f2dccf9e11653698c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.75252824Z",
+          "completed_at": "2026-08-26T11:21:12.459027545Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/locks_test.go",
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/review.go"
+              ],
+              "reason": "Confirm expired-attempt reconciliation and review freshness interactions with QA map staleness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 46187997,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+              "paths": [
+                "internal/sprint/qa_map_test.go",
+                "internal/sprint/qa_prompt_test.go",
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+          "paths": [
+            "internal/sprint/qa_map_test.go",
+            "internal/sprint/qa_prompt_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only inspection confirms textual divergence but cannot execute crash recovery without mutation; bounded string search shows only those two sites handle phase transitions"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7346636d6b20f234948a5f18",
+      "shard_id": "qa-v1-shard-229b62f2dccf9e11653698c5",
+      "claim": "ApprovedQAChecks catalog is empty for non-Go shards so evidence phase silently skips format validation for those changed paths",
+      "basis": "internal/sprint/qa_prompt.go:59-87 filters to Go paths and returns nil, nil when none. internal/sprint/qa.go:489-531 skips shards with empty approvedPaths or selects descriptor fallback to true, and buildQAEvidencePublication at 488-494 continues when len(approvedPaths)==0. Non-Go shards (md, html, js, sql) receive no gofmt check.",
+      "verification_surface": "internal/sprint/qa_prompt.go:63-74; internal/sprint/qa.go:489-520",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-evaluation-cost-safety",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Construct a QAMap with only README.md or internal/foo.js changed paths, call ApprovedQAChecks and observe zero descriptors and that the assigned shard's ApprovedChecks is empty; confirm evidence bundle skips it",
+      "refutation_condition": "Show product policy intentionally limits auto-checks to Go and that handbook/governance covers non-Go via manual review or that empty check catalog is treated as blocked coverage via qa_map.go:259-265",
+      "inconclusive_condition": "Cannot execute ApprovedQAChecks with live filesystem writes or run the evidence isolation in read-only mode",
+      "safe_evidence_strategy": "Read qa_prompt.go, qa_map.go qaBehaviorGroup allowlist, and qa_synthesis follow-up paths; search ApprovedQAChecks callers; inspect existing ApprovedChecks serialization in qa_map_test.go",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-229b62f2dccf9e11653698c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.75252824Z",
+          "completed_at": "2026-08-26T11:21:12.459027545Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/locks_test.go",
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/review.go"
+              ],
+              "reason": "Confirm expired-attempt reconciliation and review freshness interactions with QA map staleness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 46187997,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+              "paths": [
+                "internal/sprint/qa_map_test.go",
+                "internal/sprint/qa_prompt_test.go",
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+          "paths": [
+            "internal/sprint/qa_map_test.go",
+            "internal/sprint/qa_prompt_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static read confirms filtering logic and nil return; dynamic catalog determinism verified in qa_prompt_test.go:70-82 but non-Go coverage intent requires runtime or spec clarification"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7e2c94138e68a58469c78c9e",
+      "shard_id": "qa-v1-shard-229b62f2dccf9e11653698c5",
+      "claim": "QAStore.PruneAttempts retains newest N by modtime but preserves the protected attempt regardless of age, allowing stale protected attempts to pin unbounded state growth when combined with VerificationBytes hard limit",
+      "basis": "internal/sprint/qa_state.go:82-136 keeps protected attempt unconditionally then keeps newest retained-1 others sorted by modtime descending. internal/sprint/qa.go:334-342 checks VerificationBytes \u003e StateBytes budget before mapping. A protected attempt that is very old but referenced as CurrentAttemptID is never pruned, so repeated failed runs can accumulate up to retainedAttempts-1 newest plus one pinned old attempt that never ages out, approaching StateBytes limit without effective reclamation.",
+      "verification_surface": "internal/sprint/qa_state.go:113-134; internal/sprint/qa.go:336-342",
+      "expectation_refs": [
+        "contract-llm-evaluation-cost-safety",
+        "contract-performance",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Read PruneAttempts logic and show a protected attempt older than all others remains after multiple prunes while VerificationBytes grows; measure that StateBytes check occurs only at RunQA entry not after each Publish",
+      "refutation_condition": "Show retention bound of 8 plus 128MiB hard limit and per-record 128MiB cap in writeRecord:625 plus post-publish PruneAttempts at qa.go:699 guarantees reclamation before limit, or that protected is always the current semantic attempt which is also among newest after successful publish",
+      "inconclusive_condition": "Cannot create artificial attempt directories or measure filesystem bytes without writes",
+      "safe_evidence_strategy": "Read qa_state.go PruneAttempts sorting and keep logic, qa.go VerificationBytes check, and DefaultQABudgets StateBytes/RetainedAttempts; search for PruneAttempts call sites",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-229b62f2dccf9e11653698c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.75252824Z",
+          "completed_at": "2026-08-26T11:21:12.459027545Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/locks_test.go",
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/review.go"
+              ],
+              "reason": "Confirm expired-attempt reconciliation and review freshness interactions with QA map staleness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 46187997,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+              "paths": [
+                "internal/sprint/qa_map_test.go",
+                "internal/sprint/qa_prompt_test.go",
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+          "paths": [
+            "internal/sprint/qa_map_test.go",
+            "internal/sprint/qa_prompt_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static ordering logic confirmed; actual growth and pruning interleaving requires stateful execution to measure bytes and modtimes"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-82f2c59acbfc803fe68537a5",
+      "shard_id": "qa-v1-shard-229b62f2dccf9e11653698c5",
+      "claim": "Target identity drift check window allows symlink replacement between pre- and post-shard identity captures without detection of transient escape",
+      "basis": "internal/sprint/qa_prompt.go does path allowlisting via inside() at request build, but runtime enforcement is deferred. internal/sprint/qa.go:831-852 captures targetIdentity before and after runtime.StartRun and compares digests. targetIdentity at internal/sprint/verify.go:349-443 evaluates symlinks via EvalSymlinks per file and hashes contents up to 64MiB. A symlink swapped after the before-snapshot and restored before the after-snapshot would produce identical before/after digests while having escaped during the investigation.",
+      "verification_surface": "internal/sprint/qa.go:831-852; internal/sprint/verify.go:349-443; internal/sprint/qa_prompt.go:188-192",
+      "expectation_refs": [
+        "contract-llm-runtime",
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Demonstrate in an isolated copy that switching a symlink to an outside target during a bounded sleep inside StartRun yields equal before/after digests while the runtime had an escaped read, and that policy path rules do not cover the transient target",
+      "refutation_condition": "Show runtime process isolation with read_only sandbox and restricted path rules independently denies symlink escape regardless of digest equality, or that targetIdentity includes symlink value hashing (verify.go:418-420) that would differ after restore to different link target as shown in qa_prompt_test.go:165-205",
+      "inconclusive_condition": "Cannot invoke runtime or manipulate filesystem symlinks in read-only investigation",
+      "safe_evidence_strategy": "Read verify.go targetIdentity symlink handling, qa.go drift checks, and qa_prompt_test.go symlink tests; list allowed path rules; search for inside() definition",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-229b62f2dccf9e11653698c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.75252824Z",
+          "completed_at": "2026-08-26T11:21:12.459027545Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "context_requests": [
+            {
+              "id": "ctx-1",
+              "paths": [
+                "internal/sprint/locks_test.go",
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/review.go"
+              ],
+              "reason": "Confirm expired-attempt reconciliation and review freshness interactions with QA map staleness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 46187997,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+              "paths": [
+                "internal/sprint/qa_map_test.go",
+                "internal/sprint/qa_prompt_test.go",
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected qa.go, locks.go, qa_map.go, qa_prompt.go, qa_state.go, qa_types.go, verify.go to compare recovery, mapping, permission, and identity logic",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed deterministic map, synthesis, and prompt tests to understand expected invariants and boundary handling",
+          "paths": [
+            "internal/sprint/qa_map_test.go",
+            "internal/sprint/qa_prompt_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code read confirms pre/post digest comparison and symlink value included, but transient swap indistinguishability cannot be proven without execution; existing test covers stable symlink cases only"
+    }
+  ]
+}

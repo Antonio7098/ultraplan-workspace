@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-222838a464900d7ca9eda74e",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-222838a464900d7ca9eda74e/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:52:51.007381242Z",
+      "completed_at": "2026-08-26T09:54:23.162593064Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-544deb188e17edc2f5a4e004",
+      "shard_id": "qa-v1-shard-222838a464900d7ca9eda74e",
+      "claim": "smokeSettings silently discards invalid duration parse errors, yielding zero DiscoveryTimeout/RunTimeout/CleanupGrace",
+      "basis": "internal/app/sprint_commands.go:898-903 smokeSettings does discovery, _ := time.ParseDuration(e.Config.Smoke.DiscoveryTimeout) and similarly for RunTimeout, CleanupGrace without error check; qaSettings in same file 811-825 returns error on same parse. Results in effective zero durations bypassing contract-configuration validation.",
+      "verification_surface": "Supply invalid config value such as smoke.discovery_timeout=\"bad\" and inspect effective SmokeSettings applied to sprint.Service",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-errors",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "File read shows error return ignored via _ in smokeSettings vs explicit error handling in qaSettings in same file",
+      "refutation_condition": "File shows parse errors are returned or fallback defaults are explicitly validated",
+      "inconclusive_condition": "Cannot determine effective config source wiring without additional context path outside shard",
+      "safe_evidence_strategy": "Read-only comparison of sprint_commands.go:898-906 vs 804-825 and config documentation; no runtime config mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-222838a464900d7ca9eda74e/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:52:51.007381242Z",
+          "completed_at": "2026-08-26T09:54:23.162593064Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+              "paths": [
+                "internal/app/web_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+              "paths": [
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+              "paths": [
+                "internal/app/web_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static comparison of two functions in same file confirms inconsistent error handling; no execution needed"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-bbaa9babadbdf4ef0aa052b8",
+      "shard_id": "qa-v1-shard-222838a464900d7ca9eda74e",
+      "claim": "beginDurableCLICommand passes empty digest to AcceptOperation, disabling confirmation-digest deduplication for CLI durability",
+      "basis": "internal/app/durable_operations.go:49-59 beginDurableCLICommand calls manager.AcceptOperation(deps.ctx, Confirmation{Request:request}, \"\") with empty digest; durable_operations.go:106 only attempts ResolveOperationAlias deduplication when digest != \"\" \u0026\u0026 errors.Is(err, ErrConflict). CLI path therefore never coalesces, while web path passes digest and test TestDurableOperationDeduplicatesAcrossManagersAndFailsClosed expects dedup with \"same-confirmation-digest\".",
+      "verification_surface": "Concurrent or retried CLI invocations with identical OperationRequest; inspect repository.Accept conflict handling and owned map",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "File read shows empty string literal passed; requires confirming repository.Accept conflict path is reachable for CLI kind",
+      "refutation_condition": "Empty digest is intentional and CLI durability is documented as non-idempotent, or separate CLI idempotency layer exists",
+      "inconclusive_condition": "Cannot confirm runtime observable duplicate RunID creation without executing runcontrol SQLite workflow; static read alone shows code path but not impact",
+      "safe_evidence_strategy": "Read-only file reads of durable_operations.go:49-59, 97-112 and durable_operations_test.go dedup test; request no process launch, inspect only assigned changed/context paths",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-222838a464900d7ca9eda74e/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:52:51.007381242Z",
+          "completed_at": "2026-08-26T09:54:23.162593064Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+              "paths": [
+                "internal/app/web_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+              "paths": [
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+              "paths": [
+                "internal/app/web_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "File evidence shows empty digest disables dedup branch, but whether this violates intended CLI contract requires runtime or design doc confirmation beyond read-only shard"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-d44de75e6130e3670f297bd9",
+      "shard_id": "qa-v1-shard-222838a464900d7ca9eda74e",
+      "claim": "Web QAIssue lookup only scans first 200 issues, causing false ErrNotFound for issues beyond first page",
+      "basis": "internal/app/web_usecases.go:885-902 QAIssue calls QAIssues(ctx, QARequest{Limit:200}) then linear scan of page.Items; no pagination loop or cursor continuation. QAIssues paginates with limit 1..200 and nextCursor, but QAIssue ignores it.",
+      "verification_surface": "Call QAIssue with issue ID that lies beyond offset 200 in QAAdjudication issues list; observe error \"issue is not owned by the current QA attempt\" despite ownership",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Static file read confirms single-page scan with fixed limit 200 and no loop; reproduced by inspecting web_usecases.go:892-899",
+      "refutation_condition": "File shows QAIssue iterates all pages or uses direct lookup by ID in adjudication store",
+      "inconclusive_condition": "File not readable or adjudication storage pagination semantics differ from bounded() collection",
+      "safe_evidence_strategy": "Read-only file read of web_usecases.go QAIssue/QAIssues plus web_usecases_test.go collection limits; no process execution, no fixture mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-222838a464900d7ca9eda74e/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:52:51.007381242Z",
+          "completed_at": "2026-08-26T09:54:23.162593064Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+              "paths": [
+                "internal/app/web_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+              "paths": [
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+              "paths": [
+                "internal/app/web_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "QAIssue scans only first 200 via single QAIssues call at web_usecases.go:885-902",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "smokeSettings ignores ParseDuration errors at sprint_commands.go:898-906 contrast qaSettings error handling at 804-825",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "beginDurableCLICommand passes empty digest at durable_operations.go:49-59; AcceptOperation dedup guarded by digest != \"\" at 106",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "Dedup test expects digest-based Existing=true at durable_operations_test.go:92-112",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "QAIssues pagination and bounded collection limit definitions at web_usecases.go:832-883 and 871-883",
+          "paths": [
+            "internal/app/web_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "File read at web_usecases.go:885-902 directly shows truncated search; evidence supports claim without needing execution"
+    }
+  ]
+}

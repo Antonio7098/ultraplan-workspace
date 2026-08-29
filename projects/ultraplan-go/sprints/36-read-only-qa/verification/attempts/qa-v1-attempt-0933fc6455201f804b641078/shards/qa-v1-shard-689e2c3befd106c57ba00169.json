@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-689e2c3befd106c57ba00169",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-2148fdd96b40cf143e81e8eb",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: RecoverQA and ReconcileInterruptedMutation diverge on interruptible QA phases; ReconcileInterruptedMutation ignores QAPhaseMapped while RecoverQA converts Mapped to Interrupted, leaving a stale mapped attempt non-terminal after crash recovery."
+  ],
+  "expectation_refs": [
+    "contract-persistence-and-migrations",
+    "contract-workflows"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-2148fdd96b40cf143e81e8eb"
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-689e2c3befd106c57ba00169",
+    "summary": "investigator used 5 turns; limit is 4",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-689e2c3befd106c57ba00169/1",
+      "number": 1,
+      "started_at": "2026-08-26T08:07:18.844584252Z",
+      "completed_at": "2026-08-26T08:08:03.547041557Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 50617,
+        "output_tokens_known": true,
+        "output_tokens": 2020,
+        "total_tokens_known": true,
+        "total_tokens": 172151,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 2661,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 116853,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 5
+      },
+      "estimated_cost": {
+        "amount": 0.006231606000000001,
+        "currency": "USD",
+        "estimate": false
+      },
+      "stop_reason": "investigator iteration limit exceeded"
+    }
+  ]
+}

@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-4f578b8a6bbe302c2cd60dda",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_adjudication.go",
+    "internal/sprint/qa_investigation.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/smoke_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/qa_adjudication_test.go",
+    "internal/sprint/qa_investigation_test.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/smoke.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4f578b8a6bbe302c2cd60dda/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:14:51.224370071Z",
+      "completed_at": "2026-08-28T11:16:02.038748786Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+          "exit_code": 0,
+          "duration": 38341227,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        },
+        {
+          "check_id": "go-source-integrity",
+          "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+          "exit_code": 0,
+          "duration": 0,
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all assigned changed paths and provided context test paths; verified strict JSON decoding, permission checks, and budget limits without execution",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_adjudication.go",
+            "internal/sprint/qa_investigation.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_types.go",
+            "internal/sprint/smoke_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_test.go",
+            "internal/sprint/smoke.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 26,
+      "retained_events": 26,
+      "observed_tool_calls": 11,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8dd9998339d1da5f515da959",
+      "shard_id": "qa-v1-shard-4f578b8a6bbe302c2cd60dda",
+      "claim": "QAStore Publish may leave partially written evidence plans/patches when evidence bundle validation fails after incremental writes without atomic rollback of attempt subdirectories",
+      "basis": "qa_state.go:651-778 publishEvidence writes plans then patches then records sequentially with immutable checks via writeRecord/writeBytes; top-level Publish only snapshots and restores canonical state/report/flow files via captureQACanonicalFiles/restoreQACanonicalFiles, not per-attempt plan/evidence/patch directories. Early return on malformed evidence after some plans already written leaves orphaned immutable artifacts that later PruneAttempts may retain",
+      "verification_surface": "internal/sprint/qa_state.go:457-575 and internal/sprint/qa_state.go:651-733",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "After a failed publishEvidence call due to duplicate evidence ID or patch digest mismatch, filesystem contains QAEvidencePlanRelPath file for the failed attempt that is not cleaned and is subsequently loadable via LoadEvidence",
+      "refutation_condition": "All publishEvidence error paths return before any writeRecord call (validation-only) or existing test qa_state_test.go:272-319 shows no plan file after malformed bundle and that canonical rollback preserves prior State/Report digests",
+      "inconclusive_condition": "Cannot invoke Publish with synthetic malformed bundle without write permission; read-only inspection sees code structure but cannot confirm filesystem side-effect without mutating temp store",
+      "safe_evidence_strategy": "Read-only read of QAStore Publish flow, publishEvidence validation order, and inspection of existing qa_state_test.go:315-319 orphan check without creating files or shell execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4f578b8a6bbe302c2cd60dda/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.224370071Z",
+          "completed_at": "2026-08-28T11:16:02.038748786Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 38341227,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Read-only inspection of all assigned changed paths and provided context test paths; verified strict JSON decoding, permission checks, and budget limits without execution",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/qa_adjudication.go",
+                "internal/sprint/qa_investigation.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/smoke_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_test.go",
+                "internal/sprint/smoke.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 26,
+          "retained_events": 26,
+          "observed_tool_calls": 11,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all assigned changed paths and provided context test paths; verified strict JSON decoding, permission checks, and budget limits without execution",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_adjudication.go",
+            "internal/sprint/qa_investigation.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_types.go",
+            "internal/sprint/smoke_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_test.go",
+            "internal/sprint/smoke.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Write-mutation needed to confirm orphan persistence; limited to static analysis of publish order and snapshot scope, insufficient to confirm or refute without execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e610255ee8f327012f1b41af",
+      "shard_id": "qa-v1-shard-4f578b8a6bbe302c2cd60dda",
+      "claim": "Deterministically sufficient QACheckFact failure may be promoted without repeatability despite flaky output or truncation",
+      "basis": "qa_adjudication.go:87 admits fact-kind failures without Repeatable check while qa_investigation.go:113-117 marks truncation/unexpected stdout as Blocked/Fail; combined path allows a fact check that wrote truncated output to be treated as Fail and then promoted via AdjudicateQA because the plan.Kind != behavioral bypass is inverted",
+      "verification_surface": "internal/sprint/qa_adjudication.go:87 and internal/sprint/qa_investigation.go:113-117",
+      "expectation_refs": [
+        "contract-llm-evaluation-cost-safety",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "A QAEvidenceRecord with Plan.Kind=QACheckFact, Outcome=QAEvidenceFail, Repeatable=false, Commands[0].Truncated=false but workspace output was truncated and still accepted in AdjudicateQA.AcceptedIDs",
+      "refutation_condition": "All admitted fact failures are either Repeatable=true or have Commands empty (text-integrity/go-source-integrity) and any truncation path forces Outcome=QAEvidenceBlocked which is rejected at qa_adjudication.go:80-82",
+      "inconclusive_condition": "Cannot observe a live evidence record without executing isolated workspace; read-only file inspection cannot synthesize CommandResult truncation flags",
+      "safe_evidence_strategy": "Read-only inspection of ValidateQAEvidence, RunQAInvestigation truncation handling, and existing qa_investigation_test.go:118-163 without executing process runner or mutating target",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4f578b8a6bbe302c2cd60dda/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.224370071Z",
+          "completed_at": "2026-08-28T11:16:02.038748786Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 38341227,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "Read-only inspection of all assigned changed paths and provided context test paths; verified strict JSON decoding, permission checks, and budget limits without execution",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/qa_adjudication.go",
+                "internal/sprint/qa_investigation.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/smoke_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_test.go",
+                "internal/sprint/smoke.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 26,
+          "retained_events": 26,
+          "observed_tool_calls": 11,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "Read-only inspection of all assigned changed paths and provided context test paths; verified strict JSON decoding, permission checks, and budget limits without execution",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/qa_adjudication.go",
+            "internal/sprint/qa_investigation.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_types.go",
+            "internal/sprint/smoke_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_test.go",
+            "internal/sprint/smoke.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only investigator cannot execute isolated checks to produce QAEvidenceRecord truncation state; hypothesis requires runtime evidence bound to approved check output policy"
+    }
+  ]
+}

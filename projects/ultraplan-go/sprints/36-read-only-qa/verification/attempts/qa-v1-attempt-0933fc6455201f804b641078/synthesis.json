@@ -1,0 +1,942 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-synthesis-11cb0dae1d8a1de3ac388a41",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "map_id": "qa-v1-map-6b3a5876f50410f3a2ad0acc",
+  "theory_ids": [
+    "qa-v1-theory-0db3d49ae632df755ba93134",
+    "qa-v1-theory-2148fdd96b40cf143e81e8eb",
+    "qa-v1-theory-3c0e6ff46a7cf4a536a21159",
+    "qa-v1-theory-55233762a8348ad407909ae8",
+    "qa-v1-theory-65f7133245ef4908b1ce738a",
+    "qa-v1-theory-7d5041a7984bb2f2fe003244",
+    "qa-v1-theory-8c5df3aa657c9dbb0105c987",
+    "qa-v1-theory-9d9534e066e8eb7a45e26740",
+    "qa-v1-theory-a69b87a71058d96ae04f4196",
+    "qa-v1-theory-cd244dfc2da2a72ce0408c3e",
+    "qa-v1-theory-f60e5aed4344af6fb61707a8",
+    "qa-v1-theory-fc9f6f54279dec0a5a189c20"
+  ],
+  "follow_up_shards": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-26fe41407d0fe31a5108a7b2",
+      "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+      "kind": "follow_up",
+      "title": "Follow up qa-v1-theory-65f7133245ef4908b1ce738a",
+      "context_paths": [
+        "internal/sprint/domain.go",
+        "internal/sprint/locks.go",
+        "internal/sprint/locks_test.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_map.go",
+        "internal/sprint/qa_map_test.go",
+        "internal/sprint/qa_prompt.go",
+        "internal/sprint/qa_prompt_test.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_state_test.go",
+        "internal/sprint/qa_synthesis.go",
+        "internal/sprint/qa_synthesis_test.go",
+        "internal/sprint/qa_test.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/review.go",
+        "internal/sprint/review_test.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/sprint/verify_test.go"
+      ],
+      "behavioral_concerns": [
+        "follow up: QAStore.PruneAttempts retains only RetainedAttempts total including the protected semantic attempt, not RetainedAttempts newest plus protected, allowing eviction of a valid newest attempt when the protected attempt is old."
+      ],
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations"
+      ],
+      "parent_theory_ids": [
+        "qa-v1-theory-65f7133245ef4908b1ce738a"
+      ],
+      "phase": "blocked",
+      "blocker": {
+        "category": "budget_exhausted",
+        "scope": "qa-v1-shard-26fe41407d0fe31a5108a7b2",
+        "summary": "investigator used 5 turns; limit is 4",
+        "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+      },
+      "attempts": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-26fe41407d0fe31a5108a7b2/1",
+          "number": 1,
+          "started_at": "2026-08-26T08:07:18.839298175Z",
+          "completed_at": "2026-08-26T08:08:01.255288633Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 65590,
+            "output_tokens_known": true,
+            "output_tokens": 2101,
+            "total_tokens_known": true,
+            "total_tokens": 225244,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 2733,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 154820,
+            "cache_write_tokens_known": true,
+            "turns_known": true,
+            "turns": 5
+          },
+          "estimated_cost": {
+            "amount": 0.007835439999999999,
+            "currency": "USD",
+            "estimate": false
+          },
+          "stop_reason": "investigator iteration limit exceeded"
+        }
+      ]
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-689e2c3befd106c57ba00169",
+      "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+      "kind": "follow_up",
+      "title": "Follow up qa-v1-theory-2148fdd96b40cf143e81e8eb",
+      "context_paths": [
+        "internal/sprint/domain.go",
+        "internal/sprint/locks.go",
+        "internal/sprint/locks_test.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_map.go",
+        "internal/sprint/qa_map_test.go",
+        "internal/sprint/qa_prompt.go",
+        "internal/sprint/qa_prompt_test.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_state_test.go",
+        "internal/sprint/qa_synthesis.go",
+        "internal/sprint/qa_synthesis_test.go",
+        "internal/sprint/qa_test.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/review.go",
+        "internal/sprint/review_test.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/sprint/verify_test.go"
+      ],
+      "behavioral_concerns": [
+        "follow up: RecoverQA and ReconcileInterruptedMutation diverge on interruptible QA phases; ReconcileInterruptedMutation ignores QAPhaseMapped while RecoverQA converts Mapped to Interrupted, leaving a stale mapped attempt non-terminal after crash recovery."
+      ],
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "parent_theory_ids": [
+        "qa-v1-theory-2148fdd96b40cf143e81e8eb"
+      ],
+      "phase": "blocked",
+      "blocker": {
+        "category": "budget_exhausted",
+        "scope": "qa-v1-shard-689e2c3befd106c57ba00169",
+        "summary": "investigator used 5 turns; limit is 4",
+        "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+      },
+      "attempts": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-689e2c3befd106c57ba00169/1",
+          "number": 1,
+          "started_at": "2026-08-26T08:07:18.844584252Z",
+          "completed_at": "2026-08-26T08:08:03.547041557Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 50617,
+            "output_tokens_known": true,
+            "output_tokens": 2020,
+            "total_tokens_known": true,
+            "total_tokens": 172151,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 2661,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 116853,
+            "cache_write_tokens_known": true,
+            "turns_known": true,
+            "turns": 5
+          },
+          "estimated_cost": {
+            "amount": 0.006231606000000001,
+            "currency": "USD",
+            "estimate": false
+          },
+          "stop_reason": "investigator iteration limit exceeded"
+        }
+      ]
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-8b9af14d9c4cb8aaced4e895",
+      "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+      "kind": "follow_up",
+      "title": "Follow up qa-v1-theory-55233762a8348ad407909ae8",
+      "context_paths": [
+        "internal/sprint/domain.go",
+        "internal/sprint/locks.go",
+        "internal/sprint/locks_test.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_map.go",
+        "internal/sprint/qa_map_test.go",
+        "internal/sprint/qa_prompt.go",
+        "internal/sprint/qa_prompt_test.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_state_test.go",
+        "internal/sprint/qa_synthesis.go",
+        "internal/sprint/qa_synthesis_test.go",
+        "internal/sprint/qa_test.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/review.go",
+        "internal/sprint/review_test.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/sprint/verify_test.go"
+      ],
+      "behavioral_concerns": [
+        "follow up: VerificationBytes symlink check via entry.Info().Mode()\u0026ModeSymlink after WalkDir may miss symlinked directories because WalkDir already follows directory symlinks depending on WalkDirFunc handling, and Info() on DirEntry for a symlinked dir may return target mode;QA path escape via symlinked verification directory not reliably rejected."
+      ],
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "parent_theory_ids": [
+        "qa-v1-theory-55233762a8348ad407909ae8"
+      ],
+      "phase": "completed",
+      "attempts": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-8b9af14d9c4cb8aaced4e895/1",
+          "number": 1,
+          "started_at": "2026-08-26T08:07:18.842067941Z",
+          "completed_at": "2026-08-26T08:08:19.472314627Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+              "paths": [
+                "internal/sprint/qa_state.go:46-78"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+              "paths": [
+                "internal/sprint/qa_state.go:183-211"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+              "paths": [
+                "internal/sprint/verify.go:349-443"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+              "paths": [
+                "internal/sprint/qa_state.go:103-112"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunQA enforces StateBytes via VerificationBytes result",
+              "paths": [
+                "internal/sprint/qa.go:272-276"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "theories": [
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-0db3d49ae632df755ba93134",
+          "shard_id": "qa-v1-shard-8b9af14d9c4cb8aaced4e895",
+          "claim": "QAStore.VerificationBytes fails to reject symlinked directories inside verification because it tests entry.Info().Mode()\u0026os.ModeSymlink after filepath.WalkDir, which follows symlinks for Info and loses the ModeSymlink bit",
+          "basis": "Read internal/sprint/qa_state.go:46-78. VerificationBytes resolves root via store.resolve (which Lstats each component) then calls filepath.WalkDir and inside walkFn does info,err:=entry.Info(); if info.Mode()\u0026os.ModeSymlink!=0 return error. Elsewhere in repo the correct pattern is os.Lstat (e.g., verify.go:405 targetIdentity uses os.Lstat(full) to detect symlink, qa_state.go:199 resolve uses os.Lstat(current)). Go's DirEntry.Info for a symlink-to-directory Stats the target (regular dir, IsDir true, ModeSymlink cleared) while DirEntry.Type preserves ModeSymlink. WalkDir does not descend into symlinked dirs (IsDir false), so the symlink is treated as leaf, not error, not counted, silently ignored.",
+          "verification_surface": "internal/sprint/qa_state.go:46-78 VerificationBytes WalkDir callback; contrast internal/sprint/qa_state.go:183-210 resolve Lstat loop and internal/sprint/verify.go:349-443 targetIdentity Lstat+EvalSymlinks+inside check",
+          "expectation_refs": [
+            "contract-persistence-and-migrations",
+            "contract-security"
+          ],
+          "severity_if_confirmed": "high",
+          "confirmation_condition": "Static code shows VerificationBytes uses entry.Info() rather than entry.Type() or os.Lstat(path) to test symlink, and Go DirEntry.Info follows the symlink for directory targets, so a symlink directory entry will have ModeSymlink==0 and not trigger the error",
+          "refutation_condition": "Demonstrate via Go stdlib documentation or local Go source that filepath.WalkDir DirEntry.Info for a symlinked directory on this Go version preserves ModeSymlink, or that WalkDir follows symlinked directories and still surfaces ModeSymlink",
+          "inconclusive_condition": "Cannot inspect runtime Go stdlib DirEntry implementation or execute filesystem symlink test on this host to observe Info vs Type behavior",
+          "safe_evidence_strategy": "Read-only: inspect qa_state.go, verify.go, artifacts.go inside() helper, workspace.ResolveInside, and PruneAttempts similar pattern; compare Info vs Lstat usage; review Go filepath.WalkDir documentation without creating files or executing commands; no mutation, no shell",
+          "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "attempt_history": [
+            {
+              "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-8b9af14d9c4cb8aaced4e895/1",
+              "number": 1,
+              "started_at": "2026-08-26T08:07:18.842067941Z",
+              "completed_at": "2026-08-26T08:08:19.472314627Z",
+              "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "evidence": [
+                {
+                  "kind": "code",
+                  "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+                  "paths": [
+                    "internal/sprint/qa_state.go:46-78"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+                  "paths": [
+                    "internal/sprint/qa_state.go:183-211"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+                  "paths": [
+                    "internal/sprint/verify.go:349-443"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+                  "paths": [
+                    "internal/sprint/qa_state.go:103-112"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "RunQA enforces StateBytes via VerificationBytes result",
+                  "paths": [
+                    "internal/sprint/qa.go:272-276"
+                  ]
+                }
+              ],
+              "usage": {
+                "input_tokens_known": false,
+                "output_tokens_known": false,
+                "total_tokens_known": false,
+                "reasoning_tokens_known": false,
+                "cache_read_tokens_known": false,
+                "cache_write_tokens_known": false,
+                "turns_known": false
+              },
+              "stop_reason": "terminal investigator output accepted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+              "paths": [
+                "internal/sprint/qa_state.go:46-78"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+              "paths": [
+                "internal/sprint/qa_state.go:183-211"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+              "paths": [
+                "internal/sprint/verify.go:349-443"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+              "paths": [
+                "internal/sprint/qa_state.go:103-112"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunQA enforces StateBytes via VerificationBytes result",
+              "paths": [
+                "internal/sprint/qa.go:272-276"
+              ]
+            }
+          ],
+          "outcome": "confirmed",
+          "outcome_reason": "Code inspection confirms vulnerable pattern: VerificationBytes is the only verification-area size scan that relies on entry.Info() ModeSymlink, mismatched with the Lstat-based checks used in resolve() and targetIdentity(). Combined with WalkDir not descending into symlink dirs, this predictably allows a symlinked subdirectory (e.g., verification/attempts -\u003e /tmp/evil) to be ignored rather than rejected, bypassing the intended symlink rejection and the StateBytes budget accounting. Root-level symlink verification dir is correctly rejected by resolve() Lstat loop, so escape is interior but still violates contract-security symlink rejection."
+        },
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-8c5df3aa657c9dbb0105c987",
+          "shard_id": "qa-v1-shard-8b9af14d9c4cb8aaced4e895",
+          "claim": "VerificationBytes directory-symlink miss allows StateBytes budget bypass: large external content behind an interior symlink is not counted, so RetainedAttempts budget enforcement via VerificationBytes() in RunQA can be evaded",
+          "basis": "Read internal/sprint/qa.go:272-276 check if used,err:=store.VerificationBytes(); used\u003eStateBytes then BudgetExhausted. If VerificationBytes silently skips symlinked subdirectories due to theory 1, an attacker with write access to verification could place external large store via symlink and not be counted, evading persistence budget and potentially hiding malicious state.",
+          "verification_surface": "internal/sprint/qa.go:269-276 RunQA pre-publish PruneAttempts and VerificationBytes budgets; internal/sprint/qa_state.go:44-78; internal/sprint/qa_types.go DefaultQABudgets StateBytes 128\u003c\u003c20",
+          "expectation_refs": [
+            "contract-persistence-and-migrations",
+            "contract-security"
+          ],
+          "severity_if_confirmed": "medium",
+          "confirmation_condition": "Link theory 1 confirmation to the budget-enforcement call site, showing that skipped symlinked tree directly reduces total calculated size",
+          "refutation_condition": "Show that resolve() or other pre-check guarantees no interior symlinks can exist before VerificationBytes is called, making WalkDir check redundant",
+          "inconclusive_condition": "Need to verify full call graph that interior symlinks could be created between resolve() of verification root and WalkDir execution without an intervening Lstat scan",
+          "safe_evidence_strategy": "Read-only trace of RunQA -\u003e VerificationBytes -\u003e resolve vs WalkDir ordering, and inspect privateAtomicWrite/MkdirAll permission handling for symlink creation windows; no mutation",
+          "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "attempt_history": [
+            {
+              "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-8b9af14d9c4cb8aaced4e895/1",
+              "number": 1,
+              "started_at": "2026-08-26T08:07:18.842067941Z",
+              "completed_at": "2026-08-26T08:08:19.472314627Z",
+              "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "evidence": [
+                {
+                  "kind": "code",
+                  "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+                  "paths": [
+                    "internal/sprint/qa_state.go:46-78"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+                  "paths": [
+                    "internal/sprint/qa_state.go:183-211"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+                  "paths": [
+                    "internal/sprint/verify.go:349-443"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+                  "paths": [
+                    "internal/sprint/qa_state.go:103-112"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "RunQA enforces StateBytes via VerificationBytes result",
+                  "paths": [
+                    "internal/sprint/qa.go:272-276"
+                  ]
+                }
+              ],
+              "usage": {
+                "input_tokens_known": false,
+                "output_tokens_known": false,
+                "total_tokens_known": false,
+                "reasoning_tokens_known": false,
+                "cache_read_tokens_known": false,
+                "cache_write_tokens_known": false,
+                "turns_known": false
+              },
+              "stop_reason": "terminal investigator output accepted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+              "paths": [
+                "internal/sprint/qa_state.go:46-78"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+              "paths": [
+                "internal/sprint/qa_state.go:183-211"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+              "paths": [
+                "internal/sprint/verify.go:349-443"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+              "paths": [
+                "internal/sprint/qa_state.go:103-112"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunQA enforces StateBytes via VerificationBytes result",
+              "paths": [
+                "internal/sprint/qa.go:272-276"
+              ]
+            }
+          ],
+          "outcome": "confirmed",
+          "outcome_reason": "Given confirmed theory 1, the causal chain to budget bypass is direct: VerificationBytes is the sole measurement for StateBytes in RunQA, and its silently-ignored symlink subtrees mean external data is uncounted. Even though root symlink is blocked, interior symlink remains unchecked at measurement time, so contract-persistence-and-migrations accounting is not reliably enforced."
+        },
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-a69b87a71058d96ae04f4196",
+          "shard_id": "qa-v1-shard-8b9af14d9c4cb8aaced4e895",
+          "claim": "QAStore.PruneAttempts uses entry.Info().Mode()\u0026ModeSymlink on ReadDir entries, which may also follow symlink-to-directory targets and could miss the symlink bit, relying instead on !entry.IsDir gate",
+          "basis": "Read internal/sprint/qa_state.go:82-136. PruneAttempts lists attempts via os.ReadDir, first checks if !entry.IsDir()||!validQAIDKind, then does info,err:=entry.Info(); if ModeSymlink. For a symlink to a directory, ReadDir DirEntry.IsDir is false (Type includes ModeSymlink) so the first gate already triggers InvalidState but with generic invalid-entry message, not the explicit unsafe-entry symlink message, and the subsequent Info-based symlink test may be ineffective due to Stat-following behavior. Inconsistent with Lstat usage elsewhere.",
+          "verification_surface": "internal/sprint/qa_state.go:103-112 PruneAttempts attempt directory enumeration",
+          "expectation_refs": [
+            "contract-persistence-and-migrations",
+            "contract-security"
+          ],
+          "severity_if_confirmed": "medium",
+          "confirmation_condition": "Show that PruneAttempts symlink-directory case depends on Info rather than Type/Lstat and therefore does not reliably report unsafe symlink, or that removal logic could operate on wrong target",
+          "refutation_condition": "Show that ReadDir DirEntry.Info on this platform preserves ModeSymlink or that !entry.IsDir gate is sufficient to reliably reject all symlink attacks with appropriate error category",
+          "inconclusive_condition": "Cannot execute filesystem symlink test to observe ReadDir Info vs Type behavior without shell execution",
+          "safe_evidence_strategy": "Read-only comparison of PruneAttempts vs resolve vs targetIdentity symlink handling; inspect Go os.DirEntry documentation for ReadDir Type vs Info semantics; no file creation or execution",
+          "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "attempt_history": [
+            {
+              "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-8b9af14d9c4cb8aaced4e895/1",
+              "number": 1,
+              "started_at": "2026-08-26T08:07:18.842067941Z",
+              "completed_at": "2026-08-26T08:08:19.472314627Z",
+              "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "evidence": [
+                {
+                  "kind": "code",
+                  "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+                  "paths": [
+                    "internal/sprint/qa_state.go:46-78"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+                  "paths": [
+                    "internal/sprint/qa_state.go:183-211"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+                  "paths": [
+                    "internal/sprint/verify.go:349-443"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+                  "paths": [
+                    "internal/sprint/qa_state.go:103-112"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "RunQA enforces StateBytes via VerificationBytes result",
+                  "paths": [
+                    "internal/sprint/qa.go:272-276"
+                  ]
+                }
+              ],
+              "usage": {
+                "input_tokens_known": false,
+                "output_tokens_known": false,
+                "total_tokens_known": false,
+                "reasoning_tokens_known": false,
+                "cache_read_tokens_known": false,
+                "cache_write_tokens_known": false,
+                "turns_known": false
+              },
+              "stop_reason": "terminal investigator output accepted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "VerificationBytes uses entry.Info ModeSymlink inside WalkDir",
+              "paths": [
+                "internal/sprint/qa_state.go:46-78"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "resolve() correctly uses os.Lstat per component to reject symlinks",
+              "paths": [
+                "internal/sprint/qa_state.go:183-211"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "targetIdentity demonstrates correct Lstat + EvalSymlinks + inside() pattern",
+              "paths": [
+                "internal/sprint/verify.go:349-443"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "PruneAttempts similar Info-based symlink check on ReadDir entries",
+              "paths": [
+                "internal/sprint/qa_state.go:103-112"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunQA enforces StateBytes via VerificationBytes result",
+              "paths": [
+                "internal/sprint/qa.go:272-276"
+              ]
+            }
+          ],
+          "outcome": "inconclusive",
+          "outcome_reason": "Static review shows inconsistent symlink detection idiom versus verified Lstat idiom elsewhere, and the IsDir gate likely masks the bug for symlink-to-directory attempts, but without runtime observation of Go DirEntry.Info Stat-following on this build we cannot fully confirm whether the symlink bit is lost or whether the generic invalid-entry error is sufficient for security contract."
+        }
+      ]
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-a6ab23301a733ec0fd5273ec",
+      "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+      "kind": "follow_up",
+      "title": "Follow up qa-v1-theory-3c0e6ff46a7cf4a536a21159",
+      "context_paths": [
+        "internal/sprint/domain.go",
+        "internal/sprint/locks.go",
+        "internal/sprint/locks_test.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_map.go",
+        "internal/sprint/qa_map_test.go",
+        "internal/sprint/qa_prompt.go",
+        "internal/sprint/qa_prompt_test.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_state_test.go",
+        "internal/sprint/qa_synthesis.go",
+        "internal/sprint/qa_synthesis_test.go",
+        "internal/sprint/qa_test.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/review.go",
+        "internal/sprint/review_test.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/sprint/verify_test.go"
+      ],
+      "behavioral_concerns": [
+        "follow up: ApprovedQAChecks argument validation allows non-flag arguments that contain no shell metachars but are still outside budgets or escape via cleaned relative paths; attacker-controlled changed-path set could influence descriptor args via goPaths concatenation without per-path normalization check for absolute or .. after FromSlash clean."
+      ],
+      "expectation_refs": [
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "parent_theory_ids": [
+        "qa-v1-theory-3c0e6ff46a7cf4a536a21159"
+      ],
+      "phase": "completed",
+      "attempts": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-a6ab23301a733ec0fd5273ec/1",
+          "number": 1,
+          "started_at": "2026-08-26T08:08:01.592365552Z",
+          "completed_at": "2026-08-26T08:09:54.336077378Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+              "paths": [
+                "internal/sprint/qa_map.go",
+                "internal/sprint/artifacts.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "theories": [
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-7d5041a7984bb2f2fe003244",
+          "shard_id": "qa-v1-shard-a6ab23301a733ec0fd5273ec",
+          "claim": "ApprovedQAChecks descriptor validation allows non-flag arguments that bypass budget containment while attacker-controlled goPaths are concatenated into gofmt argv",
+          "basis": "ApprovedQAChecks at internal/sprint/qa_prompt.go:59-87 builds goPaths from normalizeQAStrings(changedPaths) after validateQAPath and appends all .go paths to descriptor Args -d without per-path budget check; validateQACheckDescriptor at 89-125 for non-flag args only checks ContainsAny \"\\x00\\r\\n|;\u0026\u003e\u003c`$()\" , -w/--write, and inside(target, Join(target,FromSlash(arg))) + IsAbs, but never checks QABudgets.ChangedPaths/ChangedPathsPerShard/PromptBytes/CommandOutputBytes or arg count/length; exploited changed-path set directly controls number and content of gofmt positional arguments",
+          "verification_surface": "internal/sprint/qa_prompt.go:59-87 ApprovedQAChecks goPaths concatenation; internal/sprint/qa_prompt.go:89-125 validateQACheckDescriptor non-flag branch; internal/sprint/qa_map.go:287-292 validateQAPath; internal/sprint/qa_types.go:85-112 QABudgets limits; internal/sprint/artifacts.go:77-83 inside",
+          "expectation_refs": [
+            "contract-llm-runtime",
+            "contract-security"
+          ],
+          "severity_if_confirmed": "high",
+          "confirmation_condition": "statically observable that a .go path passes validateQAPath and ContainsAny check and inside==true yet argument list length or total bytes exceeds MaximumQABudgets or map budgets and would still be accepted by validateQACheckDescriptor and executed as gofmt -d positional arg",
+          "refutation_condition": "every non-flag arg is also bounded by an explicit check against QABudgets.ChangedPaths/ChangedPathsPerShard and total arg bytes/prompt bytes before descriptor is accepted, or ApprovedQAChecks truncates goPaths to budget before concatenation",
+          "inconclusive_condition": "static reading shows gap but no runtime RunApprovedQACheck execution observed to prove attacker-supplied path outside budget is actually executed",
+          "safe_evidence_strategy": "read-only grep and read of qa_prompt.go, qa_map.go, qa_types.go, artifacts.go; compare validateQAPath and inside logic to budget enforcement in ValidateQAMap/BuildQAMap without invoking shell, writing files, or running process",
+          "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "attempt_history": [
+            {
+              "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-a6ab23301a733ec0fd5273ec/1",
+              "number": 1,
+              "started_at": "2026-08-26T08:08:01.592365552Z",
+              "completed_at": "2026-08-26T08:09:54.336077378Z",
+              "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "evidence": [
+                {
+                  "kind": "code",
+                  "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+                  "paths": [
+                    "internal/sprint/qa_prompt.go"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+                  "paths": [
+                    "internal/sprint/qa_map.go",
+                    "internal/sprint/artifacts.go"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+                  "paths": [
+                    "internal/sprint/qa_types.go"
+                  ]
+                }
+              ],
+              "usage": {
+                "input_tokens_known": false,
+                "output_tokens_known": false,
+                "total_tokens_known": false,
+                "reasoning_tokens_known": false,
+                "cache_read_tokens_known": false,
+                "cache_write_tokens_known": false,
+                "turns_known": false
+              },
+              "stop_reason": "terminal investigator output accepted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+              "paths": [
+                "internal/sprint/qa_map.go",
+                "internal/sprint/artifacts.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "outcome": "confirmed",
+          "outcome_reason": "Code inspection confirms validateQACheckDescriptor has no budget check for non-flag positional args; ApprovedQAChecks concatenates all goPaths (up to budgets.ChangedPaths=512) into Args and fingerprint without length/budget guard, only Timeout/OutputLimit are checked at 101. Static gap is deterministically present."
+        },
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-cd244dfc2da2a72ce0408c3e",
+          "shard_id": "qa-v1-shard-a6ab23301a733ec0fd5273ec",
+          "claim": "Attacker-controlled changed-path set can escape target via cleaned relative path through FromSlash clean without per-path absolute/.. check after clean in descriptor args",
+          "basis": "Concern alleges goPaths concatenation lacks per-path normalization check for absolute or .. after FromSlash clean, allowing ../-prefixed or absolute path that contains no shell metachars to pass descriptor validation via inside() after Join; must verify whether validateQAPath at qa_map.go:288 using Clean(FromSlash(path)) prefix \"../\" and IsAbs plus validateQACheckDescriptor at qa_prompt.go:114-117 using IsAbs(arg) and !inside(target, Join(target,FromSlash(arg))) together are sufficient",
+          "verification_surface": "internal/sprint/qa_prompt.go:63-71 validateQAPath loop before goPaths append; internal/sprint/qa_prompt.go:113-118 escape check; internal/sprint/qa_map.go:287-292 validateQAPath implementation; internal/sprint/artifacts.go:77-83 inside with Rel Clean",
+          "expectation_refs": [
+            "contract-security"
+          ],
+          "severity_if_confirmed": "high",
+          "confirmation_condition": "existence of a relative path that passes validateQAPath (prefix ../ false, IsAbs false) yet after Join(target,FromSlash) inside returns true while effective cleaned path references outside target, or an absolute path that bypasses IsAbs due to FromSlash normalization",
+          "refutation_condition": "every absolute path and any path where Clean(FromSlash) has prefix \"../\" is rejected before goPaths append, and every descriptor non-flag arg with IsAbs or !inside is rejected, with no bypass via intermediate \"..\" that normalizes inside target but still escapes",
+          "inconclusive_condition": "read-only inspection shows both checks use Clean/Rel, but corner cases such as Windows volume, double-slash, or symlink-contained paths require runtime inside() evaluation to confirm no bypass",
+          "safe_evidence_strategy": "read-only read of validateQAPath, inside, and descriptor loop; manual trace of candidate paths like \"a/../../b.go\", \"../a.go\", \"/etc/passwd\", \"a//..//b.go\" through Clean-\u003eprefix and Join-\u003einside without executing or creating symlinks",
+          "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "attempt_history": [
+            {
+              "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-a6ab23301a733ec0fd5273ec/1",
+              "number": 1,
+              "started_at": "2026-08-26T08:08:01.592365552Z",
+              "completed_at": "2026-08-26T08:09:54.336077378Z",
+              "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+              "evidence": [
+                {
+                  "kind": "code",
+                  "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+                  "paths": [
+                    "internal/sprint/qa_prompt.go"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+                  "paths": [
+                    "internal/sprint/qa_map.go",
+                    "internal/sprint/artifacts.go"
+                  ]
+                },
+                {
+                  "kind": "code",
+                  "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+                  "paths": [
+                    "internal/sprint/qa_types.go"
+                  ]
+                }
+              ],
+              "usage": {
+                "input_tokens_known": false,
+                "output_tokens_known": false,
+                "total_tokens_known": false,
+                "reasoning_tokens_known": false,
+                "cache_read_tokens_known": false,
+                "cache_write_tokens_known": false,
+                "turns_known": false
+              },
+              "stop_reason": "terminal investigator output accepted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "validateQACheckDescriptor only checks shell metachars and inside, no budget check for non-flag args; Args built as append(\"-d\",goPaths...)",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "validateQAPath checks IsAbs and Clean(FromSlash) prefix ../, and inside uses Rel Clean to bound target",
+              "paths": [
+                "internal/sprint/qa_map.go",
+                "internal/sprint/artifacts.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QABudgets definition shows ChangedPaths 512 and command/timeout budgets enforced only for Timeout/OutputLimit, not arg count",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "outcome": "refuted",
+          "outcome_reason": "Static inspection refutes clean-path escape: validateQAPath at qa_map.go:288 explicitly checks IsAbs and strings.HasPrefix(ToSlash(Clean(FromSlash(path))),\"../\") and rejects; ApprovedQAChecks applies this before any goPaths append at 65-66; descriptor validation at 114-117 additionally rejects IsAbs(arg) and !inside(target, Join(target,FromSlash(arg))) where inside at artifacts.go:77 uses Rel(Clean(root),Clean(candidate)). Combined checks deterministically reject absolute and escaping cleaned relative paths. Budget gap remains but path-escape via cleaned relative is blocked in current code."
+        }
+      ]
+    }
+  ],
+  "outcome_counts": {
+    "confirmed": 3,
+    "inconclusive": 8,
+    "refuted": 1
+  },
+  "blockers": [
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-26fe41407d0fe31a5108a7b2",
+      "summary": "investigator used 5 turns; limit is 4",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-689e2c3befd106c57ba00169",
+      "summary": "investigator used 5 turns; limit is 4",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-8f3b0c45a5e7b673e19df8bf",
+      "summary": "investigator output retry limit exhausted after 2 attempts",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-b34d2ebd1601e0650ec75738",
+      "summary": "investigator output retry limit exhausted after 2 attempts",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-b8c486c765931891d4096f9f",
+      "summary": "investigator output retry limit exhausted after 2 attempts",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-bbf181cf39ccd8df866aae53",
+      "summary": "investigator output retry limit exhausted after 2 attempts",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-c44ea7240eb038f343914c27",
+      "summary": "investigator output retry limit exhausted after 2 attempts",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    },
+    {
+      "category": "budget_exhausted",
+      "scope": "qa-v1-shard-c930b76694749bd6cf4be75e",
+      "summary": "investigator output retry limit exhausted after 2 attempts",
+      "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+    }
+  ],
+  "next_action": "Run the bounded parent-linked follow-up shards."
+}

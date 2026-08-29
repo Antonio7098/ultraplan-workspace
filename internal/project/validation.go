@@ -1,0 +1,255 @@
+package project
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"regexp"
+	"sort"
+	"strings"
+
+	"github.com/Antonio7098/ultraplan-go/internal/workspace"
+)
+
+var deprecatedSmokeHarnessDirectoryField = regexp.MustCompile(`(?im)^\s*-\s+(?:\*\*)?Smoke Harness Directory(?:\*\*)?\s*:`)
+
+func ValidateProject(root string, p Project, files ProjectFiles) ValidationResult {
+	var findings []ValidationFinding
+	add := func(path, problem, cause, suggestion string, err error) {
+		findings = append(findings, ValidationFinding{
+			Severity:   SeverityError,
+			Path:       path,
+			Problem:    problem,
+			Cause:      cause,
+			Suggestion: suggestion,
+			Err:        err,
+		})
+	}
+	if !files.DocsDirExists {
+		add(projectRel(p.Name, "docs"), "missing docs directory", "docs directory was not found", "Create docs/ with project Markdown documents.", nil)
+	} else if len(files.MarkdownDocs) == 0 {
+		add(projectRel(p.Name, "docs"), "empty docs directory", "no Markdown documents were found under docs/*.md", "Add at least one Markdown project document.", nil)
+	}
+	if !files.RoadmapExists {
+		add(projectRel(p.Name, "roadmap.md"), "missing roadmap", "roadmap.md was not found", "Create roadmap.md for project sequencing.", nil)
+	} else {
+		findings = append(findings, validateRoadmap(p, files)...)
+	}
+	if !files.ProjectIndexExists {
+		add(projectRel(p.Name, "project-index.md"), "missing project index", "project-index.md was not found", "Create project-index.md with catalog tables.", nil)
+	}
+	if !files.SprintsDirExists {
+		add(projectRel(p.Name, "sprints"), "missing sprints directory", "sprints directory was not found", "Create sprints/ for planning sprint artifacts.", nil)
+	}
+	if files.ProjectIndexExists {
+		if deprecatedSmokeHarnessDirectoryField.MatchString(files.IndexContent) {
+			add(projectRel(p.Name, "project-index.md"), "duplicate smoke harness source", "Project Scope declares Smoke Harness Directory even though the Smoke Harnesses catalog is authoritative", "Remove Smoke Harness Directory from Project Scope and keep the root only in the Smoke Harnesses catalog Path column.", nil)
+		}
+		index, parseFindings := ParseProjectIndex(files.IndexContent)
+		findings = append(findings, parseFindings...)
+		for _, entry := range index.Entries {
+			if entry.Section == SectionSmokeHarnesses {
+				if err := validateSmokeHarnessEntry(entry); err != nil {
+					findings = append(findings, catalogFinding(entry, "invalid smoke harness catalog entry", err.Error(), "Use an absolute existing harness root and a manifest contained by that root.", err))
+				}
+				continue
+			}
+			if entry.External {
+				continue
+			}
+			if entry.Section == SectionAvailableReasoningTemplate {
+				path := normalizeCatalogPath(entry.Path)
+				projectsPrefix := "projects/"
+				ownProjectPrefix := "projects/" + p.Name + "/"
+				if strings.HasPrefix(path, projectsPrefix) && !strings.HasPrefix(path, ownProjectPrefix) {
+					findings = append(findings, catalogFinding(entry, "cross-project reasoning template", "reasoning templates under projects/ must belong to the selected project", "Move the template into projects/"+p.Name+"/reasoning/ or use a shared workspace path outside projects/.", nil))
+					continue
+				}
+			}
+			full, err := workspace.ResolveInside(root, filepath.FromSlash(entry.Path))
+			if err != nil {
+				findings = append(findings, catalogFinding(entry, "catalog path escapes workspace", err.Error(), "Use a workspace-relative path inside this workspace.", err))
+				continue
+			}
+			if _, err := os.Stat(full); err != nil {
+				if os.IsNotExist(err) {
+					findings = append(findings, catalogFinding(entry, "catalog path not found", fmt.Sprintf("%s does not exist", entry.Path), "Create the referenced artifact or update the catalog path.", err))
+					continue
+				}
+				findings = append(findings, catalogFinding(entry, "catalog path cannot be read", err.Error(), "Fix filesystem permissions or update the catalog path.", err))
+			}
+		}
+		for _, rel := range ReasoningDefaultPaths() {
+			projectRel := filepath.ToSlash(filepath.Join("projects", p.Name, filepath.FromSlash(rel)))
+			full, err := workspace.ResolveInside(root, projectRel)
+			if err != nil {
+				add(projectRel, "invalid reasoning override path", err.Error(), "Use the supported project reasoning override path.", err)
+				continue
+			}
+			if _, err := os.Stat(full); os.IsNotExist(err) {
+				continue
+			}
+			if _, err := ResolveReasoningDefault(root, p.Name, rel); err != nil {
+				add(projectRel, "invalid project reasoning override", err.Error(), "Use a readable, non-empty Markdown file.", err)
+			}
+		}
+	}
+	sortFindings(findings)
+	status := StatusOK
+	for _, finding := range findings {
+		if finding.Severity == SeverityError {
+			status = StatusInvalid
+			break
+		}
+	}
+	return ValidationResult{Project: p, Status: status, Findings: findings}
+}
+
+func validateRoadmap(p Project, files ProjectFiles) []ValidationFinding {
+	path := projectRel(p.Name, "roadmap.md")
+	var findings []ValidationFinding
+	roadmap, issues := ParseRoadmap(files.RoadmapContent)
+	for _, issue := range issues {
+		findings = append(findings, ValidationFinding{
+			Severity:   SeverityError,
+			Path:       path,
+			Problem:    issue.Problem,
+			Cause:      fmt.Sprintf("line %d: %s", issue.Line, issue.Cause),
+			Suggestion: issue.Suggestion,
+		})
+	}
+	sprintDirs := make(map[string]bool, len(files.SprintDirs))
+	for _, dir := range files.SprintDirs {
+		sprintDirs[dir] = true
+	}
+	claimed := make(map[string]bool, len(roadmap.Sprints))
+	for _, sprint := range roadmap.Sprints {
+		if sprint.Slug == "" {
+			continue
+		}
+		if !sprintDirs[sprint.Slug] {
+			if sprint.Status == RoadmapActive || sprint.Status == RoadmapDelivered {
+				severity := SeverityWarn
+				problem := "roadmap sprint directory absent"
+				cause := fmt.Sprintf("Sprint %d slug '%s' has no matching sprints/%s directory", sprint.Number, sprint.Slug, sprint.Slug)
+				suggestion := "Create the sprint workspace or correct the '> Slug:' and '> Status:' lines."
+				if sprint.Status == RoadmapActive {
+					severity = SeverityError
+					problem = "active roadmap sprint directory missing"
+					suggestion = "Create sprints/" + sprint.Slug + " by running the governed flow, or set Status back to planned."
+				}
+				findings = append(findings, ValidationFinding{
+					Severity:   severity,
+					Path:       path,
+					Problem:    problem,
+					Cause:      cause,
+					Suggestion: suggestion,
+				})
+			}
+			continue
+		}
+		claimed[sprint.Slug] = true
+	}
+	for _, dir := range files.SprintDirs {
+		if claimed[dir] {
+			continue
+		}
+		findings = append(findings, ValidationFinding{
+			Severity:   SeverityError,
+			Path:       path,
+			Problem:    "sprint directory missing from roadmap",
+			Cause:      fmt.Sprintf("sprints/%s is not referenced by any roadmap '> Slug:' entry", dir),
+			Suggestion: fmt.Sprintf("Add a '### Sprint' section with '> Slug: %s' to roadmap.md.", dir),
+		})
+	}
+	return findings
+}
+
+func validateSmokeHarnessEntry(entry CatalogEntry) error {
+	if !filepath.IsAbs(entry.Path) {
+		return fmt.Errorf("harness path must be absolute")
+	}
+	root, err := filepath.EvalSymlinks(filepath.Clean(entry.Path))
+	if err != nil {
+		return fmt.Errorf("resolve harness root: %w", err)
+	}
+	manifest := entry.Manifest
+	if !filepath.IsAbs(manifest) {
+		manifest = filepath.Join(root, filepath.FromSlash(manifest))
+	}
+	manifest, err = filepath.EvalSymlinks(filepath.Clean(manifest))
+	if err != nil {
+		return fmt.Errorf("resolve harness manifest: %w", err)
+	}
+	rel, err := filepath.Rel(root, manifest)
+	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+		return fmt.Errorf("manifest escapes harness root")
+	}
+	info, err := os.Stat(manifest)
+	if err != nil {
+		return fmt.Errorf("read harness manifest: %w", err)
+	}
+	if info.IsDir() {
+		return fmt.Errorf("harness manifest is a directory")
+	}
+	return nil
+}
+
+func StatusFromValidation(p Project, files ProjectFiles, validation ValidationResult) ProjectStatus {
+	status := ProjectStatus{
+		Project:         p,
+		DocsDir:         state(files.DocsDirExists),
+		MarkdownDocs:    files.MarkdownDocs,
+		Roadmap:         state(files.RoadmapExists),
+		ProjectIndex:    state(files.ProjectIndexExists),
+		SprintsDir:      state(files.SprintsDirExists),
+		SprintDirs:      files.SprintDirs,
+		Catalog:         validation.Status,
+		ValidationFinds: validation.Findings,
+	}
+	if files.DocsDirExists && len(files.MarkdownDocs) == 0 {
+		status.DocsDir = StatusEmpty
+	}
+	return status
+}
+
+func state(ok bool) StatusState {
+	if ok {
+		return StatusPresent
+	}
+	return StatusMissing
+}
+
+func catalogFinding(entry CatalogEntry, problem, cause, suggestion string, err error) ValidationFinding {
+	return ValidationFinding{
+		Severity:   SeverityError,
+		Section:    entry.Section,
+		EntryName:  entry.Name,
+		Path:       entry.Path,
+		Problem:    problem,
+		Cause:      cause,
+		Suggestion: suggestion,
+		Err:        err,
+	}
+}
+
+func sortFindings(findings []ValidationFinding) {
+	sort.SliceStable(findings, func(i, j int) bool {
+		a, b := findings[i], findings[j]
+		if a.Section != b.Section {
+			return a.Section < b.Section
+		}
+		if a.EntryName != b.EntryName {
+			return a.EntryName < b.EntryName
+		}
+		if a.Path != b.Path {
+			return a.Path < b.Path
+		}
+		return a.Problem < b.Problem
+	})
+}
+
+func projectRel(projectName string, elems ...string) string {
+	parts := append([]string{"projects", projectName}, elems...)
+	return filepath.ToSlash(filepath.Join(parts...))
+}

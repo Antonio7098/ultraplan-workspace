@@ -1,0 +1,117 @@
+{{define "page/study"}}{{template "layout/top" .}}
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/studies">Studies</a><span aria-hidden="true">/</span><a href="/studies/{{.Study.Name}}"{{if eq .Page "overview"}} aria-current="page"{{end}}>{{.Study.Name}}</a>{{if ne .Page "overview"}}<span aria-hidden="true">/</span><a href="/studies/{{.Study.Name}}/{{.Page}}" aria-current="page">{{if eq .Page "inputs"}}Inputs{{else if eq .Page "progress"}}Progress{{else}}Results{{end}}</a>{{end}}</nav>
+{{if eq .Page "overview"}}
+<div class="entity-dashboard study-dashboard">
+<section class="entity-summary study-command study-state"><div class="dashboard-component-heading"><div><h2>{{if .Study.RunActive}}Study running now{{else if lt .Study.Completed .Study.Total}}Ready for the next batch{{else}}Study complete{{end}}</h2><p>{{.Study.Completed}} of {{.Study.Total}} analysis and synthesis tasks are complete.</p></div><span class="status {{if .Study.RunActive}}status-info{{else if .Study.Failed}}status-error{{else}}status-ok{{end}}">{{.Study.Status}}</span></div><div class="study-completion"><strong>{{.Study.Completed}}</strong><span>complete</span><div class="segmented-progress" aria-label="Study task distribution"><i class="segment-complete" style="flex:{{.Study.Completed}}"></i><i class="segment-active" style="flex:{{.Study.ActiveTasks}}"></i><i class="segment-failed" style="flex:{{.Study.Failed}}"></i><i class="segment-pending" style="flex:{{.Study.Pending}}"></i></div></div><dl class="study-ops"><div><dt>Active</dt><dd>{{.Study.ActiveTasks}}</dd></div><div><dt>Failed</dt><dd>{{.Study.Failed}}</dd></div><div><dt>Retrying or waiting</dt><dd>{{.Study.Waiting}}</dd></div>{{with .Study.Parallelism}}<div><dt>Parallelism</dt><dd>{{.EffectiveParallelism}} effective / {{.RequestedParallelism}} requested</dd></div>{{end}}</dl><div class="context-actions">{{if and .Study.RunActive .Study.RunID}}<a class="button-link" href="/runs/{{.Study.RunID}}">Open active run</a>{{else}}<form class="operation-form inline-operation" method="post" action="/operations/prepare" data-operation-kind="study_run_loop" data-study="{{.Study.Name}}"><input type="hidden" name="_csrf" value="{{.CSRF}}"><input type="hidden" name="kind" value="study_run_loop"><input type="hidden" name="study" value="{{.Study.Name}}"><input type="hidden" name="parallelism" value="1"><button type="submit">{{if gt .Study.Completed 0}}Resume study{{else}}Start study{{end}}</button></form>{{end}}<form class="operation-form inline-operation" method="post" action="/operations/prepare" data-operation-kind="validation" data-study="{{.Study.Name}}"><input type="hidden" name="_csrf" value="{{.CSRF}}"><input type="hidden" name="kind" value="validation"><input type="hidden" name="study" value="{{.Study.Name}}"><button type="submit">Validate study</button></form></div></section>
+<a class="dashboard-component study-progress-preview research-matrix" href="/studies/{{.Study.Name}}/progress"><section><div class="dashboard-component-heading"><h2>Research matrix</h2><strong>{{len .Study.Sources}} × {{len .Study.DimensionGroups}} groups</strong></div><div class="matrix-grid" aria-label="Grouped research progress">{{range .Study.MatrixRows}}<div><span>{{.Source}}</span>{{range .Cells}}<i class="matrix-cell cell-{{.Status}}" title="Dimension group {{.Group}}: {{.Status}}"></i>{{end}}</div>{{else}}<p class="empty">Add sources to build the research matrix.</p>{{end}}</div><span class="dashboard-component-cue">Open task-level progress</span></section></a>
+<a class="dashboard-component study-inputs-preview" href="/studies/{{.Study.Name}}/inputs"><section><h2>Research frame</h2><div class="research-frame"><div><strong>Sources</strong><ul>{{range .Study.SourcePreview}}<li>{{.}}</li>{{else}}<li>None defined</li>{{end}}</ul></div><b aria-hidden="true">×</b><div><strong>Dimension groups</strong><ul>{{range .Study.DimensionGroups}}<li>{{.}}</li>{{else}}<li>None defined</li>{{end}}</ul></div></div><p>{{.Study.Total}} planned analysis and synthesis tasks.</p></section></a>
+<a class="dashboard-component study-results-preview" href="/studies/{{.Study.Name}}/results"><section><div class="dashboard-component-heading"><h2>Emerging results</h2><strong>{{len .Study.RecentReports}} recent reports</strong></div><ul class="report-preview">{{range .Study.RecentReports}}<li><strong>{{.Label}}</strong>{{if .Summary}}<p>{{.Summary}}</p>{{end}}<span>{{.DisplayPath}}</span></li>{{else}}<li>Reports will appear as dimensions complete.</li>{{end}}</ul><span class="dashboard-component-cue">Open ratings and reports</span></section></a>
+<section class="study-reliability {{if or .Study.Failed .Study.Retries.TotalRetries}}reliability-expanded{{end}}"><div class="dashboard-component-heading"><h2>Run health</h2><strong>{{if or .Study.Failed .Study.Retries.TotalRetries}}Needs inspection{{else}}Stable{{end}}</strong></div><div class="reliability-facts"><span>{{.Study.Retries.TotalRetries}} retries</span><span>{{.Study.Retries.SameSession}} same-session</span><span>{{.Study.Retries.FreshSession}} fresh-session</span>{{with .Study.Parallelism}}<span>{{.Events}} throttle events</span>{{end}}</div></section>
+{{with .StudyLoopUsage}}{{if .HasUsage}}<section class="study-loop-usage study-overview-wide" aria-labelledby="study-loop-usage-heading">
+  <div class="dashboard-component-heading"><h2 id="study-loop-usage-heading">Token usage &amp; cost by task</h2><strong>{{.CostLabel}} across {{.TasksPriced}} priced task(s){{if gt .TasksUnpriced 0}} · {{.TasksUnpriced}} unpriced{{end}}</strong></div>
+  <p class="group-description">Costs are API-equivalent estimates at LiteLLM public rates; * marks rate-table estimates, not money spent.</p>
+  {{template "component/run-usage" .}}
+  <details class="study-loop-usage-details"><summary>Per-task breakdown · {{len .Tasks}} task(s)</summary>
+    <div class="table-wrap"><table class="study-task-usage-table" aria-label="Per-task token and cost breakdown">
+      <thead><tr><th scope="col">Task</th><th scope="col">Kind</th><th scope="col">Dimension</th><th scope="col">Source</th><th scope="col">Status</th><th scope="col">Tokens</th><th scope="col">In / Out</th><th scope="col">Cache R/W</th><th scope="col">Cost</th></tr></thead>
+      <tbody>{{range .Tasks}}{{if .Status}}<tr{{if .CostKnown}} data-cost-source="{{.CostSource}}"{{end}}><th scope="row"><code>{{.ID}}</code></th><td>{{.Kind}}</td><td>{{.Dimension}}</td><td>{{.Source}}</td><td>{{.Status}}</td><td>{{if .TokensKnown}}{{.Tokens}}{{else}}-{{end}}</td><td>{{if .InputKnown}}{{.InputTokens}}{{else}}-{{end}} / {{if .OutputKnown}}{{.OutputTokens}}{{else}}-{{end}}</td><td>{{if .CacheReadKnown}}{{.CacheReadTokens}}{{else}}-{{end}} / {{if .CacheWriteKnown}}{{.CacheWriteTokens}}{{else}}-{{end}}</td><td>{{.Cost}}{{if eq .CostSource "model_priced"}} <small class="cost-note">rate-table</small>{{end}}</td></tr>{{end}}{{end}}</tbody>
+    </table></div>
+  </details>
+</section>{{end}}{{end}}
+<section class="study-attention attention-strip"><div class="dashboard-component-heading"><h2>Recent findings</h2><strong>{{len .Study.Findings}} findings</strong></div>{{template "component/findings" .Study.Findings}}</section>
+</div>
+{{else if eq .Page "inputs"}}
+<section><h2>Sources</h2>{{if .Study.Sources}}<ul>{{range .Study.Sources}}<li>{{.}}</li>{{end}}</ul>{{else}}<p class="empty">No sources found.</p>{{end}}</section>
+<section class="dimensions-browser" data-dimensions-browser aria-label="Dimension browser">
+  <h2>Dimensions</h2>
+  <div class="dimensions-toolbar">
+    <label for="dimension-search">Search dimensions</label>
+    <input id="dimension-search" type="search" placeholder="Search by number, title, or content…" data-dimension-search autocomplete="off" spellcheck="false">
+    <span class="dimensions-count" data-dimension-count aria-live="polite"></span>
+  </div>
+  {{if .DimensionList}}
+  <ul class="dimension-list">
+    {{range .DimensionList}}
+    <li class="dimension-card" data-dimension-card>
+      <details>
+        <summary>
+          <span class="dimension-number">{{.Number}}</span>
+          <span class="dimension-title">{{if .Title}}{{.Title}}{{else if .Slug}}{{.Slug}}{{else}}Dimension{{end}}</span>
+          {{if .CodeCitationsDisabled}}<span class="status status-warn" title="This dimension forbids code citations in reports.">no code citations</span>{{end}}
+          <span class="dimension-meta"><code>{{.DisplayPath}}</code></span>
+        </summary>
+        <div class="dimension-content">{{.Body}}</div>
+        {{if .Truncated}}<p class="dimension-truncated">Preview truncated at 64 KiB; the full file remains authoritative on disk.</p>{{end}}
+      </details>
+    </li>
+    {{end}}
+  </ul>
+  <p class="empty" data-dimension-empty hidden>No dimensions match the search.</p>
+  {{else}}<p class="empty">No dimensions found.</p>{{end}}
+</section>
+<script src="/static/js/study.js" defer></script>
+<section><h2>Dimensions</h2>{{if .Study.Dimensions}}<ul>{{range .Study.Dimensions}}<li>{{.}}</li>{{end}}</ul>{{else}}<p class="empty">No dimensions found.</p>{{end}}</section>
+{{else if eq .Page "progress"}}
+<section class="study-progress-summary" aria-labelledby="study-progress-heading"><header><div><p class="eyebrow">Study progress</p><h2 id="study-progress-heading">{{.Study.Completed}} of {{.Study.Total}} tasks complete</h2><p class="group-description">{{if .Study.RunActive}}Agents are working now.{{else}}No agents are currently running.{{end}}</p></div><span class="status {{if .Study.RunActive}}status-info{{else}}status-muted{{end}}">{{if .Study.RunActive}}Active{{else}}Idle{{end}}</span></header><progress max="{{.Study.Total}}" value="{{.Study.Completed}}">{{.Study.Completed}} of {{.Study.Total}}</progress><dl class="study-progress-counts"><div><dt>Complete</dt><dd>{{.Study.Completed}}</dd></div><div><dt>Active</dt><dd>{{.Study.ActiveTasks}}</dd></div><div><dt>Needs attention</dt><dd>{{.Study.Failed}} failed · {{.Study.Cancelled}} cancelled</dd></div><div><dt>Pending</dt><dd>{{.Study.Pending}}</dd></div></dl>{{if .Study.RunID}}<p class="study-current-run">Current run <a href="/runs/{{.Study.RunID}}"><code>{{.Study.RunID}}</code></a></p>{{end}}</section>
+<section><h2>Run controls</h2><div class="operation-actions"><form class="operation-form" method="post" action="/operations/prepare" data-operation-kind="study_run_loop" data-study="{{.Study.Name}}"><input type="hidden" name="_csrf" value="{{.CSRF}}"><input type="hidden" name="kind" value="study_run_loop"><input type="hidden" name="study" value="{{.Study.Name}}"><label class="parallelism-choice">Parallel agents <select name="parallelism"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label><label class="model-choice">Model <input type="text" name="model" list="ultraplan-model-options" data-model-input placeholder="Workspace default" autocomplete="off" spellcheck="false"></label><button type="submit">{{if gt .Study.Completed 0}}Resume study{{else}}Start study{{end}}</button></form></div></section>
+<link rel="stylesheet" href="/static/run-timeline.css">
+<section class="run-history-timeline" data-run-timeline data-timeline-scope="study" data-timeline-study="{{.Study.Name}}" aria-labelledby="run-timeline-heading">
+<header><div><p class="eyebrow">Run history</p><h2 id="run-timeline-heading">Run timeline</h2><p>Each line is one durable run for this study across the selected window; spikes show tool activity.</p></div>
+<div class="run-timeline-controls"><label>Back <select data-timeline-window><option value="6h">6 hours</option><option value="24h" selected>24 hours</option><option value="7d">7 days</option><option value="30d">30 days</option></select></label><label>Max runs <select data-timeline-limit><option value="10">10</option><option value="20" selected>20</option><option value="50">50</option></select></label></div></header>
+<span class="run-timeline-state" data-timeline-state>Loading</span>
+<p class="empty" data-timeline-empty hidden>No durable runs were retained for this study in the selected window.</p>
+<div class="run-timeline-chart-wrap" data-timeline-chart hidden></div>
+</section>
+<script src="/static/run-timeline.js" defer></script>
+<section><details class="study-retries"><summary>Retries · {{.Study.Retries.TotalRetries}} across {{.Study.Retries.RetriedTasks}} task(s){{if .Study.Retries.Waiting}} · {{.Study.Retries.Waiting}} waiting{{end}}</summary><dl class="metadata"><div><dt>Total retries</dt><dd>{{.Study.Retries.TotalRetries}}</dd></div><div><dt>Tasks retried</dt><dd>{{.Study.Retries.RetriedTasks}}</dd></div><div><dt>Same session</dt><dd>{{.Study.Retries.SameSession}}</dd></div><div><dt>Fresh session</dt><dd>{{.Study.Retries.FreshSession}}</dd></div>{{if .Study.Retries.Waiting}}<div><dt>Waiting to retry</dt><dd>{{.Study.Retries.Waiting}}</dd></div>{{end}}{{with .Study.Retries.NextRetryAt}}<div><dt>Next retry</dt><dd>{{.Format "15:04:05 MST"}}</dd></div>{{end}}</dl>
+{{if .Study.RetriedTasks}}<div class="table-wrap"><table><thead><tr><th>Task</th><th>Status</th><th>Retries</th><th>Session</th></tr></thead><tbody>{{range .Study.RetriedTasks}}<tr><td>{{.ID}}</td><td>{{.Status}}</td><td>{{.Retries}}</td><td>{{if eq .SessionReuse "same"}}same session{{else if eq .SessionReuse "fresh"}}fresh session{{else}}-{{end}}</td></tr>{{end}}</tbody></table></div>{{else}}<p class="empty">No task has needed a retry.</p>{{end}}</details></section>
+<section><h2>Parallelism</h2>{{if .Study.Parallelism}}{{if .Study.Parallelism.Decreased}}<p>Memory pressure reduced parallelism from {{.Study.Parallelism.RequestedParallelism}} to {{.Study.Parallelism.EffectiveParallelism}} agent(s).</p>{{else if .Study.Parallelism.Events}}<p>Parallelism was throttled by memory pressure {{.Study.Parallelism.Events}} time(s), but is back at the requested level.</p>{{else}}<p>Parallelism has not been decreased because of memory.</p>{{end}}{{else}}<p>No run-loop diagnostics recorded; parallelism state unknown.</p>{{end}}</section>
+<link rel="stylesheet" href="/static/resource-monitor.css">
+<section class="resource-monitor" data-study-resources="/api/v1/studies/{{.Study.Name}}/resources">
+<header><div><p class="eyebrow">Live diagnostics</p><h2>Resource usage</h2></div><span class="resource-monitor-state" data-resource-state>Loading</span></header>
+<dl class="resource-metrics"><div><dt>Available memory</dt><dd data-resource="available">-</dd></div><div><dt>UltraPlan RSS</dt><dd data-resource="parent-rss">-</dd></div><div><dt>Workers RSS</dt><dd data-resource="child-rss">-</dd></div><div><dt>Swap</dt><dd data-resource="swap">-</dd></div><div><dt>Parallelism</dt><dd data-resource="parallelism">-</dd></div><div><dt>Workers</dt><dd data-resource="workers">-</dd></div></dl>
+<div class="resource-chart"><svg viewBox="0 0 720 180" role="img" aria-label="Memory usage over time"><polyline data-resource-line="children" class="resource-line resource-line-children" points=""></polyline><polyline data-resource-line="parent" class="resource-line resource-line-parent" points=""></polyline></svg><div class="resource-legend"><span><i class="children"></i>Workers RSS</span><span><i class="parent"></i>UltraPlan RSS</span></div></div>
+<p class="resource-empty" data-resource-empty hidden>No run-loop diagnostics have been recorded for this study.</p>
+<div class="table-wrap"><table class="resource-processes"><thead><tr><th>PID</th><th>Task</th><th>RSS</th><th>Swap</th><th>CPU time</th><th>Elapsed</th></tr></thead><tbody data-resource-processes></tbody></table></div>
+<div class="resource-events"><h3>Memory controls</h3><ul data-resource-events><li>No throttle events recorded.</li></ul></div>
+</section>
+<script src="/static/resource-monitor.js" defer></script>
+{{else if eq .Page "results"}}
+<section class="reports-browser">
+  <div class="pill-tabs" role="tablist" aria-label="Report kinds" data-report-tabs>
+    <button type="button" role="tab" id="reports-tab-final" aria-selected="true" aria-controls="reports-panel-final" data-report-tab="final">Final <span class="tab-count">{{len .ReportFinals}}</span></button>
+    <button type="button" role="tab" id="reports-tab-source" aria-selected="false" aria-controls="reports-panel-source" tabindex="-1" data-report-tab="source">Dimension × repo <span class="tab-count">{{.ReportSourceCount}}</span></button>
+  </div>
+  <div id="reports-panel-final" role="tabpanel" aria-labelledby="reports-tab-final">
+    {{if .ReportFinals}}
+    <ul class="report-list">{{range .ReportFinals}}<li><a href="/artifacts/{{.Ref}}"><code>{{.Label}}</code><span>{{.DisplayPath}}</span></a></li>{{end}}</ul>
+    {{else}}<p class="empty">No final reports have been generated yet.</p>{{end}}
+  </div>
+  <div id="reports-panel-source" role="tabpanel" aria-labelledby="reports-tab-source" hidden>
+    {{if .ReportGroups}}{{range .ReportGroups}}
+    <div class="report-group"><h3><code>{{.Dimension}}</code></h3>
+      <ul class="report-list">{{range .Reports}}<li><a href="/artifacts/{{.Ref}}"><code>{{.Label}}</code><span>{{.DisplayPath}}</span></a></li>{{end}}</ul>
+    </div>
+    {{end}}{{else}}<p class="empty">No per-source reports have been generated yet.</p>{{end}}
+  </div>
+</section>
+<script src="/static/js/study.js" defer></script>
+{{if .RepoBoard}}
+<section><h2>Repo leaderboard</h2>
+<ol class="repo-board">{{range .RepoBoard}}
+<li class="repo-row{{if le .Rank 3}} repo-row-top{{end}}"><span class="repo-rank">{{.Rank}}</span><div class="repo-main"><span class="repo-name">{{.Name}}</span><span class="repo-coverage">{{.Coverage}}</span></div>{{if .BestText}}<a class="repo-best" href="/artifacts/{{.BestRef}}">best: <code>{{.BestText}}</code></a>{{end}}<div class="repo-score" aria-label="Average rating {{.Average}} of 10"><strong>{{.Average}}</strong><i class="repo-bar" aria-hidden="true"><span style="width: {{.BarWidth}}%"></span></i></div></li>
+{{end}}</ol>
+</section>
+<section><h2>Dimension leaders</h2>
+<ul class="champion-grid">{{range .RepoChampions}}<li class="champion-card"><h3><code>{{.Dimension}}</code></h3><ol>{{range .Leaders}}<li><a href="/artifacts/{{.Ref}}"><span class="champ-rank">{{.Rank}}</span> {{.Name}} <strong>{{.Score}}</strong></a></li>{{end}}</ol></li>{{end}}</ul>
+</section>
+<section><h2>All scores</h2>
+<div class="table-wrap score-matrix-wrap"><table class="score-matrix">
+<thead><tr><th scope="col">Repo</th>{{range .RepoColumns}}<th scope="col" title="{{.Number}}">{{.Label}}</th>{{end}}<th scope="col">Avg</th></tr></thead>
+<tbody>{{range .RepoMatrix}}<tr><th scope="row">{{.Name}}</th>{{range .Cells}}<td{{if .Scored}} class="scored{{if .Leader}} leader{{end}}" style="--heat: {{.Percent}}%"{{end}}>{{if .Ref}}<a href="/artifacts/{{.Ref}}" title="Open report">{{.Label}}</a>{{else}}{{.Label}}{{end}}</td>{{end}}<td class="repo-avg">{{.Average}}</td></tr>{{end}}</tbody>
+</table></div>
+<p class="group-description">Each cell links to that repo’s report for the dimension; outlined cells lead their dimension; – means no rating yet, n/a means the dimension does not apply to that repo.</p>
+</section>
+{{else}}<p class="empty">No repo reports have been rated yet.</p>{{end}}
+{{end}}
+{{template "layout/bottom" .}}{{end}}

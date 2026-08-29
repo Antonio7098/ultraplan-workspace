@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "38-bounded-repair",
+  "qa_attempt_id": "qa-v1-attempt-c496c705da66f4b04235f119",
+  "repair_run_id": "repair-v1-run-cb866de6a02d6583c719f446",
+  "issue": {
+    "id": "qa-v2-issue-f1cc3019f6400a0cfa998cb1",
+    "root_cause_group_id": "qa-v2-group-f0b1bca52c7c1fc6c7697b9a",
+    "title": "Sentinel compile failure",
+    "issue_class": "behavior",
+    "severity": "medium",
+    "location": "internal/sprint/repair_dogfood_sentinel.go",
+    "evidence_ids": [
+      "qa-v2-evidence-85ab3151ab9b9aea2d3fce18"
+    ],
+    "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+    "repair_eligible": true,
+    "regression_candidate": true
+  },
+  "root_cause_group": {
+    "id": "qa-v2-group-f0b1bca52c7c1fc6c7697b9a",
+    "claim": "the sentinel function does not return an int",
+    "issue_class": "behavior",
+    "location": "internal/sprint/repair_dogfood_sentinel.go",
+    "evidence_ids": [
+      "qa-v2-evidence-85ab3151ab9b9aea2d3fce18"
+    ]
+  },
+  "adjudication_id": "qa-v2-adjudication-8c32e33d81d8938e20e92233",
+  "evidence_ids": [
+    "qa-v2-evidence-85ab3151ab9b9aea2d3fce18"
+  ],
+  "plan_ids": [
+    "qa-v2-plan-200c90c0b5553e8797c0c82c"
+  ],
+  "map_id": "qa-v1-map-c9412382899f8cbf771dee44",
+  "shard_ids": [
+    "qa-v1-shard-0c9fa1b26b4fe77b6313cf9a"
+  ],
+  "expectation_refs": [
+    "DOGFOOD-REPAIR-1"
+  ],
+  "exact_reproducer": {
+    "id": "repair-v1-check-d3c89170772bac28526dc24f",
+    "gate": "exact_reproducer",
+    "executable": "go",
+    "args": [
+      "test",
+      "./internal/sprint"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "expected": "go test ./internal/sprint exits 0",
+    "source_plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c"
+  },
+  "checks": [
+    {
+      "id": "repair-v1-check-d3c89170772bac28526dc24f",
+      "gate": "exact_reproducer",
+      "executable": "go",
+      "args": [
+        "test",
+        "./internal/sprint"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "go test ./internal/sprint exits 0",
+      "source_plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c"
+    },
+    {
+      "id": "repair-v1-check-8adbf0b3166ee3c935b76e16",
+      "gate": "primary_shards",
+      "executable": "go",
+      "args": [
+        "test",
+        "./internal/sprint"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen primary_shards conditions pass",
+      "source_plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c"
+    },
+    {
+      "id": "repair-v1-check-7c55ba47aeb77d6efeeaabc1",
+      "gate": "linked_theories",
+      "executable": "go",
+      "args": [
+        "test",
+        "./internal/sprint"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen linked_theories conditions pass",
+      "source_plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c"
+    },
+    {
+      "id": "repair-v1-check-a141a5b7091b6cfd63179637",
+      "gate": "follow_up_shards",
+      "executable": "go",
+      "args": [
+        "test",
+        "./internal/sprint"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen follow_up_shards conditions pass",
+      "source_plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c"
+    },
+    {
+      "id": "repair-v1-check-2367d71bb4bb00adeb4a354d",
+      "gate": "containing_qa",
+      "executable": "go",
+      "args": [
+        "test",
+        "./internal/sprint"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen containing_qa conditions pass",
+      "source_plan_id": "qa-v2-plan-200c90c0b5553e8797c0c82c"
+    },
+    {
+      "id": "repair-v1-check-ee83c51c1c9efff9c41518ec",
+      "gate": "containing_smoke",
+      "executable": "@product",
+      "args": [
+        "containing-smoke",
+        "6666666666666666666666666666666666666666666666666666666666666666",
+        "qa-v1-attempt-c496c705da66f4b04235f119"
+      ],
+      "timeout": 600000000000,
+      "output_limit": 1048576,
+      "expected": "current containing smoke passes on the repaired target"
+    }
+  ],
+  "allowed_paths": [
+    "internal/sprint/repair_dogfood_sentinel.go"
+  ],
+  "forbidden_paths": [
+    ".gitattributes",
+    ".gitignore",
+    ".gitmodules",
+    "go.mod",
+    "go.sum",
+    "ultraplan.yml"
+  ],
+  "acceptance_criteria": [
+    "go test ./internal/sprint exits 0"
+  ],
+  "mode": "manual",
+  "budgets": {
+    "max_cycles": 1,
+    "max_mutation_cycles": 1,
+    "max_reopenings": 1,
+    "stagnation_limit": 1,
+    "max_files_per_cycle": 8,
+    "max_files_per_run": 16,
+    "max_bytes_per_cycle": 262144,
+    "max_bytes_per_run": 524288,
+    "max_patch_bytes": 524288,
+    "wall_time": 2700000000000,
+    "runtime_attempts": 3,
+    "model_turns": 12,
+    "command_count": 32,
+    "command_timeout": 600000000000,
+    "output_bytes": 1048576,
+    "retained_cycles": 8,
+    "cleanup_timeout": 30000000000
+  },
+  "budget_sources": [
+    {
+      "field": "qa.repair.max_cycles",
+      "source": "manual_policy"
+    },
+    {
+      "field": "qa.repair.max_mutation_cycles",
+      "source": "manual_policy"
+    },
+    {
+      "field": "qa.repair.max_reopenings",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.stagnation_limit",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_patch_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.wall_time",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.runtime_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.model_turns",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_count",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.retained_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.cleanup_timeout",
+      "source": "default"
+    }
+  ],
+  "target": {
+    "fingerprint": "1a93acb491a82fff98b18b11006fb181f74768e3f9cfcc0e786a4e936271e628",
+    "git_head": "32ffead1d5cbd9315c8580cfd774f6daad206ed9",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "b16b3492949350bd44efa04ef58e21f0722023df8f861d61144521ce5cc0d0e2"
+  },
+  "governed_input_fingerprint": "7777777777777777777777777777777777777777777777777777777777777777",
+  "implementation_fingerprint": "1a93acb491a82fff98b18b11006fb181f74768e3f9cfcc0e786a4e936271e628",
+  "review_fingerprint": "e1b5c35845a0daf592cf123e160dbd32d6c1206368b63db45f3ec11197cd341d",
+  "smoke_fingerprint": "6666666666666666666666666666666666666666666666666666666666666666",
+  "policy_fingerprint": "2f748ab33aeccf8ac6445e042cbb58c251286e9c29e5dc6230afa2eccd7fa5da",
+  "isolation_fingerprint": "d94d107f6e8692ebbcbd62f079a0626dca229edd3cea7c06eff0265e241e3d9c",
+  "prepared_at": "2026-08-28T14:59:08.332898838Z",
+  "packet_digest": "3ca4593b1068a2dbb859f829154350839a5b46c80ed2fb259f563cc77287f588"
+}

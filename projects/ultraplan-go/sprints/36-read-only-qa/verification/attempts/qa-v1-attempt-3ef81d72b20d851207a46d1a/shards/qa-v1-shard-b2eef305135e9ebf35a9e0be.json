@@ -1,0 +1,1240 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:53:31.022481283Z",
+      "completed_at": "2026-08-26T10:54:41.416967788Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-runcontrol",
+          "paths": [
+            "internal/runcontrol/repository.go",
+            "internal/runcontrol/events.go",
+            "internal/sprint/service.go"
+          ],
+          "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+          "approved": false
+        },
+        {
+          "id": "ctx-sprint-qa",
+          "paths": [
+            "internal/sprint/qa_service.go",
+            "internal/sprint/qa_types.go",
+            "internal/platform/config/config.go"
+          ],
+          "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 33603653,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-19a2eb620d6c4048cf817597",
+      "shard_id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+      "claim": "Pending failure in durable CLI initiation leaks accepted run without terminal proposal when sprintRuntimeService fails",
+      "basis": "sprint_commands.go:242-245 after beginDurableCLICommand succeeds, sprintRuntimeService error returns via finishDurableCLICommand(durable,err) which calls FinishOperation; but durable_operations.go FinishOperation may fail silently or map to wrong outcome if service init fails before Claim",
+      "verification_surface": "internal/app/sprint_commands.go flow/verify/execute/qa durable blocks and durable_operations.go FinishOperation 266-299",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Init error after Accept+Claim leaves LifecycleRunning without TerminalFailed/Interrupted and requires manual reconciliation",
+      "refutation_condition": "FinishOperation always proposes TerminalFailed/Interrupted with 30s timeout and test durable_operations_test.go:92-124 shows closed repository fails closed via ErrConflict handling",
+      "inconclusive_condition": "Needs runtime fault injection of sprintRuntimeFactory failure after Accept to observe lifecycle; cannot execute per constraints",
+      "safe_evidence_strategy": "Read-only trace of every beginDurableCLICommand site counted in run_control_inventory_test.go:22-48 and FinishOperation outcome switch 286-297",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:31.022481283Z",
+          "completed_at": "2026-08-26T10:54:41.416967788Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-runcontrol",
+              "paths": [
+                "internal/runcontrol/repository.go",
+                "internal/runcontrol/events.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+              "approved": false
+            },
+            {
+              "id": "ctx-sprint-qa",
+              "paths": [
+                "internal/sprint/qa_service.go",
+                "internal/sprint/qa_types.go",
+                "internal/platform/config/config.go"
+              ],
+              "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 33603653,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/web_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/operation_runner.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+              "paths": [
+                "internal/app/run_control_inventory_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static shows 6 durable sites in sprint_commands.go plus 4 in study_commands; whether finish path reliably terminalizes on config/runtime failure not verified without execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-43c6cae1e5eacf08b044eced",
+      "shard_id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+      "claim": "Governed input fingerprint symlink check misses top-level symlink to directory and may allow path escape",
+      "basis": "operations.go:711-714 checks Lstat ModeSymlink then IsDir WalkDir; WalkDir checks entry.Type() symlink but not top-level joined path symlink-to-dir nor file symlink inside dir via ReadFile follow",
+      "verification_surface": "internal/app/operations.go fingerprintOperationInputs and hashOperationFile",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Symlinked governed input directory or file is hashed without rejection, allowing attacker-controlled workspace path to be read into fingerprint or bypassed",
+      "refutation_condition": "Lstat + WalkDir error branch already returns symbolic link rejection for both top-level and nested cases and hashOperationFile uses Lstat not ReadFile-follow",
+      "inconclusive_condition": "Need to inspect filepath.WalkDir symlink semantics on this Go version and hashOperationFile ReadFile follow behavior without execution",
+      "safe_evidence_strategy": "Read-only line review operations.go:699-754, grep Symlink usage, inspect workspace.ResolveInside if available, review existing tests for symlink fingerprint in web_operations_test",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:31.022481283Z",
+          "completed_at": "2026-08-26T10:54:41.416967788Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-runcontrol",
+              "paths": [
+                "internal/runcontrol/repository.go",
+                "internal/runcontrol/events.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+              "approved": false
+            },
+            {
+              "id": "ctx-sprint-qa",
+              "paths": [
+                "internal/sprint/qa_service.go",
+                "internal/sprint/qa_types.go",
+                "internal/platform/config/config.go"
+              ],
+              "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 33603653,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/web_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/operation_runner.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+              "paths": [
+                "internal/app/run_control_inventory_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code appears to check nested symlinks but top-level dir-symlink case depends on WalkDir Type bits for symlinked dirs not confirmed via execution"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6d4b0ca8a1620fd8bda19aba",
+      "shard_id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+      "claim": "Durable operation progress coalescing silently drops distinct progress events when key and window coincide, causing audit gaps",
+      "basis": "durable_operations.go:174-180 coalesces on exact key+elapsed \u003c ProgressCoalesceWindow, incrementing omitted counter and returning false without persistence; finish flushes only as single omission record",
+      "verification_surface": "internal/app/durable_operations.go RecordOperationEvent and controlOperation heartbeat path; ProgressCoalesceWindow handling and omission payload",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Consecutive distinct logical progress updates sharing Stage/Task/PhaseState/SafeSummary/Event fields within window are deduped and only counted via omission rather than emitted as separate EventProgress entries",
+      "refutation_condition": "Code shows coalesced events are re-emitted via omission record that preserves count and window, or window is 0/disabled so no distinct events are lost",
+      "inconclusive_condition": "Cannot time the ticker/ProgressCoalesceWindow or inspect live runcontrol ProgressCoalesceWindow constant and actual omission event shape without runtime execution",
+      "safe_evidence_strategy": "Read-only grep for ProgressCoalesceWindow, Omission handling in durable_operations.go:174-220 and durable_operations_test.go:63-90; inspect runcontrol definition via context_paths; review Events payload omission assertions",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:31.022481283Z",
+          "completed_at": "2026-08-26T10:54:41.416967788Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-runcontrol",
+              "paths": [
+                "internal/runcontrol/repository.go",
+                "internal/runcontrol/events.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+              "approved": false
+            },
+            {
+              "id": "ctx-sprint-qa",
+              "paths": [
+                "internal/sprint/qa_service.go",
+                "internal/sprint/qa_types.go",
+                "internal/platform/config/config.go"
+              ],
+              "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 33603653,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/web_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/operation_runner.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+              "paths": [
+                "internal/app/run_control_inventory_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only inspection confirms coalescing exists and test expects omission, but whether distinct user-visible progress is materially lost vs. intentionally batched requires runtime timing and runcontrol constant inspection outside changed_paths"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-793b4f1292d6ef53962d4360",
+      "shard_id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+      "claim": "Stale operation check in RunOperation is time-of-check/time-of-use with no atomic lock between Prepare and runner",
+      "basis": "operations.go:400-410 RunOperation re-derives prepared fingerprint and compares to ExpectedFingerprint supplied by caller; concurrent governance file mutation between prepare and run could be exploited",
+      "verification_surface": "internal/app/operations.go PrepareOperation/RunOperation and web_operations_test stale test",
+      "expectation_refs": [
+        "contract-security",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Runner executes despite intermediate governed file change if fingerprint comparison is bypassed or caller omits ExpectedFingerprint (empty bypasses check at line 407)",
+      "refutation_condition": "Empty ExpectedFingerprint path is intentional for direct calls and web layer always supplies durable digest; fingerprint check blocks execution before runner invocation as test 59-88 proves",
+      "inconclusive_condition": "Need to confirm web adapter always populates ExpectedFingerprint and that empty bypass cannot be triggered via TUI/CLI durable path",
+      "safe_evidence_strategy": "Read-only grep for ExpectedFingerprint assignment in sprint_commands.go/tui_commands.go/serve_commands.go; review RunOperation early return and web sandboxing",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:31.022481283Z",
+          "completed_at": "2026-08-26T10:54:41.416967788Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-runcontrol",
+              "paths": [
+                "internal/runcontrol/repository.go",
+                "internal/runcontrol/events.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+              "approved": false
+            },
+            {
+              "id": "ctx-sprint-qa",
+              "paths": [
+                "internal/sprint/qa_service.go",
+                "internal/sprint/qa_types.go",
+                "internal/platform/config/config.go"
+              ],
+              "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 33603653,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/web_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/operation_runner.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+              "paths": [
+                "internal/app/run_control_inventory_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static shows empty bypass exists at operations.go:407 and test confirms stale rejection, but whether transport adapters can invoke RunOperation with empty digest outside this shard requires cross-shard inspection"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-d6eb25d5b5b9cf26828f7ebc",
+      "shard_id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+      "claim": "QA ownership fence extraction via context allows heartbeat with stale token after context cancellation (WithoutCancel)",
+      "basis": "durable_operations.go:140-155 qaOwnershipFromContext returns closure capturing original ctx but Heartbeat uses context.WithoutCancel(ctx); test shows cancelledContext still succeeds fence(token) at line 49-57",
+      "verification_surface": "internal/app/durable_operations.go:140-156 and operation_runner.go:115-125 QA path using WithQAWriterFence",
+      "expectation_refs": [
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Cancelled operation context still permits Heartbeat/fence validation via WithoutCancel, allowing writes after logical cancellation",
+      "refutation_condition": "Fence closure correctly validates token equality and generation before Heartbeat and Heartbeat itself rejects cancelled runs via runcontrol snapshot check",
+      "inconclusive_condition": "Requires inspection of runcontrol Heartbeat/Cancellation semantics and sprint QA writer fence enforcement not in assigned shard",
+      "safe_evidence_strategy": "Read-only review of qaOwnershipFromContext, FinishOperation cancel ordering, and sprint QAService WithQAWriterFence behavior via context_paths and grep for FencingGeneration/ErrStaleFence",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:31.022481283Z",
+          "completed_at": "2026-08-26T10:54:41.416967788Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-runcontrol",
+              "paths": [
+                "internal/runcontrol/repository.go",
+                "internal/runcontrol/events.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+              "approved": false
+            },
+            {
+              "id": "ctx-sprint-qa",
+              "paths": [
+                "internal/sprint/qa_service.go",
+                "internal/sprint/qa_types.go",
+                "internal/platform/config/config.go"
+              ],
+              "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 33603653,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/web_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/operation_runner.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+              "paths": [
+                "internal/app/run_control_inventory_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static read shows WithoutCancel intentionally supports cleanup but cross-module runcontrol semantics for stale fence after cancel not visible without internal/runcontrol source"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e32f18e8818117bcb4147cfb",
+      "shard_id": "qa-v1-shard-b2eef305135e9ebf35a9e0be",
+      "claim": "QA suite=smoke branching inconsistent between PrepareOperation dry-run/status and runtime RunQA path",
+      "basis": "operations.go:231-250 QADryRun maps smoke via RunSmoke DryRun, while 247-273 QAStart handles smoke via RunQA with EvidenceProducing flag; operation_runner.go:124-126 sets EvidenceProducing= req.Suite == \"\" (opposite polarity for smoke)",
+      "verification_surface": "internal/app/operations.go PrepareOperation QA switch and operation_runner.go:114-130 QA case",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Smoke QA start produces QA artifacts vs. smoke harness artifacts mismatch due to EvidenceProducing polarity or scope divergence leading to failed verification gate",
+      "refutation_condition": "EvidenceProducing=false for smoke is intentional (QA harness not producing QA evidence) and scope strings in Confirm are presentation-only not functional",
+      "inconclusive_condition": "Requires tracing sprint service RunQA vs RunSmoke smoke-suite handling and validation of scope/warning expectations without sprint package source",
+      "safe_evidence_strategy": "Read-only compare operations.go:232-272 scope/warning vs operation_runner smoke handling; inspect sprint QA Smoke suite handling via context_paths sprint_usecases.go",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-b2eef305135e9ebf35a9e0be/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:53:31.022481283Z",
+          "completed_at": "2026-08-26T10:54:41.416967788Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-runcontrol",
+              "paths": [
+                "internal/runcontrol/repository.go",
+                "internal/runcontrol/events.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "Need runcontrol ProgressCoalesceWindow, Heartbeat/Cancel semantics and QA writer fence enforcement to confirm theories 1 and 2",
+              "approved": false
+            },
+            {
+              "id": "ctx-sprint-qa",
+              "paths": [
+                "internal/sprint/qa_service.go",
+                "internal/sprint/qa_types.go",
+                "internal/platform/config/config.go"
+              ],
+              "reason": "Need QA RunQA EvidenceProducing semantics and QA budget/settings validation for theories 4-5",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 33603653,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/durable_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+              "paths": [
+                "internal/app/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/web_operations_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+              "paths": [
+                "internal/app/operations.go",
+                "internal/app/operation_runner.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+              "paths": [
+                "internal/app/run_control_inventory_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Progress coalescing window and omission batching in RecordOperationEvent omits equivalent progress",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA ownership fence uses WithoutCancel heartbeat allowing use after context cancellation; test asserts cancelled context still fences",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/durable_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Fingerprint symlink check inspects Lstat and WalkDir entry.Type symlink but hash via ReadFile may follow link",
+          "paths": [
+            "internal/app/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Stale operation check at RunOperation 407 bypasses when ExpectedFingerprint empty; web tests show stable fingerprint and stale rejection",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/web_operations_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA smoke suite handling diverges between PrepareOperation QADryRun map vs OperationQAStart scope and runner EvidenceProducing flag",
+          "paths": [
+            "internal/app/operations.go",
+            "internal/app/operation_runner.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Inventory test counts durable entry calls 6 sprint +4 study ensuring every runtime-backed CLI entry uses durable acceptance",
+          "paths": [
+            "internal/app/run_control_inventory_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Polarity inversion (EvidenceProducing = Suite == \"\") is visible but intent of QA smoke vs. native smoke pathway not decidable from app layer alone"
+    }
+  ]
+}

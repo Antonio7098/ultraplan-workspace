@@ -1,0 +1,667 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-3625709d9349e4af6843b180",
+  "attempt_id": "qa-v1-attempt-64b69c4f4e2cad1917c70c93",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-3625709d9349e4af6843b180/1",
+      "number": 1,
+      "started_at": "2026-08-26T11:18:53.721102408Z",
+      "completed_at": "2026-08-26T11:20:15.72833859Z",
+      "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "output_digest": "sha256:qa-dispatch-mismatch-observed"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/routes_test.go"
+          ],
+          "output_digest": "sha256:qa-error-projection-stable"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+          "paths": [
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js",
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go"
+          ],
+          "output_digest": "sha256:qa-shard-contract-preserved"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "sha256:qa-xss-escaping-verified"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1b9d2a516c7eec6e64658e7a",
+      "shard_id": "qa-v1-shard-3625709d9349e4af6843b180",
+      "claim": "Browser QA operation serializer drops focused shard/suite causing map-owned shard contract violation",
+      "basis": "internal/web/operation_handlers.go:735-751 enforces QA operations accept only options.shard or options.suite with strict kind checks (qa-start/resume only for shard, start/dry-run only for suite, mutual exclusion). The modular static/js/operations.js:5-17 and legacy fallback static/app.js:630-647 must preserve those fields under confirmation. operations_contract_test.go:68-86 asserts update of this contract.",
+      "verification_surface": "Inspection of operation_handlers.go mapOperationRequest QA validation block, static/js/operations.js options and command, static/app.js specification fallback, operations_contract_test.go TestBrowserQAOperationContractAllowsOnlyMapOwnedShard and templates_test.go modular serializer check",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-configuration",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Static client serialization omits shard/suite or maps them to wrong key (e.g., task) so a valid QA start/resume with shard yields invalid_request/unsupported kind or server drops shard",
+      "refutation_condition": "Both operation clients map selectedShard to result.shard and suite to result.suite and mapOperationSpec round-trips shard via options.shard for qa-start/qa-resume, and tests enforce it",
+      "inconclusive_condition": "Client embedding or dynamic form dataset values (data-shard, data-suite) not visible in assigned static paths",
+      "safe_evidence_strategy": "Read static/js/operations.js:5-18, static/app.js:630-647 specification fallback, operation_handlers.go:735-760 and 755-787 mapping, and operations_contract_test.go:68-86 without executing browser",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-3625709d9349e4af6843b180/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.721102408Z",
+          "completed_at": "2026-08-26T11:20:15.72833859Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "output_digest": "sha256:qa-dispatch-mismatch-observed"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/routes_test.go"
+              ],
+              "output_digest": "sha256:qa-error-projection-stable"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+              "paths": [
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js",
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go"
+              ],
+              "output_digest": "sha256:qa-shard-contract-preserved"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "sha256:qa-xss-escaping-verified"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "output_digest": "sha256:qa-dispatch-mismatch-observed"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/routes_test.go"
+          ],
+          "output_digest": "sha256:qa-error-projection-stable"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+          "paths": [
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js",
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go"
+          ],
+          "output_digest": "sha256:qa-shard-contract-preserved"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "sha256:qa-xss-escaping-verified"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "static/js/operations.js:13-16 correctly copies form.elements.suite and shard to result.shard/suite, and templates_test.go:133 asserts result.shard = selectedShard. operation_handlers.go correctly validates only shard/suite for qa-* kinds and maps shard via req.Task internally. Contract tests explicitly verify focused QA request succeeds and unsafe model/task/status-shard recovery-shard variants are rejected."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2c19b14e407b7c11818a1420",
+      "shard_id": "qa-v1-shard-3625709d9349e4af6843b180",
+      "claim": "QA issues collection query parameters are rejected before reaching handler due to global dispatch allowsQuery allowlist",
+      "basis": "internal/web/handlers.go:422 defines allowsQuery only for api_validations, api_runs, api_run_events, runs, api_timeline. internal/web/routes.go:373 maps /api/v1/projects/{project}/sprints/{sprint}/qa/issues to api_sprint_qa_issues and internal/web/qa_handlers.go:51-71 expects to read ?limit and ?cursor via r.URL.Query(). The dispatch block handlers.go:422-425 returns 400 invalid_request when RawQuery != \"\" for any route not in allowsQuery, so a valid call like GET /api/v1/projects/alpha/sprints/30-web/qa/issues?limit=10\u0026cursor=... will be rejected before QAIssues query. No other middleware exempts QA routes.",
+      "verification_surface": "Static inspection of handlers.go dispatch, routes.go matchRoute for api_sprint_qa_issues/api_sprint_qa_issue, qa_handlers.go handleSprintQAIssues query handling; compare with routes_test.go TestAPIValidationAndIdentifierBoundaries which verifies invalid_request for unknown queries but does not cover QA issue pagination",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Code shows api_sprint_qa_issues not in allowsQuery set while its handler reads URL query limit/cursor, and a read-only request with ?limit or ?cursor to that path is classified as known API route and blocked at dispatch",
+      "refutation_condition": "Code shows api_sprint_qa_issues is included in allowsQuery or QA issues endpoint is intentionally non-paginated / query params are handled via different path or dispatch exempts QA routes elsewhere",
+      "inconclusive_condition": "Cannot locate dispatch or route definitions or handler pagination intent within assigned paths without expanded context",
+      "safe_evidence_strategy": "Read handlers.go:422-436 dispatch and allowed query set, read routes.go:373-382 QA route mapping, read qa_handlers.go:51-71 query parsing, search handlers.go for additional allowsQuery exemptions without executing handlers",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-3625709d9349e4af6843b180/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.721102408Z",
+          "completed_at": "2026-08-26T11:20:15.72833859Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "output_digest": "sha256:qa-dispatch-mismatch-observed"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/routes_test.go"
+              ],
+              "output_digest": "sha256:qa-error-projection-stable"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+              "paths": [
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js",
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go"
+              ],
+              "output_digest": "sha256:qa-shard-contract-preserved"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "sha256:qa-xss-escaping-verified"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "output_digest": "sha256:qa-dispatch-mismatch-observed"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/routes_test.go"
+          ],
+          "output_digest": "sha256:qa-error-projection-stable"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+          "paths": [
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js",
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go"
+          ],
+          "output_digest": "sha256:qa-shard-contract-preserved"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "sha256:qa-xss-escaping-verified"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "File reads confirm mismatch: handlers.go:422 allowlist excludes all api_sprint_qa_* routes, while qa_handlers.go:58-66 intentionally parses limit/cursor from query. Route exists at routes.go:373. Existing QA test qa_handlers_test.go:65-71 does not exercise query case and route test does not include QA paths, so regression is not caught by current read-only QA tests."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7f5f5eb76c55727c27287bcd",
+      "shard_id": "qa-v1-shard-3625709d9349e4af6843b180",
+      "claim": "QA handlers leak internal causes or panic when QA capability is absent",
+      "basis": "internal/web/routes.go:71-75 obtains QA via opts.Operations.(QAQueries) fallback to opts.Queries.(QAQueries) leaving h.qa nil when neither implements. All QA handlers in qa_handlers.go guard with if h.qa == nil and QAEvidenceQueries type assertions, delegating to handleQueryError with apiRoute=true. handleQueryError in handlers.go:1056-1080 maps QAUseCaseError to stable public codes with category/operation/guidance and maps generic errors to not_found/unavailable without leaking secret strings, as verified by routes_test.go:185-203.",
+      "verification_surface": "Code inspection of routes.go NewHandler QA wiring, qa_handlers.go nil and capability checks, handlers.go handleQueryError and writeQAError detail construction; contrast with TestQAQueryErrorsUseStablePublicCodes and TestAPIErrorProjectionDoesNotLeakInternalCause",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Any QA handler dereferences nil h.qa, returns Go error text/persistence paths, or emits stack/secret in error envelope for non-QA errors",
+      "refutation_condition": "All QA entry points return handleQueryError with true API flag and safe public code/message, with writeQAError detail limited to category/operation/guidance/component/correlation_id and without internal text",
+      "inconclusive_condition": "QA wiring or error projection spans context beyond assigned files without approval",
+      "safe_evidence_strategy": "Read routes.go:70-76, all functions in qa_handlers.go:10-201 for h.qa nil checks and type assertions, read handlers.go:1056-1130 error mapping and templateText escaping without invoking network",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-3625709d9349e4af6843b180/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.721102408Z",
+          "completed_at": "2026-08-26T11:20:15.72833859Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "output_digest": "sha256:qa-dispatch-mismatch-observed"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/routes_test.go"
+              ],
+              "output_digest": "sha256:qa-error-projection-stable"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+              "paths": [
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js",
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go"
+              ],
+              "output_digest": "sha256:qa-shard-contract-preserved"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "sha256:qa-xss-escaping-verified"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "output_digest": "sha256:qa-dispatch-mismatch-observed"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/routes_test.go"
+          ],
+          "output_digest": "sha256:qa-error-projection-stable"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+          "paths": [
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js",
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go"
+          ],
+          "output_digest": "sha256:qa-shard-contract-preserved"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "sha256:qa-xss-escaping-verified"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Reads show all QA API functions (handleSprintQA, QAMap, QAShard, QATheory, QASynthesis, QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite, handleSprintQAPage) check h.qa nil or type-assert QAEvidenceQueries and call handleQueryError. handleQueryError correctly branches to writeQAError for QAUseCaseError with stable fields and otherwise maps to not_found/unavailable with safe message. Tests at qa_handlers_test.go:38-56 and routes_test.go:185-203 enforce this."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-dc441e75679c9bffd1863399",
+      "shard_id": "qa-v1-shard-3625709d9349e4af6843b180",
+      "claim": "Sprint QA HTML rendering executes hostile shard titles or theory claims as script",
+      "basis": "internal/web/templates/sprint.html:58-61 renders shards via {{.Title}} and {{.Claim}} with status spans, and qa_handlers_test.go:65-104 asserts hostile \u003cscript\u003ealert(1)\u003c/script\u003e in shard Title and theory Claim is escaped, with no \u003cscript\u003ealert in rendered QA HTML and presence of \u003cnoscript\u003e fallback",
+      "verification_surface": "Template source sprint.html QA page block, handler render path handleSprintQAPage in qa_handlers.go:168-201 and pageModel field types, plus qa_handlers_test.go TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML hostile content checks and templates_test.go hostile name checks",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "critical",
+      "confirmation_condition": "Rendered HTML at /projects/{p}/sprints/{s}/qa or shards/theories contains raw \u003cscript\u003ealert or unescaped sharded Title/Claim bytes, or skips \u003cnoscript\u003e availability",
+      "refutation_condition": "Template uses default html/template auto-escaping for all QA text, JSON endpoints set application/json with bounded schema_version, and HTML responses escape hostile input while still rendering Read-only QA and Conformance Review markers",
+      "inconclusive_condition": "Need runtime render beyond static template read to observe post-escape output",
+      "safe_evidence_strategy": "Read templates/sprint.html:41-62 QA section for templating verbs, read qa_handlers.go:168-201 for model population, and correlate with qa_handlers_test.go:78-104 assertions without launching server",
+      "implementation_fingerprint": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+      "attempt_history": [
+        {
+          "id": "att_zxxlhs7j5hk3i2hb2oqyajlcli/qa-v1-shard-3625709d9349e4af6843b180/1",
+          "number": 1,
+          "started_at": "2026-08-26T11:18:53.721102408Z",
+          "completed_at": "2026-08-26T11:20:15.72833859Z",
+          "implementation_before": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "implementation_after": "11edd65f19dc58b3e541ac2450294c6ff6b80424c390ca89ee7c392ee891fd91",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "output_digest": "sha256:qa-dispatch-mismatch-observed"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/routes_test.go"
+              ],
+              "output_digest": "sha256:qa-error-projection-stable"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+              "paths": [
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js",
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go"
+              ],
+              "output_digest": "sha256:qa-shard-contract-preserved"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "sha256:qa-xss-escaping-verified"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery excludes QA issues pagination while handler expects limit/cursor",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "output_digest": "sha256:qa-dispatch-mismatch-observed"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA error projection returns stable public codes with correlation_id and no secret leak",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/routes_test.go"
+          ],
+          "output_digest": "sha256:qa-error-projection-stable"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Modular and fallback JS preserve QA shard/suite and server validates map-owned contract",
+          "paths": [
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js",
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go"
+          ],
+          "output_digest": "sha256:qa-shard-contract-preserved"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Sprint QA template auto-escapes hostile title/claim and renders noscript-bounded HTML",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "sha256:qa-xss-escaping-verified"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "sprint.html QA shards/theories use {{.Title}} / {{.Claim}} / {{.Theory.Claim}} / {{.Theory.Basis}} which are auto-escaped by html/template; qa_handlers_test.go explicitly sets shard Title to hostile \u003cscript\u003ealert(1)\u003c/script\u003e and theory Claim to \u003cscript\u003ealert(2)\u003c/script\u003e and then asserts HTML responses contain no \u003cscript\u003ealert, contain Read-only QA, Conformance Review, \u003cnoscript\u003e, and JSON responses contain schema_version:1. Previous templates_test hostile check also passes."
+    }
+  ]
+}

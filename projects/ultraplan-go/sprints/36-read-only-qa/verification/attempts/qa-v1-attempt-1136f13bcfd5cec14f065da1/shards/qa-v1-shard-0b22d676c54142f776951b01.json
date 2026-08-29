@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-0b22d676c54142f776951b01",
+  "attempt_id": "qa-v1-attempt-1136f13bcfd5cec14f065da1",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-0b22d676c54142f776951b01",
+    "summary": "investigator used 10 turns; limit is 4",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_44ld2s3gdane6h7mrxkmyc5u6i/qa-v1-shard-0b22d676c54142f776951b01/1",
+      "number": 1,
+      "started_at": "2026-08-25T13:07:56.598728164Z",
+      "completed_at": "2026-08-25T13:11:14.842539472Z",
+      "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "failure_kind": "runtime_exit",
+      "retryable": true,
+      "stop_reason": "runtime attempt failed"
+    },
+    {
+      "id": "att_44ld2s3gdane6h7mrxkmyc5u6i/qa-v1-shard-0b22d676c54142f776951b01/2",
+      "number": 2,
+      "started_at": "2026-08-25T13:11:15.3266439Z",
+      "completed_at": "2026-08-25T13:17:00.283579847Z",
+      "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 42890,
+        "output_tokens_known": true,
+        "output_tokens": 8550,
+        "total_tokens_known": true,
+        "total_tokens": 271152,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 219712,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 10
+      },
+      "estimated_cost": {
+        "amount": 0,
+        "currency": "USD",
+        "estimate": false
+      },
+      "stop_reason": "investigator iteration limit exceeded"
+    }
+  ]
+}

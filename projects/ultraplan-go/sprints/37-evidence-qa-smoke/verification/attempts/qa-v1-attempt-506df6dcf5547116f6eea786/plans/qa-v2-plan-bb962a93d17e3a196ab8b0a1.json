@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-plan-bb962a93d17e3a196ab8b0a1",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+  "theory_ids": [],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "kind": "fact",
+  "confirmation_condition": "approved check exits successfully and satisfies its output policy",
+  "refutation_condition": "approved check exits unsuccessfully or violates its output policy",
+  "inconclusive_condition": "approved check is unavailable or incomplete",
+  "approved_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go"
+  ],
+  "check_id": "go-format-diff",
+  "executable": "/usr/bin/gofmt",
+  "args": [
+    "-d",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go"
+  ],
+  "timeout": 300000000000,
+  "output_limit": 262144,
+  "require_empty_stdout": true,
+  "analyzer_calls": 0,
+  "cleanup_required": true,
+  "governed_input_fingerprint": "bed2bdbf1cca643266a52219525f203591127dee43ad867641d2c2ae632d1e48",
+  "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+  "map_fingerprint": "6ca9dae194ebd62d6ddd35142301b2d31d0896e24593860ccdd484ffd93abb85",
+  "frozen_at": "2026-08-28T11:29:58.509718672Z"
+}

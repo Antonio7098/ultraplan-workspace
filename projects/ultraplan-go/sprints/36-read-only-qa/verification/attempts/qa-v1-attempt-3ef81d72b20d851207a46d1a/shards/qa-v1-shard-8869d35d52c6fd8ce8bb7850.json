@@ -1,0 +1,544 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-8869d35d52c6fd8ce8bb7850",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "primary",
+  "title": "internal/platform",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/qa.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "context_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/platform"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-8869d35d52c6fd8ce8bb7850/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:52:00.368682899Z",
+      "completed_at": "2026-08-26T10:53:08.156106254Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-001",
+          "paths": [
+            "internal/platform/config/README.md",
+            "docs/configuration.md",
+            "handbook.md"
+          ],
+          "reason": "Need to confirm whether ultraplan.yml is optional (should fallback to Defaults) vs required, and which Planning/QA fields are classified as sensitive to judge redaction completeness",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 68472702,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+          "paths": [
+            "internal/platform/config/config.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-4cbd7163fc9d6628c3b715ae",
+      "shard_id": "qa-v1-shard-8869d35d52c6fd8ce8bb7850",
+      "claim": "config.go Load/loadFile returns error when workspace ultraplan.yml absent instead of falling back to Defaults; breaks default-precedence contract",
+      "basis": "config.go:159-162 Load calls loadFile(filepath.Join(opts.WorkspaceRoot,\"ultraplan.yml\"),\u0026e) unconditionally when WorkspaceRoot != \"\"; loadFile:197-201 does os.Open and returns fmt.Errorf(\"read workspace config: %w\") on any error including os.IsNotExist. No IsNotExist guard. Tests in config_test.go always create the file before Load, so missing-file path untested. Defaults() exists and would supply full defaults if file optional.",
+      "verification_surface": "config.go:153-179 Load, config.go:197-269 loadFile vs config_test.go Load tests",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-errors",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "read shows no os.IsNotExist check and historical or doc expectation states config file is optional with defaults fallback, or downstream callers rely on missing file succeeding",
+      "refutation_condition": "read shows intended strict behavior (missing file is error) documented in contract-configuration/handbook or change diff explicitly introduced this check as desired",
+      "inconclusive_condition": "without git diff of prior loadFile or product spec stating optional vs required semantics, intent cannot beตัดสิน from current files alone",
+      "safe_evidence_strategy": "read-only inspection of Load/loadFile error path; search docs/handbook for optional config statement; check git history diff if approved; do not probe filesystem or run Load",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-8869d35d52c6fd8ce8bb7850/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.368682899Z",
+          "completed_at": "2026-08-26T10:53:08.156106254Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/platform/config/README.md",
+                "docs/configuration.md",
+                "handbook.md"
+              ],
+              "reason": "Need to confirm whether ultraplan.yml is optional (should fallback to Defaults) vs required, and which Planning/QA fields are classified as sensitive to judge redaction completeness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 68472702,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+              "paths": [
+                "internal/platform/config/config.go",
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+          "paths": [
+            "internal/platform/config/config.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Error path is visible (unconditional return on os.Open error) but assigned packet provides only current files without prior version or spec excerpt stating whether ultraplan.yml is required; cannot confirm intentional vs regression without context"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-96a0aafd2883d309d8b34aef",
+      "shard_id": "qa-v1-shard-8869d35d52c6fd8ce8bb7850",
+      "claim": "redaction.go redactPlanning and Redact miss sensitive fields: planning variants (requirements_variant, sprint_index_variant, technical_handbook_variant, area_reasoning_variant, reasoning_variant, plan_variant) and QA variant are never redacted",
+      "basis": "Planning struct in config.go:13 defines 19 fields; redaction.go:54-70 only redacts RequirementsModel, CodeContextModel, CodeContextVariant, SprintIndexModel, TechnicalHandbookModel, AreaReasoningModel, ReasoningModel, PlanModel, ExecuteModel, ExecuteVariant, ReviewModel, ReviewVariant, SmokeModel, SmokeVariant. Six variant fields omitted. Redact in redaction.go:22-26 copies QA and only redacts qa.Model via RedactValue(\"qa.model\",...), leaving QA.Variant unprocessed. RedactValue relies on Sensitive(key,value) but never called for those omitted fields.",
+      "verification_surface": "static comparison internal/platform/config/config.go:41-62 Planning definition vs internal/platform/config/redaction.go:54-70 redactPlanning and internal/platform/config/redaction.go:22-26 Redact vs internal/platform/config/config_test.go:79-100 TestRedactSensitiveValues which only asserts models.default, agentwrap.env, planning.code_context_model",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "code inspection shows a Planning field or QA.Variant not passed through RedactValue and Sensitive would flag its value yet it is returned verbatim by Redact",
+      "refutation_condition": "all Planning string fields and QA.Variant are shown to flow through RedactValue or are documented as intentionally non-sensitive with security review",
+      "inconclusive_condition": "coverage cannot be determined without additional context on which fields are classified as sensitive or historical diff showing intentional omission",
+      "safe_evidence_strategy": "read-only file compare: list Planning struct fields in config.go vs list RedactValue calls in redactPlanning; list QA struct fields in qa.go vs Redact assignments; grep tests for redaction coverage; do not execute",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-8869d35d52c6fd8ce8bb7850/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.368682899Z",
+          "completed_at": "2026-08-26T10:53:08.156106254Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/platform/config/README.md",
+                "docs/configuration.md",
+                "handbook.md"
+              ],
+              "reason": "Need to confirm whether ultraplan.yml is optional (should fallback to Defaults) vs required, and which Planning/QA fields are classified as sensitive to judge redaction completeness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 68472702,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+              "paths": [
+                "internal/platform/config/config.go",
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+          "paths": [
+            "internal/platform/config/config.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static file read confirms 6 Planning variant fields and QA.Variant are absent from redaction: e.g., planning.requirements_variant (config.go:43), planning.sprint_index_variant (47), planning.technical_handbook_variant (49), planning.area_reasoning_variant (51), planning.reasoning_variant (53), planning.plan_variant (55) have no RedactValue call in redaction.go:54-70; QA Variant (qa.go:15) not redacted in redaction.go:22-24"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e05095159045cf4364106fc7",
+      "shard_id": "qa-v1-shard-8869d35d52c6fd8ce8bb7850",
+      "claim": "config.go loadFile uses bufio.Scanner with default 64KiB token limit without expansion; long lines (e.g., large env lists or model strings) would silently fail/truncate",
+      "basis": "config.go:204 bufio.NewScanner(file) with no Buffer() call; scanner.Err() only returned as \"read workspace config\" error. Default scanner limit is 64*1024. QA/config limits allow file_bytes up to 32\u003c\u003c20 and generated_patch 2\u003c\u003c20, but a single YAML line exceeding 64k would trigger scanner error. No test exercises long line.",
+      "verification_surface": "config.go:197-269 loadFile, qa.go FileBytes limit, config_test.go file writes",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-errors",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "code confirms no Scanner.Buffer enlargement and product allows config lines longer than 64k, causing Load to error or truncate",
+      "refutation_condition": "code shows Buffer enlarged or documentation limits line length below 64k, or YAML spec prevents such lines",
+      "inconclusive_condition": "need to know max expected line length or approved file generation guarantees without executing writes",
+      "safe_evidence_strategy": "read-only check for Scanner.Buffer usage in config.go; compare against file size limits in qa.go and Defaults; search for line-length contracts",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-8869d35d52c6fd8ce8bb7850/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.368682899Z",
+          "completed_at": "2026-08-26T10:53:08.156106254Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/platform/config/README.md",
+                "docs/configuration.md",
+                "handbook.md"
+              ],
+              "reason": "Need to confirm whether ultraplan.yml is optional (should fallback to Defaults) vs required, and which Planning/QA fields are classified as sensitive to judge redaction completeness",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 68472702,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+              "paths": [
+                "internal/platform/config/config.go",
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/redaction.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "Planning struct has 19 string fields including 6 variants omitted from redactPlanning",
+          "paths": [
+            "internal/platform/config/config.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Redact copies QA and only redacts Model; Variant field defined in qa.go:14-15 never redacted",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/redaction.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Load calls loadFile unconditionally and loadFile returns error on os.Open failure with no IsNotExist handling",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile uses bufio.NewScanner without Buffer expansion",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Absence of Buffer call is confirmed, but whether realistic ultraplan.yml can contain \u003e64k lines is not evidenced in provided files; requires context on config generation limits"
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-7713fc63fc835f75ddf73417",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-19a2eb620d6c4048cf817597",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Pending failure in durable CLI initiation leaks accepted run without terminal proposal when sprintRuntimeService fails"
+  ],
+  "expectation_refs": [
+    "contract-errors",
+    "contract-persistence-and-migrations"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-19a2eb620d6c4048cf817597"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-7713fc63fc835f75ddf73417/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:56:42.144682349Z",
+      "completed_at": "2026-08-26T10:58:24.35253902Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "beginDurableCLICommand accepts before sprintRuntimeService and Finish proposes terminal - durable_operations.go Accept/Finish and sprint_commands.go durable sites all call finishDurableCLICommand on sprintRuntimeService error",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/sprint_commands.go",
+            "internal/app/operation_runner.go",
+            "internal/app/run_control.go"
+          ]
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "All six durable CLI initiation branches (flow, verify, execute, qa run/resume, review, smoke) return finishDurableCLICommand(durable, err) when sprintRuntimeService fails, preventing leaked Running run",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "Claim failure path in AcceptOperation returns without terminal proposal (prepared run leak) - distinct from sprintRuntimeService but shows persistence contract boundary; append failure does propose TerminalPersistenceLost",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8a6f0999c8378424948fdf8f",
+      "shard_id": "qa-v1-shard-7713fc63fc835f75ddf73417",
+      "claim": "Durable CLI initiation leaks accepted run without terminal proposal when sprintRuntimeService fails after beginDurableCLICommand",
+      "basis": "beginDurableCLICommand in internal/app/durable_operations.go:49 creates a durable run via AcceptOperation (Accept+Claim+append Running event and starts control goroutine) before the caller in sprint_commands.go invokes sprintRuntimeService; a failure in sprintRuntimeService could leave the run in LifecycleRunning without a terminal proposal, violating contract-persistence-and-migrations requirement that accepted runs always reach a terminal proposal",
+      "verification_surface": "Read-only code inspection of internal/app/durable_operations.go AcceptOperation, durableCLICommand.Finish, FinishOperation, beginDurableCLICommand, finishDurableCLICommand and all durable CLI initiation sites in internal/app/sprint_commands.go (flow, verify, execute, qa run/resume, review, smoke) and internal/app/operation_runner.go sharedOperationRunner error paths",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Any path where beginDurableCLICommand succeeds (AcceptedOperation returned) then sprintRuntimeService returns error and the code returns without calling finishDurableCLICommand / FinishOperation / proposeRunTerminalWithRetry, leaving runcontrol Snapshot LifecycleRunning and LastSequence without terminal",
+      "refutation_condition": "Every durable CLI path that calls beginDurableCLICommand also on sprintRuntimeService error calls finishDurableCLICommand(durable, err) which joins and calls durableCLICommand.Finish -\u003e durableOperationManager.FinishOperation -\u003e proposeRunTerminalWithRetry with TerminalFailed/Cancelled/TimedOut, observable at internal/app/durable_operations.go:71 and internal/app/sprint_commands.go:242,297,343,436,515,571",
+      "inconclusive_condition": "If inspection cannot determine whether FinishOperation is invoked due to indirect control flow, or if repository/Claim failure leaves a Prepared run without terminal outside the sprintRuntimeService scope",
+      "safe_evidence_strategy": "Inspect only assigned context_paths; cite line numbers; do not execute runtime; request bounded context expansion for runcontrol handler if needed; no file writes or shell invocations",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-7713fc63fc835f75ddf73417/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:56:42.144682349Z",
+          "completed_at": "2026-08-26T10:58:24.35253902Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "beginDurableCLICommand accepts before sprintRuntimeService and Finish proposes terminal - durable_operations.go Accept/Finish and sprint_commands.go durable sites all call finishDurableCLICommand on sprintRuntimeService error",
+              "paths": [
+                "internal/app/durable_operations.go",
+                "internal/app/sprint_commands.go",
+                "internal/app/operation_runner.go",
+                "internal/app/run_control.go"
+              ]
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "All six durable CLI initiation branches (flow, verify, execute, qa run/resume, review, smoke) return finishDurableCLICommand(durable, err) when sprintRuntimeService fails, preventing leaked Running run",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "Claim failure path in AcceptOperation returns without terminal proposal (prepared run leak) - distinct from sprintRuntimeService but shows persistence contract boundary; append failure does propose TerminalPersistenceLost",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "beginDurableCLICommand accepts before sprintRuntimeService and Finish proposes terminal - durable_operations.go Accept/Finish and sprint_commands.go durable sites all call finishDurableCLICommand on sprintRuntimeService error",
+          "paths": [
+            "internal/app/durable_operations.go",
+            "internal/app/sprint_commands.go",
+            "internal/app/operation_runner.go",
+            "internal/app/run_control.go"
+          ]
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "All six durable CLI initiation branches (flow, verify, execute, qa run/resume, review, smoke) return finishDurableCLICommand(durable, err) when sprintRuntimeService fails, preventing leaked Running run",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "Claim failure path in AcceptOperation returns without terminal proposal (prepared run leak) - distinct from sprintRuntimeService but shows persistence contract boundary; append failure does propose TerminalPersistenceLost",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Current codebase refutes the pending leak for the specific sprintRuntimeService failure: internal/app/durable_operations.go:49-60 beginDurableCLICommand returns AcceptedOperation only on success, durable_operations.go:71-84 Finish maps runErr to OperationFailed/TerminalFailed and proposes via proposeRunTerminalWithRetry, and every CLI durable site in sprint_commands.go that accepts then calls sprintRuntimeService on error immediately calls finishDurableCLICommand - flow:243-244, verify:297-299, execute:343-345, qa run:435-438 (including QAWriterToken error path 431-432), review:515-517, smoke:571-573, with final err = finishDurableCLICommand(durable, err) for the main execution. No CLI path was found that returns sprintRuntimeService error without finishing. A separate pre-existing leak remains for AcceptOperation Claim failure (durable_operations.go:116-119) which returns without terminal proposal, but that is outside the sprintRuntimeService scope of this concern."
+    }
+  ]
+}

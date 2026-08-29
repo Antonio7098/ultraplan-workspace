@@ -1,0 +1,2707 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:20:30.774189728Z",
+      "completed_at": "2026-08-28T11:22:01.051501317Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+          "exit_code": 0,
+          "duration": 32017100,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        },
+        {
+          "check_id": "go-source-integrity",
+          "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+          "exit_code": 0,
+          "duration": 0,
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 34,
+      "retained_events": 34,
+      "observed_tool_calls": 6,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1a3a3e3e1d158d9db7ffb097",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "qaTheoryProjection and qaAttemptProjection sanitize terminal control characters (ANSI/\\x00) before projection",
+      "basis": "qaTheoryProjection at sprint_usecases.go:1139-1148 routes Claim/Basis/OutcomeReason through displaySafe; qaAttemptProjection at sprint_usecases.go:1150-1165 sanitizes FailureKind/StopReason and uses qaDisplayStrings for paths",
+      "verification_surface": "static inspection and TestQAProjectionIsAdapterIndependentBoundedAndSanitized, TestQAShardProjectionRetainsSafeInvestigationObservability",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "no \\x00 or ANSI escapes survive in any projected shard/title/claim/stop reason/evidence summary",
+      "refutation_condition": "control characters retained in JSON output",
+      "inconclusive_condition": "test only seeds a single boundary shard, leaving cross-shard sanitization unchecked",
+      "safe_evidence_strategy": "code path tracing of displaySafe/qaDisplayStrings",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "displaySafe is applied to every user-influenced projection string; tests assert no \\x00 or ANSI escape in joined attempt/stop reason/context reason/evidence summary"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-3e2b4984d7c10a31fb7d3478",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "SprintSummaries reports unreadable QA state as 'invalid' with a qa.invalid_state blocker and NextAction guidance",
+      "basis": "sprint_usecases.go:518-532 maps QAStatus errors to phase=invalid, FreshnessReasons, Blocker, NextAction; QAErrors are surfaced via AsQAUseCaseError",
+      "verification_surface": "static read and TestSprintSummaryReportsUnreadableQAStateAsInvalid",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "broken verification/state.json yields QA summary with Phase=invalid, Blocker.Category=qa.invalid_state, non-empty NextAction",
+      "refutation_condition": "QA summary silently masks the error or fails to include guidance",
+      "inconclusive_condition": "non-state-file QA errors are not directly tested for summary impact",
+      "safe_evidence_strategy": "test inspection with intentionally broken state.json",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "TestSprintSummaryReportsUnreadableQAStateAsInvalid asserts Phase=invalid and Blocker.Category=qa.invalid_state"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-563e08881e4d788737071fe6",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "QA projection from a map carries coverage/limits/observability fields (ChangedPaths, CoveredPaths, EffectiveSources, Limits, Target) consistently",
+      "basis": "qaMapProjection at sprint_usecases.go:1029-1038 populates SchemaVersion/Phase/Fresh/AttemptID/MapFingerprint/PolicyFingerprint/CheckCatalogFingerprint/EffectiveSources/Target/Coverage/InputRefs/Limits and counts",
+      "verification_surface": "static read and TestQAProjectionIsAdapterIndependentBoundedAndSanitized",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "post-projection result exposes all expected map-derived fields with correct counts",
+      "refutation_condition": "any expected field missing or Limit.RunTimeout fails to stringify",
+      "inconclusive_condition": "tests do not cover zero-length shards or nil budget fields",
+      "safe_evidence_strategy": "test inspection of projection result fields",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "tests assert CheckCatalogFingerprint, EffectiveSources, Target.GitHead, PrimaryOwners, InputRefs and Limit.RunTimeout string conversion"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6536f0db372646e1ec43c432",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "qaShardProjection enforces a bounded theory count (24 per shard) and trims shards to sprint.MaximumQABudgets().TotalShards while qaMapProjection caps shards via the same maximum",
+      "basis": "sprint_usecases.go:1122-1137 iterates shard.Theories and breaks at len==24; sprint_usecases.go:1031-1036 truncates result.Shards at sprint.MaximumQABudgets().TotalShards",
+      "verification_surface": "static read of qaShardProjection/qaMapProjection plus TestQAProjectionIsAdapterIndependentBoundedAndSanitized",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "projection emits \u003c=24 theories per shard and total shards \u003c= MaximumQABudgets().TotalShards under adversarial inputs",
+      "refutation_condition": "projection emits more theories than budget or fails to truncate shard list",
+      "inconclusive_condition": "tests cover only one synthesized map and do not probe boundary cases just above the cap",
+      "safe_evidence_strategy": "read-only inspection of projection and bounds in testdata/qa-canonical-v1.json",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "projection code breaks at 24 theories and truncates shards at MaximumQABudgets().TotalShards; bounds are exercised by TestQAProjectionIsAdapterIndependentBoundedAndSanitized which uses 45 shards with 25 theories each and asserts the post-condition"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-71eff04cb3cf3eebae19607d",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "qaSettings uses dedicated qa.model/qa.variant with explicit fallback to planning.review_model -\u003e planning.plan_model -\u003e models.default and to execution.default_variant, and emits one source per QA config field",
+      "basis": "sprint_commands.go:782-871 builds modelSource/variantSource with explicit fallback chain and appends QAEffectiveSource for every QAConfigField",
+      "verification_surface": "static read and TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource, TestQASettingsModelFallbackIsExplicit",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-llm-runtime",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "qa.model wins when set; fallback chain matches and Sources length equals len(QAConfigFields)",
+      "refutation_condition": "fallback skips a tier or sources are dropped",
+      "inconclusive_condition": "duration parsing errors are not directly unit-tested",
+      "safe_evidence_strategy": "test inspection and code trace",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "tests assert dedicated model is honored and sources count equals QAConfigFields, and fallback to Models.Default and Execution.DefaultVariant is asserted"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-74eea6bc77533d52c2c405fa",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "parseSprintQAArgs rejects unbounded/unsafe controls (--model, --budget, --command, --path, --restart) and enforces action-specific flag constraints",
+      "basis": "sprint_commands.go:617-696 default branch returns unknown-arg error; the per-action switch (run/resume/cancel/map/status/recover) rejects forbidden flag combinations",
+      "verification_surface": "static read of parseSprintQAArgs and TestParseSprintQAArgsUsesOnlyPublicBoundedControls",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "all listed unsafe args produce errors and action-specific guard checks trigger",
+      "refutation_condition": "any unsafe arg is silently accepted",
+      "inconclusive_condition": "if help text in sprintHelp() drifts out of sync with parseSprintQAArgs (test asserts strings)",
+      "safe_evidence_strategy": "inspection of parseSprintQAArgs + test assertions",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "explicit default error and exhaustive negative cases in TestParseSprintQAArgsUsesOnlyPublicBoundedControls cover each rejected flag"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-a1da4f9af960bf23bbfaa9e0",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "mapQACommandError maps QA errors to stable exit classes and codes (runtime_unavailable -\u003e ExitRuntime, stale_input -\u003e ExitValidation, context.Canceled -\u003e ExitPartial/qa.cancelled)",
+      "basis": "sprint_commands.go:727-748 plus stableQACommandError at sprint_commands.go:1556-1576",
+      "verification_surface": "static read and TestQACommandErrorClassesAndStableCodes",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "each typed category yields the documented class and stableCommandError reports the documented code",
+      "refutation_condition": "class or stable code diverges from documented map",
+      "inconclusive_condition": "unknown typed categories default through mapSprintError; coverage not in the table",
+      "safe_evidence_strategy": "code trace and stableCommandError assertions",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "test cases runtime/validation/partial match mapQACommandError and stableCommandError exactly"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-a41885f5fb03bb63489eaab1",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "sprint smoke and sprint verify require --yes for non-interactive execution and --force-review requires a non-empty --override-reason",
+      "basis": "parseSprintSmokeArgs at sprint_commands.go:909-961 and parseSprintVerifyArgs at sprint_commands.go:1203-1275 plus parseSprintFlowArgs at sprint_commands.go:1087-1158",
+      "verification_surface": "static read and TestParseSprintSmokeArgsAndHelp",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "smoke/verify without --yes is rejected; --force-review without --override-reason is rejected",
+      "refutation_condition": "either guard is bypassable",
+      "inconclusive_condition": "flow command path for --to smoke with --yes is not directly unit-tested",
+      "safe_evidence_strategy": "test inspection of guard branches",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "explicit error returns in parseSprintSmokeArgs/parseSprintVerifyArgs and TestSprintValidateFailuresAndUnsupportedStages assert --yes requirement"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b8a42b2e43d1efdefdfd907b",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "qa map (dry-run) vs run/resume/cancel/recover paths route through distinct sprintService methods with run/resume using durable CLI command and writer fence",
+      "basis": "sprint_commands.go:382-471 dispatches qaCommand.Action to QAMap/QAStatus/RecoverQA/CancelQA/RunQA+QAWriterToken",
+      "verification_surface": "static read of the qa case in runSprint",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "map/status/recover stay side-effect free while run/resume go through beginDurableCLICommand and durable.QAWriterToken",
+      "refutation_condition": "map/status accidentally mutates state or run/resume skips durable fencing",
+      "inconclusive_condition": "integration paths that cross sprintService() and dashboardUseCases.CancelQA are not directly exercised in unit tests here",
+      "safe_evidence_strategy": "code path inspection",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "dispatch code in qa case routes map/status/recover to read-only QAMap/QAStatus/RecoverQA; run/resume wraps in beginDurableCLICommand and QAWriterToken"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-cb84b733a2fb8676c6a49986",
+      "shard_id": "qa-v1-shard-7a6251c5b49b956e6ccf50ea",
+      "claim": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls covers the documented positive cases and the negative unsafe-control set (--model, --budget, --command, --path, --restart, resume --dry-run, status --shard, status --suite, cancel alone, cancel --run with --suite, --suite other, --suite smoke without --yes)",
+      "basis": "sprint_commands_test.go:637-670 enumerates positive action matrix and a slice of negative arg sets",
+      "verification_surface": "static read of TestParseSprintQAArgsUsesOnlyPublicBoundedControls",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "the negative set returns errors for every entry",
+      "refutation_condition": "any negative arg is accepted",
+      "inconclusive_condition": "no test for combined run --shard with run --suite simultaneously beyond --yes",
+      "safe_evidence_strategy": "test inspection",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-7a6251c5b49b956e6ccf50ea/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.774189728Z",
+          "completed_at": "2026-08-28T11:22:01.051501317Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 32017100,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_inspection",
+              "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "sprint_usecases.go:1029-1148"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:73-95"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:97-129"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:637-670"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:190-212"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:149-188"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:743-759"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+              "paths": [
+                "internal/app/sprint_commands_test.go"
+              ],
+              "output_digest": "sprint_commands_test.go:698-741"
+            },
+            {
+              "kind": "test_inspection",
+              "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+              "paths": [
+                "internal/app/sprint_usecases_test.go"
+              ],
+              "output_digest": "sprint_usecases_test.go:36-49"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:382-471"
+            },
+            {
+              "kind": "code_inspection",
+              "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "sprint_commands.go:909-1275"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 34,
+          "retained_events": 34,
+          "observed_tool_calls": 6,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_inspection",
+          "summary": "qaShardProjection enforces a hard cap of 24 theories per shard and qaMapProjection truncates shards at sprint.MaximumQABudgets().TotalShards; displaySafe is applied to every projected user-controlled string.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "sprint_usecases.go:1029-1148"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAProjectionIsAdapterIndependentBoundedAndSanitized builds a 45-shard/25-theory map with ANSI/\\x00 in title+claim and asserts len(result.Shards)==MaximumQABudgets().TotalShards, len(result.Shards[0].Theories)==24, and no control characters survive.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:73-95"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQAShardProjectionRetainsSafeInvestigationObservability seeds a boundary shard with control chars in StopReason/ContextRequest.Reason/Evidence.Summary and asserts sanitization plus that attempt/theory observability survives projection.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:97-129"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintQAArgsUsesOnlyPublicBoundedControls enumerates positive action mappings and a negative set (--model/--budget/--command/--path/--restart/resume --dry-run/status --shard/status --suite/cancel/cancel --run with --suite/--suite other/--suite smoke without --yes/--suite smoke with --shard/--yes)",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:637-670"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQACommandErrorClassesAndStableCodes covers runtime_unavailable (ExitRuntime), stale_input (ExitValidation), and context.Canceled (ExitPartial/qa.cancelled), asserting both classified class and stableCommandError code.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:190-212"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintQAJSONFailureUsesStableEnvelopeAndCategory asserts one-document JSON envelope with schema_version=1, operation=sprint.qa, status=ok then 'failed' with code=qa.invalid_state plus category/retryable/severity/operation/component fields on broken verification state.json.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:149-188"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestParseSprintSmokeArgsAndHelp asserts --suite/--timeout/--force-review/--override-reason/--dry-run/--yes/--json parsing and rejects --suite with --test and --force-review without --override-reason.",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:743-759"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestQASettingsUseDedicatedModelAndKeepEveryEffectiveSource and TestQASettingsModelFallbackIsExplicit cover dedicated qa.model/qa.variant + fallback chain and assert len(settings.Sources)==len(config.QAConfigFields()).",
+          "paths": [
+            "internal/app/sprint_commands_test.go"
+          ],
+          "output_digest": "sprint_commands_test.go:698-741"
+        },
+        {
+          "kind": "test_inspection",
+          "summary": "TestSprintSummaryReportsUnreadableQAStateAsInvalid writes a broken verification state.json and asserts Phase=invalid, Blocker.Category=qa.invalid_state, and a non-empty NextAction.",
+          "paths": [
+            "internal/app/sprint_usecases_test.go"
+          ],
+          "output_digest": "sprint_usecases_test.go:36-49"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "qa case in runSprint (sprint_commands.go:382-471) dispatches map/status/recover via read-only sprintService methods; run/resume go through beginDurableCLICommand, durable.QAWriterToken, sprintRuntimeService, and runtimeService.WithQAWriterFence(fence).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:382-471"
+        },
+        {
+          "kind": "code_inspection",
+          "summary": "parseSprintSmokeArgs and parseSprintVerifyArgs (sprint_commands.go:909-1275) require --yes for non-interactive execution and --force-review requires non-empty --override-reason; parseSprintFlowArgs enforces the same in the --to smoke path.",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "sprint_commands.go:909-1275"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "table lists accepted vs rejected cases; rejected cases use if err == nil { t.Fatalf(...) } guards"
+    }
+  ]
+}

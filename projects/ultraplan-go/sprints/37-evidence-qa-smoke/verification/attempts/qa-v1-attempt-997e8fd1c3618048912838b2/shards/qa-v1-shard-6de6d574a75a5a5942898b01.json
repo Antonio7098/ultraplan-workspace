@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-6de6d574a75a5a5942898b01",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-0cc466333b20066b491dc0f5",
+  "context_paths": [
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Additive QAEvidenceQueries type assertion creates shard-dependent 503 unavailable without stable guidance for Sprint 36 adapters"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-0cc466333b20066b491dc0f5"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6de6d574a75a5a5942898b01/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:17:45.936731574Z",
+      "completed_at": "2026-08-28T11:19:03.116863151Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "cr-1",
+          "paths": [
+            "internal/app/qa.go",
+            "internal/app/errors.go"
+          ],
+          "reason": "Need definition of app.QAEvidenceQueries and app.ErrWebUnavailable code/category/guidance and HTTP mapping to verify stable guidance for Sprint 36 adapters",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        },
+        {
+          "id": "cr-2",
+          "paths": [
+            "internal/web/handler.go",
+            "internal/web/routes.go"
+          ],
+          "reason": "Need handleQueryError implementation and route registration for evidence endpoints to confirm status-code translation and bounded JSON guarantees",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go contains six identical additive interface guards: handleSprintQAEvidence:24-27, handleSprintQAAdjudication:38-41, handleSprintQAIssues:52-55, handleSprintQAIssue:75-78, handleSprintQAAssessment:89-92, handleSprintQASmokeSuite:103-106 each asserting h.qa.(app.QAEvidenceQueries) and returning app.ErrWebUnavailable on failure",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers_test.go fixture qaQueryFixture implements only QAMap/QAStatus/QAShard/QATheory/QASynthesis and tests TestQAQueryErrorsUseStablePublicCodes and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML never call evidence/adjudication/issues/assessment/smoke routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "Contrast legacy handlers handleSprintQA:11-12, handleSprintQAMap:117-118, handleSprintQAShard:130-131, handleSprintQATheory:143-144, handleSprintQASynthesis:156-157 check only h.qa==nil before calling h.qa methods, showing evidence handlers introduced divergent availability condition",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 29,
+      "retained_events": 29,
+      "observed_tool_calls": 2,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6335af05b453a7d6d79600ca",
+      "shard_id": "qa-v1-shard-6de6d574a75a5a5942898b01",
+      "claim": "Failed QAEvidenceQueries assertion returns generic ErrWebUnavailable without stable public code/category/guidance distinction for non-implementing adapters",
+      "basis": "Evidence handlers forward app.ErrWebUnavailable via h.handleQueryError(w,r,true,err) with no qa.evidence-specific code. TestQAQueryErrorsUseStablePublicCodes in internal/web/qa_handlers_test.go:38-57 establishes stable code/category/guidance expectation but only covers QAShard.",
+      "verification_surface": "read-only read of internal/web/qa_handlers.go true-branch error forwarding and internal/web/qa_handlers_test.go stable-code assertion; requires outside context for app.ErrWebUnavailable mapping",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "ErrWebUnavailable maps to generic 503 web.unavailable with no evidence-specific guidance for Sprint 36 adapters",
+      "refutation_condition": "ErrWebUnavailable or branching provides distinct stable code like qa.evidence_unavailable with migration instructions",
+      "inconclusive_condition": "Cannot confirm HTTP status body code/guidance without inspecting app error definitions and web error writer outside assigned paths",
+      "safe_evidence_strategy": "Read-only inspection of assigned paths only; request bounded context expansion for app definitions if needed, no execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6de6d574a75a5a5942898b01/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:17:45.936731574Z",
+          "completed_at": "2026-08-28T11:19:03.116863151Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "cr-1",
+              "paths": [
+                "internal/app/qa.go",
+                "internal/app/errors.go"
+              ],
+              "reason": "Need definition of app.QAEvidenceQueries and app.ErrWebUnavailable code/category/guidance and HTTP mapping to verify stable guidance for Sprint 36 adapters",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            },
+            {
+              "id": "cr-2",
+              "paths": [
+                "internal/web/handler.go",
+                "internal/web/routes.go"
+              ],
+              "reason": "Need handleQueryError implementation and route registration for evidence endpoints to confirm status-code translation and bounded JSON guarantees",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers.go contains six identical additive interface guards: handleSprintQAEvidence:24-27, handleSprintQAAdjudication:38-41, handleSprintQAIssues:52-55, handleSprintQAIssue:75-78, handleSprintQAAssessment:89-92, handleSprintQASmokeSuite:103-106 each asserting h.qa.(app.QAEvidenceQueries) and returning app.ErrWebUnavailable on failure",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers_test.go fixture qaQueryFixture implements only QAMap/QAStatus/QAShard/QATheory/QASynthesis and tests TestQAQueryErrorsUseStablePublicCodes and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML never call evidence/adjudication/issues/assessment/smoke routes",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "Contrast legacy handlers handleSprintQA:11-12, handleSprintQAMap:117-118, handleSprintQAShard:130-131, handleSprintQATheory:143-144, handleSprintQASynthesis:156-157 check only h.qa==nil before calling h.qa methods, showing evidence handlers introduced divergent availability condition",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 29,
+          "retained_events": 29,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go contains six identical additive interface guards: handleSprintQAEvidence:24-27, handleSprintQAAdjudication:38-41, handleSprintQAIssues:52-55, handleSprintQAIssue:75-78, handleSprintQAAssessment:89-92, handleSprintQASmokeSuite:103-106 each asserting h.qa.(app.QAEvidenceQueries) and returning app.ErrWebUnavailable on failure",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers_test.go fixture qaQueryFixture implements only QAMap/QAStatus/QAShard/QATheory/QASynthesis and tests TestQAQueryErrorsUseStablePublicCodes and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML never call evidence/adjudication/issues/assessment/smoke routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "Contrast legacy handlers handleSprintQA:11-12, handleSprintQAMap:117-118, handleSprintQAShard:130-131, handleSprintQATheory:143-144, handleSprintQASynthesis:156-157 check only h.qa==nil before calling h.qa methods, showing evidence handlers introduced divergent availability condition",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Assigned paths prove !ok branch uses generic ErrWebUnavailable, but mapping to HTTP status/body/guidance requires definitions outside internal/web/qa_handlers.go not verifiable read-only within shard."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-db8f0db776afae27749f6dc9",
+      "shard_id": "qa-v1-shard-6de6d574a75a5a5942898b01",
+      "claim": "Additive app.QAEvidenceQueries type assertion in six Sprint 38 handlers converts missing interface implementation into shard-dependent 503 Service Unavailable without stable migration guidance for Sprint 36 adapters",
+      "basis": "internal/web/qa_handlers.go:23-28 handleSprintQAEvidence, :37-42 handleSprintQAAdjudication, :51-56 handleSprintQAIssues, :74-79 handleSprintQAIssue, :88-93 handleSprintQAAssessment, :102-107 handleSprintQASmokeSuite all do queries, ok := h.qa.(app.QAEvidenceQueries); if !ok { h.handleQueryError(w,r,true,app.ErrWebUnavailable); return }. Legacy handlers only check h.qa==nil.",
+      "verification_surface": "read-only read of internal/web/qa_handlers.go and internal/web/qa_handlers_test.go plus grep for QAEvidenceQueries and ErrWebUnavailable within assigned paths",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "File contains six identical h.qa.(app.QAEvidenceQueries) guards that return app.ErrWebUnavailable on !ok, making evidence-route liveness depend on adapter vintage",
+      "refutation_condition": "No additive interface assertion exists or failed assertion returns distinct stable qa-specific code/guidance not generic web.unavailable",
+      "inconclusive_condition": "Cannot resolve HTTP status/guidance mapping of app.ErrWebUnavailable without reading handler error mapping and interface definition outside assigned paths",
+      "safe_evidence_strategy": "Read-only file reads and regex search for QAEvidenceQueries and ErrWebUnavailable in assigned paths; no execution or mutation",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-6de6d574a75a5a5942898b01/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:17:45.936731574Z",
+          "completed_at": "2026-08-28T11:19:03.116863151Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "cr-1",
+              "paths": [
+                "internal/app/qa.go",
+                "internal/app/errors.go"
+              ],
+              "reason": "Need definition of app.QAEvidenceQueries and app.ErrWebUnavailable code/category/guidance and HTTP mapping to verify stable guidance for Sprint 36 adapters",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            },
+            {
+              "id": "cr-2",
+              "paths": [
+                "internal/web/handler.go",
+                "internal/web/routes.go"
+              ],
+              "reason": "Need handleQueryError implementation and route registration for evidence endpoints to confirm status-code translation and bounded JSON guarantees",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers.go contains six identical additive interface guards: handleSprintQAEvidence:24-27, handleSprintQAAdjudication:38-41, handleSprintQAIssues:52-55, handleSprintQAIssue:75-78, handleSprintQAAssessment:89-92, handleSprintQASmokeSuite:103-106 each asserting h.qa.(app.QAEvidenceQueries) and returning app.ErrWebUnavailable on failure",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers_test.go fixture qaQueryFixture implements only QAMap/QAStatus/QAShard/QATheory/QASynthesis and tests TestQAQueryErrorsUseStablePublicCodes and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML never call evidence/adjudication/issues/assessment/smoke routes",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "Contrast legacy handlers handleSprintQA:11-12, handleSprintQAMap:117-118, handleSprintQAShard:130-131, handleSprintQATheory:143-144, handleSprintQASynthesis:156-157 check only h.qa==nil before calling h.qa methods, showing evidence handlers introduced divergent availability condition",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 29,
+          "retained_events": 29,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go contains six identical additive interface guards: handleSprintQAEvidence:24-27, handleSprintQAAdjudication:38-41, handleSprintQAIssues:52-55, handleSprintQAIssue:75-78, handleSprintQAAssessment:89-92, handleSprintQASmokeSuite:103-106 each asserting h.qa.(app.QAEvidenceQueries) and returning app.ErrWebUnavailable on failure",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers_test.go fixture qaQueryFixture implements only QAMap/QAStatus/QAShard/QATheory/QASynthesis and tests TestQAQueryErrorsUseStablePublicCodes and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML never call evidence/adjudication/issues/assessment/smoke routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "Contrast legacy handlers handleSprintQA:11-12, handleSprintQAMap:117-118, handleSprintQAShard:130-131, handleSprintQATheory:143-144, handleSprintQASynthesis:156-157 check only h.qa==nil before calling h.qa methods, showing evidence handlers introduced divergent availability condition",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static read confirms all six evidence handlers use additive type assertion to gate execution with generic 503 web.unavailable. qa_handlers_test.go fixture qaQueryFixture implements only QAStatus/QAMap/QAShard/QATheory/QASynthesis and never exercises evidence routes, leaving shard-dependent unavailability untested."
+    }
+  ]
+}

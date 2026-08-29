@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-1b0a134a886968d9b30c13d0",
+  "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "overlap_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "invalid_state",
+    "scope": "qa-v1-shard-1b0a134a886968d9b30c13d0",
+    "summary": "terminal output is not one strict QA JSON object",
+    "next_action": "Inspect the detailed state and run explicit QA recovery."
+  }
+}

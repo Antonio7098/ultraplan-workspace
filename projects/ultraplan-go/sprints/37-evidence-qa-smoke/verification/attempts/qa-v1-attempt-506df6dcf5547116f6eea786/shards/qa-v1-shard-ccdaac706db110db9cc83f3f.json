@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ccdaac706db110db9cc83f3f",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-733a556f906a5362f6b7ab7c",
+  "context_paths": [
+    "internal/web/handlers.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Every handleSprintQA* method in qa_handlers.go follows an identical contract: nil h.qa ⇒ ErrWebUnavailable via handleQueryError; non-nil call to the underlying QA method; on error propagate via handleQueryError with boolean=true (API surface); on success writeSuccess(http.StatusOK, result, nil)."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-errors"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-733a556f906a5362f6b7ab7c"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-ccdaac706db110db9cc83f3f/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:26:06.673801597Z",
+      "completed_at": "2026-08-28T11:28:37.243390013Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ],
+          "output_digest": "qa-handlers-uniform-contract-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+          "paths": [
+            "internal/web/handlers.go"
+          ],
+          "output_digest": "api-vs-html-routing-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "qa-handlers-tests-coverage-v1"
+        },
+        {
+          "kind": "interface_read",
+          "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "qa-interfaces-additive-v1"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 41,
+      "retained_events": 41,
+      "observed_tool_calls": 10,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-687ad2633b45eecc1f5c7360",
+      "shard_id": "qa-v1-shard-ccdaac706db110db9cc83f3f",
+      "claim": "The `h.qa.(app.QAEvidenceQueries)` type-assertion guards used by handleSprintQAEvidence, handleSprintQAAdjudication, handleSprintQAIssues, handleSprintQAIssue, handleSprintQAAssessment, and handleSprintQASmokeSuite correctly surface ErrWebUnavailable when h.qa is nil, because Go's comma-ok type assertion on a nil interface returns (nil,false), causing the `if !ok { handleQueryError(w,r,true,app.ErrWebUnavailable); return }` branch to fire.",
+      "basis": "qa_handlers.go lines 24-28, 38-42, 52-56, 75-79, 89-93, 103-107 each use the same pattern: `queries, ok := h.qa.(app.QAEvidenceQueries); if !ok { h.handleQueryError(w, r, true, app.ErrWebUnavailable); return }`. Per the Go language spec, a comma-ok type assertion on a nil interface value yields the zero value of T and ok=false (no panic).",
+      "verification_surface": "internal/web/qa_handlers.go lines 24-28 (handleSprintQAEvidence), 38-42 (handleSprintQAAdjudication), 52-56 (handleSprintQAIssues), 75-79 (handleSprintQAIssue), 89-93 (handleSprintQAAssessment), 103-107 (handleSprintQASmokeSuite); internal/app/sprint_usecases.go lines 79-95 (QAQueries and QAEvidenceQueries interface definitions); internal/web/handlers.go lines 1056-1080 (handleQueryError mapping ErrWebUnavailable → 503 'unavailable').",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "When h.qa is nil the six QAEvidenceQueries-gated handlers all return status 503 with code 'unavailable' via handleQueryError(w,r,true,ErrWebUnavailable).",
+      "refutation_condition": "Any of the six handlers either panics on nil h.qa, returns success, returns a status other than 503, or omits the apiRoute=true flag.",
+      "inconclusive_condition": "Cannot exercise the assertion dynamically via static reading alone; relies on Go language semantics for the comma-ok form.",
+      "safe_evidence_strategy": "Static inspection confirms identical if !ok guards across all six handlers; Go spec defines the comma-ok assertion behavior; the existing tests in qa_handlers_test.go do not cover the QAEvidenceQueries endpoints directly, but the contract is symmetric with the QAStatus endpoints that are tested.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-ccdaac706db110db9cc83f3f/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:06.673801597Z",
+          "completed_at": "2026-08-28T11:28:37.243390013Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ],
+              "output_digest": "qa-handlers-uniform-contract-v1"
+            },
+            {
+              "kind": "file_read",
+              "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+              "paths": [
+                "internal/web/handlers.go"
+              ],
+              "output_digest": "api-vs-html-routing-v1"
+            },
+            {
+              "kind": "file_read",
+              "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "qa-handlers-tests-coverage-v1"
+            },
+            {
+              "kind": "interface_read",
+              "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "qa-interfaces-additive-v1"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 41,
+          "retained_events": 41,
+          "observed_tool_calls": 10,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ],
+          "output_digest": "qa-handlers-uniform-contract-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+          "paths": [
+            "internal/web/handlers.go"
+          ],
+          "output_digest": "api-vs-html-routing-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "qa-handlers-tests-coverage-v1"
+        },
+        {
+          "kind": "interface_read",
+          "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "qa-interfaces-additive-v1"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Identical comma-ok guard structure across the six handlers and Go's documented nil-interface assertion semantics make the nil-h.qa → ErrWebUnavailable propagation mechanically equivalent to the explicit nil-check used by the other five handlers."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-a8c465156672b57c6b2f947f",
+      "shard_id": "qa-v1-shard-ccdaac706db110db9cc83f3f",
+      "claim": "All 11 JSON API handleSprintQA* methods in qa_handlers.go (lines 10-166) follow an identical 4-step contract: nil-guard h.qa → call underlying QA method → on error propagate via handleQueryError(w,r,true,err) → on success writeSuccess(http.StatusOK,result,nil). handleSprintQAPage (lines 168-201) intentionally diverges because it serves HTML page routes only (registered at handlers.go:510-514), not the /api/v1/.../qa routes.",
+      "basis": "Direct read of qa_handlers.go shows each of handleSprintQA (10-21), handleSprintQAEvidence (23-35), handleSprintQAAdjudication (37-49), handleSprintQAIssues (51-72), handleSprintQAIssue (74-86), handleSprintQAAssessment (88-100), handleSprintQASmokeSuite (102-114), handleSprintQAMap (116-127), handleSprintQAShard (129-140), handleSprintQATheory (142-153), handleSprintQASynthesis (155-166) gates nil h.qa → calls method → propagates error with apiRoute=true → writes success at 200. handlers.go:652-673 dispatches only the JSON handlers under /api/v1/projects/{p}/sprints/{s}/qa/*; handlers.go:510-514 dispatches handleSprintQAPage for /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}}. handleQueryError (handlers.go:1056-1080) routes QAUseCaseError with apiRoute=true to writeQAError (status per qaErr.Code), and ErrWebUnavailable to status 503 / 'unavailable'.",
+      "verification_surface": "internal/web/qa_handlers.go lines 10-201; internal/web/handlers.go lines 510-514, 652-673, 1056-1080; internal/web/qa_handlers_test.go TestQAQueryErrorsUseStablePublicCodes (asserts qa.invalid_state at 422 with code/category/guidance/correlation_id) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (asserts JSON Content-Type and schema_version=1 for API routes, no \u003cscript\u003e tags in HTML page routes).",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Each of the 11 API handlers matches the 4-step template with apiRoute=true on every error path and writeSuccess(http.StatusOK,result,nil) on success, and handleSprintQAPage is the sole HTML renderer with apiRoute=false.",
+      "refutation_condition": "Any JSON API handler omits the nil-guard, calls render() instead of writeSuccess, or passes apiRoute=false to handleQueryError; or any HTML page route (not handleSprintQAPage) is dispatched to a JSON-style handler.",
+      "inconclusive_condition": "Behavior cannot be exercised end-to-end without a running handler; only static reading is available.",
+      "safe_evidence_strategy": "Read-only inspection of qa_handlers.go and handlers.go; cross-check against existing test coverage (TestQAQueryErrorsUseStablePublicCodes, TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML) which already encode the contract's surface (error envelope at 422, JSON Content-Type, schema_version=1, noscript HTML).",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-ccdaac706db110db9cc83f3f/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:06.673801597Z",
+          "completed_at": "2026-08-28T11:28:37.243390013Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ],
+              "output_digest": "qa-handlers-uniform-contract-v1"
+            },
+            {
+              "kind": "file_read",
+              "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+              "paths": [
+                "internal/web/handlers.go"
+              ],
+              "output_digest": "api-vs-html-routing-v1"
+            },
+            {
+              "kind": "file_read",
+              "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "qa-handlers-tests-coverage-v1"
+            },
+            {
+              "kind": "interface_read",
+              "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "qa-interfaces-additive-v1"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 41,
+          "retained_events": 41,
+          "observed_tool_calls": 10,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ],
+          "output_digest": "qa-handlers-uniform-contract-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+          "paths": [
+            "internal/web/handlers.go"
+          ],
+          "output_digest": "api-vs-html-routing-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "qa-handlers-tests-coverage-v1"
+        },
+        {
+          "kind": "interface_read",
+          "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "qa-interfaces-additive-v1"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "All 11 API handlers share the contract verbatim; handleSprintQAPage's divergence is intentional and bounded to the HTML page routes that route map to it. The existing test names directly assert the contract surface."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-c89f0cf8598c709c94f8bba2",
+      "shard_id": "qa-v1-shard-ccdaac706db110db9cc83f3f",
+      "claim": "handleSprintQAIssues is the only handleSprintQA* method that adds an extra input-validation step (parsing the `limit` query parameter) before delegating to the underlying QA method. The extra step propagates parse errors via handleQueryError(w,r,true,err), preserving the contract's intent (apiRoute=true on every error path) and uses writeSuccess(http.StatusOK,result,nil) on success, so it is a faithful extension rather than a deviation.",
+      "basis": "qa_handlers.go lines 57-65 introduce `if value := r.URL.Query().Get(\"limit\"); value != \"\" { parsed, err := strconv.Atoi(value); if err != nil { h.handleQueryError(w, r, true, err); return }; limit = parsed }` between the QAEvidenceQueries guard and the underlying queries.QAIssues call. The success path (line 71) still calls writeSuccess(w, r, http.StatusOK, result, nil).",
+      "verification_surface": "internal/web/qa_handlers.go lines 51-72.",
+      "expectation_refs": [
+        "contract-cli-surface"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "The limit-parse error path passes apiRoute=true to handleQueryError and the success path uses writeSuccess(http.StatusOK,result,nil) like every other handler.",
+      "refutation_condition": "handleSprintQAIssues uses apiRoute=false for the parse error, omits the nil-guard, or skips writeSuccess on success.",
+      "inconclusive_condition": "None.",
+      "safe_evidence_strategy": "Static read of qa_handlers.go:51-72 confirms the structure.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-ccdaac706db110db9cc83f3f/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:06.673801597Z",
+          "completed_at": "2026-08-28T11:28:37.243390013Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ],
+              "output_digest": "qa-handlers-uniform-contract-v1"
+            },
+            {
+              "kind": "file_read",
+              "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+              "paths": [
+                "internal/web/handlers.go"
+              ],
+              "output_digest": "api-vs-html-routing-v1"
+            },
+            {
+              "kind": "file_read",
+              "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ],
+              "output_digest": "qa-handlers-tests-coverage-v1"
+            },
+            {
+              "kind": "interface_read",
+              "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "qa-interfaces-additive-v1"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 41,
+          "retained_events": 41,
+          "observed_tool_calls": 10,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers.go (lines 10-201): 11 API handleSprintQA* methods follow identical nil-guard → call → handleQueryError(true,err) → writeSuccess(200) template; handleSprintQAPage (168-201) intentionally uses apiRoute=false + render() for HTML page routes. handleSprintQAIssues (51-72) is the only handler with extra limit-parse input validation that still preserves the contract.",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ],
+          "output_digest": "qa-handlers-uniform-contract-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "handlers.go (lines 510-514, 652-673): HTML /projects/{p}/sprints/{s}/qa{,/shards/{x},/theories/{x}} routes dispatch handleSprintQAPage; /api/v1/projects/{p}/sprints/{s}/qa/* routes dispatch the 11 JSON handlers. handleQueryError (1056-1080) routes QAUseCaseError to writeQAError and ErrWebUnavailable to 503 'unavailable'.",
+          "paths": [
+            "internal/web/handlers.go"
+          ],
+          "output_digest": "api-vs-html-routing-v1"
+        },
+        {
+          "kind": "file_read",
+          "summary": "qa_handlers_test.go covers TestQAQueryErrorsUseStablePublicCodes (qa.invalid_state envelope at 422 with code/category/guidance/correlation_id, no 'persistence' leakage) and TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML (application/json Content-Type + schema_version=1 for API; 'Read-only QA', 'Conformance Review', \u003cnoscript\u003e and no \u003cscript\u003ealert for HTML). POST /api/.../qa returns 405. Note: the qaQueryFixture does not implement QAEvidenceQueries, so any QAEvidence/Adjudication/Issues/Issue/Assessment/SmokeSuite endpoint would exercise the !ok → ErrWebUnavailable → 503 path.",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ],
+          "output_digest": "qa-handlers-tests-coverage-v1"
+        },
+        {
+          "kind": "interface_read",
+          "summary": "internal/app/sprint_usecases.go (lines 79-95) defines QAQueries (QAMap, QAStatus, QAShard, QATheory, QASynthesis) and additive QAEvidenceQueries (QAEvidence, QAAdjudication, QAIssues, QAIssue, QAAssessment, QASmokeSuite). The additive interface explains why some handlers use nil-check while others use comma-ok type assertion — both surface ErrWebUnavailable to handlers.go:1056-1080.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "qa-interfaces-additive-v1"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "handleSprintQAIssues inserts only the limit-parsing branch but preserves apiRoute=true on errors and writeSuccess(http.StatusOK,result,nil) on success; the contract's surface guarantees remain intact."
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-f8ee2956b33522a01cbc1d38",
+  "attempt_id": "qa-v1-attempt-4e001e19113ee8875053845b",
+  "kind": "primary",
+  "title": "internal/tui",
+  "changed_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/tui"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-f8ee2956b33522a01cbc1d38",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_bvrojsdlicgso74rblpw6r5z5i/qa-v1-shard-f8ee2956b33522a01cbc1d38/1",
+      "number": 1,
+      "started_at": "2026-08-25T12:52:34.655713Z",
+      "completed_at": "2026-08-25T12:52:37.453999894Z",
+      "implementation_before": "0583280751fc5bcd051d3ec4ddceea6e372e8cbbc2758f8fcacec3d69e7dbaaa",
+      "implementation_after": "0583280751fc5bcd051d3ec4ddceea6e372e8cbbc2758f8fcacec3d69e7dbaaa",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

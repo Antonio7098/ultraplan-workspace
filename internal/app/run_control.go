@@ -1,0 +1,976 @@
+package app
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"math/rand/v2"
+	"sort"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/Antonio7098/ultraplan-go/internal/platform/config"
+	runtimepkg "github.com/Antonio7098/ultraplan-go/internal/platform/runtime"
+	"github.com/Antonio7098/ultraplan-go/internal/runcontrol"
+)
+
+const runControlLease = runcontrol.OwnerLeaseDuration
+
+const runControlPersistenceRetry = 30 * time.Second
+
+const (
+	runtimeEventBatchSize   = 32
+	runtimeEventBatchWindow = 25 * time.Millisecond
+	runtimeEventQueueSize   = 256
+)
+
+type queuedRuntimeEvent struct {
+	event runtimepkg.Event
+	draft runcontrol.EventDraft
+}
+
+// Reconciliation only repairs abandoned ownership after the grace period. A
+// one-minute process-level pass is frequent enough and avoids competing with
+// every active run for the SQLite writer lock.
+const runControlMaintenanceInterval = time.Minute
+
+// runControlState owns one repository handle per workspace for the lifetime of
+// the process. dependencies is copied throughout command dispatch, so keeping
+// this state behind a pointer prevents accidental duplicate connection pools.
+type runControlState struct {
+	mu            sync.Mutex
+	repos         map[string]*runcontrol.SQLiteRepository
+	loggers       map[string]*runcontrol.LocalFileLogger
+	policies      map[string]runcontrol.RetentionPolicy
+	maintenance   map[string]context.CancelFunc
+	maintenanceWG sync.WaitGroup
+	owner         runcontrol.Owner
+	initErr       error
+}
+
+func newRunControlState() *runControlState {
+	owner, err := currentRunOwner()
+	return &runControlState{repos: make(map[string]*runcontrol.SQLiteRepository), loggers: make(map[string]*runcontrol.LocalFileLogger), policies: make(map[string]runcontrol.RetentionPolicy), maintenance: make(map[string]context.CancelFunc), owner: owner, initErr: err}
+}
+
+func (s *runControlState) repository(ctx context.Context, workspaceRoot string, policies ...runcontrol.RetentionPolicy) (*runcontrol.SQLiteRepository, error) {
+	if s == nil {
+		return nil, errors.New("run-control process state is unavailable")
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.initErr != nil {
+		return nil, s.initErr
+	}
+	if repository := s.repos[workspaceRoot]; repository != nil {
+		if len(policies) > 0 && s.policies[workspaceRoot] != policies[0] {
+			return nil, errors.New("run-control retention policy changed during the process lifetime")
+		}
+		return repository, nil
+	}
+	var retention runcontrol.RetentionPolicy
+	if len(policies) > 0 {
+		retention = policies[0]
+	}
+	repository, err := runcontrol.OpenSQLite(ctx, workspaceRoot, runcontrol.SQLiteOptions{Retention: retention})
+	if err != nil {
+		return nil, err
+	}
+	logger, err := runcontrol.OpenLocalFileLogger(workspaceRoot)
+	if err != nil {
+		_ = repository.Close()
+		return nil, fmt.Errorf("open run-control diagnostic log: %w", err)
+	}
+	repository.SetLogger(logger)
+	if err := retryRunControlOperation(ctx, func(callCtx context.Context) error {
+		_, maintainErr := repository.Maintain(callCtx, runcontrol.NativeProcessProbe{})
+		return maintainErr
+	}); err != nil {
+		_ = repository.Close()
+		_ = logger.Close()
+		return nil, fmt.Errorf("startup run maintenance failed: %w", err)
+	}
+	s.repos[workspaceRoot] = repository
+	s.loggers[workspaceRoot] = logger
+	s.policies[workspaceRoot] = retention
+	maintenanceCtx, maintenanceCancel := context.WithCancel(context.Background())
+	s.maintenance[workspaceRoot] = maintenanceCancel
+	s.maintenanceWG.Add(1)
+	go s.maintain(maintenanceCtx, repository)
+	return repository, nil
+}
+
+func (s *runControlState) maintain(ctx context.Context, repository *runcontrol.SQLiteRepository) {
+	defer s.maintenanceWG.Done()
+	ticker := time.NewTicker(runControlMaintenanceInterval)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			maintenanceCtx, cancel := context.WithTimeout(ctx, runControlMaintenanceInterval)
+			_ = retryRunControlOperation(maintenanceCtx, func(callCtx context.Context) error {
+				_, maintainErr := repository.Maintain(callCtx, runcontrol.NativeProcessProbe{})
+				return maintainErr
+			})
+			cancel()
+		}
+	}
+}
+
+func (s *runControlState) Close() {
+	if s == nil {
+		return
+	}
+	s.mu.Lock()
+	for root, cancel := range s.maintenance {
+		cancel()
+		delete(s.maintenance, root)
+	}
+	s.mu.Unlock()
+	s.maintenanceWG.Wait()
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for root, repository := range s.repos {
+		_ = repository.Close()
+		if logger := s.loggers[root]; logger != nil {
+			_ = logger.Close()
+			delete(s.loggers, root)
+		}
+		delete(s.repos, root)
+	}
+}
+
+func currentRunOwner() (runcontrol.Owner, error) {
+	return runcontrol.NewProcessOwner()
+}
+
+type controlledRuntime struct {
+	base interface {
+		StartRun(context.Context, runtimepkg.Request) (runtimepkg.Result, error)
+	}
+	repository runcontrol.Repository
+	owner      runcontrol.Owner
+}
+
+func (r controlledRuntime) DeleteSession(ctx context.Context, sessionID string) error {
+	deleter, ok := r.base.(interface {
+		DeleteSession(context.Context, string) error
+	})
+	if !ok {
+		return nil
+	}
+	return deleter.DeleteSession(ctx, sessionID)
+}
+
+func (r controlledRuntime) DeleteSessions(ctx context.Context, sessionIDs []string) error {
+	deleter, ok := r.base.(interface {
+		DeleteSessions(context.Context, []string) error
+	})
+	if !ok {
+		for _, sessionID := range sessionIDs {
+			if err := r.DeleteSession(ctx, sessionID); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+	return deleter.DeleteSessions(ctx, sessionIDs)
+}
+
+func (r controlledRuntime) DeleteRuntimeStore(ctx context.Context, path string) error {
+	deleter, ok := r.base.(interface {
+		DeleteRuntimeStore(context.Context, string) error
+	})
+	if !ok {
+		return nil
+	}
+	return deleter.DeleteRuntimeStore(ctx, path)
+}
+
+func controlledRuntimeFor(deps dependencies, workspaceRoot string, effectiveConfig config.Config, base interface {
+	StartRun(context.Context, runtimepkg.Request) (runtimepkg.Result, error)
+}) (controlledRuntime, error) {
+	if deps.runControl == nil {
+		return controlledRuntime{}, errors.New("run-control process state is unavailable")
+	}
+	repository, err := deps.runControl.repository(deps.ctx, workspaceRoot, runControlRetentionPolicy(effectiveConfig))
+	if err != nil {
+		return controlledRuntime{}, fmt.Errorf("open durable run control: %w", err)
+	}
+	return controlledRuntime{base: base, repository: repository, owner: deps.runControl.owner}, nil
+}
+
+func runControlRetentionPolicy(c config.Config) runcontrol.RetentionPolicy {
+	full, _ := time.ParseDuration(c.RunControl.FullHistory)
+	tombstone, _ := time.ParseDuration(c.RunControl.TombstoneHistory)
+	return runcontrol.RetentionPolicy{FullHistory: full, TombstoneHistory: tombstone, HardQuotaBytes: c.RunControl.WorkspaceQuota}
+}
+
+func (r controlledRuntime) StartRun(ctx context.Context, req runtimepkg.Request) (runtimepkg.Result, error) {
+	target := targetFromRuntimeRequest(req)
+	correlation := runcontrol.Correlation{
+		ProductRunID:  boundedSafe(string(runcontrol.ParentRun(ctx))),
+		ProductTaskID: boundedSafe(req.TraceID),
+	}
+	snapshot, err := r.repository.Accept(ctx, runcontrol.Acceptance{
+		Target:        target,
+		Correlation:   correlation,
+		ProductStatus: "accepted",
+	})
+	if err != nil {
+		return runtimepkg.Result{}, fmt.Errorf("durable run acceptance failed: %w", err)
+	}
+	attempt, _, err := r.repository.Claim(ctx, runcontrol.Claim{
+		RunID: snapshot.RunID, Owner: r.owner, Lease: runControlLease, Correlation: correlation,
+	})
+	if err != nil {
+		return runtimepkg.Result{}, fmt.Errorf("durable run ownership failed: %w", err)
+	}
+	fence := runcontrol.Fence{
+		RunID: snapshot.RunID, AttemptID: attempt.ID, OwnerID: r.owner.ID,
+		FencingGeneration: attempt.FencingGeneration,
+	}
+
+	runCtx, cancel := context.WithCancelCause(ctx)
+	defer cancel(nil)
+	req.Metadata = cloneRuntimeMetadata(req.Metadata)
+	req.Metadata["run_control_run_id"] = string(snapshot.RunID)
+	configuredOnEvent := req.OnEvent
+	var eventMu sync.Mutex
+	var persistenceErr error
+	var progressKey string
+	var progressCommittedAt time.Time
+	var progressOmitted uint64
+	var progressOmittedFirst time.Time
+	var progressOmittedLast time.Time
+	setPersistenceErr := func(value error) {
+		eventMu.Lock()
+		defer eventMu.Unlock()
+		if persistenceErr == nil {
+			persistenceErr = value
+			cancel(value)
+		}
+	}
+	eventPersistCtx, stopEventPersistence := context.WithCancel(context.Background())
+	eventQueue := make(chan queuedRuntimeEvent, runtimeEventQueueSize)
+	eventWriterDone := make(chan struct{})
+	go func() {
+		defer close(eventWriterDone)
+		for {
+			first, ok := <-eventQueue
+			if !ok {
+				return
+			}
+			batch := []queuedRuntimeEvent{first}
+			timer := time.NewTimer(runtimeEventBatchWindow)
+		collect:
+			for len(batch) < runtimeEventBatchSize {
+				select {
+				case item, open := <-eventQueue:
+					if !open {
+						timer.Stop()
+						break collect
+					}
+					batch = append(batch, item)
+				case <-timer.C:
+					break collect
+				}
+			}
+			if !timer.Stop() {
+				select {
+				case <-timer.C:
+				default:
+				}
+			}
+			drafts := make([]runcontrol.EventDraft, len(batch))
+			for i := range batch {
+				drafts[i] = batch[i].draft
+			}
+			if _, _, appendErr := appendRunEventsWithRetry(eventPersistCtx, r.repository, fence, drafts); appendErr != nil {
+				setPersistenceErr(fmt.Errorf("persist runtime event batch: %w", appendErr))
+				return
+			}
+			if configuredOnEvent != nil {
+				for _, item := range batch {
+					configuredOnEvent(item.event)
+				}
+			}
+		}
+	}()
+	req.OnEvent = func(event runtimepkg.Event) {
+		eventMu.Lock()
+		if persistenceErr != nil {
+			eventMu.Unlock()
+			return
+		}
+		draft := runtimeEventDraft(req, event)
+		eventAt := event.Time.UTC()
+		if eventAt.IsZero() {
+			eventAt = time.Now().UTC()
+		}
+		// Content-aware coalescing: only collapse identical progress payloads within the window.
+		// Reasoning/text deltas and tool calls have distinct payload hashes and will not coalesce.
+		hash := payloadHash(draft.Payload)
+		key := string(draft.Type) + "\x00" + draft.Stage + "\x00" + draft.Task + "\x00" + hash
+		elapsed := eventAt.Sub(progressCommittedAt)
+		if draft.Type == runcontrol.EventProgress && key == progressKey && elapsed >= 0 && elapsed < runcontrol.ProgressCoalesceWindow {
+			if progressOmitted == 0 {
+				progressOmittedFirst = eventAt
+			}
+			progressOmitted++
+			progressOmittedLast = eventAt
+			eventMu.Unlock()
+			return
+		}
+		if progressOmitted > 0 {
+			if draft.Omission == nil {
+				draft.Omission = &runcontrol.Omission{Reason: "equivalent progress coalesced"}
+			}
+			draft.Omission.Count += progressOmitted
+			draft.Omission.FirstAt = &progressOmittedFirst
+			draft.Omission.LastAt = &progressOmittedLast
+			progressOmitted = 0
+		}
+		if draft.Type == runcontrol.EventProgress {
+			progressKey = key
+			progressCommittedAt = eventAt
+		}
+		eventMu.Unlock()
+		select {
+		case eventQueue <- queuedRuntimeEvent{event: event, draft: draft}:
+		case <-runCtx.Done():
+		}
+	}
+
+	controlDone := make(chan struct{})
+	go func() {
+		defer close(controlDone)
+		ticker := time.NewTicker(runcontrol.OwnerTickInterval)
+		defer ticker.Stop()
+		lastHeartbeat := time.Now()
+		for {
+			select {
+			case <-runCtx.Done():
+				return
+			case now := <-ticker.C:
+				var snapshot runcontrol.Snapshot
+				err := retryRunControlOperation(runCtx, func(callCtx context.Context) error {
+					var snapshotErr error
+					snapshot, snapshotErr = r.repository.Snapshot(callCtx, fence.RunID)
+					return snapshotErr
+				})
+				if err != nil {
+					if runCtx.Err() != nil {
+						return
+					}
+					setPersistenceErr(fmt.Errorf("poll durable run control: %w", err))
+					return
+				}
+				if snapshot.Cancellation.State == runcontrol.CancellationRequested {
+					err := retryRunControlOperation(runCtx, func(callCtx context.Context) error {
+						_, _, acknowledgeErr := r.repository.AcknowledgeCancellation(callCtx, fence)
+						return acknowledgeErr
+					})
+					if err != nil {
+						setPersistenceErr(fmt.Errorf("acknowledge durable cancellation: %w", err))
+						return
+					}
+					cancel(context.Canceled)
+					return
+				}
+				if now.Sub(lastHeartbeat) >= runcontrol.HeartbeatInterval {
+					err := retryRunControlOperation(runCtx, func(callCtx context.Context) error {
+						_, heartbeatErr := r.repository.Heartbeat(callCtx, fence, runControlLease)
+						return heartbeatErr
+					})
+					if err != nil {
+						if runCtx.Err() != nil {
+							return
+						}
+						setPersistenceErr(fmt.Errorf("persist owner heartbeat: %w", err))
+						return
+					}
+					lastHeartbeat = now
+				}
+			}
+		}
+	}()
+	result, runErr := r.base.StartRun(runCtx, req)
+	close(eventQueue)
+	<-eventWriterDone
+	eventMu.Lock()
+	if persistenceErr == nil && progressOmitted > 0 {
+		_, _, appendErr := appendRunEventWithRetry(eventPersistCtx, r.repository, fence, runcontrol.EventDraft{
+			Type: runcontrol.EventOmission,
+			Omission: &runcontrol.Omission{
+				Reason: "equivalent progress coalesced", Count: progressOmitted,
+				FirstAt: &progressOmittedFirst, LastAt: &progressOmittedLast,
+			},
+		})
+		if appendErr != nil {
+			persistenceErr = fmt.Errorf("persist progress omission: %w", appendErr)
+		}
+	}
+	eventMu.Unlock()
+	stopEventPersistence()
+	cancel(nil)
+	<-controlDone
+	eventMu.Lock()
+	persistErr := persistenceErr
+	eventMu.Unlock()
+	if persistErr != nil {
+		terminalCtx, terminalCancel := context.WithTimeout(context.Background(), 30*time.Second)
+		_, _, terminalErr := proposeRunTerminalWithRetry(terminalCtx, r.repository, fence, runcontrol.TerminalProposal{
+			Outcome: runcontrol.TerminalPersistenceLost, Reason: "durable event persistence failed", ProposedBy: r.owner.ID,
+			Persistence: persistenceFailure(persistErr),
+		})
+		terminalCancel()
+		if terminalErr != nil {
+			return result, errors.Join(persistErr, terminalErr)
+		}
+		return result, persistErr
+	}
+
+	outcome, reason := terminalOutcome(result, runErr, ctx)
+	terminalCtx, terminalCancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer terminalCancel()
+	if _, _, err := proposeRunTerminalWithRetry(terminalCtx, r.repository, fence, runcontrol.TerminalProposal{
+		Outcome: outcome, Reason: reason, ProposedBy: r.owner.ID,
+	}); err != nil {
+		return result, errors.Join(runErr, fmt.Errorf("persist terminal run outcome: %w", err))
+	}
+	return result, runErr
+}
+
+func appendRunEventWithRetry(ctx context.Context, repository runcontrol.Repository, fence runcontrol.Fence, draft runcontrol.EventDraft) (runcontrol.Event, runcontrol.Snapshot, error) {
+	events, snapshot, err := appendRunEventsWithRetry(ctx, repository, fence, []runcontrol.EventDraft{draft})
+	if err != nil {
+		return runcontrol.Event{}, runcontrol.Snapshot{}, err
+	}
+	return events[0], snapshot, nil
+}
+
+func appendRunEventsWithRetry(ctx context.Context, repository runcontrol.Repository, fence runcontrol.Fence, drafts []runcontrol.EventDraft) ([]runcontrol.Event, runcontrol.Snapshot, error) {
+	deadline := time.Now().Add(runControlPersistenceRetry)
+	wait := 25 * time.Millisecond
+	for {
+		var events []runcontrol.Event
+		var snapshot runcontrol.Snapshot
+		var err error
+		if batcher, ok := repository.(runcontrol.BatchAppender); ok {
+			events, snapshot, err = batcher.AppendBatch(ctx, fence, drafts)
+		} else {
+			events = make([]runcontrol.Event, 0, len(drafts))
+			for _, draft := range drafts {
+				var event runcontrol.Event
+				event, snapshot, err = repository.Append(ctx, fence, draft)
+				if err != nil {
+					break
+				}
+				events = append(events, event)
+			}
+		}
+		if err == nil || !retryableRunControlError(err) || !time.Now().Before(deadline) {
+			return events, snapshot, err
+		}
+		// A repository without atomic batch support may have committed a prefix.
+		// Retrying the whole slice would duplicate those events.
+		if _, ok := repository.(runcontrol.BatchAppender); !ok && len(events) > 0 {
+			return events, snapshot, err
+		}
+		if err := waitRunControlRetry(ctx, deadline, jitterRunControlWait(wait)); err != nil {
+			return nil, runcontrol.Snapshot{}, err
+		}
+		if wait < time.Second {
+			wait *= 2
+		}
+	}
+}
+
+func proposeRunTerminalWithRetry(ctx context.Context, repository runcontrol.Repository, fence runcontrol.Fence, proposal runcontrol.TerminalProposal) (runcontrol.Snapshot, bool, error) {
+	for {
+		snapshot, won, err := repository.ProposeTerminal(ctx, fence, proposal)
+		if err == nil || !retryableRunControlError(err) {
+			return snapshot, won, err
+		}
+		if err := waitRunControlRetry(ctx, time.Now().Add(250*time.Millisecond), 100*time.Millisecond); err != nil {
+			return runcontrol.Snapshot{}, false, err
+		}
+	}
+}
+
+func retryableRunControlError(err error) bool {
+	return errors.Is(err, runcontrol.ErrUnavailable) || errors.Is(err, runcontrol.ErrBusy)
+}
+
+func waitRunControlRetry(ctx context.Context, deadline time.Time, requested time.Duration) error {
+	wait := time.Until(deadline)
+	if wait > requested {
+		wait = requested
+	}
+	if wait <= 0 {
+		return context.DeadlineExceeded
+	}
+	timer := time.NewTimer(wait)
+	defer timer.Stop()
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-timer.C:
+		return nil
+	}
+}
+
+func retryRunControlOperation(ctx context.Context, operation func(context.Context) error) error {
+	deadline := time.Now().Add(runControlPersistenceRetry)
+	wait := 25 * time.Millisecond
+	for {
+		err := operation(ctx)
+		if err == nil || !retryableRunControlError(err) || !time.Now().Before(deadline) {
+			return err
+		}
+		if err := waitRunControlRetry(ctx, deadline, jitterRunControlWait(wait)); err != nil {
+			return err
+		}
+		if wait < time.Second {
+			wait *= 2
+		}
+	}
+}
+
+func jitterRunControlWait(wait time.Duration) time.Duration {
+	if wait <= 1 {
+		return wait
+	}
+	spread := wait / 2
+	return wait - spread/2 + time.Duration(rand.Int64N(int64(spread)+1))
+}
+
+func persistenceFailure(err error) *runcontrol.PersistenceFailure {
+	var persistenceErr *runcontrol.Error
+	if !errors.As(err, &persistenceErr) {
+		return &runcontrol.PersistenceFailure{Code: runcontrol.CodeUnavailable}
+	}
+	return &runcontrol.PersistenceFailure{Code: persistenceErr.Code, Operation: boundedSafe(persistenceErr.Operation)}
+}
+
+func targetFromRuntimeRequest(req runtimepkg.Request) runcontrol.Target {
+	target := runcontrol.Target{
+		Kind:      boundedSafe(req.PromptRef.OwnerKind),
+		Operation: boundedSafe(req.PromptRef.Purpose),
+		Project:   boundedSafe(req.Metadata["project"]),
+		Sprint:    boundedSafe(req.Metadata["sprint"]),
+		Study:     boundedSafe(req.Metadata["study"]),
+		Stage:     boundedSafe(req.Metadata["stage"]),
+		Task:      boundedSafe(firstSafeValue(req.Metadata["task"], req.Metadata["task.kind"], req.Metadata["coverage"])),
+	}
+	if target.Kind == "" {
+		if target.Study != "" {
+			target.Kind = "study"
+		} else if target.Sprint != "" {
+			target.Kind = "sprint"
+		} else {
+			target.Kind = "runtime"
+		}
+	}
+	if target.Operation == "" {
+		target.Operation = boundedSafe(firstSafeValue(target.Stage, req.Metadata["task.kind"], req.PromptRef.ID, "runtime"))
+	}
+	return target
+}
+
+func runtimeEventDraft(req runtimepkg.Request, event runtimepkg.Event) runcontrol.EventDraft {
+	eventType := runcontrol.EventProgress
+	lowerType := strings.ToLower(strings.TrimSpace(event.Type))
+	lowerKind := strings.ToLower(strings.TrimSpace(event.Kind))
+	switch lowerType {
+	case "warning", "warn", "error":
+		eventType = runcontrol.EventWarning
+	case "artifact", "file":
+		eventType = runcontrol.EventArtifact
+	case "finding":
+		eventType = runcontrol.EventFinding
+	case "message", "text", "output", "assistant_text", "reasoning_text", "reasoning", "content", "delta":
+		eventType = runcontrol.EventMessage
+	default:
+		// Kind-based fallback: reasoning and message kinds should be visible as message, not coalesced progress.
+		switch lowerKind {
+		case "message", "reasoning", "assistant", "assistant_text", "reasoning_text":
+			eventType = runcontrol.EventMessage
+		case "tool", "tool_use", "tool_call", "tool_call_update":
+			// Tools stay as progress but with distinct payload so coalescing can distinguish.
+			eventType = runcontrol.EventProgress
+		}
+	}
+	payload := map[string]string{
+		"runtime_event_id": boundedSafe(event.ID),
+		"runtime_run_id":   boundedSafe(event.RunID),
+		"session_id":       boundedSafe(event.SessionID),
+		"type":             boundedSafe(event.Type),
+		"kind":             boundedSafe(event.Kind),
+	}
+	if lowerKind == "tool" || lowerKind == "tool_use" || lowerKind == "tool_call" || lowerKind == "tool_call_update" {
+		captureToolObservation(payload, event.Payload)
+	}
+	// Preserve safe observable payload fields into durable storage for observability.
+	// Deny sensitive keys and truncate values to runcontrol-safe limits.
+	// Flatten one level of nesting so tool/action names buried in maps are surfaced as top-level payload keys
+	// that the run timeline JS expects (payload.tool, payload.action, payload.title, etc.).
+	for key, value := range event.Payload {
+		if isSensitivePayloadKey(key) {
+			continue
+		}
+		normalized := strings.TrimSpace(key)
+		if normalized == "" || len(normalized) > 128 || strings.ContainsAny(normalized, "\x00\r\n") {
+			continue
+		}
+		if normalized == "type" || normalized == "kind" {
+			continue
+		}
+		if nested, ok := value.(map[string]any); ok {
+			for subKey, subVal := range nested {
+				if isSensitivePayloadKey(subKey) {
+					continue
+				}
+				subNorm := strings.TrimSpace(subKey)
+				if subNorm == "" || len(subNorm) > 128 || strings.ContainsAny(subNorm, "\x00\r\n") {
+					continue
+				}
+				if _, exists := payload[subNorm]; exists {
+					continue
+				}
+				// Promote common observable sub-keys; namespace the rest to avoid collisions.
+				promote := map[string]bool{"tool": true, "title": true, "detail": true, "text": true, "delta": true, "content": true, "message": true, "action": true, "state": true, "status": true, "native_type": true, "line": true}
+				targetKey := subNorm
+				if !promote[subNorm] {
+					targetKey = normalized + "_" + subNorm
+					if len(targetKey) > 128 {
+						continue
+					}
+				}
+				if _, exists := payload[targetKey]; exists {
+					continue
+				}
+				str := payloadValueString(subVal)
+				if strings.TrimSpace(str) == "" {
+					continue
+				}
+				if len(payload) >= 30 {
+					break
+				}
+				payload[targetKey] = boundedPayloadValue(str)
+			}
+			// Also keep a compact stringified top-level for debugging if not promoted.
+			if len(payload) < 30 {
+				if _, exists := payload[normalized]; !exists {
+					str := payloadValueString(value)
+					if strings.TrimSpace(str) != "" && !strings.HasPrefix(str, "[map omitted") {
+						payload[normalized] = boundedPayloadValue(str)
+					}
+				}
+			}
+			continue
+		}
+		str := payloadValueString(value)
+		if strings.TrimSpace(str) == "" {
+			continue
+		}
+		if len(payload) >= 30 {
+			break
+		}
+		if _, exists := payload[normalized]; exists {
+			continue
+		}
+		payload[normalized] = boundedPayloadValue(str)
+	}
+	// Ensure the most useful display keys are always present even if nested.
+	for _, want := range []string{"tool", "action", "title", "detail", "text", "delta"} {
+		if _, ok := payload[want]; ok {
+			continue
+		}
+		if v := findNestedString(event.Payload, want); v != "" {
+			payload[want] = boundedPayloadValue(v)
+		}
+	}
+	omission := (*runcontrol.Omission)(nil)
+	if event.RawPresent || event.RawOmitted {
+		reason := firstSafeValue(event.RawOmissionReason, "runtime payload omitted by safe persistence policy")
+		omission = &runcontrol.Omission{Reason: boundedSafe(reason), Count: 1}
+	} else if len(event.Payload) > len(payload)-5 {
+		// Payload had more fields than we persisted (truncated/omitted keys) – record for diagnostics but don't hide persisted fields.
+		omission = &runcontrol.Omission{Reason: boundedSafe("runtime payload truncated to safe observable fields"), Count: 1}
+	}
+	return runcontrol.EventDraft{
+		Type: eventType, Scope: runcontrol.EventScopeRuntime,
+		Stage: boundedSafe(req.Metadata["stage"]), Task: boundedSafe(firstSafeValue(req.Metadata["task"], req.Metadata["task.kind"])),
+		Kind: payload["kind"], Tool: payload["tool"], Action: payload["action"],
+		Reason: payload["reason"], Detail: firstSafeValue(payload["detail"], payload["title"]),
+		Payload: payload, Omission: omission,
+	}
+}
+
+func isSensitivePayloadKey(key string) bool {
+	lower := strings.ToLower(key)
+	for _, marker := range []string{"secret", "token", "password", "authorization", "cookie", "api_key", "apikey", "credential", "auth"} {
+		if strings.Contains(lower, marker) {
+			return true
+		}
+	}
+	return false
+}
+
+func findNestedString(payload map[string]any, want string) string {
+	for _, v := range payload {
+		if m, ok := v.(map[string]any); ok {
+			if s, ok := m[want].(string); ok && strings.TrimSpace(s) != "" {
+				return s
+			}
+			// One more level deep (common for opencode part.state structures)
+			for _, inner := range m {
+				if innerMap, ok := inner.(map[string]any); ok {
+					if s, ok := innerMap[want].(string); ok && strings.TrimSpace(s) != "" {
+						return s
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+func payloadValueString(value any) string {
+	switch v := value.(type) {
+	case string:
+		return v
+	case []byte:
+		if len(v) == 0 {
+			return ""
+		}
+		return string(v)
+	case bool:
+		if v {
+			return "true"
+		}
+		return "false"
+	case int:
+		return fmt.Sprintf("%d", v)
+	case int8:
+		return fmt.Sprintf("%d", v)
+	case int16:
+		return fmt.Sprintf("%d", v)
+	case int32:
+		return fmt.Sprintf("%d", v)
+	case int64:
+		return fmt.Sprintf("%d", v)
+	case uint, uint8, uint16, uint32, uint64:
+		return fmt.Sprintf("%d", v)
+	case float32, float64:
+		return fmt.Sprintf("%v", v)
+	case map[string]any, map[string]string, []any, []string:
+		// Encode structured values compactly.
+		encoded, err := jsonMarshalTruncated(v)
+		if err != nil {
+			return fmt.Sprintf("%v", v)
+		}
+		return encoded
+	default:
+		return fmt.Sprintf("%v", v)
+	}
+}
+
+func jsonMarshalTruncated(v any) (string, error) {
+	encoded, err := json.Marshal(v)
+	if err != nil {
+		return "", err
+	}
+	return string(encoded), nil
+}
+
+func captureToolObservation(out map[string]string, payload map[string]any) {
+	for target, aliases := range map[string][]string{
+		"tool_call_id": {"tool_call_id", "toolCallId", "call_id", "callID"},
+		"tool_name":    {"tool_name", "toolName", "tool", "name"},
+		"tool_status":  {"tool_status", "status", "phase"},
+	} {
+		if value := findNestedPayloadValue(payload, aliases, 0); value != nil {
+			if text, ok := value.(string); ok && strings.TrimSpace(text) != "" {
+				out[target] = boundedPayloadValue(text)
+			}
+		}
+	}
+	for target, aliases := range map[string][]string{
+		"tool_arguments": {"tool_arguments", "arguments", "args", "input", "parameters"},
+		"tool_result":    {"tool_result", "result", "output", "content"},
+		"tool_error":     {"tool_error", "error"},
+	} {
+		value := findNestedPayloadValue(payload, aliases, 0)
+		if value == nil {
+			continue
+		}
+		encoded, err := json.Marshal(redactObservableValue(value))
+		if err == nil && string(encoded) != "null" {
+			out[target] = boundedPayloadValue(string(encoded))
+		}
+	}
+	if out["tool"] == "" {
+		out["tool"] = out["tool_name"]
+	}
+}
+
+func findNestedPayloadValue(value any, aliases []string, depth int) any {
+	if depth > 5 {
+		return nil
+	}
+	switch typed := value.(type) {
+	case map[string]any:
+		for _, key := range aliases {
+			if found, ok := typed[key]; ok && found != nil {
+				return found
+			}
+		}
+		keys := make([]string, 0, len(typed))
+		for key := range typed {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			if found := findNestedPayloadValue(typed[key], aliases, depth+1); found != nil {
+				return found
+			}
+		}
+	case []any:
+		for _, item := range typed {
+			if found := findNestedPayloadValue(item, aliases, depth+1); found != nil {
+				return found
+			}
+		}
+	}
+	return nil
+}
+
+func redactObservableValue(value any) any {
+	switch typed := value.(type) {
+	case map[string]any:
+		redacted := make(map[string]any, len(typed))
+		for key, item := range typed {
+			if isSensitivePayloadKey(key) {
+				redacted[key] = "[REDACTED]"
+			} else {
+				redacted[key] = redactObservableValue(item)
+			}
+		}
+		return redacted
+	case []any:
+		redacted := make([]any, len(typed))
+		for index, item := range typed {
+			redacted[index] = redactObservableValue(item)
+		}
+		return redacted
+	case string:
+		lower := strings.ToLower(typed)
+		for _, marker := range []string{"bearer ", "sk-", "ghp_", "github_pat_", "-----begin private key"} {
+			if strings.Contains(lower, marker) {
+				return "[REDACTED]"
+			}
+		}
+		return typed
+	default:
+		return value
+	}
+}
+
+func boundedPayloadValue(value string) string {
+	value = strings.Map(func(r rune) rune {
+		if r == 0 || r == '\r' || r == '\n' {
+			return -1
+		}
+		return r
+	}, strings.TrimSpace(value))
+	if len(value) > runcontrol.MaxSafeValueBytes {
+		value = value[:runcontrol.MaxSafeValueBytes]
+	}
+	return value
+}
+
+func payloadHash(payload map[string]string) string {
+	if len(payload) == 0 {
+		return ""
+	}
+	// Stable hash of payload content for coalescing: include type/kind and any payload_* keys.
+	keys := make([]string, 0, len(payload))
+	for k := range payload {
+		if k == "runtime_event_id" || k == "runtime_run_id" || k == "session_id" {
+			continue
+		}
+		keys = append(keys, k)
+	}
+	// Keep deterministic order by sorting.
+	sortStrings(keys)
+	var b strings.Builder
+	for _, k := range keys {
+		b.WriteString(k)
+		b.WriteString("=")
+		b.WriteString(payload[k])
+		b.WriteString("\x00")
+	}
+	return b.String()
+}
+
+func sortStrings(values []string) {
+	// Insertion sort for small slices – avoid importing sort for minimal diff; keep stdlib sort if available.
+	for i := 1; i < len(values); i++ {
+		j := i
+		for j > 0 && values[j-1] > values[j] {
+			values[j-1], values[j] = values[j], values[j-1]
+			j--
+		}
+	}
+}
+
+func terminalOutcome(result runtimepkg.Result, runErr error, parent context.Context) (runcontrol.TerminalOutcome, string) {
+	status := strings.ToLower(strings.TrimSpace(result.Status))
+	switch {
+	case errors.Is(runErr, context.DeadlineExceeded), errors.Is(parent.Err(), context.DeadlineExceeded), result.Error != nil && result.Error.Category == "timeout":
+		return runcontrol.TerminalTimedOut, "runtime deadline exceeded"
+	case errors.Is(runErr, context.Canceled), errors.Is(parent.Err(), context.Canceled), status == "cancelled", result.Error != nil && result.Error.Category == "cancellation":
+		return runcontrol.TerminalCancelled, "runtime cancelled"
+	case runErr != nil, status == "failed", status == "error":
+		return runcontrol.TerminalFailed, "runtime failed"
+	default:
+		return runcontrol.TerminalSucceeded, "runtime completed"
+	}
+}
+
+func cloneRuntimeMetadata(input map[string]string) map[string]string {
+	out := make(map[string]string, len(input)+1)
+	for key, value := range input {
+		out[key] = value
+	}
+	return out
+}
+
+func boundedSafe(value string) string {
+	value = strings.Map(func(r rune) rune {
+		if r == 0 || r == '\r' || r == '\n' {
+			return -1
+		}
+		return r
+	}, strings.TrimSpace(value))
+	if len(value) > runcontrol.MaxTargetFieldBytes {
+		value = value[:runcontrol.MaxTargetFieldBytes]
+	}
+	return value
+}
+
+func firstSafeValue(values ...string) string {
+	for _, value := range values {
+		if strings.TrimSpace(value) != "" {
+			return value
+		}
+	}
+	return ""
+}

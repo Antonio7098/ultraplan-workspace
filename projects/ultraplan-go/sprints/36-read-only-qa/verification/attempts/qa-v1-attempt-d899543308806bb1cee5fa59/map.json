@@ -1,0 +1,1104 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-map-e33a7e44e0ce5d52a2cf8f7f",
+  "project": "ultraplan-go",
+  "sprint": "36-read-only-qa",
+  "semantic_attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+  "governed_input_fingerprint": "59b8948c1037ffac555b8f474b8afae5193e0ed66cb2fd16a20ac494a626b5ec",
+  "implementation_fingerprint": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+  "review_fingerprint": "c0fd8452a95ae0461631b81a75140d2ff66a9b37ab21849cccaa3fcc6730dd63",
+  "policy_fingerprint": "32450daa1d7cccd83b70e01ac943733ad5117da80b574bbd06c32ee1f507982b",
+  "check_catalog_fingerprint": "5d89681a52ae67a1016a78a5e2182577a93dc444480ba7ac99d540c912523cc5",
+  "budgets": {
+    "changed_paths": 512,
+    "primary_shards": 32,
+    "boundary_shards": 8,
+    "follow_up_shards": 4,
+    "total_shards": 44,
+    "pending_entries": 44,
+    "changed_paths_per_shard": 32,
+    "context_paths_per_shard": 64,
+    "context_expansions": 2,
+    "paths_per_expansion": 16,
+    "behavioral_concerns_per_shard": 12,
+    "theories_per_shard": 12,
+    "iterations_per_attempt": 4,
+    "commands_per_attempt": 8,
+    "runtime_retries": 1,
+    "concurrent_investigators": 3,
+    "command_timeout": 300000000000,
+    "shard_timeout": 1200000000000,
+    "run_timeout": 3600000000000,
+    "cleanup_timeout": 30000000000,
+    "command_output_bytes": 262144,
+    "shard_output_bytes": 1048576,
+    "prompt_bytes": 524288,
+    "recent_progress": 100,
+    "retained_attempts": 8,
+    "state_bytes": 134217728
+  },
+  "effective_sources": [
+    {
+      "field": "qa.behavioral_concerns_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.boundary_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.changed_paths",
+      "source": "default"
+    },
+    {
+      "field": "qa.changed_paths_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.cleanup_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.command_output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.command_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.commands_per_attempt",
+      "source": "default"
+    },
+    {
+      "field": "qa.concurrent_investigators",
+      "source": "default"
+    },
+    {
+      "field": "qa.context_expansions",
+      "source": "default"
+    },
+    {
+      "field": "qa.context_paths_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.follow_up_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.iterations_per_attempt",
+      "source": "default"
+    },
+    {
+      "field": "qa.model",
+      "source": "workspace"
+    },
+    {
+      "field": "qa.paths_per_expansion",
+      "source": "default"
+    },
+    {
+      "field": "qa.pending_entries",
+      "source": "default"
+    },
+    {
+      "field": "qa.primary_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.prompt_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.recent_progress",
+      "source": "default"
+    },
+    {
+      "field": "qa.retained_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.run_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.runtime_retries",
+      "source": "default"
+    },
+    {
+      "field": "qa.shard_output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.shard_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.state_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.theories_per_shard",
+      "source": "default"
+    },
+    {
+      "field": "qa.total_shards",
+      "source": "default"
+    },
+    {
+      "field": "qa.variant",
+      "source": "workspace"
+    }
+  ],
+  "target": {
+    "fingerprint": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+    "git_head": "5e7d309177e21c63973b54397c9948c5f660b024",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "037dc963103e3c9becae7ada86618d34a6ccd4f60ca50a2c6d92d33e7cd66437"
+  },
+  "coverage": {
+    "changed_paths": [
+      "docs/architecture.md",
+      "docs/cli-reference.md",
+      "docs/local-web.md",
+      "docs/phase3-json-schemas.md",
+      "docs/recovery.md",
+      "docs/release-checklist.md",
+      "docs/user-guide.md",
+      "internal/app/config_commands.go",
+      "internal/app/durable_operations.go",
+      "internal/app/durable_operations_test.go",
+      "internal/app/operation_runner.go",
+      "internal/app/operations.go",
+      "internal/app/qa_errors.go",
+      "internal/app/qa_errors_test.go",
+      "internal/app/run_control_inventory_test.go",
+      "internal/app/serve_commands.go",
+      "internal/app/sprint_commands.go",
+      "internal/app/sprint_commands_test.go",
+      "internal/app/sprint_usecases.go",
+      "internal/app/sprint_usecases_test.go",
+      "internal/app/tui_commands.go",
+      "internal/app/tui_commands_test.go",
+      "internal/app/usecases.go",
+      "internal/app/web_operations_test.go",
+      "internal/app/web_usecases.go",
+      "internal/platform/config/config.go",
+      "internal/platform/config/config_test.go",
+      "internal/platform/config/qa.go",
+      "internal/platform/config/redaction.go",
+      "internal/sprint/domain.go",
+      "internal/sprint/locks.go",
+      "internal/sprint/qa.go",
+      "internal/sprint/qa_map.go",
+      "internal/sprint/qa_map_test.go",
+      "internal/sprint/qa_prompt.go",
+      "internal/sprint/qa_prompt_test.go",
+      "internal/sprint/qa_state.go",
+      "internal/sprint/qa_state_test.go",
+      "internal/sprint/qa_synthesis.go",
+      "internal/sprint/qa_synthesis_test.go",
+      "internal/sprint/qa_test.go",
+      "internal/sprint/qa_types.go",
+      "internal/sprint/review.go",
+      "internal/sprint/service.go",
+      "internal/sprint/state.go",
+      "internal/sprint/verification_phase.go",
+      "internal/sprint/verification_phase_test.go",
+      "internal/sprint/verify.go",
+      "internal/tui/model.go",
+      "internal/tui/model_test.go",
+      "internal/tui/qa_view.go",
+      "internal/tui/qa_view_test.go",
+      "internal/tui/verify_test.go",
+      "internal/tui/views.go",
+      "internal/web/handlers.go",
+      "internal/web/operation_handlers.go",
+      "internal/web/operations_contract_test.go",
+      "internal/web/qa_handlers.go",
+      "internal/web/qa_handlers_test.go",
+      "internal/web/routes.go",
+      "internal/web/static/app.js",
+      "internal/web/static/js/operations.js",
+      "internal/web/templates/sprint.html",
+      "internal/web/templates_test.go"
+    ],
+    "primary_owners": {
+      "docs/architecture.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "docs/cli-reference.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "docs/local-web.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "docs/phase3-json-schemas.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "docs/recovery.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "docs/release-checklist.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "docs/user-guide.md": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "internal/app/config_commands.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/durable_operations.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/durable_operations_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/operation_runner.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/operations.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/qa_errors.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/qa_errors_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/run_control_inventory_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/serve_commands.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/sprint_commands.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/sprint_commands_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/sprint_usecases.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/sprint_usecases_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/tui_commands.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/tui_commands_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/usecases.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/web_operations_test.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/app/web_usecases.go": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "internal/platform/config/config.go": "qa-v1-shard-7c431af0ba52ed4f59ac9db5",
+      "internal/platform/config/config_test.go": "qa-v1-shard-7c431af0ba52ed4f59ac9db5",
+      "internal/platform/config/qa.go": "qa-v1-shard-7c431af0ba52ed4f59ac9db5",
+      "internal/platform/config/redaction.go": "qa-v1-shard-7c431af0ba52ed4f59ac9db5",
+      "internal/sprint/domain.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/locks.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_map.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_map_test.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_prompt.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_prompt_test.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_state.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_state_test.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_synthesis.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_synthesis_test.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_test.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/qa_types.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/review.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/service.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/state.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/verification_phase.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/verification_phase_test.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/sprint/verify.go": "qa-v1-shard-146d093952a08d6f278363b4",
+      "internal/tui/model.go": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "internal/tui/model_test.go": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "internal/tui/qa_view.go": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "internal/tui/qa_view_test.go": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "internal/tui/verify_test.go": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "internal/tui/views.go": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "internal/web/handlers.go": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/operation_handlers.go": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/operations_contract_test.go": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/qa_handlers.go": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/qa_handlers_test.go": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/routes.go": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/static/app.js": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/static/js/operations.js": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/templates/sprint.html": "qa-v1-shard-19c991db575274423b0a0650",
+      "internal/web/templates_test.go": "qa-v1-shard-19c991db575274423b0a0650"
+    },
+    "boundary_overlaps": {
+      "qa-v1-shard-1b0a134a886968d9b30c13d0": [
+        "docs/architecture.md",
+        "internal/app/config_commands.go",
+        "internal/platform/config/config.go",
+        "internal/sprint/domain.go",
+        "internal/tui/model.go",
+        "internal/web/handlers.go"
+      ]
+    }
+  },
+  "shards": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-146d093952a08d6f278363b4",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "primary",
+      "title": "internal/sprint",
+      "changed_paths": [
+        "internal/sprint/domain.go",
+        "internal/sprint/locks.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_map.go",
+        "internal/sprint/qa_map_test.go",
+        "internal/sprint/qa_prompt.go",
+        "internal/sprint/qa_prompt_test.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_state_test.go",
+        "internal/sprint/qa_synthesis.go",
+        "internal/sprint/qa_synthesis_test.go",
+        "internal/sprint/qa_test.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/review.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go"
+      ],
+      "context_paths": [
+        "internal/sprint/locks_test.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_map.go",
+        "internal/sprint/qa_map_test.go",
+        "internal/sprint/qa_prompt.go",
+        "internal/sprint/qa_prompt_test.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_state_test.go",
+        "internal/sprint/qa_synthesis.go",
+        "internal/sprint/qa_synthesis_test.go",
+        "internal/sprint/qa_test.go",
+        "internal/sprint/review_test.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/sprint"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "persistence",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-19c991db575274423b0a0650",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "primary",
+      "title": "internal/web",
+      "changed_paths": [
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/qa_handlers.go",
+        "internal/web/qa_handlers_test.go",
+        "internal/web/routes.go",
+        "internal/web/static/app.js",
+        "internal/web/static/js/operations.js",
+        "internal/web/templates/sprint.html",
+        "internal/web/templates_test.go"
+      ],
+      "context_paths": [
+        "internal/web/qa_handlers.go",
+        "internal/web/qa_handlers_test.go",
+        "internal/web/routes_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/web"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "public-api",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-1b0a134a886968d9b30c13d0",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "boundary",
+      "title": "cross-package integration",
+      "context_paths": [
+        "docs/architecture.md",
+        "internal/app/config_commands.go",
+        "internal/platform/config/config.go",
+        "internal/sprint/domain.go",
+        "internal/tui/model.go",
+        "internal/web/handlers.go"
+      ],
+      "overlap_paths": [
+        "docs/architecture.md",
+        "internal/app/config_commands.go",
+        "internal/platform/config/config.go",
+        "internal/sprint/domain.go",
+        "internal/tui/model.go",
+        "internal/web/handlers.go"
+      ],
+      "boundary_reason": "cross-package",
+      "behavioral_concerns": [
+        "cross-package integration"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "public-api",
+        "security"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-4312b77c49718b8554b38d84",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "primary",
+      "title": "internal/tui",
+      "changed_paths": [
+        "internal/tui/model.go",
+        "internal/tui/model_test.go",
+        "internal/tui/qa_view.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/verify_test.go",
+        "internal/tui/views.go"
+      ],
+      "context_paths": [
+        "internal/tui/model.go",
+        "internal/tui/model_test.go",
+        "internal/tui/qa_view.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/tui"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-7c431af0ba52ed4f59ac9db5",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "primary",
+      "title": "internal/platform",
+      "changed_paths": [
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/qa.go",
+        "internal/platform/config/redaction.go"
+      ],
+      "context_paths": [
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/platform"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "security",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-7ed45c60edd94cf4a65026fa",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "primary",
+      "title": "internal/app",
+      "changed_paths": [
+        "internal/app/config_commands.go",
+        "internal/app/durable_operations.go",
+        "internal/app/durable_operations_test.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/qa_errors.go",
+        "internal/app/qa_errors_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/sprint_usecases_test.go",
+        "internal/app/tui_commands.go",
+        "internal/app/tui_commands_test.go",
+        "internal/app/usecases.go",
+        "internal/app/web_operations_test.go",
+        "internal/app/web_usecases.go"
+      ],
+      "context_paths": [
+        "internal/app/durable_operations.go",
+        "internal/app/durable_operations_test.go",
+        "internal/app/qa_errors.go",
+        "internal/app/qa_errors_test.go",
+        "internal/app/serve_commands_test.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/sprint_usecases_test.go",
+        "internal/app/tui_commands.go",
+        "internal/app/tui_commands_test.go",
+        "internal/app/usecases_test.go",
+        "internal/app/web_usecases_test.go"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in internal/app"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "risk_tags": [
+        "public-api",
+        "security",
+        "test"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-9b6391b488e9db9526a2c363",
+      "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+      "kind": "primary",
+      "title": "docs",
+      "changed_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md"
+      ],
+      "behavioral_concerns": [
+        "changed behavior in docs"
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "approved_checks": [
+        {
+          "id": "go-format-diff",
+          "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+        }
+      ],
+      "phase": "mapped"
+    }
+  ],
+  "input_refs": [
+    {
+      "path": "projects/ultraplan-go/docs/ARCHITECTURE.md",
+      "digest": "541bbb2f039b8f830551397fd84f2a6be31822be33ece97458087c7bc98e4625"
+    },
+    {
+      "path": "projects/ultraplan-go/docs/PRD.md",
+      "digest": "4c8c6c11da1e596603266256ca2e1d58f92a6a7891d77fe579217d5474e86836"
+    },
+    {
+      "path": "projects/ultraplan-go/docs/TRD.md",
+      "digest": "f1c7c8f6d1ae053c836c49919a3c22bbaa53c0720ddb86396610b500677198bb"
+    },
+    {
+      "path": "projects/ultraplan-go/project-index.md",
+      "digest": "650c49c4e2d08ffc1585d2f8478cd24f5888f858e5f7ba8ad2fa9b350ed26074"
+    },
+    {
+      "path": "projects/ultraplan-go/roadmap.md",
+      "digest": "c058abf90d076007ef6103baf4e934eded0ab3a5fc682e300808231440202640"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/.run-state.json",
+      "digest": "d253ca18ccc9b1c504860938c9e7b962d56c810f302cc7f1afba94171bbecdff"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/code-context.md",
+      "digest": "bd3f2f67d118c1c138f89e4321b691cf3f76bb22b624a749fe73872f95bf906e"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/execute.md",
+      "digest": "95fc5e3a0df3eb31b3341eb83f9a049902e037f680667a44b37437f19f4871c0"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/plan.md",
+      "digest": "5660ea44fb28e488d6901aa5a09b3531220092a0bc7ebb77072bd0022b309388"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/reasoning.md",
+      "digest": "7164b9c0f1741914ad86d274b8c7490136daf03552a089416072516818e3cb94"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/reasoning/api-design.md",
+      "digest": "a81fd09cd82ee0e1f31f358982b0476f9139b3bc31bebaaa4c145ebfc9ce7329"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/reasoning/architecture.md",
+      "digest": "746c85136cb5a7f5606aa675ed1c57d0984e4067b586fd4083afade14cf92f84"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/reasoning/frontend.md",
+      "digest": "7bdee4c9d10c9ff77f9ffa9d06eebc652ed54ebc30ac20f688b9551b437644c2"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/requirements.md",
+      "digest": "37773a86d1f7d35a4d635286719b5193aa7bc49621e60ab37618ef2d49a86263"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/review.md",
+      "digest": "55b64ae878573413a3adf951feeb8c3064beac40bfc8e54e2fdec56d53e10ec3"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/sprint-index.md",
+      "digest": "4113f68c634470ce6307f94d11005c6e438afeb103be5773a636aa4c12939599"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/36-read-only-qa/technical-handbook.md",
+      "digest": "e83aa7816470ea1c9b7b7310bb98760d394a85eb72ee57a54c04c672defba495"
+    },
+    {
+      "path": "prompts/review.md",
+      "digest": "66e497732d43b3dbeaaf55b0d972972c46cdec9c81139869e890b8a0eb9584aa"
+    },
+    {
+      "path": "system/contracts/core/architecture.md",
+      "digest": "275e80f72b0127ef1ee92c1f76b02c0e6f2084adaaf97315bdb61ae42c8a7556"
+    },
+    {
+      "path": "system/contracts/core/configuration.md",
+      "digest": "40451fce9c8d33ec214aec8c70d524d2b3c0524a2f23655fa81b49263c634d66"
+    },
+    {
+      "path": "system/contracts/core/documentation.md",
+      "digest": "4624a2876d574313a816d018c68300eae180cda6c526ade0ee5811dbdeeb767d"
+    },
+    {
+      "path": "system/contracts/core/errors.md",
+      "digest": "d802fe296d19932c6e0115625a4df0e5caa987a8b96ccd32fcd5849ced9af9e2"
+    },
+    {
+      "path": "system/contracts/core/observability.md",
+      "digest": "9a48650b90f273955751ef7e833e80436be64e36d6803a6cadc2cf76d6d962fb"
+    },
+    {
+      "path": "system/contracts/core/security.md",
+      "digest": "5af338526c1f0898631c06ca76d651aaa59b391fa5b5d341c899086ff3d3d328"
+    },
+    {
+      "path": "system/contracts/core/testing.md",
+      "digest": "25905e8c5826e9068e4c752cd9ea80997e85cb7a6c53ae1ba72f9a8b78eb42fd"
+    },
+    {
+      "path": "system/contracts/runtime/llm-evaluation-cost-safety.md",
+      "digest": "fd95c7a87d4d244f5f73fa2a69ff948863373d95e783d986644945ca5c203f3d"
+    },
+    {
+      "path": "system/contracts/runtime/llm.md",
+      "digest": "1d81f5a844f9088ac4c1b43305300449bad6b01e83e131ff5964de4f844ccce2"
+    },
+    {
+      "path": "system/contracts/runtime/performance.md",
+      "digest": "c200a47aab06e3b3dfcee59e91f5aa5b9bafdfb6a47bc3d15aed6db51f2a386d"
+    },
+    {
+      "path": "system/contracts/runtime/persistence-and-migrations.md",
+      "digest": "249990b954b05e2274bd9c04febf92184d69f4380386626582adeaaee54974a3"
+    },
+    {
+      "path": "system/contracts/runtime/workflows.md",
+      "digest": "5d0200141beb53f8330a508ec35b90571b546ed56d2419e77b9e1b4d96048b01"
+    },
+    {
+      "path": "system/contracts/surfaces/cli.md",
+      "digest": "1d9023f483e128960de402e4402b6a1eb116cb542f4617910e42c96d9569f243"
+    },
+    {
+      "path": "system/protocols/architecture-review-protocol.md",
+      "digest": "b42fe1ca1376d88a7651ca8cbce3379642ac990ccdd89853a9f22a7d60f8c663"
+    },
+    {
+      "path": "system/protocols/deep-smoke-sprint-protocol.md",
+      "digest": "a72797b3b66d3cc04450b1e9c230941d6ce8dc8d6926e7daa7540379246a84f6"
+    },
+    {
+      "path": "system/protocols/review-sprint-protocol.md",
+      "digest": "98773f6b8d10b16d65e4251de8015a17a1b514e5fbe9071273be9824ad0d6503"
+    },
+    {
+      "path": "target/.identity",
+      "digest": "8b0fc96ddfe0977c4e6150df563aad7886f7b80bcb3a05171df464f120135efb"
+    },
+    {
+      "path": "target/docs/architecture.md",
+      "digest": "35d99547473396142e7d214f53380896e78c157aee4e7febbf4fbb986308e3ce"
+    },
+    {
+      "path": "target/docs/cli-reference.md",
+      "digest": "4c8e146e456c6e5539969a1370c98dd040c8c74b6b4c69954bae3275dc8b12b1"
+    },
+    {
+      "path": "target/docs/local-web.md",
+      "digest": "6ac7f8bbe87bf0de0fb6d74edd778905d18ec082496d4be1d0c8364072c5dded"
+    },
+    {
+      "path": "target/docs/phase3-json-schemas.md",
+      "digest": "5fd298423742dec7522c8a9d3635b5417923f439f753f5fef051c3bea9814722"
+    },
+    {
+      "path": "target/docs/recovery.md",
+      "digest": "5365dca9a58e704bfc3421c73b543ae668d28a98d28d542a723939863cc3efbd"
+    },
+    {
+      "path": "target/docs/release-checklist.md",
+      "digest": "4b990dece8d63d8ad53d34c00d19dd278e921ab86b7ce44654fae3c89d866169"
+    },
+    {
+      "path": "target/docs/user-guide.md",
+      "digest": "4ae60f05a67e3183c00be40a8cd93a2476f6ab82945fcefd3400c1092f134dcf"
+    },
+    {
+      "path": "target/internal/app/config_commands.go",
+      "digest": "4c6e1dc21dbe1fe6ca72ef6d7115ad60725868ba9df829ec582a74a61e002164"
+    },
+    {
+      "path": "target/internal/app/durable_operations.go",
+      "digest": "d4d6294245a9739c5691811a5d7d8dfdf561f2a90eca72457d91a8bb7aa34fba"
+    },
+    {
+      "path": "target/internal/app/durable_operations_test.go",
+      "digest": "4e8fc45fdfef25023bea4d7e74f50b7dbf9bfa04524d5c373313c91ca2e9d3ae"
+    },
+    {
+      "path": "target/internal/app/operation_runner.go",
+      "digest": "52452cd15a9116112ea071cf59b12853003bac55a490aa48252e5c31bdefb9e4"
+    },
+    {
+      "path": "target/internal/app/operations.go",
+      "digest": "7a33694a71a49e67606447128cbd98ffb50de93c3fd828ff478304ca8fdc2d9e"
+    },
+    {
+      "path": "target/internal/app/qa_errors.go",
+      "digest": "68186535a4c229f7b1123880b4f06f58e28b56cf3091b1e2942d0d0844494288"
+    },
+    {
+      "path": "target/internal/app/qa_errors_test.go",
+      "digest": "6703c768269cb078c89b69c73cfc999833e49043397130ede6a87ae597a046e7"
+    },
+    {
+      "path": "target/internal/app/run_control_inventory_test.go",
+      "digest": "0ed2b03f895d8b9149fc0c36f3b7770b21a032d1cc16448bdc86141e76cecea9"
+    },
+    {
+      "path": "target/internal/app/serve_commands.go",
+      "digest": "4265263d111cc2cdc132949a93083fb8657abedc07e9614ec8693b4469f23668"
+    },
+    {
+      "path": "target/internal/app/sprint_commands.go",
+      "digest": "4f64bbd62e3422a15a621a8ef5ba586c70c003c44563dbdd9fcfe8938b145b27"
+    },
+    {
+      "path": "target/internal/app/sprint_commands_test.go",
+      "digest": "5b34602b56e92f1813c4655e8142884af0cc52282a17ff535d98468f888ab49d"
+    },
+    {
+      "path": "target/internal/app/sprint_usecases.go",
+      "digest": "b655057f4a51e03bcdcc1e2bbdcd718301609632a092a6b8ffd708d31594e947"
+    },
+    {
+      "path": "target/internal/app/sprint_usecases_test.go",
+      "digest": "b1b4ffeb61b64573c283b5308f4528f52d782863505f58e61493e3660161f798"
+    },
+    {
+      "path": "target/internal/app/tui_commands.go",
+      "digest": "e16de54c22468958822ec8831d029f948d0840ac1dfba1e41411729992bde1f9"
+    },
+    {
+      "path": "target/internal/app/tui_commands_test.go",
+      "digest": "192e918fe9a84d0e4afaff8e92aa77785b701903387b526513778196adcccfc5"
+    },
+    {
+      "path": "target/internal/app/usecases.go",
+      "digest": "15df44a922ae71de46abc13d4ebda0e4640068cbbea63bac146a21509e67c3ef"
+    },
+    {
+      "path": "target/internal/app/web_operations_test.go",
+      "digest": "a5dc879f03fec6ab58644a0f37af8224bde7e3cd8f469f60d4c6dd2d0368a8a7"
+    },
+    {
+      "path": "target/internal/app/web_usecases.go",
+      "digest": "601965190b0c9950b82ae1fb082b3eecfeced01693fa7d99cb160176125f6e83"
+    },
+    {
+      "path": "target/internal/platform/config/config.go",
+      "digest": "51d1d9577951fdb19048e5947b6900e001be5bfb3440a839a5b1f3dc7a29aace"
+    },
+    {
+      "path": "target/internal/platform/config/config_test.go",
+      "digest": "e82c4635c07daf139c721f228d3695db67b12b2a0e8e8776b1f0bdcb9d148b49"
+    },
+    {
+      "path": "target/internal/platform/config/qa.go",
+      "digest": "a1c9aa870aada79e7e1772e00209cdeeb6e40416fa72dda7c51893566b56f7ef"
+    },
+    {
+      "path": "target/internal/platform/config/redaction.go",
+      "digest": "87f26d1936907f6e64d70ced4cac3da40fd91e1ae7fc7b207dc4ea5c67394e7a"
+    },
+    {
+      "path": "target/internal/sprint/domain.go",
+      "digest": "07a9276577d729a1c6bd463d4de8be9edcae1372af82f7433ad1066ea6ab6285"
+    },
+    {
+      "path": "target/internal/sprint/locks.go",
+      "digest": "59719f7cf538e0db0e3bc55ec63aad179fd7e024c0cb70892f568b4cb205eb18"
+    },
+    {
+      "path": "target/internal/sprint/qa.go",
+      "digest": "ef33755a851d339b77ae193ab9505e2fb9896c4400e5ffd7e162783a53a4e73a"
+    },
+    {
+      "path": "target/internal/sprint/qa_map.go",
+      "digest": "d5f63e288890b25c3672918a51cac299b236824887e973e129da702dde3b60cb"
+    },
+    {
+      "path": "target/internal/sprint/qa_map_test.go",
+      "digest": "9f960177091e4ff8886826d3f10d7053920567db806722a18d3c5050cbce4715"
+    },
+    {
+      "path": "target/internal/sprint/qa_prompt.go",
+      "digest": "a84cc94d102418b9be4514d67012911f97641ed4a7ae00373305afe6ffdf086b"
+    },
+    {
+      "path": "target/internal/sprint/qa_prompt_test.go",
+      "digest": "5f42170b1844f3b07cf08635558c8a9495656d7769dd4028ae7ef1364e878dff"
+    },
+    {
+      "path": "target/internal/sprint/qa_state.go",
+      "digest": "e2400cf4ca1d19c5075d01aa2728e36e2bba18159f9d2ee05eb2d625857a68a7"
+    },
+    {
+      "path": "target/internal/sprint/qa_state_test.go",
+      "digest": "4e0ddd76a1b78da32f8d1a2aae8f6afc7e9b4ca33d528c4eb574402c941701f6"
+    },
+    {
+      "path": "target/internal/sprint/qa_synthesis.go",
+      "digest": "2dabb95863ea14ae30fb1533fe92a63f04d792094aca7c738062640096bbc833"
+    },
+    {
+      "path": "target/internal/sprint/qa_synthesis_test.go",
+      "digest": "d281b669eab13ff8af6334e7488e4e0aa14700663f1d46dfed2c50cf201d0a97"
+    },
+    {
+      "path": "target/internal/sprint/qa_test.go",
+      "digest": "14a218bc12779437f5bfba4fced37b021981b9d3b955ee37e803e3f61ff01398"
+    },
+    {
+      "path": "target/internal/sprint/qa_types.go",
+      "digest": "424a89bb5bb62d7206b29e46d34b31dd65713da21973ccaa9f70711574d52d53"
+    },
+    {
+      "path": "target/internal/sprint/review.go",
+      "digest": "721b0b454acac744c695e6a6a22d178cbdb3355516dc48d04d3f7cf8744a7a3a"
+    },
+    {
+      "path": "target/internal/sprint/service.go",
+      "digest": "91295092ca88082484ade5aea5d5780ffadc699c3b99edf34febfbb6b8b0a43a"
+    },
+    {
+      "path": "target/internal/sprint/state.go",
+      "digest": "aa90ef3d1062b9f0c71e055695f1269180139976c23f70cb6e9dabde321c1504"
+    },
+    {
+      "path": "target/internal/sprint/verification_phase.go",
+      "digest": "2e9be35213e2de609b0180287afd6c4f50b317993dbfcdd064c919200bc9355c"
+    },
+    {
+      "path": "target/internal/sprint/verification_phase_test.go",
+      "digest": "15f2a1704496c726294e9587b57dead5ad817b3f088f52c6ea353023dc71ab06"
+    },
+    {
+      "path": "target/internal/sprint/verify.go",
+      "digest": "5371638a4d3e97dc386f023ad4f7d0c50c45b131b5f3c6b1e15dc4f77a6ac23f"
+    },
+    {
+      "path": "target/internal/tui/model.go",
+      "digest": "bee4ba7decd78ac2303db0d1d46b2332e9b022ba5918c60e332ae023fca67545"
+    },
+    {
+      "path": "target/internal/tui/model_test.go",
+      "digest": "ff72d4da92fbbdc295b4c1a8e8b64d9f4d184b35ac60599dbdd78c860ecba0dc"
+    },
+    {
+      "path": "target/internal/tui/qa_view.go",
+      "digest": "61d052b1625e4ea4ed245caef445dd110ba3e8153f1b3384fb0c62fb145fe092"
+    },
+    {
+      "path": "target/internal/tui/qa_view_test.go",
+      "digest": "6b1da66a46be5a53e9037c2feac439c6a7ef897112f3af764572cc8fbd3a42ea"
+    },
+    {
+      "path": "target/internal/tui/verify_test.go",
+      "digest": "8c393382adfd83435e19c3cee0d9e26dec77680639473ce524562bd95ad377d2"
+    },
+    {
+      "path": "target/internal/tui/views.go",
+      "digest": "8452dcbdaecbdc4ac41c5d19a22a0e740330f7f17cd08f959888153d1038c30a"
+    },
+    {
+      "path": "target/internal/web/handlers.go",
+      "digest": "99689e405b23dd80afde7fc245d6ac7e76d65df1d2abeeea3f67fff1367a7d12"
+    },
+    {
+      "path": "target/internal/web/operation_handlers.go",
+      "digest": "aabb704937a75cd2bb9cd51963f4109101a1d7e5f9d8915f7ef9276225dccb3b"
+    },
+    {
+      "path": "target/internal/web/operations_contract_test.go",
+      "digest": "2c65c8ea3bb40f867a73d5c502ad9a4206da11d6eb79c745f2c3e1d4c42c6df4"
+    },
+    {
+      "path": "target/internal/web/qa_handlers.go",
+      "digest": "f024255d66c65b3601fe5d51a0b02d5a33012e704f87941928d14b160dddb5ab"
+    },
+    {
+      "path": "target/internal/web/qa_handlers_test.go",
+      "digest": "ffa206661a0cd082c99dd307693eb7740b533064dc5eb6fd5d43254ef3adb72b"
+    },
+    {
+      "path": "target/internal/web/routes.go",
+      "digest": "af216ca8102c0f54cea09421ab1fa1c341afb93660f8fa7640c8bae3847c1835"
+    },
+    {
+      "path": "target/internal/web/static/app.js",
+      "digest": "dfbaf4fb0fe1a4fc5b08360a217fa528ac969784fdf9217dbac9dea3ff3de02c"
+    },
+    {
+      "path": "target/internal/web/static/js/operations.js",
+      "digest": "e18fdaa107e6bb855bc8450cec51a6d52f24628be2bc5cbfd78c7c50447c4e2c"
+    },
+    {
+      "path": "target/internal/web/templates/sprint.html",
+      "digest": "bf545bfabedf75c30da5fc69d3f65d979d184b6459f0b8ff642315bc72b2dfd7"
+    },
+    {
+      "path": "target/internal/web/templates_test.go",
+      "digest": "d256945894e1ced2df74949c87e80f7f5b27d53d01440f33515f7790594b96b4"
+    },
+    {
+      "path": "templates/review.md",
+      "digest": "b69243e6eb6f1d2312194dede77749a7ad698f456dd36181ce901bdb24680249"
+    }
+  ]
+}

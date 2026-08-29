@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-e6b86c7aa70a0fdbddad84fc",
+  "attempt_id": "qa-v1-attempt-1136f13bcfd5cec14f065da1",
+  "kind": "primary",
+  "title": "internal/tui",
+  "changed_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/tui"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "invalid_state",
+    "scope": "qa-v1-shard-e6b86c7aa70a0fdbddad84fc",
+    "summary": "terminal output is not one strict QA JSON object",
+    "next_action": "Inspect the detailed state and run explicit QA recovery."
+  }
+}

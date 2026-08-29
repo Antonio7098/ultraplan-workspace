@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-c73a9713ca1843bd13272681",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-425eec69d347067a2b530ba3",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Implementation identity drift during QA sharding may be missed, allowing evidence to be bound to a stale fingerprint"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-persistence-and-migrations",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-425eec69d347067a2b530ba3"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-c73a9713ca1843bd13272681/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:57:38.843429098Z",
+      "completed_at": "2026-08-26T10:58:46.386917311Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "buildQAEvidencePublication freezes plan with stale qaMap.ImplementationFingerprint while ExpectedTargetID is fresh; no equality check before plan creation",
+          "paths": [
+            "internal/sprint/qa.go:442-510"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunQAInvestigation validates targetBefore vs ExpectedTargetID only, not vs plan ImplementationFingerprint; target drift after sharding yields stale binding",
+          "paths": [
+            "internal/sprint/qa_investigation.go:46-52",
+            "internal/sprint/qa_investigation.go:118-121"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "ValidateQAEvidence checks record vs plan and target Before==After but never TargetIdentityBefore == ImplementationFingerprint",
+          "paths": [
+            "internal/sprint/qa_evidence.go:247-256"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runOneQAShard before/after targetIdentity checks and validateCurrentQAMap reject drift per shard; test mutates target and expects rejection",
+          "paths": [
+            "internal/sprint/qa.go:803-845",
+            "internal/sprint/qa_test.go:221-257",
+            "internal/sprint/verify.go:349-443"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-63996b264ce1db04308a2f9b",
+      "shard_id": "qa-v1-shard-c73a9713ca1843bd13272681",
+      "claim": "Implementation identity drift occurring during an individual shard’s read-only investigation is always detected and blocks that shard",
+      "basis": "runOneQAShard captures before = targetIdentity(target) and rejects if before != qaMap.ImplementationFingerprint with QAErrorStaleInput before runtime, then captures after after runtime and rejects if after != before with QAErrorPermissionDenied implementation identity drift, and revalidates governed inputs via validateCurrentQAMap both before runtime (804) and after runtime (845) before persisting any theory",
+      "verification_surface": "internal/sprint/qa.go:803-850 internal/sprint/verify.go:349-443 internal/sprint/qa_prompt.go:36-52",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "A drift where before!=map or after!=before would still persist a QAShard with PhaseCompleted and Theory.ImplementationFingerprint == stale before value",
+      "refutation_condition": "Code shows explicit before != map check at qa.go:824 returning stale_input, explicit after != before check at qa.go:841-845 returning permission_denied with StopReason implementation identity drift and appending the attempt, plus governed-input drift revalidation at 844 and 939-940, and existing test coverage rejects drift",
+      "inconclusive_condition": "A runtime fence or custom Service.WithQAMapFence in tests could bypass the identity check, making static conclusion incomplete",
+      "safe_evidence_strategy": "Read runOneQAShard before/after blocks, validateCurrentQAMap calls, and qa_test.go TestQAPermissionRejectsFallbackAndTargetDrift which mutates target during Run and expects PermissionDenied; verify no code path skips these checks for concurrent workers",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-c73a9713ca1843bd13272681/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:57:38.843429098Z",
+          "completed_at": "2026-08-26T10:58:46.386917311Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "buildQAEvidencePublication freezes plan with stale qaMap.ImplementationFingerprint while ExpectedTargetID is fresh; no equality check before plan creation",
+              "paths": [
+                "internal/sprint/qa.go:442-510"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunQAInvestigation validates targetBefore vs ExpectedTargetID only, not vs plan ImplementationFingerprint; target drift after sharding yields stale binding",
+              "paths": [
+                "internal/sprint/qa_investigation.go:46-52",
+                "internal/sprint/qa_investigation.go:118-121"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "ValidateQAEvidence checks record vs plan and target Before==After but never TargetIdentityBefore == ImplementationFingerprint",
+              "paths": [
+                "internal/sprint/qa_evidence.go:247-256"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runOneQAShard before/after targetIdentity checks and validateCurrentQAMap reject drift per shard; test mutates target and expects rejection",
+              "paths": [
+                "internal/sprint/qa.go:803-845",
+                "internal/sprint/qa_test.go:221-257",
+                "internal/sprint/verify.go:349-443"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "buildQAEvidencePublication freezes plan with stale qaMap.ImplementationFingerprint while ExpectedTargetID is fresh; no equality check before plan creation",
+          "paths": [
+            "internal/sprint/qa.go:442-510"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunQAInvestigation validates targetBefore vs ExpectedTargetID only, not vs plan ImplementationFingerprint; target drift after sharding yields stale binding",
+          "paths": [
+            "internal/sprint/qa_investigation.go:46-52",
+            "internal/sprint/qa_investigation.go:118-121"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "ValidateQAEvidence checks record vs plan and target Before==After but never TargetIdentityBefore == ImplementationFingerprint",
+          "paths": [
+            "internal/sprint/qa_evidence.go:247-256"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runOneQAShard before/after targetIdentity checks and validateCurrentQAMap reject drift per shard; test mutates target and expects rejection",
+          "paths": [
+            "internal/sprint/qa.go:803-845",
+            "internal/sprint/qa_test.go:221-257",
+            "internal/sprint/verify.go:349-443"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Per-shard inspection shows dual targetIdentity checks and map revalidation surrounding every runtime invocation; concurrent workers in runQAShardBatch each execute the same per-shard checks sequentially per worker, so intra-shard drift is not missed and is persisted as Blocked with blocker category permission_denied, contrary to concern for this window"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f178333c1059121f5d0f508c",
+      "shard_id": "qa-v1-shard-c73a9713ca1843bd13272681",
+      "claim": "Evidence publication can bind results to a stale implementation fingerprint if the target drifts after sharding completes but before evidence plans are frozen",
+      "basis": "buildQAEvidencePublication captures a fresh pprocess.IdentifyTree digest as ExpectedTargetID but freezes each QAEvidencePlan with the stale qaMap.ImplementationFingerprint without comparing them; RunQAInvestigation validates targetBefore.Digest == ExpectedTargetID (fresh) not vs plan fingerprint; ValidateQAEvidence only checks record equality to plan and TargetIdentityBefore == TargetIdentityAfter, never that TargetIdentityBefore == ImplementationFingerprint",
+      "verification_surface": "internal/sprint/qa.go:442-510 internal/sprint/qa_investigation.go:32-52 internal/sprint/qa_evidence.go:247-256",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Code inspection shows no comparison between fresh pprocess.IdentifyTree digest and qaMap.ImplementationFingerprint before FreezeQAEvidencePlan, and ValidateQAEvidence does not require TargetIdentityBefore == ImplementationFingerprint, allowing a record with ImplementationFingerprint=A and TargetIdentityBefore=B to validate",
+      "refutation_condition": "A guard compares fresh target identity to qaMap.ImplementationFingerprint and aborts evidence publication on mismatch, or ValidateQAEvidence rejects records where TargetIdentityBefore != ImplementationFingerprint, or buildQAEvidencePublication re-validates the map via validateCurrentQAMap before freezing",
+      "inconclusive_condition": "Cannot determine without executing a drift simulation if an alternate process runner alias makes IdentifyTree and targetIdentity diverge in a way masks the mismatch",
+      "safe_evidence_strategy": "Read-only search for ImplementationFingerprint equality checks in qa.go buildQAEvidencePublication, qa_investigation.go RunQAInvestigation ExpectedTargetID handling, and qa_evidence.go ValidateQAEvidence fingerprint checks; confirm absence of cross-check",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-c73a9713ca1843bd13272681/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:57:38.843429098Z",
+          "completed_at": "2026-08-26T10:58:46.386917311Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "buildQAEvidencePublication freezes plan with stale qaMap.ImplementationFingerprint while ExpectedTargetID is fresh; no equality check before plan creation",
+              "paths": [
+                "internal/sprint/qa.go:442-510"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunQAInvestigation validates targetBefore vs ExpectedTargetID only, not vs plan ImplementationFingerprint; target drift after sharding yields stale binding",
+              "paths": [
+                "internal/sprint/qa_investigation.go:46-52",
+                "internal/sprint/qa_investigation.go:118-121"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "ValidateQAEvidence checks record vs plan and target Before==After but never TargetIdentityBefore == ImplementationFingerprint",
+              "paths": [
+                "internal/sprint/qa_evidence.go:247-256"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runOneQAShard before/after targetIdentity checks and validateCurrentQAMap reject drift per shard; test mutates target and expects rejection",
+              "paths": [
+                "internal/sprint/qa.go:803-845",
+                "internal/sprint/qa_test.go:221-257",
+                "internal/sprint/verify.go:349-443"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "buildQAEvidencePublication freezes plan with stale qaMap.ImplementationFingerprint while ExpectedTargetID is fresh; no equality check before plan creation",
+          "paths": [
+            "internal/sprint/qa.go:442-510"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunQAInvestigation validates targetBefore vs ExpectedTargetID only, not vs plan ImplementationFingerprint; target drift after sharding yields stale binding",
+          "paths": [
+            "internal/sprint/qa_investigation.go:46-52",
+            "internal/sprint/qa_investigation.go:118-121"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "ValidateQAEvidence checks record vs plan and target Before==After but never TargetIdentityBefore == ImplementationFingerprint",
+          "paths": [
+            "internal/sprint/qa_evidence.go:247-256"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runOneQAShard before/after targetIdentity checks and validateCurrentQAMap reject drift per shard; test mutates target and expects rejection",
+          "paths": [
+            "internal/sprint/qa.go:803-845",
+            "internal/sprint/qa_test.go:221-257",
+            "internal/sprint/verify.go:349-443"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Read-only inspection confirms gap: fresh digest is stored in ExpectedTargetID and passes targetBefore check, but plan retains stale qaMap.ImplementationFingerprint; ValidateQAEvidence at qa_evidence.go:251 checks record vs plan and at 255 checks TargetIdentityBefore==TargetIdentityAfter only, so drift B between shard completion and evidence freezing yields evidence with stale A still accepted and published via QAStore publishEvidence"
+    }
+  ]
+}

@@ -1,0 +1,3621 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-9632b65ade54d5d768f290aa",
+  "context_paths": [
+    "docs/architecture.md"
+  ],
+  "behavioral_concerns": [
+    "follow up: docs/architecture.md accurately reflects current implementation behavior for the QA verification phase, module ownership boundaries, dependency direction, v1/v2 schema separation across Sprint 36 and 37, runtime and run-control settings, and prompt composition rules."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-9632b65ade54d5d768f290aa"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:26:34.154867137Z",
+      "completed_at": "2026-08-28T11:29:50.954210659Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 227,
+      "retained_events": 200,
+      "observed_tool_calls": 71,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1babc3fffce47225a214f6e0",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md's claim that 'The hub is transport lifecycle state, not workflow authority: it holds at most eight active owners, ... terminal projections for ten minutes. It never persists a queue or operation history' matches the implementation",
+      "basis": "internal/web/operations.go defines MaxActiveOperations=8 and TerminalRetention=10*time.Minute, drains on shutdown, retains bounded terminal projections, and there is no persistence of operations or queues outside the durable run-control store",
+      "verification_surface": "internal/web/operations.go (MaxActiveOperations, TerminalRetention, newOperationHub, startConfirmed, drainAndWait), internal/web/server.go (Run lifecycle)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "the two constants are 8 and 10*time.Minute, and the hub's records are in-memory only",
+      "refutation_condition": "the constants differ, or the hub writes anything to disk",
+      "inconclusive_condition": "the hub cannot be located",
+      "safe_evidence_strategy": "read internal/web/operations.go lines 1-60 (constants) and 100-220 (state, start)",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "operations.go:19 sets MaxActiveOperations=8 and line 29 sets TerminalRetention=10*time.Minute; newOperationHub (lines 133-143) constructs an in-memory map only; operations_test.go exercises the8-active and drain behaviors. The hub does not persist operations outside of run-control's SQLite store, consistent with the doc."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1d71966c63d6afd2cbe9550b",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md's claim that 'The complete shared prefix is capped at 256 KiB' is consistent with implementation",
+      "basis": "renderSharedPromptContext in internal/sprint/prompt_context.go enforces a hard byte budget and fails closed on overflow; the constant is defined at the top of prompt_context.go",
+      "verification_surface": "internal/sprint/prompt_context.go (maxSharedPromptPrefixBytes constant and checkSharedPromptBudget helper), internal/sprint/context_pack.go (load/save checks the same limit)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "maxSharedPromptPrefixBytes == 256\u003c\u003c10 and checkSharedPromptBudget, the prompt_context test for overflow, and the context_pack size check all reference 256 KiB",
+      "refutation_condition": "the constant is 512\u003c\u003c10 (512 KiB) or any other value different from 256 KiB",
+      "inconclusive_condition": "the constant cannot be located or the relevant test does not exist",
+      "safe_evidence_strategy": "read internal/sprint/prompt_context.go lines 19-22 and checkSharedPromptBudget (lines 484-489); read context_pack.go size validation (lines 64, 71)",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "internal/sprint/prompt_context.go:20 declares maxSharedPromptPrefixBytes = 512 \u003c\u003c 10 (512 KiB), not 256 KiB. The same limit is re-applied at context_pack.go:64 and 71. The architecture doc states 'The complete shared prefix is capped at 256 KiB; overflow is an actionable error, never truncation or omission' — the limit itself is off by a factor of two in the documentation while the failure-closed behavior is accurate."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-4479bcb43fde873b35c95d57",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md accurately reflects the module ownership boundaries (product/sprint/runcontrol/app) and the strict web→app→sprint dependency direction with runcontrol isolated to stdlib + sqlite + x/sys/unix",
+      "basis": "internal/web/import_boundary_test.go enforces that web only imports internal/app plus stdlib; internal/runcontrol/import_boundary_test.go enforces that runcontrol only imports stdlib, modernc.org/sqlite, and golang.org/x/sys/unix; grep searches show internal/sprint does not import internal/web and internal/runcontrol does not import internal/sprint",
+      "verification_surface": "internal/web/import_boundary_test.go, internal/runcontrol/import_boundary_test.go, and cross-package import scans",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "each package's *_test.go boundary test passes and no in-package import outside the allowlist exists",
+      "refutation_condition": "a forbidden import exists or the test files are absent",
+      "inconclusive_condition": "imports cannot be statically verified",
+      "safe_evidence_strategy": "grep for `github.com/Antonio7098/ultraplan-go/internal/web` inside internal/sprint and internal/runcontrol (no hits); grep for `internal/sprint` inside internal/web non-test files (no hits); confirm web's boundary test restricts to internal/app + stdlib",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "internal/web/import_boundary_test.go:30 forbids any non-stdlib import except internal/app; internal/runcontrol/import_boundary_test.go:33 restricts runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix; ripgrep across internal/sprint found zero imports of internal/web, and across internal/runcontrol found zero imports of internal/sprint or internal/app; the dependency direction web → app → sprint is the actual graph."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-5e7a8ebf8ed9c990e1415c11",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md accurately describes QA evidence + isolation: each writable check runs in a fresh 0700 non-Git-dependent copy created by platform/process, with Linux bubblewrap providing protected-root denial or the host reporting the missing capability",
+      "basis": "internal/platform/process/isolation.go creates a new MkdirTemp under a 0o700 parent without consulting Git; isolation_linux.go probes bubblewrap with --ro-bind / / and --unshare-pid --die-with-parent and falls back to reporting the missing capability when bwrap is unavailable; qa_investigation.go runs the plan inside the isolated workspace and refuses when capabilities.NativeProtectedRootDeny/DescendantCleanup/WorkspaceRemoval are false",
+      "verification_surface": "internal/platform/process/isolation.go (CreateIsolation), internal/platform/process/isolation_linux.go (bubblewrapCapability, nativeIsolationRequest), internal/sprint/qa_investigation.go (capability check)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-evaluation-cost-safety",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "MkdirTemp parent is 0o700, bwrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent, and RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+      "refutation_condition": "isolation uses Git, parent dir is not 0o700, or the run continues without protected-root denial",
+      "inconclusive_condition": "isolation code path is unreachable",
+      "safe_evidence_strategy": "read isolation.go lines 105-112, isolation_linux.go lines 32-58, qa_investigation.go lines 70-76",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "isolation.go:105 sets parent dir 0o700; lines 108-112 create a fresh MkdirTemp and never query Git; isolation_linux.go:40-43 probes bwrap with --ro-bind / / --unshare-pid --die-with-parent and records success only when /bin/true exits0; qa_investigation.go:71 rejects the run when capabilities.NativeProtectedRootDeny/DescendantCleanup/WorkspaceRemoval are false. The doc's '0700 non-Git-dependent copy with bubblewrap protection or capability-reported block' is faithful to the implementation."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6dfb5634e07f7760270b9e72",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md accurately describes the QA verification phase as an independent VerificationPhase that does not enter PlanningStage ordering and keeps `StageReview`/conformance-review authoritative",
+      "basis": "verification_phase.go defines VerificationPhaseConformanceReview/QA/Repair with explicit CompatibilityStage mapping only for conformance-review; verification_phase_test.go asserts QA and Repair are excluded from PlanningStages(); tests verify this exclusion",
+      "verification_surface": "internal/sprint/verification_phase.go and internal/sprint/verification_phase_test.go",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "the test TestVerificationPhaseIsIndependentFromPlanningOrder passes and no public PlanningStage value carries a verification phase identity",
+      "refutation_condition": "any PlanningStage is defined that carries the QA or repair identity",
+      "inconclusive_condition": "test fixtures are unavailable or the planning sequence is unresolved",
+      "safe_evidence_strategy": "read internal/sprint/verification_phase.go (lines 1-52), verification_phase_test.go (lines 1-50), and grep for `PlanningStage(VerificationPhase` to confirm no QA/repair alias exists",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "verification_phase.go (internal/sprint/verification_phase.go:5-52) limits CompatibilityStage() to conformance-review; verification_phase_test.go (internal/sprint/verification_phase_test.go:5-29) explicitly asserts QA and Repair do not appear in PlanningStages(). No PlanningStage string in the codebase is constructed from a QA/Repair value."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7e66ec00cb6a56fe8b83bf58",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md accurately describes the v1/v2 schema separation: Sprint 36 map/shard/synthesis/theory/challenge records remain at QASchemaVersion=1, while Sprint 37 evidence-producing attempts write QAEvidenceSchemaVersion=2 plans/evidence/adjudication/issues/assessment/report and promote QAState to QAStateSchemaVersion=2",
+      "basis": "qa_types.go declares QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2; qa_state.go enforces schema_version per kind and auto-promotes State.SchemaVersion to QAStateSchemaVersion when an Evidence bundle is published; QAState validation accepts both v1 and v2",
+      "verification_surface": "internal/sprint/qa_types.go (const block + validators) and internal/sprint/qa_state.go (readStrictVersion, Publish, SaveRecoveredState)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "map/shard/synthesis/theory/challenge carry SchemaVersion=1, evidence/plan/adjudication/assessment carry SchemaVersion=2, state may carry either v1 or v2 but flips to v2 only with an evidence bundle",
+      "refutation_condition": "a record carries the wrong schema version, validation silently accepts a v1 evidence record, or state promotes to v2 without evidence",
+      "inconclusive_condition": "validators are unreachable from current test fixtures",
+      "safe_evidence_strategy": "read qa_types.go lines 16-22 and the per-record validators (lines 665-819); read qa_state.go readStrictVersion (lines 379-431) and Publish (lines 457-576)",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa_types.go:16-22 declares the three schema versions; qa_state.go:409-411 accepts v1 or v2 for state only and rejects v2 for kind=='state' reads; qa_state.go:462 promotes State.SchemaVersion to QAStateSchemaVersion when publication includes evidence; validators at qa_types.go:666,688,721,766,804 enforce v1 for map/shard/synthesis/theory/challenge and qa_evidence.go:209,253, qa_state.go:885,895 enforce v2 for plans/evidence/adjudication/assessment."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8b04d7620740110f4b0c0b74",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md's claim that publication 'writes referenced records first, then state.json, then the bounded flow-state.json summary' is enforced by QAStore.Publish",
+      "basis": "QAStore.Publish writes map (immutable), each shard (immutable), synthesis (immutable), evidence bundle (plans/patches/records/assessment/adjudication/report, immutable), then state, then calls SaveFlowState; it captures and can rollback all three canonical files",
+      "verification_surface": "internal/sprint/qa_state.go Publish (lines 457-576) and captureQACanonicalFiles/restoreQACanonicalFiles (lines 964-1014)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "map/shards/synthesis/evidence are written before state and state before flow summary; rollback restores all three",
+      "refutation_condition": "state is written before referenced records or flow summary is written before state",
+      "inconclusive_condition": "the publisher is unreachable",
+      "safe_evidence_strategy": "read qa_state.go lines 457-576 and 964-1014",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa_state.go:494-545 write map then shards then synthesis with the immutable flag; lines 546-855 publish plans/patches/records/adjudication/assessment/report before state; lines 559-574 write state then publish the flow summary via SaveFlowState. The snapshot/rollback pair at lines 482-493 and 964-1014 covers state, qa.md, and flow-state.json together, matching the doc."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ade27454025c4bc6ebc48b6f",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md's claim that 'Recovery may reconcile a validated terminal pointer and summary but never fabricates runtime completion' is implemented by SaveRecoveredState which only writes non-active phases and forbids writing map/shard/synthesis evidence",
+      "basis": "qa_state.go SaveRecoveredState is gated to a switch over QAPhaseInterrupted/Stale/Invalid/Blocked/Cancelled/Completed, never over active phases, and never accepts map/shard/synthesis evidence; reconcileInterruptedQAState only converts mapped/queued/running/synthesizing states to interrupted",
+      "verification_surface": "internal/sprint/qa_state.go (SaveRecoveredState) and internal/sprint/qa.go (reconcileInterruptedQAState)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "the recovery switch rejects active phases and the recovery path only sets QAPhaseInterrupted with a blocker",
+      "refutation_condition": "recovery writes a Completed phase from an active one or fabricates map/shard/synthesis",
+      "inconclusive_condition": "the recovery entry cannot be located",
+      "safe_evidence_strategy": "read qa_state.go lines 582-604 and qa.go lines 240-256",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa_state.go:582-587 gates SaveRecoveredState to {Interrupted, Stale, Invalid, Blocked, Cancelled, Completed}; active phases (Mapped/Queued/Running/Synthesizing) fall through the default branch and return QAErrorInvalidState. qa.go:240-256 reconcileInterruptedQAState only transitions Mapped/Queued/Running/Synthesizing to Interrupted and sets a Blocker; it never fabricates a successful Completed phase."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-db1f626d4a30b6bc63cf94d2",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md's claim about prompt composition order (stable shared instructions → project/sprint identity → requirements frame → code-context frame → transient source evidence → constant stage-specific boundary) matches renderSharedPromptContext",
+      "basis": "renderSharedPromptContext in prompt_context.go concatenates these six blocks in exactly that order with a strings.Builder and writes the stage boundary last",
+      "verification_surface": "internal/sprint/prompt_context.go renderSharedPromptContext (lines 158-228), the shared prompt boundary constants (prompts.go and prompt_context.go), and the test that asserts the prefix order (prompt_context_test.go)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-prompt-composition"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "the writer sequence matches the documented order and the sharedPromptStageBoundary is appended as the final bytes",
+      "refutation_condition": "any block is reordered, dropped, or split around the stage boundary",
+      "inconclusive_condition": "the function is unreachable from tests",
+      "safe_evidence_strategy": "read prompt_context.go lines 174-227 and prompts.go for sharedPromptInstructions, sharedRequirementsOpen/Close, sharedCodeContextOpen/Close, sharedSourceEvidenceOpen/Close, sharedPromptStageBoundary",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "prompt_context.go:176 writes sharedPromptInstructions, then project/sprint identity, then the requirements open/close frame around `requirements`, then the code-context open/close frame around `codeContext`, then the untrusted source evidence frame(s) in authored order via canonicalSharedSelections, then sharedPromptStageBoundary at line 220. The ordering in the doc matches the actual writer sequence, including the constant stage-specific boundary as the final prefix bytes."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-eb53b054f59d38b7e2c47400",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md's claim that QA investigators run with `read_only` sandbox, default `deny` permission policy, allowed read/list/search/glob, denied write/edit/patch/bash/shell, and path rules limited to assigned changed/context files is enforced by the product",
+      "basis": "Service.QAInvestigatorRequest in qa_prompt.go sets req.Sandbox='read_only', req.Permissions='restricted', req.RequireCaps appends 'permissions', and builds a pruntime.PermissionPolicy with Default='deny' and explicit tool allow/deny lists; it also enforces every changed/context path stays inside the target via inside(target, full)",
+      "verification_surface": "internal/sprint/qa_prompt.go (Service.QAInvestigatorRequest and RenderQAInvestigatorPrompt)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-evaluation-cost-safety",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "the request sets Sandbox='read_only', Permissions='restricted', default deny, the documented tool policy, and rejects any changed/context path that escapes the target",
+      "refutation_condition": "the request omits the sandbox/policy, defaults allow tools, or accepts a path that escapes target",
+      "inconclusive_condition": "the request constructor is unreachable",
+      "safe_evidence_strategy": "read qa_prompt.go lines 173-220",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa_prompt.go:189 sets req.Sandbox='read_only'; line 190 sets req.Permissions='restricted'; line 191 appends 'permissions' to RequireCaps; line 192 builds the policy with Default='deny' and explicit allow for read/list/search/glob and deny for write/edit/patch/bash/shell; lines 193-200 validate that every changed/context path joins inside the target and rejects paths that escape."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f4428c152283c4e376e332d2",
+      "shard_id": "qa-v1-shard-eadc7a5f96dcd040bd3c9d35",
+      "claim": "docs/architecture.md accurately states run-control timing: owners tick every 1s, persist heartbeats every 5s with a 15s lease, and reconcile every 10s with a 45s grace beyond lease expiry",
+      "basis": "internal/runcontrol/model.go declares OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s as exported constants; Heartbeat is the only fence mutation called with OwnerLeaseDuration in lifecycle tests",
+      "verification_surface": "internal/runcontrol/model.go (constants block) and internal/runcontrol/lifecycle.go / lifecycle_test.go",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "the five timing constants exist with the exact values 1s, 5s, 15s, 10s, 45s",
+      "refutation_condition": "any constant value disagrees with the doc",
+      "inconclusive_condition": "constants cannot be located",
+      "safe_evidence_strategy": "read internal/runcontrol/model.go:522-530",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-eadc7a5f96dcd040bd3c9d35/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:34.154867137Z",
+          "completed_at": "2026-08-28T11:29:50.954210659Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+              "paths": [
+                "internal/web/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+              "paths": [
+                "internal/runcontrol/import_boundary_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+              "paths": [
+                "internal/sprint",
+                "internal/runcontrol"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+              "paths": [
+                "cmd/ultraplan/main.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+              "paths": [
+                "internal/sprint/verification_phase.go",
+                "internal/sprint/verification_phase_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+              "paths": [
+                "internal/runcontrol/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+              "paths": [
+                "internal/sprint/prompt_context.go",
+                "internal/sprint/context_pack.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+              "paths": [
+                "internal/sprint/prompt_context.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+              "paths": [
+                "internal/sprint/qa_prompt.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+              "paths": [
+                "internal/platform/process/isolation.go",
+                "internal/platform/process/isolation_linux.go",
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+              "paths": [
+                "internal/web/operations.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+              "paths": [
+                "internal/web/routes.go",
+                "internal/web/templates_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+              "paths": [
+                "internal/sprint/smoke_author.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 227,
+          "retained_events": 200,
+          "observed_tool_calls": 71,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "web import boundary test restricts internal/web to internal/app + stdlib",
+          "paths": [
+            "internal/web/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "runcontrol import boundary test restricts internal/runcontrol to stdlib + modernc.org/sqlite + golang.org/x/sys/unix",
+          "paths": [
+            "internal/runcontrol/import_boundary_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "internal/sprint does not import internal/web or internal/runcontrol; internal/runcontrol does not import internal/sprint",
+          "paths": [
+            "internal/sprint",
+            "internal/runcontrol"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "cmd/ultraplan/main.go wires cmd → internal/app + internal/tui + internal/web and shows explicit runners without an app↔web cycle",
+          "paths": [
+            "cmd/ultraplan/main.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "VerificationPhase is independent from PlanningStage; only conformance-review maps to a CompatibilityStage",
+          "paths": [
+            "internal/sprint/verification_phase.go",
+            "internal/sprint/verification_phase_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Schema versions are pinned: QASchemaVersion=1 (map/shard/synthesis/theory/challenge), QAStateSchemaVersion=2 (state with evidence), QAEvidenceSchemaVersion=2 (plans/evidence/adjudication/issues/assessment/patch/report)",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "State reader accepts v1 or v2 for kind=='state'; reader/publisher otherwise enforce the expected schema version and Promote State.SchemaVersion to QAStateSchemaVersion when an evidence bundle is present",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Run-control timing constants: OwnerTickInterval=1s, HeartbeatInterval=5s, OwnerLeaseDuration=15s, ReconciliationInterval=10s, ReconciliationGrace=45s",
+          "paths": [
+            "internal/runcontrol/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Shared prompt prefix budget is 512 KiB (maxSharedPromptPrefixBytes = 512 \u003c\u003c 10), re-checked in context_pack load/save — doc says 256 KiB",
+          "paths": [
+            "internal/sprint/prompt_context.go",
+            "internal/sprint/context_pack.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSharedPromptContext writes stable instructions, project/sprint identity, requirements frame, code-context frame, transient source evidence in authored order, then sharedPromptStageBoundary — matches doc order",
+          "paths": [
+            "internal/sprint/prompt_context.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA investigator request sets Sandbox=read_only, Permissions=restricted, default deny, explicit allow read/list/search/glob and deny write/edit/patch/bash/shell, and validates every changed/context path stays inside the target",
+          "paths": [
+            "internal/sprint/qa_prompt.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Isolation creates a fresh 0o700 non-Git copy; Linux bubblewrap probe uses --ro-bind / / with --unshare-pid/--die-with-parent and falls back to capability-reported block; RunQAInvestigation rejects when NativeProtectedRootDeny is false",
+          "paths": [
+            "internal/platform/process/isolation.go",
+            "internal/platform/process/isolation_linux.go",
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Operation hub caps at MaxActiveOperations=8 active owners and TerminalRetention=10*time.Minute; hub records are in-memory only",
+          "paths": [
+            "internal/web/operations.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "SaveRecoveredState gates recovery to non-active phases; reconcileInterruptedQAState only converts Mapped/Queued/Running/Synthesizing to Interrupted with a blocker",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QAStore.Publish writes map, shards, synthesis, evidence bundle, state, then flow summary; snapshots state+qa.md+flow-state.json and rolls them back together on failure",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Template hierarchy validation rejects missing definitions, duplicates, unnamespaced dependencies, upward or same-layer dependencies, and cycles",
+          "paths": [
+            "internal/web/routes.go",
+            "internal/web/templates_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Smoke authoring observes live runtime events for author-attributed protected writes; concurrent target drift without an attributed write is recorded as a diagnostic but does not fail the run",
+          "paths": [
+            "internal/sprint/smoke_author.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "internal/runcontrol/model.go:522-530 declares OwnerTickInterval=time.Second, HeartbeatInterval=5*time.Second, OwnerLeaseDuration=15*time.Second, ReconciliationInterval=10*time.Second, ReconciliationGrace=45*time.Second. The doc's narrative matches every value."
+    }
+  ]
+}

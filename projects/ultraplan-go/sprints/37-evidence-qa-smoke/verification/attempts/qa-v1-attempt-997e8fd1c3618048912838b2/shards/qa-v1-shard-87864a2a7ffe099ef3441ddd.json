@@ -1,0 +1,685 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-87864a2a7ffe099ef3441ddd",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/qa_handlers.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-87864a2a7ffe099ef3441ddd/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:14:51.223048954Z",
+      "completed_at": "2026-08-28T11:16:27.212303152Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 32,
+      "retained_events": 32,
+      "observed_tool_calls": 11,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0cc466333b20066b491dc0f5",
+      "shard_id": "qa-v1-shard-87864a2a7ffe099ef3441ddd",
+      "claim": "Additive QAEvidenceQueries type assertion creates shard-dependent 503 unavailable without stable guidance for Sprint 36 adapters",
+      "basis": "qa_handlers.go:24-28,38-42,51-55,74-78 etc assert h.qa.(app.QAEvidenceQueries) for evidence/adjudication/issues/assessment/smoke-suite while handlers.go:71-75 sets h.qa from opts.Operations.(app.QAQueries) or opts.Queries.(app.QAQueries). Comment in sprint_usecases.go:87-89 says QAEvidenceQueries is additive so older adapters implementing only QAQueries remain source-compatible. Handler returns ErrWebUnavailable (503) when assertion fails, but does not differentiate from nil qa case used for QAMap/QAStatus (qa_handlers.go:116-127).",
+      "verification_surface": "Integration: NewHandler with fakeQueries implementing only QAQueries (no QAEvidenceQueries) then GET /api/v1/projects/alpha/sprints/30-web/qa/issues, /qa/evidence/{id}, /qa/adjudication, /qa/assessment, /qa/smoke-suite",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Evidence-tier QA routes return 503 unavailable with generic The service is unavailable instead of explicit additive-capability diagnostic, while map/status/shard/theory/synthesis remain 200",
+      "refutation_condition": "All QA routes including evidence tier return either 200 via compatible adapter or consistent 503 with clear unavailable reasoning and no regression for legacy QAQueries",
+      "inconclusive_condition": "Cannot instantiate handler with partial adapter without execution",
+      "safe_evidence_strategy": "Static inspection of handler type assertions vs HandlerOptions wiring and app.QAEvidenceQueries additive comment; request approved integration_test that covers both adapter shapes read-only",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-87864a2a7ffe099ef3441ddd/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.223048954Z",
+          "completed_at": "2026-08-28T11:16:27.212303152Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+              "paths": [
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 32,
+          "retained_events": 32,
+          "observed_tool_calls": 11,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code inspection confirms asymmetric nil vs type-assertion checks, but compatibility impact requires runtime handler construction"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8e490f6de2b0c8e5df866e0c",
+      "shard_id": "qa-v1-shard-87864a2a7ffe099ef3441ddd",
+      "claim": "Missing upper-bound and method validation for QA evidence/adjudication/assessment/smoke routes allows unbounded or HEAD requests to reach use-case or bypass Allow header",
+      "basis": "qa_handlers.go:57-114 handleSprintQAIssues only checks Atoi error, delegates range to use-case; routes.go:373 allows map/synthesis/adjudication/issues/assessment/smoke-suite as GET-only via allowedMethods default (handlers.go:269-270 returns GET,HEAD for unknown matches), so HEAD is implicitly allowed for read-only QA but not validated against use-case expectations. No MaxIdentifierBytes or cursor size cap at web layer (handlers.go:1047-1053 validIdentifier only used in dispatch for param validation, not for query).",
+      "verification_surface": "HTTP API: HEAD /api/v1/projects/alpha/sprints/30-web/qa/issues, GET with limit=5000, GET with cursor length 10k, GET /api/v1/projects/alpha/sprints/30-web/qa/adjudication with stray query ?x=1",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-performance",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "HEAD returns 200 with body or truncated check, or large limit/cursor reaches use-case and returns 500 or allocates large base64 decode without 400",
+      "refutation_condition": "HEAD returns 200 with empty body and correct headers, large limit/cursor returns 400 invalid_request before use-case, and stray queries on non-paginated QA routes return 400",
+      "inconclusive_condition": "No execution to observe headResponseWriter behavior or cursor size handling",
+      "safe_evidence_strategy": "Read handlers.go allowedMethods/dispatch and qa_handlers.go limit/cursor handling; request product-owned API compatibility or security test that probes HEAD and oversized query params read-only",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-87864a2a7ffe099ef3441ddd/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.223048954Z",
+          "completed_at": "2026-08-28T11:16:27.212303152Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+              "paths": [
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 32,
+          "retained_events": 32,
+          "observed_tool_calls": 11,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static allowlist shows HEAD permitted and no web-layer bounds on limit/cursor; actual enforcement depends on runtime handler and handleQueryError mapping"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-a9d88d9a452d66c0ed8ecef9",
+      "shard_id": "qa-v1-shard-87864a2a7ffe099ef3441ddd",
+      "claim": "Invalid limit values (non-numeric, negative, \u003e200) are mapped to unstable 500 internal_error instead of stable public 400/422 qa.* contract",
+      "basis": "qa_handlers.go:59-63 parses limit with strconv.Atoi and only returns handleQueryError(w,r,true,err) where err is plain strconv error; for out-of-range, sprint_usecases.go:848-849 returns plain fmt.Errorf(\"issue page limit must be between 1 and 200\") and sprint_usecases.go:857-859,862-873 returns plain fmt.Errorf for invalid/stale cursor. handlers.go:1056-1080 handleQueryError only maps QAUseCaseError to stable qa.* codes (422/409/503) and ErrWebNotFound/Unavailable to 404/503; all other plain errors fall through to 500 internal_error with message The request could not be completed, violating TestQAQueryErrorsUseStablePublicCodes pattern at qa_handlers_test.go:38-56",
+      "verification_surface": "HTTP API: GET /api/v1/projects/alpha/sprints/30-web/qa/issues?limit=abc, ?limit=-5, ?limit=0, ?limit=201, ?limit=9999999999, ?cursor=!!!, observe error.code/message/category/guidance/correlation_id",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-observability",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Any of those requests returns 500 code=internal_error without category/guidance/correlation_id details instead of 400 invalid_request or 422 qa.invalid_state with stable details",
+      "refutation_condition": "All invalid limit/cursor requests return 400 invalid_request or 422 with stable qa.* code and details category/guidance/correlation_id, no internal_error leakage",
+      "inconclusive_condition": "Cannot execute requests or QAIssues use-case error mapping changed upstream to use QAUseCaseError",
+      "safe_evidence_strategy": "Static review of qa_handlers.go limit parsing, sprint_usecases.go QAIssues validation, handlers.go handleQueryError/writeQAError branching; request approved check run of existing TestQAQueryErrorsUseStablePublicCodes plus new QAIssues validation test without custom execution",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-87864a2a7ffe099ef3441ddd/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.223048954Z",
+          "completed_at": "2026-08-28T11:16:27.212303152Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+              "paths": [
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 32,
+          "retained_events": 32,
+          "observed_tool_calls": 11,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code paths deterministically show plain-error-to-500 mapping for qa issue pagination, but live error envelope requires runtime confirmation via approved check"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b931b1aa3badcb794f514687",
+      "shard_id": "qa-v1-shard-87864a2a7ffe099ef3441ddd",
+      "claim": "GET /api/v1/projects/{project}/sprints/{sprint}/qa/issues with ?limit and ?cursor is rejected by dispatch unknown-query guard before reaching handleSprintQAIssues",
+      "basis": "handlers.go:421-426 allowsQuery is limited to api_validations, api_runs, api_run_events, runs, api_timeline. qa_handlers.go:58-66 expects r.URL.Query().Get(\"limit\") and \"cursor\" for api_sprint_qa_issues, but dispatch returns 400 invalid_request Unknown query parameters are not accepted for any non-allowed route, including api_sprint_qa_issues. Routes match api_sprint_qa_issues is known and api=true, but not in allowlist.",
+      "verification_surface": "HTTP API: GET /api/v1/projects/alpha/sprints/30-web/qa/issues?limit=10, GET with ?cursor=\u003cbase64\u003e, GET with ?limit=200\u0026cursor=..., observe status and error code vs expected paginated QAIssuePage",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Request with valid limit/cursor returns 400 code=invalid_request message Unknown query parameters are not accepted instead of 200 QAIssuePage or mapped QA error",
+      "refutation_condition": "Same requests return 200 with paginated payload (or 422 for invalid limit/cursor) and Content-Type application/json schema_version 1",
+      "inconclusive_condition": "Cannot invoke HTTP handler (no execution) or route matching differs from handlers.go:372-383",
+      "safe_evidence_strategy": "Read-only static review of handlers.go dispatch allowlist vs routes.go qa issue routes and qa_handlers.go query reads; request product-owned check routing or API integration test that exercises limit/cursor without writing files or executing shell",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-87864a2a7ffe099ef3441ddd/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:14:51.223048954Z",
+          "completed_at": "2026-08-28T11:16:27.212303152Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+              "paths": [
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+              "paths": [
+                "internal/web/qa_handlers_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 32,
+          "retained_events": 32,
+          "observed_tool_calls": 11,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers.go defines 12 QA handlers; handleSprintQAIssues parses limit via strconv.Atoi and forwards cursor/limit without bounds check, using QAEvidenceQueries assertion",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go dispatch rejects unknown query params for all routes except allowlist (api_validations, api_runs, api_run_events, runs, api_timeline) before reaching QA handlers",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "routes.go maps api_sprint_qa_issues/adjudication/evidence etc under /api/v1/projects/.../qa but those names are not in dispatch allowlist",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "sprint_usecases.go QAIssues validates limit 1-200 and cursor base64/attemptID and returns plain fmt.Errorf, not QAUseCaseError; validateFocusedQARequest enforces allowed fields",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "handlers.go handleQueryError maps only QAUseCaseError to stable qa.* codes (422/409/503) else falls to 500 internal_error; writeQAError adds category/operation/guidance/correlation_id",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "qa_handlers_test.go covers bounded JSON, noscript HTML, XSS escaping, stable public codes for qa.invalid_state, but does not exercise limit/cursor pagination or evidence routes",
+          "paths": [
+            "internal/web/qa_handlers_test.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only inspection shows direct conflict between dispatch guard and handler query expectations, but cannot execute HTTP request to confirm live status code without approved check execution"
+    }
+  ]
+}

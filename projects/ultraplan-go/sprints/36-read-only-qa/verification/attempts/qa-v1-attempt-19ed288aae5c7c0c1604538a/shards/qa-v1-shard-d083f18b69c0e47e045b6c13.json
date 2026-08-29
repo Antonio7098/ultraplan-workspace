@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-d083f18b69c0e47e045b6c13",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-29d1d7c696dc3e304864cc0d",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: config show text/JSON output diverges from platform/config Effective schema and Sources attribution due to partially visible QA field plumbing"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-29d1d7c696dc3e304864cc0d"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-d083f18b69c0e47e045b6c13/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:43:56.062955355Z",
+      "completed_at": "2026-08-26T09:47:11.689374763Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "file",
+          "summary": "qaConfigFields defines 35 QA fields from qa.model to qa.issues",
+          "paths": [
+            "internal/platform/config/qa.go"
+          ],
+          "output_digest": "sha256:qa-fields-35"
+        },
+        {
+          "kind": "file",
+          "summary": "Load initializes Sources[field]=default for every qaConfigFields entry and applyEnv/loadFile set Sources to workspace/env",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:effective-sources-init"
+        },
+        {
+          "kind": "file",
+          "summary": "config show text prints qa.model/variant with source but remaining 33 QA fields without source via fmt.Fprintf lines 73-107",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-show-text-partial"
+        },
+        {
+          "kind": "file",
+          "summary": "Redact returns Redacted{QA, Sources} preserving full Sources map for JSON; writeJSON envelopes it as result.sources vs text branch divergence",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/app/json_output.go",
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:redact-json-full-sources"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-10f9f29c9fc634488bc048fe",
+      "shard_id": "qa-v1-shard-d083f18b69c0e47e045b6c13",
+      "claim": "config show --json and text diverge: JSON carries complete QA Sources attribution while text carries partial attribution, so the two surfaces disagree on provenance for the same Effective value",
+      "basis": "internal/app/config_commands.go:42-43 JSON path calls config.Redact(effective) which returns Redacted{QA, Sources} per internal/platform/config/redaction.go:22-26 with Sources containing all 35 qa.* keys; internal/app/json_output.go wraps that as result in envelope; text path lines 45-117 prints Workspace/version/runtime/models plus inline sources for planning.code_context_model/variant and run_control triples and only qa.model/variant, not the other QA Sources entries present in JSON map",
+      "verification_surface": "internal/app/config_commands.go runConfig JSON branch vs text branch and internal/platform/config/redaction.go:7-20 Redacted struct",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "JSON result.sources contains keys for all qaConfigFields() (35 entries) with values default/workspace/env while text output for the same effective config lacks those keys for 33 QA fields, observable by comparing Redact output schema to fmt.Fprintf sites without execution",
+      "refutation_condition": "Text and JSON expose identical Sources key set and identical inline provenance for every QA field, with no missing source annotations in text",
+      "inconclusive_condition": "Cannot inspect both branches of runConfig or Redact struct definition to determine JSON vs text Sources cardinality",
+      "safe_evidence_strategy": "Read-only compare Redacted.Sources json tag and Redact return against config_commands.go JSON write vs the full sequence of Fprintf lines 45-125, noting which fields fetch Sources and which do not, without running binary",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-d083f18b69c0e47e045b6c13/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:43:56.062955355Z",
+          "completed_at": "2026-08-26T09:47:11.689374763Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file",
+              "summary": "qaConfigFields defines 35 QA fields from qa.model to qa.issues",
+              "paths": [
+                "internal/platform/config/qa.go"
+              ],
+              "output_digest": "sha256:qa-fields-35"
+            },
+            {
+              "kind": "file",
+              "summary": "Load initializes Sources[field]=default for every qaConfigFields entry and applyEnv/loadFile set Sources to workspace/env",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "sha256:effective-sources-init"
+            },
+            {
+              "kind": "file",
+              "summary": "config show text prints qa.model/variant with source but remaining 33 QA fields without source via fmt.Fprintf lines 73-107",
+              "paths": [
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:config-show-text-partial"
+            },
+            {
+              "kind": "file",
+              "summary": "Redact returns Redacted{QA, Sources} preserving full Sources map for JSON; writeJSON envelopes it as result.sources vs text branch divergence",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/app/json_output.go",
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:redact-json-full-sources"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file",
+          "summary": "qaConfigFields defines 35 QA fields from qa.model to qa.issues",
+          "paths": [
+            "internal/platform/config/qa.go"
+          ],
+          "output_digest": "sha256:qa-fields-35"
+        },
+        {
+          "kind": "file",
+          "summary": "Load initializes Sources[field]=default for every qaConfigFields entry and applyEnv/loadFile set Sources to workspace/env",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:effective-sources-init"
+        },
+        {
+          "kind": "file",
+          "summary": "config show text prints qa.model/variant with source but remaining 33 QA fields without source via fmt.Fprintf lines 73-107",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-show-text-partial"
+        },
+        {
+          "kind": "file",
+          "summary": "Redact returns Redacted{QA, Sources} preserving full Sources map for JSON; writeJSON envelopes it as result.sources vs text branch divergence",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/app/json_output.go",
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:redact-json-full-sources"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Redact preserves Effective.Sources intact for JSON, while text selectively renders Sources for only qa.model/qa.variant (and a few non-QA fields), so JSON and text necessarily diverge on QA provenance despite sharing the same Effective input, matching the partially-visible QA plumbing concern"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-c8887f9baf79e6a2a95d4c73",
+      "shard_id": "qa-v1-shard-d083f18b69c0e47e045b6c13",
+      "claim": "config show text omits Sources attribution for 33 of 35 QA fields while platform/config Effective tracks Sources for all QA fields, diverging from Effective schema",
+      "basis": "internal/platform/config/qa.go:85-100 defines 35 qa.* fields; internal/platform/config/config.go:154-158 initializes Sources[field]=default for every qaConfigFields() entry and applyEnv sets Sources to env/workspace on override; internal/app/config_commands.go:73-74 prints qa.model and qa.variant with '(source: %s)' via redacted.Sources[\"qa.model\"] etc, but lines 75-107 print the remaining 33 QA fields (changed_paths, primary_shards, boundary_shards, follow_up_shards, total_shards, pending_entries, changed_paths_per_shard, context_paths_per_shard, context_expansions, paths_per_expansion, behavioral_concerns_per_shard, theories_per_shard, iterations_per_attempt, commands_per_attempt, output_repair_attempts, concurrent_investigators, tree_files, tree_bytes, file_bytes, generated_checks, generated_patch_bytes, evidence_records, issues, command_timeout, shard_timeout, run_timeout, cleanup_timeout, command_output_bytes, shard_output_bytes, prompt_bytes, recent_progress, retained_attempts, state_bytes) without any Sources lookup, losing workspace/env/default provenance",
+      "verification_surface": "internal/app/config_commands.go text rendering vs internal/platform/config/config.go:98-101 Effective{Sources map} + qa.go:85-100 + loadFile/applyEnv provenance + internal/platform/config/redaction.go JSON path",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Text output for any QA field beyond qa.model/qa.variant lacks source annotation while Effective.Sources contains an entry for that field (default/workspace/env) and JSON result.sources does contain it - confirmed by static line comparison of config_commands.go 73-107 against qaConfigFields",
+      "refutation_condition": "Every QA field printed in config show text includes '(source: %s)' sourced from Effective.Sources, matching the 35 entries initialized in Load and exposed in JSON",
+      "inconclusive_condition": "Cannot read config_commands.go or config/qa.go or redaction.go to compare Sources cardinality and print sites",
+      "safe_evidence_strategy": "Read-only file inspection: count qaConfigFields entries, verify Load initializes Sources for each, list config_commands.go fmt.Fprintf sites for qa.* and note which interpolate redacted.Sources, compare to Redact/EFFECTIVE JSON envelope without executing commands",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_offfsdvxetwgjm456i6u6u6viu/qa-v1-shard-d083f18b69c0e47e045b6c13/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:43:56.062955355Z",
+          "completed_at": "2026-08-26T09:47:11.689374763Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file",
+              "summary": "qaConfigFields defines 35 QA fields from qa.model to qa.issues",
+              "paths": [
+                "internal/platform/config/qa.go"
+              ],
+              "output_digest": "sha256:qa-fields-35"
+            },
+            {
+              "kind": "file",
+              "summary": "Load initializes Sources[field]=default for every qaConfigFields entry and applyEnv/loadFile set Sources to workspace/env",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "sha256:effective-sources-init"
+            },
+            {
+              "kind": "file",
+              "summary": "config show text prints qa.model/variant with source but remaining 33 QA fields without source via fmt.Fprintf lines 73-107",
+              "paths": [
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:config-show-text-partial"
+            },
+            {
+              "kind": "file",
+              "summary": "Redact returns Redacted{QA, Sources} preserving full Sources map for JSON; writeJSON envelopes it as result.sources vs text branch divergence",
+              "paths": [
+                "internal/platform/config/redaction.go",
+                "internal/app/json_output.go",
+                "internal/app/config_commands.go"
+              ],
+              "output_digest": "sha256:redact-json-full-sources"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file",
+          "summary": "qaConfigFields defines 35 QA fields from qa.model to qa.issues",
+          "paths": [
+            "internal/platform/config/qa.go"
+          ],
+          "output_digest": "sha256:qa-fields-35"
+        },
+        {
+          "kind": "file",
+          "summary": "Load initializes Sources[field]=default for every qaConfigFields entry and applyEnv/loadFile set Sources to workspace/env",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "sha256:effective-sources-init"
+        },
+        {
+          "kind": "file",
+          "summary": "config show text prints qa.model/variant with source but remaining 33 QA fields without source via fmt.Fprintf lines 73-107",
+          "paths": [
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:config-show-text-partial"
+        },
+        {
+          "kind": "file",
+          "summary": "Redact returns Redacted{QA, Sources} preserving full Sources map for JSON; writeJSON envelopes it as result.sources vs text branch divergence",
+          "paths": [
+            "internal/platform/config/redaction.go",
+            "internal/app/json_output.go",
+            "internal/app/config_commands.go"
+          ],
+          "output_digest": "sha256:redact-json-full-sources"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static inspection confirms 35 QA fields have Effective Sources tracking and JSON exposes full Sources map via Redact, but text only interpolates Sources for 2 fields (qa.model, qa.variant) and prints the other 33 as bare values, creating text-vs-Effective and text-vs-JSON attribution divergence per assigned behavioral concern"
+    }
+  ]
+}

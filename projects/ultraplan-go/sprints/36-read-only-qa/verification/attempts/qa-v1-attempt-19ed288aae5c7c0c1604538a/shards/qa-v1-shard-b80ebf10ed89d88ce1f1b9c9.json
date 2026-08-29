@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b80ebf10ed89d88ce1f1b9c9",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-0e9d194c48ffd6c2b5c2d694",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Manual ultraplan.yml line parser in internal/platform/config silently diverges from standard YAML writers, causing effective config to retain defaults while file appears valid"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-persistence-and-migrations",
+    "contract-testing"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-0e9d194c48ffd6c2b5c2d694"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-b80ebf10ed89d88ce1f1b9c9/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:55:50.329042786Z",
+      "completed_at": "2026-08-26T09:57:55.92331936Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "context_requests": [
+        {
+          "id": "ctx-01-config-tests",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ],
+          "reason": "Existing config tests and fixtures would show expected YAML round-trip coverage and whether flow/single-quote/comment cases are currently exercised; needed to bound verification surface without expanding to unrelated packages.",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "Manual line parser at internal/platform/config/config.go:197-268 uses bufio.Scanner, TrimSpace, suffix ':' section detection, leadingWhitespace\u003e0 for nested headers, SplitN ':' for values, Trim('\"') only, and '- ' list prefix; full-line '#' skip only. Handles five list fields via clearListField but misses YAML flow style, single quotes, inline comments, document marker '---', and empty '[]' forms.",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "Fallback defaults at config.go:181-195 and field allowlist at 155-158 show Sources initialized to 'default' for all fields then selectively overwritten by loadFile; divergence leaves Sources='default' even when file exists and looks valid. setField switch 290-423 lacks handling for list fields with inline values, returning unknown field error for flow style while single-quote/comment cases slip through as literal values.",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "Architecture docs and other assigned context paths (docs/architecture.md, internal/app/config_commands.go, internal/sprint/domain.go, internal/tui/model.go, internal/web/handlers.go) contain no YAML parsing logic; config show command at internal/app/config_commands.go:33-40 delegates to loadEffectiveConfig/Redact and cannot compensate for parser divergence.",
+          "paths": [
+            "docs/architecture.md",
+            "internal/app/config_commands.go",
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2f89f73938856ab7a54a7a04",
+      "shard_id": "qa-v1-shard-b80ebf10ed89d88ce1f1b9c9",
+      "claim": "List and scalar field handling depends on exact indentation and double-quote stripping, causing valid YAML variations (2- vs 4-space indent, zero-indent list header, empty list '[]', single-quoted items) to bypass clearListField/setField and leave list fields at defaults",
+      "basis": "loadFile 211-244: section header with list requires leadingWhitespace\u003e0 \u0026\u0026 section!='' and listConfigField(field) to clear list; scalar list items require TrimSpace '- ' prefix and exact listField match; empty list case at 255-258 requires value=='' to trigger clearListField; single quotes are not stripped at 226/250. A compliant writer emitting 'required_health: []' or 4-space indent or \"  - 'runtime_available'\" will either take unknown-field path or append quoted literal, or fail to clear defaults, leaving Config.Agentwrap.RequiredHealth / Smoke.Environment at Defaults() silently.",
+      "verification_surface": "internal/platform/config/config.go:211-243 list header handling; 244-258 list item handling and empty-list gate; 553-575 listConfigField/clearListField; 425-538 Validate",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Workspace file containing valid YAML list forms such as 'agentwrap:\\n  required_health: []' or \"    - 'runtime_available'\" or 'smoke.environment: []' loads without error but Effective.Config lists equal Defaults() and Sources unchanged, while yaml.Unmarshal confirms file is valid.",
+      "refutation_condition": "All valid YAML list encodings for agentwrap.required_health, agentwrap.required_capabilities, agentwrap.extra_args, agentwrap.env, smoke.environment are correctly cleared/appended and Sources set to 'workspace', matching yaml.Unmarshal result.",
+      "inconclusive_condition": "Requires execution of Load against varied YAML fixtures; read-only inspection alone shows structural gate but not runtime Sources outcome.",
+      "safe_evidence_strategy": "Propose approved check that writes each list variant to disposable ultraplan.yml in isolated copy, calls Load, and diffs Effective.Config lists vs file intent; inspect Sources map and Validate result; no mutation of workspace, no shell wrappers, timeout and output limits per policy.",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-b80ebf10ed89d88ce1f1b9c9/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:55:50.329042786Z",
+          "completed_at": "2026-08-26T09:57:55.92331936Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-01-config-tests",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ],
+              "reason": "Existing config tests and fixtures would show expected YAML round-trip coverage and whether flow/single-quote/comment cases are currently exercised; needed to bound verification surface without expanding to unrelated packages.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "static_analysis",
+              "summary": "Manual line parser at internal/platform/config/config.go:197-268 uses bufio.Scanner, TrimSpace, suffix ':' section detection, leadingWhitespace\u003e0 for nested headers, SplitN ':' for values, Trim('\"') only, and '- ' list prefix; full-line '#' skip only. Handles five list fields via clearListField but misses YAML flow style, single quotes, inline comments, document marker '---', and empty '[]' forms.",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "Fallback defaults at config.go:181-195 and field allowlist at 155-158 show Sources initialized to 'default' for all fields then selectively overwritten by loadFile; divergence leaves Sources='default' even when file exists and looks valid. setField switch 290-423 lacks handling for list fields with inline values, returning unknown field error for flow style while single-quote/comment cases slip through as literal values.",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "Architecture docs and other assigned context paths (docs/architecture.md, internal/app/config_commands.go, internal/sprint/domain.go, internal/tui/model.go, internal/web/handlers.go) contain no YAML parsing logic; config show command at internal/app/config_commands.go:33-40 delegates to loadEffectiveConfig/Redact and cannot compensate for parser divergence.",
+              "paths": [
+                "docs/architecture.md",
+                "internal/app/config_commands.go",
+                "internal/sprint/domain.go",
+                "internal/tui/model.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "Manual line parser at internal/platform/config/config.go:197-268 uses bufio.Scanner, TrimSpace, suffix ':' section detection, leadingWhitespace\u003e0 for nested headers, SplitN ':' for values, Trim('\"') only, and '- ' list prefix; full-line '#' skip only. Handles five list fields via clearListField but misses YAML flow style, single quotes, inline comments, document marker '---', and empty '[]' forms.",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "Fallback defaults at config.go:181-195 and field allowlist at 155-158 show Sources initialized to 'default' for all fields then selectively overwritten by loadFile; divergence leaves Sources='default' even when file exists and looks valid. setField switch 290-423 lacks handling for list fields with inline values, returning unknown field error for flow style while single-quote/comment cases slip through as literal values.",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "Architecture docs and other assigned context paths (docs/architecture.md, internal/app/config_commands.go, internal/sprint/domain.go, internal/tui/model.go, internal/web/handlers.go) contain no YAML parsing logic; config show command at internal/app/config_commands.go:33-40 delegates to loadEffectiveConfig/Redact and cannot compensate for parser divergence.",
+          "paths": [
+            "docs/architecture.md",
+            "internal/app/config_commands.go",
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code gates at 212-217 and 255-258 are demonstrably whitespace/quote-sensitive and inconsistent with YAML spec, strongly suggesting silent default retention, but without executable check the shard cannot observe Effective.Sources at runtime; blocked on execution."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-eaf959dfdd5bfab237bce378",
+      "shard_id": "qa-v1-shard-b80ebf10ed89d88ce1f1b9c9",
+      "claim": "Manual loadFile parser in internal/platform/config/config.go silently retains defaults when ultraplan.yml is produced by a standard YAML encoder (flow style, inline lists/maps, single quotes, trailing comments, document header) while file remains valid YAML",
+      "basis": "Inspection of loadFile 197-268 shows ad-hoc line logic: TrimSpace then suffix ':' for section detection, leadingWhitespace\u003e0 gate for nested list headers, SplitN ':' for key/value, Trim('\"') only, '- ' prefix for list items, full-line '#' skip only. Standard YAML permits 'runtime: {default: opencode}', 'smoke.environment: [PATH, HOME]', single-quoted scalars, 'default: opencode # comment', '---' header, and 'environment: []' which this parser either errors as unknown field/unsupported line or stores with syntactic noise without applying effective config; error paths return error but comment/single-quote/trailing-space cases retain defaults silently with Sources staying 'default'.",
+      "verification_surface": "internal/platform/config/config.go:197-269 loadFile; 270-273 leadingWhitespace; 290-423 setField; 553-575 listConfigField/clearListField",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A workspace ultraplan.yml that is valid per YAML 1.2 and round-trips via standard yaml.Marshal produces Effective.Config equal to Defaults() and Sources[field]='default' after Load, despite file visually containing non-default values (e.g., inline list, single-quoted scalar, comment-suffixed value, flow mapping).",
+      "refutation_condition": "Any standard-YAML-written ultraplan.yml containing those constructs is either rejected with explicit parse error or correctly applied so Effective.Config matches file content and Sources[field]='workspace' for all fields.",
+      "inconclusive_condition": "No execution allowed to materialize a standard-encoder file and call Load; static inspection alone cannot prove runtime Sources retention vs error path without approved check execution.",
+      "safe_evidence_strategy": "Read-only static comparison plus future approved check: generate candidate ultraplan.yml bytes via standard yaml.Marshal in disposable 0700 copy; call config.Load with WorkspaceRoot pointing at copy and no env/CLI overrides; record Effective.Config and Sources map without writing back; no shell/Git, no file mutation outside copy.",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-b80ebf10ed89d88ce1f1b9c9/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:55:50.329042786Z",
+          "completed_at": "2026-08-26T09:57:55.92331936Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-01-config-tests",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ],
+              "reason": "Existing config tests and fixtures would show expected YAML round-trip coverage and whether flow/single-quote/comment cases are currently exercised; needed to bound verification surface without expanding to unrelated packages.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "static_analysis",
+              "summary": "Manual line parser at internal/platform/config/config.go:197-268 uses bufio.Scanner, TrimSpace, suffix ':' section detection, leadingWhitespace\u003e0 for nested headers, SplitN ':' for values, Trim('\"') only, and '- ' list prefix; full-line '#' skip only. Handles five list fields via clearListField but misses YAML flow style, single quotes, inline comments, document marker '---', and empty '[]' forms.",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "Fallback defaults at config.go:181-195 and field allowlist at 155-158 show Sources initialized to 'default' for all fields then selectively overwritten by loadFile; divergence leaves Sources='default' even when file exists and looks valid. setField switch 290-423 lacks handling for list fields with inline values, returning unknown field error for flow style while single-quote/comment cases slip through as literal values.",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "file",
+              "summary": "Architecture docs and other assigned context paths (docs/architecture.md, internal/app/config_commands.go, internal/sprint/domain.go, internal/tui/model.go, internal/web/handlers.go) contain no YAML parsing logic; config show command at internal/app/config_commands.go:33-40 delegates to loadEffectiveConfig/Redact and cannot compensate for parser divergence.",
+              "paths": [
+                "docs/architecture.md",
+                "internal/app/config_commands.go",
+                "internal/sprint/domain.go",
+                "internal/tui/model.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "Manual line parser at internal/platform/config/config.go:197-268 uses bufio.Scanner, TrimSpace, suffix ':' section detection, leadingWhitespace\u003e0 for nested headers, SplitN ':' for values, Trim('\"') only, and '- ' list prefix; full-line '#' skip only. Handles five list fields via clearListField but misses YAML flow style, single quotes, inline comments, document marker '---', and empty '[]' forms.",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "Fallback defaults at config.go:181-195 and field allowlist at 155-158 show Sources initialized to 'default' for all fields then selectively overwritten by loadFile; divergence leaves Sources='default' even when file exists and looks valid. setField switch 290-423 lacks handling for list fields with inline values, returning unknown field error for flow style while single-quote/comment cases slip through as literal values.",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "file",
+          "summary": "Architecture docs and other assigned context paths (docs/architecture.md, internal/app/config_commands.go, internal/sprint/domain.go, internal/tui/model.go, internal/web/handlers.go) contain no YAML parsing logic; config show command at internal/app/config_commands.go:33-40 delegates to loadEffectiveConfig/Redact and cannot compensate for parser divergence.",
+          "paths": [
+            "docs/architecture.md",
+            "internal/app/config_commands.go",
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static code evidence at config.go:203-268 confirms narrow parsing surface that diverges from YAML spec, but shard is read-only with approved_checks=null and no shell/execution permitted, so runtime demonstration that effective config retains defaults while file appears valid cannot be executed; confirmation requires bounded file-based Load check."
+    }
+  ]
+}

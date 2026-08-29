@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-c4f2dda0c5a7b1790d35e896",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-435f82659add211ce8433063",
+  "context_paths": [
+    "internal/platform/process/isolation.go",
+    "internal/platform/process/isolation_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: copyBoundedTree has a TOCTOU window between the directory walk that rejects symlinks, special files, and hardlinks and the subsequent os.Open that materializes each file, allowing a concurrent source-tree mutation to substitute a symlink or hardlink for a regular file and bypass the security checks."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-435f82659add211ce8433063"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c4f2dda0c5a7b1790d35e896/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:26:06.676802046Z",
+      "completed_at": "2026-08-28T11:27:00.567061237Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 43,
+      "retained_events": 43,
+      "observed_tool_calls": 16,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b4d538d8d89d46ee412ceb6b",
+      "shard_id": "qa-v1-shard-c4f2dda0c5a7b1790d35e896",
+      "claim": "copyBoundedTree performs non-atomic check-then-open: the symlink/special/hardlink rejections at entry.Info() (isolation.go:334-343) are taken on a DirEntry snapshot, while readRegularFile (isolation.go:436-450) re-opens the same path with os.Open, which follows symlinks. A concurrent source-tree mutation that swaps the inspected regular file for a symlink or hardlink after entry.Info() but before os.Open can therefore be silently materialized into the disposable copy when the replacement resolves to content of the same byte size (info.Size()), since readRegularFile only compares the limited read length against the previously captured info.Size() and MaxFileSize, not against any fresh stat.",
+      "basis": "isolation.go:317-371 (copyBoundedTree) calls filepath.WalkDir, evaluates entry.Mode()/linkCount, then calls readRegularFile which calls os.Open(path) at isolation.go:437. os.Open follows symlinks and no O_NOFOLLOW/openat-by-fd is used (grep for O_NOFOLLOW/openat in internal/platform/process returns0 matches). isolation.go:446 only compares int64(len(data)) against info.Size() (captured from the walk) and MaxFileSize, so a same-size swap (symlink target or hardlink pointing outside source) would pass the size gate. The function comment at isolation.go:78-79 advertises rejection of links, hard links, special files, path escapes, and out-of-limit trees, and docs/architecture.md:227-234 treats isolation failure as a blocked outcome. isolation_test.go covers only pre-mutation symlink/oversize/hardlink setups (TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets at lines 55-86) and never exercises a concurrent swap, so the existing suite does not detect the race.",
+      "verification_surface": "isolation.go:317-371 (copyBoundedTree walk callback), isolation.go:436-450 (readRegularFile/os.Open), isolation_unix.go:10-15 (linkCount via Stat_t.Nlink), isolation_test.go:13-135 (no concurrent-swap test present).",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A controlled reproducer that mutates a source file between WalkDir's entry.Info() and os.Open shows a same-size external file's bytes being copied into the isolation workspace and included in the recorded TreeIdentity, demonstrating that the link/special rejection is bypassed by an attacker with write access to the source tree during CreateIsolation.",
+      "refutation_condition": "A reproducer shows os.Open (or its callers) failing closed on any concurrent swap, or that the readRegularFile size check reliably rejects every same-size substitution as well, restoring the advertised containment guarantee.",
+      "inconclusive_condition": "Static code analysis shows a non-atomic check/use pair and no O_NOFOLLOW protection, and no covered test exercises the race, but no executable reproducer is available to the read-only investigator.",
+      "safe_evidence_strategy": "Cite the exact check-then-open sequence, the absent O_NOFOLLOW, and the size-only mismatch gate; flag the missing test coverage. Defer runtime confirmation to a writeable investigator who can construct a concurrent-swap reproducer against copyBoundedTree.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c4f2dda0c5a7b1790d35e896/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:06.676802046Z",
+          "completed_at": "2026-08-28T11:27:00.567061237Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 43,
+          "retained_events": 43,
+          "observed_tool_calls": 16,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only inspection confirms the structural TOCTOU window described in the behavioral concern (check at entry.Info()/linkCount, use via os.Open without O_NOFOLLOW, only a pre-captured size mismatch gate) but cannot run a concurrent-swap reproducer to demonstrate exploitability end-to-end, and no existing test covers the race."
+    }
+  ]
+}

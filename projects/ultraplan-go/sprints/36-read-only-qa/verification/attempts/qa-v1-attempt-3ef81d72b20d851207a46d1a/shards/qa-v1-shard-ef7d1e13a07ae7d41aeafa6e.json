@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ef7d1e13a07ae7d41aeafa6e",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-1676e2cad9f3160bd243e07a",
+  "context_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/qa.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Sources map is inaccurate when a list is cleared via empty scalar value in workspace file"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-observability",
+    "contract-testing"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-1676e2cad9f3160bd243e07a"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-ef7d1e13a07ae7d41aeafa6e/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:46:34.624581485Z",
+      "completed_at": "2026-08-26T10:47:40.406833414Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "loadFile list-clear branches at 212-220 and 254-259 call clearListField then continue without e.Sources[field]='workspace', while list-item and scalar branches at 229-231 and 263 assign workspace source",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "listConfigField/clearListField enumerate the 5 affected list fields (agentwrap.required_health, agentwrap.required_capabilities, agentwrap.extra_args, agentwrap.env, smoke.environment) at 553-575",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "config_test.go covers non-empty list loads and precedence but contains no test that clears a list to empty via empty scalar and asserts Sources==workspace, confirming testing gap for contract-testing",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7f130242707aa30a615902af",
+      "shard_id": "qa-v1-shard-ef7d1e13a07ae7d41aeafa6e",
+      "claim": "Sources map remains 'default' after workspace ultraplan.yml clears a list field via empty scalar value (e.g., 'smoke.environment: \"\"', 'smoke.environment:', 'agentwrap.extra_args:', 'agentwrap.env:') because loadFile clears the slice but does not set Sources[field]='workspace'",
+      "basis": "Static inspection of internal/platform/config/config.go:197-269 loadFile shows two list-clear paths both call clearListField then continue without assigning Sources, while every other workspace mutation assigns 'workspace' (lines 229-231 for list items, line 263 for scalars). The follow-up behavioral concern exactly matches this omission.",
+      "verification_surface": "internal/platform/config/config.go:197-269 loadFile, internal/platform/config/config.go:553-575 listConfigField/clearListField, internal/platform/config/config.go:153-179 Load Sources initialization, internal/platform/config/config_test.go: absence of empty-list-clear test",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-observability",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Either clear branch (indented header 'field:' at 212-220 or empty-value 'field: \"\"' at 254-259) executes clearListField and continues without e.Sources[field]='workspace', leaving an empty/nil Config slice whose source is still 'default' despite being mutated by workspace file",
+      "refutation_condition": "If both clear branches assigned e.Sources[field]='workspace' before continue, or if clearListField were never reached for empty scalar values, Sources would correctly reflect workspace origin",
+      "inconclusive_condition": "If YAML parsing in production never uses the empty-scalar form to clear lists (e.g., caller ensures list fields only via dash items) or if a post-load correction elsewhere updates Sources, the inaccuracy would not manifest despite the code gap visible in these files",
+      "safe_evidence_strategy": "Read-only inspection of config.go loadFile branches vs Sources assignments elsewhere; compare with config_test.go coverage for list fields (TestLoadAgentwrapListThenScalarFields only tests non-empty lists, no test clears to empty); no shell, write, or mutation",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-ef7d1e13a07ae7d41aeafa6e/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:46:34.624581485Z",
+          "completed_at": "2026-08-26T10:47:40.406833414Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "loadFile list-clear branches at 212-220 and 254-259 call clearListField then continue without e.Sources[field]='workspace', while list-item and scalar branches at 229-231 and 263 assign workspace source",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "listConfigField/clearListField enumerate the 5 affected list fields (agentwrap.required_health, agentwrap.required_capabilities, agentwrap.extra_args, agentwrap.env, smoke.environment) at 553-575",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "config_test.go covers non-empty list loads and precedence but contains no test that clears a list to empty via empty scalar and asserts Sources==workspace, confirming testing gap for contract-testing",
+              "paths": [
+                "internal/platform/config/config_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "loadFile list-clear branches at 212-220 and 254-259 call clearListField then continue without e.Sources[field]='workspace', while list-item and scalar branches at 229-231 and 263 assign workspace source",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "listConfigField/clearListField enumerate the 5 affected list fields (agentwrap.required_health, agentwrap.required_capabilities, agentwrap.extra_args, agentwrap.env, smoke.environment) at 553-575",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "config_test.go covers non-empty list loads and precedence but contains no test that clears a list to empty via empty scalar and asserts Sources==workspace, confirming testing gap for contract-testing",
+          "paths": [
+            "internal/platform/config/config_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Both branches are provably missing the assignment: 1) indented header path at 212-220: if listConfigField(field) { clearListField(\u0026e.Config,field); listField=field; continue } — no Sources update; 2) empty-value path at 254-259: if value==\"\" \u0026\u0026 listConfigField(field) { clearListField(\u0026e.Config,field); listField=field; continue } — no Sources update. List item appends at 227-242 do set Sources[listField]='workspace', so a clear-to-empty with zero subsequent '- ' items never updates Sources. This leaves smoke.environment, agentwrap.extra_args, agentwrap.env, agentwrap.required_health, agentwrap.required_capabilities stale at 'default' after workspace clear, matching the concern."
+    }
+  ]
+}

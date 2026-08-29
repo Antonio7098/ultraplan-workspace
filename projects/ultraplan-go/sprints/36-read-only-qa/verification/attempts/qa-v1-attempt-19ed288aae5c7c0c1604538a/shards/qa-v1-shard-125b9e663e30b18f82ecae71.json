@@ -1,0 +1,604 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-125b9e663e30b18f82ecae71",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "overlap_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-125b9e663e30b18f82ecae71/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:51:55.395643042Z",
+      "completed_at": "2026-08-26T09:53:06.607856419Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "context_requests": [
+        {
+          "id": "ctx-qa-config-detail",
+          "paths": [
+            "internal/platform/config/qa.go"
+          ],
+          "reason": "qaConfigFields, qaEnvOverrides, setQAField, DefaultQA, validateQA definitions needed to confirm Sources key naming versus config_commands.go literals for cross-package configuration integration",
+          "approved": false
+        },
+        {
+          "id": "ctx-app-config-loader",
+          "paths": [
+            "internal/app/config.go",
+            "internal/app/workspace.go",
+            "internal/app/config_loader.go"
+          ],
+          "reason": "loadEffectiveConfig, discoverWorkspace, Redact, writeJSON signatures and handling of CLIOverrides.JSON needed to confirm flag propagation between app and platform/config",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 36008548,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "doc",
+          "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+          "paths": [
+            "docs/architecture.md",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+          "paths": [
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0347bda86eba175445425df1",
+      "shard_id": "qa-v1-shard-125b9e663e30b18f82ecae71",
+      "claim": "Web and TUI remain within architecture layer boundary internal/web -\u003e internal/app -\u003e internal/sprint and do not directly import sprint/domain, but cross-package DTO mapping could still diverge",
+      "basis": "docs/architecture.md:11-19 and :51-55 and :155 explicitly forbid internal/web importing project/sprint/study/workspace/runtime and require web to receive only typed app interfaces; internal/web/handlers.go:17-20 imports only github.com/Antonio7098/ultraplan-go/internal/app plus stdlib and maps via app.WebSprintResult-\u003esprintDTO at :1191-1209 and app.QAResult at :158; internal/tui/model.go:9 imports only app and navigates via app.DashboardResult/app.SprintSummary at :519-532; internal/sprint/domain.go:135-144 defines FlowState/QA types that are not imported by TUI/web directly in this shard.",
+      "verification_surface": "import lists and type references in assigned files versus architecture forbidden-import list; DTO field mapping for Status/Assessment/Findings/Artifacts/QA across app -\u003e web/tui",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "handlers.go or model.go directly imports internal/sprint, internal/platform/config, or workspace/runtime packages, or maps a domain field incorrectly (e.g., drops QA assessment/next_action) breaking the app-owned projection contract",
+      "refutation_condition": "both runners import only internal/app (plus stdlib) and all sprint/workflow state is projected through app types as observed in handlers.go:17 and model.go:9 and mapping functions preserve parity",
+      "inconclusive_condition": "other files in internal/web or internal/tui outside assigned paths could import forbidden packages, requiring broader tree inspection",
+      "safe_evidence_strategy": "read-only grep of import blocks and type refs within assigned context_paths only; no shell or transitive dependency resolution",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-125b9e663e30b18f82ecae71/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.395643042Z",
+          "completed_at": "2026-08-26T09:53:06.607856419Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-config-detail",
+              "paths": [
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "qaConfigFields, qaEnvOverrides, setQAField, DefaultQA, validateQA definitions needed to confirm Sources key naming versus config_commands.go literals for cross-package configuration integration",
+              "approved": false
+            },
+            {
+              "id": "ctx-app-config-loader",
+              "paths": [
+                "internal/app/config.go",
+                "internal/app/workspace.go",
+                "internal/app/config_loader.go"
+              ],
+              "reason": "loadEffectiveConfig, discoverWorkspace, Redact, writeJSON signatures and handling of CLIOverrides.JSON needed to confirm flag propagation between app and platform/config",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 36008548,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+              "paths": [
+                "internal/app/config_commands.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "doc",
+              "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+              "paths": [
+                "docs/architecture.md",
+                "internal/web/handlers.go",
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+              "paths": [
+                "internal/sprint/domain.go",
+                "internal/tui/model.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "doc",
+          "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+          "paths": [
+            "docs/architecture.md",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+          "paths": [
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Within assigned paths, internal/web/handlers.go and internal/tui/model.go import only internal/app and stdlib, and sprint/domain.go is not imported; handlers map app.QAResult and sprint/study findings verbatim, satisfying the documented layer direction for this surface. Full-repo guarantee remains cross-shard."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0b162102c96450931af3505c",
+      "shard_id": "qa-v1-shard-125b9e663e30b18f82ecae71",
+      "claim": "Sources map key mismatch between internal/app/config_commands.go print sites and internal/platform/config registration could yield empty source labels for planning/qa fields",
+      "basis": "internal/app/config_commands.go:57-58 prints redacted.Sources[\"planning.code_context_model\"] and :58 variant, plus :73-74 qa.model/variant; internal/platform/config/config.go:153-158 initializes Sources for fields+qaConfigFields(), EnvOverrides() at :150 appends qaEnvOverrides(), and setField() delegates to setQAField() at :291. The qa.* field names and env mappings are defined outside assigned paths (qa.go), so dot-notation alignment cannot be verified read-only.",
+      "verification_surface": "compare literal keys in config_commands.go against qaConfigFields(), qaEnvOverrides(), setQAField() definitions and against Effective.Sources initialization in Load()",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "qaConfigFields() or setQAField() registers a different canonical key (e.g., qa_model, qa/model, or missing entry) than the string literal printed in config_commands.go, causing Sources lookup to return \"\" / missing",
+      "refutation_condition": "qa.go defines qaConfigFields() containing exactly \"qa.model\", \"qa.variant\" and all other qa.* keys printed, and setQAField/EnvOverrides use identical dot-notation and Load seeds Sources for them, so lookups resolve to default/workspace/env/cli",
+      "inconclusive_condition": "qa.go not available in shard or read-only parse blocked, or Sources population path cannot be traced without executing Load with fixture files",
+      "safe_evidence_strategy": "read-only open of assigned files plus bounded expansion of internal/platform/config/qa.go; static string-literal comparison; no shell, no mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-125b9e663e30b18f82ecae71/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.395643042Z",
+          "completed_at": "2026-08-26T09:53:06.607856419Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-config-detail",
+              "paths": [
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "qaConfigFields, qaEnvOverrides, setQAField, DefaultQA, validateQA definitions needed to confirm Sources key naming versus config_commands.go literals for cross-package configuration integration",
+              "approved": false
+            },
+            {
+              "id": "ctx-app-config-loader",
+              "paths": [
+                "internal/app/config.go",
+                "internal/app/workspace.go",
+                "internal/app/config_loader.go"
+              ],
+              "reason": "loadEffectiveConfig, discoverWorkspace, Redact, writeJSON signatures and handling of CLIOverrides.JSON needed to confirm flag propagation between app and platform/config",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 36008548,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+              "paths": [
+                "internal/app/config_commands.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "doc",
+              "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+              "paths": [
+                "docs/architecture.md",
+                "internal/web/handlers.go",
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+              "paths": [
+                "internal/sprint/domain.go",
+                "internal/tui/model.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "doc",
+          "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+          "paths": [
+            "docs/architecture.md",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+          "paths": [
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "outcome": "blocked",
+      "outcome_reason": "Cross-package Sources consistency requires file internal/platform/config/qa.go which is outside assigned context_paths; with read-only restriction and no shell, key registration cannot be confirmed or refuted on this shard."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0e9d194c48ffd6c2b5c2d694",
+      "shard_id": "qa-v1-shard-125b9e663e30b18f82ecae71",
+      "claim": "Manual ultraplan.yml line parser in internal/platform/config silently diverges from standard YAML writers, causing effective config to retain defaults while file appears valid",
+      "basis": "internal/platform/config/config.go:197-269 implements loadFile with bufio.Scanner, leadingWhitespace, string prefix checks for sections/lists, strings.SplitN(line,\":\",2) and single-quote stripping at :250, :226. It only handles list fields enumerated in listConfigField() at :553 and clears lists via clearListField(). Quoted values containing ':' , inline/bracket YAML, or indentation variations would be mis-split or rejected, while Validate() at :425 would still pass because defaults remain. internal/app/config_commands.go:37-40 surfaces effective config without surfacing parse truncation.",
+      "verification_surface": "static review of loadFile parser vs any writer of ultraplan.yml (platform/config writer, tests, or user edits) and static check of error paths for unsupported line at :248",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "a well-formed ultraplan.yml emitted by a YAML marshaller (e.g., value \"host:8080\" or flow list) is parsed with truncated value, dropped list items, or \"unsupported line\" error while Validate passes on retained defaults, demonstrating writer/reader contract break",
+      "refutation_condition": "loadFile is the sole writer/reader and all workspace files are always produced/validated through this exact parser, with tests and validation rejecting any standard-YAML form that the parser cannot handle, so no drift occurs",
+      "inconclusive_condition": "cannot execute parser with fixtures or inspect writer implementation without approved check or context expansion; read-only static review alone cannot prove runtime drift",
+      "safe_evidence_strategy": "read-only parse of config.go:197-269 and config_commands.go:33-41; compare listConfigField allowlist and SplitN logic against expected YAML; no execution or file creation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-125b9e663e30b18f82ecae71/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.395643042Z",
+          "completed_at": "2026-08-26T09:53:06.607856419Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-config-detail",
+              "paths": [
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "qaConfigFields, qaEnvOverrides, setQAField, DefaultQA, validateQA definitions needed to confirm Sources key naming versus config_commands.go literals for cross-package configuration integration",
+              "approved": false
+            },
+            {
+              "id": "ctx-app-config-loader",
+              "paths": [
+                "internal/app/config.go",
+                "internal/app/workspace.go",
+                "internal/app/config_loader.go"
+              ],
+              "reason": "loadEffectiveConfig, discoverWorkspace, Redact, writeJSON signatures and handling of CLIOverrides.JSON needed to confirm flag propagation between app and platform/config",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 36008548,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+              "paths": [
+                "internal/app/config_commands.go",
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+              "paths": [
+                "internal/platform/config/config.go"
+              ]
+            },
+            {
+              "kind": "doc",
+              "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+              "paths": [
+                "docs/architecture.md",
+                "internal/web/handlers.go",
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+              "paths": [
+                "internal/sprint/domain.go",
+                "internal/tui/model.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "config_commands prints Sources for planning.code_context_model/variant and qa.model/variant while Load seeds Sources via fields+qaConfigFields and delegates QA fields to setQAField/qaEnvOverrides outside shard",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "loadFile implements manual scanner/SplitN/listField parser with allowlist via listConfigField/clearListField; Validate enforces positive durations and limits but parser silently retains defaults on mis-parse",
+          "paths": [
+            "internal/platform/config/config.go"
+          ]
+        },
+        {
+          "kind": "doc",
+          "summary": "architecture mandates local interface composition cmd-\u003eapp, tui-\u003eapp, web-\u003eapp, app-\u003eplatform and forbids web importing sprint/project/study/workspace/runtime; web owns transport only",
+          "paths": [
+            "docs/architecture.md",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "sprint/domain.go defines FlowState/StageState/VerificationAttempt contracts; tui/model.go and web/handlers.go consume sprints only via app.DashboardResult/WebSprintResult/QAResult projection",
+          "paths": [
+            "internal/sprint/domain.go",
+            "internal/tui/model.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Parser fragility is evident statically, but confirming silent drift requires executing Load with crafted fixtures or inspecting the writer; blocked by read-only and no-shell constraints."
+    }
+  ]
+}

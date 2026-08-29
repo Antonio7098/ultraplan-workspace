@@ -8,133 +8,113 @@
 |-------|-------|
 | Name | crewai |
 | Path | `studies/agent-harness-study/sources/crewai` |
-| Language / Stack | Python 3.10–3.13, uv workspace monorepo, hatchling builds, Pydantic v2 |
-| Analyzed | 2026-08-21 |
+| Language / Stack | Unknown (source payload missing) |
+| Analyzed | 2026-08-22 |
 
 ## Summary
 
-crewAI is organized as a six-package uv workspace (`pyproject.toml:227-235`): `crewai` (framework meta-package), `crewai-core` (leaf utilities), `crewai-cli` (CLI), `crewai-tools` (tool catalog), `crewai-files` (multimodal file handling), and `crewai-devtools` (private release tooling). The intended dependency direction is `core → (nothing)`, `cli → core`, `crewai → core + cli`, `crewai-tools → crewai`, with `crewai-files` fully standalone.
+The selected source directory `studies/agent-harness-study/sources/crewai/` is empty on disk. No implementation files, tests, configuration, manifests, workspace metadata, or documentation were present at the time of this study. The only artifact in the sources folder for this target is the source descriptor `studies/agent-harness-study/sources/crewai.ultraplan-source.yml:1-87`, which declares the upstream URL as `https://github.com/crewAIInc/crewAI` and describes the project as "Influential multi-agent design with role-based delegation", but does not include any code, project files, or boundary material.
 
-In practice the layering is real but asymmetric and enforced only by convention. `crewai-core` and `crewai-files` are genuinely independent bottom layers (verified by import scans: zero workspace imports). The top of the graph, however, is entangled: `crewai-tools` hard-depends on the entire `crewai` distribution just to subclass `BaseTool` (`lib/crewai-tools/pyproject.toml:13`), while `crewai` reaches back into `crewai_tools` at five call sites via lazy function-level imports (`lib/crewai/src/crewai/task.py:1182`, `lib/crewai/src/crewai/agent/core.py:1179`, `lib/crewai/src/crewai/project/crew_base.py:324`, `lib/crewai/src/crewai/mcp/tool_resolver.py:194`, `lib/crewai/src/crewai/project/json_loader.py:1888`). `crewai` even declares `crewai-tools` as an optional extra pointing back at its dependent (`lib/crewai/pyproject.toml:57-58`), a package-level cycle broken only by optionality. Inside `crewai` itself, circularity is handled by a hand-rolled namespace-injection mechanism in `__init__.py` (`lib/crewai/src/crewai/__init__.py:128-145`) plus 104 files of `TYPE_CHECKING` guards and lazy `__getattr__` loaders — workable but evidence that module boundaries are managed manually rather than by clean layering.
+Because the source payload is missing, there is no package or workspace manifest to read, no folder hierarchy to map, no module dependency graph to construct, no import statements or namespace declarations to inspect for direction, no visibility annotations (e.g., `__all__`, `export`, `pub`, `internal`, `: public`, `package-private`) to evaluate, and no separation/import-cycle tests to verify. All dimension steps, evidence requirements, and questions are therefore answered against a null evidence base. The analysis below follows the template, but every section explicitly records "No clear evidence found" together with the search boundary that was actually executed.
 
-Public vs internal API distinction is weak-to-moderate: `crewai` and `crewai-files` curate `__all__` exports; `crewai-core` exports nothing at its package root (`lib/crewai-core/src/crewai_core/__init__.py:1` is a bare version string), forcing consumers to reach into submodules. There is no import-linter, no layering test, and no `_internal/` convention beyond one directory (`lib/crewai/src/crewai/agent/internal/`). CI enforces strict mypy and ruff with all relative imports banned (`pyproject.toml:90-91`, `pyproject.toml:120-131`, `.github/workflows/type-checker.yml:61`), which guarantees import hygiene but not architectural direction. All six packages are version-pinned to each other with exact `==` pins (`1.14.8a2`), so they ship in lockstep and are not independently installable in practice.
+Search boundary executed for this task:
+
+- `ls studies/agent-harness-study/sources/crewai/` → empty directory (`.` and `..` only).
+- `find studies/agent-harness-study/sources/crewai -mindepth 1` → zero entries.
+- `find studies/agent-harness-study/sources/crewai -type f | wc -l` → `0`.
+- `stat studies/agent-harness-study/sources/crewai` → directory inode 263488, no contained files.
+- Read of `studies/agent-harness-study/sources/crewai.ultraplan-source.yml:1-87` → metadata-only.
+- `wc -l studies/agent-harness-study/sources/crewai.ultraplan-source.yml` → 87 lines.
+- No cross-source inspection was performed; sibling sources under `studies/agent-harness-study/sources/` were intentionally not read, per the isolation rules in the base prompt.
 
 ## Rating
 
-**5 / 10** — Present but inconsistent. The workspace split, the pure `crewai-core`/`crewai-files` bottom layers, lazy-loading discipline, and the deprecation shim show deliberate boundary engineering. But the `crewai ↔ crewai-tools` cycle, the undeclared `crewai-cli → crewai` runtime import (`lib/cli/src/crewai_cli/deploy/validate.py:41`), the duplicate console entrypoint (`lib/crewai/pyproject.toml:146-147` duplicating `lib/cli/pyproject.toml`), the absence of any automated layering enforcement, and the lockstep version pins keep this from the "clear model with tests and explicit interfaces" band (7-8). The dimension's litmus question — *can you use the tool system without pulling in the entire runtime?* — answers **no at the distribution level**: `crewai.tools.base_tool` is a leaf module (stdlib + pydantic only, `lib/crewai/src/crewai/tools/base_tool.py:1-15`), but it lives inside the `crewai` wheel, so installing `crewai-tools` transitively installs chromadb, lancedb, openai, and the whole framework (`lib/crewai/pyproject.toml:14-56`).
+**1 / 10** — Absent.
+
+Rationale: The rating rubric places a score of 1-3 in the "Absent, implicit, ad-hoc, or unsafe" band. With zero source files, there is no top-level package structure to identify, no dependency direction to check, no module independence to demonstrate, no circular-dependency story to evaluate, and no internal-vs-public API distinction to verify. The dimension's headline question — "Can you use the tool system without pulling in the entire runtime?" — is unanswerable from the local payload. A score of 1 (rather than 0) is reserved because the source descriptor exists and proves the study target was intended to be `crewAIInc/crewAI`; the absence is a missing payload, not a misconfigured study, and at least one concrete artifact (the descriptor) is locatable to cite as evidence that the intent was real.
 
 ## Evidence Collected
 
-Every entry includes a file path with line numbers.
+Every entry MUST include a file path with line numbers. Format: `path/to/file.ts:NN`.
 
 | Area | Evidence | File:Line |
 |------|----------|-----------|
-| Package structure | uv workspace with 6 members: crewai, crewai-tools, devtools, crewai-files, cli, crewai-core | `pyproject.toml:227-235` |
-| Package structure | Workspace source mapping for all 6 packages | `pyproject.toml:238-244` |
-| Dependency direction | `crewai` depends on `crewai-core==1.14.8a2` and `crewai-cli==1.14.8a2` | `lib/crewai/pyproject.toml:11-12` |
-| Dependency direction | `crewai-tools` depends on `crewai==1.14.8a2` (full framework, exact pin) | `lib/crewai-tools/pyproject.toml:13` |
-| Dependency direction | `crewai-cli` depends on `crewai-core` but NOT on `crewai` | `lib/cli/pyproject.toml:11-24` |
-| Dependency direction | `crewai-core` dependencies are all third-party (appdirs, cryptography, httpx, pydantic, rich, opentelemetry, etc.) — no workspace deps | `lib/crewai-core/pyproject.toml:10-22` |
-| Dependency direction | `crewai-files` dependencies all third-party (Pillow, pypdf, aiocache, aiofiles, av) — no workspace deps | `lib/crewai-files/pyproject.toml:10-18` |
-| Circular dependency (package level) | `crewai` optional extra `tools = ["crewai-tools==1.14.8a2"]` points back at its own dependent | `lib/crewai/pyproject.toml:57-58` |
-| Circular dependency (package level) | `crewai → crewai_tools` lazy imports at 5 sites; `crewai_tools → crewai` in 88 source files | `lib/crewai/src/crewai/task.py:1182`, `lib/crewai-tools/src/crewai_tools/__init__.py:1-60` |
-| Undeclared dependency | `crewai_cli.deploy.validate` imports `crewai.project.json_loader` at module level; `crewai` absent from `crewai-cli` deps | `lib/cli/src/crewai_cli/deploy/validate.py:41` |
-| Duplicate entrypoint | `crewai = "crewai_cli.cli:crewai"` script defined in both `crewai` and `crewai-cli` packages | `lib/crewai/pyproject.toml:146-147`, `lib/cli/pyproject.toml` `[project.scripts]` |
-| Independence: crewai-core | Only stdlib + third-party imports across all of `crewai_core` (verified by import scan); zero `crewai` references | `lib/crewai-core/src/crewai_core/` (whole tree) |
-| Independence: crewai-files | Only stdlib + third-party imports; explicit re-exports of 60+ public symbols in `__init__` | `lib/crewai-files/src/crewai_files/__init__.py:3-80` |
-| Independence: event bus | `event_bus.py` runtime imports limited to `crewai.events.*` leaves; `RuntimeState` only under TYPE_CHECKING | `lib/crewai/src/crewai/events/event_bus.py:26-27` |
-| Intra-package circularity handling | Namespace injection: `_resolve_namespace` written into 8 modules' `__dict__`, then 9 `model_rebuild()` calls | `lib/crewai/src/crewai/__init__.py:128-159` |
-| Lazy loading | `Memory` lazily imported via module `__getattr__` to avoid lancedb at init | `lib/crewai/src/crewai/__init__.py:53-66` |
-| Lazy loading | Event types lazy-loaded via `_LAZY_EVENT_MAPPING` to avoid ~12 Pydantic modules at init | `lib/crewai/src/crewai/events/__init__.py:9-11,154,257-260` |
-| TYPE_CHECKING discipline | 104 files under `lib/crewai/src` use `if TYPE_CHECKING:` guards for upward imports | e.g. `lib/crewai/src/crewai/utilities/tool_utils.py:24-27`, `lib/crewai/src/crewai/llms/base_llm.py` |
-| Public API surface | `crewai.__all__` curates 17 public symbols | `lib/crewai/src/crewai/__init__.py:187-205` |
-| Public API surface | `crewai.tools.__all__` exports exactly BaseTool, EnvVar, tool | `lib/crewai/src/crewai/tools/__init__.py:1-8` |
-| Public API surface | `crewai-core` package root exports only `__version__` — consumers import submodules directly | `lib/crewai-core/src/crewai_core/__init__.py:1` |
-| Public API surface | All 5 distributable packages ship `py.typed` markers | `lib/*/src/*/py.typed` |
-| Internal API convention | `crewai/agent/internal/` package for extension metaclass, imported only by `base_agent.py` | `lib/crewai/src/crewai/agent/internal/meta.py:1-13`, `lib/crewai/src/crewai/agents/agent_builder/base_agent.py:26` |
-| Deprecation shim | `crewai.cli` meta-path finder remaps legacy imports to `crewai_cli` with DeprecationWarning | `lib/crewai/src/crewai/cli/__init__.py:1-66` |
-| Optional-dep guard (good) | Platform tools import wrapped in try/except, returns `[]` on failure | `lib/crewai/src/crewai/agent/core.py:1177-1186` |
-| Optional-dep guard (good) | JSON loader resolves tool classes from `crewai_tools` with ImportError fallback returning None | `lib/crewai/src/crewai/project/json_loader.py:1887-1893` |
-| Optional-dep gap | `MCPServerAdapter` import unguarded — raises ImportError if `crewai-tools` extra not installed but `mcp_server_params` set | `lib/crewai/src/crewai/project/crew_base.py:324` |
-| Import hygiene enforcement | ruff `ban-relative-imports = "all"` | `pyproject.toml:90-91` |
-| Import hygiene enforcement | mypy strict mode across `lib/` in CI | `pyproject.toml:120-131`, `.github/workflows/type-checker.yml:61` |
-| Import hygiene enforcement | ruff check + format in CI | `.github/workflows/linter.yml:54-57` |
-| No layering enforcement | No import-linter config, no dependency-cruiser, no layering test found (searched pyproject, pre-commit, workflows, tests for "import.linter", "circular", "layered") | — |
-| Lockstep versioning | All cross-package pins are exact `==1.14.8a2`; versions duplicated in source `__init__` files | `lib/crewai/pyproject.toml:11-12`, `lib/crewai-tools/pyproject.toml:13`, `lib/crewai/src/crewai/__init__.py:51` |
-| Separation tests | `crewai-core` has exactly 1 smoke test file covering leaf modules | `lib/crewai-core/tests/test_smoke.py:1-40` |
-| Separation tests | `crewai-tools` import test asserts no Pydantic deprecation warnings at import | `lib/crewai-tools/tests/tools/test_import_without_warnings.py:1-9` |
-| Separation tests | Public-API importability test (TaskOutput, CrewOutput from `crewai`) — minimal, 15 lines | `lib/crewai/tests/test_imports.py:1-15` |
-| Runtime circular-dependency guard | `CircularDependencyError` exists for event-handler dependency graph (not module imports) | `lib/crewai/src/crewai/events/handler_graph.py:15` |
-| Test isolation | Root `conftest.py` shared by all packages; per-package test dirs (207/26/8/32/2/1 test files) | `conftest.py:1-10`, `pyproject.toml:142-148` |
+| Top-level package structure | No clear evidence found. Directory `studies/agent-harness-study/sources/crewai/` contains no files; no folder hierarchy, `Cargo.toml`, `package.json`, `pyproject.toml`, `go.mod`, `*.sln`, `*.csproj`, `Package.swift`, or `*.podspec` could be inspected. | `studies/agent-harness-study/sources/crewai/` (empty) |
+| Module dependency graphs | No clear evidence found. No import/`use`/`require`/`from … import`/`using` statements, no `dependencies`/`extras_require`/`optionalDependencies` blocks, no `internal` packages, no `importlib`-style subpackage markers exist locally. | `studies/agent-harness-study/sources/crewai/` (empty) |
+| Module boundaries | No clear evidence found. No source files exist to delineate sub-packages for runtime, tools, memory, evals, tracing, UI, or provider adapters. | `studies/agent-harness-study/sources/crewai/` (empty) |
+| API visibility annotations | No clear evidence found. No `export`/`pub`/`__all__`/`internal`/`public`/`package-private` markers, no `.h` public-header files, no `_test.go` separation, no `__init__.py` boundary files are present. | `studies/agent-harness-study/sources/crewai/` (empty) |
+| Separation / boundary tests | No clear evidence found. No `archunit`, `dependency-cruiser`, `import-linter`, `depcheck`, `go mod why`, or `cargo tree` configuration is present; no test that asserts one module does not import from another exists. | `studies/agent-harness-study/sources/crewai/` (empty) |
+| Source descriptor (only artifact) | YAML file declaring the upstream repository URL `https://github.com/crewAIInc/crewAI`, a short tag line ("Influential multi-agent design with role-based delegation"), and the list of applicable dimensions, including `22.01`. | `studies/agent-harness-study/sources/crewai.ultraplan-source.yml:1-87` |
 
 ## Answers to Dimension Questions
 
-**1. Are modules cleanly separated?**
-Partially. The workspace gives six physically separate distributions with their own pyproject, tests, and `py.typed`. The bottom layers are clean: `crewai-core` (verified zero workspace imports across its 27 modules, e.g. `lib/crewai-core/src/crewai_core/telemetry.py` uses only opentelemetry/stdlib) and `crewai-files` (zero `crewai` references; explicit 80-line export surface at `lib/crewai-files/src/crewai_files/__init__.py`). The top is not clean: `crewai` ↔ `crewai-tools` form a package-level cycle broken only by lazy imports and an optional extra, and `crewai-cli` has an undeclared runtime import of `crewai` (`lib/cli/src/crewai_cli/deploy/validate.py:41`). Within `crewai`, `utilities/` and `events/listeners/` import upward into `task`/`crew` at runtime (`lib/crewai/src/crewai/utilities/task_output_storage_handler.py:12`, `lib/crewai/src/crewai/utilities/planning_handler.py:9`), so "utilities" is not a lower layer despite its name.
+1. **Are modules cleanly separated?**
+   No clear evidence found. No source code is present to inspect. Cannot affirm or refute whether the upstream `crewAIInc/crewAI` repository carves out separate modules/packages for runtime, tools, memory, evals, tracing, UI, or provider adapters. The local payload contains zero files, so no folder layout (e.g., a `crewai/`, `crewai_tools/`, `crewai/agents/`, `crewai/llms/` split) can be mapped and no import-direction check can be performed.
 
-**2. Do dependencies flow in one direction?**
-Core does; the periphery does not. Verified one-directional edges: `crewai-files → (nothing)`, `crewai-core → (nothing)`, `cli → crewai-core`, `crewai → crewai-core`, `crewai → crewai-cli`. Non-one-directional edges: `crewai-tools → crewai` (declared, `lib/crewai-tools/pyproject.toml:13`) combined with five reverse lazy imports from `crewai` into `crewai_tools` (`lib/crewai/src/crewai/agent/core.py:1179`, `lib/crewai/src/crewai/task.py:1182`, `lib/crewai/src/crewai/project/crew_base.py:324`, `lib/crewai/src/crewai/mcp/tool_resolver.py:194`, `lib/crewai/src/crewai/project/json_loader.py:1888`); plus the undeclared `crewai-cli → crewai` import. The `crewai` optional extra `tools` (`lib/crewai/pyproject.toml:57-58`) formally documents the cycle.
+2. **Do dependencies flow in one direction?**
+   No clear evidence found. With no files, there are no edges in a module graph to check for directionality — no "providers depend on runtime, not vice versa" assertion can be made. The dimension's question about clean unidirectional flow between runtime, tools, and provider adapters is unanswerable from the local payload.
 
-**3. Can modules be used independently?**
-`crewai-core`: yes — it is a genuine leaf library (paths, printer, telemetry, auth tokens, user data) with its own smoke test (`lib/crewai-core/tests/test_smoke.py:6-13`). `crewai-files`: yes — fully standalone multimodal file handling with provider formatters and uploaders (`lib/crewai-files/src/crewai_files/`). `crewai-cli`: mostly — it depends only on `crewai-core` per its manifest, but the deploy-validate path breaks without `crewai` installed (`lib/cli/src/crewai_cli/deploy/validate.py:41`). `crewai-tools`: no — it requires the full `crewai` distribution (`lib/crewai-tools/pyproject.toml:13`), which transitively pulls chromadb, lancedb, openai, instructor, and opentelemetry (`lib/crewai/pyproject.toml:14-56`). At module level the tool abstraction is decoupled — `crewai/tools/base_tool.py:1-15` imports only stdlib and pydantic — but it is packaged inside `crewai`, so the answer to the dimension's litmus question is no at install granularity.
+3. **Can modules be used independently?**
+   No clear evidence found. No manifest file (`package.json` with subpath `exports`, `pyproject.toml` with optional dependency groups, `Cargo.toml` feature flags, `go.mod` with build tags, `.csproj` per-feature, etc.) is present, so the ability to import a subset of the framework without pulling in the entire runtime cannot be demonstrated. There is no `__init__.py`, `mod.rs`, or `index.ts` to test a narrow import. Notably, the crewAI ecosystem upstream ships a separate `crewai-tools` PyPI package, but that separation cannot be inspected or verified locally.
 
-**4. Are public APIs distinguished from internal ones?**
-Moderately. `crewai` curates `__all__` with 17 symbols and uses lazy `__getattr__` for heavy imports (`lib/crewai/src/crewai/__init__.py:53-66,187-205`); `crewai.tools` exports exactly three names (`lib/crewai/src/crewai/tools/__init__.py:1-8`); `crewai-files` re-exports its full public surface explicitly (`lib/crewai-files/src/crewai_files/__init__.py:3-80`). But `crewai-core`'s root namespace is empty (`lib/crewai-core/src/crewai_core/__init__.py:1`), so every consumer — including `crewai` and `crewai-cli` — reaches into submodules (`lib/cli/src/crewai_cli/config.py` imports `crewai_core.settings`), making every core module de-facto public. There is a single `internal/` package (`lib/crewai/src/crewai/agent/internal/`) but no repo-wide `_internal` or underscore convention; conversely, deeply nested modules like `crewai.utilities.prompts` are injected into the public namespace by the init-time machinery (`lib/crewai/src/crewai/__init__.py:78-81`). No stability annotations (`@public`, `__all__` in most submodules) or API-surface tests beyond the 15-line `lib/crewai/tests/test_imports.py`.
+4. **Are public APIs distinguished from internal ones?**
+   No clear evidence found. No visibility annotations (`pub`/`pub(crate)`, `__all__`, `export`, `internal`, `: public`, `InternalsVisibleTo`, `__declspec(dllexport)`/`__declspec(dllimport)`) could be inspected, and no public-API surface file (e.g., `docs/api.md`, `reference.md`, `api/index.html`) is present. There is no `_internal/` directory, no `api/` + `impl/` split, and no public-API snapshot test to evaluate.
 
 ## Architectural Decisions
 
-1. **Workspace monorepo with lockstep exact pins.** All six packages pin each other at `==1.14.8a2` (`lib/crewai/pyproject.toml:11-12`, `lib/crewai-tools/pyproject.toml:13`). Packages are structurally separate but released as one unit — the boundary buys code organization, not independent versioning or installability.
-2. **Extract shared leaf utilities into `crewai-core`.** Version, paths, settings, telemetry, printer, token management, and plus-API client live in a dependency-free package consumed by both `crewai` and `crewai-cli` (53 import sites in `crewai`, e.g. `lib/crewai/src/crewai/constants.py`; 5+ in cli, e.g. `lib/cli/src/crewai_cli/plus_api.py`). This deduplicates auth/telemetry that previously existed in both trees.
-3. **Keep `BaseTool` in `crewai`, not `crewai-tools`.** The tool contract (`lib/crewai/src/crewai/tools/base_tool.py:103`) is a leaf module inside the framework package; `crewai-tools` is a pure catalog of concrete tools. This avoids a tools-core package but forces tool authors to install the entire runtime.
-4. **Manage intra-package cycles at runtime, not by design.** The init-time namespace injection (`lib/crewai/src/crewai/__init__.py:128-159`), 104 TYPE_CHECKING-guarded files, and lazy `__getattr__` loaders (`lib/crewai/src/crewai/__init__.py:58-66`, `lib/crewai/src/crewai/events/__init__.py:257`) let a highly connected object graph (Agent ↔ Task ↔ Crew ↔ Flow) exist without import errors, at the cost of import-order sensitivity.
-5. **Compatibility shim instead of a breaking change.** `crewai.cli` was extracted to `crewai-cli`, and a meta-path finder transparently remaps legacy imports (`lib/crewai/src/crewai/cli/__init__.py:38-66`) — a deliberate boundary-migration technique.
-6. **Optional extras for heavy integrations.** Provider and integration deps (anthropic, bedrock, qdrant, docling, a2a, tools) are extras (`lib/crewai/pyproject.toml:53-110`), keeping the core install smaller while code references them defensively.
+No clear evidence found. No code, configuration, design documents, ADRs, RFCs, or workspace manifests were available in the selected source directory. Architectural decisions that would normally be observable for this dimension are therefore not observable:
+
+- Whether `crewai` is a single-package Python distribution versus a workspace (e.g., `crewai` core plus a `crewai-tools` extension plus a `crewai-tools-...` provider namespace) on PyPI.
+- Whether provider adapters (OpenAI, Anthropic, Azure OpenAI, Gemini, Bedrock, etc.) live under a shared `crewai/llms/` tree, behind a LiteLLM wrapper, or are first-class top-level packages.
+- Whether the public surface is enforced by lint rules (e.g., `ruff`/`flake8` import boundaries, `pyright`/`mypy` strict-mode settings, `grimp` import-linter, `import-linter`) or only by convention.
+- Whether tools, memory, evals, and tracing ship as opt-in extras (e.g., `[project.optional-dependencies]`) or as always-on transitive dependencies.
+- Whether internal helpers are colocated under an `_internal/` directory, hidden behind re-exports, or stamped with an `_` (underscore) prefix to mark them private.
 
 ## Notable Patterns
 
-- **Lazy `__getattr__` module pattern** for heavy optional deps: `Memory → lancedb` (`lib/crewai/src/crewai/__init__.py:53-66`) and ~40 event types (`lib/crewai/src/crewai/events/__init__.py:154,257-260`), with documented rationale ("avoid importing ~12 Pydantic model modules", `lib/crewai/src/crewai/events/__init__.py:9-11`).
-- **Pydantic model_rebuild with explicit types namespace** to close forward-reference cycles across Agent/Task/Crew/Flow (`lib/crewai/src/crewai/__init__.py:152-176`).
-- **Meta-path import shim** for cross-package renames with deprecation warnings (`lib/crewai/src/crewai/cli/__init__.py:38-66`).
-- **Function-level imports as cycle breakers** for optional sibling packages, sometimes guarded (`lib/crewai/src/crewai/agent/core.py:1178-1186`), sometimes not (`lib/crewai/src/crewai/project/crew_base.py:324`).
-- **Extension metaclass in an `internal/` package** (`lib/crewai/src/crewai/agent/internal/meta.py:13`) consumed by the public `BaseAgent` — the only explicit internal-API carve-out.
-- **Runtime dependency-graph validation for event handlers** — `CircularDependencyError` in the handler graph (`lib/crewai/src/crewai/events/handler_graph.py:15`) — the circularity concern is enforced for handler wiring even though module-level circularity is not.
+No clear evidence found. No patterns could be located: no single-package vs workspace-of-packages decision, no `__init__.py`-barrel-files vs deep-imports choice, no `public/` + `internal/` split, no `api/` + `impl/` split, no DI container boundary defining tool vs runtime vs UI scope. There is no test or fixture demonstrating how the agent loop reaches into provider adapters without coupling to them. The upstream `crewAIInc/crewAI` project is widely cited for its role/agent/task/delegate mental model, but any observation about its package boundary design is unverifiable from the local payload.
 
 ## Tradeoffs
 
-- **Tool-catalog convenience vs. boundary integrity.** Putting `BaseTool` in `crewai` makes the tool API co-versioned with the runtime, but every tool author and `crewai-tools` consumer installs chromadb, lancedb, openai, and telemetry deps (`lib/crewai/pyproject.toml:14-56`). A `crewai-tools-core` split would answer the dimension's litmus question affirmatively.
-- **Lazy imports vs. failure visibility.** Guarded lazy imports degrade silently (platform tools return `[]` on any Exception, `lib/crewai/src/crewai/agent/core.py:1184-1186`; JSON loader returns None, `lib/crewai/src/crewai/project/json_loader.py:1892-1893`), while unguarded ones fail late at feature use (`lib/crewai/src/crewai/project/crew_base.py:324`). Neither failure mode is surfaced at configuration time.
-- **Namespace injection vs. explicit layering.** The `__init__.py` machinery keeps the Agent/Task/Crew graph importable without refactoring into layers, but it makes import order semantically significant and wraps the entire setup in one try/except that downgrades failures to a log warning (`lib/crewai/src/crewai/__init__.py:178-185`).
-- **Lockstep pins vs. independent evolution.** Exact `==` pins eliminate version-skew bugs across packages but mean `crewai-files` — which needs nothing from the workspace — still cannot be consumed at a different version by third parties mixing releases.
-- **Empty `crewai-core` root namespace vs. API stability.** Exporting nothing avoids heavy imports, but with no `__all__`, every internal module is implicitly public API for two consumer packages, constraining refactoring.
+No clear evidence found. Tradeoffs cannot be enumerated when there is no implementation to weigh. In general, agent frameworks that lack clean module boundaries tend to suffer from these tradeoffs:
+
+- Adopting a non-default provider pulls in the entire runtime (large transitive surface).
+- Internal helpers leak into public docs because the visibility boundary is implicit.
+- Refactors cross sub-packages because nothing prevents callers from deep-importing.
+- Circular-dependency errors surface late in CI rather than at lint time.
+
+Whether `crewAIInc/crewAI` follows any of these paths is unverifiable from the local payload.
 
 ## Failure Modes / Edge Cases
 
-- **Undeclared dependency breaks standalone `crewai-cli`.** `pip install crewai-cli` alone (satisfying its declared deps, `lib/cli/pyproject.toml:10-24`) then running deploy validation raises `ModuleNotFoundError` at `lib/cli/src/crewai_cli/deploy/validate.py:41` because `crewai` is not declared. Masked in practice because `crewai` installs `crewai-cli`, not vice versa.
-- **MCP usage without the tools extra crashes at call time.** `mcp_server_params` set but `crewai-tools` not installed → unguarded `from crewai_tools import MCPServerAdapter` (`lib/crewai/src/crewai/project/crew_base.py:324`) raises ImportError deep in crew execution rather than at config validation.
-- **Import-order sensitivity from namespace injection.** The rebuild sequence in `lib/crewai/src/crewai/__init__.py:128-176` assumes specific modules are already in `sys.modules` (`__init__.py:130`); if the wrapped block fails, `RuntimeState` is set to `None` (`__init__.py:185`) and downstream attribute errors surface far from the cause.
-- **Broad exception swallowing hides missing tools.** `get_platform_tools` catches bare `Exception` — including genuine bugs in tool construction — and returns an empty list (`lib/crewai/src/crewai/agent/core.py:1184-1186`), conflating "extra not installed" with "tool broken."
-- **Silent pydantic-warning suppression at import.** `crewai/__init__.py:28-49` globally monkey-patches `warnings.warn` for pydantic deprecations, trading user visibility for clean imports; a test pins the same expectation for `crewai_tools` (`lib/crewai-tools/tests/tools/test_import_without_warnings.py:4-9`).
-- **Duplicate console entrypoint.** Both `crewai` and `crewai-cli` wheels register `crewai = "crewai_cli.cli:crewai"` (`lib/crewai/pyproject.toml:146-147`); installing both is the normal case, so the conflict is latent rather than active, but it makes the `crewai` package's CLI ownership ambiguous.
-- **No automated detection of new boundary violations.** Nothing in CI (`.github/workflows/linter.yml:54-57`, `.github/workflows/type-checker.yml:61`) or pre-commit (`.pre-commit-config.yaml`) would catch a new upward import from `crewai-core`, a new unguarded `crewai_tools` import, or `crewai-cli` growing more undeclared `crewai` usage.
+No clear evidence found. Failure modes that module boundaries are meant to prevent or expose cannot be observed:
+
+- **Transitive bloat** — installing `crewai` may pull the entire LLM stack and tool catalog; no opt-in extras block visible.
+- **Circular imports** — no `grimp`/`import-linter`/`pydeps`/`madge` configuration exists; no `cargo tree`/`go mod graph` equivalent for Python to inspect.
+- **Public-API drift** — no `public-api` snapshot test, no `semver`-pinned sub-package, no `pyproject.toml#project.optional-dependencies` boundary to evaluate.
+- **Provider leakage** — no evidence of a strategy for swapping `openai` for `azure-openai` for `anthropic` without re-importing core runtime.
+- **Tool-coupling** — the `crewai-tools` package reportedly pulls many integrations at once; whether that coupling is mirrored in the core runtime is unverifiable.
+- **Build errors after partial checkout** — without a manifest, even a partial clone of the documented layout cannot be built or tested.
 
 ## Future Considerations
 
-- Add import-linter (or equivalent) contracts to CI encoding the observed intended graph: `crewai-core` ← nothing; `crewai-files` ← nothing; `cli → {core}`; `crewai → {core, cli}`; `crewai-tools → {crewai}`. This is cheap and would have caught `lib/cli/src/crewai_cli/deploy/validate.py:41`.
-- Extract `crewai.tools.base_tool` + `structured_tool` into a small `crewai-tools-core` (or move into `crewai-core`) so the tool system is installable without the runtime — directly resolving the litmus question.
-- Declare the real dependency: either add `crewai` to `crewai-cli` deps (accepting the cycle) or make the deploy-validate import lazy with a clear error message.
-- Give `crewai-core` an explicit root `__all__` re-exporting its stable surface (paths, printer, settings, version, token_manager) so consumers stop importing private paths.
-- Replace the unguarded `MCPServerAdapter` import with a guarded one plus a config-time validation error naming the missing extra.
-- Remove the duplicate `[project.scripts]` entry from `lib/crewai/pyproject.toml:146-147`, leaving CLI ownership in `crewai-cli`.
-- Consider independent versioning (compatible-range pins like `crewai-core>=1.14,<2`) for the leaf packages that already have no upward coupling.
+When the source payload is restored, the following should be re-examined for this dimension:
+
+- Top-level layout: presence of a `pyproject.toml` (or legacy `setup.py` / `setup.cfg`) for `crewai` itself and for any sibling distribution such as `crewai-tools`. Compare with the layout of `crewai/` and `crewai_tools/` Python packages.
+- Whether provider adapters (OpenAI, Azure OpenAI, Anthropic, Gemini, Bedrock, Groq, etc.) live as separate optional sub-packages so a consumer can install only what they need.
+- Whether tools, memory, evals, and tracing are opt-in (extras_require / optional-dependencies / subpath imports) so the headline question — "Can you use the tool system without pulling in the entire runtime?" — receives an empirical yes/no.
+- Direction of imports: a quick `grimp`/`pydeps`/`importlinter`/`snakefood` pass should be run against the restored snapshot to surface cycles and reverse edges between the agent loop, the LLM adapter layer, and the tool layer.
+- Visibility tooling: presence of lint rules (`ruff` `tidy-imports` / `flake8-import-graph`, `pyright`/`mypy` strict-mode settings, `import-linter` contracts, `archunit` analogue for Python) that mechanically enforce the public/internal split.
+- Public-API surface governance: presence of `public-api` snapshot tests (e.g., `griffe`, `pytest-apischema`, `pyright --verifytypes`) that pin the public surface and fail CI on unplanned additions.
+- Whether the repo separates a `crewai-core` from `crewai-tools` and from individual provider sub-packages to make adapter swapping cheap.
 
 ## Questions / Gaps
 
-- **No evidence found** of any automated circular-import detection or layering test for Python module imports. Searched: all `pyproject.toml` files, `.pre-commit-config.yaml`, `.github/workflows/*.yml`, and test trees for "import-linter", "circular", "layered", "boundary"; the only `CircularDependencyError` is for event-handler wiring (`lib/crewai/src/crewai/events/handler_graph.py:15`).
-- **No evidence found** of a documented, intended dependency diagram (no ARCHITECTURE.md; `lib/crewai-core/README.md` and `lib/crewai-files/README.md` are one-paragraph descriptions). The dependency graph above is reconstructed from manifests and import scans, not from a stated design document.
-- **No evidence found** of per-package publish-time independence: whether `crewai-files` or `crewai-core` are published to PyPI separately, or only as transitive deps of `crewai`. The lockstep pins suggest the latter, but publish configuration (`.github/workflows/publish.yml`) was not analyzed in depth for per-package triggers.
-- **No evidence found** of stability/deprecation policy for the de-facto-public `crewai-core` submodule paths consumed by `crewai` and `crewai-cli`.
-- The runtime behavior of the unguarded `crew_base.py:324` import path (exact exception surfaced to users when the tools extra is missing) was verified by code reading only, not executed.
+- **Why is the source directory empty?** The descriptor at `studies/agent-harness-study/sources/crewai.ultraplan-source.yml:1-87` references `https://github.com/crewAIInc/crewAI`, but no checkout, snapshot, or mirror was present under `studies/agent-harness-study/sources/crewai/`. The study cannot proceed against an empty target.
+- **Is the upstream `crewAIInc/crewAI` repository the right version?** Without a pinned commit/tag in the descriptor or a checked-out copy locally, the study cannot anchor itself to a specific revision. Future runs should pin a commit SHA in `crewai.ultraplan-source.yml`.
+- **Was the source supposed to be vendored or fetched on demand?** The presence of sibling sources (e.g., `langgraph/`, `pydantic-ai/`) suggests the convention is to vendor a snapshot. If `crewai` was meant to be fetched on demand, the fetch step failed silently for this dimension. Recommend adding a fetch manifest entry to the descriptor.
+- **Resolution path:** populate `studies/agent-harness-study/sources/crewai/` with a vendored snapshot of `crewAIInc/crewAI` at a pinned SHA, then re-run this dimension study. Until then, this report's findings are "No clear evidence found" across every required section.
 
 ---
 
-Generated by `dimension 22.01: Package and Module Boundaries` against `crewai`.
+Generated by `dimensions/22.01-package-and-module-boundaries.md` against `crewai`.

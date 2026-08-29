@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-26fe41407d0fe31a5108a7b2",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-65f7133245ef4908b1ce738a",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QAStore.PruneAttempts retains only RetainedAttempts total including the protected semantic attempt, not RetainedAttempts newest plus protected, allowing eviction of a valid newest attempt when the protected attempt is old."
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-persistence-and-migrations"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-65f7133245ef4908b1ce738a"
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-26fe41407d0fe31a5108a7b2",
+    "summary": "investigator used 5 turns; limit is 4",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-26fe41407d0fe31a5108a7b2/1",
+      "number": 1,
+      "started_at": "2026-08-26T08:07:18.839298175Z",
+      "completed_at": "2026-08-26T08:08:01.255288633Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 65590,
+        "output_tokens_known": true,
+        "output_tokens": 2101,
+        "total_tokens_known": true,
+        "total_tokens": 225244,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 2733,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 154820,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 5
+      },
+      "estimated_cost": {
+        "amount": 0.007835439999999999,
+        "currency": "USD",
+        "estimate": false
+      },
+      "stop_reason": "investigator iteration limit exceeded"
+    }
+  ]
+}

@@ -1,0 +1,1149 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+  "attempt_id": "qa-v1-attempt-0933fc6455201f804b641078",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+      "number": 1,
+      "started_at": "2026-08-26T07:59:04.23044534Z",
+      "completed_at": "2026-08-26T08:00:02.266799957Z",
+      "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 53061567,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2148fdd96b40cf143e81e8eb",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "RecoverQA and ReconcileInterruptedMutation diverge on interruptible QA phases; ReconcileInterruptedMutation ignores QAPhaseMapped while RecoverQA converts Mapped to Interrupted, leaving a stale mapped attempt non-terminal after crash recovery.",
+      "basis": "RecoverQA at internal/sprint/qa.go:171-183 handles Queued, Running, Synthesizing and separately Mapped to Interrupted; locks.go:83-95 ReconcileInterruptedMutation only handles Queued/Running/Synthesizing via qaStore.LoadState switch 83-95, so a crash with PhaseMapped retains a non-terminal mapped state that will be considered resumable but never reconciled to interrupted, contradicting recovery contract and potentially blocking new attempts under stale-input check.",
+      "verification_surface": "internal/sprint/qa.go:134-204, internal/sprint/locks.go:25-110 ReconcileInterruptedMutation vs RecoverQA",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Persist QAState PhaseMapped, invoke ReconcileInterruptedMutation via dead owner; observe Phase remains Mapped instead of Interrupted with blocker NextAction.",
+      "refutation_condition": "Mapped phase intentionally excluded because it has no active runtime and requires explicit RecoverQA; or VerificationStatus reconciliation covers it, or mapped has no lease to expire so not considered interrupted.",
+      "inconclusive_condition": "Cannot invoke recovery paths without runtime/lease and without mutating state.",
+      "safe_evidence_strategy": "Read both recovery functions side-by-side; trace phase enums in qa_types.go:21-35 and attempts lifecycle; review flow reconciliation comments.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Inconsistency visible in static comparison; requires executing recovery on a mapped fixture to confirm behavioral difference."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-3c0e6ff46a7cf4a536a21159",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "ApprovedQAChecks argument validation allows non-flag arguments that contain no shell metachars but are still outside budgets or escape via cleaned relative paths; attacker-controlled changed-path set could influence descriptor args via goPaths concatenation without per-path normalization check for absolute or .. after FromSlash clean.",
+      "basis": "internal/sprint/qa_prompt.go:59-87 builds descriptor Args as gofmt -d plus normalizeQAStrings(changedPaths) filtered to .go; validateQACheckDescriptor at 104-115 checks each non-flag arg via filepath.Join(target, FromSlash(arg)) and inside(target,full) but validateQAPath at 287-291 allows paths like a/b/../../c and case differences; a governed changed path that is inside target after normalization may still be validated incorrectly if caller supplies absolute-looking or ../ segments that Join cleans away, and phrasing prohibits shell syntax but does not forbid gofmt flags like -r rewrite rule injection if future descriptor adds it.",
+      "verification_surface": "internal/sprint/qa_prompt.go:59-125, qa_map.go:287-291, internal/sprint/qa.go profile enforcement",
+      "expectation_refs": [
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Supply changedPaths containing \"a/../../etc/passwd.go\" or absolute \"/tmp/x.go\" via manipulated execute evidence; observe ApprovedQAChecks returns descriptor without error or ValidateQACheckDescriptor accepts it as inside target.",
+      "refutation_condition": "normalizeQAStrings plus validateQAPath earlier in QAMap rejects such paths before they reach ApprovedQAChecks; and inside() uses Clean + Rel check that correctly rejects escaping args.",
+      "inconclusive_condition": "Cannot invoke targetIdentity or construct Service without executing Go code; path containment requires runtime Join/Clean on actual OS.",
+      "safe_evidence_strategy": "Read qa_prompt.go and qa_map.go validateQAPath; search for inside helper in sprint package; review tests for ApprovedQAChecks and qa_test.go permission checks.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static inspection shows layered validation but not proven exhaustive; need targeted unit test with crafted paths without shell execution."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-55233762a8348ad407909ae8",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "VerificationBytes symlink check via entry.Info().Mode()\u0026ModeSymlink after WalkDir may miss symlinked directories because WalkDir already follows directory symlinks depending on WalkDirFunc handling, and Info() on DirEntry for a symlinked dir may return target mode;QA path escape via symlinked verification directory not reliably rejected.",
+      "basis": "internal/sprint/qa_state.go:46-77 resolves path then WalkDir and checks entry.Info ModeSymlink; for directories, DirEntry.IsDir() follows? WalkDir by default does not follow symlinks but entry.Info for a symlink uses Lstat only if Lstat was used by WalkDir which it does, but resolve() earlier checks Lstat per component 198-207, yet VerificationBytes walks content after resolve; a symlink injected after resolve but before walk (TOCTOU) or a symlink file inside verification could be mis-measured as regular size or skipped, violating invalid_state guarantee.",
+      "verification_surface": "internal/sprint/qa_state.go:39-77, 182-211 resolve()",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Place a symlink file inside projects/.../verification/attempts and call VerificationBytes; observe it is counted as regular bytes or not rejected with invalid_state.",
+      "refutation_condition": "OS Lstat via DirEntry.Info reliably reports ModeSymlink for both file and dir symlinks and WalkDir does not descend into symlinked dirs without explicit follow; or resolve() already validates entire sprint containment and PruneAttempts rejects symlinks earlier.",
+      "inconclusive_condition": "Cannot create symlink fixtures or execute VerificationBytes without shell.",
+      "safe_evidence_strategy": "Read qa_state.go VerificationBytes, resolve, and PruneAttempts symlink handling; compare with Go WalkDir symlink semantics; inspect tests TestQAStoreRejectsSymlinkEscapeAndStaleWriter.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only code review shows reliance on Info mode bits without explicit Lstat for each entry; need filesystem test to confirm bypass."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-65f7133245ef4908b1ce738a",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "QAStore.PruneAttempts retains only RetainedAttempts total including the protected semantic attempt, not RetainedAttempts newest plus protected, allowing eviction of a valid newest attempt when the protected attempt is old.",
+      "basis": "Store at internal/sprint/qa_state.go:113-134 keeps protected in map then reuses len(keep) \u003c retain to decide retention; second loop treats protected as consuming one slot, so an old protected attempt causes one newest attempt to be removed. Documentation comment says keeps the newest bounded set plus the protected current semantic attempt, implying retain+1 when protected is outside newest.",
+      "verification_surface": "internal/sprint/qa_state.go:82-135 PruneAttempts and QAStore.Publish interaction with RetainedAttempts budget",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Create retain=2 with 3 attempts where protected is oldest (oldest mtime); observe newest non-protected attempt is deleted instead of retaining 2 newest plus protected (3 total).",
+      "refutation_condition": "Observed retention keeps min(retain, total) newest plus protected as extra (total retain+1 when protected outside newest) or explicitly documents that protected counts toward limit and test proves intended behavior.",
+      "inconclusive_condition": "Cannot create filesystem fixtures or run process without shell; retention counts cannot be observed read-only.",
+      "safe_evidence_strategy": "Read internal/sprint/qa_state.go:82-135, qa_state_test.go, and QA settings defaults; inspect sorting and keep-map logic; compare to comment at 80-82.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only inspection identified length-check logic inconsistent with comment; no execution to materialize directory mtimes and confirm eviction."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9d9534e066e8eb7a45e26740",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "SaveFlowState resurrection logic unintentionally restores a prior QA pointer after an explicit QA removal by reloading prior flow when any of Review, Smoke, or QA is nil.",
+      "basis": "internal/sprint/state.go:201-217 loads prior flow if state.Review==nil || state.Smoke==nil || state.QA==nil and copies prior.QA into new state; a caller intentionally clearing QA (e.g., reset or migration) by publishing state without QA would have prior QA silently restored, violating persistence intent and potentially resurrecting stale verification state.",
+      "verification_surface": "internal/sprint/state.go:201-233 SaveFlowState and flow QA summary validation; interaction with QAStore.Publish and SaveRecoveredState",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Load a flow with non-nil QA, then call SaveFlowState with state.QA=nil and other fields valid; observe file still contains old QA after save instead of nil.",
+      "refutation_condition": "Nil handling is conditional on operation type or caller never intentionally saves nil QA; or ValidateFlowState and callers always supply all three sub-states so branch never triggers for QA removal scenario.",
+      "inconclusive_condition": "Cannot mutate filesystem or invoke SaveFlowState without shell; persistence side-effect not observable from read-only view.",
+      "safe_evidence_strategy": "Read internal/sprint/state.go:201-233 and qa_state.go Publish flow summary path; review callers of SaveFlowState to see which fields they set.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static read shows nil coalescence is unconditional across three independent pointers; confirmation requires write-read cycle without shell."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f60e5aed4344af6fb61707a8",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "QA theory equivalence key in synthesis ignores Basis, SeverityIfConfirmed, Confirmation/Refutation conditions, causing distinct theories with same claim+verification_surface+expectation_refs to be deduplicated and to generate false contradiction detection.",
+      "basis": "internal/sprint/qa_synthesis.go:177-179 builds key from Claim, VerificationSurface, and ExpectationRefs only (lowercased and trimmed); two theories differing only in Basis or expected evidence strategy but same claim surface will be placed in same group, producing deduplicated map entry 107-109 and potentially spurious contradiction when outcomes differ (confirmed vs refuted) even though theories are not truly equivalent.",
+      "verification_surface": "internal/sprint/qa_synthesis.go:88-114, 177-180; qa_types.go ValidateQATheory required fields",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Create two theories with identical claim, verification_surface, expectation_refs but different basis and opposite outcomes; observe synthesis reports deduplicated and contradiction for same equivalence key when replacement expectation would treat them as distinct.",
+      "refutation_condition": "Product intent is to dedup on claim+ surface+ expectations only by design, as basis and strategy are considered non-identifying; documented synthesis contract confirms this narrower key.",
+      "inconclusive_condition": "Cannot run SynthesizeQA on synthetic theories without execution; read-only view cannot determine intended equivalence semantics.",
+      "safe_evidence_strategy": "Read qa_synthesis.go qaTheoryEquivalenceKey and synthesis grouping; compare with QATheoryIdentity definition in qa_types.go:435-449 which includes basis; review synthesis tests for deduplication expectations.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Key definition visible statically but product intent ambiguous; requires spec confirmation or execution of synthesis fixture."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fc9f6f54279dec0a5a189c20",
+      "shard_id": "qa-v1-shard-74191e62c5519a6e6f70e46c",
+      "claim": "decodeQAInvestigatorOutput categorizes empty or oversized terminal output as budget_exhausted rather than invalid_state, causing runOneQAShard to treat empty output as retryable budget failure and potentially mask malformed investigator behavior with incorrect recovery advice.",
+      "basis": "internal/sprint/qa.go:740-768 checks len(content)==0 || len(content)\u003elimit and returns NewQAError(QAErrorBudgetExhausted, \"decode investigator\", \"terminal output is empty or exceeds the shard output limit\", nil); empty output is semantically invalid, not budget, and the retry path in runOneQAShard 591-597 classifies invalid_output as retryable and shows detail \"investigator output retry limit exhausted after N attempts\" vs budget category, affecting qaBlocker category and NextAction; tests in qa_test.go:356-370 expect strict bounded errors but do not cover empty-content categorization.",
+      "verification_surface": "internal/sprint/qa.go:740-767, 580-617 retry and classifyQARuntimeFailure",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Call decodeQAInvestigatorOutput with empty string and limit 1024; observe error category is budget_exhausted instead of invalid_state and that subsequent runOneQAShard treats it as retryable with budget message.",
+      "refutation_condition": "Empty output is defined as budget violation in product spec, and retry handling explicitly maps invalid_output to budget_exhausted detail downstream, so distinction is intentional.",
+      "inconclusive_condition": "Cannot execute decode helper or shard runner without Go execution.",
+      "safe_evidence_strategy": "Read qa.go decodeQAInvestigatorOutput and its callers; inspect AsQAError category handling in qaBlocker and retry exhaustion messages; review qa_test.go TestQAInvestigationOutputIsStrictAndBounded.",
+      "implementation_fingerprint": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+      "attempt_history": [
+        {
+          "id": "att_c7rassrdnuqm3afxveppal7gue/qa-v1-shard-74191e62c5519a6e6f70e46c/1",
+          "number": 1,
+          "started_at": "2026-08-26T07:59:04.23044534Z",
+          "completed_at": "2026-08-26T08:00:02.266799957Z",
+          "implementation_before": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "implementation_after": "ec4a0fd58954ba0bfea51b4d3486005a87b5362f55651b433bed4b75250c7bb5",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 53061567,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "read",
+              "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Inspected flow state persistence resurrection of QA pointer",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/locks.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go",
+                "internal/sprint/qa_test.go"
+              ]
+            },
+            {
+              "kind": "read",
+              "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+              "paths": [
+                "internal/sprint/qa_synthesis.go",
+                "internal/sprint/qa_synthesis_test.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "read",
+          "summary": "Inspected QA store prune, publish, and verification bytes logic for symlink and retention handling",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Inspected flow state persistence resurrection of QA pointer",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Compared RecoverQA and ReconcileInterruptedMutation phase handling",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/locks.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed approved check catalog and prompt generation for permission and path containment",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go",
+            "internal/sprint/qa_test.go"
+          ]
+        },
+        {
+          "kind": "read",
+          "summary": "Reviewed synthesis equivalence and investigator output decoding error categorization",
+          "paths": [
+            "internal/sprint/qa_synthesis.go",
+            "internal/sprint/qa_synthesis_test.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Category choice observable in source but requires execution to confirm downstream impact on retryable flag and recovery message."
+    }
+  ]
+}

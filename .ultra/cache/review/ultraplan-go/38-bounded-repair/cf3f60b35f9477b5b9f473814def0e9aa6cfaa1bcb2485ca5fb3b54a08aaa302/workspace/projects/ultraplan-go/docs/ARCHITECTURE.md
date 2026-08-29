@@ -1,0 +1,769 @@
+# UltraPlan Go Architecture
+
+## Architecture Philosophy
+
+UltraPlan Go is module-driven, not global-layer-driven.
+
+The guiding question is not:
+
+> What technical category does this file belong to?
+
+It is:
+
+> Which module owns this behavior and state?
+
+A product module should encapsulate a complete slice of behavior:
+
+```text
+module = state + logic + workflows + validation + persistence adapters + local interface surface
+```
+
+This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, Conformance Review, QA, smoke compatibility, and repair behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
+
+CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol. The delivered grounded-planning track proves that boundary by adding `code-context` as a new sprint stage surfaced uniformly through all three interfaces. Product Phase 5 uses Sprint 35 to make run identity and observation workspace-wide, then Sprints 36–39 to add read-only QA, isolated empirical QA, adjudicated repair, and verification dogfooding through the same boundaries.
+
+## Core Rule
+
+Prefer this:
+
+```text
+internal/study owns its validation, scheduling, reports, prompts, state, and persistence
+internal/project owns project docs, project-index cataloging, and project validation
+internal/sprint owns planning artifacts including code-context, flow state, shared sprint-context prompt rendering, stage validation, controlled implementation through execute, automated review, and external-harness-backed smoke
+internal/codeextract owns its parsing, resolution, extraction, and validation behavior
+internal/workspace owns workspace discovery, path rules, and workspace validation
+internal/platform/runtime owns generic execution only
+internal/platform/process owns safe generic external executable/argv execution only
+internal/app owns local composition and shared use-case wiring for CLI, TUI, and web
+internal/tui owns terminal widgets, navigation, key handling, and rendering only
+internal/web owns loopback HTTP transport, Go templates/static assets, JSON mapping, SSE subscriptions, and browser security only
+the Sprint 35 execution-control boundary owns durable run identity, lifecycle projection, liveness, event history, and reconciliation outside every interface adapter; its final package placement is selected during sprint reasoning
+```
+
+Avoid this as the default shape:
+
+```text
+internal/validation
+internal/scheduler
+internal/reports
+internal/prompts
+internal/study
+```
+
+Global technical-layer packages look clean at first, but they tend to fracture product context and create cross-module coupling.
+
+## Target Layout
+
+Use a pragmatic Go layout: one package per product module, split by focused files first, and introduce subpackages only when the module grows enough that the boundary improves comprehension.
+
+```text
+cmd/
+  ultraplan/
+    main.go
+
+internal/
+  app/
+    app.go                  # composition root, dependency wiring, CLI adapters
+    surfaces.go             # explicit TUI/web runner dependencies constructed by cmd
+    usecases.go             # shared operations used by CLI, TUI, and web
+
+  tui/
+    app.go                  # Bubble Tea or equivalent program setup
+    model.go                # TUI state/update model
+    views.go                # terminal rendering
+    keys.go                 # key bindings and commands
+
+  web/
+    server.go               # loopback net/http lifecycle and graceful shutdown
+    routes.go               # HTML and versioned JSON route registration
+    handlers.go             # app use-case request/response mapping
+    operations.go           # HTTP operation compatibility and transient SSE delivery over durable runs
+    security.go             # Host/Origin/CSRF/body-limit/security-header policy
+    ui/                     # browser presentation assets and embedding
+      embed.go              # embedded assets and template parsing
+      templates/            # html/template presentation hierarchy
+        primitives/         # smallest reusable visual elements
+        components/         # composed domain-neutral UI pieces
+        layouts/            # shared page shells and content arrangements
+        pages/              # route-level page composition only
+      static/
+        css/                # tokens, base, primitives, components, layouts, utilities
+        js/                 # minimal progressive enhancement, operations, and SSE
+
+  platform/
+    config/
+    logging/
+    filesystem/
+    runtime/
+      runtime.go            # generic execution interface
+      agentwrap.go          # agentwrap integration
+      opencode.go           # opencode-specific adapter, if needed
+    process/
+      runner.go             # executable/argv/cwd/env/timeout/cancellation boundary
+
+  workspace/
+    domain.go
+    discovery.go
+    validation.go
+    paths.go
+    store.go
+
+  study/
+    domain.go               # Study, Source, Dimension, Report, RunState
+    service.go              # use-case coordination
+    init.go
+    run.go
+    run_all.go
+    synthesize.go
+    scheduler.go
+    state.go
+    prompts.go
+    validation.go
+    reports.go
+    summary.go
+    store_fs.go
+    cli.go
+
+  project/
+    domain.go               # Project, ProjectIndex, catalog entries
+    discovery.go
+    validation.go
+    service.go
+    store_fs.go
+    cli.go
+
+  sprint/
+    domain.go               # Sprint, PlanningStage, FlowState
+    flow.go
+    prompts.go
+    validation.go
+    state.go
+    service.go
+    store_fs.go
+    cli.go
+    review.go               # review scope, reviewer orchestration, verdict, review.md
+    review_validation.go
+    smoke.go                # harness discovery, scope, invocation, verdict, smoke.md
+    smoke_validation.go
+    code_context.go         # requirements-driven source-context stage and validation
+    prompt_context.go       # exact shared requirements/code-context prefix
+    qa.go                   # verification-phase orchestration and canonical QA summary
+    qa_state.go             # versioned maps, shards, theories, evidence, issues, and attempts
+    qa_map.go               # deterministic behavioral verification surfaces
+    qa_investigation.go     # read-only and isolated evidence-producing investigators
+    qa_adjudication.go      # evidence quality, synthesis, issue promotion, and smoke integration
+    qa_repair.go            # frozen issue repair and bounded convergence
+
+  codeextract/
+    domain.go
+    service.go
+    parser.go
+    resolver.go
+    validation.go
+    cli.go
+```
+
+Do not immediately create a large clean-architecture tree such as:
+
+```text
+internal/study/domain/
+internal/study/app/
+internal/study/ports/
+internal/study/adapters/
+internal/study/validation/
+internal/study/reports/
+internal/study/prompts/
+```
+
+That can recreate the same abstraction problem as global layers. Start with one package per module and multiple focused files. Split into subpackages later when there is a concrete readability or dependency benefit.
+
+## Module Ownership
+
+### `study`
+
+`study` is the main product module for the current build. It owns the full study lifecycle:
+
+```text
+Study definitions
+Sources
+Dimensions
+Source applicability
+Prompt creation
+Single analysis runs
+Full study runs
+Run-loop state
+Scheduling
+Per-source report paths
+Final synthesis report paths
+Study validation
+Report parsing
+Summary generation
+Filesystem persistence for study artifacts
+Local interface commands for study workflows
+```
+
+Prefer:
+
+```text
+internal/study/validation.go
+internal/study/scheduler.go
+internal/study/reports.go
+internal/study/prompts.go
+```
+
+Instead of:
+
+```text
+internal/validation/study.go
+internal/scheduler/study.go
+internal/reports/study.go
+internal/prompts/study.go
+```
+
+The study module may call platform runtime services, workspace path services, and config/logging infrastructure. Runtime and platform packages must not import `study`.
+
+### `project`
+
+`project` owns the planning root under `projects/<project>`:
+
+```text
+Project discovery and resolution
+Project docs discovery
+Roadmap discovery
+project-index.md parsing
+Catalog entries for contracts, evidence, reasoning templates, and review protocols
+Project validation
+Project status output
+Filesystem persistence for project catalog artifacts
+Local interface commands for project workflows
+```
+
+`project` may call workspace path services and config/logging infrastructure. It should not import `study`; study outputs are referenced as catalog paths, not consumed through study services.
+
+### `sprint`
+
+`sprint` owns governed planning, execute, Conformance Review, QA, smoke compatibility, and repair behavior under `projects/<project>/sprints/<slug>`:
+
+```text
+requirements.md
+sprint-index.md
+technical-handbook.md
+reasoning/*.md
+reasoning.md
+plan.md
+execute.md
+flow-state.json
+.run-state.json
+review.md
+smoke.md
+qa.md
+verification/state.json
+verification/attempts/...
+```
+
+It owns:
+
+```text
+Planning and execute stage order plus distinct verification-phase orchestration
+Stage validation
+Sprint-index subset checks against project-index.md
+Technical handbook prompt/rendering behavior
+Area reasoning prompt/rendering behavior
+Final reasoning prompt/rendering behavior
+Plan prompt/rendering behavior
+Code-context prompt, artifact, validation, repository-read boundary, and ordered-stage behavior
+Stable shared requirements/code-context prompt-prefix rendering
+Execute prompt/rendering behavior
+Plan task extraction and deterministic task IDs
+Sprint stage model-resolution rules
+Flow state persistence
+Execute run-state persistence
+Review scope, selected-contract/protocol resolution, structured reviewer orchestration, deterministic verdicts, and review.md
+Smoke review-gating, agent-driven sprint-suite authoring inside manifest-declared harness paths, enumerated coverage validation, external harness selection/invocation, evidence-link validation, deterministic verdicts, and smoke.md
+Deterministic QA mapping, bounded verification surfaces, read-only investigation, and synthesis
+Isolated evidence-producing investigation, evidence adjudication, canonical qa.md, and smoke-as-QA compatibility
+Frozen evidence-backed issue packets, repair-scope enforcement, progressive reverification, and bounded convergence
+Versioned detailed verification state outside flow-state.json summaries
+Sprint status output
+Local interface commands for planning-stage sprint workflows
+```
+
+`sprint` may depend on `project` for project catalogs, `workspace` for path rules, configuration for stage-specific runtime model selection, `platform/runtime` for generic prompt/reviewer/implementation execution, and `platform/process` for safe external harness invocation. It must not depend on `study` services, source/dimension models, study report validation, rating parsing, summary generation, or study run-loop scheduling.
+
+Phase 2 includes controlled implementation execution through `execute`. Phase 3 extends the same sprint module through `review` and `smoke`. Product Phase 5 Sprints 36–39 add QA and repair inside the sprint module while keeping Conformance Review, empirical investigation, adjudication, and production repair distinct. The sprint root keeps canonical human-readable summaries; detailed verification attempts live under `verification/`, while raw smoke evidence remains in the external harness. Evidence-backed verification issues are bounded QA records, not a general-purpose issue tracker. `sprint` must not add assignment, scheduling, remote issue synchronization, or automatic Git mutation.
+
+The delivered grounded-planning track inserts `code-context` after requirements. The sprint module resolves the implementation target through project-owned configuration, invokes generic runtime execution with read access to that target, permits only `code-context.md` as stage output, validates the Markdown, and advances flow state. A shared renderer then inserts exact requirements and code-context bytes before stage-specific instructions for later agent requests. The pack is durable prepared evidence, not an index or exclusive repository view; downstream stages may inspect more live source.
+
+### `app`
+
+`app` is the local composition and use-case boundary. It owns:
+
+```text
+CLI argument parsing and command dispatch
+shared dependency construction
+workspace/config/runtime preflight wiring
+typed use-case functions for local interfaces
+text and JSON output adapters for CLI commands
+stable error classification and process exit mapping
+review/smoke progress, cancellation, result, evidence-link, and recovery use cases shared by CLI, TUI, and web
+```
+
+As additional interfaces enter scope, command handlers should be thinned so the real operation lives in shared app use cases or product services. The desired shape is:
+
+```text
+CLI command -> parse flags -> call app use case -> render text/JSON
+TUI action  -> build request -> call app use case -> update model/view
+HTTP action -> decode/validate request -> call app use case -> render HTML/JSON/SSE
+```
+
+Avoid letting the TUI or web surface call CLI command functions that write to stdout, or shelling out to the `ultraplan` binary to parse its own output.
+
+Side-effectful surface runners should be constructed explicitly in `cmd/ultraplan` and passed into app composition. Do not add package-global mutable runner registration as each interface is introduced.
+
+### `tui`
+
+`tui` owns the interactive terminal experience:
+
+```text
+dashboard navigation
+lists, panes, filters, and detail views
+key bindings
+terminal rendering and resize behavior
+read-only artifact previews
+guarded action prompts for mutating/runtime operations
+progress/event display
+review scope, reviewer progress, findings, verdict, reruns, and review.md preview
+smoke scope, prerequisites, suite/test progress, linked harness evidence, issues, verdict, reruns, and smoke.md preview
+```
+
+It may depend on `app` use cases and domain result types. It must not own product state machines, validation rules, prompt construction, runtime execution, smoke-harness invocation, verdict synthesis, or artifact persistence. Durable workspace files and linked harness evidence remain the source of truth.
+
+If a third-party terminal UI library is used, it should stay behind `internal/tui` and not leak into product modules.
+
+### `web`
+
+`web` owns the Phase 4 local browser interface:
+
+```text
+loopback HTTP lifecycle and graceful shutdown
+HTML routes and html/template view models
+embedded templates, CSS, and minimal JavaScript
+versioned JSON request/response mapping
+Host, Origin, CSRF, body-limit, timeout, and security-header enforcement
+short-lived guarded-operation confirmations
+durable-run request/response mapping and bounded transient SSE subscribers
+safe Markdown/JSON artifact presentation
+```
+
+It may depend on `app` use-case interfaces and plain result types. It must not import `study`, `project`, `sprint`, runtime adapters, or process adapters directly. It must not own workflow state machines, validators, prompts, runtime execution, smoke invocation, verdicts, product locks, durable run identity, or durable recovery.
+
+The server operation hub is transport-lifecycle state, not product state. It may retain bounded delivery buffers and subscribers, but it cannot be the authoritative run registry or sole event history. Slow or disconnected SSE subscribers must never block an app operation. A server restart or browser-session change replaces delivery state without erasing the durable run.
+
+The server owns every worker it starts, while `internal/runcontrol` owns the durable operational record. Graceful shutdown enters draining, rejects new mutations, persists cancellation for server-owned workers through their canonical cancellation functions, waits for bounded cleanup/terminal persistence, then closes SSE/HTTP. Browser disconnect is subscription loss only and never operation cancellation. Run identity and retained observation survive the server even when the worker does not.
+
+### Sprint 35 — Durable run identity and cross-surface observability
+
+Sprint 35 introduces `internal/runcontrol`, an adapter-neutral operational boundary shared through `internal/app` by CLI, TUI, and web. It uses direct same-host SQLite writers at `.ultraplan/run-control.db`; there is no daemon, broker, leader, or multi-host guarantee:
+
+```text
+accept run durably before starting work
+assign stable run / attempt / stage / task correlations
+publish one workspace-wide lifecycle projection
+record sanitized monotonically ordered events before fan-out
+track owner lease, heartbeat, fencing, and process/runtime identity
+route authorized idempotent cancellation to the current owner
+arbitrate exactly one terminal outcome
+reconcile stale, interrupted, and cleanup-uncertain work conservatively
+apply bounded retention with explicit cursor gaps and tombstones
+```
+
+Owners use exact process-birth identity, 15-second leases, 5-second durable heartbeats, repository-allocated fencing generations, and a 45-second post-expiry reconciliation grace. Work is never adopted after owner loss. Reconciliation may prove interruption or cleanup uncertainty, but never success. Lifecycle, liveness, and product status remain separate projections.
+
+The store uses `modernc.org/sqlite`, WAL, `synchronous=FULL`, private `0700`/`0600` storage, schema-versioned migrations with bounded backups, ordered commit-before-delivery events, explicit replay gaps, seven-day full history, thirty-day tombstones, and a 512 MiB hard quota with 16 MiB reserved headroom. Product modules still decide whether their own stages and artifacts succeeded. Run control records execution facts; it does not replace sprint flow state, study run state, execute task state, Markdown artifacts, Git/source state, or external smoke evidence. Operational SQLite does not select authored-product persistence.
+
+The first web UI is server-rendered and progressively enhanced. A frontend framework or JavaScript build pipeline is not part of the Phase 4 foundation; add one only after real client-side complexity earns it.
+
+Sprint 32 formalizes the template hierarchy:
+
+```text
+page -> layout -> component -> primitive
+```
+
+- **Primitives** are presentation-only atoms such as buttons, badges, links, icons, and code blocks.
+- **Components** combine primitives into reusable UI such as breadcrumbs, validation summaries, artifact previews, operation status, progress panels, tables, empty states, and error panels.
+- **Layouts** define shared shells and arrangements such as base, dashboard, and detail layouts.
+- **Pages** are route-level compositions that bind explicit typed view models to layouts and components.
+
+Dependencies flow downward only. A primitive must not render a component, and no template reads workspace files, calls an app use case, interprets product state, or performs transport validation. Handlers map typed app results into explicit page/component view models before rendering.
+
+Template definitions use stable, namespaced names such as `primitive/button`, `component/breadcrumb`, `layout/base`, and `page/sprint` so parsing the embedded tree cannot silently collide. CSS follows the same layering and design tokens remain presentation concerns. JavaScript stays dependency-free and capability-focused; it enhances server-rendered behavior but never becomes the authoritative router, store, or workflow engine.
+
+### `platform/runtime`
+
+Runtime is platform-level because it is generic execution infrastructure, not study behavior.
+
+It may understand:
+
+```text
+Prompt
+Working directory
+Model
+Timeout
+Environment
+Permissions
+Expected output path
+Execution events
+Execution result
+```
+
+It must not understand:
+
+```text
+Study
+Project
+Sprint
+Dimension
+Source
+Synthesis gating
+Report semantics
+Study state machines
+Project catalog semantics
+Sprint stage semantics
+Summary generation
+```
+
+The dependency direction is:
+
+```text
+study -> platform/runtime
+sprint -> platform/runtime
+platform/runtime -> no product modules
+```
+
+### `platform/process`
+
+The process package is a generic volatile-boundary adapter used by Phase 3 to run the cataloged smoke harness. It may understand:
+
+```text
+Executable
+Argument vector
+Working directory
+Allowlisted environment
+Timeout and context cancellation
+Stdout/stderr capture limits
+Exit code and process-tree cleanup
+```
+
+It must not understand projects, sprints, reviews, smoke levels, harness issue semantics, verdicts, or `review.md`/`smoke.md`. Those remain in `internal/sprint`.
+
+The dependency direction is:
+
+```text
+sprint -> platform/process
+platform/process -> no product modules
+```
+
+Runtime supervision is delegated to `agentwrap`. UltraPlan's runtime integration should translate generic execution requests into agentwrap requests and translate generic results/events back to UltraPlan's platform-facing runtime model.
+
+### `workspace`
+
+`workspace` owns where UltraPlan is operating and how workspace paths are resolved.
+
+It owns:
+
+```text
+Root discovery
+Workspace marker/config lookup
+Canonical workspace paths
+Workspace-level validation
+Path safety rules
+Embedded prompt/template default registry and override resolution
+Opt-in default materialization
+```
+
+Product modules own the semantics of their prompts and generated artifacts. The workspace package owns the mechanical asset policy:
+
+```text
+readable workspace file at prompts/<name> or templates/<name>
+  -> intentional local override
+otherwise
+  -> embedded binary default
+```
+
+`init-workspace` must not export prompt or template files. `ultraplan defaults install` is the explicit operation for materializing editable copies. A workspace without `prompts/` or `templates/` remains complete and operational, and embedded Phase 3 defaults are updated in the sprint that implements the corresponding stage.
+
+It should not know:
+
+```text
+Which dimensions exist
+How study synthesis works
+How report summaries are generated
+How code extraction parses citations
+What review or smoke content means
+```
+
+Boundary:
+
+```text
+workspace = where am I and where are things?
+study = what study work happens here?
+```
+
+### `codeextract`
+
+`codeextract` owns code-reference extraction as a distinct product capability.
+
+It owns:
+
+```text
+Parsing report citations
+Resolving referenced source files
+Extracting source snippets
+Producing extraction output
+Validating extraction requests
+CLI commands for extraction workflows
+```
+
+It may consume report paths or metadata produced by `study`, but it should not become a generic `reports` package unless the behavior is genuinely shared by multiple modules.
+
+## Dependency Rules
+
+Use these rules to keep module boundaries clear:
+
+```text
+Product modules may depend on platform packages.
+Product modules may depend on workspace when they need workspace paths.
+Product modules should not depend on other product modules unless there is a clear product relationship.
+Platform packages must not depend on product modules.
+Shared helpers must not become a dumping ground for product behavior.
+Runtime must not import study, project, or sprint.
+```
+
+Expected dependency direction for the current build:
+
+```text
+cmd/ultraplan -> internal/app
+cmd/ultraplan -> internal/tui + internal/web for explicit interface construction
+internal/app -> product modules + platform modules
+internal/tui -> internal/app
+internal/web -> internal/app
+study -> workspace
+study -> platform/runtime
+study -> platform/config/logging/filesystem as needed
+project -> workspace
+project -> platform/config/logging/filesystem as needed
+sprint -> project
+sprint -> workspace
+sprint -> platform/runtime
+sprint -> platform/config/logging/filesystem as needed
+codeextract -> workspace
+codeextract -> platform/filesystem/logging as needed
+workspace -> platform/filesystem as needed
+platform/* -> no product modules
+```
+
+`internal/web` must not become a parallel application layer. HTTP DTOs, templates, confirmations, and SSE subscriptions are interface concerns; product rules remain behind app use cases. `internal/web` must not call CLI handlers, parse CLI output, or execute the UltraPlan binary.
+
+## Encapsulation in Practice
+
+A module should expose a small use-case-oriented surface and hide internal helpers.
+
+Example shape:
+
+```go
+type Service struct {
+    store   Store
+    runtime Runtime
+    clock   Clock
+}
+
+func (s *Service) InitStudy(ctx context.Context, req InitStudyRequest) error
+func (s *Service) RunDimension(ctx context.Context, req RunDimensionRequest) error
+func (s *Service) RunAll(ctx context.Context, req RunAllRequest) error
+func (s *Service) Synthesize(ctx context.Context, req SynthesizeRequest) error
+```
+
+Internally, the module can call helpers such as:
+
+```go
+validateStudy(...)
+buildAnalysisPrompt(...)
+resolveSources(...)
+scheduleRuns(...)
+parseReports(...)
+writeRunState(...)
+```
+
+Callers should not need to know those helpers exist.
+
+## Interface Guidance
+
+Interfaces should appear at external or volatile boundaries, not everywhere by default.
+
+Good interface boundaries:
+
+```text
+Runtime execution
+Filesystem persistence where tests need fakes
+Clock/time
+External process execution
+```
+
+Avoid introducing interfaces for every internal helper. If a function is purely internal to a module and not volatile, keep it concrete.
+
+## Contract Interpretation For Go Sprints
+
+The shared contracts are production standards. Apply them through this Go module architecture rather than literal Python-style package shapes such as `use_cases/ports.py` or `bootstrap.py`.
+
+Current CLI foundation and study-discovery sprints may use concrete local filesystem collaborators when:
+
+```text
+The side effect is local and narrow.
+The package boundary is explicit.
+The behavior is tested through the public CLI or module surface.
+The design does not block later introduction of runtime, persistence, or process-execution ports.
+```
+
+Do not reject current-sprint code only because it lacks a port or registrar. Reject it when a concrete dependency crosses a volatile boundary, hides side effects, makes tests require private mutation, or couples product modules in a way this document does not allow.
+
+The following become mandatory when their capability enters scope:
+
+```text
+Runtime/provider execution: context propagation, cancellation, runtime ports, correlation IDs, retry ownership, bounded provider calls, and cost metadata.
+Batch/run-loop execution: bounded concurrency, durable task state, diagnostics, terminal failure state, and resumability.
+Stable public JSON/release: canonical structured error payloads, stable machine-readable error codes, scenario tests, documented compatibility, and migration/rejection behavior for durable formats.
+```
+
+`study -> workspace` is an allowed dependency for workspace path resolution and safety helpers. It is not a cross-module violation unless `study` starts depending on workspace-owned behavior that knows study semantics or reaches around the exported workspace package API.
+
+## Reuse Boundary For Phase 2
+
+Reuse infrastructure, not study semantics.
+
+Good candidates for reuse:
+
+```text
+workspace discovery and path safety
+config loading, precedence, and redaction
+generic runtime prompt execution
+command exit codes and output discipline
+atomic file and JSON writes
+durable task-state helpers when they remain product-neutral
+small result/diagnostic structs without product semantics
+```
+
+Do not extract these from `study` for Phase 2:
+
+```text
+study Service
+Source and Dimension models
+study prompt builders
+report validation
+rating parsing
+summary generation
+run-loop scheduling
+task state machines
+```
+
+If two modules need the same mechanical filesystem behavior, extract the mechanical helper. If two modules merely have similar product workflows, keep the behavior in the owning modules until repeated concrete implementations prove a shared abstraction is stable. Execute task semantics belong to `internal/sprint`; do not move them into a global scheduler or workflow package.
+
+## Product Phase 5 Sprints 36–39 And Gated Architecture Evolution
+
+The implementation plans describe a long-term direction, not permission to build every abstraction now. The architectural order is:
+
+```text
+filesystem-backed observable web
+-> code-context through shared app/web boundaries
+-> durable workspace-wide run control and observation
+-> read-only QA decomposition and synthesis
+-> isolated empirical QA and adjudication
+-> bounded repair
+-> QA and repair dogfooding and hardening
+-> minimal content identity and revision-aware provenance
+-> joint content and QA schema dogfooding
+-> measured lexical retrieval
+-> proven product persistence boundary and optional SQLite
+-> optional derived knowledge graph
+-> authority decision, cloud, and Aren tools
+```
+
+### Sprint 36 — Read-only QA decomposition and synthesis
+
+`internal/sprint` owns deterministic verification-surface mapping, read-only investigators, durable theory outcomes, bounded cross-shard follow-up, and global synthesis. `VerificationPhase` remains distinct from `PlanningStage`; detailed QA state remains outside `flow-state.json`. Investigators cannot write production or verification code, promote issues, or repair code.
+
+### Sprint 37 — Evidence-producing QA and smoke integration
+
+`internal/sprint` coordinates isolated investigation workspaces and evidence adjudication while reusable sandbox/copy/process mechanics remain at platform boundaries. Writable work fails closed unless isolation, target identity, containment, and cleanup are proven. Smoke is wrapped as a QA executor without moving harness authority or weakening compatibility and safety guarantees.
+
+### Sprint 38 — Manual repair and bounded automatic repair
+
+Repair remains a sprint-owned verification phase consuming frozen adjudicated issue packets. It enforces allowed paths, preserves evidence and governed expectations, and progressively reverifies changes. Automatic convergence is layered on only after manual repair and has explicit cycle, reopening, scope, severity, cleanup, and stall limits.
+
+### Sprint 39 — QA and repair dogfooding and hardening
+
+Sprint 39 adds no broad new abstraction. It exercises the Sprint 36–38 boundaries across real multi-package and failure-mode cases, measures evidence quality and convergence, hardens cross-surface operation and recovery, and supplies representative artifacts for the later content contract. Automatic repair remains disabled when convergence evidence is insufficient.
+
+### Authoritative versus derived state
+
+Until an explicit authority decision changes it:
+
+```text
+Markdown artifacts                  = authoritative authored content
+flow/run JSON                       = authoritative machine state for owned concerns
+durable operational run records     = authoritative execution identity, liveness, event order, and terminal observation for their concern
+Git checkout                        = authoritative source and implementation workspace
+browser views                       = app-mediated projections
+SSE connections                     = transient delivery only
+search records / graph projections  = derived, disposable, and rebuildable
+```
+
+Never allow the browser, retrieval index, or graph to become a shadow source of truth.
+
+### Content and retrieval boundary
+
+An optional focused content-metadata package may eventually parse versioned frontmatter, stable IDs, semantic blocks, relationships, and revision-aware evidence while preserving legacy Markdown bodies. It must not become a universal product artifact service or persistence layer. Explicit project/sprint selections continue to govern agent context; retrieval may propose or display candidates but cannot silently alter governance.
+
+Derived retrieval begins with deterministic semantic chunks and a measured lexical baseline. Embeddings, automatic prompt injection, and hosted indexing require separate evidence. Every record retains exact authoritative text, status, authority, provenance, source revision, and rebuild version.
+
+### Verification and repair boundary
+
+Keep Conformance Review, empirical QA, adjudication, and repair distinct:
+
+- Conformance Review remains read-only and preserves `review`/`review.md` compatibility.
+- Sprint 36 introduces `VerificationPhase`, deterministic bounded verification surfaces, read-only investigation, durable theory outcomes, and global synthesis without issue promotion.
+- QA state may use schema-versioned verification-scoped identifiers before the later global content contract; compatibility and migration remain explicit.
+- Sprint 37 allows evidence-writing investigators only inside validated isolated workspaces and adds global adjudication before issue promotion.
+- Writable investigators require isolated validated workspaces; isolation uncertainty blocks mutation.
+- A global adjudicator grounds expectations, rejects invalid/flaky evidence, groups root causes, and alone promotes repairable issues.
+- Sprint 37 absorbs smoke only as a QA executor after preserving protocol, containment, evidence, cancellation, cleanup, and compatibility guarantees.
+- Sprint 38 permits production repair only from frozen adjudicated issue packets.
+- Repair consumes frozen issue packets, changes only allowed production scope, cannot weaken evidence or requirements, and is progressively reverified.
+- Automatic repair has fixed cycle/reopen limits and explicit `blocked`, `escalated`, and `stalled` outcomes.
+- Sprint 39 dogfoods evidence quality, isolation, convergence, cancellation, recovery, and cross-surface usability before content identity or wider automation proceeds.
+
+Detailed QA attempt state belongs outside `flow-state.json`; flow state keeps canonical summaries, freshness, verdicts, and pointers.
+
+### Persistence boundary
+
+Operational run durability in Sprint 35 does not decide the later authority of authored product artifacts. The run store may use the smallest mechanism that proves concurrent acceptance, ordered append, liveness, replay, bounded retention, and recovery, while Markdown and package-owned workflow artifacts retain their existing authority.
+
+Do not inject a generic virtual filesystem. If concrete browser workflows prove the need for alternate product-artifact persistence, define focused interfaces in the consuming product modules—for example `project.Repository`, `sprint.Repository`, and `study.Repository`. Repository contracts express semantic atomic stage commits, immutable artifact revisions, and optimistic concurrency, not paths, SQL, or transaction handles.
+
+Filesystem and any later SQLite adapters must pass shared contract suites. Persistence selection occurs once at composition, one authority is active at a time, and migration/import/export is explicit. Source repositories, Git operations, code search, builds/tests, and agent execution workspaces remain real filesystems. No silent dual writes or synchronization precede an explicit authority decision.
+
+### Knowledge graph boundary
+
+A future graph starts, if justified, as a deterministic in-memory read-only projection over explicit artifact IDs and relationships. Every material edge carries provenance, origin (`explicit`, `structural`, `deterministic`, or visibly weaker `inferred`), status, and revision. Inferred edges cannot satisfy governance, completion, implementation, or verification. Persistent graph storage remains a disposable index and a dedicated graph database is not assumed.
+
+### Stop/go rule
+
+Each boundary is earned by the next demonstrated use case. Stop when metadata becomes unreliable bureaucracy, QA isolation/evidence is uncertain, repair does not converge, lexical search answers the real corpus, SQLite lacks concrete product value, or graph traversal does not outperform direct evidence inspection.
+
+## Final Principle
+
+```text
+Platform owns generic capabilities.
+Modules own product behavior.
+Logic stays near the state it transforms.
+Interfaces appear only at external or volatile boundaries.
+```

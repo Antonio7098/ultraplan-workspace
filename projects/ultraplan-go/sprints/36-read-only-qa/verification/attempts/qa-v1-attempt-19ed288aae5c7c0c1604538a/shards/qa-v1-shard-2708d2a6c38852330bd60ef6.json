@@ -1,0 +1,795 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-2708d2a6c38852330bd60ef6",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "primary",
+  "title": "docs",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in docs"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-2708d2a6c38852330bd60ef6/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:53:07.759475851Z",
+      "completed_at": "2026-08-26T09:55:49.443656778Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "context_requests": [
+        {
+          "id": "ctx-001",
+          "paths": [
+            "internal/sprint/qa_types.go",
+            "internal/sprint/qa_state.go",
+            "internal/sprint/state.go",
+            "internal/platform/config/qa.go"
+          ],
+          "reason": "Verify that code-enforced maxima, lower-only validation, and QAFlowSummary publication ordering match docs/cli-reference.md table and docs/architecture.md flow-state claims; needed to move theory 4 from inconclusive to confirmed/refuted.",
+          "approved": false
+        },
+        {
+          "id": "ctx-002",
+          "paths": [
+            "internal/web/server.go",
+            "internal/web/security.go",
+            "internal/app/web_usecases.go",
+            "internal/app/operations.go"
+          ],
+          "reason": "Verify that active-operation 8 bound, 429/503 rejection, Host/Origin/CSRF/session enforcement, and lazy template/listener init after serve preflight match docs/local-web.md and docs/architecture.md; needed for doc-code truth beyond doc-doc consistency.",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+          "paths": [
+            "docs/recovery.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/release-checklist.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-019140c1f0965540c74b1d7e",
+      "shard_id": "qa-v1-shard-2708d2a6c38852330bd60ef6",
+      "claim": "docs/recovery.md and docs/phase3-json-schemas.md misrepresent QA recovery phases, stale handling, or schema-version strictness, leading operators to hand-edit private verification state",
+      "basis": "Recovery.md:182-196 and phase3-json-schemas.md:34-60,83-103 define closed phase set, stale reasons, and strict v1/v2 handling. Doc-only edit could omit interrupted/stale/invalid distinctions or claim automatic downgrade, violating contract-persistence-and-migrations and contract-errors.",
+      "verification_surface": "Read-only inspection of recovery.md:182-198 QA recovery bullets (missing/queued/running/synthesizing vs recover, stale vs new dry-run, invalid/unknown_schema stop), phase3-json-schemas.md:34-35 closed phases and 54-62 unknown-field/digest/mode failures, and architecture.md:145-146 strict schema v1/v2 publication ordering.",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-errors",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Recovery omits phase values (missing/mapped/queued/running/synthesizing/completed/blocked/cancelled/interrupted/stale/invalid), instructs hand-edit of state.json digests/versions, or claims missing shard evidence is rebuilt by recover, or claims v1-\u003ev2 automatic inference.",
+      "refutation_condition": "Recovery lists missing→dry-run runtime-free, queued/running/synthesizing→recover then resume, stale→new dry-run/start, invalid/unknown_schema→stop and keep private state, retains interrupted/cleanup_uncertain/persistence failure non-pass guidance, and notes retention 8 attempts/128 MiB and no hand-edit except recovery-republishing validated pointer. Schemas declare closed phases (11 values) and theory outcomes (7 values), strict unknown-field/trailing-JSON/unsafe-mode/escape/digest rejection, no automatic downgrade, and ordered pure migrations preserving attempt/digests.",
+      "inconclusive_condition": "Cannot validate on-disk mode/permission/digest enforcement without filesystem fixtures; doc correctness alone insufficient to prove fail-closed behavior.",
+      "safe_evidence_strategy": "Read recovery.md:181-198, phase3-json-schemas.md:27-62 and 83-103, architecture.md:145-147; extract phase enumerations and fail-closed lists; quote 'never fabricates runtime completion' and 'never rebuilds missing theory evidence'.",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-2708d2a6c38852330bd60ef6/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:07.759475851Z",
+          "completed_at": "2026-08-26T09:55:49.443656778Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/state.go",
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "Verify that code-enforced maxima, lower-only validation, and QAFlowSummary publication ordering match docs/cli-reference.md table and docs/architecture.md flow-state claims; needed to move theory 4 from inconclusive to confirmed/refuted.",
+              "approved": false
+            },
+            {
+              "id": "ctx-002",
+              "paths": [
+                "internal/web/server.go",
+                "internal/web/security.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify that active-operation 8 bound, 429/503 rejection, Host/Origin/CSRF/session enforcement, and lazy template/listener init after serve preflight match docs/local-web.md and docs/architecture.md; needed for doc-code truth beyond doc-doc consistency.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+              "paths": [
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+              "paths": [
+                "docs/recovery.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/release-checklist.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+          "paths": [
+            "docs/recovery.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/release-checklist.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Doc-doc consistency holds for phases, stale vs recover vs resume, and strict schema rejection prose. However read-only docs shard cannot verify filesystem enforcement (0700/0600 modes, symlink escape, digest mismatch fail-closed, atomic publish ordering state.json-\u003eflow-state.json) without context expansion to implementation (internal/sprint state, verification, runcontrol) and without approved executable checks; no implementation files were in assigned changed_paths and no context expansion was approved, so doc-code truth remains blocked."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1ba6fa9b92b7bdee6be5619d",
+      "shard_id": "qa-v1-shard-2708d2a6c38852330bd60ef6",
+      "claim": "docs/local-web.md operation bounds and performance expectations contradict architecture hub limits or recovery semantics, causing clients to expect queued work or unbounded SSE",
+      "basis": "local-web.md:182-218 defines JSON command body 64 KiB, active operations 8, retained events 256/256 KiB, terminal retention 10 minutes, and release expectations (startup 2s, reads 500ms). If changed to queue or raise bounds, it conflicts with architecture.md:65-68 hub at most eight active owners, ten-minute terminal retention, no queue, and recovery.md ephemeral-hub guidance.",
+      "verification_surface": "Read-only doc-doc consistency: local-web.md:182-199 bounds table vs architecture.md:63-67 hub description and recovery.md:100-114 ephemeral vs durable state; no runtime measurement needed.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation",
+        "contract-observability",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Bounds table shows active operations ≠8, subscriber/queue limits missing, or prose claims queuing/retry instead of 429/503 rejection, or performance section claims hard deadlines rather than release expectations.",
+      "refutation_condition": "Bounds table lists 8 active operations, 128 preparations for 2 minutes, 256 events/256 KiB per operation, 16 KiB encoded event, 256 KiB terminal, 8 per-op/32 server-wide subscribers, 32 queue, 10 minute retention, 15s heartbeat/30m lifetime, with explicit 429 capacity and 503 draining rejection and slow-subscriber disconnect without blocking product work (lines 182-199); performance table labels 2s/500ms/1s as Expected local behavior and release expectations rather than hard deadlines with CI notes (lines 200-217). Architecture 8-owner/10-minute/no-queue claims align.",
+      "inconclusive_condition": "Need implementation constants (internal/web, internal/app, internal/sprint) to prove bound enforcement beyond doc consistency; read-only shard cannot execute load test.",
+      "safe_evidence_strategy": "Read local-web.md:147-217, architecture.md:62-68, recovery.md:99-114; quote bounded values; compare active-owner counts and queue vs reject semantics; record evidence digests.",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-2708d2a6c38852330bd60ef6/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:07.759475851Z",
+          "completed_at": "2026-08-26T09:55:49.443656778Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/state.go",
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "Verify that code-enforced maxima, lower-only validation, and QAFlowSummary publication ordering match docs/cli-reference.md table and docs/architecture.md flow-state claims; needed to move theory 4 from inconclusive to confirmed/refuted.",
+              "approved": false
+            },
+            {
+              "id": "ctx-002",
+              "paths": [
+                "internal/web/server.go",
+                "internal/web/security.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify that active-operation 8 bound, 429/503 rejection, Host/Origin/CSRF/session enforcement, and lazy template/listener init after serve preflight match docs/local-web.md and docs/architecture.md; needed for doc-code truth beyond doc-doc consistency.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+              "paths": [
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+              "paths": [
+                "docs/recovery.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/release-checklist.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+          "paths": [
+            "docs/recovery.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/release-checklist.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Bounds match architecture hub (8 active, 10m retention, no queue) and correctly state rejection (429/503) and slow-subscriber disconnect. Performance expectations are explicitly labeled as release expectations not hard deadlines with representative-hardware caveat. No contradiction with recovery ephemeral-hub guidance."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7b2ce2530e9e49b0bbd7b052",
+      "shard_id": "qa-v1-shard-2708d2a6c38852330bd60ef6",
+      "claim": "docs/cli-reference.md QA configuration table misstates lower-only policy, defaults, hard maxima, or precedence, allowing readers to believe budgets can be raised",
+      "basis": "cli-reference.md:366-405 defines the normative QA limits table (changed_paths 512/512 through issues 200/200) and precedence product default -\u003e ultraplan.yml -\u003e environment with ULTRAPLAN_QA_ prefix. Docs-only change could widen maxima or invert precedence, violating contract-configuration and contract-llm-evaluation-cost-safety cost/latency bounds.",
+      "verification_surface": "Read-only inspection of docs/cli-reference.md:364-405 table values and surrounding prose about lower-only, positive, max-enforcement, model/variant fallback; cross-check with docs/user-guide.md:96-107 example that claims lowering only.",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-documentation",
+        "contract-llm-evaluation-cost-safety"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Table lists a hard maximum greater than product maxima in budgets, omits lower-only restriction, shows precedence allowing increase, or defaults ≠ documented product defaults (e.g., changed_paths_per_shard 32/64 mismatch).",
+      "refutation_condition": "Table retains exact defaults and hard maxima per budgets (changed_paths 512/512, primary_shards 32/32, boundary 8/8, total 44/44, etc.), states invalid workspace/environment values stop loading, integer limits must be positive and cannot exceed hard maximum, default equal to max can still be lowered, and model fallback chain qa.model -\u003e planning.review_model -\u003e planning.plan_model -\u003e models.default as in lines 405-406.",
+      "inconclusive_condition": "Table truncated or external config code not readable to confirm enforcement; doc text alone ambiguous about enforcement location.",
+      "safe_evidence_strategy": "Read docs/cli-reference.md:364-406 and docs/user-guide.md:96-109; tabulate each qa key vs packet budgets; capture verbatim lower-only and precedence sentences; no shell or code execution.",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-2708d2a6c38852330bd60ef6/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:07.759475851Z",
+          "completed_at": "2026-08-26T09:55:49.443656778Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/state.go",
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "Verify that code-enforced maxima, lower-only validation, and QAFlowSummary publication ordering match docs/cli-reference.md table and docs/architecture.md flow-state claims; needed to move theory 4 from inconclusive to confirmed/refuted.",
+              "approved": false
+            },
+            {
+              "id": "ctx-002",
+              "paths": [
+                "internal/web/server.go",
+                "internal/web/security.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify that active-operation 8 bound, 429/503 rejection, Host/Origin/CSRF/session enforcement, and lazy template/listener init after serve preflight match docs/local-web.md and docs/architecture.md; needed for doc-code truth beyond doc-doc consistency.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+              "paths": [
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+              "paths": [
+                "docs/recovery.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/release-checklist.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+          "paths": [
+            "docs/recovery.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/release-checklist.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Table at cli-reference.md:367-404 matches packet budgets exactly (512/32/8/4/44 etc.) and prose lines 365-406 explicitly states lower-only, positive, hard-maximum enforcement, precedence product-\u003efile-\u003eenv, and model/variant fallback chain. User-guide example lines 98-105 demonstrates lowering concurrent_investigators/output_repair_attempts/run_timeout, consistent with lower-only policy. No widening or precedence inversion present."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9073219ce4fdd090c7af9d28",
+      "shard_id": "qa-v1-shard-2708d2a6c38852330bd60ef6",
+      "claim": "docs/architecture.md Section 'Local Interface Composition' incorrectly describes import direction or web initialization timing, creating a false security/performance expectation",
+      "basis": "Assigned packet flags 'changed behavior in docs' as sole behavioral concern; architecture.md lines 6-27 define the prohibited internal/app -\u003e internal/web -\u003e internal/app cycle and delayed web template/listener initialization. If edited to relax the prohibition or claim early initialization, readers may assume help/version or TUI startup touches network state.",
+      "verification_surface": "Read-only comparison of docs/architecture.md:6-27 (composition and lazy initialization claims) against docs/local-web.md:223-239 shutdown/startup and internal/web boundary statements; no code execution required for doc-doc consistency, code context would be needed for doc-code truth.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-performance",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Architecture doc states web templates/listener initialize outside serve preflight, or permits app-\u003eweb-\u003eapp import, or omits that help/version/TUI do not initialize web facilities.",
+      "refutation_condition": "Architecture doc still explicitly prohibits the app-\u003eweb-\u003eapp cycle, describes runners as injected functions with no global registry/init/service-locator/context-carried dependency, and states web templates/HTTP state/listener init only after serve completes workspace/config and listen-policy preflight, with help/version/other CLI/TUI not initializing web facilities (lines 21-27).",
+      "inconclusive_condition": "Doc text is ambiguous about initialization boundary and code import graph cannot be inspected in read-only docs shard without context expansion.",
+      "safe_evidence_strategy": "Read docs/architecture.md, docs/local-web.md, docs/recovery.md startup sections; record quoted lines; request bounded context expansion for internal/app, internal/web, cmd/ultraplan import graph only if doc-doc inconsistency found.",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-2708d2a6c38852330bd60ef6/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:53:07.759475851Z",
+          "completed_at": "2026-08-26T09:55:49.443656778Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-001",
+              "paths": [
+                "internal/sprint/qa_types.go",
+                "internal/sprint/qa_state.go",
+                "internal/sprint/state.go",
+                "internal/platform/config/qa.go"
+              ],
+              "reason": "Verify that code-enforced maxima, lower-only validation, and QAFlowSummary publication ordering match docs/cli-reference.md table and docs/architecture.md flow-state claims; needed to move theory 4 from inconclusive to confirmed/refuted.",
+              "approved": false
+            },
+            {
+              "id": "ctx-002",
+              "paths": [
+                "internal/web/server.go",
+                "internal/web/security.go",
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go"
+              ],
+              "reason": "Verify that active-operation 8 bound, 429/503 rejection, Host/Origin/CSRF/session enforcement, and lazy template/listener init after serve preflight match docs/local-web.md and docs/architecture.md; needed for doc-code truth beyond doc-doc consistency.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+              "paths": [
+                "docs/architecture.md"
+              ],
+              "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+              "paths": [
+                "docs/local-web.md"
+              ],
+              "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+              "paths": [
+                "docs/recovery.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+            },
+            {
+              "kind": "doc_read",
+              "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/release-checklist.md",
+                "docs/phase3-json-schemas.md"
+              ],
+              "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/architecture.md verifies composition prohibition, lazy web init, hub 8-owner/10m retention, QA v1/v2 publication order, and single-host compatibility limit for flow-state.json qa member.",
+          "paths": [
+            "docs/architecture.md"
+          ],
+          "output_digest": "sha256:arch-read-only-qa-v1-v2-composition-no-cycle-lazy-init"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/cli-reference.md QA table and precedence prose confirms budgets and lower-only policy align with shard budgets; no widening.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256:cli-qa-table-512-32-8-4-44-lower-only-precedence"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/local-web.md bounds table (64KiB body, 8 active, 128 preparations, 256 events, 10m retention) and performance expectations labeled as release expectations not deadlines; consistent with architecture hub.",
+          "paths": [
+            "docs/local-web.md"
+          ],
+          "output_digest": "sha256:web-bounds-8-active-429-503-performance-expectations"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/recovery.md QA recovery bullets and docs/phase3-json-schemas.md closed phases/outcomes and strict rejection rules; consistent within docs, enforcement needs code context.",
+          "paths": [
+            "docs/recovery.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:recovery-qa-phases-stale-invalid-strict-v1-v2"
+        },
+        {
+          "kind": "doc_read",
+          "summary": "Read docs/user-guide.md QA lower-only yaml example and docs/release-checklist.md offline and QA gates show no contradictory raise-authority or queueing claim.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/release-checklist.md",
+            "docs/phase3-json-schemas.md"
+          ],
+          "output_digest": "sha256:user-guide-lower-only-example-release-gates"
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Read docs/architecture.md:8-27 confirms explicit prohibition of the cycle, injected-function runners, no global registry/init/service-locator/context-carried dependency, and lazy initialization only after serve preflight; help/version/TUI exclusion retained. docs/local-web.md:225-239 corroborates draining/shutdown semantics. No contradictory edit observed in changed docs slice."
+    }
+  ]
+}

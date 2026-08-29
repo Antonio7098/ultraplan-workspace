@@ -1,0 +1,1968 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "primary",
+  "title": "internal/sprint",
+  "changed_paths": [
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_adjudication.go",
+    "internal/sprint/qa_investigation.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/smoke_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/qa_adjudication_test.go",
+    "internal/sprint/qa_investigation_test.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/smoke.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/sprint"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:23:08.415714017Z",
+      "completed_at": "2026-08-28T11:26:04.366180388Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+          "exit_code": 0,
+          "duration": 39721784,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        },
+        {
+          "check_id": "go-source-integrity",
+          "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+          "exit_code": 0,
+          "duration": 0,
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 45,
+      "retained_events": 45,
+      "observed_tool_calls": 20,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1c05f0d62489df883ddf1b5f",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "SmokeProgress events from RunSmoke are translated into QAProgress events via emitQA, preserving nil-safety for req.Progress.",
+      "basis": "qa.go:299-301 wraps the QA progress callback so each SmokeProgress is re-emitted as a QAProgress with phase=QAPhaseRunning, event=\"smoke_\"+phase, message preserved; emitQA at qa.go:1203-1207 short-circuits when progress is nil.",
+      "verification_surface": "internal/sprint/qa.go:299-301,1203-1207",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "A Suite==\"smoke\" RunQA invocation with nil Progress does not panic and emits no QAProgress events; a non-nil Progress receives one QAProgress per emitted SmokeProgress with the smoke_\u003cphase\u003e event prefix.",
+      "refutation_condition": "A nil req.Progress causes a panic during Suite==\"smoke\" smoke delegation, or smoke events are dropped without translation.",
+      "inconclusive_condition": "Smoke is short-circuited (dry-run / blocked / not-applicable) and emits no SmokeProgress, masking the wiring.",
+      "safe_evidence_strategy": "Verify the Progress wrapper is closure-safe and that emitQA handles nil at qa.go:1203.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "emitQA at qa.go:1203 explicitly checks for nil progress before invocation; the wrapper at qa.go:299-301 unconditionally forwards to emitQA, so nil req.Progress is handled by the emitQA guard."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2bf0d8cf015723d196f072c0",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "When QARunRequest.Suite is \"smoke\", RunQA delegates entirely to RunSmoke and returns the same SmokeResult object, preserving verdict, protocol, scope kind, and scope identity.",
+      "basis": "qa.go:289-310 executes a dedicated branch that constructs a SmokeRequest wrapping req.Progress and forwards it to s.RunSmoke, then returns QARunResult{Smoke: \u0026smoke}; no transformation is applied to the smoke value before returning.",
+      "verification_surface": "internal/sprint/qa.go:289-310; internal/sprint/smoke_test.go:367-373; internal/sprint/qa_types.go:43-51",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "qaResult.Smoke is non-nil and qaResult.Smoke.Verdict/Protocol/ScopeKind/Scope equal the direct smoke result; the harness runner.call count equals 2x the direct smoke invocation count (4 for one direct plus one QA-delegated run).",
+      "refutation_condition": "qaResult.Smoke is nil after a successful smoke run, or any of Verdict/Protocol/ScopeKind/Scope diverges from the direct RunSmoke result.",
+      "inconclusive_condition": "Direct RunSmoke itself fails or returns a non-pass verdict, masking parity assertions.",
+      "safe_evidence_strategy": "Re-read the dedicated Suite==\"smoke\" branch in qa.go and confirm there is no copy/transform of smoke before return; compare with smoke_test.go parity assertions.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa.go:309 returns \u0026smoke directly with no transformation; the QARunResult.Smoke field is filled with the same memory address, so identity-preserving parity is enforced by reference semantics."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2cf66bfba1ec37dfb795db7a",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "Smoke failure or blocked verdict maps the QAState.Phase to QAPhaseBlocked and the terminal result to QATerminalBlocked; a passing smoke maps to QAPhaseCompleted/QATerminalCompleted.",
+      "basis": "qa.go:302-306 sets phase/terminal defaults to Completed and overrides to Blocked when smokeErr != nil OR smoke.Status != SmokeCompleted OR verdict is SmokeFailVerdict or SmokeBlockedVerdict.",
+      "verification_surface": "internal/sprint/qa.go:302-309; internal/sprint/smoke_types.go:21-44",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "A failing smoke (fail or blocked verdict, or non-completed status) yields QAState.Phase == QAPhaseBlocked and Run.TerminalResult == QATerminalBlocked; a passing smoke yields QAPhaseCompleted/QATerminalCompleted.",
+      "refutation_condition": "A failing smoke produces QAState.Phase == QAPhaseCompleted, or a passing smoke produces QAPhaseBlocked.",
+      "inconclusive_condition": "Smoke passes (pass or pass_with_open_issues) so the failing branch is not exercised.",
+      "safe_evidence_strategy": "Read the conditional at qa.go:304 and confirm it covers all four failing conditions enumerated; cross-reference SmokeVerdict constants in smoke_types.go.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa.go:304-306 is a direct conditional mapping that covers all smoke-failure branches (error, non-completed status, fail verdict, blocked verdict) and assigns the Phase/Terminal pair consistently."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-55b9c755af6e772fb454c0c4",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "The Suite==\"smoke\" branch forces Run.Lifecycle to QARunTerminal on construction, skipping the Accepted/Claimed/Active phase transitions used by the full investigation path; this is intentional for a one-shot delegated run.",
+      "basis": "qa.go:307 initializes Run via qaRunCorrelation(req.WriterToken, QARunTerminal), which embeds Terminal in the initial correlation rather than walking QARunUnaccepted → Accepted → Claimed → Active → Terminal.",
+      "verification_surface": "internal/sprint/qa.go:307; internal/sprint/qa_types.go:213-219,68-86",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "The persisted (or in-memory) QAState.Run.Lifecycle equals QARunTerminal after a smoke QA run, and TerminalResult equals QATerminalCompleted or QATerminalBlocked depending on smoke outcome.",
+      "refutation_condition": "A smoke QA run produces a QAState whose Run.Lifecycle is anything other than QARunTerminal.",
+      "inconclusive_condition": "Smoke QA run never reaches the QAState construction path due to upstream failure.",
+      "safe_evidence_strategy": "Trace qaRunCorrelation in qa_types.go and the construction site at qa.go:307 to confirm the initial lifecycle is Terminal.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa.go:307 literally passes QARunTerminal as the lifecycle argument to qaRunCorrelation, which is then assigned to state.Run; no later reassignment to a non-terminal lifecycle occurs before return."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6fcf8385b34b18863edf52d8",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "The QA state construction on the smoke branch uses QASchemaVersion (=1), not QAStateSchemaVersion (=2), even when smoke persists state; this is consistent for an in-memory state but may interact with downstream consumers expecting schema_version=2.",
+      "basis": "qa.go:307 sets SchemaVersion: QASchemaVersion (==1 from qa_types.go:17), whereas QAState.Publish at qa_state.go:462 promotes to QAStateSchemaVersion (==2) when publication.Evidence is non-nil.",
+      "verification_surface": "internal/sprint/qa.go:307; internal/sprint/qa_types.go:16-22; internal/sprint/qa_state.go:461-463",
+      "expectation_refs": [
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Suite==\"smoke\" returns QAState.SchemaVersion == 1 in the result struct; this state is not persisted by this branch, so downstream QAStatus readers will load the persisted state.json which may carry QAStateSchemaVersion (2).",
+      "refutation_condition": "A Suite==\"smoke\" call persists a state.json with schema_version 1 that QAStatus then rejects.",
+      "inconclusive_condition": "QAStatus loading the persisted smoke.md-only state and then re-loading state.json after the smoke path is unexercised by tests in smoke_test.go.",
+      "safe_evidence_strategy": "Re-read qa.go:307 and qa_state.go:461-463 to confirm the smoke branch does not invoke Publish.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa.go:307 explicitly sets SchemaVersion: QASchemaVersion (==1) and never invokes Publish, so the in-memory state cannot reach state.json via this branch; QAStateSchemaVersion promotion only applies inside Publish when Evidence != nil, which the smoke branch never triggers."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8daf9924cdb497b07cc29c0b",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "The smoke QA branch does NOT persist any QAState, QAMap, QAShard, QASynthesis, or QAFlowSummary via QAStore.Publish; only RunSmoke's internal commit path persists smoke state and flow state.",
+      "basis": "qa.go:289-310 contains no call to store.Publish, SaveRecoveredState, or any other QAStore persistence method; the constructed QAState is returned in memory only.",
+      "verification_surface": "internal/sprint/qa.go:289-310; internal/sprint/qa_state.go:457-576",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "No QA verification/state.json or attempts/* writes occur as a side effect of a Suite==\"smoke\" RunQA invocation, beyond what RunSmoke itself would write.",
+      "refutation_condition": "QAStore state.json or attempts/ directory are mutated by a Suite==\"smoke\" RunQA in a way not attributable to RunSmoke.",
+      "inconclusive_condition": "Without filesystem observation during a run, persistence side effects cannot be definitively proven from source alone.",
+      "safe_evidence_strategy": "Inspect the Suite==\"smoke\" code path for any QAStore call and cross-reference with qa_state.go.Publish to confirm no smuggled persistence path.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "A literal review of qa.go:289-310 shows the smoke branch returns before any store construction or persistence call; the QAState value is allocated locally and discarded on return. Persisted evidence is owned by RunSmoke's commitSmoke + SaveFlowState path, not the QA wrapper."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-96a29f2b4fcefc0a11cb9a01",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "QAState.Freshness.Current is correctly derived from smokeErr == nil AND !smoke.Stale, but the branch never invalidates QA admission prerequisites because smoke is itself the producer (not consumer) of smoke state.",
+      "basis": "qa.go:307 sets Freshness.Current from the local smoke outcome; the branch does NOT call ValidateQAAdmission, which would require ContainingSmoke == true (qa.go:466, qa_evidence.go:193).",
+      "verification_surface": "internal/sprint/qa.go:289-310; internal/sprint/qa_evidence.go:176-200; internal/sprint/qa.go:459-468",
+      "expectation_refs": [
+        "contract-llm-evaluation-cost-safety",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "A Suite==\"smoke\" RunQA produces a Fresh QAState regardless of prior smoke freshness, because the delegation itself produces fresh smoke state. No QA admission failure is raised because admission is not consulted on the smoke branch.",
+      "refutation_condition": "A Suite==\"smoke\" RunQA returns NewQAError(QAErrorAdmissionBlocked, ...) because ContainingSmoke is false at admission time.",
+      "inconclusive_condition": "Smoke fails before producing state, leaving smoke.Stale=true; the Freshness.Current mapping could then appear inconsistent even though the delegation was responsible.",
+      "safe_evidence_strategy": "Confirm admission is only consulted in the full investigation path (buildQAEvidencePublication), not in the smoke branch.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa.go:289-310 contains no call to ValidateQAAdmission or to buildQAEvidencePublication; admission prerequisites are only consulted at qa.go:466, which is unreachable from the smoke branch."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-c4d29ef5c59c2d815dbbf899",
+      "shard_id": "qa-v1-shard-c8782698c4b13edd4f94b9f2",
+      "claim": "Writer token validation and Resume/FocusShard rejection occur before any smoke work begins on the Suite==\"smoke\" branch, satisfying the \"valid writer token\" precondition comment in RunQA's docstring.",
+      "basis": "qa.go:296-298 calls req.WriterToken.Validate() before RunSmoke; qa.go:293-295 rejects Resume or FocusShard combinations before any work.",
+      "verification_surface": "internal/sprint/qa.go:293-298",
+      "expectation_refs": [
+        "contract-security",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "An empty/invalid writer token (e.g., zero fencing generation) returns NewQAError(QAErrorConflict, ...) without invoking RunSmoke; a Resume or FocusShard smoke request returns NewQAError(QAErrorInvalidState, ...) without invoking RunSmoke.",
+      "refutation_condition": "An invalid writer token or Resume/FocusShard combination proceeds to RunSmoke before rejection.",
+      "inconclusive_condition": "The failure modes of Validate() are not all enumerated in source (Token.Validate may accept some malformed shapes).",
+      "safe_evidence_strategy": "Re-read qa.go:289-310 to confirm validation occurs before s.RunSmoke.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-c8782698c4b13edd4f94b9f2/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:23:08.415714017Z",
+          "completed_at": "2026-08-28T11:26:04.366180388Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188",
+              "exit_code": 0,
+              "duration": 39721784,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            },
+            {
+              "check_id": "go-source-integrity",
+              "descriptor_fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a",
+              "exit_code": 0,
+              "duration": 0,
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+              "paths": [
+                "internal/sprint/qa_adjudication.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+              "paths": [
+                "internal/sprint/qa_investigation.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+              "paths": [
+                "internal/sprint/qa_state.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+              "paths": [
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+              "paths": [
+                "internal/sprint/smoke_test.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+              "paths": [
+                "internal/sprint/smoke.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+              "paths": [
+                "internal/sprint/smoke_types.go"
+              ]
+            },
+            {
+              "kind": "source_read",
+              "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_adjudication_test.go",
+                "internal/sprint/qa_investigation_test.go",
+                "internal/sprint/qa_state_test.go"
+              ]
+            },
+            {
+              "kind": "source_pattern",
+              "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 45,
+          "retained_events": 45,
+          "observed_tool_calls": 20,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa.go (1255 lines) — confirmed the Suite==\"smoke\" branch at qa.go:289-310 delegates to s.RunSmoke, validates writer token and Resume/FocusShard inputs, constructs an in-memory QAState, and returns without invoking store.Publish. Also confirmed emitQA at qa.go:1203-1207 is nil-safe and boundedQAProgress wraps user progress.",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_adjudication.go (243 lines) — confirmed AdjudicateQA accepts behavioral failures only when Repeatable==true unless plan.Kind == QACheckFact (deterministic sufficiency), validates fresh evaluator sessions, and rejects malformed evidence. AdjudicateFailedShard requires exactly three valid evaluators on the same evidence digest.",
+          "paths": [
+            "internal/sprint/qa_adjudication.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_investigation.go (238 lines) — confirmed RunQAInvestigation enforces native protected-root denial (qa_investigation.go:71-76), target identity match before/after isolation (lines 52-54, 137-140), rejects target-root leak via Args/Environment (lines 77-81), and validates frozen evidence plans before any execution. Cleanup result forces QAEvidenceBlocked on incomplete cleanup or target drift.",
+          "paths": [
+            "internal/sprint/qa_investigation.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_state.go (1060 lines) — confirmed QAStore.PruneAttempts validates attempt directories, blocks symlinks, and preserves a protected attempt ID; Publish captures canonical snapshots and rolls back on failure (qa_state.go:482-493); publishEvidence enforces immutable plan/evidence writes and patch/plan digest binding (lines 651-855).",
+          "paths": [
+            "internal/sprint/qa_state.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_types.go (938 lines) — confirmed QASchemaVersion=1, QAStateSchemaVersion=2, QAEvidenceSchemaVersion=2, and the closed enums QAPhaseStatuses (11) and QATheoryOutcomes (7). Confirmed qaRecovery(category) maps every QAErrorCategory to a tailored recovery message.",
+          "paths": [
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_test.go (560 lines) — the test TestQASmokeParityCommitsValidatedArtifactAndPreservesItOnMalformedRun at line 301 is the behavioral contract for this shard: it exercises QARunRequest{Suite:\"smoke\"} and asserts parity, roadmap reconciliation, VerificationStatus assessment, coverage-mapping retention, smoke.md preservation on malformed run, and that external evidence edits do not stale smoke while snapshot freshness is disabled.",
+          "paths": [
+            "internal/sprint/smoke_test.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke.go (746 lines) — confirmed RunSmoke acquires the mutation lease internally, runs authoring/discovery/run phases, calls project.MarkRoadmapSprintDelivered on a clean pass, and persists smoke state via commitSmoke + SaveFlowState. validateSmokeRun enforces issue/test pairing for every failed/errored test.",
+          "paths": [
+            "internal/sprint/smoke.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/smoke_types.go (first 100 lines) — confirmed SmokeRequest.Progress is func(SmokeProgress); the six smoke phases and five smoke verdicts are closed enums.",
+          "paths": [
+            "internal/sprint/smoke_types.go"
+          ]
+        },
+        {
+          "kind": "source_read",
+          "summary": "Read internal/sprint/qa_test.go (first 200 of 433 lines), internal/sprint/qa_adjudication_test.go (full 97 lines), internal/sprint/qa_investigation_test.go (full 164 lines), internal/sprint/qa_state_test.go (first 200 of 392 lines) — these establish the existing contract tests that the new smoke branch must coexist with (bounded workers, panic containment, recovery handling, strict schema/field rejection, target-leak rejection, output-policy enforcement).",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_adjudication_test.go",
+            "internal/sprint/qa_investigation_test.go",
+            "internal/sprint/qa_state_test.go"
+          ]
+        },
+        {
+          "kind": "source_pattern",
+          "summary": "Confirmed QAAdmission (qa_evidence.go:176-200) requires ContainingSmoke==true and SmokeVerdict in {pass, pass_with_open_issues} for admission; this gate is consulted only by buildQAEvidencePublication (qa.go:466), which the Suite==\"smoke\" branch never invokes. Therefore the smoke branch cannot fail admission even when no prior smoke exists, because the branch produces the smoke itself.",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "qa.go:296-298 and qa.go:293-295 are textually above the s.RunSmoke invocation at qa.go:299 with explicit early returns on failure, so any non-empty Resume/FocusShard or invalid token fails closed before smoke work."
+    }
+  ]
+}

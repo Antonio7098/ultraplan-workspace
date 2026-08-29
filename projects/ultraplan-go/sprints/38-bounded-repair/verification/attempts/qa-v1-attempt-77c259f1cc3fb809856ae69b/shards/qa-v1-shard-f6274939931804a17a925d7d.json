@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-f6274939931804a17a925d7d",
+  "attempt_id": "qa-v1-attempt-77c259f1cc3fb809856ae69b",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/sprint/qa_repair.go",
+    "internal/tui/qa_view_test.go",
+    "internal/web/operations_test.go"
+  ],
+  "overlap_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/sprint/qa_repair.go",
+    "internal/tui/qa_view_test.go",
+    "internal/web/operations_test.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "8efe34050e9235e24061263f11a634eef7f7892bc26187f6b942c54ce945c64b"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "4d8232dd40efaf37f2d8ce5bc8d51c2f72e9c986c4c2d8a65dca3faf823e9e99"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "invalid_state",
+    "scope": "qa-v1-shard-f6274939931804a17a925d7d",
+    "summary": "investigator returned no falsifiable theories",
+    "next_action": "Inspect the detailed state and run explicit QA recovery."
+  },
+  "attempts": [
+    {
+      "id": "att_2j2detmfxvyysgsu3oo25rdzzq/qa-v1-shard-f6274939931804a17a925d7d/1",
+      "number": 1,
+      "started_at": "2026-08-28T15:34:37.213763482Z",
+      "completed_at": "2026-08-28T15:34:47.114937392Z",
+      "implementation_before": "67633d4125cfd1e5dfb1eb7b3fc6c1ef72277ab72f424a3600bff3c34b2af9a6",
+      "implementation_after": "67633d4125cfd1e5dfb1eb7b3fc6c1ef72277ab72f424a3600bff3c34b2af9a6",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 554,
+        "output_tokens_known": true,
+        "output_tokens": 24,
+        "total_tokens_known": true,
+        "total_tokens": 4149,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 3571,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 11,
+      "retained_events": 11,
+      "observed_tool_calls": 0,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ]
+}

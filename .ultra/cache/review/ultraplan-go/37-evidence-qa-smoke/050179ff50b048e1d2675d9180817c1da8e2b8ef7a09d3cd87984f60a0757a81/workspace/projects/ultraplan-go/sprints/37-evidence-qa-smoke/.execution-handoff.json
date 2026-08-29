@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "planFingerprint": "sha256:9b4c077ebbc2f1ce5873272846ead01cf6aa6bd541ddb143ab5d2b5cd8b70c1e",
+  "changedPaths": [
+    "docs/architecture.md",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_usecases.go",
+    "internal/platform/process/isolation.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_adjudication.go",
+    "internal/sprint/qa_investigation.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/smoke_test.go",
+    "internal/web/qa_handlers.go"
+  ],
+  "tasks": [
+    {
+      "id": "task-59bf8efa4b61",
+      "name": "Task 1: Enforce the Sprint 36 writable-admission gate and freeze policy limits",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Admission and lower-only evidence limits implemented and tested",
+          "path": "internal/sprint/qa_types.go"
+        }
+      ]
+    },
+    {
+      "id": "task-37165f794598",
+      "name": "Task 2: Add product-neutral local isolation mechanics",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Bounded copy, tree identity, native protected-root denial, execution, and cleanup tests passed",
+          "path": "internal/platform/process/isolation.go"
+        }
+      ]
+    },
+    {
+      "id": "task-493454df9ef3",
+      "name": "Task 3: Define private QA v2 evidence, patch, adjudication, issue, and assessment records",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Strict v2 records, IDs, retained patch evidence, state-v1 reads, state-v2 writes, and canonical rollback implemented",
+          "path": "internal/sprint/qa_state.go"
+        }
+      ]
+    },
+    {
+      "id": "task-c6d295d74e2b",
+      "name": "Task 4: Implement isolated evidence-producing investigation",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Sequential isolated checks preserve target identity and reject path leaks and unapproved changes",
+          "path": "internal/sprint/qa_investigation.go"
+        }
+      ]
+    },
+    {
+      "id": "task-695b3f1b8865",
+      "name": "Task 5: Add deterministic global adjudication and bounded issue promotion",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Pure adjudication, evidence rejection, grouping, issue promotion, and three-evaluator rule tested",
+          "path": "internal/sprint/qa_adjudication.go"
+        }
+      ]
+    },
+    {
+      "id": "task-abe62036be95",
+      "name": "Task 6: Extend QA orchestration, resume, cancellation, assessment, and canonical qa.md",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Evidence orchestration, product assessment, deterministic report, fencing, and rollback implemented",
+          "path": "internal/sprint/qa.go"
+        }
+      ]
+    },
+    {
+      "id": "task-2f8ed2ca72e5",
+      "name": "Task 7: Wrap canonical smoke as the QA smoke suite without forking behavior",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Direct smoke and QA smoke-suite parity fixture passed against one canonical executor",
+          "path": "internal/sprint/smoke_test.go"
+        }
+      ]
+    },
+    {
+      "id": "task-92b09eef917f",
+      "name": "Task 8: Extend adapter-independent app use cases and durable operations",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Bounded focused queries, attempt-bound cursors, suite validation, and durable routing implemented",
+          "path": "internal/app/sprint_usecases.go"
+        }
+      ]
+    },
+    {
+      "id": "task-9482a2a99bc3",
+      "name": "Task 9: Add CLI text/JSON controls and compatibility tests",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "QA suite CLI grammar, additive JSON v1, help, output, and stable errors implemented",
+          "path": "internal/app/sprint_commands.go"
+        }
+      ]
+    },
+    {
+      "id": "task-222cc3c7c346",
+      "name": "Task 10: Extend TUI and browser QA presentation over app facts",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Assessment, counts, failure, report, smoke form, and focused API routes implemented through app facts",
+          "path": "internal/web/qa_handlers.go"
+        }
+      ]
+    },
+    {
+      "id": "task-cf74cb600262",
+      "name": "Task 11: Document the supported workflow, schemas, limits, and recovery",
+      "status": "complete",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Seven operator, architecture, schema, recovery, and release documents updated",
+          "path": "docs/architecture.md"
+        }
+      ]
+    },
+    {
+      "id": "task-54c889a6adc1",
+      "name": "Task 12: Complete deterministic, race, parity, and gated release evidence",
+      "status": "deferred",
+      "attempts": 1,
+      "evidence": [
+        {
+          "kind": "verified-checkpoint",
+          "summary": "Full deterministic and race suites, vet, build, JavaScript syntax, and diff hygiene passed"
+        }
+      ],
+      "diagnostics": [
+        {
+          "code": "deferred",
+          "message": "Offline, race, parity, vet, build, JavaScript, and diff gates passed; downstream reviews and real external-harness dogfood remain blocked because the real smoke opt-in is unavailable",
+          "at": "2026-08-25T13:20:28.802941582Z"
+        }
+      ]
+    }
+  ]
+}

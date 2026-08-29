@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-30ac6c93a5741664a76ccc8e",
+  "attempt_id": "qa-v1-attempt-1136f13bcfd5cec14f065da1",
+  "kind": "primary",
+  "title": "internal/app",
+  "changed_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/app"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "budget_exhausted",
+    "scope": "qa-v1-shard-30ac6c93a5741664a76ccc8e",
+    "summary": "investigator used 10 turns; limit is 4",
+    "next_action": "Reduce the governed scope or lower work per attempt; do not raise product maxima."
+  },
+  "attempts": [
+    {
+      "id": "att_44ld2s3gdane6h7mrxkmyc5u6i/qa-v1-shard-30ac6c93a5741664a76ccc8e/1",
+      "number": 1,
+      "started_at": "2026-08-25T13:07:56.597028857Z",
+      "completed_at": "2026-08-25T13:13:20.766833692Z",
+      "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 88713,
+        "output_tokens_known": true,
+        "output_tokens": 9222,
+        "total_tokens_known": true,
+        "total_tokens": 606223,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 508288,
+        "cache_write_tokens_known": true,
+        "turns_known": true,
+        "turns": 10
+      },
+      "estimated_cost": {
+        "amount": 0,
+        "currency": "USD",
+        "estimate": false
+      },
+      "stop_reason": "investigator iteration limit exceeded"
+    }
+  ]
+}

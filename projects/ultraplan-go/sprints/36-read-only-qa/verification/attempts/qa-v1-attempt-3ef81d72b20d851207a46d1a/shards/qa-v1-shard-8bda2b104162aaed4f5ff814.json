@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-8bda2b104162aaed4f5ff814",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-3057e184992900eb9f293abe",
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: PreviewOffset scroll has no upper bound, allowing ActionDown to increment indefinitely when preview is active"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-performance"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-3057e184992900eb9f293abe"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-8bda2b104162aaed4f5ff814/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:45:28.358536203Z",
+      "completed_at": "2026-08-26T10:46:39.13580403Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "ActionUp clamps to 0, ActionDown unconditionally increments PreviewOffset without max - asymmetric bounds",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Viewport.AtOffset delegates to Clamp/MaxOffset, capping displayed offset to total-height but not bounding stored Model.PreviewOffset; mitigates overflow at render time",
+          "paths": [
+            "internal/tui/viewport.go",
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Existing test verifies only single increment to 1 and close-reset, never exercising upper-bound or long press",
+          "paths": [
+            "internal/tui/model_test.go",
+            "internal/tui/views_test.go",
+            "internal/tui/viewport_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-d0cc5e8f69d56c2943b85035",
+      "shard_id": "qa-v1-shard-8bda2b104162aaed4f5ff814",
+      "claim": "PreviewOffset has no upper bound: Model.Update ActionDown increments m.PreviewOffset indefinitely when m.Preview != nil, while ActionUp is clamped to 0. Rendering is capped downstream by viewport.AtOffset/Clamp, so visible scroll does not overflow, but Model state is unbounded and diverges from displayed offset.",
+      "basis": "internal/tui/model.go:282-300 shows asymmetric handling: ActionUp does m.PreviewOffset-- with if \u003c0 clamp, ActionDown does unconditional m.PreviewOffset++ with no max check and no access to viewport height/total. No other site clamps PreviewOffset except resets to 0. internal/tui/viewport.go:16-36 caps offset at render time via MaxOffset/Clamp, masking state growth.",
+      "verification_surface": "internal/tui/model.go:292-294 ActionDown branch, internal/tui/viewport.go:16-37 AtOffset/Clamp/MaxOffset, internal/tui/views.go:53-55 and 614-629 renderFrame offset usage",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Static inspection finds ActionDown branch for Preview != nil contains only increment with no conditional upper bound or Clamp call and no height-aware limit, whereas ActionUp contains lower-bound clamp; viewport clamping is rendering-only.",
+      "refutation_condition": "ActionDown branch clamped PreviewOffset to a content-aware maximum (e.g., MaxOffset) or delegated to viewport.Clamp before storing, symmetrically with ActionUp lower bound.",
+      "inconclusive_condition": "Cannot determine viewport total/height at Model.Update time without reading more context, requiring bounded context expansion beyond textual clamp.",
+      "safe_evidence_strategy": "Read-only static inspection of model.go KeyMsg handling and viewport.go AtOffset/Clamp/MaxOffset; cross-reference views.go renderFrame offset usage; no execution, no mutation.",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-8bda2b104162aaed4f5ff814/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:45:28.358536203Z",
+          "completed_at": "2026-08-26T10:46:39.13580403Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "ActionUp clamps to 0, ActionDown unconditionally increments PreviewOffset without max - asymmetric bounds",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Viewport.AtOffset delegates to Clamp/MaxOffset, capping displayed offset to total-height but not bounding stored Model.PreviewOffset; mitigates overflow at render time",
+              "paths": [
+                "internal/tui/viewport.go",
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "Existing test verifies only single increment to 1 and close-reset, never exercising upper-bound or long press",
+              "paths": [
+                "internal/tui/model_test.go",
+                "internal/tui/views_test.go",
+                "internal/tui/viewport_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "ActionUp clamps to 0, ActionDown unconditionally increments PreviewOffset without max - asymmetric bounds",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Viewport.AtOffset delegates to Clamp/MaxOffset, capping displayed offset to total-height but not bounding stored Model.PreviewOffset; mitigates overflow at render time",
+          "paths": [
+            "internal/tui/viewport.go",
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "Existing test verifies only single increment to 1 and close-reset, never exercising upper-bound or long press",
+          "paths": [
+            "internal/tui/model_test.go",
+            "internal/tui/views_test.go",
+            "internal/tui/viewport_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code at model.go:293-294 is unconditional increment with no upper bound, confirmed by contrast with clamped ActionUp at 283-286 and viewport.go:34-36 which applies Clamp only at render time. Concern is accurate about unbounded Model state; severity is low because viewport.go:24-31 prevents rendering overflow/panic and performance impact is limited to int growth and misleading scroll state, but architecture invariant (bounded offset) is violated."
+    }
+  ]
+}

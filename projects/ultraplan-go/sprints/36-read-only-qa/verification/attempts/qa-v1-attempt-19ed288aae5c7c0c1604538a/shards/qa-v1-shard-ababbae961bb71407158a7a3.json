@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ababbae961bb71407158a7a3",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "primary",
+  "title": "internal/tui",
+  "changed_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/tui"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-ababbae961bb71407158a7a3/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:54:24.479627251Z",
+      "completed_at": "2026-08-26T09:55:36.687750184Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "breadcrumb for theory omits shard - model.go 588-589",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-01a700345d5d439bc3fafd20",
+      "shard_id": "qa-v1-shard-ababbae961bb71407158a7a3",
+      "claim": "Read-only QA completed banner risks being misread as product verdict promotion despite neutrality intent",
+      "basis": "internal/tui/qa_view.go:15-17 prints \"Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies\" when Phase==\"completed\"; tests assert no \"QA passed\" string but new banner is unverified for narrow-width rendering and assessment separation",
+      "verification_surface": "internal/tui/qa_view.go:10-54 renderSprintQAView(), internal/tui/views.go:371 renderRouteSummary QA branch, internal/tui/qa_view_test.go:13-34",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-llm-evaluation-cost-safety",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Rendered QA view at completed phase shows banner that users/tests interpret as pass/fail verdict, or Assessment/Evidence counts are omitted/duplicated in narrow viewport",
+      "refutation_condition": "Static view contains banner plus explicit Assessment/Evidence/NextAction lines exactly as in qa_view.go and tests prove no \"QA passed\"/verdict promotion at 80 and narrow widths, with assessment rendered separately",
+      "inconclusive_condition": "Cannot render RenderWithSize at multiple widths or inspect produced artifact without executing go test / view render",
+      "safe_evidence_strategy": "Read-only review of qa_view.go and qa_view_test narrow-width assertions; compare to qa-canonical fixture; request approved check go-format-diff if formatting relevant; no shell or file writes",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-ababbae961bb71407158a7a3/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:54:24.479627251Z",
+          "completed_at": "2026-08-26T09:55:36.687750184Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "breadcrumb for theory omits shard - model.go 588-589",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+              "paths": [
+                "internal/tui/qa_view.go",
+                "internal/tui/qa_view_test.go",
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+              "paths": [
+                "internal/tui/views.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "breadcrumb for theory omits shard - model.go 588-589",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Banner text verified statically and test guards against promotion, but visual confirmation across widths and spec for compatibility status requires execution which is not permitted"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7f9f6cf622bdfbf64f3d4a4a",
+      "shard_id": "qa-v1-shard-ababbae961bb71407158a7a3",
+      "claim": "navItems has no case for RouteSprintQATheory and returns nil, leaving leaf theory route with empty navigation pane and stale Selected handling on back",
+      "basis": "internal/tui/model.go:408-570 navItems() switches on RouteSprintQA, RouteSprintQAShard but has no RouteSprintQATheory case, falling through to return nil; model_test only asserts renderRouteSummary at theory depth, not navItems",
+      "verification_surface": "internal/tui/model.go:400-571 navItems(), selectedItem(), clampSelection(), Update KeyMsg ActionBack",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Setting Routes to RouteSprintQATheory yields navItems len 0 / nil, viewport shows \"(none)\" or empty list, and return via esc leaves Selected out of expected range or requires extra back steps",
+      "refutation_condition": "Nil/empty return is intentional leaf design and Update back handling plus clampSelection correctly resets Selected to 0 when re-entering shard/QA without panic or hidden state",
+      "inconclusive_condition": "Cannot execute navigation sequence (open shard → open theory → esc) in read-only mode to observe pane content and selection reset",
+      "safe_evidence_strategy": "Read-only code inspection of navItems switch and model tests; inspect views.go renderNavItems empty handling; no writes or command execution",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-ababbae961bb71407158a7a3/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:54:24.479627251Z",
+          "completed_at": "2026-08-26T09:55:36.687750184Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "breadcrumb for theory omits shard - model.go 588-589",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+              "paths": [
+                "internal/tui/qa_view.go",
+                "internal/tui/qa_view_test.go",
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+              "paths": [
+                "internal/tui/views.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "breadcrumb for theory omits shard - model.go 588-589",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Code pattern confirmed via reads; behavioral confirmation requires interactive navigation run which is disallowed under read-only investigator constraints"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8c65e01ae8d4db091133e645",
+      "shard_id": "qa-v1-shard-ababbae961bb71407158a7a3",
+      "claim": "RouteSprintQATheory breadcrumb omits shard ID, showing only theory ID and creating ambiguous navigation context",
+      "basis": "internal/tui/model.go:588-589 breadcrumb() for RouteSprintQATheory returns \"Projects \u003e P \u003e Sprints \u003e S \u003e QA \u003e \" + route.Theory, while RouteSprintQAShard includes shard; navItems for shard→theory pushes both Shard and Theory but breadcrumb loses shard",
+      "verification_surface": "internal/tui/model.go:573-605 breadcrumb(), internal/tui/model_test.go:135 focused theory rendering",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Rendered breadcrumb at RouteSprintQATheory shows only theory ID without shard and two different shards with same theory suffix are indistinguishable in viewport",
+      "refutation_condition": "Breadcrumb at theory depth includes both shard and theory (e.g., \"... \u003e shard/theory\" or shard title) or spec declares theory ID globally unique and shard omission intentional",
+      "inconclusive_condition": "Static read alone cannot confirm user-visible confusion without rendered viewport at narrow width or product spec for theory ID uniqueness",
+      "safe_evidence_strategy": "Read-only inspection of model.go breadcrumb and qa_view.go focused rendering; compare to prior behavior in context_paths; no shell, no mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-ababbae961bb71407158a7a3/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:54:24.479627251Z",
+          "completed_at": "2026-08-26T09:55:36.687750184Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "breadcrumb for theory omits shard - model.go 588-589",
+              "paths": [
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+              "paths": [
+                "internal/tui/qa_view.go",
+                "internal/tui/qa_view_test.go",
+                "internal/tui/views.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+              "paths": [
+                "internal/tui/views.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "breadcrumb for theory omits shard - model.go 588-589",
+          "paths": [
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "navItems switch missing RouteSprintQATheory case falls to return nil - model.go 408-571",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "renderSprintQAView completed banner and neutral assessment rendering - qa_view.go 10-22",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/qa_view_test.go",
+            "internal/tui/views.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "QA view delegated for all QA depths in renderRouteSummary - views.go 371-374",
+          "paths": [
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only static review confirmed code pattern but cannot render viewport or query product spec for uniqueness without execution; no behavioral run to observe user impact"
+    }
+  ]
+}

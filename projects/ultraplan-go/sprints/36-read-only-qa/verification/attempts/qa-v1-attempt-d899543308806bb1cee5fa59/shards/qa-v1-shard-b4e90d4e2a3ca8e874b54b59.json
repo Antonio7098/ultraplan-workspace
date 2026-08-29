@@ -1,0 +1,366 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b4e90d4e2a3ca8e874b54b59",
+  "attempt_id": "qa-v1-attempt-d899543308806bb1cee5fa59",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-86a3854a583a3f2016253044",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Implementation identity (targetIdentity) drift during QA investigation or approved go-format-diff check is not detected, allowing theories to be recorded against a mutated filesystem."
+  ],
+  "expectation_refs": [
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-86a3854a583a3f2016253044"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_cmgbszqvg5ghf5xax4rs5wn5ba/qa-v1-shard-b4e90d4e2a3ca8e874b54b59/1",
+      "number": 1,
+      "started_at": "2026-08-25T14:36:58.968938298Z",
+      "completed_at": "2026-08-25T14:38:06.058444986Z",
+      "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-259b99370dffc5e287b8478f",
+      "shard_id": "qa-v1-shard-b4e90d4e2a3ca8e874b54b59",
+      "claim": "Implementation identity (targetIdentity) drift during QA investigator runtime is not detected, allowing theories to be recorded against a mutated filesystem",
+      "basis": "Follow-up concern hypothesizes missing before/after fence around pruntime.StartRun inside the read-only investigation loop",
+      "verification_surface": "internal/sprint/qa.go:534-666 runOneQAShard/runOneQAShardSafely and internal/sprint/verify.go:349-443 targetIdentity",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A mutation of the target root between the captured before and after identities results in shard still reaching QAPhaseCompleted with theories persisted carrying the stale ImplementationFingerprint",
+      "refutation_condition": "Every runtime attempt captures before=targetIdentity(target) and requires before==qaMap.ImplementationFingerprint at qa.go:550-553 and after==before at qa.go:558-567 per retry, returning QAErrorPermissionDenied/QAErrorStaleInput with StopReason='implementation identity drift' and without creating theories",
+      "inconclusive_condition": "Cannot execute runtime or filesystem mutation in this read-only inspection",
+      "safe_evidence_strategy": "Read-only read of qa.go:549-599, verify.go:349-443 targetIdentity definition, and qa_test.go:187-223 drift test; no writes, no shell, no git invocation",
+      "implementation_fingerprint": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "attempt_history": [
+        {
+          "id": "att_cmgbszqvg5ghf5xax4rs5wn5ba/qa-v1-shard-b4e90d4e2a3ca8e874b54b59/1",
+          "number": 1,
+          "started_at": "2026-08-25T14:36:58.968938298Z",
+          "completed_at": "2026-08-25T14:38:06.058444986Z",
+          "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+          "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "qa.go:550-567 implements per-attempt before/after checks against map fingerprint and aborts before theory construction with attempt recorded; exercised by qa_test.go:198-204 driftRuntime that writes drift.txt during StartRun and expects PermissionDenied"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-77ccb3d415222c1d4f67bc75",
+      "shard_id": "qa-v1-shard-b4e90d4e2a3ca8e874b54b59",
+      "claim": "Mutation occurring after the last approved check but before theory assembly and shard publish escapes re-validation, leaving a TOCTOU window for stale-fingerprint theories",
+      "basis": "runOneQAShard only fences runtime and each approved check individually; after the last check it validates governed inputs via validateCurrentQAMap at qa.go:657 but performs no final targetIdentity re-check before constructing QATheory objects at 647-653 and returning for publish in qa.go:484-514",
+      "verification_surface": "internal/sprint/qa.go:622-665 theory construction and final validateCurrentQAMap, and 484-522 runQAShardBatch publish loop",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "A filesystem mutation that occurs after the last successful RunApprovedQACheck returns but before shard.Theories are sorted and returned results in QAPhaseCompleted with ImplementationFingerprint == stale attempt.ImplementationBefore still published",
+      "refutation_condition": "A final targetIdentity(target)==qaMap.ImplementationFingerprint check exists after the last check and before shard finalization/publish that aborts on drift",
+      "inconclusive_condition": "Without live concurrent mutation, exploitability is unconfirmed because sandbox is read_only/restricted and external file lock may prevent mutation; static window exists but may be mitigated operationally",
+      "safe_evidence_strategy": "Read-only grep for targetIdentity within qa.go:534-666 confirming occurrences only at 550,558 and 262/273 in qa_prompt.go, with no call between 635 and 665; inspect runQAShardBatch publish path for absent identity check; no execution",
+      "implementation_fingerprint": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "attempt_history": [
+        {
+          "id": "att_cmgbszqvg5ghf5xax4rs5wn5ba/qa-v1-shard-b4e90d4e2a3ca8e874b54b59/1",
+          "number": 1,
+          "started_at": "2026-08-25T14:36:58.968938298Z",
+          "completed_at": "2026-08-25T14:38:06.058444986Z",
+          "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+          "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static inspection confirms no targetIdentity call between final ApprovedQACheck completion at qa.go:635 and theory creation at 641-662; only governed-input fence remains at 657-659, and batch publish at 504-514 does not re-hash target, leaving a narrow window where a post-check mutation would be recorded with the pre-mutation fingerprint"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9f3c9444f24577fb145ab069",
+      "shard_id": "qa-v1-shard-b4e90d4e2a3ca8e874b54b59",
+      "claim": "Implementation identity drift during the approved go-format-diff check is not detected, allowing theories against a mutated filesystem",
+      "basis": "Concern hypothesizes missing identity fence around pprocess.Run for the product-owned read-only check",
+      "verification_surface": "internal/sprint/qa_prompt.go:243-285 RunApprovedQACheck and internal/sprint/qa.go:622-640 ApprovedQAChecks call site inside runOneQAShard",
+      "expectation_refs": [
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Mutating the target directory during the gofmt -d subprocess results in QACommandSummary accepted and subsequent theories still published with stale fingerprint",
+      "refutation_condition": "RunApprovedQACheck captures before=targetIdentity at qa_prompt.go:262 and after at qa_prompt.go:273 per invocation and returns QAErrorPermissionDenied 'target identity changed during the approved check' before any theory is built; caller in qa.go:634-639 propagates error immediately",
+      "inconclusive_condition": "Cannot invoke gofmt subprocess read-only; need live process to observe truncation/budget edge",
+      "safe_evidence_strategy": "Read-only inspection of qa_prompt.go:59-87 ApprovedQAChecks catalog, 262-285 drift fence, and qa_prompt_test.go:122-163 drift test; no process execution",
+      "implementation_fingerprint": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+      "attempt_history": [
+        {
+          "id": "att_cmgbszqvg5ghf5xax4rs5wn5ba/qa-v1-shard-b4e90d4e2a3ca8e874b54b59/1",
+          "number": 1,
+          "started_at": "2026-08-25T14:36:58.968938298Z",
+          "completed_at": "2026-08-25T14:38:06.058444986Z",
+          "implementation_before": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+          "implementation_after": "2232cad5332ae6854e7532cc1ff024eb48c3790619fec8651760e39f7a618a9f",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/verify.go"
+              ]
+            },
+            {
+              "kind": "code",
+              "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+              "paths": [
+                "internal/sprint/qa_prompt.go",
+                "internal/sprint/qa_map.go"
+              ]
+            },
+            {
+              "kind": "test",
+              "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+              "paths": [
+                "internal/sprint/qa_test.go",
+                "internal/sprint/qa_prompt_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "runOneQAShard per-retry before==map and after==before fences with PermissionDenied on drift",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/verify.go"
+          ]
+        },
+        {
+          "kind": "code",
+          "summary": "RunApprovedQACheck before/after targetIdentity fence and descriptor fingerprint ownership check",
+          "paths": [
+            "internal/sprint/qa_prompt.go",
+            "internal/sprint/qa_map.go"
+          ]
+        },
+        {
+          "kind": "test",
+          "summary": "Existing unit tests assert runtime drift and check drift are rejected",
+          "paths": [
+            "internal/sprint/qa_test.go",
+            "internal/sprint/qa_prompt_test.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "qa_prompt.go:262-276 explicitly hashes target before/after the DirectRunner and errors on mismatch or error; insertion point in qa.go:635 ensures failure precedes theory assembly at 641-665; verified by qa_prompt_test.go:154-162 that sets drift=true and expects PermissionDenied"
+    }
+  ]
+}

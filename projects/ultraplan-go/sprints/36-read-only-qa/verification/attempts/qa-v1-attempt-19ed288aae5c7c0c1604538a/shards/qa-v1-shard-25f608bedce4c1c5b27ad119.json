@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-25f608bedce4c1c5b27ad119",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-01a700345d5d439bc3fafd20",
+  "context_paths": [
+    "internal/tui/model.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/verify_test.go",
+    "internal/tui/views.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Read-only QA completed banner risks being misread as product verdict promotion despite neutrality intent"
+  ],
+  "expectation_refs": [
+    "contract-documentation",
+    "contract-llm-evaluation-cost-safety",
+    "contract-observability"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-01a700345d5d439bc3fafd20"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-25f608bedce4c1c5b27ad119/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:55:50.319533039Z",
+      "completed_at": "2026-08-26T09:57:58.930820325Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_view.go:17 QA completed banner is verdict-neutral: 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' - only when Phase==completed, else 'QA'; comment explicitly states renderSprintQAView never derives product outcomes from observer events",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "test_assertion",
+          "summary": "qa_view_test.go:26-33 TestQAViewUsesVerdictNeutralTextAtNarrowWidth asserts 'Read-only QA completed' present with Conformance Review verdict 'fail' shown separately and fails if 'QA passed' appears; model_test.go:137-145 asserts theory view contains 'Read-only QA completed' and 'Conformance Review: status=completed verdict=pass_with_findings' without 'QA passed' or 'Issues' promotion",
+          "paths": [
+            "internal/tui/qa_view_test.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "documentation",
+          "summary": "docs/user-guide.md:357, docs/cli-reference.md:361, docs/architecture.md:153, docs/phase3-json-schemas.md:33 consistently define 'QA completed means bounded investigation ended' ≠ pass verdict, state QA cannot change Conformance Review verdict, and list theory outcomes as confirmed/refuted/... not product issue promotion",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1f28a295b034e5a199c6667e",
+      "shard_id": "qa-v1-shard-25f608bedce4c1c5b27ad119",
+      "claim": "TUI 'Read-only QA completed' banner is rendered as a product verdict promotion (e.g., 'QA passed' / pass verdict) rather than a neutral compatibility-status notice",
+      "basis": "Follow-up concern that the completed-state header in the bounded QA projection could be conflated with Conformance Review verdict promotion despite neutrality intent; banner is unconditional header when qa.Phase == \"completed\"",
+      "verification_surface": "internal/tui/qa_view.go:16-18 renderSprintQAView() branch, internal/tui/views.go:371-373 renderRouteSummary() QA delegation, and downstream Render() framing",
+      "expectation_refs": [
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Render output for Phase==completed contains verdict-promotion language such as 'QA passed', 'QA succeeded', 'pass', or assessment-with-findings conflated into banner, or docs define completed as a verdict",
+      "refutation_condition": "Banner text is exactly 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' with no pass/fail lexing, Conformance Review verdict rendered separately as independent field 'Conformance Review: status=... verdict=... fresh=...', and dedicated tests assert absence of 'QA passed' while docs explicitly define 'QA completed means bounded work ended, not QA passed'",
+      "inconclusive_condition": "No direct operator comprehension study; semantic misread risk outside static code/text cannot be measured from code alone",
+      "safe_evidence_strategy": "Read-only inspection of qa_view.go, qa_view_test.go, model_test.go and documentation; reuse existing negative-assertion tests; no runtime mutation, no writable QA execution, no new checks",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-25f608bedce4c1c5b27ad119/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:55:50.319533039Z",
+          "completed_at": "2026-08-26T09:57:58.930820325Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "qa_view.go:17 QA completed banner is verdict-neutral: 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' - only when Phase==completed, else 'QA'; comment explicitly states renderSprintQAView never derives product outcomes from observer events",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ]
+            },
+            {
+              "kind": "test_assertion",
+              "summary": "qa_view_test.go:26-33 TestQAViewUsesVerdictNeutralTextAtNarrowWidth asserts 'Read-only QA completed' present with Conformance Review verdict 'fail' shown separately and fails if 'QA passed' appears; model_test.go:137-145 asserts theory view contains 'Read-only QA completed' and 'Conformance Review: status=completed verdict=pass_with_findings' without 'QA passed' or 'Issues' promotion",
+              "paths": [
+                "internal/tui/qa_view_test.go",
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "documentation",
+              "summary": "docs/user-guide.md:357, docs/cli-reference.md:361, docs/architecture.md:153, docs/phase3-json-schemas.md:33 consistently define 'QA completed means bounded investigation ended' ≠ pass verdict, state QA cannot change Conformance Review verdict, and list theory outcomes as confirmed/refuted/... not product issue promotion",
+              "paths": [
+                "internal/tui/qa_view.go",
+                "internal/tui/views.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_view.go:17 QA completed banner is verdict-neutral: 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' - only when Phase==completed, else 'QA'; comment explicitly states renderSprintQAView never derives product outcomes from observer events",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "test_assertion",
+          "summary": "qa_view_test.go:26-33 TestQAViewUsesVerdictNeutralTextAtNarrowWidth asserts 'Read-only QA completed' present with Conformance Review verdict 'fail' shown separately and fails if 'QA passed' appears; model_test.go:137-145 asserts theory view contains 'Read-only QA completed' and 'Conformance Review: status=completed verdict=pass_with_findings' without 'QA passed' or 'Issues' promotion",
+          "paths": [
+            "internal/tui/qa_view_test.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "documentation",
+          "summary": "docs/user-guide.md:357, docs/cli-reference.md:361, docs/architecture.md:153, docs/phase3-json-schemas.md:33 consistently define 'QA completed means bounded investigation ended' ≠ pass verdict, state QA cannot change Conformance Review verdict, and list theory outcomes as confirmed/refuted/... not product issue promotion",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "Static evidence refutes promotion: qa_view.go:17 emits only the neutral string 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' gated on Phase==completed, never on Assessment/IssueCount/Verdict; Conformance Review verdict remains a separate line 'Conformance Review: status=%s verdict=%s fresh=%t' (qa_view.go:21); qa_view_test.go:26-33 and model_test.go:138-145 explicitly assert presence of 'Read-only QA completed' and absence of 'QA passed' / 'Issues' promotion; docs/user-guide.md:357, docs/cli-reference.md:361, docs/architecture.md:153 and docs/phase3-json-schemas.md:33 define completed ≠ pass verdict and that QA cannot change Conformance Review verdict"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-35fab327fe6501cb2c4e0775",
+      "shard_id": "qa-v1-shard-25f608bedce4c1c5b27ad119",
+      "claim": "Header position and wording still allow operator to conflate QA completed with Conformance Review pass despite literal neutrality",
+      "basis": "Banner is first line of QA view (preceding Phase/Fresh/Conformance Review lines) with parenthetical '(compatibility status)' that may be overlooked; concern notes residual UX misread risk even if text is technically neutral",
+      "verification_surface": "internal/tui/qa_view.go:16-22 ordering, internal/tui/views.go:371-373 summary ordering, internal/tui/model_test.go and internal/tui/qa_view_test.go render assertions",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Usability evidence or layout review showing operators skip parenthetical or read top banner as overall sprint verdict without inspecting the subsequent 'Conformance Review: status=... verdict=...' line",
+      "refutation_condition": "Layout or copy review demonstrates banner cannot be read as verdict because qualifier is on same line, Phase and Conformance Review are rendered immediately below, and no color/icon promotion occurs",
+      "inconclusive_condition": "No operator study, telemetry, or visual-hierarchy test in assigned context_paths; static code review can confirm literal text but not perceptual misread rate",
+      "safe_evidence_strategy": "Read-only rendering inspection and doc review only; do not invent user study or run interactive TUI; note bounded follow-up nature",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-25f608bedce4c1c5b27ad119/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:55:50.319533039Z",
+          "completed_at": "2026-08-26T09:57:58.930820325Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "qa_view.go:17 QA completed banner is verdict-neutral: 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' - only when Phase==completed, else 'QA'; comment explicitly states renderSprintQAView never derives product outcomes from observer events",
+              "paths": [
+                "internal/tui/qa_view.go"
+              ]
+            },
+            {
+              "kind": "test_assertion",
+              "summary": "qa_view_test.go:26-33 TestQAViewUsesVerdictNeutralTextAtNarrowWidth asserts 'Read-only QA completed' present with Conformance Review verdict 'fail' shown separately and fails if 'QA passed' appears; model_test.go:137-145 asserts theory view contains 'Read-only QA completed' and 'Conformance Review: status=completed verdict=pass_with_findings' without 'QA passed' or 'Issues' promotion",
+              "paths": [
+                "internal/tui/qa_view_test.go",
+                "internal/tui/model_test.go"
+              ]
+            },
+            {
+              "kind": "documentation",
+              "summary": "docs/user-guide.md:357, docs/cli-reference.md:361, docs/architecture.md:153, docs/phase3-json-schemas.md:33 consistently define 'QA completed means bounded investigation ended' ≠ pass verdict, state QA cannot change Conformance Review verdict, and list theory outcomes as confirmed/refuted/... not product issue promotion",
+              "paths": [
+                "internal/tui/qa_view.go",
+                "internal/tui/views.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "qa_view.go:17 QA completed banner is verdict-neutral: 'Read-only QA completed (compatibility status); evidence-producing QA uses isolated writable copies' - only when Phase==completed, else 'QA'; comment explicitly states renderSprintQAView never derives product outcomes from observer events",
+          "paths": [
+            "internal/tui/qa_view.go"
+          ]
+        },
+        {
+          "kind": "test_assertion",
+          "summary": "qa_view_test.go:26-33 TestQAViewUsesVerdictNeutralTextAtNarrowWidth asserts 'Read-only QA completed' present with Conformance Review verdict 'fail' shown separately and fails if 'QA passed' appears; model_test.go:137-145 asserts theory view contains 'Read-only QA completed' and 'Conformance Review: status=completed verdict=pass_with_findings' without 'QA passed' or 'Issues' promotion",
+          "paths": [
+            "internal/tui/qa_view_test.go",
+            "internal/tui/model_test.go"
+          ]
+        },
+        {
+          "kind": "documentation",
+          "summary": "docs/user-guide.md:357, docs/cli-reference.md:361, docs/architecture.md:153, docs/phase3-json-schemas.md:33 consistently define 'QA completed means bounded investigation ended' ≠ pass verdict, state QA cannot change Conformance Review verdict, and list theory outcomes as confirmed/refuted/... not product issue promotion",
+          "paths": [
+            "internal/tui/qa_view.go",
+            "internal/tui/views.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Literal promotion is refuted (theory 1), but perceptual risk is inherently non-code: banner is correctly neutral and tested, docs consistently state 'QA completed means all admitted bounded work ended, not QA passed, and it cannot upgrade a failed or blocked Conformance Review' (user-guide.md:357, cli-reference.md:361). No evidence of promotion language exists, yet without human-factors data the residual possibility that an operator glances at first line and ignores '(compatibility status)' cannot be confirmed or refuted from file inspection alone. No fix required in read-only context; risk remains documentation/UX footnote, not a verdict-promotion bug."
+    }
+  ]
+}

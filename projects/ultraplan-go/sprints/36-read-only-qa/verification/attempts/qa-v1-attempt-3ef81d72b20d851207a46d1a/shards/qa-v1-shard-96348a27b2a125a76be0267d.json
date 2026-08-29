@@ -1,0 +1,523 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-96348a27b2a125a76be0267d",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "boundary",
+  "title": "cross-package integration",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "overlap_paths": [
+    "docs/architecture.md",
+    "internal/app/config_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/domain.go",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "boundary_reason": "cross-package",
+  "behavioral_concerns": [
+    "cross-package integration"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-96348a27b2a125a76be0267d/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:52:00.384276803Z",
+      "completed_at": "2026-08-26T10:53:19.088387907Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "cr-qa-config",
+          "paths": [
+            "internal/platform/config/qa.go",
+            "internal/platform/config/config_qa.go"
+          ],
+          "reason": "QA struct, qaEnvOverrides, qaConfigFields, setQAField and validateQA needed to determine full config field set and list-field handling for cross-package config integration",
+          "approved": false
+        },
+        {
+          "id": "cr-app-boundary",
+          "paths": [
+            "internal/app/web_usecases.go",
+            "internal/app/operations.go",
+            "internal/app/dashboard.go",
+            "internal/app/config.go"
+          ],
+          "reason": "app OperationalUseCases, Web*Result types and identifier validation needed to confirm canonical TUI/web validation and error envelope consistency",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/tui/model.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "not_computed_read_only"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-6106204d3bc85abae33bc123",
+      "shard_id": "qa-v1-shard-96348a27b2a125a76be0267d",
+      "claim": "internal/tui/model.go and internal/web/handlers.go diverge on identifier/opaque-ref validation before invoking shared internal/app operations, weakening consistent security and error-envelope handling",
+      "basis": "web/handlers.go:427-436 dispatch validates every route param via validIdentifier or validOpaqueRef (patterns ^[A-Za-z0-9][A-Za-z0-9._-]*$ and ^[A-Za-z0-9_-]+$ with MaxIdentifierBytes and dot-dot slash checks) and rejects unknown query params; tui/model.go:520-521 and 408-532 constructs OperationRequest{Kind: OperationQAStart, Task: route.Shard} and navigation routes RouteSprintQAShard/RouteSprintQATheory without any validation, forwarding directly to app.OperationalUseCases; web also centralizes QA error mapping via AsQAUseCaseError:1058-1072 while TUI stores raw Err.Error() in Model.Error:168-169,183,195,242",
+      "verification_surface": "internal/web/handlers.go:22-23 patterns, 421-436 dispatch validation, 1056-1080 error handling versus internal/tui/model.go:518-533 navItems QA routes, 520 Task passthrough, 164-243 Update error assignments",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-observability",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "TUI path accepts or forwards an identifier that web dispatch would reject as invalid_request, or TUI and web surface different error codes for same app error",
+      "refutation_condition": "internal/app layer canonicalizes and validates all identifiers uniformly, making web pre-validation purely additive and TUI passthrough safe",
+      "inconclusive_condition": "internal/app validation and OperationalUseCases contract not visible in assigned context_paths, so app-layer guarantee cannot be verified",
+      "safe_evidence_strategy": "read-only cross-file comparison of validation predicates and error handling; no runtime invocation or network calls",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-96348a27b2a125a76be0267d/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.384276803Z",
+          "completed_at": "2026-08-26T10:53:19.088387907Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "cr-qa-config",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/config_qa.go"
+              ],
+              "reason": "QA struct, qaEnvOverrides, qaConfigFields, setQAField and validateQA needed to determine full config field set and list-field handling for cross-package config integration",
+              "approved": false
+            },
+            {
+              "id": "cr-app-boundary",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go",
+                "internal/app/dashboard.go",
+                "internal/app/config.go"
+              ],
+              "reason": "app OperationalUseCases, Web*Result types and identifier validation needed to confirm canonical TUI/web validation and error envelope consistency",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+              "paths": [
+                "internal/app/config_commands.go",
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "not_computed_read_only"
+            },
+            {
+              "kind": "code_read",
+              "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "not_computed_read_only"
+            },
+            {
+              "kind": "code_read",
+              "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/tui/model.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "not_computed_read_only"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/tui/model.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "not_computed_read_only"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "static read confirms web enforces identifierPattern/opaqueRefPattern and query allowlist while TUI builds operation requests from unvalidated Route.Shard/Theory and stores unnormalized errors, establishing observable transport-layer divergence in cross-package integration"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8f709bb390d2ee31f9a85e1a",
+      "shard_id": "qa-v1-shard-96348a27b2a125a76be0267d",
+      "claim": "internal/app/config_commands.go selectively exposes Effective.Sources while internal/platform/config/config.go populates Sources for every config field, causing CLI surface provenance inconsistency",
+      "basis": "config_commands.go:57-58 and 73-74 and 114-116 print Sources for planning.code_context_model, planning.code_context_variant, qa.model, qa.variant, run_control.* but omit Sources for planning.requirements_model, planning.sprint_index_model, planning.technical_handbook_model, planning.area_reasoning_model, planning.reasoning_model, planning.plan_model, planning.execute_model, planning.review_model, planning.smoke_model, and all other qa.* numeric/timeout fields; config.go:155-158 initializes Sources[field]=default for every field via fields+qaConfigFields(), and Load:160-173 sets Sources[field]=workspace/env/cli for all fields; the display layer therefore hides provenance that the platform layer tracks",
+      "verification_surface": "static read of internal/app/config_commands.go:42-126 versus internal/platform/config/config.go:155-178 Load and Effective.Sources population",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "code shows a field present in config.go fields slice and Sources map but printed in config_commands.go without accompanying Sources value",
+      "refutation_condition": "project spec explicitly documents selective source display as intended for only overridden fields, or all displayed fields consistently include source",
+      "inconclusive_condition": "spec for required config show provenance output is unavailable in assigned context paths",
+      "safe_evidence_strategy": "read-only line comparison of printed keys in config_commands.go against fields slice and Sources assignments in config.go; no execution or file mutation",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-96348a27b2a125a76be0267d/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.384276803Z",
+          "completed_at": "2026-08-26T10:53:19.088387907Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "cr-qa-config",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/config_qa.go"
+              ],
+              "reason": "QA struct, qaEnvOverrides, qaConfigFields, setQAField and validateQA needed to determine full config field set and list-field handling for cross-package config integration",
+              "approved": false
+            },
+            {
+              "id": "cr-app-boundary",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go",
+                "internal/app/dashboard.go",
+                "internal/app/config.go"
+              ],
+              "reason": "app OperationalUseCases, Web*Result types and identifier validation needed to confirm canonical TUI/web validation and error envelope consistency",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+              "paths": [
+                "internal/app/config_commands.go",
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "not_computed_read_only"
+            },
+            {
+              "kind": "code_read",
+              "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "not_computed_read_only"
+            },
+            {
+              "kind": "code_read",
+              "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/tui/model.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "not_computed_read_only"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/tui/model.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "not_computed_read_only"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "read-only comparison confirms 4 planning/qa/run_control fields include '(source: %s)' while at least 12 other planning/qa fields with identical Sources lifecycle omit source display, creating observable cross-package CLI/configuration integration inconsistency"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ee7563d6c3787891f6caa7d1",
+      "shard_id": "qa-v1-shard-96348a27b2a125a76be0267d",
+      "claim": "internal/platform/config/config.go loadFile custom YAML parser creates cross-package integration risk with workspace config supplied via internal/app",
+      "basis": "loadFile:197-269 implements line-oriented parser using TrimSpace, SplitN on ':', leadingWhitespace check and listConfigField/clearListField; listConfigField:553-560 only recognizes agentwrap.required_health, agentwrap.required_capabilities, agentwrap.extra_args, agentwrap.env, smoke.environment; any qa list fields handled via setQAField would not be cleared by clearListField, and parser rejects lines without ':' , silently ignores unknown list items, and does not support quoted colons, multiline or anchor YAML features that a standard workspace ultraplan.yml author would expect via docs/architecture.md workspace file ownership",
+      "verification_surface": "internal/platform/config/config.go:197-288 loadFile, 553-575 list handling, and setField delegation to setQAField",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-configuration",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "parser demonstrably rejects or misinterprets a valid workspace YAML construct that Validate would otherwise accept, or listConfigField misses qa list fields defined in qaConfigFields()",
+      "refutation_condition": "workspace config format is formally defined as the restricted subset implemented by loadFile and callers validate input against that subset only",
+      "inconclusive_condition": "definition of allowed ultraplan.yml syntax and qa list fields not visible in assigned context_paths (qaEnvOverrides, qaConfigFields, setQAField, validateQA defined outside context_paths)",
+      "safe_evidence_strategy": "read-only inspection of loadFile branching, listConfigField allowlist, and setField delegation; compare against architecture.md State and Artifact Ownership without executing parser",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-96348a27b2a125a76be0267d/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:52:00.384276803Z",
+          "completed_at": "2026-08-26T10:53:19.088387907Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "cr-qa-config",
+              "paths": [
+                "internal/platform/config/qa.go",
+                "internal/platform/config/config_qa.go"
+              ],
+              "reason": "QA struct, qaEnvOverrides, qaConfigFields, setQAField and validateQA needed to determine full config field set and list-field handling for cross-package config integration",
+              "approved": false
+            },
+            {
+              "id": "cr-app-boundary",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/operations.go",
+                "internal/app/dashboard.go",
+                "internal/app/config.go"
+              ],
+              "reason": "app OperationalUseCases, Web*Result types and identifier validation needed to confirm canonical TUI/web validation and error envelope consistency",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "code_read",
+              "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+              "paths": [
+                "internal/app/config_commands.go",
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "not_computed_read_only"
+            },
+            {
+              "kind": "code_read",
+              "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+              "paths": [
+                "internal/platform/config/config.go"
+              ],
+              "output_digest": "not_computed_read_only"
+            },
+            {
+              "kind": "code_read",
+              "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/tui/model.go",
+                "docs/architecture.md"
+              ],
+              "output_digest": "not_computed_read_only"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_read",
+          "summary": "config_commands source annotation covers only planning.code_context_model/variant, qa.model/variant and run_control fields while config.go Sources tracks every field; verified via line sets 55-116 vs 155-178",
+          "paths": [
+            "internal/app/config_commands.go",
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "loadFile uses SplitN, leadingWhitespace, section/listField state machine and listConfigField allowlist limited to 5 agentwrap/smoke fields; setField delegates to setQAField before switch, indicating qa fields bypass list clearing",
+          "paths": [
+            "internal/platform/config/config.go"
+          ],
+          "output_digest": "not_computed_read_only"
+        },
+        {
+          "kind": "code_read",
+          "summary": "web dispatch validates identifiers via identifierPattern/opaqueRefPattern and normalizes QA errors via AsQAUseCaseError; TUI model forwards Route.Shard as OperationRequest.Task without validation and stores raw error strings",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/tui/model.go",
+            "docs/architecture.md"
+          ],
+          "output_digest": "not_computed_read_only"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "parser simplicity and allowlist gap are observable but determination of defect requires external qa config definitions and formal YAML contract not in assigned paths; cannot confirm or refute integration failure without additional context"
+    }
+  ]
+}

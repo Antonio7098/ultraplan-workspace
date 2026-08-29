@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-abf6bd7942b85ff3168de986",
+  "attempt_id": "qa-v1-attempt-1136f13bcfd5cec14f065da1",
+  "kind": "primary",
+  "title": "docs",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in docs"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "invalid_state",
+    "scope": "qa-v1-shard-abf6bd7942b85ff3168de986",
+    "summary": "terminal output is not one strict QA JSON object",
+    "next_action": "Inspect the detailed state and run explicit QA recovery."
+  }
+}

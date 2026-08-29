@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "38-bounded-repair",
+  "qa_attempt_id": "qa-v1-attempt-c496c705da66f4b04235f119",
+  "repair_run_id": "repair-v1-run-cb866de6a02d6583c719f446",
+  "mode": "manual",
+  "outcome": "verified",
+  "reason": "the exact issue and every frozen progressive gate passed with proven cleanup",
+  "stop_reason": "verified",
+  "consumed": {
+    "cycles": 1,
+    "mutation_cycles": 1,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 1,
+    "changed_bytes": 270,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 6,
+    "output_bytes": 330
+  },
+  "runtime": {
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 67,
+      "output_tokens_known": true,
+      "output_tokens": 22,
+      "total_tokens_known": true,
+      "total_tokens": 6366,
+      "reasoning_tokens_known": true,
+      "cache_read_tokens_known": true,
+      "cache_read_tokens": 6277,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "started_at": "2026-08-28T14:59:24.221151334Z",
+    "completed_at": "2026-08-28T14:59:51.010238512Z",
+    "duration": 26789087178,
+    "runtime_events": 17,
+    "retained_events": 17,
+    "observed_tool_calls": 2
+  },
+  "target": {
+    "fingerprint": "4b75280bda0b8da5d6da1185b18b4917fe559ef5808de15ee2e2679d33cdf93b",
+    "git_head": "32ffead1d5cbd9315c8580cfd774f6daad206ed9",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "b16b3492949350bd44efa04ef58e21f0722023df8f861d61144521ce5cc0d0e2"
+  },
+  "cleanup_complete": true,
+  "production_applied": true,
+  "complete_ladder": true,
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/issue-packet.json",
+      "digest": "1922931c7b42cddf9c42fe668d7e1f7d52e78800e744aa571b7fe0e7ddf330d2"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/confirmation.json",
+      "digest": "32a2bd692ed752fcae9be829c94b4909c965c431ab6904bbb080a33b6589a5a2"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/cycles/000001/proposal.patch",
+      "digest": "aa1acecc38ee013d4f77f4a59cd0c569f73981f2cd226f658de55b5917bfe3a6"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/cycles/000001/scope.json",
+      "digest": "fc11d10dc63f7cb005fd2b7f19c2acb094734633f3361ff134a4d0b9e9cfb57b"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/cycles/000001/apply-journal.json",
+      "digest": "b773f8beec533180f69825b017a890f8a16fa2eaf2a6db6e5c74c1e47cebacc3"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/cycles/000001/reverification.json",
+      "digest": "eacab836e2e04bd7b6bfe25695a3ffcd5c03c25c19032d18e9ef16a3a5795222"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/cycles/000001/cleanup.json",
+      "digest": "7ceaca445d8ff0481b6757811ff4e3eaa7d56e18724ec17a9aaccb76a7ade4d0"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/38-bounded-repair/verification/attempts/qa-v1-attempt-c496c705da66f4b04235f119/repairs/repair-v1-run-cb866de6a02d6583c719f446/cycles/000001/cycle.json",
+      "digest": "124f3ae15bcf0a96b77599ded589a41a69a829f0deeff4b20f01f3cedf65e67e"
+    }
+  ],
+  "next_action": "Inspect the retained result and repaired-target smoke evidence.",
+  "completed_at": "2026-08-28T15:00:16.271949889Z"
+}

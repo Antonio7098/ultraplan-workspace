@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-e888470a220d819c70e327a7",
+  "attempt_id": "qa-v1-attempt-1136f13bcfd5cec14f065da1",
+  "kind": "primary",
+  "title": "internal/platform",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/qa.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "context_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/platform"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "invalid_state",
+    "scope": "qa-v1-shard-e888470a220d819c70e327a7",
+    "summary": "terminal output is not one strict QA JSON object",
+    "next_action": "Inspect the detailed state and run explicit QA recovery."
+  }
+}

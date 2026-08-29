@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-0d511432bfcbc42e936f437b",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-202770b7fc9de893cab3374b",
+  "context_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QA HTML pages may render stored shard/theory fields without additional escaping allowing stored XSS if escaping regresses"
+  ],
+  "expectation_refs": [
+    "contract-security",
+    "contract-testing"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-202770b7fc9de893cab3374b"
+  ],
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-0d511432bfcbc42e936f437b",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_islzv5c5tpbpuy25fbexpgoyeu/qa-v1-shard-0d511432bfcbc42e936f437b/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:30:27.113006568Z",
+      "completed_at": "2026-08-26T09:31:32.282608872Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

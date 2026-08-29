@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-22e0999a6d96f08286ccd928",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "primary",
+  "title": "internal/platform",
+  "changed_paths": [
+    "internal/platform/process/isolation.go"
+  ],
+  "context_paths": [
+    "internal/platform/process/isolation_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/platform"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "runtime"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-22e0999a6d96f08286ccd928/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:20:30.785692505Z",
+      "completed_at": "2026-08-28T11:23:59.853799459Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation.go:317-371",
+            "internal/platform/process/isolation.go:436-450"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+          "paths": [
+            "internal/platform/process/isolation.go:344-359",
+            "internal/platform/process/isolation.go:105"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+          "paths": [
+            "internal/platform/process/isolation.go:242-262",
+            "internal/sprint/qa_investigation.go:132-140"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation_test.go:55-86"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 67,
+      "retained_events": 67,
+      "observed_tool_calls": 22,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-435f82659add211ce8433063",
+      "shard_id": "qa-v1-shard-22e0999a6d96f08286ccd928",
+      "claim": "copyBoundedTree has a TOCTOU window between the directory walk that rejects symlinks, special files, and hardlinks and the subsequent os.Open that materializes each file, allowing a concurrent source-tree mutation to substitute a symlink or hardlink for a regular file and bypass the security checks.",
+      "basis": "isolation.go:320-365 walks the source with filepath.WalkDir and rejects entries based on entry.Info() (cached from the directory read). isolation.go:436-449 then opens each file by path with os.Open, which follows symlinks. There is no os.Lstat or mode or link-count re-check between the two steps, and readRegularFile only verifies that read length matches the cached Size. The walk callback link-count check uses the cached Stat_t from the directory entry, not a fresh lstat of the path about to be opened.",
+      "verification_surface": "isolation.go:317-371 copyBoundedTree, isolation.go:436-450 readRegularFile, isolation_test.go:55-86 TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets which does not exercise a TOCTOU substitution.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Code review confirms that the only file-type and link-count inspection happens in the WalkDir callback and that os.Open in readRegularFile does not re-stat the path; the existing test suite never substitutes a regular file with a symlink during the copy.",
+      "refutation_condition": "readRegularFile re-stats with os.Lstat or equivalent and re-checks symlink and hardlink invariants before writing, or the workspace is created from a path the caller already proved unmodifiable.",
+      "inconclusive_condition": "Whether a real caller can mutate the source during CreateIsolation depends on the operator and OS, neither of which is observable from this read-only review.",
+      "safe_evidence_strategy": "Read isolation.go:317-450 and isolation_test.go:55-86 to confirm there is no re-check after os.Open and that the rejection tests construct the symlink and hardlink before CreateIsolation starts. Do not invoke CreateIsolation with a mutating source.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-22e0999a6d96f08286ccd928/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.785692505Z",
+          "completed_at": "2026-08-28T11:23:59.853799459Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "static_analysis",
+              "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+              "paths": [
+                "internal/platform/process/isolation.go:317-371",
+                "internal/platform/process/isolation.go:436-450"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+              "paths": [
+                "internal/platform/process/isolation.go:344-359",
+                "internal/platform/process/isolation.go:105"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+              "paths": [
+                "internal/platform/process/isolation.go:242-262",
+                "internal/sprint/qa_investigation.go:132-140"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+              "paths": [
+                "internal/platform/process/isolation_test.go:55-86"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 67,
+          "retained_events": 67,
+          "observed_tool_calls": 22,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation.go:317-371",
+            "internal/platform/process/isolation.go:436-450"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+          "paths": [
+            "internal/platform/process/isolation.go:344-359",
+            "internal/platform/process/isolation.go:105"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+          "paths": [
+            "internal/platform/process/isolation.go:242-262",
+            "internal/sprint/qa_investigation.go:132-140"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation_test.go:55-86"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static review identifies a TOCTOU window; without a concurrent-mutation probe I cannot determine whether the gap is exploitable in practice, and the investigator is read-only."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9c9e6db0baee9a4709ec3405",
+      "shard_id": "qa-v1-shard-22e0999a6d96f08286ccd928",
+      "claim": "Directory entries are masked to 0o700 during copy, but regular-file entries are written with their original Mode().Perm() bits intact, so a source file with group- or world-writable permissions such as 0666 or 0777 survives verbatim into the isolated workspace and weakens the 0700 containment promised by the parent directory.",
+      "basis": "isolation.go:346 masks directory mode with info.Mode().Perm() and 0o700 when calling os.Mkdir. isolation.go:357 then calls os.WriteFile(destination, data, info.Mode().Perm()) with no masking. isolation.go:105 creates the parent at 0o700, but the copied file mode is independent of the parent directory mode on POSIX.",
+      "verification_surface": "isolation.go:344-359 the divergent os.Mkdir and os.WriteFile calls in copyBoundedTree, isolation.go:105 parent directory mode, isolation_test.go:13-53 which exercises no test with a non-0o600 source mode.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Line-by-line comparison shows directories are masked with and 0o700 while files are written with raw Perm(); no test or call site normalises source file modes before copy.",
+      "refutation_condition": "isolation.go applies a and 0o700 mask or equivalent before os.WriteFile, or the caller is required to pre-chmod the source tree.",
+      "inconclusive_condition": "Whether the workspace parent mode 0o700 plus typical source mode 0o644 produces a practical exploit depends on the deployment environment, which is out of scope for this packet.",
+      "safe_evidence_strategy": "Read isolation.go:344-359 and confirm the asymmetry between the Mkdir mask and the WriteFile call. Do not attempt to copy a non-default-mode file tree.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-22e0999a6d96f08286ccd928/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.785692505Z",
+          "completed_at": "2026-08-28T11:23:59.853799459Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "static_analysis",
+              "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+              "paths": [
+                "internal/platform/process/isolation.go:317-371",
+                "internal/platform/process/isolation.go:436-450"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+              "paths": [
+                "internal/platform/process/isolation.go:344-359",
+                "internal/platform/process/isolation.go:105"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+              "paths": [
+                "internal/platform/process/isolation.go:242-262",
+                "internal/sprint/qa_investigation.go:132-140"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+              "paths": [
+                "internal/platform/process/isolation_test.go:55-86"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 67,
+          "retained_events": 67,
+          "observed_tool_calls": 22,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation.go:317-371",
+            "internal/platform/process/isolation.go:436-450"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+          "paths": [
+            "internal/platform/process/isolation.go:344-359",
+            "internal/platform/process/isolation.go:105"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+          "paths": [
+            "internal/platform/process/isolation.go:242-262",
+            "internal/sprint/qa_investigation.go:132-140"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation_test.go:55-86"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static review shows the asymmetric mode handling; without running a copy of a 0o666 source file I cannot prove the mode survives unchanged, and the investigator is read-only."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e3c3b40aca89c8ab0221c567",
+      "shard_id": "qa-v1-shard-22e0999a6d96f08286ccd928",
+      "claim": "Cleanup uses a non-atomic os.RemoveAll followed by os.Lstat to confirm deletion, so any process or attacker that recreates the workspace path between the two syscalls produces a false-positive workspace still exists error and a blocked outcome even though the original cleanup succeeded.",
+      "basis": "isolation.go:248-260: RemoveAll is called, then Lstat is used to verify absence. There is no rename-then-rm or fd-based unlink. internal/sprint/qa_investigation.go:132-136 promotes any cleanup_uncertain to QAEvidenceBlocked, so a transient recreate propagates as a blocked evidence record.",
+      "verification_surface": "isolation.go:242-262 Cleanup, internal/sprint/qa_investigation.go:132-140 consumer that maps CleanupResult.Complete==false to Blocked.",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "CleanupResult reports Error=workspace still exists or Complete==false when no QA-relevant files remain but the path was briefly re-created; consumer logic maps this to a blocked evidence outcome.",
+      "refutation_condition": "Cleanup uses an atomic compare-and-delete such as rename plus rm or the consumer distinguishes recreated by another process from incomplete remove.",
+      "inconclusive_condition": "Whether a recreate race actually occurs depends on concurrent host activity, which cannot be observed from a static review.",
+      "safe_evidence_strategy": "Read isolation.go:242-262 and internal/sprint/qa_investigation.go:132-140 to confirm the non-atomic verification and the Blocked promotion. Do not race Cleanup against a competing mkdir.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-22e0999a6d96f08286ccd928/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:20:30.785692505Z",
+          "completed_at": "2026-08-28T11:23:59.853799459Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "static_analysis",
+              "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+              "paths": [
+                "internal/platform/process/isolation.go:317-371",
+                "internal/platform/process/isolation.go:436-450"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+              "paths": [
+                "internal/platform/process/isolation.go:344-359",
+                "internal/platform/process/isolation.go:105"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+              "paths": [
+                "internal/platform/process/isolation.go:242-262",
+                "internal/sprint/qa_investigation.go:132-140"
+              ]
+            },
+            {
+              "kind": "static_analysis",
+              "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+              "paths": [
+                "internal/platform/process/isolation_test.go:55-86"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 67,
+          "retained_events": 67,
+          "observed_tool_calls": 22,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_analysis",
+          "summary": "copyBoundedTree (isolation.go:317-371) rejects symlinks, special files, and hardlinks inside the WalkDir callback using entry.Info() and linkCount(info). readRegularFile (isolation.go:436-450) then opens the same path with os.Open, which follows symlinks, and re-checks only the byte count against info.Size(). There is no os.Lstat or fresh link-count check between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation.go:317-371",
+            "internal/platform/process/isolation.go:436-450"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Directory creation in copyBoundedTree masks the mode with 0o700 (isolation.go:346), but the matching file write at isolation.go:357 passes info.Mode().Perm() unchanged to os.WriteFile. Parent directory is created at 0o700 (isolation.go:105), so directory bits are sanitised but file bits are not.",
+          "paths": [
+            "internal/platform/process/isolation.go:344-359",
+            "internal/platform/process/isolation.go:105"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Cleanup uses os.RemoveAll followed by os.Lstat to verify absence (isolation.go:248-260); internal/sprint/qa_investigation.go:132-140 promotes any non-Complete cleanup to a Blocked evidence outcome and further blocks on subsequent target-drift or identity failures.",
+          "paths": [
+            "internal/platform/process/isolation.go:242-262",
+            "internal/sprint/qa_investigation.go:132-140"
+          ]
+        },
+        {
+          "kind": "static_analysis",
+          "summary": "Test coverage in isolation_test.go constructs the symlink, oversize, and hardlink inputs before CreateIsolation starts; TestIsolationRejectsEscapeSymlinkSpecialHardlinkAndBudgets does not exercise a TOCTOU substitution between walk and open.",
+          "paths": [
+            "internal/platform/process/isolation_test.go:55-86"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static review identifies the non-atomic verification path and its blocked escalation; without a concurrent-creator probe the race cannot be exercised, and the investigator is read-only."
+    }
+  ]
+}

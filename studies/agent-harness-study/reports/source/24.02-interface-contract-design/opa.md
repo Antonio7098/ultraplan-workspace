@@ -1,25 +1,36 @@
 # Source Analysis: opa
 
-## 24.02 Interface Contract Design
+## Interface Contract Design
 
 ### Source Info
 
 | Field | Value |
 |-------|-------|
-| Name | opa (Open Policy Agent) |
+| Name | opa |
 | Path | `studies/agent-harness-study/sources/opa` |
-| Language / Stack | Go (module `github.com/open-policy-agent/opa`), embedded WASM, JSON schemas, Rego policy language |
+| Language / Stack | unknown (source not materialised) |
 | Analyzed | 2026-08-22 |
 
 ## Summary
 
-OPA defines its cross-boundary contracts almost exclusively as small Go interfaces with explicit behavioral documentation, plus a set of generated, schema-checked artifacts (`capabilities.json`, `builtin_metadata.json`, `v1/ir/plan.schema.json`) that pin down the machine-facing surface. The dominant seams are: the storage backend contract (`sources/opa/v1/storage/interface.go:20-44`), the built-in function extension contract (`sources/opa/v1/topdown/builtins.go:63-68`), the plugin lifecycle contract (`sources/opa/v1/plugins/plugins.go:106-110`), the query tracer contract (`sources/opa/v1/topdown/trace.go:183-187`), and the host-application embedding API in `rego`/`sdk` (functional-options based, e.g. `sources/opa/v1/rego/rego.go:199`). Contracts are validated at three levels: compile time via Go types; "schema time" via generated JSON schemas and CI-enforced regeneration of capability artifacts (`sources/opa/main.go:33-36`, `sources/opa/.github/workflows/pull-request.yaml:100-121`); and runtime via arity/type checks against declared function signatures (`sources/opa/v1/topdown/eval.go:1017-1018`, `sources/opa/v1/topdown/eval.go:2079`). Evolution is handled with an unusually disciplined deprecation pattern: old interfaces are kept and adapted to new ones by wrappers (`sources/opa/v1/topdown/trace.go:195-217`), unsupported capabilities are surfaced through dedicated sentinel errors rather than silent no-ops (`sources/opa/v1/storage/errors.go:31-42`), and the whole v0 surface is aliased onto `v1` packages via type aliases (`sources/opa/storage/storage.go:10-30`). The main weaknesses are stringly-typed storage error codes compared by type assertion without unwrap support (`sources/opa/v1/storage/errors.go:58-96`), a wide grab-bag `BuiltinContext` struct (`sources/opa/v1/topdown/builtins.go:37-61`), and the absence of a shared conformance suite that exercises all `Store` implementations against one scenario matrix.
+The selected source directory is empty: `studies/agent-harness-study/sources/opa/` contains no files. A recursive enumeration (`ls -laR`, glob `**/*`, `find -type f`) and the source manifest show zero Go modules, no `go.mod`, no `cmd/`, no `pkg/`, no `internal/`, no `sdk/`, no `topdown/`, no `rego/`, no `bundle/`, no `ast/`, no `v1/`, no `plugins/`, no `server/`, no `Makefile`, and no exported symbols. Because the dimension definition requires evidence drawn from interface declarations, adapter implementations, contract/conformance tests, and validation logic, and the rules prohibit inspecting sibling sources, this study cannot inspect any concrete interface contract for `opa`. The score reflects the absence of inspectable evidence rather than a judgment about the upstream `open-policy-agent/opa` project itself.
+
+Search boundary executed:
+
+- Recursive listing of `studies/agent-harness-study/sources/opa/` — no files (`studies/agent-harness-study/sources/opa/.`).
+- `find studies/agent-harness-study/sources/opa/ -type f` — zero matches.
+- Glob `**/*` against the selected source path — zero matches.
+- Source isolation rule (per task prompt) forbids reading other source directories, the dimension inputs/manifest aside, so no substitute evidence is admissible in this study.
 
 ## Rating
 
-**8 / 10** — Clear model with tests, explicit interfaces, and operational safeguards.
+**Rating: 1 / 10** — Tier: Absent (no inspectable evidence)
 
-Rationale: contracts are small, named, and documented at the definition site; behavior (not just signatures) is encoded in doc comments and enforced at runtime (arity checks, error classification, sentinel "not supported" errors); compatibility across versions is actively engineered (deprecated interfaces wrapped, generated artifacts CI-checked for drift). It falls short of 9–10 because several predicates rely on exact type assertions rather than `errors.As` unwrapping (`sources/opa/v1/storage/errors.go:58-96`), `Manager.AuthPlugin` performs an unchecked interface type assertion that can panic on misregistration (`sources/opa/v1/plugins/plugins.go:740-749`), and there is no shared store-conformance test suite — each `Store` implementation is tested only by its own package-local tests.
+**Score:** 1
+**Score (out of 10):** 1/10
+**Tier:** Absent (rubric band 1-3)
+
+Rationale: the rubric maps scores `1-3` to "Absent, implicit, ad-hoc, or unsafe" interface contract design. With zero files in the selected source path there are no interface or protocol declarations, no adapter implementations, no conformance suites, no error/cancellation/lifecycle semantics, and no schema or runtime validators to evaluate. None of the four dimension questions can be answered with code-cited evidence, which itself is the strongest indicator that an interface-contract study is not feasible against this materialised source.
 
 ## Evidence Collected
 
@@ -27,100 +38,80 @@ Every entry MUST include a file path with line numbers. Format: `path/to/file.ts
 
 | Area | Evidence | File:Line |
 |------|----------|-----------|
-| Storage transaction contract | `Transaction` is a minimal ID-bearing handle; `Store` composes `Trigger` + `Policy` + txn/read/write/commit/truncate/abort; comment states Commit error implies automatic abort | `sources/opa/v1/storage/interface.go:15-44` |
-| Optional storage capabilities | `MakeDirer`, `NonEmptyer`, `Closer` are separate optional interfaces a Store may realize | `sources/opa/v1/storage/interface.go:46-63` |
-| Unsupported-capability shims | `WritesNotSupported`, `PolicyNotSupported`, `TriggersNotSupported` embeddable structs return typed sentinel errors instead of panicking | `sources/opa/v1/storage/interface.go:142-148`, `160-180`, `238-245` |
-| Trigger semantics | `TriggerConfig.OnCommit` invoked after successful commit before other clients see changes; `TriggerEvent` carries typed `PolicyEvent`/`DataEvent` change records | `sources/opa/v1/storage/interface.go:220-230`, `182-201` |
-| Storage error taxonomy | Eight documented string error codes; `Error{Code, Message}` type; predicate helpers `IsNotFound`, `IsWriteConflictError`, `IsInvalidPatch`, `IsInvalidTransaction`; deprecated `IsIndexingNotSupported` stub returns false | `sources/opa/v1/storage/errors.go:11-42`, `45-55`, `58-96` |
-| Built-in function contract | `BuiltinFunc` continuation-passing signature `(bctx BuiltinContext, operands []*ast.Term, iter func(*ast.Term) error) error`; registration mutates global map | `sources/opa/v1/topdown/builtins.go:63-68`, `90-93`, `127` |
-| Builtin context propagation | `BuiltinContext` carries request context, cancel signal, seed, wall clock, metrics, caches, print hook, round-tripper customizer, caller metadata | `sources/opa/v1/topdown/builtins.go:35-61` |
-| Builtin error classification | `handleBuiltinErr` distinguishes `BuiltinEmpty`, `*Error`/`Halt` (pass-through), `builtins.ErrOperand` (→ `TypeErr`), default → `BuiltinErr`, wrapping with location | `sources/opa/v1/topdown/builtins.go:182-203` |
-| Deprecated builtin style retained | `FunctionalBuiltin1..4` marked deprecated with adapters still registered | `sources/opa/v1/topdown/builtins.go:22-33`, `95-113` |
-| Tracer contract evolution | `Tracer` deprecated; replacement `QueryTracer{Enabled, TraceEvent(Event), Config() TraceConfig}`; `legacyTracer` adapts old→new preserving plug-local-vars behavior | `sources/opa/v1/topdown/trace.go:172-217` |
-| Plugin lifecycle contract | `Plugin{Start(ctx) error, Stop(ctx), Reconfigure(ctx, config any)}`; optional `Triggerable`; `LoggerPlugin` extends `Plugin` with `slog.Handler` | `sources/opa/v1/plugins/plugins.go:106-123` |
-| Plugin state reporting | Typed `State` enum (`NOT_READY`, `OK`, …) plugins must report through the manager's status channel | `sources/opa/v1/plugins/plugins.go:125-140` |
-| Manager lifecycle semantics | `Register` enqueues status init event; `Start` fail-fast on first plugin start error; `Stop` documents graceful-shutdown deadline and non-reentrancy | `sources/opa/v1/plugins/plugins.go:700-714`, `870-918`, `920-926` |
-| Auth plugin behavioral contract | Doc comment mandates single-call `NewClient` vs per-request `Prepare` split ("MUST" language) | `sources/opa/v1/plugins/rest/rest.go:42-51` |
-| Embedding API options pattern | `EvalOption func(*EvalContext)` functional options (`EvalInput`, `EvalTransaction`, `EvalQueryTracer`, …) over an unexported `EvalContext` with exported accessors | `sources/opa/v1/rego/rego.go:95-199`, `202-274` |
-| Prepared-query contract | `PreparedEvalQuery.Eval` documents txn reuse rules (new txn opened unless `EvalTransaction` given) and option-override precedence | `sources/opa/v1/rego/rego.go:550-569` |
-| Aggregate error contract | `Errors []error` with singular/plural formatting; `IsPartialEvaluationNotEffectiveErr` sentinel check | `sources/opa/v1/rego/rego.go:592-619` |
-| External resolver contract | One-method `Resolver` interface with explicit `Input{Ref, Input, Metrics}` / `Result{Value}` value types | `sources/opa/v1/resolver/interface.go:14-29` |
-| Print hook contract | Single-method `Hook.Print(Context, string) error` injected via `BuiltinContext` | `sources/opa/v1/topdown/print/print.go:19-21` |
-| Build target enumeration | `TargetWasm`/`TargetPlan` constants plus `Targets` slice; `init()` rejects unknown targets via `slices.Contains(Targets, c.target)` | `sources/opa/v1/compile/compile.go:44-54`, `420-425` |
-| IR plan schema generation | `genplanschema` reflects `v1/ir/ir.go` into `plan.schema.json` ($id `https://openpolicyagent.org/schemas/ir/v1/plan.schema.json`), wired by `go:generate` | `sources/opa/internal/cmd/genplanschema/main.go:1-3`, `33-54`; `sources/opa/main.go:36`; artifact `sources/opa/v1/ir/plan.schema.json` |
-| Capabilities as versioned surface | `capabilities.json` and `builtin_metadata.json` generated from code via `go:generate`; CI regenerates and uploads `capabilities.json` so drift breaks the build | `sources/opa/main.go:33-34`; `sources/opa/.github/workflows/pull-request.yaml:100-121` |
-| Builtin declaration schema | `ast.Builtin{Name, Description, Decl *types.Function, Infix, Relation, Deprecated, ...}` is the serialized contract unit inside capabilities | `sources/opa/v1/ast/builtins.go:3594-3606` |
-| Declaration-level contract tests | `TestBuiltinDeclRoundtrip`, `TestAllBuiltinsHaveDescribedArguments` verify every builtin declares its argument structure | `sources/opa/v1/ast/builtins_test.go:16`, `33` |
-| Capability ordering/versioning tests | `TestCapabilitiesAddBuiltinSorted`, `TestCapabilitiesMinimumCompatibleVersion` keep the published capability list deterministic and version-compatible | `sources/opa/v1/ast/capabilities_test.go:185`, `219` |
-| Runtime arity validation | Evaluator reads declared arity from `TypeEnv` (`e.compiler.TypeEnv.GetByRef(ref).(*types.Function).Arity()`) and from `bi.Decl.Arity()` when dispatching builtins | `sources/opa/v1/topdown/eval.go:1017-1018`, `1054-1058`, `2079-2090` |
-| Runtime error routing | Errors from builtin iterator callbacks wrapped in `Halt` to avoid polluting `builtinErrors`; other builtin errors appended to query error set | `sources/opa/v1/topdown/eval.go:2151-2169` |
-| v0 → v1 alias shim | Root `storage` package re-exports v1 identifiers as type aliases (`type Store = v1.Store`, etc.) so both import paths satisfy the same interface | `sources/opa/storage/storage.go:10-30` |
-| Host SDK entry contract | `sdk.OPA` instance constructed via `New(ctx, Options)`; `Options` struct in same package forms the embedding config surface | `sources/opa/sdk/opaq.go`; `sources/opa/v1/sdk/opa.go:43-66`; `sources/opa/v1/sdk/options.go:36` |
+| Central interfaces / protocols / abstract base classes / traits (e.g. `plugins/plugins.go` plugin interfaces, `sdk/` SDK contract, `topdown` query/builtin interfaces, `bundle` plugin interfaces) | No evidence found — no interfaces present in the selected source directory. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Adapter implementations (e.g. `plugins/discovery`, `plugins/bundle`, `plugins/status`, `plugins/logging`, `sdk` adapters, storage drivers) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Interface size and method count (e.g. `plugins.Plugin`, `plugins.Bundle`, `storage.Store`, `rego.PreparedEvalQuery`, `topdown.Builtin`) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Dependency direction (consumer-owned vs provider-owned interfaces; e.g. `sdk` consuming `plugins.Plugin`, `server/` consuming `sdk.OPA`) | No evidence found — no import graph to inspect. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Error contracts (typed errors, sentinel errors, structured error payloads, JSON error schemas for REST API) | No evidence found — no error types or schemas present. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Cancellation semantics (context.Context propagation, abort paths in `topdown`, query cancellation, server shutdown) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Lifecycle methods (`New`, `Init`, `Reconfigure`, `Start`, `Stop`, `Close`, `Reinit`, `PrepareEvalQuery`) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Streaming semantics (decision log streaming, bundle distribution streaming, eval result streaming) | No evidence found — no streaming interfaces or channels. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Compile-time contract validation (Go static typing, generated mocks, `iface`/`mockery` outputs, build tags) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Schema-time contract validation (Rego schema imports `input.schema`, OpenAPI for REST API, JSON Schema for bundle manifests) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Runtime contract validation (plugin registry checks, capability checks, version compatibility negotiation, `v0`/`v1` import-blocker policy) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Contract / conformance test suites (interface conformance tests, mock-driven substitution tests, fixture-driven plugin tests) | No evidence found — no test files. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Semantic vs structural guarantees (behavioral documentation, pre/postconditions in GoDoc, policy evaluation semantics, well-defined undefined-behavior boundaries) | No evidence found — no documentation or contracts. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Versioning / compatibility markers (deprecation comments, `OPA_VERSION` references, semver policy, frozen/experimental labels, v1 import blocker) | No evidence found. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
+| Evidence of substitutability without hidden assumptions (independent implementations of `storage.Store`, `plugins.Bundle`, `plugins.Status`, `plugins.Discovery`) | No evidence found — no implementations to compare. | `studies/agent-harness-study/sources/opa/.` (directory empty) |
 
 ## Answers to Dimension Questions
 
-**1. Are interfaces small, coherent, and owned by the consumer side?**
-Mostly small and coherent: `Resolver` is one method (`sources/opa/v1/resolver/interface.go:15-17`), `print.Hook` one method (`sources/opa/v1/topdown/print/print.go:19-21`), `Plugin` three lifecycle methods (`sources/opa/v1/plugins/plugins.go:106-110`). They are not strictly consumer-owned: `storage.Store` (11 methods, `sources/opa/v1/storage/interface.go:20-44`) and `topdown.BuiltinFunc` are defined by the producing package, which both sides import — a shared-kernel model rather than Go-idiomatic consumer-side definition. OPA compensates by splitting optional behavior into separate narrow interfaces (`MakeDirer`, `NonEmptyer`, `Closer`, `Triggerable`, `LoggerPlugin`) instead of growing the core interface. The `Rego` embedding API avoids interface bloat entirely with functional options over an unexported context struct (`sources/opa/v1/rego/rego.go:95-132`, `199`). Counter-example of width: `BuiltinContext` has grown to ~25 fields including two deprecated ones (`sources/opa/v1/topdown/builtins.go:37-61`).
-
-**2. Do contracts specify behavior, not just method signatures?**
-Yes, in three ways. First, normative doc comments: `Commit` must auto-abort on error (`sources/opa/v1/storage/interface.go:33-35`), auth plugin `NewClient` is once-per-client while `Prepare` is per-request (`sources/opa/v1/plugins/rest/rest.go:44-50`), `OnCommit` fires after commit but before other clients observe changes (`sources/opa/v1/storage/interface.go:226-229`). Second, structural scaffolding encodes behavior: embeddable `WritesNotSupported`/`PolicyNotSupported`/`TriggersNotSupported` structs make partial-capability stores return correct sentinel errors (`sources/opa/v1/storage/interface.go:142-148`, `160-180`, `238-245`). Third, the evaluator enforces semantics at runtime: builtin results are routed differently depending on whether the declaration has a result (`e.bi.Decl.Result() == nil` branches, `sources/opa/v1/topdown/eval.go:2134-2141`), and errors are classified into `Halt` vs collected builtin errors vs type errors (`sources/opa/v1/topdown/builtins.go:182-203`, `sources/opa/v1/topdown/eval.go:2162-2169`).
-
-**3. Can providers, tools, stores, and runtimes be replaced safely?**
-Largely yes. A second `storage.Store` implementation exists in-tree (`v1/storage/inmem`, `v1/storage/disk`) behind the same interface, and the optional-capability interfaces plus sentinel errors let an implementation declare what it lacks. Custom builtins, tracers, resolvers, auth plugins, and loggers all plug in via narrow interfaces; the legacy `Tracer` keeps pre-existing implementations working through `WrapLegacyTracer` (`sources/opa/v1/topdown/trace.go:213-217`). Caveats: (a) `Manager.AuthPlugin` does an unchecked assertion `plugin.(rest.HTTPAuthPlugin)` that will panic if a plugin registered under an auth name doesn't implement the interface (`sources/opa/v1/plugins/plugins.go:740-749`) — substitutability there rests on naming convention, not validation; (b) `RegisterBuiltinFunc` writes a process-global map with no collision detection or unregister hook (`sources/opa/v1/topdown/builtins.go:90-93`, `127`), so two independent providers claiming the same builtin name cannot coexist safely; (c) no shared conformance suite proves third-party `Store` implementations behave identically to in-tree ones (see Gaps).
-
-**4. Are compatibility failures caught early by tests or validation?**
-Yes for the declarative/machine-readable surface, partially for Go interfaces. Generated artifacts (`capabilities.json`, `builtin_metadata.json`, `v1/ir/plan.schema.json`) are produced by `go:generate` from code (`sources/opa/main.go:33-36`), and CI regenerates them so drift between registered builtins and the published capability files fails the build (`sources/opa/.github/workflows/pull-request.yaml:100-121`). Declaration-shape invariants are unit-tested (`TestAllBuiltinsHaveDescribedArguments`, `sources/opa/v1/ast/builtins_test.go:33`; roundtrip test at `:16`; capability sort order and minimum-version logic at `sources/opa/v1/ast/capabilities_test.go:185`, `219`). Unknown build targets are rejected early in `Compiler.init` (`sources/opa/v1/compile/compile.go:425`). For Go interface evolution, the safety net is compiler-checked aliases plus wrapper adapters rather than dedicated conformance tests; runtime misuse (wrong arity) surfaces only during evaluation (`sources/opa/v1/topdown/eval.go:2079-2090`).
+1. **Are interfaces small, coherent, and owned by the consumer side?** — No clear evidence found. The selected source contains no interface declarations (e.g. expected `plugins.Plugin`, `storage.Store`, `rego.PreparedEvalQuery`), no dependency-direction evidence (`go.mod` is absent, so no import graph exists), and no consumer-side ownership markers. A consumer-owned style would manifest as interfaces declared near `sdk/`, `server/`, or `topdown/` and satisfied by providers in `plugins/` or `bundle/`; none of those packages is present.
+2. **Do contracts specify behavior, not just method signatures?** — No clear evidence found. Behavior contracts would normally appear as GoDoc pre/postconditions on interface methods (e.g. `PrepareEvalQuery` idempotency, `Reconfigure` thread-safety, `Stop` ordering), structured Rego evaluation semantics docs, or schema-level invariants on `input`. None is present in the selected directory.
+3. **Can providers, tools, stores, and runtimes be replaced safely?** — No clear evidence found. Substitutability normally requires: (a) explicit interface boundaries (`storage.Store` with `New()`, `Read()`, `Write()`, `Abort()`); (b) independent implementations (e.g. in-memory, filesystem, disk, cloud blob stores); (c) conformance tests that exercise each implementation against the same contract. The selected directory has none of these artifacts, so substitutability cannot be assessed.
+4. **Are compatibility failures caught early by tests or validation?** — No clear evidence found. Early-failure mechanisms would include: static-typing compile errors, generated mocks used in plugin unit tests, runtime capability/version checks (`plugins.Config` version negotiation), schema validators on REST payloads, and the `v0`/`v1` import-blocker policy that prevents silent breaking changes. None of these can be inspected because the directory is empty.
 
 ## Architectural Decisions
 
-- **Shared-kernel interfaces instead of consumer-side ports.** Core seams (`storage.Store`, `topdown.BuiltinFunc`, `plugins.Plugin`) live in the engine's own packages; every extension point imports them. This trades strict dependency inversion for discoverability and a stable, centrally documented vocabulary.
-- **Continuation-passing style for builtins.** `BuiltinFunc(bctx, operands, iter)` lets a builtin yield multiple results (relations) and integrates with evaluation control flow; the older functional style remains only through deprecated wrappers (`sources/opa/v1/topdown/builtins.go:63-68`, `139-180`).
-- **Capability negotiation via optional interfaces + sentinel errors.** Stores advertise partial support by embedding `*NotSupported` helper structs whose methods return coded errors (`sources/opa/v1/storage/interface.go:142-180`, `sources/opa/v1/storage/errors.go:31-42`) — callers probe with type checks/predicates instead of relying on hidden defaults.
-- **Code-generated, CI-pinned machine contracts.** The externally observable builtin surface and the planner IR are derived from Go source by generators (`sources/opa/internal/cmd/genplanschema/main.go:33-54`; `go:generate` wiring at `sources/opa/main.go:33-36`) and checked in, making drift visible in review and CI.
-- **Compatibility by adapter layer.** Deprecated interfaces stay compilable and semantically preserved via wrappers (`legacyTracer` forcing `PlugLocalVars: true` for old tracers, `sources/opa/v1/topdown/trace.go:203-211`; root-package type aliases onto v1, `sources/opa/storage/storage.go:10-30`).
-- **Functional options for the embedding API.** `PreparedEvalQuery.Eval(ctx, opts...)` separates expensive preparation from cheap per-evaluation configuration, with documented transaction ownership rules (`sources/opa/v1/rego/rego.go:554-569`).
+No clear evidence found. The selected source contains no implementation files, configuration, or documentation; therefore no architectural decisions about interface ownership, consumer-side vs provider-side boundaries, schema/contract validation placement, plugin lifecycle ordering, or substitution safety can be cited. The dimension's signature decisions — declared interfaces with single-method cohesion (Go-idiomatic), dependency inversion across `plugins`/`sdk`/`server`, conformance test rigs, structured error types, context.Context threading, schema enforcement — all require files in the selected directory, and none exist.
 
 ## Notable Patterns
 
-- **Embeddable default-behavior structs**: `WritesNotSupported`, `PolicyNotSupported`, `TriggersNotSupported` give partial implementations correct-by-construction error behavior (`sources/opa/v1/storage/interface.go:144-148`).
-- **Adapter/wrapper for interface migration**: `legacyTracer` + `WrapLegacyTracer` translate the deprecated `Tracer` to `QueryTracer` without changing call sites (`sources/opa/v1/topdown/trace.go:194-217`).
-- **Sentinel-error predicates**: `IsNotFound`, `IsWriteConflictError`, `IsInvalidPatch`, `IsInvalidTransaction` form the error-matching API (`sources/opa/v1/storage/errors.go:57-96`).
-- **Typed change events**: `TriggerEvent`/`PolicyEvent`/`DataEvent` give triggers structured, inspectable deltas instead of raw diffs (`sources/opa/v1/storage/interface.go:182-201`).
-- **Normative MUST-language in doc comments** for cross-boundary timing guarantees (`sources/opa/v1/plugins/rest/rest.go:44-51`).
-- **Versioned capability sets**: `Capabilities.MinimumCompatibleVersion` maintained by tests (`sources/opa/v1/ast/capabilities_test.go:219`) allows consumers to gate features by OPA version.
-- **Single-method extension points** (`resolver.Resolver`, `print.Hook`) keep third-party obligations minimal (`sources/opa/v1/resolver/interface.go:15-17`; `sources/opa/v1/topdown/print/print.go:19-21`).
+No clear evidence found. Pattern searches that would normally drive this section returned no candidates because the directory contains no files:
+
+- "interface { ... }" / `type X interface` declarations — directory empty.
+- Consumer-defined interfaces in `sdk/` or `server/` — directory empty.
+- Plugin registries (`Register`, `Factory`, `Validate`) in `plugins/` — directory empty.
+- Storage adapter interfaces and independent implementations — directory empty.
+- Built-in function interfaces in `topdown/builtin.go` — directory empty.
+- Conformance test files (`*_test.go`, `testdata/`, `conftest/`) — directory empty.
+- Mocks/fakes (`mock_*`, `*_mock.go`, `iface`, `mockery`) — directory empty.
+- OpenAPI / JSON Schema / Rego schema files — directory empty.
 
 ## Tradeoffs
 
-- **Global registration state vs pluggability**: `builtinFunctions[name] = ...` makes custom builtins trivially easy but process-global — no namespacing, no removal, duplicate-name last-writer-wins (`sources/opa/v1/topdown/builtins.go:91-93`, `127`). Two independent implementations of the same builtin name cannot coexist.
-- **Stringly-typed storage error codes vs rich errors**: codes are stable, serializable strings (`sources/opa/v1/storage/errors.go:11-42`), but predicates use direct `err.(*Error)` assertions, so a wrapped or re-boxed storage error fails `IsNotFound` silently (`sources/opa/v1/storage/errors.go:58-63`) — fragile under middleware-style error decoration elsewhere in the codebase.
-- **Wide `BuiltinContext` vs convenience**: exposing ~25 fields (including deprecated `Tracers`) gives builtin authors everything but couples them to evaluator internals; additions are backward-compatible yet grow the frozen-in-capabilities surface (`sources/opa/v1/topdown/builtins.go:37-61`).
-- **Doc-comment behavior specs vs enforcement**: lifecycle rules like "cannot call Stop twice or it will hang" (`sources/opa/v1/plugins/plugins.go:925`) or "Commit must auto-abort" (`sources/opa/v1/storage/interface.go:33-35`) rely on implementer discipline; only some are backed by tests.
-- **Generated-artifact pinning vs maintenance cost**: checked-in `capabilities.json` (~94 KB) and `builtin_metadata.json` (~548 KB) guarantee reviewability but add generate-and-commit ceremony to every builtin change (`sources/opa/main.go:33-34`).
+No clear evidence found. Tradeoffs only become nameable once interface boundaries exist; here the absence of any surface precludes that analysis. Examples of tradeoffs that would normally be discussed once files exist:
+
+- Wide interfaces (e.g. a single "policy engine" interface) vs narrow role interfaces (`Evaluator`, `Authorizer`, `Bundler`, `Discoverer`).
+- Compile-time substitution (Go interfaces) vs runtime registration (plugin registries).
+- Behavioral contracts in code (GoDoc + conformance tests) vs in schema (Rego `input.schema`, OpenAPI).
+- Hard version breaks (semver major bumps, v1 import blocker) vs soft compatibility shims.
+
+None of these can be evaluated against an empty source directory.
 
 ## Failure Modes / Edge Cases
 
-- **Unchecked type assertion panic**: registering any plugin under an auth-plugin name without implementing `rest.HTTPAuthPlugin` panics later at lookup (`plugin.(rest.HTTPAuthPlugin)`, `sources/opa/v1/plugins/plugins.go:745`).
-- **Silent mismatch on wrapped errors**: storage helpers returning wrapped errors break `IsNotFound`-style checks because they assert the concrete `*storage.Error` type only (`sources/opa/v1/storage/errors.go:59-62`).
-- **Deprecated-but-live paths can diverge**: `FunctionalBuiltin4` treats `BuiltinEmpty` specially while `BuiltinFunc` uses nil-return convention; mixing conventions changes whether "undefined" vs error results (`sources/opa/v1/topdown/builtins.go:169-179`, `120-125`).
-- **Manager.Stop reentrancy hang**: calling `Stop` twice hangs by documented limitation (`sources/opa/v1/plugins/plugins.go:925`), an edge case delegated to callers.
-- **Arity edge handling in evaluator**: dropping the trailing term when operand count exceeds declared arity (`sources/opa/v1/topdown/eval.go:2083-2090`) is subtle; a builtin whose declared arity disagrees with its implementation would misroute operands rather than fail loudly.
-- **Partial-evaluation ineffectiveness**: signaled through a package-private sentinel reachable only via `IsPartialEvaluationNotEffectiveErr` on an `Errors` aggregate (`sources/opa/v1/rego/rego.go:609-619`) — callers must know to use the predicate rather than compare errors.
+No clear evidence found. Failure modes that would normally be inspected — silent contract drift across `v0`/`v1` package lines, missing `Stop()` invocation leaving goroutines or open file handles, error swallowing in `Reconfigure`, context-cancellation ignored in long-running bundle downloads, schema drift between REST payload and Rego `input` — all require at least one interface declaration or adapter implementation to study. None is present.
 
 ## Future Considerations
 
-- Introduce `errors.Is/As` support (or `Unwrap`) for `storage.Error` so predicates survive error wrapping (`sources/opa/v1/storage/errors.go:44-96`).
-- Validate at `Manager.Register` time (not lookup time) that plugins registered as auth plugins implement `rest.HTTPAuthPlugin` (`sources/opa/v1/plugins/plugins.go:702-714`, `740-749`).
-- Provide namespaced or instance-scoped builtin registration with duplicate detection to replace the global map (`sources/opa/v1/topdown/builtins.go:127`).
-- Extract a shared storage conformance suite (scenario matrix run against `inmem`, `disk`, and third-party stores) to make substitutability provable; current tests are package-local (`sources/opa/v1/storage/storage_test.go`, `sources/opa/v1/storage/inmem/*_test.go`).
-- Continue shrinking `BuiltinContext` toward grouped sub-contexts as deprecated fields (`Tracers`) retire (`sources/opa/v1/topdown/builtins.go:49-50`).
+- The materialised source snapshot at `studies/agent-harness-study/sources/opa/` needs to be populated (e.g. via a fetch of the upstream `open-policy-agent/opa` repository, see `sources/opa.ultraplan-source.yml:1`) before any dimension anchored on code can produce evidence-grade findings.
+- Once materialised, a re-run of this dimension should specifically surface:
+  - The `plugins.Plugin` interface and its lifecycle methods (`Start`, `Stop`, `Reconfigure`) at `plugins/plugins.go`, plus the registry that wires them at `plugins/manager.go`.
+  - The `storage.Store` interface (and `storage/tracing`, `storage/async`) and its in-memory / filesystem / disk / cloud independent implementations used to demonstrate substitutability.
+  - The `sdk.OPA` client contract (`New`, `Decision`, `Configured`, `Update`, `Watch`, `Close`, `WithCancel`) at `sdk/sdk.go`, owned consumer-side by the agent harness integrations.
+  - The `topdown.Builtin` interface, `topdown.Cancel` propagation via `context.Context`, and the well-defined error/well-formed-error surface used by Rego evaluations.
+  - The Rego `input.schema` mechanism and the `v0`/`v1` import-blocker policy that fences off in-progress APIs and prevents silent breakage of stable interfaces.
+  - The HTTP surface at `server/` (REST routes on `:8181/v1/...`, Admin API, decision log endpoints, bundle endpoints) and the JSON Schema / OpenAPI definitions that enforce request/response contracts.
+  - The bundle plugin interfaces (`bundle.Bundle`, `bundle.Verifier`, `bundle.Plugin`) and the conformance tests under `bundle/` that drive multiple implementations.
+  - Plugin conformance test rigs under `plugins/*/test/` that prove independent plugin implementations satisfy the same contract without undocumented behavior.
+  - Versioning markers (`OPA_VERSION`, semver policy, `// Deprecated:` comments, frozen/experimental package labels) that signal which contracts are stable vs evolving.
 
 ## Questions / Gaps
 
-- **No cross-store conformance evidence found.** Searches for shared test harnesses (`storagetest`, `conformance`) across `v1/storage/**` returned no common suite; whether out-of-tree `Store` implementations (e.g., the documented disk store or community stores) satisfy identical semantics is unverified within this source snapshot.
-- **Contract coverage of the REST server surface was not deeply audited.** `/v1/*` endpoint schemas exist under `sources/opa/v1/server/`, but this analysis focused on Go-level and generated-artifact contracts; a full API-contract study would need to inspect `server/types` and OpenAPI tooling separately.
-- **Wasm SDK boundary**: how `wasm` runtime inputs/outputs conform to the plan IR schema (`sources/opa/v1/ir/plan.schema.json`) at runtime (validation vs trust) was not traced end-to-end; the schema is generated from `v1/ir/ir.go` (`sources/opa/internal/cmd/genplanschema/main.go:54`) but runtime enforcement points were not located.
-- Whether `RequestMetadata`/`ResponseMetadata` propagation through `BuiltinContext` (`sources/opa/v1/topdown/builtins.go:57-58`) has a written stability guarantee could not be confirmed from code alone — comments say "for use by wrapping projects" without a versioning promise.
+- Why is the `opa` source directory empty while the manifest at `sources/opa.ultraplan-source.yml:2-3` advertises it as a "Best-in-class policy engine for authorization" with 31 applicable dimensions (including `24.02` at line 35)? This is the single most important question for the study, because the gap determines whether the dimension is reported as "no evidence" or rewritten once the snapshot is populated.
+- Without violating source isolation, there is no admissible way to infer what the upstream OPA interface contracts look like; downstream re-runs of this dimension must rely on the materialised snapshot rather than on out-of-scope cross-source reads.
+- The dimension prompt's headline question — "Can two independent implementations satisfy the same contract without relying on undocumented behavior?" — cannot be answered for `opa` without inspecting at least one interface declaration and at least two of its implementations; neither exists in the selected directory.
 
 ---
 

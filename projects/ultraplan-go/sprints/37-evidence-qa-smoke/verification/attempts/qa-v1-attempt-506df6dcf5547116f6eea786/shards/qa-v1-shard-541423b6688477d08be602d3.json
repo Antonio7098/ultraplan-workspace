@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-541423b6688477d08be602d3",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-9c9e6db0baee9a4709ec3405",
+  "context_paths": [
+    "internal/platform/process/isolation.go",
+    "internal/platform/process/isolation_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: Directory entries are masked to 0o700 during copy, but regular-file entries are written with their original Mode().Perm() bits intact, so a source file with group- or world-writable permissions such as 0666 or 0777 survives verbatim into the isolated workspace and weakens the 0700 containment promised by the parent directory."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-9c9e6db0baee9a4709ec3405"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-541423b6688477d08be602d3/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:26:06.673801597Z",
+      "completed_at": "2026-08-28T11:26:33.279330207Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "evidence": [
+        {
+          "kind": "code_quote",
+          "summary": "Directory branch masks permission bits to 0o700; file branch passes source Mode().Perm() unchanged to os.WriteFile.",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "isolation.go:346 os.Mkdir(destination, info.Mode().Perm()\u00260o700) vs isolation.go:357 os.WriteFile(destination, data, info.Mode().Perm())"
+        },
+        {
+          "kind": "test_assertion",
+          "summary": "Existing test asserts the copied file retains the source's 0o644 mode, locking in preservation rather than tightening.",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "isolation_test.go:38-40 if copiedInfo.Mode().Perm() != 0o644 { t.Fatalf(\"copied mode = %v\", copiedInfo.Mode().Perm()) }"
+        },
+        {
+          "kind": "code_quote",
+          "summary": "Parent and workspace root directories are created with 0o700, contrasting with files whose mode is preserved verbatim.",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "isolation.go:105 os.MkdirAll(parent, 0o700); isolation.go:108 os.MkdirTemp(parent, safePrefix(req.Prefix))"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 2,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8aacd8e3e5b1a12024522fdc",
+      "shard_id": "qa-v1-shard-541423b6688477d08be602d3",
+      "claim": "The bounded-tree copy preserves each source regular file's permission bits verbatim while masking directory permissions to 0o700, so a source file with group- or world-writable bits (e.g. 0o666 or 0o777) is reproduced in the isolated workspace with those bits intact, weakening the 0o700 containment advertised by the parent directory and isolated workspace root.",
+      "basis": "isolation.go:346 creates intermediate directories with `os.Mkdir(destination, info.Mode().Perm()\u00260o700)`, applying a 0o700 mask, but isolation.go:357 calls `os.WriteFile(destination, data, info.Mode().Perm())` for regular files without any masking. isolation.go:105 creates the parent with0o700, and isolation.go:108 uses `os.MkdirTemp(parent, ...)`, so the workspace root is0o700, but children may have wider bits. The test isolation_test.go:38-40 explicitly asserts `copiedInfo.Mode().Perm() != 0o644`, locking in preservation of source bits for the file case rather than tightening them.",
+      "verification_surface": "isolation.go:344-359 (file copy branch vs. directory branch); isolation_test.go:38-40 (test asserts preservation, not masking); isolation.go:105,108 (parent and root are 0o700)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Read isolation.go:357 verbatim and observe no permission mask applied to the WriteFile call, paired with isolation_test.go:38-40 asserting that a 0o644 source becomes a 0o644 destination; directory branch at isolation.go:346 explicitly masks with \u00260o700, demonstrating the asymmetry.",
+      "refutation_condition": "isolation.go:357 applies an explicit mask such as \u00260o600 (or otherwise narrows perm bits) and isolation_test.go:38-40 is updated to match the narrowed bits; or a separate post-write chmod narrows bits for regular files.",
+      "inconclusive_condition": "Static reading is the only inspection surface available to a read-only investigator, so the mode bits that survive for arbitrary0o666/0o777 sources cannot be exercised dynamically here; only the literal code path and the existing assertion can be cited.",
+      "safe_evidence_strategy": "Quote the WriteFile mode argument and the Mkdir mask side-by-side and cite the test assertion that pins0o644 as the expected copied mode.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-541423b6688477d08be602d3/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:26:06.673801597Z",
+          "completed_at": "2026-08-28T11:26:33.279330207Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "evidence": [
+            {
+              "kind": "code_quote",
+              "summary": "Directory branch masks permission bits to 0o700; file branch passes source Mode().Perm() unchanged to os.WriteFile.",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ],
+              "output_digest": "isolation.go:346 os.Mkdir(destination, info.Mode().Perm()\u00260o700) vs isolation.go:357 os.WriteFile(destination, data, info.Mode().Perm())"
+            },
+            {
+              "kind": "test_assertion",
+              "summary": "Existing test asserts the copied file retains the source's 0o644 mode, locking in preservation rather than tightening.",
+              "paths": [
+                "internal/platform/process/isolation_test.go"
+              ],
+              "output_digest": "isolation_test.go:38-40 if copiedInfo.Mode().Perm() != 0o644 { t.Fatalf(\"copied mode = %v\", copiedInfo.Mode().Perm()) }"
+            },
+            {
+              "kind": "code_quote",
+              "summary": "Parent and workspace root directories are created with 0o700, contrasting with files whose mode is preserved verbatim.",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ],
+              "output_digest": "isolation.go:105 os.MkdirAll(parent, 0o700); isolation.go:108 os.MkdirTemp(parent, safePrefix(req.Prefix))"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 2,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code_quote",
+          "summary": "Directory branch masks permission bits to 0o700; file branch passes source Mode().Perm() unchanged to os.WriteFile.",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "isolation.go:346 os.Mkdir(destination, info.Mode().Perm()\u00260o700) vs isolation.go:357 os.WriteFile(destination, data, info.Mode().Perm())"
+        },
+        {
+          "kind": "test_assertion",
+          "summary": "Existing test asserts the copied file retains the source's 0o644 mode, locking in preservation rather than tightening.",
+          "paths": [
+            "internal/platform/process/isolation_test.go"
+          ],
+          "output_digest": "isolation_test.go:38-40 if copiedInfo.Mode().Perm() != 0o644 { t.Fatalf(\"copied mode = %v\", copiedInfo.Mode().Perm()) }"
+        },
+        {
+          "kind": "code_quote",
+          "summary": "Parent and workspace root directories are created with 0o700, contrasting with files whose mode is preserved verbatim.",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ],
+          "output_digest": "isolation.go:105 os.MkdirAll(parent, 0o700); isolation.go:108 os.MkdirTemp(parent, safePrefix(req.Prefix))"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "isolation.go:357 passes `info.Mode().Perm()` directly to `os.WriteFile` with no mask, while the sibling directory branch at isolation.go:346 explicitly masks with `\u00260o700`. isolation_test.go:38-40 asserts the copied file retains0o644, demonstrating that preservation (not narrowing) is the intended and locked-in behavior. The asymmetry between directory and file branches confirms that group/world-writable source bits survive into the workspace."
+    }
+  ]
+}

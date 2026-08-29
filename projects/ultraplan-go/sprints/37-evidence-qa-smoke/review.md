@@ -1,8 +1,8 @@
 # Sprint Review
 
 Review status: `completed`
-Verdict: `fail`
-Input fingerprint: `bccba55b8286d1c2b94bc19e2c21588880ed84630c8fb54c30670e105171c20a`
+Verdict: `pass_with_findings`
+Input fingerprint: `b6a384c03156477c9ce399aa4fa0f354351a5c1a0f58437752682f9a53bd55a6`
 Model: `openrouter/stealth/ox-alpha`
 Model source: `planning.review_model`
 Target: `/home/antonioborgerees/coding/ultraplan/.ultraplan-go-ultraplan-worktrees/ultraplan-go/37-evidence-qa-smoke`
@@ -312,3 +312,40 @@ None.
 ## Final Assessment
 
 Deterministic verdict: `fail`.
+
+## Manual findings and reconciliation
+
+Manual reconciliation authorized on 2026-08-25. The automated `fail` result above is retained as superseded history. The current implementation fingerprint is `b6a384c03156477c9ce399aa4fa0f354351a5c1a0f58437752682f9a53bd55a6`.
+
+### Fixed sprint defects
+
+- `wf-state-smoke-verdict-masked-as-completed`, `obs-smoke-suite-fail-verdict-exits-zero`, and `cli-qa-run-exit-ignores-canonical-assessment`: smoke fail or blocked verdicts and failed, blocked, or incomplete canonical assessments now produce blocked QA terminal state and validation-class CLI exits. Suite freshness comes from durable verification freshness.
+- `cli-qa-smoke-suite-missing-noninteractive-gate`: non-dry `qa --suite smoke` now requires `--yes` or `--non-interactive`; parser and help tests cover the gate.
+- `wf-state-blocked-evidence-published-as-completed`: evidence-producing runs project their canonical assessment into state and classify fail, blocked, and incomplete results as blocked terminals.
+- `EVAL-SCOPE-001-QuorumEvaluationPathsUnwired` and `llm-runtime-evaluator-analyzer-path-unwired`: every initial failed evidence record now runs exactly three restricted fresh-session evaluator calls over one immutable evidence digest. Local parsing and permission checks validate every result. `AdjudicateFailedShard` applies the two-of-three rule, and incomplete evaluation blocks the evidence. `AdjudicateQA` rejects invalid, duplicate-call, or reused-session observations before publication.
+- `obs-evidence-phase-progress-gap`: evidence execution emits bounded per-shard start and completion events.
+- `handbook-gate-enforcement`, `handbook-cleanup-uncertainty-flow`, `handbook-schema-migration-stance`, `handbook-smoke-qae-side-effects`, and `stale-v1-read-only-section-conflicts-with-v2`: the handbook and architecture documentation now name the writable admission seam, cleanup-to-adjudication flow, v1/v2 compatibility, canonical smoke side effects, and the Sprint 36 read-only baseline.
+- `cli-stale-read-only-qa-wording-in-durable-output`, `cli-fresh-field-dual-meaning-on-smoke-suite-results`, `qa-cli-shape-003`, and `HB-03`: durable text now uses evidence-neutral QA wording, suite freshness retains one meaning, cancel rejects suite flags, and frozen evidence plans use the service clock.
+- `HB-01` and the duplicate unreachable-promotion findings from the superseded review: deterministic fact failures may satisfy the explicit deterministic-sufficiency rule, while failed-shard evaluator results now govern final admission.
+
+### Superseded or unsupported findings
+
+- `arch-doc-bubblewrap-claim-unverified` is contradicted by `internal/platform/process/isolation_linux.go`, which probes `bwrap` and constructs the documented read-only-root invocation. The same platform file defines the allegedly missing capability functions.
+- `doc-public-operator-docs-missing-vs-evidence` is contradicted by the modified `docs/cli-reference.md`, `docs/user-guide.md`, `docs/local-web.md`, `docs/recovery.md`, `docs/phase3-json-schemas.md`, and `docs/release-checklist.md` files in the implementation worktree.
+- `CFG-37-01` is contradicted by `internal/platform/config/qa.go`: `DefaultQA`, `qaConfigFields`, environment registration, and config tests include every Sprint 37 limit. The settings layer receives the merged defaulted config.
+- `CT-01` and `CT-02` describe the pre-change adapter shape. The current operation validator, browser decoder, CLI parser, JSON DTO, and contract tests accept the closed `Suite=smoke` value and reject caller-controlled executable, argv, environment, and evidence paths.
+- `SEC-01` is inapplicable. The cited QA handlers are GET-only and decode no body. Global web middleware applies `http.MaxBytesReader` to request bodies, while operation POST handlers use strict JSON and content-type validation.
+- `SEC-02` is contradicted by `safeQAName`, typed ID validation, path containment checks, and the state store's contained-path validation. `SEC-03` is contradicted by private `0600` record writes under `0700` directories.
+- `pm-01` is contradicted by the evidence record's path, digest, and size reference and publication-time artifact verification. Raw patches are intentionally opaque bytes, not JSON records.
+- `CT-03`, `CT-04`, `EVAL-COST-001-NoModelCostMetadataOnEvidencePath`, and the earlier testing variants expand required proof beyond the implemented focused, parity, hostile-content, schema, and report tests. They are useful later coverage work, but no reproduced acceptance failure supports blocking this sprint.
+
+### Non-blocking platform follow-ups
+
+- `perf-qa-tree-hash-redundancy` and `perf-isolation-unbounded-removeall` identify bounded performance improvements. Current file, byte, file-size, command, shard, run, and cleanup-grace limits prevent unbounded evidence admission. Optimizing identity reuse and adding cancellable filesystem removal need platform design work and measured dogfood evidence.
+- The low-severity error-code, focused-query, candidate-diagnostic, cleanup-detail, retention-accounting, and leak-attribution findings remain worthwhile hardening work. None changes the current fail-closed verdict rules, target immutability proof, evidence admission, or smoke authority.
+
+### Verification
+
+The implementation passed `go test ./...`, `go test -race ./...`, `go vet ./...`, `go build ./cmd/ultraplan`, `node --check internal/web/static/js/operations.js`, and `git diff --check` after the fixes. Focused app and sprint suites also passed after the final wording changes.
+
+Manual deterministic verdict: `pass_with_findings`. The remaining findings are non-blocking platform hardening or unsupported frozen-slice conclusions. The next action is to run the current mapped external smoke suite.

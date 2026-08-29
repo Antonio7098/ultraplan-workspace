@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-300273cc218a5d6b9460d1c5",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-3283fa75672e780e61703b99",
+  "context_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "follow up: Documentation change alone alters observable consumer behavior contract (CLI text/JSON, browser API, file layout) without implementation change, risking contract-cli-surface/contract-persistence-and-migrations drift if docs promise fields not yet served"
+  ],
+  "expectation_refs": [
+    "contract-cli-surface",
+    "contract-documentation",
+    "contract-observability",
+    "contract-persistence-and-migrations"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-3283fa75672e780e61703b99"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-300273cc218a5d6b9460d1c5/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:56:42.144732006Z",
+      "completed_at": "2026-08-26T10:59:33.53432238Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-qa-impl-1",
+          "paths": [
+            "internal/app",
+            "internal/sprint",
+            "internal/web"
+          ],
+          "reason": "Verify whether documented QA CLI JSON envelope, persistence layout (verification/state.json, flow-state.json v2 qa member), and browser /api/v1 QA routes are actually served by implementation at fingerprint 9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5 to confirm or refute docs-only drift",
+          "approved": false
+        },
+        {
+          "id": "ctx-qa-tests-1",
+          "paths": [
+            "internal/sprint",
+            "internal/app",
+            "internal/web"
+          ],
+          "reason": "Inspect compatibility tests and fixtures for QA CLI text/JSON, TUI, browser HTML/JSON, app DTOs agreeing on fingerprints/coverage/outcomes/synthesis as cited in release-checklist.md:136 to validate documented contracts",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+          "paths": [
+            "docs/cli-reference.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+          "paths": [
+            "docs/cli-reference.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/architecture.md"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-bed113df95ded42957a78324",
+      "shard_id": "qa-v1-shard-300273cc218a5d6b9460d1c5",
+      "claim": "Documentation describes persistence layout and migration implications (verification/state.json, attempts/map.json/shards/synthesis.json, flow-state.json v2 optional bounded qa member with strict rejection by pre-Sprint-36 binaries) that alter file-layout contract without visible implementation migration, risking contract-persistence-and-migrations drift",
+      "basis": "architecture.md:145-146, phase3-json-schemas.md:37-62 and docs/phase3-json-schemas.md:59-61 define private verification paths, digest-checked pointers, and flow-state.json v2 compatibility break; recovery.md:196 notes retention/quota; behavioral concern warns file layout promises without implementation change",
+      "verification_surface": "read-only inspection of architecture.md, phase3-json-schemas.md, recovery.md for promised paths, versioning, and migration ordering",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Implementation does not yet write/read exactly the documented verification tree, schema v1 strict validation, digest-checked pointers, or flow-state v2 qa member with frozen migration ordering, or does so with incompatible semantics causing upgrade failures",
+      "refutation_condition": "Implementation matches documented layout, strict v1/v2 decoding, digest/mode/containment checks, ordered pure migrations preserving current attempt and digests, and flow-state compatibility note, proven by tests cited in release-checklist.md:131-132",
+      "inconclusive_condition": "Docs describe intended layout and migration contract, but no implementation files or state fixtures are in shard to verify actual writes/reads or migration code",
+      "safe_evidence_strategy": "Read-only grep for \"verification/\", \"state.json\", \"flow-state.json\", \"schema_version\", \"qa-v1\", \"qa-v2\" across architecture.md and phase3-json-schemas.md; cite line ranges as evidence; request context expansion to internal/sprint persistence and migration code only if approved",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-300273cc218a5d6b9460d1c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:56:42.144732006Z",
+          "completed_at": "2026-08-26T10:59:33.53432238Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-1",
+              "paths": [
+                "internal/app",
+                "internal/sprint",
+                "internal/web"
+              ],
+              "reason": "Verify whether documented QA CLI JSON envelope, persistence layout (verification/state.json, flow-state.json v2 qa member), and browser /api/v1 QA routes are actually served by implementation at fingerprint 9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5 to confirm or refute docs-only drift",
+              "approved": false
+            },
+            {
+              "id": "ctx-qa-tests-1",
+              "paths": [
+                "internal/sprint",
+                "internal/app",
+                "internal/web"
+              ],
+              "reason": "Inspect compatibility tests and fixtures for QA CLI text/JSON, TUI, browser HTML/JSON, app DTOs agreeing on fingerprints/coverage/outcomes/synthesis as cited in release-checklist.md:136 to validate documented contracts",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+              "paths": [
+                "docs/cli-reference.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+              "paths": [
+                "docs/local-web.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+              "paths": [
+                "docs/cli-reference.md",
+                "docs/phase3-json-schemas.md",
+                "docs/local-web.md",
+                "docs/architecture.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+          "paths": [
+            "docs/cli-reference.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+          "paths": [
+            "docs/cli-reference.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/architecture.md"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Persistence contract is fully documented across assigned docs with explicit compatibility limits, but verification of implementation conformance requires code not present in shard (changed_paths null); cannot confirm or refute drift without implementation inspection"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-c8a1b8c078edeed64e766855",
+      "shard_id": "qa-v1-shard-300273cc218a5d6b9460d1c5",
+      "claim": "Documentation expands local browser API contract (/api/v1/projects/.../qa, map, shards, theories, synthesis and SSE/operation routes) and observability expectations while stating API is compatibility-controlled for bundled browser only, risking contract-observability drift if consumers treat docs as stable public API",
+      "basis": "local-web.md:281-354 defines QA HTML pages and versioned JSON resources with envelope {data,meta}/{error,meta}, plus operation/SSE bounds and health semantics; docs also note API is not yet promised public integration API (local-web.md:124-126); architecture.md:31-49 bounds web adapter scope",
+      "verification_surface": "read-only inspection of local-web.md QA pages/resources section and architecture web-adapter boundary for promised routes vs stability disclaimers",
+      "expectation_refs": [
+        "contract-documentation",
+        "contract-observability"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Docs are cited by consumers as stable public API or omit disclaimer in user-facing pages, or implementation exposes different routes/envelopes/status codes than documented, causing consumer breakage",
+      "refutation_condition": "Docs consistently mark QA browser API as bundled-browser controlled, versioned but not yet public, with HTTP envelope and error codes matching implementation DTOs and existing TESTAPICompatibility compatibility tests",
+      "inconclusive_condition": "Docs contain both expansion and disclaimer; no implementation route handlers or API compatibility fixtures are viewable in this docs-only shard to confirm alignment",
+      "safe_evidence_strategy": "Read-only comparison of route lists in local-web.md:292-301 and cli-reference user-guide QA sections for consistency; note disclaimer text as mitigating evidence; request bounded expansion to internal/web and internal/app QA DTOs only if approved",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-300273cc218a5d6b9460d1c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:56:42.144732006Z",
+          "completed_at": "2026-08-26T10:59:33.53432238Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-1",
+              "paths": [
+                "internal/app",
+                "internal/sprint",
+                "internal/web"
+              ],
+              "reason": "Verify whether documented QA CLI JSON envelope, persistence layout (verification/state.json, flow-state.json v2 qa member), and browser /api/v1 QA routes are actually served by implementation at fingerprint 9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5 to confirm or refute docs-only drift",
+              "approved": false
+            },
+            {
+              "id": "ctx-qa-tests-1",
+              "paths": [
+                "internal/sprint",
+                "internal/app",
+                "internal/web"
+              ],
+              "reason": "Inspect compatibility tests and fixtures for QA CLI text/JSON, TUI, browser HTML/JSON, app DTOs agreeing on fingerprints/coverage/outcomes/synthesis as cited in release-checklist.md:136 to validate documented contracts",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+              "paths": [
+                "docs/cli-reference.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+              "paths": [
+                "docs/local-web.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+              "paths": [
+                "docs/cli-reference.md",
+                "docs/phase3-json-schemas.md",
+                "docs/local-web.md",
+                "docs/architecture.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+          "paths": [
+            "docs/cli-reference.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+          "paths": [
+            "docs/cli-reference.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/architecture.md"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Internal doc consistency check shows expansion plus explicit \"not yet promised public integration API\" disclaimer, but shard cannot verify browser API implementation alignment without web/app code; risk is consumer misinterpretation rather than proven implementation drift"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-d2b0c68cac642d9a49254816",
+      "shard_id": "qa-v1-shard-300273cc218a5d6b9460d1c5",
+      "claim": "Documentation-only change expands observable CLI/JSON contract (sprint qa --json envelope, result fields, phase/outcome enums, qa.* error codes) without paired implementation change, risking contract-cli-surface drift if docs promise fields not yet served",
+      "basis": "context_paths docs describe stable QA CLI JSON envelope (cli-reference.md:345-404, 481-498) and additive v1 result fields plus closed phase/outcome/error enums (phase3-json-schemas.md:26-36) as consumer contract; assigned packet notes changed_paths=null and behavioral_concerns flags docs-only contract change",
+      "verification_surface": "read-only inspection of assigned docs (cli-reference.md, phase3-json-schemas.md, user-guide.md) for promised stable fields vs implementation fingerprint 9c4bc4ea...; no implementation paths available in shard",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Implementation at fingerprint 9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5 does not serve documented qa --json envelope/result fields, phase/outcome enums, or qa.* error codes exactly as docs promise, or serves them with different semantics",
+      "refutation_condition": "Implementation serves exactly the documented schema_version:1 operation sprint.qa envelope (schema_version, operation, status, result, optional error) and additive result fields/closed enums/codes as described and is tested by compatibility tests referenced in release-checklist.md:136",
+      "inconclusive_condition": "Cannot inspect implementation code, generated JSON fixtures, or prior diff to confirm field presence/absence from docs alone; shard limited to context_paths with changed_paths null",
+      "safe_evidence_strategy": "Read-only doc search for promised CLI flags and JSON fields (grep for \"sprint.qa\", \"schema_version\", \"qa\\.\", phase lists) across cli-reference.md and phase3-json-schemas.md; record line references as evidence; request bounded context expansion to internal/app, internal/sprint QA DTO/CLI handlers for verification without execution",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_mwp423iil2eiclamcw2mpdutjm/qa-v1-shard-300273cc218a5d6b9460d1c5/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:56:42.144732006Z",
+          "completed_at": "2026-08-26T10:59:33.53432238Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-impl-1",
+              "paths": [
+                "internal/app",
+                "internal/sprint",
+                "internal/web"
+              ],
+              "reason": "Verify whether documented QA CLI JSON envelope, persistence layout (verification/state.json, flow-state.json v2 qa member), and browser /api/v1 QA routes are actually served by implementation at fingerprint 9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5 to confirm or refute docs-only drift",
+              "approved": false
+            },
+            {
+              "id": "ctx-qa-tests-1",
+              "paths": [
+                "internal/sprint",
+                "internal/app",
+                "internal/web"
+              ],
+              "reason": "Inspect compatibility tests and fixtures for QA CLI text/JSON, TUI, browser HTML/JSON, app DTOs agreeing on fingerprints/coverage/outcomes/synthesis as cited in release-checklist.md:136 to validate documented contracts",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "document",
+              "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+              "paths": [
+                "docs/cli-reference.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+              "paths": [
+                "docs/phase3-json-schemas.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+              "paths": [
+                "docs/local-web.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "document",
+              "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+              "paths": [
+                "docs/cli-reference.md",
+                "docs/phase3-json-schemas.md",
+                "docs/local-web.md",
+                "docs/architecture.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "document",
+          "summary": "cli-reference.md defines QA CLI lifecycle (qa --dry-run, --shard, resume, status, cancel, recover), stable envelope operation sprint.qa, and lower-only QA config table with hard maxima",
+          "paths": [
+            "docs/cli-reference.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "phase3-json-schemas.md defines QA result additive fields, closed phase/outcome enums, qa.* error categories, and strict v1 filesystem state (state.json, map.json, shards, synthesis.json) plus state v2 additions",
+          "paths": [
+            "docs/phase3-json-schemas.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "local-web.md defines QA server-rendered pages and versioned /api/v1 QA JSON resources (qa, map, shards, theories, synthesis) and notes API is compatibility-controlled for bundled browser not public integration API",
+          "paths": [
+            "docs/local-web.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "architecture.md defines QA verification phase independent from planning, authorities, verification root, deterministic qa-v1 IDs, and read-only investigators with approved-check fencing",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "document",
+          "summary": "Assigned packet metadata shows changed_paths null with behavioral_concerns flagging documentation alone altering consumer contract and expectation_refs linking to contract-cli-surface and contract-persistence-and-migrations",
+          "paths": [
+            "docs/cli-reference.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/architecture.md"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Docs unambiguously promise expanded QA CLI/JSON contract, but shard has no implementation visibility (changed_paths null, no approved_checks) to confirm whether implementation already serves those fields at this fingerprint; requires implementation code/artifact inspection beyond assigned context_paths"
+    }
+  ]
+}

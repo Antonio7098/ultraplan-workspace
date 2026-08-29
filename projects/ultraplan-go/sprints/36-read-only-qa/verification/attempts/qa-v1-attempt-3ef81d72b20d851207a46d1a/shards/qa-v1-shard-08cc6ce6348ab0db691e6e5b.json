@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-08cc6ce6348ab0db691e6e5b",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-6fbc75c62863e94836ce0fc5",
+  "context_paths": [
+    "internal/app/config_commands.go",
+    "internal/app/durable_operations.go",
+    "internal/app/durable_operations_test.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/qa_errors.go",
+    "internal/app/qa_errors_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_operations_test.go",
+    "internal/app/web_usecases.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: durableOperationManager.AcceptOperation deduplication is bypassed when confirmation digest is empty, breaking idempotency for conflict case"
+  ],
+  "expectation_refs": [
+    "contract-observability",
+    "contract-persistence-and-migrations",
+    "contract-workflows"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-6fbc75c62863e94836ce0fc5"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-08cc6ce6348ab0db691e6e5b/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:31:15.880535144Z",
+      "completed_at": "2026-08-26T10:32:04.519067846Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "source",
+          "summary": "durableOperationManager.AcceptOperation guards deduplication on non-empty digest: `if err != nil \u0026\u0026 digest != \"\" \u0026\u0026 errors.Is(err, runcontrol.ErrConflict)` then ResolveOperationAlias, else generic persist error",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "beginDurableCLICommand passes empty digest to AcceptOperation, disabling dedup for that path",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "web operationHub startConfirmed in-memory dedup also gated on dedupKey != \"\" and forwards dedupKey (possibly empty) to durable AcceptOperation; TUI correctly computes sha256 hex digest but web/CLI can be empty",
+          "paths": [
+            "internal/web/operations.go",
+            "internal/tui/app.go",
+            "internal/app/usecases.go",
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "SQLite Accept only inserts operation_aliases when OperationAlias != \"\" and returns ErrConflict only on alias collision; empty digest path is therefore inconsistent with expected idempotent conflict handling",
+          "paths": [
+            "internal/runcontrol/sqlite.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "Existing test TestDurableOperationDeduplicatesAcrossManagersAndFailsClosed covers non-empty digest dedup only; no coverage for empty-digest conflict idempotency",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-74b9394919fa8d8527c7a04e",
+      "shard_id": "qa-v1-shard-08cc6ce6348ab0db691e6e5b",
+      "claim": "durableOperationManager.AcceptOperation deduplication is bypassed when confirmation digest is empty, breaking idempotency for conflict case",
+      "basis": "durable_operations.go:106 gates conflict-\u003eExisting resolution on `digest != \"\"`; beginDurableCLICommand at line 55 passes empty digest; web operationHub startConfirmed also allows empty dedupKey",
+      "verification_surface": "read-only source inspection of durable_operations.go, web/operations.go, tui/app.go and runcontrol/sqlite.go without execution",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "source shows `if err != nil \u0026\u0026 digest != \"\" \u0026\u0026 errors.Is(err, runcontrol.ErrConflict)` and a caller passes empty digest where ErrConflict could otherwise be resolved via ResolveOperationAlias to return Existing=true",
+      "refutation_condition": "source shows empty digest either never produces ErrConflict (no alias insert) or an alternative deduplication path handles empty digest idempotently",
+      "inconclusive_condition": "cannot determine repository conflict semantics for empty alias without runtime execution or schema constraint evidence",
+      "safe_evidence_strategy": "read internal/app/durable_operations.go lines 97-138 to verify guard; grep AcceptOperation call sites for empty string arguments; inspect internal/runcontrol/sqlite.go Accept alias insert (only when non-empty) and conflict error paths",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-08cc6ce6348ab0db691e6e5b/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:31:15.880535144Z",
+          "completed_at": "2026-08-26T10:32:04.519067846Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "source",
+              "summary": "durableOperationManager.AcceptOperation guards deduplication on non-empty digest: `if err != nil \u0026\u0026 digest != \"\" \u0026\u0026 errors.Is(err, runcontrol.ErrConflict)` then ResolveOperationAlias, else generic persist error",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "beginDurableCLICommand passes empty digest to AcceptOperation, disabling dedup for that path",
+              "paths": [
+                "internal/app/durable_operations.go"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "web operationHub startConfirmed in-memory dedup also gated on dedupKey != \"\" and forwards dedupKey (possibly empty) to durable AcceptOperation; TUI correctly computes sha256 hex digest but web/CLI can be empty",
+              "paths": [
+                "internal/web/operations.go",
+                "internal/tui/app.go",
+                "internal/app/usecases.go",
+                "internal/app/web_usecases.go"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "SQLite Accept only inserts operation_aliases when OperationAlias != \"\" and returns ErrConflict only on alias collision; empty digest path is therefore inconsistent with expected idempotent conflict handling",
+              "paths": [
+                "internal/runcontrol/sqlite.go"
+              ]
+            },
+            {
+              "kind": "source",
+              "summary": "Existing test TestDurableOperationDeduplicatesAcrossManagersAndFailsClosed covers non-empty digest dedup only; no coverage for empty-digest conflict idempotency",
+              "paths": [
+                "internal/app/durable_operations_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "source",
+          "summary": "durableOperationManager.AcceptOperation guards deduplication on non-empty digest: `if err != nil \u0026\u0026 digest != \"\" \u0026\u0026 errors.Is(err, runcontrol.ErrConflict)` then ResolveOperationAlias, else generic persist error",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "beginDurableCLICommand passes empty digest to AcceptOperation, disabling dedup for that path",
+          "paths": [
+            "internal/app/durable_operations.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "web operationHub startConfirmed in-memory dedup also gated on dedupKey != \"\" and forwards dedupKey (possibly empty) to durable AcceptOperation; TUI correctly computes sha256 hex digest but web/CLI can be empty",
+          "paths": [
+            "internal/web/operations.go",
+            "internal/tui/app.go",
+            "internal/app/usecases.go",
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "SQLite Accept only inserts operation_aliases when OperationAlias != \"\" and returns ErrConflict only on alias collision; empty digest path is therefore inconsistent with expected idempotent conflict handling",
+          "paths": [
+            "internal/runcontrol/sqlite.go"
+          ]
+        },
+        {
+          "kind": "source",
+          "summary": "Existing test TestDurableOperationDeduplicatesAcrossManagersAndFailsClosed covers non-empty digest dedup only; no coverage for empty-digest conflict idempotency",
+          "paths": [
+            "internal/app/durable_operations_test.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Verified durable_operations.go:106 includes `digest != \"\"` in conflict dedup branch, so any ErrConflict with empty digest falls through to `persist confirmed operation acceptance: %w` instead of ResolveOperationAlias-\u003eExisting. Caller at durable_operations.go:55 explicitly passes \"\" (CLI path) and web/operations.go:147 start() passes \"\" via hub, confirming the bypass path is reachable. No compensating dedup for empty digest exists."
+    }
+  ]
+}

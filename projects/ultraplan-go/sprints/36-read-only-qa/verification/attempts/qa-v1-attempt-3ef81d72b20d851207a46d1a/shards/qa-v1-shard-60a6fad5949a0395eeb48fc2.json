@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-60a6fad5949a0395eeb48fc2",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-3768990b800cf1c3e1ba4fa8",
+  "context_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/locks.go",
+    "internal/sprint/locks_test.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_map.go",
+    "internal/sprint/qa_map_test.go",
+    "internal/sprint/qa_prompt.go",
+    "internal/sprint/qa_prompt_test.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_state_test.go",
+    "internal/sprint/qa_synthesis.go",
+    "internal/sprint/qa_synthesis_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/review.go",
+    "internal/sprint/review_test.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QAFlowSummary validation requires StateDigest fingerprint but Publish overwrites FlowState.UpdatedAt after writing state file, risking digest mismatch on immediate reload"
+  ],
+  "expectation_refs": [
+    "contract-persistence-and-migrations",
+    "contract-testing"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-3768990b800cf1c3e1ba4fa8"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-60a6fad5949a0395eeb48fc2/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:45:28.37823468Z",
+      "completed_at": "2026-08-26T10:46:33.449665038Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Publish ordering: writeRecord state -\u003e stateDigest -\u003e qaFlowSummary(StateDigest) -\u003e SaveFlowState(overwrites FlowState.UpdatedAt)",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/state.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "QAFlowSummary validation requires StateDigest fingerprint format only, not hash equality vs state.json at ValidateFlowState time",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/domain.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "Publish fixture and persistence tests show Publish then LoadState/LoadFlowState without timestamp equality assertion",
+          "paths": [
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_state.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-92a4203e56b13f9fb51c3f9e",
+      "shard_id": "qa-v1-shard-60a6fad5949a0395eeb48fc2",
+      "claim": "Publish computes StateDigest as hash of state.json then SaveFlowState overwrites FlowState.UpdatedAt to Now UTC; StateDigest cannot become stale from that overwrite because it hashes only state.json, but the two persisted UpdatedAt timestamps diverge and may violate an implied persistence invariant that flow and QA state share a mutation timestamp and could be misread as digest risk",
+      "basis": "QAStore.Publish at qa_state.go:559-574 writes state via writeRecord and captures stateDigest, builds QAFlowSummary via qaFlowSummary(state,stateDigest), then calls SaveFlowState which unconditionally sets state.UpdatedAt=time.Now().UTC at state.go:247 before validation and write; qaFlowSummary and validateQAFlowSummary only carry/check StateDigest as fingerprint",
+      "verification_surface": "internal/sprint/qa_state.go:559-574 (Publish stateDigest-\u003eqaFlowSummary-\u003eSaveFlowState), internal/sprint/state.go:242-292 (saveFlowStateWithHooks UpdatedAt overwrite), internal/sprint/state.go:369-385 (validateQAFlowSummary fingerprint-only check), internal/sprint/domain.go:135-145 (FlowState/QAFlowSummary structs)",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Executed Publish followed immediately by LoadFlowState+hashFile(statePath) shows flow.QA.StateDigest != hashFile(statePath) or ValidateFlowState fails on immediate reload due to timestamp-driven mismatch",
+      "refutation_condition": "Executed Publish followed immediately by load shows hashFile(statePath)==flow.QA.StateDigest and ValidateFlowState passes, proving flow UpdatedAt overwrite does not affect StateDigest and immediate reload remains consistent",
+      "inconclusive_condition": "Read-only inspection cannot execute Publish/reload/hash cycle; static code reading alone cannot observe on-disk timing or contract validator hash-equality enforcement",
+      "safe_evidence_strategy": "Read-only grep/read of qa_state.go Publish ordering, state.go SaveFlowState mutation, qa_types.go QAState/QAFlowSummary definitions, domain.go FlowState, and qa_state_test.go fixture publishing without writing or invoking shell",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-60a6fad5949a0395eeb48fc2/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:45:28.37823468Z",
+          "completed_at": "2026-08-26T10:46:33.449665038Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Publish ordering: writeRecord state -\u003e stateDigest -\u003e qaFlowSummary(StateDigest) -\u003e SaveFlowState(overwrites FlowState.UpdatedAt)",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/state.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "QAFlowSummary validation requires StateDigest fingerprint format only, not hash equality vs state.json at ValidateFlowState time",
+              "paths": [
+                "internal/sprint/state.go",
+                "internal/sprint/domain.go",
+                "internal/sprint/qa_types.go"
+              ]
+            },
+            {
+              "kind": "file_read",
+              "summary": "Publish fixture and persistence tests show Publish then LoadState/LoadFlowState without timestamp equality assertion",
+              "paths": [
+                "internal/sprint/qa_state_test.go",
+                "internal/sprint/qa_state.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Publish ordering: writeRecord state -\u003e stateDigest -\u003e qaFlowSummary(StateDigest) -\u003e SaveFlowState(overwrites FlowState.UpdatedAt)",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/state.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "QAFlowSummary validation requires StateDigest fingerprint format only, not hash equality vs state.json at ValidateFlowState time",
+          "paths": [
+            "internal/sprint/state.go",
+            "internal/sprint/domain.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "file_read",
+          "summary": "Publish fixture and persistence tests show Publish then LoadState/LoadFlowState without timestamp equality assertion",
+          "paths": [
+            "internal/sprint/qa_state_test.go",
+            "internal/sprint/qa_state.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Static evidence confirms Publish order and that StateDigest is derived solely from state.json bytes (writeRecord hashBytes) so flow UpdatedAt overwrite does not mutate the digest; immediate hash mismatch is not entailed by code, but without executing the write→hash→load→validate surface the claimed digest-mismatch risk and timestamp-divergence contract violation remain unexecuted in this read-only shard"
+    }
+  ]
+}

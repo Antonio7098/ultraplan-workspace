@@ -1,0 +1,199 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ab21a2b5eee14b16c449da51",
+  "attempt_id": "qa-v1-attempt-506df6dcf5547116f6eea786",
+  "kind": "primary",
+  "title": "docs",
+  "changed_paths": [
+    "docs/architecture.md"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in docs"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "7c2121ee47e41ed4b6dd09e1e50b548c0fa2f6e2c0f46a71a3df1d1d253cb188"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "7afe913e7dc87186e7ca26552d8d30aefeb4def2aa03596030df358aed2f478a"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-ab21a2b5eee14b16c449da51/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:22:02.862966511Z",
+      "completed_at": "2026-08-28T11:24:04.700804966Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "ctx-architecture-doc-referenced-sources",
+          "paths": [
+            "internal/web",
+            "internal/app",
+            "internal/sprint",
+            "internal/runcontrol",
+            "internal/platform/runtime",
+            "internal/platform/gitpublish",
+            "internal/platform/process",
+            "docs"
+          ],
+          "reason": "docs/architecture.md makes numerous falsifiable claims about implementation behavior that cannot be verified from the doc alone: import direction internal/web -\u003e internal/app -\u003e internal/sprint and the explicit non-import list for internal/web; existence and shape of internal/app/web_usecases.go, internal/app/operations.go, internal/web/artifacts.go; VerificationPhase enum and PlanningStage separation; QA detailed state root and flow-state.json summary; Sprint 36 v1 / Sprint 37 v2 schema writers; 256 KiB shared-prefix cap; SQLite WAL synchronous=FULL and 5s busy timeout; bubblewrap writable-copy isolation; frozen-plan restrictions rejecting shell/Git/interpreters/redirection/write modes. Without these paths in scope the architecture doc cannot be validated against code.",
+          "approved": false,
+          "denied_reason": "requested context path is not a regular file"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "observation",
+          "summary": "Read docs/architecture.md (250 lines). It documents QA verification phase with VerificationPhase distinct from PlanningStage, names {conformance-review, qa, repair} (repair reserved), state root projects/\u003cproject\u003e/sprints/\u003csprint\u003e/verification/ with state.json pointer, Sprint 36 v1 read-only vs Sprint 37 v2 evidence writers, dependency direction internal/web -\u003e internal/app -\u003e internal/sprint, 256 KiB shared prefix cap, SQLite WAL synchronous=FULL with 5s busy timeout, bubblewrap writable-copy isolation on Linux, frozen plans rejecting shell/Git/interpreters/redirection/write modes, and bounded follow-up proposals in synthesis. No internal self-contradiction was found across sections. Claims about specific Go files and runtime values cannot be verified without context.",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 26,
+      "retained_events": 26,
+      "observed_tool_calls": 4,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9632b65ade54d5d768f290aa",
+      "shard_id": "qa-v1-shard-ab21a2b5eee14b16c449da51",
+      "claim": "docs/architecture.md accurately reflects current implementation behavior for the QA verification phase, module ownership boundaries, dependency direction, v1/v2 schema separation across Sprint 36 and 37, runtime and run-control settings, and prompt composition rules.",
+      "basis": "The doc asserts many specific, falsifiable claims about code behavior that are outside the assigned scope to verify directly: (a) dependency direction internal/web -\u003e internal/app -\u003e internal/sprint and that internal/web does not import project, sprint, study, workspace, runtime, process, or CLI handler packages; (b) existence and roles of internal/app/web_usecases.go, internal/app/operations.go, internal/web/artifacts.go; (c) VerificationPhase naming {conformance-review, qa, repair} with 'repair' reserved, independent from PlanningStage, with `review` as authoritative machine identity; (d) detailed state root at projects/\u003cproject\u003e/sprints/\u003csprint\u003e/verification/ with state.json pointer and bounded flow-state.json summary; (e) Sprint 36 = strict schema v1 read-only, Sprint 37 = strict schema v2 writers; (f) 256 KiB shared-prefix cap; (g) SQLite WAL with synchronous=FULL and 5-second busy timeout; (h) bubblewrap-based writable-copy isolation on Linux; (i) frozen plans binding executable/argv/cwd/environment/timeout/output/cleanup and rejecting shell, Git, interpreters, redirection, and write modes. None of these can be confirmed or refuted from docs/architecture.md alone.",
+      "verification_surface": "internal/web/**, internal/app/**, internal/sprint/**, internal/runcontrol/**, internal/platform/{runtime,gitpublish,process}/** (out of scope; context_paths is null in packet)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-cli-surface",
+        "contract-configuration",
+        "contract-documentation",
+        "contract-errors",
+        "contract-llm-evaluation-cost-safety",
+        "contract-llm-runtime",
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-security",
+        "contract-testing",
+        "contract-workflows",
+        "handbook"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Every concrete doc claim (file paths, import boundaries, package ownership, numeric limits, phase names, schema versions, runtime tuning values) is corroborated by reading the corresponding Go source under internal/{web,app,sprint,runcontrol,platform} and the corresponding contract documentation under docs/.",
+      "refutation_condition": "Any doc claim is contradicted by observable Go source (e.g., an internal/web -\u003e internal/sprint import exists, the VerificationPhase enum contains unexpected members, the state root path differs, the SQLite pragma is different, or the shared-prefix cap is missing or different).",
+      "inconclusive_condition": "Cannot reach the referenced source paths or contract docs needed to compare against the architecture doc text.",
+      "safe_evidence_strategy": "Inspect only the assigned path docs/architecture.md using read-only listing/search; do not invoke shell, mutate Git, or write artifacts. Flag any internal self-contradiction found in the doc itself.",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_dmm5vwkkylytyru5pzzez5ppoe/qa-v1-shard-ab21a2b5eee14b16c449da51/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:22:02.862966511Z",
+          "completed_at": "2026-08-28T11:24:04.700804966Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-architecture-doc-referenced-sources",
+              "paths": [
+                "internal/web",
+                "internal/app",
+                "internal/sprint",
+                "internal/runcontrol",
+                "internal/platform/runtime",
+                "internal/platform/gitpublish",
+                "internal/platform/process",
+                "docs"
+              ],
+              "reason": "docs/architecture.md makes numerous falsifiable claims about implementation behavior that cannot be verified from the doc alone: import direction internal/web -\u003e internal/app -\u003e internal/sprint and the explicit non-import list for internal/web; existence and shape of internal/app/web_usecases.go, internal/app/operations.go, internal/web/artifacts.go; VerificationPhase enum and PlanningStage separation; QA detailed state root and flow-state.json summary; Sprint 36 v1 / Sprint 37 v2 schema writers; 256 KiB shared-prefix cap; SQLite WAL synchronous=FULL and 5s busy timeout; bubblewrap writable-copy isolation; frozen-plan restrictions rejecting shell/Git/interpreters/redirection/write modes. Without these paths in scope the architecture doc cannot be validated against code.",
+              "approved": false,
+              "denied_reason": "requested context path is not a regular file"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "observation",
+              "summary": "Read docs/architecture.md (250 lines). It documents QA verification phase with VerificationPhase distinct from PlanningStage, names {conformance-review, qa, repair} (repair reserved), state root projects/\u003cproject\u003e/sprints/\u003csprint\u003e/verification/ with state.json pointer, Sprint 36 v1 read-only vs Sprint 37 v2 evidence writers, dependency direction internal/web -\u003e internal/app -\u003e internal/sprint, 256 KiB shared prefix cap, SQLite WAL synchronous=FULL with 5s busy timeout, bubblewrap writable-copy isolation on Linux, frozen plans rejecting shell/Git/interpreters/redirection/write modes, and bounded follow-up proposals in synthesis. No internal self-contradiction was found across sections. Claims about specific Go files and runtime values cannot be verified without context.",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 26,
+          "retained_events": 26,
+          "observed_tool_calls": 4,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "observation",
+          "summary": "Read docs/architecture.md (250 lines). It documents QA verification phase with VerificationPhase distinct from PlanningStage, names {conformance-review, qa, repair} (repair reserved), state root projects/\u003cproject\u003e/sprints/\u003csprint\u003e/verification/ with state.json pointer, Sprint 36 v1 read-only vs Sprint 37 v2 evidence writers, dependency direction internal/web -\u003e internal/app -\u003e internal/sprint, 256 KiB shared prefix cap, SQLite WAL synchronous=FULL with 5s busy timeout, bubblewrap writable-copy isolation on Linux, frozen plans rejecting shell/Git/interpreters/redirection/write modes, and bounded follow-up proposals in synthesis. No internal self-contradiction was found across sections. Claims about specific Go files and runtime values cannot be verified without context.",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Only docs/architecture.md is assigned and context_paths is null, so none of the source dependencies the doc describes (internal/web, internal/app, internal/sprint, internal/runcontrol, internal/platform/*) can be inspected from this shard. Doc text itself shows no internal contradictions across its sections (Local Interface Composition, Web Adapter Boundary, State And Artifact Ownership, Single-Binary Frontend, Operation Ownership And Shutdown, QA verification phase, Deferred Phase 4, Grounded Planning, Git stage publication, Durable run control, QA evidence and isolation)."
+    }
+  ]
+}

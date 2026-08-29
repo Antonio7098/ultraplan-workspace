@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-2f95815d337e9e0f14bf102a",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-42a2de36b5f48b5fcc8bc0f2",
+  "context_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "behavioral_concerns": [
+    "follow up: Changed docs misstate QA numeric limits, defaults or hard maxima versus product configuration, allowing user to set values that exceed maxima or are rejected at startup"
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-documentation"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-42a2de36b5f48b5fcc8bc0f2"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-2f95815d337e9e0f14bf102a/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:31:15.862753394Z",
+      "completed_at": "2026-08-26T10:32:09.956795375Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-qa-limits-01",
+          "paths": [
+            "internal/sprint/qa.go",
+            "internal/sprint/map.go",
+            "internal/sprint/policy.go",
+            "internal/sprint/limits.go",
+            "internal/sprint/config.go",
+            "internal/config/config.go",
+            "internal/config/qa.go",
+            "configs/ultraplan.yml"
+          ],
+          "reason": "Need product-owned QA limit definitions (defaults and hard maxima) and startup validation that enforces 'cannot exceed hard maximum' to compare against docs/cli-reference.md table and ancillary 128 MiB/8 attempts claims; essential to confirm/refute documentation misstatement concern without execution.",
+          "approved": false
+        },
+        {
+          "id": "ctx-changed-docs-01",
+          "paths": [
+            "docs/cli-reference.md",
+            "docs/user-guide.md"
+          ],
+          "reason": "changed_paths is null in packet; need bounded expansion to list and read the actual changed doc set that allegedly misstates QA numeric limits, as follow-up shard only sees context_paths.",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-03d85148d3455d4c83966b48",
+      "shard_id": "qa-v1-shard-2f95815d337e9e0f14bf102a",
+      "claim": "Changed docs (outside this follow-up shard's assigned context paths) misstate at least one QA numeric limit default or hard maximum versus product configuration, so a user value that appears allowed in docs is rejected at startup or a value exceeding the true maximum is documented as allowed.",
+      "basis": "Assigned behavioral_concerns: 'Changed docs misstate QA numeric limits, defaults or hard maxima versus product configuration, allowing user to set values that exceed maxima or are rejected at startup'. This shard is a follow-up shard (qa-v1-shard-2f95815d337e9e0f14bf102a) with changed_paths:null and only context_paths (docs/*) visible; the primary misstatement is therefore expected in the changed set, not directly readable here. Context docs propagate the same table and therefore inherit risk.",
+      "verification_surface": "Compare the documented QA table in docs/cli-reference.md:371-403 (defaults and hard maxima) and related numeric claims in docs/user-guide.md:96-109, docs/recovery.md:195, docs/architecture.md:168 against the product-owned effective limits that enforce startup validation (precedence product default → ultraplan.yml → environment, positive integers, cannot exceed hard maximum). Requires product config source, limit definitions, and startup validation code.",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A limit shown in changed_docs (or its copy in context docs) has a hard maximum or default higher/lower than the code-enforced maximum/default; setting the documented maximum in ultraplan.yml or ULTRAPLAN_QA_* is rejected with configuration error, or setting a value between the true maximum and the documented maximum is accepted per docs but should be rejected.",
+      "refutation_condition": "Every QA key's documented default and hard maximum in changed_docs and in docs/cli-reference.md matches the code-enforced defaults and maxima exactly, and lower-only enforcement matches 'A default equal to its maximum can still be lowered' semantics with no observable startup rejection for documented maxima.",
+      "inconclusive_condition": "Product configuration source or limit enforcement code is not available in this read-only context-paths-only view (changed_paths:null, no implementation files), or the changed doc set cannot be listed, so comparison cannot be completed.",
+      "safe_evidence_strategy": "Read-only listing and bounded reads of changed_docs set plus product-owned limit definitions via approved context expansion (e.g., internal/sprint/* that owns budgets/policy, internal/config/* that validates qa.* keys) and compare each row of the CLI reference table; do not attempt writes, shell execution, or startup with mutated config.",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-2f95815d337e9e0f14bf102a/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:31:15.862753394Z",
+          "completed_at": "2026-08-26T10:32:09.956795375Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-limits-01",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/map.go",
+                "internal/sprint/policy.go",
+                "internal/sprint/limits.go",
+                "internal/sprint/config.go",
+                "internal/config/config.go",
+                "internal/config/qa.go",
+                "configs/ultraplan.yml"
+              ],
+              "reason": "Need product-owned QA limit definitions (defaults and hard maxima) and startup validation that enforces 'cannot exceed hard maximum' to compare against docs/cli-reference.md table and ancillary 128 MiB/8 attempts claims; essential to confirm/refute documentation misstatement concern without execution.",
+              "approved": false
+            },
+            {
+              "id": "ctx-changed-docs-01",
+              "paths": [
+                "docs/cli-reference.md",
+                "docs/user-guide.md"
+              ],
+              "reason": "changed_paths is null in packet; need bounded expansion to list and read the actual changed doc set that allegedly misstates QA numeric limits, as follow-up shard only sees context_paths.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/recovery.md",
+                "docs/architecture.md",
+                "docs/phase3-json-schemas.md",
+                "docs/local-web.md",
+                "docs/release-checklist.md"
+              ],
+              "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+        }
+      ],
+      "outcome": "cross_shard",
+      "outcome_reason": "This follow-up shard is restricted to docs/architecture.md, docs/cli-reference.md, docs/local-web.md, docs/phase3-json-schemas.md, docs/recovery.md, docs/release-checklist.md, docs/user-guide.md; changed_paths is null so the alleged changed-docs misstatement cannot be inspected here. The primary evidence lives in another shard's changed set and requires cross-shard comparison."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-c115cd804a3ed89106fb3cda",
+      "shard_id": "qa-v1-shard-2f95815d337e9e0f14bf102a",
+      "claim": "Ancillary QA numeric claims in docs/recovery.md and docs/architecture.md (retained_attempts 8, state_bytes 128 MiB, detailed-state 128 MiB hard budget, shared prefix 256 KiB) are inconsistent with the CLI reference hard maxima or product config, creating a secondary documentation contradiction.",
+      "basis": "docs/recovery.md:195 states 'Retention keeps at most eight semantic attempts by default, including the current protected attempt, and the detailed-state hard budget is 128 MiB' which should align with cli-reference retained_attempts 8/8 and state_bytes 134217728/134217728; docs/architecture.md:168 states shared prefix capped at 256 KiB vs cli-reference prompt_bytes 524288 default; mismatch would be a documentation inconsistency even if CLI table were correct.",
+      "verification_surface": "Cross-check retained_attempts/state_bytes/prompt_bytes/prefix budget claims across docs/cli-reference.md:394-395,398, docs/recovery.md:195, docs/architecture.md:168 against product config; all are read-only text claims.",
+      "expectation_refs": [
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "An ancillary doc states a numeric limit that differs from both the CLI reference row and the product-enforced value for the same underlying limit, or two docs state different values for the same limit.",
+      "refutation_condition": "All ancillary mentions (8 attempts, 134217728 bytes = 128 MiB, 256 KiB prefix) match the corresponding CLI reference defaults/maxima and, where applicable, the product config values.",
+      "inconclusive_condition": "Product config not available in this shard; only inter-doc consistency can be checked, not ground-truth product correctness.",
+      "safe_evidence_strategy": "Read-only comparison of numeric literals across assigned context_paths (completed) plus approved context expansion to read product limit constants for retained_attempts, state_bytes, prompt_bytes/prefix budget; no writes or execution.",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-2f95815d337e9e0f14bf102a/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:31:15.862753394Z",
+          "completed_at": "2026-08-26T10:32:09.956795375Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-limits-01",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/map.go",
+                "internal/sprint/policy.go",
+                "internal/sprint/limits.go",
+                "internal/sprint/config.go",
+                "internal/config/config.go",
+                "internal/config/qa.go",
+                "configs/ultraplan.yml"
+              ],
+              "reason": "Need product-owned QA limit definitions (defaults and hard maxima) and startup validation that enforces 'cannot exceed hard maximum' to compare against docs/cli-reference.md table and ancillary 128 MiB/8 attempts claims; essential to confirm/refute documentation misstatement concern without execution.",
+              "approved": false
+            },
+            {
+              "id": "ctx-changed-docs-01",
+              "paths": [
+                "docs/cli-reference.md",
+                "docs/user-guide.md"
+              ],
+              "reason": "changed_paths is null in packet; need bounded expansion to list and read the actual changed doc set that allegedly misstates QA numeric limits, as follow-up shard only sees context_paths.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/recovery.md",
+                "docs/architecture.md",
+                "docs/phase3-json-schemas.md",
+                "docs/local-web.md",
+                "docs/release-checklist.md"
+              ],
+              "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Inter-doc consistency within assigned context_paths is observed (8 and 128 MiB align between recovery and cli-reference; prefix 256 KiB is distinct from prompt_bytes 524 KiB and intentionally different), but ground-truth product values for those limits remain outside assigned paths and cannot be confirmed without expanded context."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ee830330caeb12eb2fde3bd3",
+      "shard_id": "qa-v1-shard-2f95815d337e9e0f14bf102a",
+      "claim": "Context docs inspected in this shard misstate at least one QA hard maximum or default versus product configuration (e.g., docs/cli-reference.md table row for changed_paths_per_shard 32/64, context_paths_per_shard 64/128, tree_files 200000/400000, command_output_bytes 262144/524288 etc. vs actual enforced maxima)",
+      "basis": "docs/cli-reference.md:371-403 is the user-facing source of truth for 29 QA keys, stating 'Integer limits and durations must be positive and cannot exceed the listed hard maximum' and that workspace/environment may only lower limits. docs/user-guide.md:96-109 repeats lower-only policy with example lowering, and docs/recovery.md:195 repeats retained_attempts 8 / state_bytes 128MiB. If any table maximum exceeds the code-enforced maximum, user can set a value that docs claim is valid but startup rejects with exit 3.",
+      "verification_surface": "Read-only extraction of all numeric QA claims in assigned context_paths (cli-reference table, user-guide example, recovery hard budget line, architecture prefix budget) and compare to effective limits / hard maxima defined in product config and reflected in assigned packet budgets (which match the documented defaults, not the maxima). Needs product config files to confirm maxima.",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "At least one key in docs/cli-reference.md has documented hard maximum ≠ code-enforced hard maximum (e.g., documented 400000 vs code 200000, or documented 64 vs code 32) or documented default ≠ code default, demonstrable by inspecting product config limit constants and validation that caps ultraplan.yml / ULTRAPLAN_QA_* values.",
+      "refutation_condition": "All 29 rows in docs/cli-reference.md plus the ancillary numeric claims (retained_attempts 8, state_bytes 134217728, shared prefix 256KiB) exactly match the code-enforced defaults and hard maxima, and the lower-only rule is correctly described with startup rejecting only values \u003e true maximum.",
+      "inconclusive_condition": "Product-owned QA limit definitions and validation logic are outside the assigned context_paths and not readable without a bounded context expansion; without them the table cannot be confirmed or refuted.",
+      "safe_evidence_strategy": "Read-only grep and file reads within assigned context_paths to enumerate claimed limits (already done) and, via approved context expansion, read the product-defined defaults/maxima and startup validation; no config mutation or process execution.",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-2f95815d337e9e0f14bf102a/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:31:15.862753394Z",
+          "completed_at": "2026-08-26T10:32:09.956795375Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-limits-01",
+              "paths": [
+                "internal/sprint/qa.go",
+                "internal/sprint/map.go",
+                "internal/sprint/policy.go",
+                "internal/sprint/limits.go",
+                "internal/sprint/config.go",
+                "internal/config/config.go",
+                "internal/config/qa.go",
+                "configs/ultraplan.yml"
+              ],
+              "reason": "Need product-owned QA limit definitions (defaults and hard maxima) and startup validation that enforces 'cannot exceed hard maximum' to compare against docs/cli-reference.md table and ancillary 128 MiB/8 attempts claims; essential to confirm/refute documentation misstatement concern without execution.",
+              "approved": false
+            },
+            {
+              "id": "ctx-changed-docs-01",
+              "paths": [
+                "docs/cli-reference.md",
+                "docs/user-guide.md"
+              ],
+              "reason": "changed_paths is null in packet; need bounded expansion to list and read the actual changed doc set that allegedly misstates QA numeric limits, as follow-up shard only sees context_paths.",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+              "paths": [
+                "docs/cli-reference.md"
+              ],
+              "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+            },
+            {
+              "kind": "file_read",
+              "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+              "paths": [
+                "docs/user-guide.md",
+                "docs/recovery.md",
+                "docs/architecture.md",
+                "docs/phase3-json-schemas.md",
+                "docs/local-web.md",
+                "docs/release-checklist.md"
+              ],
+              "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "Extracted QA configuration lower-only policy and full numeric table (29 keys with defaults and hard maxima) from docs/cli-reference.md:365-404; budgets in packet match defaults, maxima remain unverified against product code.",
+          "paths": [
+            "docs/cli-reference.md"
+          ],
+          "output_digest": "sha256-cli-ref-qa-table-29rows-extracted"
+        },
+        {
+          "kind": "file_read",
+          "summary": "Read docs/user-guide.md:96-109 (lower-only QA example and precedence description), docs/recovery.md:195 (retained_attempts 8 / state_bytes 128 MiB), docs/architecture.md:134-172 (QA verification phase, shared prefix 256 KiB cap) and confirmed no additional hard-maxima table; values inter-doc consistent but product ground truth not in assigned paths.",
+          "paths": [
+            "docs/user-guide.md",
+            "docs/recovery.md",
+            "docs/architecture.md",
+            "docs/phase3-json-schemas.md",
+            "docs/local-web.md",
+            "docs/release-checklist.md"
+          ],
+          "output_digest": "sha256-context-docs-qa-numerics-scanned-no-product-source"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Context docs values were extracted and budgets in packet confirm defaults (e.g., changed_paths 512, primary_shards 32, command_timeout 5m) but hard maxima are not verifiable without product configuration source which is not in assigned context_paths and no approved_checks exist to execute validation; requires bounded context request for internal/sprint and internal/config limit definitions."
+    }
+  ]
+}

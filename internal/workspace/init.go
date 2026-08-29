@@ -1,0 +1,318 @@
+package workspace
+
+import (
+	_ "embed"
+	"fmt"
+	"os"
+	"path/filepath"
+)
+
+type Operation struct {
+	Action string `json:"action"`
+	Path   string `json:"path"`
+	Type   string `json:"type"`
+}
+
+type InitPlan struct {
+	Root       string      `json:"root"`
+	Operations []Operation `json:"operations"`
+}
+
+//go:embed scaffold/prompts/base.md
+var defaultBasePrompt string
+
+//go:embed scaffold/prompts/synthesize.md
+var defaultSynthesizePrompt string
+
+//go:embed scaffold/prompts/create-area-reasoning.md
+var defaultCreateAreaReasoningPrompt string
+
+//go:embed scaffold/prompts/create-requirements.md
+var defaultCreateRequirementsPrompt string
+
+//go:embed scaffold/prompts/create-code-context.md
+var defaultCreateCodeContextPrompt string
+
+//go:embed scaffold/prompts/create-sprint-index.md
+var defaultCreateSprintIndexPrompt string
+
+//go:embed scaffold/prompts/create-sprint-reasoning.md
+var defaultCreateSprintReasoningPrompt string
+
+//go:embed scaffold/prompts/create-technical-handbook.md
+var defaultCreateTechnicalHandbookPrompt string
+
+//go:embed scaffold/prompts/execute-sprint.md
+var defaultExecuteSprintPrompt string
+
+//go:embed scaffold/prompts/meta-plan.md
+var defaultMetaPlanPrompt string
+
+//go:embed scaffold/prompts/meta-synthesize.md
+var defaultMetaSynthesizePrompt string
+
+//go:embed scaffold/prompts/plan-sprint.md
+var defaultPlanSprintPrompt string
+
+//go:embed scaffold/prompts/review.md
+var defaultReviewPrompt string
+
+//go:embed scaffold/prompts/smoke.md
+var defaultSmokePrompt string
+
+//go:embed scaffold/templates/README.md
+var defaultTemplatesReadme string
+
+//go:embed scaffold/templates/meta-report.md
+var defaultMetaReportTemplate string
+
+//go:embed scaffold/templates/project-index.md
+var defaultProjectIndexTemplate string
+
+//go:embed scaffold/templates/repo-analysis.md
+var defaultRepoAnalysisTemplate string
+
+//go:embed scaffold/templates/report.md
+var defaultReportTemplate string
+
+//go:embed scaffold/templates/requirements.md
+var defaultRequirementsTemplate string
+
+//go:embed scaffold/templates/code-context.md
+var defaultCodeContextTemplate string
+
+//go:embed scaffold/templates/review.md
+var defaultReviewTemplate string
+
+//go:embed scaffold/templates/smoke.md
+var defaultSmokeTemplate string
+
+//go:embed scaffold/templates/sprint-index.md
+var defaultSprintIndexTemplate string
+
+//go:embed scaffold/templates/sprint-plan.md
+var defaultSprintPlanTemplate string
+
+//go:embed scaffold/templates/sprint-reasoning.md
+var defaultSprintReasoningTemplate string
+
+//go:embed scaffold/templates/technical-handbook.md
+var defaultTechnicalHandbookTemplate string
+
+var workspaceFiles = map[string]string{
+	"ultraplan.yml": defaultConfig,
+	"README.md":     defaultWorkspaceReadme,
+}
+
+var defaultOverrideFiles = map[string]string{
+	"prompts/base.md":                      defaultBasePrompt,
+	"prompts/create-area-reasoning.md":     defaultCreateAreaReasoningPrompt,
+	"prompts/create-requirements.md":       defaultCreateRequirementsPrompt,
+	"prompts/create-code-context.md":       defaultCreateCodeContextPrompt,
+	"prompts/create-sprint-index.md":       defaultCreateSprintIndexPrompt,
+	"prompts/create-sprint-reasoning.md":   defaultCreateSprintReasoningPrompt,
+	"prompts/create-technical-handbook.md": defaultCreateTechnicalHandbookPrompt,
+	"prompts/execute-sprint.md":            defaultExecuteSprintPrompt,
+	"prompts/meta-plan.md":                 defaultMetaPlanPrompt,
+	"prompts/meta-synthesize.md":           defaultMetaSynthesizePrompt,
+	"prompts/plan-sprint.md":               defaultPlanSprintPrompt,
+	"prompts/review.md":                    defaultReviewPrompt,
+	"prompts/smoke.md":                     defaultSmokePrompt,
+	"prompts/synthesize.md":                defaultSynthesizePrompt,
+	"templates/README.md":                  defaultTemplatesReadme,
+	"templates/meta-report.md":             defaultMetaReportTemplate,
+	"templates/project-index.md":           defaultProjectIndexTemplate,
+	"templates/repo-analysis.md":           defaultRepoAnalysisTemplate,
+	"templates/report.md":                  defaultReportTemplate,
+	"templates/requirements.md":            defaultRequirementsTemplate,
+	"templates/code-context.md":            defaultCodeContextTemplate,
+	"templates/review.md":                  defaultReviewTemplate,
+	"templates/smoke.md":                   defaultSmokeTemplate,
+	"templates/sprint-index.md":            defaultSprintIndexTemplate,
+	"templates/sprint-plan.md":             defaultSprintPlanTemplate,
+	"templates/sprint-reasoning.md":        defaultSprintReasoningTemplate,
+	"templates/technical-handbook.md":      defaultTechnicalHandbookTemplate,
+}
+
+const defaultConfig = `version: 1
+runtime:
+  default: opencode
+models:
+  default: provider/model
+  primary: provider/model
+  backup: provider/model
+execution:
+  default_variant: high
+  default_parallel: 3
+  default_timeout: 30m
+  default_retries: 3
+planning:
+  code_context_model: provider/model
+  code_context_variant: high
+  smoke_model: provider/model
+  smoke_variant: high
+smoke:
+  discovery_timeout: 30s
+  run_timeout: 30m
+  stdout_limit: 4194304
+  stderr_limit: 1048576
+  cleanup_grace: 5s
+  environment:
+    - PATH
+    - HOME
+    - TMPDIR
+    - LANG
+    - LC_ALL
+logging:
+  format: text
+  level: info
+agentwrap:
+  executable: opencode
+  required_health:
+    - runtime_available
+    - structured_output
+    - workdir
+`
+
+const defaultWorkspaceReadme = `# UltraPlan Workspace
+
+This workspace stores local UltraPlan studies, planning projects, runtime state, and generated artifacts.
+
+## Health And Config
+
+` + "```sh" + `
+ultraplan health
+ultraplan config show
+ultraplan config show --json
+` + "```" + `
+
+## Studies
+
+` + "```sh" + `
+ultraplan study list
+ultraplan study <study> list
+ultraplan study <study> prompt analysis <dimension> <source>
+ultraplan study <study> run <dimension> <source>
+ultraplan study <study> synthesize <dimension>
+ultraplan study <study> run-loop --parallel 1
+ultraplan study <study> validate
+ultraplan study <study> status
+ultraplan study <study> summary
+` + "```" + `
+
+## Planning Projects
+
+` + "```sh" + `
+ultraplan project list
+ultraplan project <project> status
+ultraplan project <project> validate
+ultraplan sprint <project> <sprint> status
+ultraplan sprint <project> <sprint> validate requirements
+ultraplan sprint <project> <sprint> validate sprint-index
+ultraplan sprint <project> <sprint> prompt requirements
+ultraplan sprint <project> <sprint> prompt sprint-index
+ultraplan sprint <project> <sprint> flow --to requirements --dry-run
+ultraplan sprint <project> <sprint> flow --to plan --dry-run
+ultraplan sprint <project> <sprint> review --dry-run
+ultraplan sprint <project> <sprint> review
+ultraplan sprint <project> <sprint> validate review
+ultraplan sprint <project> <sprint> smoke --dry-run
+ultraplan sprint <project> <sprint> smoke --yes
+ultraplan sprint <project> <sprint> validate smoke
+` + "```" + `
+
+## Defaults
+
+Prompts and templates are built into the CLI. Materialize editable copies only when you need local overrides.
+
+` + "```sh" + `
+ultraplan defaults install --dry-run
+ultraplan defaults install
+` + "```" + `
+
+## Manually Invoked Stage Skills
+
+Materialise every embedded stage skill, or one selected stage:
+
+` + "```sh" + `
+ultraplan skills materialise
+ultraplan skills materialise reasoning
+` + "```" + `
+`
+
+func PlanInit(path string) (InitPlan, error) {
+	root, err := normalize(path)
+	if err != nil {
+		return InitPlan{}, err
+	}
+	plan := InitPlan{Root: root}
+	for _, dir := range RequiredDirs() {
+		full, err := ResolveInside(root, dir)
+		if err != nil {
+			return InitPlan{}, err
+		}
+		if _, statErr := os.Stat(full); os.IsNotExist(statErr) {
+			plan.Operations = append(plan.Operations, Operation{Action: "create", Path: dir, Type: "dir"})
+		}
+	}
+	for _, rel := range RequiredFiles() {
+		full, err := ResolveInside(root, rel)
+		if err != nil {
+			return InitPlan{}, err
+		}
+		if _, statErr := os.Stat(full); os.IsNotExist(statErr) {
+			plan.Operations = append(plan.Operations, Operation{Action: "create", Path: rel, Type: "file"})
+		}
+	}
+	return plan, nil
+}
+
+func Init(path string) (InitPlan, error) {
+	plan, err := PlanInit(path)
+	if err != nil {
+		return InitPlan{}, err
+	}
+	for _, op := range plan.Operations {
+		full, err := ResolveInside(plan.Root, filepath.FromSlash(op.Path))
+		if err != nil {
+			return InitPlan{}, err
+		}
+		switch op.Type {
+		case "dir":
+			if err := os.MkdirAll(full, 0o755); err != nil {
+				return InitPlan{}, fmt.Errorf("create directory %s: %w", op.Path, err)
+			}
+		case "file":
+			if err := os.MkdirAll(filepath.Dir(full), 0o755); err != nil {
+				return InitPlan{}, fmt.Errorf("create parent for %s: %w", op.Path, err)
+			}
+			if _, err := os.Stat(full); os.IsNotExist(err) {
+				if err := os.WriteFile(full, []byte(workspaceFiles[op.Path]), 0o644); err != nil {
+					return InitPlan{}, fmt.Errorf("create file %s: %w", op.Path, err)
+				}
+			}
+		}
+	}
+	return plan, nil
+}
+
+func RequiredFiles() []string {
+	return []string{"ultraplan.yml", "README.md"}
+}
+
+func RequiredDirs() []string {
+	return []string{"studies"}
+}
+
+func DefaultOverrideFiles() map[string]string {
+	out := make(map[string]string, len(defaultOverrideFiles))
+	for rel, content := range defaultOverrideFiles {
+		out[rel] = content
+	}
+	return out
+}
+
+func DefaultOverrideFile(rel string) (string, bool) {
+	content, ok := defaultOverrideFiles[filepath.ToSlash(rel)]
+	return content, ok
+}

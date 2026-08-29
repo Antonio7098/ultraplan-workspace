@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-a0dd07bee4631df4a3bae6f0",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-3d63e2a7a2246d80cf412bb9",
+  "context_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QA shard/theory route parameter validation in handler dispatch may allow invalid identifiers to reach QA use cases"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-3d63e2a7a2246d80cf412bb9"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-a0dd07bee4631df4a3bae6f0/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:45:28.38002206Z",
+      "completed_at": "2026-08-26T10:46:51.757001947Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "context_requests": [
+        {
+          "id": "ctx-qa-validation",
+          "paths": [
+            "internal/sprint/qa_state.go",
+            "internal/sprint/service.go",
+            "internal/app/dashboard_usecases.go"
+          ],
+          "reason": "Need downstream QA id validation to see if sprint Service re-validates shard/theory/evidence ids or maps invalid ids to 400 vs 422, determining whether handler permissiveness is compensating or leaks to use case",
+          "approved": false
+        },
+        {
+          "id": "ctx-operation-qa-shard",
+          "paths": [
+            "internal/app/operations.go"
+          ],
+          "reason": "QA shard via operation prepare/start (qa-start/resume) bypasses dispatch and uses mapOperationRequest which only validates scope via validOptionalIdentifier, not shard syntax; need to confirm if that path also allows invalid shard to reach QA runner",
+          "approved": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "dispatch validates non-artifact params with validIdentifier (allows dot) vs artifact with validOpaqueRef (forbids dot)",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "identifierPattern ^[A-Za-z0-9][A-Za-z0-9._-]*$ and opaqueRefPattern ^[A-Za-z0-9_-]+$ definitions with MaxIdentifierBytes 128",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/security.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "QA routes for shards/theories/evidence/issues use splitPath without inline regex; params passed as match.params to dispatch",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "QA handlers pass shard/theory/evidence/issue directly to app.QAQueries without handler-side re-validation",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "Existing tests cover invalid project/artifact/query but not dot-containing QA shard/theory/evidence/issue ids",
+          "paths": [
+            "internal/web/routes_test.go",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "validateFocusedQARequest checks only allowed fields, not identifier syntax; QAEvidence validates empty but not pattern",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7587cf318a5782d6dcfc86c6",
+      "shard_id": "qa-v1-shard-a0dd07bee4631df4a3bae6f0",
+      "claim": "QA shard/theory dispatch validation allows dot-containing identifiers to reach QA use cases instead of returning 400 invalid_request",
+      "basis": "handlers.go dispatch loop (421-436) validates all non-artifact params with validIdentifier (identifierPattern ^[A-Za-z0-9][A-Za-z0-9._-]*$ allows '.'); artifact routes use validOpaqueRef (^[A-Za-z0-9_-]+$ forbids '.'). QA routes sprint_qa_shard, sprint_qa_theory, api_sprint_qa_shard, api_sprint_qa_theory, api_sprint_qa_evidence, api_sprint_qa_issue are not artifact routes, so shard/theory values like 'qa-v1-shard.evil' or 'foo.bar' pass generic check and are forwarded to handleSprintQAShard/QATheory (qa_handlers.go:129-152) with no additional handler-side gate before app.QAQueries.",
+      "verification_surface": "internal/web/handlers.go:22-23,421-436,1047-1054 dispatch validation + routeMatch QA branches; internal/web/routes.go:337-382 QA route definitions (splitPath, no inline regex); internal/web/qa_handlers.go:129-152 direct pass-through; expectation refs contract-errors (400 invalid_request for invalid resource identifier) and contract-security (strict loopback input validation)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "A request to /api/v1/projects/alpha/sprints/30-web/qa/shards/shard.evil or /theories/theory.bad (dot in id) is routed as known, passes dispatch validIdentifier, reaches QA use case and returns non-400 (e.g., 422 qa.invalid_state or 500) instead of 400 {code:invalid_request} at the handler boundary",
+      "refutation_condition": "Dispatch uses validOpaqueRef (or QA-specific pattern requiring ^[A-Za-z0-9_-]+$ and no dot) for shard/theory/evidence/issue params, causing same request to be rejected in dispatch writeRouteError 400 invalid_request without reaching QA use case",
+      "inconclusive_condition": "Static file view confirms generic pattern but cannot execute handler to observe live status code; downstream sprint Service may re-validate and still return 400/404, masking handler permissiveness, or MaxIdentifierBytes length checks may already dominate",
+      "safe_evidence_strategy": "Read-only file inspection: read handlers.go identifierPattern/opaqueRefPattern and dispatch loop to confirm branch condition strings.Contains(match.name,\"artifact\"); read routes.go matchRoute to confirm QA param indices have no regex; grep validIdentifier/validOpaqueRef usages; inspect qa_handlers_test.go and routes_test.go TestAPIValidationAndIdentifierBoundaries for absence of QA dot-rejection coverage; compare artifact vs QA validation paths",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-a0dd07bee4631df4a3bae6f0/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:45:28.38002206Z",
+          "completed_at": "2026-08-26T10:46:51.757001947Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/service.go",
+                "internal/app/dashboard_usecases.go"
+              ],
+              "reason": "Need downstream QA id validation to see if sprint Service re-validates shard/theory/evidence ids or maps invalid ids to 400 vs 422, determining whether handler permissiveness is compensating or leaks to use case",
+              "approved": false
+            },
+            {
+              "id": "ctx-operation-qa-shard",
+              "paths": [
+                "internal/app/operations.go"
+              ],
+              "reason": "QA shard via operation prepare/start (qa-start/resume) bypasses dispatch and uses mapOperationRequest which only validates scope via validOptionalIdentifier, not shard syntax; need to confirm if that path also allows invalid shard to reach QA runner",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "dispatch validates non-artifact params with validIdentifier (allows dot) vs artifact with validOpaqueRef (forbids dot)",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "identifierPattern ^[A-Za-z0-9][A-Za-z0-9._-]*$ and opaqueRefPattern ^[A-Za-z0-9_-]+$ definitions with MaxIdentifierBytes 128",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/security.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "QA routes for shards/theories/evidence/issues use splitPath without inline regex; params passed as match.params to dispatch",
+              "paths": [
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "QA handlers pass shard/theory/evidence/issue directly to app.QAQueries without handler-side re-validation",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "Existing tests cover invalid project/artifact/query but not dot-containing QA shard/theory/evidence/issue ids",
+              "paths": [
+                "internal/web/routes_test.go",
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "validateFocusedQARequest checks only allowed fields, not identifier syntax; QAEvidence validates empty but not pattern",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "dispatch validates non-artifact params with validIdentifier (allows dot) vs artifact with validOpaqueRef (forbids dot)",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "identifierPattern ^[A-Za-z0-9][A-Za-z0-9._-]*$ and opaqueRefPattern ^[A-Za-z0-9_-]+$ definitions with MaxIdentifierBytes 128",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/security.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "QA routes for shards/theories/evidence/issues use splitPath without inline regex; params passed as match.params to dispatch",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "QA handlers pass shard/theory/evidence/issue directly to app.QAQueries without handler-side re-validation",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "Existing tests cover invalid project/artifact/query but not dot-containing QA shard/theory/evidence/issue ids",
+          "paths": [
+            "internal/web/routes_test.go",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "validateFocusedQARequest checks only allowed fields, not identifier syntax; QAEvidence validates empty but not pattern",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Read-only static analysis shows identifierPattern permits '.' for QA shard/theory while opaqueRefPattern forbids it, and routes have no stricter gate, but without executing a handler request or seeing approved check output we cannot confirm live behavior (whether downstream re-validation compensates or error projection leaks)"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fed19865bad59d8721e06076",
+      "shard_id": "qa-v1-shard-a0dd07bee4631df4a3bae6f0",
+      "claim": "Evidence/issue focused QA query identifiers share same permissive dispatch, allowing invalid evidence/issue ids to reach adjudication path",
+      "basis": "api_sprint_qa_evidence (9 parts /qa/evidence/{id}) and api_sprint_qa_issue (9 parts /qa/issues/{id}) also matched in routes.go:379-382 and validated only via validIdentifier in handlers.go dispatch. app layer validateFocusedQARequest (sprint_usecases.go:938-953) only checks allowed field presence, not identifier syntax, and evidence/issue ids canonically are opaque refs (e.g., evidence digests, issue ids) which should be ^[A-Za-z0-9_-]+$ without dot.",
+      "verification_surface": "internal/web/handlers.go dispatch loop applied to api_sprint_qa_evidence/issue; internal/web/routes.go:379-382; internal/app/sprint_usecases.go validateFocusedQARequest and QAEvidence/QAIssue handlers",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "Request to /api/v1/projects/alpha/sprints/30-web/qa/evidence/bad.evil or /qa/issues/bad.evil passes dispatch and reaches QAEvidence/QAIssue returning 422/404 instead of handler 400 invalid_request",
+      "refutation_condition": "Dispatch applies validOpaqueRef to evidence/issue param positions, rejecting dot-containing values with 400 before QA use case",
+      "inconclusive_condition": "No read-only execution; existing tests (qa_handlers_test.go) use valid ids only and routes_test only covers /api/v1/validations and artifact '..', leaving QA evidence/issue boundary unexercised in visible fixtures",
+      "safe_evidence_strategy": "Inspect routes.go param mapping for evidence/issue, inspect handlers.go dispatch conditional for artifact vs non-artifact, inspect sprint_usecases.go validateFocusedQARequest to confirm no syntax check, search codebase for opaqueRef usages beyond validations scope/ref check",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_c7jsrrotznq5hpp66q7iu2oecu/qa-v1-shard-a0dd07bee4631df4a3bae6f0/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:45:28.38002206Z",
+          "completed_at": "2026-08-26T10:46:51.757001947Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation",
+              "paths": [
+                "internal/sprint/qa_state.go",
+                "internal/sprint/service.go",
+                "internal/app/dashboard_usecases.go"
+              ],
+              "reason": "Need downstream QA id validation to see if sprint Service re-validates shard/theory/evidence ids or maps invalid ids to 400 vs 422, determining whether handler permissiveness is compensating or leaks to use case",
+              "approved": false
+            },
+            {
+              "id": "ctx-operation-qa-shard",
+              "paths": [
+                "internal/app/operations.go"
+              ],
+              "reason": "QA shard via operation prepare/start (qa-start/resume) bypasses dispatch and uses mapOperationRequest which only validates scope via validOptionalIdentifier, not shard syntax; need to confirm if that path also allows invalid shard to reach QA runner",
+              "approved": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "dispatch validates non-artifact params with validIdentifier (allows dot) vs artifact with validOpaqueRef (forbids dot)",
+              "paths": [
+                "internal/web/handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "identifierPattern ^[A-Za-z0-9][A-Za-z0-9._-]*$ and opaqueRefPattern ^[A-Za-z0-9_-]+$ definitions with MaxIdentifierBytes 128",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/security.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "QA routes for shards/theories/evidence/issues use splitPath without inline regex; params passed as match.params to dispatch",
+              "paths": [
+                "internal/web/routes.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "QA handlers pass shard/theory/evidence/issue directly to app.QAQueries without handler-side re-validation",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "Existing tests cover invalid project/artifact/query but not dot-containing QA shard/theory/evidence/issue ids",
+              "paths": [
+                "internal/web/routes_test.go",
+                "internal/web/qa_handlers_test.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "validateFocusedQARequest checks only allowed fields, not identifier syntax; QAEvidence validates empty but not pattern",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "dispatch validates non-artifact params with validIdentifier (allows dot) vs artifact with validOpaqueRef (forbids dot)",
+          "paths": [
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "identifierPattern ^[A-Za-z0-9][A-Za-z0-9._-]*$ and opaqueRefPattern ^[A-Za-z0-9_-]+$ definitions with MaxIdentifierBytes 128",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/security.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "QA routes for shards/theories/evidence/issues use splitPath without inline regex; params passed as match.params to dispatch",
+          "paths": [
+            "internal/web/routes.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "QA handlers pass shard/theory/evidence/issue directly to app.QAQueries without handler-side re-validation",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "Existing tests cover invalid project/artifact/query but not dot-containing QA shard/theory/evidence/issue ids",
+          "paths": [
+            "internal/web/routes_test.go",
+            "internal/web/qa_handlers_test.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "validateFocusedQARequest checks only allowed fields, not identifier syntax; QAEvidence validates empty but not pattern",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Same static pattern as shard/theory; cannot execute request to observe status code, and downstream mapping may or may not canonicalize error to invalid_request, so live confirmation requires handler test or approved check execution"
+    }
+  ]
+}

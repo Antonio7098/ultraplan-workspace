@@ -1,0 +1,263 @@
+package app
+
+import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/Antonio7098/ultraplan-go/internal/platform/config"
+	"github.com/Antonio7098/ultraplan-go/internal/sprint"
+	"github.com/Antonio7098/ultraplan-go/internal/study"
+	"github.com/Antonio7098/ultraplan-go/internal/workspace"
+)
+
+// sharedOperationRunner is the single runtime-backed implementation used by
+// terminal and browser adapters. Surface code owns presentation and
+// confirmation; workflow semantics remain here and in the product services.
+func sharedOperationRunner(deps dependencies, root workspace.Root, effective config.Effective, useCases dashboardUseCases) func(context.Context, OperationRequest, func(OperationEvent)) (OperationResult, error) {
+	return func(ctx context.Context, req OperationRequest, emit func(OperationEvent)) (OperationResult, error) {
+		result := OperationResult{State: OperationComplete, Subject: operationFirstNonEmpty(req.Project+"/"+req.Sprint, req.Study)}
+		switch req.Kind {
+		case OperationStage:
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			r, e := service.FlowStage(ctx, req.Project, req.Sprint, stageFlowRequest(req, func(progress sprint.FlowProgress) {
+				summary := displaySafe(progress.Message)
+				emit(OperationEvent{State: OperationRunning, Stage: string(progress.Stage), Message: progress.State + ": " + summary, PhaseState: progress.State, SafeSummary: summary})
+			}))
+			result.Message = r.Message
+			result = operationWithSprintFindings(result, r.Findings)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationFlow:
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			flow := stageFlowRequest(req, func(progress sprint.FlowProgress) {
+				summary := displaySafe(progress.Message)
+				emit(OperationEvent{State: OperationRunning, Stage: string(progress.Stage), Message: progress.State + ": " + summary, PhaseState: progress.State, SafeSummary: summary})
+			})
+			flow.Review = sprint.ReviewRequest{Restart: req.RestartReview}
+			flow.Smoke = sprint.SmokeRequest{NonInteractive: true, OverrideConfirmed: req.ForceReview, ForceReview: req.ForceReview, OverrideRationale: req.OverrideRationale}
+			flow.Merge = sprint.MergeRequest{Confirm: true, ModelOverride: req.Model}
+			r, e := runSprintFlow(ctx, service, req.Project, req.Sprint, flow)
+			result.Message = r.Message
+			result = operationWithSprintFindings(result, r.Findings)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationExecuteStart, OperationExecuteResume:
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			r, e := service.Execute(ctx, req.Project, req.Sprint, sprint.ExecuteRequest{TaskID: req.Task, ModelOverride: req.Model, Resume: req.Kind == OperationExecuteResume})
+			result.Message = r.Message
+			result = operationWithSprintFindings(result, r.Findings)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationReviewStart:
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			r, e := service.Review(ctx, req.Project, req.Sprint, sprint.ReviewRequest{Concurrency: req.Parallelism, Focus: req.ReviewFocus, Restart: req.RestartReview, ModelOverride: req.Model, Progress: func(p sprint.ReviewProgress) {
+				emit(OperationEvent{State: OperationRunning, Stage: "review", Task: p.CoverageID, Message: p.Message, Completed: p.Completed, Total: p.Total})
+			}})
+			result.Message = fmt.Sprintf("%s verdict=%s", r.Status, r.Verdict)
+			for _, f := range r.Findings {
+				result.Findings = append(result.Findings, DisplayFinding{Severity: f.Severity, Section: "review", Problem: f.Title, Cause: f.Detail, Suggestion: f.Action})
+			}
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationSmokeStart:
+			service := sprint.NewService(root.Path).WithPublisher(stagePublisher(effective.Config)).WithSmokeSettings(smokeSettings(effective, envLookup(deps.env)))
+			var timeout time.Duration
+			if req.Timeout != "" {
+				timeout, _ = time.ParseDuration(req.Timeout)
+			}
+			r, e := service.RunSmoke(ctx, req.Project, req.Sprint, sprint.SmokeRequest{Level: req.Level, Suite: req.Suite, Test: req.Test, Timeout: timeout, ForceReview: req.ForceReview, OverrideConfirmed: req.ForceReview, OverrideRationale: req.OverrideRationale, Progress: func(p sprint.SmokeProgress) {
+				emit(OperationEvent{State: OperationRunning, Stage: string(p.Phase), Task: operationFirstNonEmpty(p.Test, p.Suite), Message: p.Message, Completed: p.Completed, Total: p.Total})
+			}})
+			result.Message = fmt.Sprintf("%s verdict=%s run=%s next=%s", r.Status, r.Verdict, r.RunID, r.NextAction)
+			if r.Artifact != "" {
+				if preview, readErr := useCases.PreviewArtifact(ctx, r.Artifact); readErr == nil {
+					result.Content, result.Truncated = boundContent(preview.Content)
+				}
+			}
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationVerifyStart:
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			var timeout time.Duration
+			if req.Timeout != "" {
+				timeout, _ = time.ParseDuration(req.Timeout)
+			}
+			r, e := service.Verify(ctx, req.Project, req.Sprint, sprint.VerifyRequest{To: sprint.PlanningStage(req.Stage), Review: sprint.ReviewRequest{Focus: req.ReviewFocus, Restart: req.RestartReview}, Smoke: sprint.SmokeRequest{Level: req.Level, Suite: req.Suite, Test: req.Test, Timeout: timeout, ForceReview: req.ForceReview, OverrideConfirmed: req.ForceReview, OverrideRationale: req.OverrideRationale}, Progress: func(p sprint.FlowProgress) {
+				summary := displaySafe(p.Message)
+				emit(OperationEvent{State: OperationRunning, Stage: string(p.Stage), Message: p.State + ": " + summary, PhaseState: p.State, SafeSummary: summary})
+			}})
+			result.Message = fmt.Sprintf("assessment=%s next=%s", r.Verification.Assessment, r.Verification.NextAction)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationQAStart, OperationQAResume:
+			token, fence, e := qaOwnershipFromContext(ctx)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			service = service.WithQAWriterFence(fence)
+			r, e := service.RunQA(ctx, req.Project, req.Sprint, sprint.QARunRequest{Resume: req.Kind == OperationQAResume, FocusShard: req.Task, Suite: req.Suite, EvidenceProducing: req.Suite == "", WriterToken: token, Progress: func(progress sprint.QAProgress) {
+				emit(OperationEvent{State: OperationRunning, Stage: string(progress.Phase), Task: progress.ShardID, Message: progress.Message, Action: progress.Event, Reason: string(progress.ShardPhase), Detail: string(progress.ShardKind), Completed: progress.Completed, Total: progress.Total})
+			}})
+			result.Message = fmt.Sprintf("phase=%s shards=%d/%d next=%s", r.State.Phase, r.State.CompletedShards, r.State.TotalShards, r.State.NextAction)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationRepairPrepare:
+			token, fence, e := qaOwnershipFromContext(ctx)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			budgets, budgetSources, e := repairBudgetsFor(effective, req.RepairMode)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			if req.RepairMaxCycles > 0 && req.RepairMaxCycles < budgets.MaxCycles {
+				budgets.MaxCycles = req.RepairMaxCycles
+				if budgets.MaxMutationCycles > budgets.MaxCycles {
+					budgets.MaxMutationCycles = budgets.MaxCycles
+				}
+			}
+			service := useCases.sprintService().WithQAWriterFence(fence)
+			r, e := service.PrepareRepair(ctx, req.Project, req.Sprint, sprint.RepairPrepareRequest{IssueID: req.RepairIssueID, Mode: req.RepairMode, Budgets: budgets, BudgetSources: budgetSources, WriterToken: token})
+			result.RunID = r.State.Run.RunID
+			result.Message = fmt.Sprintf("repair=%s packet=%s phase=%s next=%s", r.Packet.RepairRunID, r.Packet.PacketDigest, r.State.Phase, r.State.NextAction)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationRepairStart, OperationRepairResume:
+			token, fence, e := qaOwnershipFromContext(ctx)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			service, e := sprintRuntimeService(deps, root, tuiSprintRuntimeProgress(emit))
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			service = service.WithQAWriterFence(fence)
+			run := sprint.RepairRunRequest{RepairRunID: req.RepairRunID, WriterToken: token, Progress: func(progress sprint.RepairProgress) {
+				emit(OperationEvent{State: OperationRunning, Stage: string(sprint.VerificationPhaseRepair), Task: req.RepairRunID, Message: progress.Message, PhaseState: string(progress.Phase), Action: string(progress.Gate), Completed: progress.Cycle, Total: 1})
+			}}
+			var r sprint.RepairResult
+			if req.Kind == OperationRepairResume {
+				r, e = service.ResumeRepair(ctx, req.Project, req.Sprint, run)
+			} else {
+				r, e = service.RunRepair(ctx, req.Project, req.Sprint, run)
+			}
+			result.RunID = token.RunID
+			result.SemanticOutcome = string(r.Outcome)
+			result.Message = fmt.Sprintf("repair=%s outcome=%s stop=%s cleanup=%t next=%s", r.RepairRunID, r.Outcome, r.StopReason, r.CleanupComplete, r.NextAction)
+			severity := "info"
+			if r.Outcome == sprint.RepairOutcomeEscalated {
+				severity = "critical"
+			} else if r.Outcome == sprint.RepairOutcomeFailed || r.Outcome == sprint.RepairOutcomeBlocked || r.Outcome == sprint.RepairOutcomeStalled {
+				severity = "error"
+			}
+			emit(OperationEvent{State: operationStateForError(e), Stage: string(sprint.VerificationPhaseRepair), Task: r.RepairRunID, Code: "repair.terminal." + string(r.Outcome), Severity: severity, Project: req.Project, Sprint: req.Sprint, RepairRunID: r.RepairRunID, OperationRunID: token.RunID, OperationalAttemptID: token.OperationalAttemptID, FencingGeneration: token.FencingGeneration, Action: "terminal", Reason: string(r.StopReason), SafeSummary: displaySafe(result.Message)})
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationRepairRecover:
+			token, fence, e := qaOwnershipFromContext(ctx)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			service := useCases.sprintService().WithQAWriterFence(fence)
+			r, e := service.RecoverRepair(ctx, req.Project, req.Sprint, sprint.RepairRecoverRequest{RepairRunID: req.RepairRunID, WriterToken: token})
+			result.RunID = token.RunID
+			result.SemanticOutcome = string(r.Outcome)
+			result.Message = fmt.Sprintf("repair=%s recovery_outcome=%s stop=%s cleanup=%t next=%s", r.RepairRunID, r.Outcome, r.StopReason, r.CleanupComplete, r.NextAction)
+			severity := "info"
+			if r.Outcome == sprint.RepairOutcomeEscalated {
+				severity = "critical"
+			} else if r.Outcome != sprint.RepairOutcomeVerified && r.Outcome != sprint.RepairOutcomeVerifiedWithFindings {
+				severity = "error"
+			}
+			emit(OperationEvent{State: operationStateForError(e), Stage: string(sprint.VerificationPhaseRepair), Task: r.RepairRunID, Code: "repair.recovery." + string(r.Outcome), Severity: severity, Project: req.Project, Sprint: req.Sprint, RepairRunID: r.RepairRunID, OperationRunID: token.RunID, OperationalAttemptID: token.OperationalAttemptID, FencingGeneration: token.FencingGeneration, Action: "terminal", Reason: string(r.StopReason), SafeSummary: displaySafe(result.Message)})
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationStudyStart, OperationStudyResume:
+			flags := runAllFlags{}
+			flags.parallelism = &req.Parallelism
+			flags.model = req.Model
+			service, parallel, summary, e := runLoopService(deps, root, flags)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			r, e := service.RunLoop(ctx, study.RunLoopRequest{StudyRef: req.Study, DimensionRefs: req.Dimensions, SourceRefs: req.Sources, Parallelism: parallel, Model: studyModelOverride(deps, flags.model), Config: summary, Continue: req.Kind == OperationStudyResume, Command: []string{"ultraplan", "operation"}, Progress: func(p study.RunLoopProgress) {
+				stats := operationTaskStats(p.Task, time.Now().UTC())
+				event := OperationEvent{State: OperationRunning, Task: p.Task.ID, Stage: string(p.Event), Message: strings.TrimSpace(p.Task.DimensionRef + " " + p.Task.Source), Completed: p.ScopeCounts.Completed, Total: p.ScopeCounts.Total, Attempt: p.Task.Attempts, RuntimeAttempts: stats.RuntimeAttempts, Turns: stats.Turns, TurnsKnown: stats.TurnsKnown, Tokens: stats.Tokens, TokensKnown: stats.TokensKnown, InputTokens: stats.InputTokens, OutputTokens: stats.OutputTokens, ReasoningTokens: stats.ReasoningTokens, CacheReadTokens: stats.CacheReadTokens, CacheWriteTokens: stats.CacheWriteTokens, Duration: stats.Duration, Provider: stats.Provider, Model: stats.Model, Harness: stats.Runtime, Cost: stats.Cost, RuntimeEvents: stats.Events}
+				if p.RuntimeEvent != nil {
+					applyRuntimeObservation(&event, *p.RuntimeEvent)
+					event.Message = runtimeProgressSummary(*p.RuntimeEvent)
+				}
+				emit(event)
+			}})
+			result.Message = string(r.Status)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+		case OperationStudyCancel:
+			service := study.NewService(root.Path)
+			listing, e := service.ListStudy(req.Study)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			info, e := study.CancelRunLoop(listing.Study)
+			if e != nil {
+				return failedOperation(result, e)
+			}
+			result.Message = fmt.Sprintf("cancellation requested from run-loop process %d", info.PID)
+		default:
+			return failedOperation(result, fmt.Errorf("unsupported runtime operation %q", req.Kind))
+		}
+		emit(OperationEvent{State: OperationComplete, Message: "operation complete"})
+		return result, nil
+	}
+}
+
+// stageFlowRequest builds the sprint flow request for a stage or flow
+// operation. A requested model applies to the selected target stage and, as a
+// fallback for stages without dedicated per-stage handling (code-context), as
+// the generic model override. Empty models keep configured defaults.
+func stageFlowRequest(req OperationRequest, progress func(sprint.FlowProgress)) sprint.FlowRequest {
+	flow := sprint.FlowRequest{To: sprint.PlanningStage(req.Stage), ModelOverride: req.Model}
+	if req.Model != "" && req.Stage != "" {
+		stage := sprint.PlanningStage(req.Stage)
+		if _, ok := flow.StageOverrides[stage]; !ok {
+			flow.StageOverrides = map[sprint.PlanningStage]sprint.StageRuntime{}
+		}
+		override := flow.StageOverrides[stage]
+		override.Model = req.Model
+		flow.StageOverrides[stage] = override
+	}
+	flow.Progress = progress
+	return flow
+}

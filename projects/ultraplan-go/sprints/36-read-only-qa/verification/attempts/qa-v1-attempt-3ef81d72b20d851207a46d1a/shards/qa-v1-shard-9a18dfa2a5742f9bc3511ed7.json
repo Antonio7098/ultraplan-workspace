@@ -1,0 +1,394 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-9a18dfa2a5742f9bc3511ed7",
+  "attempt_id": "qa-v1-attempt-3ef81d72b20d851207a46d1a",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-6e8cb25fe415b983a717abdf",
+  "context_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QA issues limit lacks range/bounds validation allowing 0, negative, or very large limits to bypass bounded JSON and truncated metadata contract"
+  ],
+  "expectation_refs": [
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-6e8cb25fe415b983a717abdf"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-9a18dfa2a5742f9bc3511ed7/1",
+      "number": 1,
+      "started_at": "2026-08-26T10:32:05.851429602Z",
+      "completed_at": "2026-08-26T10:33:28.383459281Z",
+      "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "qa_handlers.go handleSprintQAIssues parses limit with Atoi only, no \u003c1 or \u003e200 check, forwards 0/negative/large to QAIssues",
+          "paths": [
+            "internal/web/qa_handlers.go:51-72"
+          ],
+          "output_digest": "sha256:qa-handlers-limit-novalidation"
+        },
+        {
+          "kind": "code",
+          "summary": "App layer QAIssues validates limit 1-200 and defaults 0-\u003e50 at sprint_usecases.go:839-844, but error is fmt.Errorf mapped to 500 internal_error via handleQueryError",
+          "paths": [
+            "internal/app/sprint_usecases.go:832-883",
+            "internal/web/handlers.go:1056-1081"
+          ],
+          "output_digest": "sha256:app-qaissues-1-200-fmt-error"
+        },
+        {
+          "kind": "code",
+          "summary": "Peer handlers enforce bounded limits at web layer: timeline 1-50 and runs 1-200 with 400 invalid_limit",
+          "paths": [
+            "internal/web/timeline_handlers.go:73-81",
+            "internal/web/run_handlers.go:259-267"
+          ],
+          "output_digest": "sha256:peer-limit-validation-400"
+        },
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes api_sprint_qa_issues and handler lacks onlyQueryKeys, unlike timeline/run handlers",
+          "paths": [
+            "internal/web/handlers.go:421-426",
+            "internal/web/timeline_handlers.go:55",
+            "internal/web/run_handlers.go:255"
+          ],
+          "output_digest": "sha256:dispatch-allowlist-missing-qa"
+        },
+        {
+          "kind": "code",
+          "summary": "No QA limit tests exist; qa_handlers_test.go covers QA map/shard/theory/synthesis bounded JSON but not QAIssues limit edge cases",
+          "paths": [
+            "internal/web/qa_handlers_test.go:1-109",
+            "internal/web/routes_test.go:167-183"
+          ],
+          "output_digest": "sha256:missing-qa-limit-test-coverage"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1c819ab0762cc8604b8d4b45",
+      "shard_id": "qa-v1-shard-9a18dfa2a5742f9bc3511ed7",
+      "claim": "dispatch allowlist inconsistency for QA issues queries leaves unknown-param contract unenforced and obscures limit validation path",
+      "basis": "handlers.go:422 dispatch permits RawQuery only for api_validations/api_runs/api_run_events/runs/api_timeline; api_sprint_qa_issues is not listed yet qa_handlers.go expects ?limit \u0026 ?cursor. This means either every query is rejected as 400 invalid_request unknown query parameters before limit validation, or the bypass relies on app layer, both diverging from timeline_handlers.go:55 and run_handlers.go:255 which use onlyQueryKeys. The handler also lacks unknown-param check, so ?limit=50\u0026evil=1 would be silently accepted while dispatch blanket rule would otherwise reject it.",
+      "verification_surface": "static read of internal/web/handlers.go dispatch, internal/web/routes.go matchRoute for api_sprint_qa_issues, and comparative onlyQueryKeys usage in timeline_handlers.go/run_handlers.go",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "dispatch allowlist excludes api_sprint_qa_issues and handler lacks onlyQueryKeys, creating divergent unknown-param vs limit handling compared to validated timeline/runs paths",
+      "refutation_condition": "dispatch includes api_sprint_qa_issues in allowsQuery or handler validates onlyQueryKeys and returns consistent 400 for unknown params",
+      "inconclusive_condition": "cannot execute live request to confirm whether RawQuery rejection preempts handler limit parsing",
+      "safe_evidence_strategy": "read dispatch code, route table, and onlyQueryKeys patterns; no execution",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-9a18dfa2a5742f9bc3511ed7/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:32:05.851429602Z",
+          "completed_at": "2026-08-26T10:33:28.383459281Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "qa_handlers.go handleSprintQAIssues parses limit with Atoi only, no \u003c1 or \u003e200 check, forwards 0/negative/large to QAIssues",
+              "paths": [
+                "internal/web/qa_handlers.go:51-72"
+              ],
+              "output_digest": "sha256:qa-handlers-limit-novalidation"
+            },
+            {
+              "kind": "code",
+              "summary": "App layer QAIssues validates limit 1-200 and defaults 0-\u003e50 at sprint_usecases.go:839-844, but error is fmt.Errorf mapped to 500 internal_error via handleQueryError",
+              "paths": [
+                "internal/app/sprint_usecases.go:832-883",
+                "internal/web/handlers.go:1056-1081"
+              ],
+              "output_digest": "sha256:app-qaissues-1-200-fmt-error"
+            },
+            {
+              "kind": "code",
+              "summary": "Peer handlers enforce bounded limits at web layer: timeline 1-50 and runs 1-200 with 400 invalid_limit",
+              "paths": [
+                "internal/web/timeline_handlers.go:73-81",
+                "internal/web/run_handlers.go:259-267"
+              ],
+              "output_digest": "sha256:peer-limit-validation-400"
+            },
+            {
+              "kind": "code",
+              "summary": "dispatch allowsQuery excludes api_sprint_qa_issues and handler lacks onlyQueryKeys, unlike timeline/run handlers",
+              "paths": [
+                "internal/web/handlers.go:421-426",
+                "internal/web/timeline_handlers.go:55",
+                "internal/web/run_handlers.go:255"
+              ],
+              "output_digest": "sha256:dispatch-allowlist-missing-qa"
+            },
+            {
+              "kind": "code",
+              "summary": "No QA limit tests exist; qa_handlers_test.go covers QA map/shard/theory/synthesis bounded JSON but not QAIssues limit edge cases",
+              "paths": [
+                "internal/web/qa_handlers_test.go:1-109",
+                "internal/web/routes_test.go:167-183"
+              ],
+              "output_digest": "sha256:missing-qa-limit-test-coverage"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "qa_handlers.go handleSprintQAIssues parses limit with Atoi only, no \u003c1 or \u003e200 check, forwards 0/negative/large to QAIssues",
+          "paths": [
+            "internal/web/qa_handlers.go:51-72"
+          ],
+          "output_digest": "sha256:qa-handlers-limit-novalidation"
+        },
+        {
+          "kind": "code",
+          "summary": "App layer QAIssues validates limit 1-200 and defaults 0-\u003e50 at sprint_usecases.go:839-844, but error is fmt.Errorf mapped to 500 internal_error via handleQueryError",
+          "paths": [
+            "internal/app/sprint_usecases.go:832-883",
+            "internal/web/handlers.go:1056-1081"
+          ],
+          "output_digest": "sha256:app-qaissues-1-200-fmt-error"
+        },
+        {
+          "kind": "code",
+          "summary": "Peer handlers enforce bounded limits at web layer: timeline 1-50 and runs 1-200 with 400 invalid_limit",
+          "paths": [
+            "internal/web/timeline_handlers.go:73-81",
+            "internal/web/run_handlers.go:259-267"
+          ],
+          "output_digest": "sha256:peer-limit-validation-400"
+        },
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes api_sprint_qa_issues and handler lacks onlyQueryKeys, unlike timeline/run handlers",
+          "paths": [
+            "internal/web/handlers.go:421-426",
+            "internal/web/timeline_handlers.go:55",
+            "internal/web/run_handlers.go:255"
+          ],
+          "output_digest": "sha256:dispatch-allowlist-missing-qa"
+        },
+        {
+          "kind": "code",
+          "summary": "No QA limit tests exist; qa_handlers_test.go covers QA map/shard/theory/synthesis bounded JSON but not QAIssues limit edge cases",
+          "paths": [
+            "internal/web/qa_handlers_test.go:1-109",
+            "internal/web/routes_test.go:167-183"
+          ],
+          "output_digest": "sha256:missing-qa-limit-test-coverage"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Code shows dispatch:422 does not whitelist api_sprint_qa_issues and qa_handlers.go has no onlyQueryKeys check, confirmed by direct file reads; peer handlers explicitly whitelist and validate, so QA issues path is inconsistent"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-55603a5307c12f38838b7cec",
+      "shard_id": "qa-v1-shard-9a18dfa2a5742f9bc3511ed7",
+      "claim": "handleSprintQAIssues does not validate limit bounds at the web layer, allowing 0, negative, or very large limits to reach the app layer and bypass the bounded JSON / truncated metadata contract",
+      "basis": "qa_handlers.go:51-66 parses limit with strconv.Atoi only and forwards Limit directly without range check or onlyQueryKeys guard. Peer handlers timeline_handlers.go:73-80 (1-50) and run_handlers.go:259-266 (1-200) validate at the handler and return 400 invalid_limit. App layer sprint_usecases.go:839-844 validates 1-200 and defaults 0-\u003e50, but its error is a plain fmt.Errorf that handleQueryError maps to 500 internal_error rather than 400 invalid_request, breaking contract-observability stable error codes and contract-performance bounded response. Dispatch handlers.go:422 allowlist does not include api_sprint_qa_issues so RawQuery handling is inconsistent with limit/cursor expectation.",
+      "verification_surface": "static read-only inspection of context_paths: internal/web/qa_handlers.go, internal/web/handlers.go dispatch, internal/app/sprint_usecases.go QAIssues, and comparative reads of internal/web/timeline_handlers.go and internal/web/run_handlers.go; grep for limit validation patterns",
+      "expectation_refs": [
+        "contract-observability",
+        "contract-performance",
+        "contract-persistence-and-migrations"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "qa_handlers.go limit parsing lacks any \u003c1 or \u003e200 guard and no onlyQueryKeys/unknown-param rejection, while peer handlers enforce bounded 400 responses and app validation for QAIssues exists but surfaces as 500",
+      "refutation_condition": "handler returns 400 invalid_limit/invalid_request for limit 0, limit -1, limit 201/1000000 with truncated collection metadata, or app validation is correctly projected as 400 via writeError/QA error code",
+      "inconclusive_condition": "live HTTP execution is prohibited read-only; cannot observe runtime status codes or response metadata truncation without executing a handler or test harness",
+      "safe_evidence_strategy": "read-only file reads and regex grep for limit handling; compare qa_handlers.go against validated endpoints (timeline, runs); inspect dispatch allowlist and error projection in handlers.go without invoking shell, network, or mutations",
+      "implementation_fingerprint": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+      "attempt_history": [
+        {
+          "id": "att_45t2hfwj5gwnn2gtanzd63net4/qa-v1-shard-9a18dfa2a5742f9bc3511ed7/1",
+          "number": 1,
+          "started_at": "2026-08-26T10:32:05.851429602Z",
+          "completed_at": "2026-08-26T10:33:28.383459281Z",
+          "implementation_before": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "implementation_after": "9c4bc4ea04076735155c7538e442a0727c151ed19933321dae0440a360c3f9c5",
+          "evidence": [
+            {
+              "kind": "code",
+              "summary": "qa_handlers.go handleSprintQAIssues parses limit with Atoi only, no \u003c1 or \u003e200 check, forwards 0/negative/large to QAIssues",
+              "paths": [
+                "internal/web/qa_handlers.go:51-72"
+              ],
+              "output_digest": "sha256:qa-handlers-limit-novalidation"
+            },
+            {
+              "kind": "code",
+              "summary": "App layer QAIssues validates limit 1-200 and defaults 0-\u003e50 at sprint_usecases.go:839-844, but error is fmt.Errorf mapped to 500 internal_error via handleQueryError",
+              "paths": [
+                "internal/app/sprint_usecases.go:832-883",
+                "internal/web/handlers.go:1056-1081"
+              ],
+              "output_digest": "sha256:app-qaissues-1-200-fmt-error"
+            },
+            {
+              "kind": "code",
+              "summary": "Peer handlers enforce bounded limits at web layer: timeline 1-50 and runs 1-200 with 400 invalid_limit",
+              "paths": [
+                "internal/web/timeline_handlers.go:73-81",
+                "internal/web/run_handlers.go:259-267"
+              ],
+              "output_digest": "sha256:peer-limit-validation-400"
+            },
+            {
+              "kind": "code",
+              "summary": "dispatch allowsQuery excludes api_sprint_qa_issues and handler lacks onlyQueryKeys, unlike timeline/run handlers",
+              "paths": [
+                "internal/web/handlers.go:421-426",
+                "internal/web/timeline_handlers.go:55",
+                "internal/web/run_handlers.go:255"
+              ],
+              "output_digest": "sha256:dispatch-allowlist-missing-qa"
+            },
+            {
+              "kind": "code",
+              "summary": "No QA limit tests exist; qa_handlers_test.go covers QA map/shard/theory/synthesis bounded JSON but not QAIssues limit edge cases",
+              "paths": [
+                "internal/web/qa_handlers_test.go:1-109",
+                "internal/web/routes_test.go:167-183"
+              ],
+              "output_digest": "sha256:missing-qa-limit-test-coverage"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "code",
+          "summary": "qa_handlers.go handleSprintQAIssues parses limit with Atoi only, no \u003c1 or \u003e200 check, forwards 0/negative/large to QAIssues",
+          "paths": [
+            "internal/web/qa_handlers.go:51-72"
+          ],
+          "output_digest": "sha256:qa-handlers-limit-novalidation"
+        },
+        {
+          "kind": "code",
+          "summary": "App layer QAIssues validates limit 1-200 and defaults 0-\u003e50 at sprint_usecases.go:839-844, but error is fmt.Errorf mapped to 500 internal_error via handleQueryError",
+          "paths": [
+            "internal/app/sprint_usecases.go:832-883",
+            "internal/web/handlers.go:1056-1081"
+          ],
+          "output_digest": "sha256:app-qaissues-1-200-fmt-error"
+        },
+        {
+          "kind": "code",
+          "summary": "Peer handlers enforce bounded limits at web layer: timeline 1-50 and runs 1-200 with 400 invalid_limit",
+          "paths": [
+            "internal/web/timeline_handlers.go:73-81",
+            "internal/web/run_handlers.go:259-267"
+          ],
+          "output_digest": "sha256:peer-limit-validation-400"
+        },
+        {
+          "kind": "code",
+          "summary": "dispatch allowsQuery excludes api_sprint_qa_issues and handler lacks onlyQueryKeys, unlike timeline/run handlers",
+          "paths": [
+            "internal/web/handlers.go:421-426",
+            "internal/web/timeline_handlers.go:55",
+            "internal/web/run_handlers.go:255"
+          ],
+          "output_digest": "sha256:dispatch-allowlist-missing-qa"
+        },
+        {
+          "kind": "code",
+          "summary": "No QA limit tests exist; qa_handlers_test.go covers QA map/shard/theory/synthesis bounded JSON but not QAIssues limit edge cases",
+          "paths": [
+            "internal/web/qa_handlers_test.go:1-109",
+            "internal/web/routes_test.go:167-183"
+          ],
+          "output_digest": "sha256:missing-qa-limit-test-coverage"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static evidence confirms missing validation: qa_handlers.go:57-64 has no range check after Atoi, no max 200, no rejection of 0/negative, and no limit query allowlist; peers demonstrate the expected bounded 1-50/1-200 pattern and app layer alone would default 0 to 50 and return 500 for out-of-range, violating bounded 200-page contract and stable 400 mapping"
+    }
+  ]
+}

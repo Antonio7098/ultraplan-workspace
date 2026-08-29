@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f",
+  "attempt_id": "qa-v1-attempt-997e8fd1c3618048912838b2",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-6e4f37a8326a9b785f7a23ae",
+  "context_paths": [
+    "docs/architecture.md",
+    "internal/app/sprint_commands.go",
+    "internal/platform/process/isolation.go",
+    "internal/sprint/qa.go",
+    "internal/web/qa_handlers.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: QA evidence production proceeds without native protected-root denial, process-group/descendant cleanup or workspace removal proven, violating isolation guarantees between internal/sprint and internal/platform/process"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-llm-runtime",
+    "contract-security"
+  ],
+  "parent_theory_ids": [
+    "qa-v1-theory-6e4f37a8326a9b785f7a23ae"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f/1",
+      "number": 1,
+      "started_at": "2026-08-28T11:17:45.940788755Z",
+      "completed_at": "2026-08-28T11:19:02.575418111Z",
+      "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "context_requests": [
+        {
+          "id": "ctx-qa-investigation-evidence",
+          "paths": [
+            "internal/sprint/qa_evidence.go",
+            "internal/sprint/qa_investigation.go"
+          ],
+          "reason": "Verify ValidateQAAdmission definition, whether it strictly requires all three-plus capabilities, and whether RunQAInvestigation proves workspace removal and descendant cleanup per disposable copy before publishing evidence",
+          "approved": true
+        },
+        {
+          "id": "ctx-process-native",
+          "paths": [
+            "internal/platform/process/isolation_linux.go",
+            "internal/platform/process/isolation_other.go",
+            "internal/platform/process/native.go",
+            "internal/platform/process/runner.go"
+          ],
+          "reason": "Verify how isolationCapabilities() probes native protected-root denial, process-group, descendant cleanup, and workspace removal, and whether nativeIsolationRequest provides read-only root mount and process-group setup or fails closed",
+          "approved": false,
+          "denied_reason": "requested context path is unavailable"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 7,
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-147850d5d5936c42e9f2ee42",
+      "shard_id": "qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f",
+      "claim": "QA IsolationProven omits ProcessGroup, allowing evidence production without process-group isolation proven",
+      "basis": "docs/architecture.md:232-234 requires platforms that cannot prove protected-root denial, process-group cleanup, and workspace removal to block before writable work; internal/platform/process/isolation.go:38-45 defines IsolationCapabilities with separate ProcessGroup and DescendantCleanup booleans; internal/sprint/qa.go:463 computes IsolationProven as NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval with no ProcessGroup term, so a host with ProcessGroup=false but DescendantCleanup=true passes admission",
+      "verification_surface": "docs/architecture.md:227-234, internal/platform/process/isolation.go:38-45, internal/sprint/qa.go:449-468 (buildQAEvidencePublication admission construction and ValidateQAAdmission call)",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "File content shows IsolationCapabilities defines ProcessGroup but QA admission logic at internal/sprint/qa.go:463 does not include it, and no other assigned file compensates",
+      "refutation_condition": "Another assigned file checks ProcessGroup before writable work or proves admission includes it via indirection",
+      "inconclusive_condition": "ProcessGroup is intentionally excluded from the isolation guarantee or is proven elsewhere outside assigned paths",
+      "safe_evidence_strategy": "Read-only file inspection of assigned paths; grep for ProcessGroup and IsolationProven; compare to docs architecture requirement",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:17:45.940788755Z",
+          "completed_at": "2026-08-28T11:19:02.575418111Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-qa-investigation-evidence",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_investigation.go"
+              ],
+              "reason": "Verify ValidateQAAdmission definition, whether it strictly requires all three-plus capabilities, and whether RunQAInvestigation proves workspace removal and descendant cleanup per disposable copy before publishing evidence",
+              "approved": true
+            },
+            {
+              "id": "ctx-process-native",
+              "paths": [
+                "internal/platform/process/isolation_linux.go",
+                "internal/platform/process/isolation_other.go",
+                "internal/platform/process/native.go",
+                "internal/platform/process/runner.go"
+              ],
+              "reason": "Verify how isolationCapabilities() probes native protected-root denial, process-group, descendant cleanup, and workspace removal, and whether nativeIsolationRequest provides read-only root mount and process-group setup or fails closed",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 7,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "Static inspection confirms mismatch: capability exists but is not gated. Lines internal/sprint/qa.go:463 and internal/platform/process/isolation.go:41 and docs/architecture.md:232-234 together demonstrate violation without needing execution."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1bfbcc3f163304f00b32fb3b",
+      "shard_id": "qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f",
+      "claim": "Writable QA checks can execute in IsolationWorkspace.Run without native protected-root denial when capability is false",
+      "basis": "internal/platform/process/isolation.go:158-183 shows Workspace.Run conditionally calls nativeIsolationRequest only if Capabilities.NativeProtectedRootDeny is true, otherwise delegates directly to runner.Run with no read-only root mount; admission gating in internal/sprint/qa.go:463 is single-point and also incomplete (missing ProcessGroup), so isolation guarantee between internal/sprint and internal/platform/process depends entirely on correct admission evaluation and cannot fail-closed at the execution boundary",
+      "verification_surface": "internal/platform/process/isolation.go:158-183, internal/sprint/qa.go:449-468, docs/architecture.md:230-234",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Inspection shows Run does not error when NativeProtectedRootDeny is false and relies solely on prior admission flag; no fail-closed enforcement at process boundary in assigned paths",
+      "refutation_condition": "Run fails closed when NativeProtectedRootDeny is false, or every writable entry point is proven to call ValidateQAAdmission before any workspace creation",
+      "inconclusive_condition": "Native isolation enforcement is proven inside nativeIsolationRequest or runner implementation outside assigned paths, or admission is always called on every writable path",
+      "safe_evidence_strategy": "Read assigned isolation.go Run method and qa.go admission; request additional process isolation files to verify native implementation and fail-closed behavior",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:17:45.940788755Z",
+          "completed_at": "2026-08-28T11:19:02.575418111Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-qa-investigation-evidence",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_investigation.go"
+              ],
+              "reason": "Verify ValidateQAAdmission definition, whether it strictly requires all three-plus capabilities, and whether RunQAInvestigation proves workspace removal and descendant cleanup per disposable copy before publishing evidence",
+              "approved": true
+            },
+            {
+              "id": "ctx-process-native",
+              "paths": [
+                "internal/platform/process/isolation_linux.go",
+                "internal/platform/process/isolation_other.go",
+                "internal/platform/process/native.go",
+                "internal/platform/process/runner.go"
+              ],
+              "reason": "Verify how isolationCapabilities() probes native protected-root denial, process-group, descendant cleanup, and workspace removal, and whether nativeIsolationRequest provides read-only root mount and process-group setup or fails closed",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 7,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Assigned paths show conditional enforcement and single-point admission, but proof of end-to-end protected-root denial and its coupling to workspace creation requires non-assigned files (native implementation and full QA publication flow). No shell execution performed per mandate."
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-3d99496ca47e70103c77c33d",
+      "shard_id": "qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f",
+      "claim": "Descendant cleanup and workspace removal are advertised as capabilities but not proven per-investigation via observed cleanup before QA evidence promotion",
+      "basis": "internal/platform/process/isolation.go:66-70 and 242-262 define CleanupResult with Complete flag and WorkspaceRemoval capability; internal/sprint/qa.go:449-593 builds evidence publication, creates workspaceParent via os.MkdirTemp, loops over shards calling RunQAInvestigation and collects QAEvidenceRecord, but assigned files show no per-record inspection of CleanupResult.Complete or descendant process-group termination before AdjudicateQA/Publish; docs/architecture.md:232-234 requires platforms that cannot prove process-group/descendant cleanup and workspace removal to block before writable work and to report proven containment and cleanup",
+      "verification_surface": "internal/platform/process/isolation.go:38-45,66-70,242-262, internal/sprint/qa.go:478-594 (workspaceParent handling, RunQAInvestigation loop, adjudication), docs/architecture.md:227-242",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Full flow shows evidence records and adjudication are published without verifying CleanupResult.Complete and without verifying process-group/descendant cleanup succeeded for each disposable copy",
+      "refutation_condition": "Assigned or requested files show each RunQAInvestigation verifies cleanup success and aborts/block publication on failure, and qa.go gates on ProcessGroup \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval",
+      "inconclusive_condition": "Cleanup verification exists in non-assigned files (qa_investigation.go, qa_evidence.go) not inspectable under current assignment",
+      "safe_evidence_strategy": "Read-only inspection of assigned paths for CleanupResult usage; request bounded context expansion for qa_investigation.go and qa_evidence.go to verify per-attempt cleanup proof and ValidateQAAdmission implementation",
+      "implementation_fingerprint": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+      "attempt_history": [
+        {
+          "id": "att_rzqhh5ripnldl6myok5hsxsnoi/qa-v1-shard-4a8ad43d5b9d1381f7fb3c3f/1",
+          "number": 1,
+          "started_at": "2026-08-28T11:17:45.940788755Z",
+          "completed_at": "2026-08-28T11:19:02.575418111Z",
+          "implementation_before": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "implementation_after": "d6f8e122b892ad435c8e9910dd389ea444a9d26454a4434be04a188f40afe0f2",
+          "context_requests": [
+            {
+              "id": "ctx-qa-investigation-evidence",
+              "paths": [
+                "internal/sprint/qa_evidence.go",
+                "internal/sprint/qa_investigation.go"
+              ],
+              "reason": "Verify ValidateQAAdmission definition, whether it strictly requires all three-plus capabilities, and whether RunQAInvestigation proves workspace removal and descendant cleanup per disposable copy before publishing evidence",
+              "approved": true
+            },
+            {
+              "id": "ctx-process-native",
+              "paths": [
+                "internal/platform/process/isolation_linux.go",
+                "internal/platform/process/isolation_other.go",
+                "internal/platform/process/native.go",
+                "internal/platform/process/runner.go"
+              ],
+              "reason": "Verify how isolationCapabilities() probes native protected-root denial, process-group, descendant cleanup, and workspace removal, and whether nativeIsolationRequest provides read-only root mount and process-group setup or fails closed",
+              "approved": false,
+              "denied_reason": "requested context path is unavailable"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_content",
+              "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+              "paths": [
+                "docs/architecture.md"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+              "paths": [
+                "internal/platform/process/isolation.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+              "paths": [
+                "internal/sprint/qa.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ]
+            },
+            {
+              "kind": "file_content",
+              "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+              "paths": [
+                "internal/web/qa_handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 7,
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_content",
+          "summary": "docs/architecture.md requires QA to block before writable work when host cannot prove protected-root denial, process-group cleanup, and workspace removal; notes bubblewrap on Linux and capability reporting",
+          "paths": [
+            "docs/architecture.md"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/platform/process/isolation.go defines IsolationCapabilities with NativeProtectedRootDeny, ProcessGroup, DescendantCleanup, WorkspaceRemoval and shows Workspace.Run only applies nativeIsolationRequest when NativeProtectedRootDeny true, otherwise runs unconfined",
+          "paths": [
+            "internal/platform/process/isolation.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/sprint/qa.go buildQAEvidencePublication builds QAAdmission with IsolationProven = NativeProtectedRootDeny \u0026\u0026 DescendantCleanup \u0026\u0026 WorkspaceRemoval (line 463) omitting ProcessGroup, then gates via ValidateQAAdmission",
+          "paths": [
+            "internal/sprint/qa.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/app/sprint_commands.go wires QA command and settings but contains no additional isolation gating beyond service-level admission",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ]
+        },
+        {
+          "kind": "file_content",
+          "summary": "internal/web/qa_handlers.go exposes QA status/evidence queries only, confirms dependency direction internal/web -\u003e internal/app -\u003e internal/sprint but provides no isolation enforcement",
+          "paths": [
+            "internal/web/qa_handlers.go"
+          ]
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "Assigned paths establish capability flags and cleanup primitive but do not show per-attempt proof of descendant cleanup and removal before promotion; definitive verdict requires files outside assignment."
+    }
+  ]
+}

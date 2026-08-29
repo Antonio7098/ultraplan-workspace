@@ -1,0 +1,985 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-0831275fcb96a9b67bcd9aaa",
+  "attempt_id": "qa-v1-attempt-19ed288aae5c7c0c1604538a",
+  "kind": "primary",
+  "title": "internal/web",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes.go",
+    "internal/web/static/app.js",
+    "internal/web/static/js/operations.js",
+    "internal/web/templates/sprint.html",
+    "internal/web/templates_test.go"
+  ],
+  "context_paths": [
+    "internal/web/qa_handlers.go",
+    "internal/web/qa_handlers_test.go",
+    "internal/web/routes_test.go"
+  ],
+  "behavioral_concerns": [
+    "changed behavior in internal/web"
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b"
+    }
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0831275fcb96a9b67bcd9aaa/1",
+      "number": 1,
+      "started_at": "2026-08-26T09:51:55.402948742Z",
+      "completed_at": "2026-08-26T09:53:29.102069922Z",
+      "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "context_requests": [
+        {
+          "id": "ctx-qa-validation-001",
+          "paths": [
+            "internal/app/web_usecases.go",
+            "internal/app/sprint_usecases.go",
+            "internal/sprint/qa_types.go",
+            "internal/sprint/service.go"
+          ],
+          "reason": "need to confirm downstream shard ID format validation and whether limit parse 500 maps to intended QA error, which determines true severity of theories 2 and 3",
+          "approved": false
+        }
+      ],
+      "commands": [
+        {
+          "check_id": "go-format-diff",
+          "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+          "exit_code": 0,
+          "duration": 44540177,
+          "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "output_bytes": 0,
+          "truncated": false
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:allowlist-mismatch-3b52a311"
+        },
+        {
+          "kind": "file_read",
+          "summary": "limit parse error maps to handleQueryError without 400 branch",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:limit-error-500-branch"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA operation suite/shard mapping and contract test shard focus",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:qa-options-suite-shard"
+        },
+        {
+          "kind": "file_read",
+          "summary": "hostile QA payload escaping via displaySafe and html/template",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/templates_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:xss-escaping-qa-payload"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": false,
+        "max_attempts": 1,
+        "attempt_count": 0,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-3b747582a61775b110b3223f",
+      "shard_id": "qa-v1-shard-0831275fcb96a9b67bcd9aaa",
+      "claim": "Browser operation serializer divergence: /static/app.js fallback options omits suite while /static/js/operations.js includes suite, causing HTML-only flow to drop QA suite=smoke",
+      "basis": "internal/web/static/js/operations.js:15-16 includes selectedSuite -\u003e result.suite; internal/web/static/app.js:30-45 specification() fallback when UltraPlanOperations missing only maps stage/model/parallelism/shard, no suite; sprint.html:54 smoke button posts suite=smoke via form field; operation_handlers.go mapOperationRequest expects suite only via options.Suite",
+      "verification_surface": "internal/web/static/app.js specification, internal/web/static/js/operations.js options, internal/web/templates/sprint.html smoke form",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-testing",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "fallback path in app.js does not forward suite, so non-JS or pre-operations.js load loses suite=smoke and QA start via suite fails or becomes generic",
+      "refutation_condition": "suite forwarded via Form or other path when UltraPlanOperations unavailable, or HTML form directly posts suite as form field independent of JS serializer",
+      "inconclusive_condition": "requires browser runtime to observe form serialization fallback",
+      "safe_evidence_strategy": "read-only diff of two JS serializers and template form fields; verify operationSpecFromForm handles suite string vs HTML path",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0831275fcb96a9b67bcd9aaa/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.402948742Z",
+          "completed_at": "2026-08-26T09:53:29.102069922Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation-001",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/sprint_usecases.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "need to confirm downstream shard ID format validation and whether limit parse 500 maps to intended QA error, which determines true severity of theories 2 and 3",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 44540177,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:allowlist-mismatch-3b52a311"
+            },
+            {
+              "kind": "file_read",
+              "summary": "limit parse error maps to handleQueryError without 400 branch",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:limit-error-500-branch"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA operation suite/shard mapping and contract test shard focus",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:qa-options-suite-shard"
+            },
+            {
+              "kind": "file_read",
+              "summary": "hostile QA payload escaping via displaySafe and html/template",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/templates_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:xss-escaping-qa-payload"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:allowlist-mismatch-3b52a311"
+        },
+        {
+          "kind": "file_read",
+          "summary": "limit parse error maps to handleQueryError without 400 branch",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:limit-error-500-branch"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA operation suite/shard mapping and contract test shard focus",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:qa-options-suite-shard"
+        },
+        {
+          "kind": "file_read",
+          "summary": "hostile QA payload escaping via displaySafe and html/template",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/templates_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:xss-escaping-qa-payload"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "static diff confirms app.js fallback lacks suite while modular serializer includes it; fallback is dead-path when both scripts load but remains inconsistent contract"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-53ac16e848d98b88c58958c5",
+      "shard_id": "qa-v1-shard-0831275fcb96a9b67bcd9aaa",
+      "claim": "handleSprintQAIssues limit parse error surfaces as 500 internal_error instead of 400 invalid_request",
+      "basis": "internal/web/qa_handlers.go:59-62 on strconv.Atoi error calls handleQueryError with raw err; handlers.go:1056 handleQueryError maps only ErrWebNotFound/ErrWebUnavailable/QAUseCaseError else defaults to 500 internal_error; no invalid_request mapping for Atoi error",
+      "verification_surface": "internal/web/qa_handlers.go limit parsing, internal/web/handlers.go handleQueryError",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "code shows Atoi error not wrapped as QAUseCaseError and not matching existing error branches, so handleQueryError returns 500",
+      "refutation_condition": "Atoi error is wrapped/mapped to 400 elsewhere or middleware normalizes it before handleQueryError",
+      "inconclusive_condition": "requires runtime request to observe status code and cannot execute shell",
+      "safe_evidence_strategy": "read-only inspection of error branching in handleQueryError and call site; compare with TestAPIErrorProjectionDoesNotLeakInternalCause expectations",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0831275fcb96a9b67bcd9aaa/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.402948742Z",
+          "completed_at": "2026-08-26T09:53:29.102069922Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation-001",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/sprint_usecases.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "need to confirm downstream shard ID format validation and whether limit parse 500 maps to intended QA error, which determines true severity of theories 2 and 3",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 44540177,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:allowlist-mismatch-3b52a311"
+            },
+            {
+              "kind": "file_read",
+              "summary": "limit parse error maps to handleQueryError without 400 branch",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:limit-error-500-branch"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA operation suite/shard mapping and contract test shard focus",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:qa-options-suite-shard"
+            },
+            {
+              "kind": "file_read",
+              "summary": "hostile QA payload escaping via displaySafe and html/template",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/templates_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:xss-escaping-qa-payload"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:allowlist-mismatch-3b52a311"
+        },
+        {
+          "kind": "file_read",
+          "summary": "limit parse error maps to handleQueryError without 400 branch",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:limit-error-500-branch"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA operation suite/shard mapping and contract test shard focus",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:qa-options-suite-shard"
+        },
+        {
+          "kind": "file_read",
+          "summary": "hostile QA payload escaping via displaySafe and html/template",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/templates_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:xss-escaping-qa-payload"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "static inspection confirms fall-through to 500 branch; no explicit 400 mapping for invalid limit"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-5b71e42df8cbf4389009bde9",
+      "shard_id": "qa-v1-shard-0831275fcb96a9b67bcd9aaa",
+      "claim": "QA operation mapping allows caller supplied model/task variations via alternative kinds or omits strict shard ID format validation beyond presence check",
+      "basis": "internal/web/operation_handlers.go:734-750 restricts QA options to shard/suite but only checks suite==smoke and mutual exclusion; no regex/length validation of shard ID format (e.g., qa-v1-shard-...); operations_contract_test.go:68-87 shows focused shard test but does not verify format enforcement; handler dispatch validIdentifier allows dash/underscore but shard IDs have specific prefix/length expectations",
+      "verification_surface": "internal/web/operation_handlers.go mapOperationRequest, internal/web/handlers.go validIdentifier, internal/web/operations_contract_test.go",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-llm-runtime",
+        "contract-security"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "shard option accepted for any identifier string passing validIdentifier, including arbitrary values not matching governed qa-v1-shard-* pattern",
+      "refutation_condition": "sprint service or QA fence validates shard ID format/length/prefix after mapping, rejecting arbitrary shards with stable qa.* code",
+      "inconclusive_condition": "requires cross-shard context in internal/app and internal/sprint to see downstream validation, cannot invoke runtime",
+      "safe_evidence_strategy": "read-only: compare mapOperationRequest QA branch against sprint/qa_types constraints and QA service fence; search for additional validation in context_paths",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0831275fcb96a9b67bcd9aaa/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.402948742Z",
+          "completed_at": "2026-08-26T09:53:29.102069922Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation-001",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/sprint_usecases.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "need to confirm downstream shard ID format validation and whether limit parse 500 maps to intended QA error, which determines true severity of theories 2 and 3",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 44540177,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:allowlist-mismatch-3b52a311"
+            },
+            {
+              "kind": "file_read",
+              "summary": "limit parse error maps to handleQueryError without 400 branch",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:limit-error-500-branch"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA operation suite/shard mapping and contract test shard focus",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:qa-options-suite-shard"
+            },
+            {
+              "kind": "file_read",
+              "summary": "hostile QA payload escaping via displaySafe and html/template",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/templates_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:xss-escaping-qa-payload"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:allowlist-mismatch-3b52a311"
+        },
+        {
+          "kind": "file_read",
+          "summary": "limit parse error maps to handleQueryError without 400 branch",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:limit-error-500-branch"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA operation suite/shard mapping and contract test shard focus",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:qa-options-suite-shard"
+        },
+        {
+          "kind": "file_read",
+          "summary": "hostile QA payload escaping via displaySafe and html/template",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/templates_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:xss-escaping-qa-payload"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "mapping restricts option set but format/length check not visible in assigned paths; downstream validation may exist in internal/sprint or internal/app outside read-only shard so cannot confirm without extra context"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8fbbd11213be3c91cd83eb77",
+      "shard_id": "qa-v1-shard-0831275fcb96a9b67bcd9aaa",
+      "claim": "GET /api/v1/projects/{project}/sprints/{sprint}/qa/issues with ?limit=\u0026cursor= is rejected by dispatch query guard before reaching QA handler, breaking pagination",
+      "basis": "internal/web/handlers.go:422 allowsQuery only for api_validations, api_runs, api_run_events, runs, api_timeline; internal/web/qa_handlers.go:51 handleSprintQAIssues reads r.URL.Query limit/cursor; internal/web/routes.go:374 maps api_sprint_qa_issues to known route but dispatch will return 400 \"Unknown query parameters are not accepted\" for any RawQuery",
+      "verification_surface": "internal/web/handlers.go dispatch, internal/web/routes.go matchRoute, internal/web/qa_handlers.go handleSprintQAIssues",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "static reading shows allowsQuery does not include api_sprint_qa_issues/api_sprint_qa_issue/api_sprint_qa_evidence etc and handler expects query params, and a request with ?limit=10 would hit writeRouteError 400",
+      "refutation_condition": "allowsQuery includes those QA names or QA handlers do not actually require query params and paginated requests succeed without query guard",
+      "inconclusive_condition": "cannot determine dispatch name for that path without runtime routing test",
+      "safe_evidence_strategy": "read-only: inspect handlers.go:422 allow-list, routes.go:374 mapping, qa_handlers.go:58 query parsing; no execution, no mutation",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0831275fcb96a9b67bcd9aaa/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.402948742Z",
+          "completed_at": "2026-08-26T09:53:29.102069922Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation-001",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/sprint_usecases.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "need to confirm downstream shard ID format validation and whether limit parse 500 maps to intended QA error, which determines true severity of theories 2 and 3",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 44540177,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:allowlist-mismatch-3b52a311"
+            },
+            {
+              "kind": "file_read",
+              "summary": "limit parse error maps to handleQueryError without 400 branch",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:limit-error-500-branch"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA operation suite/shard mapping and contract test shard focus",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:qa-options-suite-shard"
+            },
+            {
+              "kind": "file_read",
+              "summary": "hostile QA payload escaping via displaySafe and html/template",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/templates_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:xss-escaping-qa-payload"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:allowlist-mismatch-3b52a311"
+        },
+        {
+          "kind": "file_read",
+          "summary": "limit parse error maps to handleQueryError without 400 branch",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:limit-error-500-branch"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA operation suite/shard mapping and contract test shard focus",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:qa-options-suite-shard"
+        },
+        {
+          "kind": "file_read",
+          "summary": "hostile QA payload escaping via displaySafe and html/template",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/templates_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:xss-escaping-qa-payload"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "file evidence confirms allow-list omits QA issue pagination endpoints while handler requires limit/cursor query params; static mismatch is deterministically present"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e0381230f654d4a3edb9e11a",
+      "shard_id": "qa-v1-shard-0831275fcb96a9b67bcd9aaa",
+      "claim": "hostile QA shard title and theory claim are correctly escaped in both JSON API and server-rendered HTML, preserving read-only safety",
+      "basis": "internal/web/qa_handlers_test.go:78-103 injects hostile \u003cscript\u003ealert(1)\u003c/script\u003e into shard.Title and theory.Claim and asserts JSON contains schema_version and HTML contains escaped \u0026lt;script\u0026gt; without raw tag and includes \u003cnoscript\u003e; internal/web/templates/sprint.html:60-61 renders {{.Shard.Title}}, {{.Claim}} via html/template; internal/app sprint_usecases.go qaShardProjection/qaTheoryProjection call displaySafe",
+      "verification_surface": "internal/web/templates/sprint.html, internal/web/qa_handlers_test.go, internal/app/web_usecases.go projection",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "HTML response contains \u0026lt;script\u0026gt; and not \u003cscript\u003ealert, JSON remains valid, noscript present",
+      "refutation_condition": "raw \u003cscript\u003e appears in HTML response or JSON invalid or noscript missing",
+      "inconclusive_condition": "cannot execute httptest without shell, but static template escaping plus existing test assertion provides strong bounded evidence",
+      "safe_evidence_strategy": "read-only: inspect template action, projection displaySafe usage, and existing test expectations; no execution beyond file reads",
+      "implementation_fingerprint": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+      "attempt_history": [
+        {
+          "id": "att_imsxnfrrka5l5q6rofhp6rq37y/qa-v1-shard-0831275fcb96a9b67bcd9aaa/1",
+          "number": 1,
+          "started_at": "2026-08-26T09:51:55.402948742Z",
+          "completed_at": "2026-08-26T09:53:29.102069922Z",
+          "implementation_before": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "implementation_after": "3b52a3115727c4ed93331427be91a175c207e2cc77cb493adc67d9f88e53dcd6",
+          "context_requests": [
+            {
+              "id": "ctx-qa-validation-001",
+              "paths": [
+                "internal/app/web_usecases.go",
+                "internal/app/sprint_usecases.go",
+                "internal/sprint/qa_types.go",
+                "internal/sprint/service.go"
+              ],
+              "reason": "need to confirm downstream shard ID format validation and whether limit parse 500 maps to intended QA error, which determines true severity of theories 2 and 3",
+              "approved": false
+            }
+          ],
+          "commands": [
+            {
+              "check_id": "go-format-diff",
+              "descriptor_fingerprint": "088c784cf2e83f5e35eaabf6089c1f86c96fc3a10a37a2ece1d0103a7b61d15b",
+              "exit_code": 0,
+              "duration": 44540177,
+              "stdout_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "output_bytes": 0,
+              "truncated": false
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "file_read",
+              "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/web/qa_handlers.go",
+                "internal/web/routes.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:allowlist-mismatch-3b52a311"
+            },
+            {
+              "kind": "file_read",
+              "summary": "limit parse error maps to handleQueryError without 400 branch",
+              "paths": [
+                "internal/web/qa_handlers.go",
+                "internal/web/handlers.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:limit-error-500-branch"
+            },
+            {
+              "kind": "file_read",
+              "summary": "QA operation suite/shard mapping and contract test shard focus",
+              "paths": [
+                "internal/web/operation_handlers.go",
+                "internal/web/operations_contract_test.go",
+                "internal/web/static/js/operations.js",
+                "internal/web/static/app.js"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:qa-options-suite-shard"
+            },
+            {
+              "kind": "file_read",
+              "summary": "hostile QA payload escaping via displaySafe and html/template",
+              "paths": [
+                "internal/web/templates/sprint.html",
+                "internal/web/qa_handlers_test.go",
+                "internal/web/templates_test.go"
+              ],
+              "check_id": "go-format-diff",
+              "output_digest": "sha256:xss-escaping-qa-payload"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": false,
+            "output_tokens_known": false,
+            "total_tokens_known": false,
+            "reasoning_tokens_known": false,
+            "cache_read_tokens_known": false,
+            "cache_write_tokens_known": false,
+            "turns_known": false
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": false,
+            "max_attempts": 1,
+            "attempt_count": 0,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "file_read",
+          "summary": "dispatch allowsQuery guard omits QA issues pagination endpoints",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/web/qa_handlers.go",
+            "internal/web/routes.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:allowlist-mismatch-3b52a311"
+        },
+        {
+          "kind": "file_read",
+          "summary": "limit parse error maps to handleQueryError without 400 branch",
+          "paths": [
+            "internal/web/qa_handlers.go",
+            "internal/web/handlers.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:limit-error-500-branch"
+        },
+        {
+          "kind": "file_read",
+          "summary": "QA operation suite/shard mapping and contract test shard focus",
+          "paths": [
+            "internal/web/operation_handlers.go",
+            "internal/web/operations_contract_test.go",
+            "internal/web/static/js/operations.js",
+            "internal/web/static/app.js"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:qa-options-suite-shard"
+        },
+        {
+          "kind": "file_read",
+          "summary": "hostile QA payload escaping via displaySafe and html/template",
+          "paths": [
+            "internal/web/templates/sprint.html",
+            "internal/web/qa_handlers_test.go",
+            "internal/web/templates_test.go"
+          ],
+          "check_id": "go-format-diff",
+          "output_digest": "sha256:xss-escaping-qa-payload"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "static evidence strongly suggests correct escaping and test asserts it, but definitive confirmation requires running TestQARoutesReturnBoundedJSONAndCompleteNoJavaScriptHTML which is blocked (no shell)"
+    }
+  ]
+}
