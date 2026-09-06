@@ -1,0 +1,511 @@
+{
+  "schemaVersion": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "target": {
+    "path": "/home/antonioborgerees/coding/ultraplan/.ultraplan-go-ultraplan-worktrees/ultraplan-go/39-performance-stage",
+    "source": ".workspace.json"
+  },
+  "planPath": "projects/ultraplan-go/sprints/39-performance-stage/plan.md",
+  "planFingerprint": "sha256:5227e3490dbd710ac3e01562a06666be1570350fd37eeb9a57bbeaaf765108f5",
+  "baseRevision": "37ac236ac14a730c3b228991492546f84062fc0f",
+  "createdAt": "2026-09-04T09:00:00Z",
+  "updatedAt": "2026-09-06T11:01:52Z",
+  "executionMode": "manual in-session execution under $ultraplan-execute",
+  "tasks": [
+    {
+      "id": "task-d904e6a0b733",
+      "identity": {
+        "name": "Task 1: Verify dependency gates and generalize writer ownership narrowly",
+        "planLine": 143,
+        "decisions": [
+          "Decision 2",
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-1",
+          "AC-7",
+          "AC-10"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "startedAt": "2026-09-04T09:00:00Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/qa_state.go"
+        }
+      ]
+    },
+    {
+      "id": "task-18e02b367e3b",
+      "identity": {
+        "name": "Task 2: Implement project activation and strict requirements-owned targets",
+        "planLine": 151,
+        "decisions": [
+          "Decision 1"
+        ],
+        "requirements": [
+          "AC-1",
+          "AC-2",
+          "AC-7"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/project/index.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-4b4240e93801",
+      "identity": {
+        "name": "Task 3: Add performance domain types, limits, configuration, and pure verdict rules",
+        "planLine": 162,
+        "decisions": [
+          "Decision 4",
+          "Decision 6"
+        ],
+        "requirements": [
+          "AC-2",
+          "AC-5",
+          "AC-8"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/performance_types.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-2bd59e222305",
+      "identity": {
+        "name": "Task 4: Add verification ordering, flow-state compatibility, and deterministic admission",
+        "planLine": 171,
+        "decisions": [
+          "Decision 2"
+        ],
+        "requirements": [
+          "AC-1",
+          "AC-3",
+          "AC-8",
+          "AC-9"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/verification_phase.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-eee029091f14",
+      "identity": {
+        "name": "Task 5: Build private performance persistence and recovery boundaries",
+        "planLine": 180,
+        "decisions": [
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-7",
+          "AC-9",
+          "AC-10"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/performance_state.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-5fda729710b5",
+      "identity": {
+        "name": "Task 6: Implement closed benchmark discovery, authoring, coverage, and freezing",
+        "planLine": 190,
+        "decisions": [
+          "Decision 3"
+        ],
+        "requirements": [
+          "AC-3",
+          "AC-4",
+          "AC-7"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/performance_authoring.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-2b92d035f4ee",
+      "identity": {
+        "name": "Task 7: Implement bounded measurement, parsing, qualification, and comparison",
+        "planLine": 201,
+        "decisions": [
+          "Decision 4"
+        ],
+        "requirements": [
+          "AC-4",
+          "AC-5",
+          "AC-8"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/performance_measure.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-505c41fbc9a1",
+      "identity": {
+        "name": "Task 8: Implement bounded isolated optimization and product-owned promotion",
+        "planLine": 212,
+        "decisions": [
+          "Decision 5"
+        ],
+        "requirements": [
+          "AC-6",
+          "AC-7",
+          "AC-8",
+          "AC-9"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "startedAt": "2026-09-04T09:00:00Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/performance_optimize_runtime.go"
+        }
+      ]
+    },
+    {
+      "id": "task-a4eaf6051e0b",
+      "identity": {
+        "name": "Task 9: Complete service orchestration, freshness, publication, and cancellation",
+        "planLine": 224,
+        "decisions": [
+          "Decision 2",
+          "Decision 5",
+          "Decision 6",
+          "Decision 7"
+        ],
+        "requirements": [
+          "AC-3",
+          "AC-4",
+          "AC-5",
+          "AC-6",
+          "AC-7",
+          "AC-8",
+          "AC-9",
+          "AC-10"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/sprint/performance.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-856d45129afe",
+      "identity": {
+        "name": "Task 10: Add shared application operations and CLI",
+        "planLine": 236,
+        "decisions": [
+          "Decision 8"
+        ],
+        "requirements": [
+          "AC-3",
+          "AC-8",
+          "AC-10"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/app/sprint_commands.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-8e8948555266",
+      "identity": {
+        "name": "Task 11: Add the TUI performance workbench",
+        "planLine": 248,
+        "decisions": [
+          "Decision 9"
+        ],
+        "requirements": [
+          "AC-1",
+          "AC-8",
+          "AC-9",
+          "AC-10"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/tui/model.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-85a0be0c39f6",
+      "identity": {
+        "name": "Task 12: Add the server-rendered browser performance workbench",
+        "planLine": 258,
+        "decisions": [
+          "Decision 8",
+          "Decision 9"
+        ],
+        "requirements": [
+          "AC-3",
+          "AC-8",
+          "AC-9",
+          "AC-10"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "internal/web/handlers.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-84dfd7dc5492",
+      "identity": {
+        "name": "Task 13: Add canonical fixtures, documentation, and compatibility evidence",
+        "planLine": 269,
+        "decisions": [
+          "Decision 10"
+        ],
+        "requirements": [
+          "AC-1",
+          "AC-2",
+          "AC-3",
+          "AC-4",
+          "AC-5",
+          "AC-6",
+          "AC-7",
+          "AC-8",
+          "AC-9",
+          "AC-10",
+          "AC-11"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "verification",
+          "summary": "Implementation and direct evidence are complete and traced in review.md.",
+          "path": "docs/architecture.md"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    },
+    {
+      "id": "task-6fb77a7b5f09",
+      "identity": {
+        "name": "Task 14: Run the release gate, required reviews, and gated dogfood",
+        "planLine": 281,
+        "decisions": [
+          "Decision 10"
+        ],
+        "requirements": [
+          "AC-11"
+        ]
+      },
+      "status": "complete",
+      "attempts": 1,
+      "createdAt": "2026-09-04T09:00:00Z",
+      "updatedAt": "2026-09-06T11:01:52Z",
+      "completedAt": "2026-09-06T11:01:52Z",
+      "evidence": [
+        {
+          "kind": "review",
+          "summary": "Deterministic release checks, Architecture Review, Sprint Review, and independent numeric recalculation passed; Deep Smoke and real-runtime dogfood were excluded by user direction.",
+          "path": "internal/sprint/performance_service_test.go"
+        }
+      ],
+      "startedAt": "2026-09-04T09:00:00Z"
+    }
+  ],
+  "metadata": {
+    "implementationBranch": "ultraplan/ultraplan-go/39-performance-stage",
+    "implementationWorktree": "/home/antonioborgerees/coding/ultraplan/.ultraplan-go-ultraplan-worktrees/ultraplan-go/39-performance-stage",
+    "releaseGate": "ready-user-deferred-dogfood",
+    "verificationAssessment": "pass",
+    "reviewArtifact": "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+    "dogfood": "deferred-by-user"
+  },
+  "files": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/configuration.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md",
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/performance_fixtures_test.go",
+    "internal/app/performance_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/tui_commands.go",
+    "internal/app/usecases.go",
+    "internal/app/web_usecases.go",
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/performance.go",
+    "internal/platform/config/performance_test.go",
+    "internal/platform/config/redaction.go",
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go",
+    "internal/sprint/domain.go",
+    "internal/sprint/index.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_benchmark_test.go",
+    "internal/sprint/performance_discovery.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_isolation_test.go",
+    "internal/sprint/performance_measure.go",
+    "internal/sprint/performance_optimize.go",
+    "internal/sprint/performance_optimize_runtime.go",
+    "internal/sprint/performance_optimize_test.go",
+    "internal/sprint/performance_repair.go",
+    "internal/sprint/performance_service_test.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go",
+    "internal/sprint/performance_types.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_repair.go",
+    "internal/sprint/qa_repair_state.go",
+    "internal/sprint/qa_reproduction.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go",
+    "internal/testdata/performance/states.json",
+    "internal/tui/model.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views.go",
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/templates/sprint.html",
+    "internal/web/test_fakes_test.go",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ]
+}

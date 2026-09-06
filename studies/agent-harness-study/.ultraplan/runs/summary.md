@@ -1,7 +1,7 @@
 # Study Run Summary
 
 - Study: `agent-harness-study`
-- Updated: `2026-08-29T18:23:49Z`
+- Updated: `2026-09-01T19:29:41Z`
 - Study progress state: `.ultraplan/run-state.json`
 - Ledger: `.ultraplan/runs/tasks.jsonl`
 
@@ -9,13 +9,13 @@
 
 | Metric | Value |
 | --- | ---: |
-| Runs recorded | 1730 |
-| Completed | 1482 |
+| Runs recorded | 1739 |
+| Completed | 1491 |
 | Failed | 113 |
 | Cancelled | 135 |
 | Skipped | 0 |
 | Remaining tasks | 0 |
-| Dimensions seen | 118 |
+| Dimensions seen | 119 |
 | Sources seen | 10 |
 
 ## Remaining Work
@@ -36,6 +36,7 @@ No remaining tasks in the current run state.
 | 01.08-streaming-execution-semantics | 8 | 8 | 0 | 10m22s | - | - |
 | 01.09-delivery-guarantees-idempotency | 7 | 5 | 2 | 7m02s | - | - |
 | 01.10-replay-and-determinism | 3 | 3 | 0 | 10m58s | - | - |
+| 01.16-result-outcome-publication-contract | 9 | 9 | 0 | 2m08s | 1297309 | - |
 | 02.01-state-taxonomy-and-ownership | 29 | 7 | 12 | 4m01s | - | - |
 | 02.02-snapshot-and-checkpoint-architecture | 6 | 6 | 0 | 7m21s | - | - |
 | 02.03-event-sourcing-and-replay-state | 3 | 3 | 0 | 12m05s | - | - |
@@ -149,16 +150,16 @@ No remaining tasks in the current run state.
 
 | Source | Runs | Completed | Failed | Avg Duration | Tokens | Cost |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| agent-framework | 223 | 186 | 11 | 300m10s | 16196051 | 0.0000 USD |
-| crewai | 161 | 139 | 5 | 401m13s | 320501 | - |
+| agent-framework | 224 | 187 | 11 | 298m51s | 16376038 | 0.0000 USD |
+| crewai | 162 | 140 | 5 | 398m45s | 446837 | - |
 | langfuse | 97 | 79 | 8 | 32m58s | 9666408 | 0.0000 USD |
-| langgraph | 169 | 154 | 5 | 293m14s | 36374024 | 0.0000 USD |
-| letta | 135 | 114 | 8 | 447m48s | 12479429 | 0.0000 USD |
+| langgraph | 170 | 155 | 5 | 291m31s | 36517008 | 0.0000 USD |
+| letta | 136 | 115 | 8 | 444m31s | 12602215 | 0.0000 USD |
 | opa | 71 | 62 | 3 | 78m29s | 143511 | - |
-| openai-agents-sdk | 160 | 145 | 7 | 229m51s | 19841523 | 0.0000 USD |
-| openhands | 211 | 183 | 7 | 307m51s | 776818 | 0.0000 USD |
-| pydantic-ai | 133 | 123 | 2 | 247m21s | 18236003 | 0.0000 USD |
-| temporal | 107 | 95 | 1 | 91m45s | 67313 | - |
+| openai-agents-sdk | 161 | 146 | 7 | 228m26s | 19987713 | 0.0000 USD |
+| openhands | 212 | 184 | 7 | 306m25s | 885264 | 0.0000 USD |
+| pydantic-ai | 134 | 124 | 2 | 245m31s | 18441262 | 0.0000 USD |
+| temporal | 108 | 96 | 1 | 90m55s | 233156 | - |
 
 ## Runtime And Model
 
@@ -167,7 +168,7 @@ No remaining tasks in the current run state.
 | minimax-coding-plan / minimax-coding-plan / MiniMax-M3 | 390 | 314 | 24 | 995m05s | 110870742 | 0.0000 USD |
 | opencode / - / minimax-coding-plan/MiniMax-M3 | 55 | 1 | 49 | 5s | - | - |
 | opencode / - / openrouter/stealth/ox-alpha | 452 | 449 | 3 | 11m33s | - | - |
-| opencode / opencode / muse-spark-1.2-contributor-free | 215 | 178 | 0 | 6m27s | 4035861 | - |
+| opencode / opencode / muse-spark-1.2-contributor-free | 224 | 187 | 0 | 6m16s | 5333170 | - |
 | openrouter / openrouter / minimax/minimax-m3:free | 2 | 1 | 0 | 8m10s | - | - |
 | openrouter / openrouter / stealth/ox-alpha | 616 | 539 | 37 | 612m41s | - | - |
 
@@ -175,6 +176,15 @@ No remaining tasks in the current run state.
 
 | Completed | Dimension | Source | Kind | Status | Duration | Model | Tokens | Cost |
 | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: |
+| 2026-09-01T19:29:40Z | 01.16-result-outcome-publication-contract | (synthesis) | synthesis | completed | 5m01s | muse-spark-1.2-contributor-free | 99478 | - |
+| 2026-09-01T19:24:39Z | 01.16-result-outcome-publication-contract | temporal | analysis | completed | 2m01s | muse-spark-1.2-contributor-free | 165843 | - |
+| 2026-09-01T19:23:05Z | 01.16-result-outcome-publication-contract | pydantic-ai | analysis | completed | 1m32s | muse-spark-1.2-contributor-free | 205259 | - |
+| 2026-09-01T19:22:38Z | 01.16-result-outcome-publication-contract | openhands | analysis | completed | 1m58s | muse-spark-1.2-contributor-free | 108446 | - |
+| 2026-09-01T19:21:33Z | 01.16-result-outcome-publication-contract | openai-agents-sdk | analysis | completed | 1m33s | muse-spark-1.2-contributor-free | 146190 | - |
+| 2026-09-01T19:20:40Z | 01.16-result-outcome-publication-contract | langgraph | analysis | completed | 1m55s | muse-spark-1.2-contributor-free | 142984 | - |
+| 2026-09-01T19:19:59Z | 01.16-result-outcome-publication-contract | letta | analysis | completed | 1m13s | muse-spark-1.2-contributor-free | 122786 | - |
+| 2026-09-01T19:18:46Z | 01.16-result-outcome-publication-contract | crewai | analysis | completed | 2m02s | muse-spark-1.2-contributor-free | 126336 | - |
+| 2026-09-01T19:18:44Z | 01.16-result-outcome-publication-contract | agent-framework | analysis | completed | 2m01s | muse-spark-1.2-contributor-free | 179987 | - |
 | 2026-08-29T10:52:01Z | 18.02-trajectory-evaluation | (synthesis) | synthesis | completed | 2m50s | muse-spark-1.2-contributor-free | 110588 | - |
 | 2026-08-29T10:49:11Z | 18.02-trajectory-evaluation | pydantic-ai | analysis | completed | 1m37s | muse-spark-1.2-contributor-free | 124720 | - |
 | 2026-08-29T10:47:34Z | 18.02-trajectory-evaluation | openhands | analysis | completed | 1m21s | muse-spark-1.2-contributor-free | 93467 | - |
@@ -186,15 +196,6 @@ No remaining tasks in the current run state.
 | 2026-08-29T10:36:04Z | 18.02-trajectory-evaluation | agent-framework | analysis | completed | 1m38s | muse-spark-1.2-contributor-free | 125495 | - |
 | 2026-08-29T10:34:26Z | 12.04-prompt-rollback-change-control | (synthesis) | synthesis | completed | 1m38s | muse-spark-1.2-contributor-free | 76278 | - |
 | 2026-08-29T10:32:46Z | 12.04-prompt-rollback-change-control | langfuse | analysis | completed | 2m16s | muse-spark-1.2-contributor-free | 153233 | - |
-| 2026-08-29T10:30:29Z | 12.04-prompt-rollback-change-control | agent-framework | analysis | completed | 1m23s | muse-spark-1.2-contributor-free | 162687 | - |
-| 2026-08-29T10:29:05Z | 12.03-prompt-evaluation-experiments | (synthesis) | synthesis | completed | 2m06s | muse-spark-1.2-contributor-free | 71821 | - |
-| 2026-08-29T10:26:58Z | 12.03-prompt-evaluation-experiments | pydantic-ai | analysis | completed | 1m20s | muse-spark-1.2-contributor-free | 169017 | - |
-| 2026-08-29T10:25:37Z | 12.03-prompt-evaluation-experiments | openhands | analysis | completed | 1m59s | muse-spark-1.2-contributor-free | 95614 | - |
-| 2026-08-29T10:23:37Z | 12.03-prompt-evaluation-experiments | openai-agents-sdk | analysis | completed | 1m25s | muse-spark-1.2-contributor-free | 97642 | - |
-| 2026-08-29T10:22:10Z | 12.03-prompt-evaluation-experiments | langgraph | analysis | completed | 1m34s | muse-spark-1.2-contributor-free | 112571 | - |
-| 2026-08-29T10:20:35Z | 12.03-prompt-evaluation-experiments | langfuse | analysis | completed | 2m26s | muse-spark-1.2-contributor-free | 183312 | - |
-| 2026-08-29T10:18:08Z | 12.03-prompt-evaluation-experiments | crewai | analysis | completed | 6m04s | muse-spark-1.2-contributor-free | 99166 | - |
-| 2026-08-29T10:12:04Z | 12.03-prompt-evaluation-experiments | agent-framework | analysis | completed | 2m13s | muse-spark-1.2-contributor-free | 130929 | - |
 
 ## Slowest Runs
 

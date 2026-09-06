@@ -43,6 +43,8 @@ Contracts are selected per sprint and applied through the phase gates in `roadma
 | Workflows | `system/contracts/runtime/workflows.md` | Run-loop, orchestration, retries | Stateful batch/workflow execution, retries, cancellation, resumability. |
 | Performance | `system/contracts/runtime/performance.md` | Scheduler/concurrency/report processing | Bounded workers, startup latency, repository scans, large artifact handling. |
 | Persistence And Migrations | `system/contracts/runtime/persistence-and-migrations.md` | Run state/workspace artifacts | Atomic file writes, durable format versions, compatibility and migrations. |
+| Context Engineering | `projects/ultraplan-go/contracts/context-engineering.md` | Model-backed sprint stages, prompt assembly, code context, retrieval, and handoffs | Select when a change affects what a model receives, discovers, reuses, trusts, or caches. |
+| Runtime Efficiency | `projects/ultraplan-go/contracts/runtime-efficiency.md` | Model calls, agents, sessions, tools, fan-out, retries, and runtime telemetry | Select when a change affects executor boundaries, model routing, latency, tokens, cache behavior, or cost. |
 
 ## Phase 2 Planning And Execute Context
 
@@ -127,6 +129,8 @@ browser -> internal/web HTTP/SSE -> internal/app use cases -> existing product m
 | Architecture | `system/reasoning/architecture_reasoning_template.md` | Module boundaries, dependency direction, package layout, runtime/product separation | Current |
 | API Design | `system/reasoning/api-design-reasoning-template.md` | Phase 4 HTTP resources, versioning, errors, confirmation, cancellation, and SSE semantics | Current |
 | Frontend | `system/reasoning/frontend-reasoning-template.md` | Phase 4 server-rendered browser flows, state placement, progressive enhancement, and accessibility | Current |
+| Context Engineering | `projects/ultraplan-go/reasoning/context-engineering.md` | Stage input contracts, code-context reuse, context handoffs, freshness, trust, and cacheable prompt prefixes | Current |
+| Runtime Efficiency | `projects/ultraplan-go/reasoning/runtime-efficiency.md` | Executor selection, session reuse, tool budgets, fan-out, latency, tokens, provider caching, and cost | Current |
 
 ## Smoke Harnesses
 

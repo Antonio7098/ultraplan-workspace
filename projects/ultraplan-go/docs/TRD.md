@@ -1,13 +1,13 @@
 # Technical Requirements Document: UltraPlan Go
 
-**Version:** 1.8.0
+**Version:** 2.0.0
 **Status:** Draft
 **Owner:** Engineering
-**Last Updated:** 2026-08-20
+**Last Updated:** 2026-09-04
 
 ## 1. Purpose
 
-This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress. Sprints 33–34 form the grounded-planning track, inserting a validated `code-context` stage and reusing its exact Markdown source pack downstream. Product Phase 5 comprises Sprints 35–39: durable run identity and cross-surface observability, read-only QA decomposition and synthesis, isolated evidence-producing QA with smoke integration, bounded repair, and QA/repair dogfooding and hardening.
+This TRD defines the technical requirements for UltraPlan Go, a production-grade local CLI, TUI, and browser surface that implement the proven UltraPlan workflow. Phase 1 covers study initialization, source analysis, report synthesis, code-reference extraction, resumable orchestration, validation, and operational diagnostics. Phase 2 adds governed project and sprint planning through `plan.md`, then controlled implementation execution through `execute`. Sprints 24 and 25 deliver the local TUI foundation and guarded controls. Phase 3 adds automated conformance review through `review.md`, then sprint-targeted deep smoke through `smoke.md` backed by the external harness cataloged in `project-index.md`. Phase 4 begins with Sprint 30 and adds a loopback-only Go HTTP server plus a simple Go-rendered browser UI with SSE progress. Sprints 33–34 form the grounded-planning track, inserting a validated `code-context` stage and reusing its exact Markdown source pack downstream. Product Phase 5 comprises Sprints 35–40: durable run identity and cross-surface observability, read-only QA decomposition and synthesis, isolated evidence-producing QA with smoke integration, bounded repair, optional requirements-driven performance verification, and combined dogfooding and hardening.
 
 This document is implementation-oriented. It defines boundaries, modules, data models, state machines, validators, runtime contracts, error handling, and testing requirements. It does not prescribe every package name or third-party library, but it should be specific enough to guide implementation.
 
@@ -54,7 +54,7 @@ UltraPlan Go is not responsible for:
 - Replacing workspace artifacts with browser-owned or server-only durable state.
 - Treating operational run persistence as authority for governed Markdown, stage outcomes, Git/source state, or external smoke evidence.
 - Treating a code-context pack as a repository index, exclusive source boundary, cache database, or second machine-readable manifest.
-- Introducing content identity, retrieval, SQLite product persistence, knowledge-graph persistence, cloud, or Aren capabilities before their explicit post-Sprint-39 evidence gates.
+- Introducing content identity, retrieval, SQLite product persistence, knowledge-graph persistence, cloud, or Aren capabilities before their explicit post-Sprint-40 evidence gates.
 
 ## 3. Architecture Overview
 
@@ -1635,12 +1635,14 @@ Rating parser must handle:
 
 Ambiguous ratings should create warnings, not invented values.
 
-## 18. Project, Sprint Planning, Execute, Review, and Smoke Technical Requirements
+## 18. Project, Sprint Planning, Execute, Performance, Review, QA, And Repair Technical Requirements
 
-Phase 2 implements the governed planning and execute side of UltraPlan through `execute`. Phase 3 extends the same product-owned sprint flow through review and smoke:
+Phase 2 implements the governed planning and execute side of UltraPlan through `execute`. Phase 3 extends the same product-owned sprint flow through review and smoke. Sprint 39 inserts optional requirements-driven performance verification after execute:
 
 ```text
-study -> select -> distill -> reason -> plan -> execute -> review -> smoke
+study -> select -> distill -> reason -> plan -> execute
+  -> performance, when enabled
+  -> conformance review -> QA -> bounded repair -> verified
 ```
 
 The TypeScript prototype includes planning, execution, smoke, review, and issue-tracking behavior. UltraPlan Go Phase 2 ports the planning artifact chain and adds controlled implementation execution. Phase 3 replaces the prototype's manually coordinated review and smoke with product-owned stages while keeping detailed smoke runs and issue evidence in the external harness. General-purpose issue tracking and Git mutation remain deferred.
@@ -1660,6 +1662,7 @@ internal/sprint
 - project docs discovery
 - roadmap discovery
 - `project-index.md` parsing and validation
+- project performance-policy activation and default-off interpretation
 - catalog entries for contracts, evidence reports, reasoning templates, review protocols, and project source documents
 - project status output
 
@@ -1676,6 +1679,7 @@ internal/sprint
 - global and per-stage runtime model resolution for sprint planning and execute stages
 - sprint status output
 - flow execution through `execute`
+- requirements target parsing, performance attempt orchestration, benchmark identity, measurement qualification, optimization proposal validation, product-owned target verdicts, and `performance.md`
 - review scope, prompt rendering, independent reviewer orchestration, structured result validation, deterministic verdict synthesis, and `review.md`
 - smoke harness discovery, review gating, scope selection, safe invocation, evidence-link validation, verdict synthesis, and `smoke.md`
 - flow execution through `review` and `smoke`
@@ -1735,6 +1739,11 @@ type ProjectIndex struct {
     EvidenceReports    []CatalogEntry
     ReasoningTemplates []CatalogEntry
     ReviewProtocols    []CatalogEntry
+    PerformancePolicy PerformancePolicy
+}
+
+type PerformancePolicy struct {
+    Mode string // disabled or enabled
 }
 
 type CatalogEntry struct {
@@ -1753,6 +1762,9 @@ Requirements:
 - `project-index.md` is a catalog, not a sprint plan.
 - Catalog paths must resolve within the workspace unless explicitly marked external.
 - Missing catalog entries must produce actionable diagnostics.
+- Missing performance policy means `disabled`.
+- Project performance policy may activate the phase but must not define target values, comparators, units, or passing thresholds.
+- `enabled` requires every sprint that enters execute to contain a valid `Performance Targets` section in `requirements.md`.
 
 ### 18.4 Sprint Planning Model
 
@@ -1799,6 +1811,8 @@ flow-state.json
 .run-state.json
 review.md
 smoke.md
+performance.md
+verification/performance-state.json
 ```
 
 Deferred artifacts:
@@ -1844,6 +1858,9 @@ Requirements:
 - Phase 3 flow state adds `review` after `execute` and `smoke` after `review`.
 - Review and smoke stage state must distinguish execution status from verdict so a successfully completed investigation may truthfully report a failing verdict.
 - Review and smoke state must record the governed input fingerprint used by the current artifact. A fingerprint mismatch makes the artifact stale.
+- An enabled performance phase adds a bounded summary and digest-bound state pointer without placing measurements, profiles, runtime output, or optimization history directly in `flow-state.json`.
+- Performance freshness is bound to project policy, requirements, parsed targets, execute result, implementation identity, benchmark identity, environment identity, and correctness policy.
+- Any accepted implementation mutation after performance completion makes performance evidence stale. Repair must obtain a current performance result before the sprint can return to verified or merge-ready state.
 
 ### 18.5.1 Execute Run State
 
@@ -1892,6 +1909,11 @@ Planning validators are product behavior owned by `internal/sprint`.
 - file exists
 - no placeholders
 - required sections exist: sprint goal, required outputs, acceptance criteria, non-goals
+- when project performance policy is enabled, an exact `Performance Targets` table exists and contains at least one valid target
+- when project performance policy is disabled, non-empty performance targets fail with guidance to enable the project or remove the targets
+- performance target IDs are unique and stable; scenario, metric, comparator, unit, gate, and sample count are explicit
+- comparators are initially limited to `<=`, `>=`, and `baseline`; `baseline` omits a numeric value
+- gates are limited to `required` and `report`, values are finite, units come from a versioned allowlist, and sample counts stay within product bounds
 
 `sprint-index.md` validator checks:
 
@@ -1981,7 +2003,7 @@ Sprint runtime model resolution must be product-owned and deterministic:
 4. `models.primary`
 5. `models.default`
 
-Supported stage-specific keys are `sprint-index`, `technical-handbook`, `area-reasoning`, `reasoning`, `plan`, `execute`, and `review`. Smoke model/runtime selection belongs to the external harness request and its explicit configuration rather than an agentwrap review model key. Validation must reject unknown stage keys and empty model values. Diagnostics and prompt previews must show the selected model source without leaking secrets.
+Supported stage-specific keys are `sprint-index`, `technical-handbook`, `area-reasoning`, `reasoning`, `plan`, `execute`, `performance`, and `review`. Smoke model/runtime selection belongs to the external harness request and its explicit configuration rather than an agentwrap review model key. Validation must reject unknown stage keys and empty model values. Diagnostics and prompt previews must show the selected model source without leaking secrets.
 
 Runtime success is insufficient. A planning stage is complete only when:
 
@@ -2031,16 +2053,19 @@ Flow options:
 
 Phase 2 valid `--to` stages end at `execute`. Phase 3 adds `review` and then `smoke`. `issues` remains invalid.
 
-Sprints 36–38 extend the verification surface without adding QA or repair to the planning-stage enum:
+Sprints 36–40 extend the verification surface without adding performance, QA, or repair to the planning-stage enum:
 
 ```bash
+ultraplan sprint <project> <sprint> performance [--dry-run] [--json]
+ultraplan sprint <project> <sprint> performance status|resume|recover [--json]
+ultraplan sprint <project> <sprint> performance cancel --run <run-id> [--json]
 ultraplan sprint <project> <sprint> conformance-review
 ultraplan sprint <project> <sprint> qa [--dry-run|--restart|--shard <id>|--suite smoke] [--json]
 ultraplan sprint <project> <sprint> repair --issue <id>
-ultraplan sprint <project> <sprint> verify --to conformance-review|qa [--repair --max-cycles <n>]
+ultraplan sprint <project> <sprint> verify --to performance|conformance-review|qa [--repair --max-cycles <n>]
 ```
 
-`review` remains a compatibility alias/projection for Conformance Review. `smoke` remains compatible and may later map to `qa --suite smoke` only after parity. General-purpose `issues` remains invalid; QA issue records are bounded evidence artifacts, not a project-management surface.
+`performance` is the public name of a verification phase placed after execute and before Conformance Review. `review` remains a compatibility alias/projection for Conformance Review. `smoke` remains compatible and may later map to `qa --suite smoke` only after parity. General-purpose `issues` remains invalid; QA issue records are bounded evidence artifacts, not a project-management surface.
 
 ### 18.9 Phase 3 Review And Deep Smoke Requirements
 
@@ -2263,19 +2288,58 @@ Reverification widens progressively from exact reproducer to affected shard, lin
 
 Automatic repair follows only after manual repair works end to end. It must bound cycles, reopenings, issue-set stagnation, scope growth, severity growth, uncertainty, target drift, cleanup failure, and design decisions. Terminal outcomes distinguish `verified`, `verified_with_findings`, `failed`, `blocked`, `escalated`, and `stalled`.
 
-## 18G. Sprint 39 QA And Repair Dogfooding And Hardening
+## 18G. Sprint 39 Requirements-Driven Performance Stage
 
-Sprint 39 must dogfood broad multi-package, boundary, concurrency, cancellation, persistence, recovery, invalid-setup, cross-shard, manual-repair, bounded-automatic-repair, restart, and cleanup-uncertain cases through CLI, JSON, TUI, and browser.
+Performance is a `VerificationPhase`, not a `PlanningStage`. Project policy in `project-index.md` controls activation and defaults to disabled. The policy contains activation only. Workspace and environment configuration may lower bounded operational limits. The current validated sprint requirements are the sole authority for target scenarios, metrics, comparators, values, units, gates, and sample counts.
 
-Measure deterministic shard quality, false-positive and inconclusive rates, evidence validity, isolation reliability, investigation cost, issue quality, repair convergence, cancellation/recovery behavior, and operator usability. Automatic repair remains disabled if issue sets do not shrink reliably or severity, scope, or uncertainty grows.
+The requirements template gains an optional exact `Performance Targets` table. Requirements generation may derive targets from governed project documents and prior sprint decisions but must not invent numeric values when those sources require only a baseline. Product code parses the table, validates it against project activation, and freezes an immutable target packet containing the requirements digest and normalized targets. The runtime cannot add, remove, weaken, or reinterpret targets.
 
-Sprint 39 exits only when read-only and writable boundaries are reliable, adjudication rejects invalid evidence consistently, manual repair succeeds on real work, automatic repair either demonstrates bounded convergence or remains disabled, and representative QA artifacts exist to inform the later content contract.
+The v1 table contract is:
 
-## 18H. Gated Post-Sprint-39 Technical Direction
+```markdown
+## Performance Targets
+
+| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |
+| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |
+| PERF-001 | `<bounded scenario>` | `<stable metric>` | `<=` | `<number>` | `ns/op` | `required` | `10` | `absolute` |
+```
+
+Columns are exact and ordered. IDs are unique stable `PERF-` identifiers. Comparator is `<=`, `>=`, or `baseline`; gate is `required` or `report`; samples is a bounded positive integer; and basis is `absolute`, `baseline`, or `current`. `<=` and `>=` require a finite numeric value and use `absolute` or `baseline`. Baseline-relative values use `%` and compare `100 * (candidate - baseline) / baseline` with the target value; the manifest freezes the raw unit, and a zero or non-finite baseline is inconclusive. `baseline` requires value `-`, gate `report`, and basis `current`. The initial supported units are `ns/op`, `B/op`, `allocs/op`, `ms`, `MiB`, `ops/s`, `tasks/run`, and `%`. Unknown, missing, reordered, duplicate, contradictory, or unsupported cells fail requirements validation rather than being inferred. Only a real level-two heading and its associated table count; examples inside fenced code, inline code, blockquotes, comments, or other sections are ignored. An operational limit below a requirements-owned sample count blocks admission rather than reducing the target.
+
+An enabled run requires complete execute state and the recorded sprint worktree. It performs this ordered protocol:
+
+1. resolve project activation, current requirements, target repository, execute evidence, operational limits, and correctness commands;
+2. author or locate one measurement path for every target in an isolated copy;
+3. validate benchmark-only scope and correctness, promote the benchmark patch through the product mutation boundary, then freeze the benchmark file set and digest;
+4. run bounded warmups and repeated samples, record the environment identity, and classify excessive variance or parser uncertainty as `inconclusive`;
+5. for each qualified miss, profile the relevant symptom, record one hypothesis, create one bounded optimization proposal in an isolated copy, run correctness checks and the frozen measurements there, and promote only a current contained improvement;
+6. rerun final correctness and performance checks against the canonical sprint worktree, derive target verdicts in product code, publish state, and make downstream evidence stale when implementation identity changed.
+
+The first parser set is versioned and narrow. It must support standard Go benchmark measurements for `ns/op`, `B/op`, and `allocs/op`, plus a versioned UltraPlan JSON result for metrics such as tail latency, throughput, retained bytes per run, and runtime tasks per run. Unsupported units, ambiguous benchmark names, missing target coverage, non-finite values, insufficient samples, environment drift, or benchmark drift block or make the affected target inconclusive. They never pass.
+
+The runtime may write benchmark and optimization proposals only inside disposable copies. Product code owns allowed paths, protected requirements and evidence, target/benchmark fingerprints, command descriptors, process isolation, patch validation and promotion, sample qualification, comparisons, correctness gates, deadlines, cycle counters, cancellation, cleanup, and terminal outcomes. Once baseline measurement starts, neither runtime nor user-facing command flags may change the targets, benchmark definition, parser, sample policy, or correctness commands for that attempt.
+
+Detailed state belongs under `verification/` and includes immutable target packets, benchmark manifests, samples, profiles, proposals, rejected attempts, correctness results, cleanup, and terminal result. The sprint root contains the canonical `performance.md`. `flow-state.json` keeps only a bounded performance summary, freshness, counts, verdict, next action, and digest-bound pointers.
+
+Target outcomes distinguish `met`, `missed`, `baseline_recorded`, `report_only`, `inconclusive`, and `blocked`. Run outcomes distinguish `passed`, `passed_with_reports`, `target_missed`, `blocked`, `cancelled`, `cleanup_uncertain`, and `stalled`. Every required target must be current and met before Conformance Review, QA, or merge can claim the enabled flow is complete. Report-only and baseline targets cannot block, but they remain visible. Exhausting optimization cycles cannot convert a miss into a pass.
+
+Any later repair or implementation mutation invalidates current performance evidence. The repair reverification ladder must rerun the applicable frozen performance targets before it can return to verified state. If optimization then changes implementation behavior, Conformance Review and empirical QA must run against that new fingerprint.
+
+Required tests cover default-off behavior, policy and requirements disagreement, strict table parsing, target-packet stability, benchmark coverage and freezing, repeated-sample qualification, noisy and non-finite results, target and environment drift, isolated mutation, protected paths, correctness regression, product-owned comparison, cycle exhaustion, cancellation, cleanup uncertainty, resume, stale writers, post-repair invalidation, state migration, and CLI/JSON/TUI/browser agreement.
+
+## 18H. Sprint 40 QA Repair And Performance Dogfooding And Hardening
+
+Sprint 40 must dogfood broad multi-package, boundary, concurrency, cancellation, persistence, recovery, invalid-setup, cross-shard, manual-repair, bounded-automatic-repair, performance, restart, and cleanup-uncertain cases through CLI, JSON, TUI, and browser.
+
+Measure deterministic shard quality, false-positive and inconclusive rates, evidence validity, isolation reliability, investigation cost, issue quality, repair convergence, benchmark stability, target coverage, optimization convergence, cancellation/recovery behavior, and operator usability. Automatic repair and performance optimization remain disabled for cases where issue sets do not shrink reliably, measurements are not repeatable, correctness weakens, or severity, scope, or uncertainty grows.
+
+Sprint 40 exits only when read-only and writable boundaries are reliable, adjudication rejects invalid evidence consistently, target verdicts remain traceable to requirements, manual repair succeeds on real work, performance evidence stays current through repair, automatic mutation either demonstrates bounded convergence or remains disabled, and representative QA, repair, and performance artifacts exist to inform the later content contract.
+
+## 18I. Gated Post-Sprint-40 Technical Direction
 
 The following sequence remains directional until a later sprint passes the preceding gate:
 
-1. **Content identity/provenance pilot:** design optional metadata, semantic block IDs, revision-aware evidence, contradiction, and supersession from real QA theories, evidence, issues, repairs, and findings; preserve legacy Markdown and verification-state compatibility.
+1. **Content identity/provenance pilot:** design optional metadata, semantic block IDs, revision-aware evidence, contradiction, and supersession from real QA theories, evidence, issues, repairs, performance attempts, and findings; preserve legacy Markdown and verification-state compatibility.
 2. **Joint content/QA schema dogfood:** validate identifier stability, traceability, authoring burden, and migration before retrieval.
 3. **Derived retrieval:** build deterministic semantic records and a measured lexical baseline first. Indexes remain disposable and governed context selection remains authoritative.
 4. **Product persistence/SQLite:** classify product state and extract focused package-owned repositories only for proven needs. Sprint 35 operational SQLite does not select authored-artifact authority.
@@ -2694,7 +2758,8 @@ UltraPlan Go is technically acceptable when:
 - Sprint 36 QA mapping is deterministic, covers every changed path with a bounded verification surface, persists resumable theory outcomes, and prevents investigator mutation.
 - Sprint 37 writable investigation fails closed without validated isolation; global adjudication alone promotes evidence-backed issues; smoke-as-QA preserves current protocol and evidence guarantees.
 - Sprint 38 repair consumes frozen adjudicated issue packets, enforces allowed scope, progressively reverifies changes, and exposes bounded stalled/escalated outcomes.
-- Sprint 39 dogfood measures evidence validity, isolation reliability, false-positive/inconclusive rates, repair convergence, cancellation, recovery, and cross-surface agreement before content identity proceeds.
+- Sprint 39 performance is default-off, takes targets only from validated sprint requirements, freezes benchmark identity, and permits only bounded correctness-preserving optimization.
+- Sprint 40 dogfood measures evidence validity, isolation reliability, false-positive/inconclusive rates, repair and optimization convergence, benchmark stability, cancellation, recovery, and cross-surface agreement before content identity proceeds.
 
 ## 27. Open Technical Questions
 
@@ -2734,8 +2799,9 @@ UltraPlan Go is technically acceptable when:
 | 1.7.0 | 2026-08-15 | Add grounded planning and gated future architecture | Define the `code-context` stage and stable downstream prompt prefix, strengthen server shutdown ownership, formalize the embedded primitives/components/layouts/pages hierarchy, and record evidence gates for content, QA/repair, retrieval, persistence, optional graph, and cloud/Aren. |
 | 1.8.0 | 2026-08-20 | Add durable run control and observability | Define stable workspace run identity, durable ordered safe events, cross-surface/server projection, lease/fencing and reconciliation, compatible stable inspection, and correlated operational diagnostics. |
 | 1.9.0 | 2026-08-21 | Add Product Phase 5 Sprints 35–39 | Treat Sprints 33–34 as the grounded-planning track; define one sprint each for durable run observability, read-only QA, evidence QA and smoke integration, bounded repair, and QA/repair dogfood before content identity. |
+| 2.0.0 | 2026-09-04 | Add requirements-driven performance verification | Insert default-off project activation and a Sprint 39 performance phase with requirements-owned targets, frozen benchmarks, bounded isolated optimization, post-repair freshness, and Sprint 40 dogfood. |
 
 
 ## Current Scope Clarification
 
-UltraPlan has two connected product sides: (1) studying source repositories/documents and producing validated research artifacts, and (2) applying selected study findings to governed project/sprint planning, controlled implementation, Conformance Review, empirical QA, and bounded repair. Phase 4 adds the local browser interface, and the delivered grounded-planning track adds `code-context` through the same application boundaries. Product Phase 5 uses Sprints 35–39 for durable operational run identity, read-only QA, isolated evidence production and smoke integration, adjudicated bounded repair, and QA/repair dogfooding. Content identity, retrieval, alternate product-artifact persistence, knowledge graphs, cloud, and Aren remain gated after Sprint 39. General-purpose issue tracking, hosted/multi-user service, remote workers, automatic Git mutation, and unbounded autonomous repair remain non-goals.
+UltraPlan has two connected product sides: studying source repositories or documents and producing validated research artifacts, then applying selected findings to governed project planning, controlled implementation, performance verification, Conformance Review, empirical QA, and bounded repair. Phase 4 adds the local browser interface, and the delivered grounded-planning track adds `code-context` through the same application boundaries. Product Phase 5 uses Sprints 35–40 for durable operational run identity, read-only QA, isolated evidence production and smoke integration, adjudicated bounded repair, requirements-driven performance work, and combined dogfooding. Content identity, retrieval, alternate product-artifact persistence, knowledge graphs, cloud, and Aren remain gated after Sprint 40. General-purpose issue tracking, hosted or multi-user service, remote workers, automatic Git mutation, and unbounded autonomous repair or optimization remain non-goals.

@@ -1,17 +1,17 @@
 # Product Requirements Document: UltraPlan Go
 
-**Version:** 1.7.0
+**Version:** 1.9.0
 **Status:** Draft
 **Owner:** Product and Engineering
-**Last Updated:** 2026-08-20
+**Last Updated:** 2026-09-04
 
 ## Stage 1: Product Brief
 
 ### 1.1 Executive Summary
 
-UltraPlan Go is a production-grade local planning, implementation, review, QA, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the initial sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases. Sprints 33–34 form a delivered grounded-planning track that adds `code-context`. Product Phase 5 comprises Sprints 35–39: durable run identity and cross-surface observability, read-only QA decomposition and synthesis, evidence-producing QA with smoke integration, bounded repair, then QA/repair dogfooding and hardening.
+UltraPlan Go is a production-grade local planning, implementation, review, QA, and research system. Phase 1 implements the study side: architecture studies across source repositories/documents, structured report synthesis, summary generation, validation, and cited code-reference extraction. Phase 2 adds governed project and sprint planning through `plan`, then controlled implementation execution through `execute`. Sprints 24 and 25 add the local TUI foundation and guarded operational controls. Phase 3 completes the initial sprint workflow with automated conformance review followed by sprint-targeted deep smoke. Phase 4, beginning with Sprint 30, adds a loopback-only Go HTTP server and a simple Go-rendered browser UI over the same typed application use cases. Sprints 33–34 form a delivered grounded-planning track that adds `code-context`. Product Phase 5 comprises Sprints 35–40: durable run identity and cross-surface observability, read-only QA decomposition and synthesis, evidence-producing QA with smoke integration, bounded repair, an optional requirements-driven performance stage, then QA/repair/performance dogfooding and hardening.
 
-Sprints 35–39 are the ordered Product Phase 5 delivery group, with each sprint gated on the preceding sprint's evidence. Content identity follows Sprint 39 so its schema is shaped by real theories, evidence, issues, repairs, and findings. Retrieval, alternate product-artifact persistence, knowledge graph, cloud, and Aren remain later gated options. Sprint 35 operational persistence does not select a new authority for authored product artifacts.
+Sprints 35–40 are the ordered Product Phase 5 delivery group, with each sprint gated on the preceding sprint's evidence. Content identity follows Sprint 40 so its schema is shaped by real theories, evidence, issues, repairs, performance attempts, and findings. Retrieval, alternate product-artifact persistence, knowledge graph, cloud, and Aren remain later gated options. Sprint 35 operational persistence does not select a new authority for authored product artifacts.
 
 - **Problem Statement:** The current prototype proves the workflow, but it is script-like, tightly coupled to a local Bun/TypeScript environment, and not hardened for durable runs, reproducible outputs, reliable retries, clear configuration, or long-term extensibility.
 - **Proposed Solution:** Rebuild UltraPlan as a Go CLI with a well-defined domain model, deterministic filesystem layout, resumable orchestration, structured runtime adapters, robust validation, and production-quality testing.
@@ -33,7 +33,7 @@ The prototype in `ultraplan/cli` demonstrates the core product shape:
 - Project documents for PRDs, TRDs, roadmaps, project indexes, sprint requirements, sprint indexes, technical handbooks, reasoning, and plans in the prototype.
 - Sprint planning and sprint execution workflows in the prototype.
 
-For UltraPlan Go, Phase 2 ports the planning artifact chain from the prototype through `plan.md` and adds controlled implementation execution from validated plans. The delivered TUI enabling track exposes those services locally. Phase 3 replaces manual sprint review and smoke coordination with product-owned `review.md` and `smoke.md` stages. Detailed smoke runs and issue evidence remain in the external harness referenced by the project index. Phase 4 adds a local browser surface, and the grounded-planning track adds `code-context` through the same boundary. Product Phase 5 uses Sprints 35–39 to make run observation durable, add read-only and evidence-producing QA, introduce adjudicated bounded repair, and harden the complete verification loop without changing product-artifact authority boundaries.
+For UltraPlan Go, Phase 2 ports the planning artifact chain from the prototype through `plan.md` and adds controlled implementation execution from validated plans. The delivered TUI enabling track exposes those services locally. Phase 3 replaces manual sprint review and smoke coordination with product-owned `review.md` and `smoke.md` stages. Detailed smoke runs and issue evidence remain in the external harness referenced by the project index. Phase 4 adds a local browser surface, and the grounded-planning track adds `code-context` through the same boundary. Product Phase 5 uses Sprints 35–40 to make run observation durable, add read-only and evidence-producing QA, introduce adjudicated bounded repair, add requirements-driven performance work, and harden the complete verification loop without changing product-artifact authority boundaries.
 
 The Go product keeps those core capabilities but makes them reliable, portable, testable, and extensible.
 
@@ -449,10 +449,18 @@ Required workspace concepts:
     - Repair cannot weaken evidence, requirements, tests, or acceptance criteria.
     - Automatic repair is optional, bounded by cycles and reopenings, resumable, and exposes failed, blocked, escalated, and stalled outcomes distinctly.
 
-30. **Sprint 39: QA and repair dogfooding and hardening**
+30. **Sprint 39: Requirements-driven performance stage**
+    - Projects can opt into a `performance` verification phase through explicit project policy; the phase is disabled by default.
+    - An enabled sprint takes its complete target set from a validated `Performance Targets` section in `requirements.md`.
+    - The performance runtime can author missing benchmarks, establish a repeatable baseline, profile missed targets, and propose bounded implementation changes in isolated copies.
+    - Product code freezes target and benchmark identities, runs configured correctness gates, promotes only validated changes, and derives target verdicts from measurements.
+    - Required targets block later verification and merge when they remain missed; report-only and baseline targets remain visible without manufacturing a pass.
+
+31. **Sprint 40: QA, repair, and performance dogfooding and hardening**
     - Representative real workflows measure shard quality, false positives, inconclusive outcomes, invalid evidence, isolation reliability, issue quality, and repair convergence.
     - Automatic repair remains disabled unless bounded convergence is demonstrated.
-    - QA and repair artifacts become the evidence base for the later content identity and provenance contract.
+    - Performance dogfood measures benchmark stability, target coverage, correctness preservation, optimization convergence, and stale-evidence handling.
+    - QA, repair, and performance artifacts become the evidence base for the later content identity and provenance contract.
 
 #### Should Have
 
@@ -579,7 +587,7 @@ The exact command names may be refined during implementation, but the production
 - `ultraplan study <study> validate`
   - Validates study structure and generated artifacts.
 
-#### Sprint Planning, Code Context, Execute, Review, QA, Smoke, And Repair Commands
+#### Sprint Planning, Code Context, Execute, Performance, Review, QA, Smoke, And Repair Commands
 
 Phase 2 supports sprint planning commands through `plan.md` and controlled implementation execution through `execute`. Phase 3 extends the same sprint surface through review and smoke. The grounded-planning track inserts `code-context` after requirements without creating a separate workflow surface:
 
@@ -598,6 +606,9 @@ Phase 2 supports sprint planning commands through `plan.md` and controlled imple
 - `ultraplan sprint <project> <sprint> execute [--task <id>]`
   - Runs pending implementation tasks from a validated `plan.md` or a selected task when supported by the current sprint implementation.
 
+- `ultraplan sprint <project> <sprint> performance [--dry-run|status|resume|cancel]`
+  - For projects with performance enabled, reads the frozen targets from `requirements.md`, authors or locates matching benchmarks, records a repeatable baseline, and runs a bounded profile/change/remeasure loop without changing the targets or benchmark definition after baseline.
+
 - `ultraplan sprint <project> <sprint> review`
   - Runs the selected contract and handbook reviewers, deterministic plan/decision/evidence checks, and atomically replaces the sprint's current `review.md`.
 
@@ -613,7 +624,7 @@ Phase 2 supports sprint planning commands through `plan.md` and controlled imple
 - `ultraplan sprint <project> <sprint> repair --issue <id>`
   - Repairs one frozen adjudicated issue within confirmed scope and progressively reverifies it.
 
-- `ultraplan sprint <project> <sprint> verify [--to conformance-review|qa] [--repair --max-cycles <n>]`
+- `ultraplan sprint <project> <sprint> verify [--to performance|conformance-review|qa] [--repair --max-cycles <n>]`
   - Orchestrates the verification phases without introducing a third canonical assessment artifact.
 
 Supported stages:
@@ -631,11 +642,11 @@ review     # compatibility planning-stage projection for Conformance Review
 smoke      # compatibility planning-stage projection for the smoke QA executor
 ```
 
-`conformance-review`, `qa`, and `repair` are verification phases rather than additions to the canonical planning-stage list. Compatibility projections preserve current review/smoke clients during migration.
+`performance`, `conformance-review`, `qa`, and `repair` are verification phases rather than additions to the canonical planning-stage list. Compatibility projections preserve current review/smoke clients during migration. Performance runs after execute and before Conformance Review when project policy enables it.
 
 For `code-context`, the existing `prompt`, `validate`, `flow --to`, status, JSON, TUI, and browser surfaces apply. `flow --to plan` runs it exactly once when required. Explicit reruns replace only `code-context.md` atomically.
 
-General-purpose `ultraplan issue ...` and automatic Git mutation remain deferred. Sprint 38 repair is limited to adjudicated verification issues and bounded confirmed scope.
+General-purpose `ultraplan issue ...` and automatic Git mutation remain deferred. Sprint 38 repair is limited to adjudicated verification issues and bounded confirmed scope. Performance mutation is limited to an enabled project, frozen sprint targets, bounded isolated proposals, and product-owned promotion.
 
 ### 2.5 Study Initialization Requirements
 
@@ -768,14 +779,16 @@ Synthesis success requires:
 - Source summary table exists.
 - Rating summary exists.
 
-### 2.7 Applying Study Findings Through Planning, Execution, Review, And Smoke
+### 2.7 Applying Study Findings Through Planning, Execution, Performance, Review, And Smoke
 
 The TypeScript prototype demonstrates a second side of UltraPlan: applying study findings to project requirements, roadmaps, sprint reasoning, plans, execution, smoke runs, review, and issue tracking.
 
-Phase 2 includes governed planning and controlled implementation execution. Phase 3 extends the governed flow:
+Phase 2 includes governed planning and controlled implementation execution. Phase 3 extends the governed flow. Product Phase 5 adds an optional performance phase after execute:
 
 ```text
-study -> select -> distill -> reason -> plan -> execute -> review -> smoke
+study -> select -> distill -> reason -> plan -> execute
+  -> performance, when enabled
+  -> conformance review -> QA -> bounded repair -> verified
 ```
 
 Required planning and execute behavior:
@@ -789,6 +802,10 @@ Required planning and execute behavior:
 - Users can inspect execute task state, attempts, failures, and completion evidence.
 - Users can resume interrupted execute runs without redoing completed tasks unless explicitly requested.
 - Users can configure a default runtime model for all sprint stages and override the model for specific stages such as `sprint-index`, `technical-handbook`, `reasoning`, `plan`, and `execute`.
+- Projects can enable performance verification explicitly; projects without that policy keep the existing flow unchanged.
+- An enabled sprint must declare its targets in a machine-parseable `Performance Targets` section of `requirements.md`. Project and workspace configuration cannot supply or override target values.
+- Performance work writes or locates benchmarks, freezes their identity before optimization, measures a repeatable baseline, profiles missed targets, and attempts bounded changes without weakening correctness checks or target definitions.
+- Conformance Review and QA run against the post-performance implementation. Any later repair or implementation mutation makes performance evidence stale and requires a current performance recheck before verification or merge can complete.
 - Users can dry-run planning stages and render prompts before runtime execution.
 - Flow state records planning-stage and execute-stage progress, failures, skipped optional area reasoning, and timestamps.
 - Execute run state records task-level progress, attempts, diagnostics, runtime metadata where available, and terminal task states.
@@ -833,6 +850,8 @@ Required generated artifacts:
 - Sprint `reasoning.md`.
 - Sprint `plan.md`.
 - Sprint `flow-state.json`.
+- Sprint `performance.md` when project policy enables the performance phase.
+- Versioned detailed performance target, attempt, measurement, profile, proposal, cleanup, and result records under the sprint's `verification/` directory.
 - Sprint execute summary `execute.md`.
 - Sprint execute `.run-state.json`.
 - Sprint automated conformance `review.md`.
@@ -946,6 +965,23 @@ CLI command
   -> flow-state update
 ```
 
+Data flow for sprint performance:
+
+```text
+CLI, TUI, or browser action
+  -> project performance-policy resolution
+  -> validated requirements target parsing and immutable target packet
+  -> execute-complete and target-worktree identity gate
+  -> isolated benchmark authoring or discovery
+  -> correctness check and frozen benchmark identity
+  -> repeated baseline measurement and variance qualification
+  -> bounded profile, hypothesis, isolated change, and remeasurement loop
+  -> product-owned comparison, scope validation, and accepted-patch promotion
+  -> final correctness and target verdict
+  -> performance.md plus bounded detailed verification state
+  -> flow-state summary and downstream freshness update
+```
+
 Data flow for sprint review:
 
 ```text
@@ -997,7 +1033,7 @@ Browser operation start
 
 Graceful server shutdown enters a draining state, rejects new mutations, requests cancellation for every server-owned active operation, waits for bounded cleanup and reconciliation, persists a truthful `cancelled`, `interrupted`, `cleanup_uncertain`, or already-authoritative failure/completion outcome, closes SSE/HTTP, and exits. Closing or refreshing a browser tab does not cancel work.
 
-General issue tracking, automatic product fixes, and automatic Git mutation remain deferred.
+General issue tracking, unbounded automatic product fixes, and automatic Git mutation remain deferred. The performance phase cannot edit requirements, targets, benchmark definitions after baseline, correctness commands, verification evidence, or Git state.
 
 ### 3.3 Dependencies
 
@@ -1097,6 +1133,8 @@ Deferred possibilities:
 - Automatic Git add/commit/push from sprint execution.
 - Automatic product fixes during review or smoke.
 - Cross-project/cross-sprint verification scheduling.
+- Workspace-level or project-level performance target values that override sprint requirements.
+- A performance database, unrestricted benchmark commands, benchmark rewriting after baseline, or indefinite optimization.
 
 Product Phase 5 proceeds in this sprint order:
 
@@ -1104,9 +1142,10 @@ Product Phase 5 proceeds in this sprint order:
 2. Complete Sprint 36 read-only QA decomposition, investigation, and synthesis before permitting generated checks.
 3. Add Sprint 37 isolated evidence-producing QA, global adjudication, canonical QA, and smoke integration.
 4. Add Sprint 38 adjudicated manual repair, then bounded automatic repair only if convergence is demonstrated.
-5. Complete Sprint 39 QA and repair dogfooding and hardening; disable automatic repair if evidence quality, isolation, or convergence is weak.
+5. Add Sprint 39 optional requirements-driven performance verification after execute and require current performance evidence again after later repair.
+6. Complete Sprint 40 QA, repair, and performance dogfooding and hardening; disable automatic repair or optimization paths when evidence quality, isolation, measurement stability, or convergence is weak.
 
-After Sprint 39:
+After Sprint 40:
 
 1. Design minimal artifact identity, authority, provenance, semantic blocks, and revision-aware evidence from the resulting real QA artifacts while preserving legacy Markdown.
 2. Dogfood the combined content and QA schema before retrieval.
@@ -1115,7 +1154,7 @@ After Sprint 39:
 5. Consider an in-memory read-only knowledge graph only after stable relationships and a retrieval baseline prove a real multi-hop traceability need.
 6. Decide filesystem, SQLite/server, or hybrid authority before cloud or Aren integration.
 
-The post-Sprint-39 directions are not current release commitments. A failed evidence gate stops or simplifies the branch.
+The post-Sprint-40 directions are not current release commitments. A failed evidence gate stops or simplifies the branch.
 
 ### 3.9 Risks and Mitigations
 
@@ -1216,11 +1255,17 @@ The post-Sprint-39 directions are not current release commitments. A failed evid
 - Target: 100% bounded termination; zero passes created by weakened evidence or acceptance criteria.
 - Measurement: Repair-cycle state, issue-set deltas, reverification results, and adversarial repair tests.
 
-**Sprint 39 KPI: QA Trustworthiness**
+**Sprint 39 KPI: Performance Target Integrity**
 
-- Definition: Real-work rates for false positives, inconclusive or blocked investigations, invalid evidence, isolation failures, issue reopening, and repair convergence.
-- Target: Thresholds are selected from initial dogfood evidence; automatic repair remains disabled until acceptable convergence is demonstrated.
-- Measurement: Representative multi-package dogfood, browser operation traces, and verification-state summaries.
+- Definition: Percentage of enabled performance runs where every measured target traces to the current validated sprint requirements, uses the frozen benchmark definition, and receives a product-derived verdict from qualified measurements.
+- Target: 100% target traceability and frozen-benchmark integrity; zero passes after correctness failure, target drift, benchmark drift, or inconclusive measurement.
+- Measurement: Target-packet fixtures, benchmark identity checks, repeated-sample results, correctness gates, stale-state tests, and one representative real-repository dogfood run.
+
+**Sprint 40 KPI: Verification Trustworthiness**
+
+- Definition: Real-work rates for false positives, inconclusive or blocked investigations, invalid evidence, isolation failures, issue reopening, repair convergence, unstable benchmarks, and optimization convergence.
+- Target: Thresholds are selected from initial dogfood evidence; automatic repair and optimization remain disabled where their evidence is not trustworthy.
+- Measurement: Representative multi-package dogfood, performance attempts, browser operation traces, and verification-state summaries.
 
 ### 4.2 Definition of Done
 
@@ -1298,14 +1343,23 @@ Sprint 38 — Manual Repair and Bounded Automatic Repair is done when:
 - Repair cannot modify evidence, weaken requirements, or escape its allowed scope.
 - Automatic repair is bounded, resumable, and terminates distinctly as verified, failed, blocked, escalated, or stalled.
 
-Sprint 39 — QA and Repair Dogfooding and Hardening is done when:
+Sprint 39, Requirements-Driven Performance Stage, is done when:
 
-- Representative real-work dogfood measures shard quality, evidence validity, isolation reliability, investigation cost, and repair convergence.
+- Performance is disabled by default and appears in the flow only for projects with explicit enabled policy.
+- Enabled sprints take every target from the current validated `Performance Targets` section in `requirements.md`; configuration and runtime output cannot add or weaken targets.
+- Benchmark authoring, baseline qualification, profiling, bounded optimization, correctness checks, target comparison, cancellation, resume, and recovery use one durable product-owned workflow.
+- Baseline and candidate measurements use the same frozen benchmark identity, and product code derives every target verdict.
+- Required misses block downstream verification and merge, while report-only and baseline outcomes remain truthful.
+- CLI, JSON, TUI, and browser agree on activation, target coverage, progress, measurements, changes, freshness, verdict, and next action.
+
+Sprint 40, QA, Repair, and Performance Dogfooding and Hardening, is done when:
+
+- Representative real-work dogfood measures shard quality, evidence validity, isolation reliability, investigation cost, repair convergence, benchmark stability, and optimization convergence.
 - Manual repair succeeds on real work.
-- Automatic repair either demonstrates bounded convergence or remains disabled.
-- The resulting QA artifacts are representative enough to design the later content identity and provenance contract.
+- Automatic repair and performance optimization either demonstrate bounded convergence or remain disabled for the unsafe case.
+- The resulting QA, repair, and performance artifacts are representative enough to design the later content identity and provenance contract.
 
-Product Phase 5 is done when Sprints 35–39 have passed their individual gates and the Sprint 39 dogfood evidence supports release of the durable QA and repair workflow.
+Product Phase 5 is done when Sprints 35–40 have passed their individual gates and the Sprint 40 dogfood evidence supports release of the durable QA, repair, and performance workflow.
 
 ### 4.3 Instrumentation Requirements
 
@@ -1332,6 +1386,9 @@ Track these event categories:
 - Subscriber connected, lagged, dropped detail, reconnected, or closed.
 - Cancellation requested, routed, acknowledged, or left uncertain.
 - Terminal outcome proposed, won, rejected as stale, or reconciled.
+- Performance target packet frozen, invalidated, or rejected.
+- Benchmark authored, frozen, started, sampled, qualified, or rejected as inconclusive.
+- Performance profile captured, optimization proposed, accepted, rejected, or exhausted.
 
 Metrics to monitor locally:
 
@@ -1348,6 +1405,8 @@ Metrics to monitor locally:
 - Durable append latency/failures, journal bytes, retained events, and compaction results.
 - Replay distance, cursor gaps, subscriber lag, and dropped/sampled event detail.
 - Cancellation routing latency and cleanup-uncertain outcomes.
+- Performance targets covered, met, missed, report-only, or inconclusive.
+- Benchmark variance, sample count, baseline/candidate comparison, optimization cycles, and correctness-gate failures.
 
 ### 4.4 Rollout Strategy
 
@@ -1421,13 +1480,17 @@ Metrics to monitor locally:
 
 - Add frozen evidence-backed issue packets, explicit confirmation, allowed-scope enforcement, progressive reverification, then bounded automatic cycles with stalled and escalated outcomes.
 
-**Rollout Step 17: Sprint 39 QA and repair dogfooding and hardening**
+**Rollout Step 17: Sprint 39 requirements-driven performance stage**
 
-- Exercise representative real changes and failure modes, measure evidence quality and convergence, harden recovery and browser operation, and leave automatic repair disabled unless it proves trustworthy.
+- Add explicit project activation, requirements target parsing, immutable target packets, benchmark authoring and freezing, repeatable baseline qualification, bounded isolated optimization, product-owned verdicts, stale evidence, and cross-surface operation.
+
+**Rollout Step 18: Sprint 40 QA, repair, and performance dogfooding and hardening**
+
+- Exercise representative real changes and failure modes, measure evidence quality, benchmark stability, and convergence, harden recovery and browser operation, and leave unsafe automatic paths disabled unless they prove trustworthy.
 
 **Later gated evaluation**
 
-- Design and dogfood content identity/provenance from real Sprint 36–39 artifacts, then sequence retrieval, product persistence/SQLite, optional graph, and cloud/Aren only through the evidence gates described above.
+- Design and dogfood content identity/provenance from real Sprint 36–40 artifacts, then sequence retrieval, product persistence/SQLite, optional graph, and cloud/Aren only through the evidence gates described above.
 
 ### 4.5 Review History
 
@@ -1441,6 +1504,7 @@ Metrics to monitor locally:
 | 2026-08-15 | Product/Engineering | Draft | Add the grounded-planning track through `code-context`, adopt the server-owned shutdown cancellation contract, and record the evidence-gated later sequence. |
 | 2026-08-20 | Product/Engineering | Draft | Add durable run identity and cross-surface observability after live use exposed server-memory, browser-session, and page-local visibility gaps. |
 | 2026-08-21 | Product/Engineering | Draft | Define Product Phase 5 as Sprints 35–39 covering durable run observability, read-only QA, evidence QA with smoke integration, bounded repair, and QA/repair dogfood; move content identity after QA. |
+| 2026-09-04 | Product/Engineering | Draft | Insert Sprint 39 requirements-driven performance verification before Conformance Review and move QA, repair, and performance dogfood to Sprint 40. |
 
 ### 4.6 Changelog
 
@@ -1452,3 +1516,4 @@ Metrics to monitor locally:
 | 1.6.0 | 2026-08-15 | Add grounded planning and gated future direction | Add `code-context` as a shared source foundation, make server shutdown cancellation explicit, organize the embedded UI as primitives/components/layouts/pages, and align later work with measured stop/go gates. |
 | 1.7.0 | 2026-08-20 | Add durable run control and observation | Commit Sprint 35 outcomes for workspace-wide run identity, replayable safe events, cross-server observation, liveness/reconciliation, compatible stable inspection, and correlated operational diagnostics while leaving the implementation topology open for reasoning. |
 | 1.8.0 | 2026-08-21 | Add Product Phase 5 Sprints 35–39 | Add one sprint each for durable run observability, read-only QA, evidence-producing QA and smoke integration, bounded repair, and QA/repair dogfood before content identity. |
+| 1.9.0 | 2026-09-04 | Add requirements-driven performance stage | Add opt-in project activation, sprint-requirements target authority, frozen benchmarks, bounded optimization, product-owned verdicts, post-repair freshness, and Sprint 40 dogfood. |

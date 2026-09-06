@@ -18,9 +18,9 @@ A product module should encapsulate a complete slice of behavior:
 module = state + logic + workflows + validation + persistence adapters + local interface surface
 ```
 
-This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, Conformance Review, QA, smoke compatibility, and repair behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
+This means study behavior should stay with the study module. Project catalog behavior should stay with the project module. Sprint planning, execute, performance, Conformance Review, QA, smoke compatibility, and repair behavior should stay with the sprint module. Code extraction behavior should stay with the code extraction module. Workspace behavior should stay with the workspace module. Shared platform packages should exist only for genuinely cross-cutting infrastructure.
 
-CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol. The delivered grounded-planning track proves that boundary by adding `code-context` as a new sprint stage surfaced uniformly through all three interfaces. Product Phase 5 uses Sprint 35 to make run identity and observation workspace-wide, then Sprints 36–39 to add read-only QA, isolated empirical QA, adjudicated repair, and verification dogfooding through the same boundaries.
+CLI, TUI, and the Phase 4 local browser surface are interfaces over the same product core. They should share application use cases and dependency construction instead of duplicating workflow logic or using CLI output as an integration protocol. The delivered grounded-planning track proves that boundary by adding `code-context` as a new sprint stage surfaced uniformly through all three interfaces. Product Phase 5 uses Sprint 35 to make run identity and observation workspace-wide, then Sprints 36–40 to add read-only QA, isolated empirical QA, adjudicated repair, requirements-driven performance work, and verification dogfooding through the same boundaries.
 
 ## Core Rule
 
@@ -153,6 +153,8 @@ internal/
     qa_investigation.go     # read-only and isolated evidence-producing investigators
     qa_adjudication.go      # evidence quality, synthesis, issue promotion, and smoke integration
     qa_repair.go            # frozen issue repair and bounded convergence
+    performance.go          # target packets, benchmark workflow, verdicts, and performance.md
+    performance_state.go    # detailed attempts, measurements, profiles, proposals, and freshness
 
   codeextract/
     domain.go
@@ -233,6 +235,7 @@ Roadmap discovery
 project-index.md parsing
 Catalog entries for contracts, evidence, reasoning templates, and review protocols
 Project validation
+Project performance activation from project-index.md, defaulting to disabled
 Project status output
 Filesystem persistence for project catalog artifacts
 Local interface commands for project workflows
@@ -242,7 +245,7 @@ Local interface commands for project workflows
 
 ### `sprint`
 
-`sprint` owns governed planning, execute, Conformance Review, QA, smoke compatibility, and repair behavior under `projects/<project>/sprints/<slug>`:
+`sprint` owns governed planning, execute, performance, Conformance Review, QA, smoke compatibility, and repair behavior under `projects/<project>/sprints/<slug>`:
 
 ```text
 requirements.md
@@ -257,7 +260,9 @@ flow-state.json
 review.md
 smoke.md
 qa.md
+performance.md
 verification/state.json
+verification/performance-state.json
 verification/attempts/...
 ```
 
@@ -283,6 +288,7 @@ Smoke review-gating, agent-driven sprint-suite authoring inside manifest-declare
 Deterministic QA mapping, bounded verification surfaces, read-only investigation, and synthesis
 Isolated evidence-producing investigation, evidence adjudication, canonical qa.md, and smoke-as-QA compatibility
 Frozen evidence-backed issue packets, repair-scope enforcement, progressive reverification, and bounded convergence
+Requirements target parsing, immutable target packets, frozen benchmark identity, qualified measurements, bounded isolated optimization, and product-owned target verdicts
 Versioned detailed verification state outside flow-state.json summaries
 Sprint status output
 Local interface commands for planning-stage sprint workflows
@@ -290,7 +296,7 @@ Local interface commands for planning-stage sprint workflows
 
 `sprint` may depend on `project` for project catalogs, `workspace` for path rules, configuration for stage-specific runtime model selection, `platform/runtime` for generic prompt/reviewer/implementation execution, and `platform/process` for safe external harness invocation. It must not depend on `study` services, source/dimension models, study report validation, rating parsing, summary generation, or study run-loop scheduling.
 
-Phase 2 includes controlled implementation execution through `execute`. Phase 3 extends the same sprint module through `review` and `smoke`. Product Phase 5 Sprints 36–39 add QA and repair inside the sprint module while keeping Conformance Review, empirical investigation, adjudication, and production repair distinct. The sprint root keeps canonical human-readable summaries; detailed verification attempts live under `verification/`, while raw smoke evidence remains in the external harness. Evidence-backed verification issues are bounded QA records, not a general-purpose issue tracker. `sprint` must not add assignment, scheduling, remote issue synchronization, or automatic Git mutation.
+Phase 2 includes controlled implementation execution through `execute`. Phase 3 extends the same sprint module through `review` and `smoke`. Product Phase 5 Sprints 36–40 add QA, repair, and performance inside the sprint module while keeping performance optimization, Conformance Review, empirical investigation, adjudication, and production repair distinct. The sprint root keeps canonical human-readable summaries; detailed verification attempts live under `verification/`, while raw smoke evidence remains in the external harness. Evidence-backed verification issues are bounded QA records, not a general-purpose issue tracker. `sprint` must not add assignment, scheduling, remote issue synchronization, or automatic Git mutation.
 
 The delivered grounded-planning track inserts `code-context` after requirements. The sprint module resolves the implementation target through project-owned configuration, invokes generic runtime execution with read access to that target, permits only `code-context.md` as stage output, validates the Markdown, and advances flow state. A shared renderer then inserts exact requirements and code-context bytes before stage-specific instructions for later agent requests. The pack is durable prepared evidence, not an index or exclusive repository view; downstream stages may inspect more live source.
 
@@ -667,7 +673,7 @@ task state machines
 
 If two modules need the same mechanical filesystem behavior, extract the mechanical helper. If two modules merely have similar product workflows, keep the behavior in the owning modules until repeated concrete implementations prove a shared abstraction is stable. Execute task semantics belong to `internal/sprint`; do not move them into a global scheduler or workflow package.
 
-## Product Phase 5 Sprints 36–39 And Gated Architecture Evolution
+## Product Phase 5 Sprints 36–40 And Gated Architecture Evolution
 
 The implementation plans describe a long-term direction, not permission to build every abstraction now. The architectural order is:
 
@@ -678,7 +684,8 @@ filesystem-backed observable web
 -> read-only QA decomposition and synthesis
 -> isolated empirical QA and adjudication
 -> bounded repair
--> QA and repair dogfooding and hardening
+-> optional requirements-driven performance verification
+-> QA, repair, and performance dogfooding and hardening
 -> minimal content identity and revision-aware provenance
 -> joint content and QA schema dogfooding
 -> measured lexical retrieval
@@ -699,9 +706,15 @@ filesystem-backed observable web
 
 Repair remains a sprint-owned verification phase consuming frozen adjudicated issue packets. It enforces allowed paths, preserves evidence and governed expectations, and progressively reverifies changes. Automatic convergence is layered on only after manual repair and has explicit cycle, reopening, scope, severity, cleanup, and stall limits.
 
-### Sprint 39 — QA and repair dogfooding and hardening
+### Sprint 39: Requirements-driven performance stage
 
-Sprint 39 adds no broad new abstraction. It exercises the Sprint 36–38 boundaries across real multi-package and failure-mode cases, measures evidence quality and convergence, hardens cross-surface operation and recovery, and supplies representative artifacts for the later content contract. Automatic repair remains disabled when convergence evidence is insufficient.
+`internal/project` owns only the explicit project activation policy, which defaults to disabled. `internal/sprint` parses the exact `Performance Targets` table from current validated requirements, freezes the normalized target packet, and owns the complete measurement and optimization protocol. The runtime can author benchmarks and propose changes in disposable copies. Product code owns benchmark identity, command descriptors, sample qualification, comparisons, correctness gates, patch promotion, limits, freshness, and terminal outcomes.
+
+Performance runs after execute and before Conformance Review. Required targets block later verification when missed. Report-only and baseline targets remain visible without blocking. Any later repair or implementation mutation makes performance evidence stale and requires another performance check before verified or merge-ready state.
+
+### Sprint 40: QA, repair, and performance dogfooding and hardening
+
+Sprint 40 adds no broad new abstraction. It exercises the Sprint 36–39 boundaries across real multi-package, measurement, and failure-mode cases, measures evidence quality and convergence, hardens cross-surface operation and recovery, and supplies representative artifacts for the later content contract. Automatic repair and performance optimization remain disabled for cases where convergence or measurement evidence is insufficient.
 
 ### Authoritative versus derived state
 
@@ -727,7 +740,7 @@ Derived retrieval begins with deterministic semantic chunks and a measured lexic
 
 ### Verification and repair boundary
 
-Keep Conformance Review, empirical QA, adjudication, and repair distinct:
+Keep performance, Conformance Review, empirical QA, adjudication, and repair distinct:
 
 - Conformance Review remains read-only and preserves `review`/`review.md` compatibility.
 - Sprint 36 introduces `VerificationPhase`, deterministic bounded verification surfaces, read-only investigation, durable theory outcomes, and global synthesis without issue promotion.
@@ -739,9 +752,12 @@ Keep Conformance Review, empirical QA, adjudication, and repair distinct:
 - Sprint 38 permits production repair only from frozen adjudicated issue packets.
 - Repair consumes frozen issue packets, changes only allowed production scope, cannot weaken evidence or requirements, and is progressively reverified.
 - Automatic repair has fixed cycle/reopen limits and explicit `blocked`, `escalated`, and `stalled` outcomes.
-- Sprint 39 dogfoods evidence quality, isolation, convergence, cancellation, recovery, and cross-surface usability before content identity or wider automation proceeds.
+- Sprint 39 adds performance as a separate verification phase after execute, enabled only by project policy and governed only by targets in current sprint requirements.
+- The performance runtime cannot edit requirements, targets, frozen benchmarks, correctness policy, or prior evidence. It proposes benchmark and implementation changes in isolated copies for product validation and promotion.
+- Product code derives performance verdicts from qualified measurements and makes them stale after any later implementation mutation.
+- Sprint 40 dogfoods evidence quality, isolation, benchmark stability, repair and optimization convergence, cancellation, recovery, and cross-surface usability before content identity or wider automation proceeds.
 
-Detailed QA attempt state belongs outside `flow-state.json`; flow state keeps canonical summaries, freshness, verdicts, and pointers.
+Detailed QA and performance attempt state belongs outside `flow-state.json`; flow state keeps canonical summaries, freshness, verdicts, and pointers.
 
 ### Persistence boundary
 
