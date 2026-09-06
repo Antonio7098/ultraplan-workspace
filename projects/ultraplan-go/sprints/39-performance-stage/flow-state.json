@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "project": "ultraplan-go",
   "sprint": "39-performance-stage",
-  "updatedAt": "2026-09-06T12:19:06.986945969Z",
+  "updatedAt": "2026-09-06T12:29:13.409433964Z",
   "stages": [
     {
       "stage": "requirements",
@@ -49,227 +49,211 @@
   ],
   "review": {
     "status": "completed",
-    "verdict": "fail",
+    "verdict": "pass_with_findings",
     "path": "projects/ultraplan-go/sprints/39-performance-stage/review.md",
-    "lastRunAt": "2026-09-06T12:19:06.985567841Z",
-    "fingerprint": "ad8cc118a02ef1be0f658040cbe41762017c37f31880868085603938c7bb1a27",
+    "lastRunAt": "2026-09-06T12:28:31.792374454Z",
+    "fingerprint": "5a1318314307929406ebca976a8369ae4927f395a7ffd3e73d50a653d71a6e87",
     "stale": false,
     "completed": 14,
     "total": 14,
-    "artifactDigest": "5aa41c0a020fefcf5fa50e7c06cc3d29d886e5af487d7b7815cd3f5a1f207316",
+    "artifactDigest": "5895dc9967b6f130ebdffa03184307cedd8bbe86f92a434aadaab39393a75760",
     "lastAttempt": {
-      "id": "review-1788696846429203680",
+      "id": "review-1788697407422575922",
       "status": "completed",
-      "startedAt": "2026-09-06T12:14:06.42920368Z",
-      "heartbeatAt": "2026-09-06T12:19:06.735205966Z",
-      "ownerPid": 736755,
-      "completedAt": "2026-09-06T12:19:06.985567841Z"
+      "startedAt": "2026-09-06T12:23:27.422575922Z",
+      "heartbeatAt": "2026-09-06T12:28:31.530278061Z",
+      "ownerPid": 762346,
+      "completedAt": "2026-09-06T12:28:31.792374454Z"
     },
     "lastComplete": {
-      "verdict": "fail",
+      "verdict": "pass_with_findings",
       "artifact": "projects/ultraplan-go/sprints/39-performance-stage/review.md",
-      "artifactDigest": "5aa41c0a020fefcf5fa50e7c06cc3d29d886e5af487d7b7815cd3f5a1f207316",
-      "inputFingerprint": "ad8cc118a02ef1be0f658040cbe41762017c37f31880868085603938c7bb1a27",
-      "completedAt": "2026-09-06T12:19:06.985567841Z",
+      "artifactDigest": "5895dc9967b6f130ebdffa03184307cedd8bbe86f92a434aadaab39393a75760",
+      "inputFingerprint": "5a1318314307929406ebca976a8369ae4927f395a7ffd3e73d50a653d71a6e87",
+      "completedAt": "2026-09-06T12:28:31.792374454Z",
       "coverage": [
         {
           "schemaVersion": 1,
           "coverageId": "contract-architecture",
           "applicability": "direct",
-          "summary": "Sprint 39 preserves module-driven architecture. `internal/project` owns activation-only `PerformancePolicy` (target/internal/project/domain.go:28-42, target/internal/project/index.go:82-156) and `internal/sprint` owns target parsing, `VerificationPhasePerformance`, frozen manifests, qualification/comparison, isolation and fenced persistence (target/internal/sprint/verification_phase.go:11-19, target/internal/sprint/domain.go:137-148, target/internal/sprint/performance_types.go:9-17, target/internal/sprint/performance.go:21-93). Platform `process` and `config` remain generic, injected via narrow ports `pprocess.Runner`/`IsolationWorkspace` and `WithVerificationWriterFence`/`WithPerformanceLimits` without importing product modules (target/internal/sprint/performance.go:339-343, target/internal/platform/config/performance.go:12-32). `internal/app` composes CLI/TUI/web over typed use cases delegating to sprint services (target/internal/app/operations.go:105-111, target/internal/app/sprint_commands.go:891-950, target/internal/app/operation_runner.go:126-150, target/docs/architecture.md:262-289); web/tui do not import sprint/project directly and entrypoints stay thin. Composition uses explicit `dashboardUseCases` and `Service.With*` registrars, no global registry or cycle. Shared/platform code stays domain-neutral; operational limits are validated lower-only bounds, not target authority.",
+          "summary": "Performance as optional verification phase respects module-driven architecture. Activation stays in internal/project (typed PerformancePolicy, digest-bound, target-free) and full protocol stays in internal/sprint (target packet, manifest freeze, serial qualification, isolated optimization, private immutable evidence, digest pointers, writer fence, freshness). internal/app remains the shared composition boundary: typed PerformanceUseCases projections, bounded DTOs, and operation bridge reuse for durable acceptance/fencing/cancellation; CLI (internal/app/sprint_commands.go), TUI (internal/tui) and web (internal/web/handlers.go-\u003einternal/app) are thin adapters delegating to app use cases. Dependency direction is inward: product-\u003eplatform/process, platform/config stays domain-neutral with lower-only numeric/duration limits and validation (internal/platform/config/performance.go), no platform imports product. Ports are used at volatile seams (pprocess.Runner, IsolationWorkspace, Runtime, VerificationWriterToken). Composition via WithPerformanceLimits/WithVerificationWriterFence on sprint.Service avoids god constructor. Public APIs are cohesive verification types, not leaked infra.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-cli-surface",
           "applicability": "direct",
-          "summary": "Sprint 39 adds `ultraplan sprint \u003cproject\u003e \u003csprint\u003e performance` to the existing sprint command surface. Shape follows existing `sprint qa/repair/review` conventions (positional \u003cproject\u003e \u003csprint\u003e, long flags --dry-run/--yes/--json, positional actions status/resume/cancel/recover), help is registered at both root and per-command level with examples, stdout carries only the intended JSON/result and stderr carries diagnostics, --json produces a single stable envelope with no log contamination, exit codes map to the documented 0/2/3/5/7/8 classes, config precedence is unchanged, lifecycle uses centralized discoverWorkspace/loadEffectiveConfig/beginDurableCLICommand with context propagation and run-control cancellation, destructive run/resume require explicit --yes and dry-run previews prerequisites, and non-interactive invocations fail with usage error rather than hanging.",
+          "summary": "Sprint 39 performance CLI additions fully satisfy contract-cli-surface. Shape is predictable (`ultraplan sprint \u003cproject\u003e \u003csprint\u003e performance [--dry-run|--yes|status|resume|cancel|recover] [--json]`) with consistent --dry-run/--yes/--json flags, discoverable via sprint --help and dedicated performance help with examples. Help/version exists. Stdout holds only intended result (single JSON envelope on --json, human text otherwise) with progress/diagnostics on stderr (cli-reference line 32). Exit codes are stable (0 success, 2 usage, 3 config, 5 validation/target_missed/blocked, 7 cancelled, 8 stalled/partial) and never return 0 on failure. JSON is explicit, schema_version 1, single document, no log contamination. Config precedence is documented (defaults \u003c workspace \u003c env \u003c flags) with inspectable effective config and Sources map; performance limits are lower-only with table of defaults/hard-maxima/env names and redacted model fields. Lifecycle is centralized via beginDurableCLICommand/finishDurableCLICommand, verification writer fence, and shared operation runner with context propagation/timeout/cleanup. Destructive start/resume require explicit --yes and provide --dry-run that is runtime-free/write-free; cancel/recover are idempotent. Non-interactive mode fails fast with clear error when --yes missing, no TTY hang.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-configuration",
           "applicability": "direct",
-          "summary": "Sprint 39 performance configuration conforms to the Configuration contract. Config precedence remains defaults \u003c ultraplan.yml \u003c ULTRAPLAN_* env \u003c CLI flags with centralized loading in internal/platform/config/config.go:159-186 and explicit ULTRAPLAN_PERFORMANCE_* namespace via performanceEnvOverrides (internal/platform/config/performance.go:42-50). All performance fields are typed (int/float64/duration string parsed to time.Duration) and strictly validated in validatePerformance (performance.go:116-143) rejecting zero/negative, upward (\u003edefault), malformed, overflowed and non-finite CV, validated at Load and at command preflight in internal/app/sprint_commands.go:98-102 before side effects. Durable config remains compatible: new performance section has safe built-in defaults (performance.go:34-35) and Defaults() populates them so old ultraplan.yml without the section loads unchanged. Secrets remain separated: planning.performance_model is redacted via Sensitive/RedactValue and tested in config_test.go:87-112, performance limits contain no secrets and are allowlisted in Redacted. Required config fails fast via Validate/performanceSettings before run control acceptance. Effective non-secret config and sources remain inspectable (Sources map populated for every performance.* field, exposed via config show).",
+          "summary": "Sprint 39 adds explicit typed performance configuration through centralized platform/config with documented precedence defaults \u003c workspace ultraplan.yml \u003c ULTRAPLAN_ env \u003c CLI. Defaults under internal/platform/config/performance.go:34-35 with lower-only ceilings validated in config:116-142 and platform/config/performance.go:116-142 fail closed before work (CFG-START-001). All ULTRAPLAN_PERFORMANCE_* variables are ULTRAPLAN_ namespaced and enumerated via EnvOverrides config:123-157 and performanceEnvOverrides performance.go:42-49, owner settings module (CFG-SOURCE-001). Typed parsing (strconv.Atoi/ParseFloat/time.ParseDuration) and range/lower-only checks cover malformed, zero, negative, overflow, NaN/Inf with tests config_test.go and performance_test.go (CFG-TYPE-001). Additive defaults keep old ultraplan.yml without performance section valid via Defaults config:188-196, no silent reinterpretation (CFG-COMPAT-001). Secrets redacted via RedactValue Sensitive check and redactPlanning redaction.go:62-79 for planning.performance_model/variant, safe allowlisted Redacted export (CFG-SECRET-001/CFG-PUBLIC-001). Effective non-secret limits and Sources exposed via PerformancePrepareResult/Limits, LimitSources, docs/configuration.md:324-364 table and performanceSummaryForSprint inspection (CFG-OBS-001). No hidden env reads, no raw string logic reuse, no insecure defaults (CFG-ENV-001).",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-documentation",
           "applicability": "direct",
-          "summary": "Performance stage documentation is comprehensive and aligned: docs/architecture.md adds verification-owned performance ordering/ownership, docs/cli-reference.md and docs/user-guide.md document the exact `performance --dry-run/--yes/status/resume/cancel/recover` surface with realistic examples, docs/configuration.md documents lower-only performance model/limits and env overrides, docs/phase3-json-schemas.md versions private performance-state.json/flow v4 and public DTOs without leaking raw evidence, docs/recovery.md provides stale/resume/recover/cleanup-uncertain runbook, and docs/local-web.md documents server-rendered workbench and versioned /performance endpoints. Workspace prompts/create-requirements.md prohibits invented thresholds. No conflicting source-of-truth, no stale generated docs, and examples match implemented argv parsing.",
-          "findings": [
-            {
-              "id": "DOC-PUBLIC-001-config-performance-table",
-              "severity": "low",
-              "applicability": "direct",
-              "title": "Performance operational limits lack explicit defaults/max table",
-              "detail": "docs/configuration.md performance section (324-342) states limits are exposed by CLI-reference names and are lower-only, but unlike the qa.* table (368-423) it does not enumerate the V1 defaults, hard maxima, or env var mapping table. Operators must read code to discover values like warmups=2/5, sample_ceiling=100, cv_percent 5/10, commands 128/256, etc., reducing discoverability for config validation (DOC-PUBLIC-001/DOC-OPS-001).",
-              "action": "Add a concise table mirroring the qa table listing each performance.* key, ULTRAPLAN_PERFORMANCE_* env var, built-in default and immutable hard maximum as defined in internal/platform/config/performance.go DefaultPerformance/MaxPerformanceLimits, with note that requirements-owned Samples gate admission when ceiling is lowered.",
-              "citations": [
-                {
-                  "path": "target/docs/configuration.md",
-                  "startLine": 324,
-                  "endLine": 342
-                }
-              ]
-            },
-            {
-              "id": "DOC-ARCH-001-performance-rationale",
-              "severity": "low",
-              "applicability": "direct",
-              "title": "Architecture section describes result without explicit alternatives/trade-offs",
-              "detail": "docs/architecture.md 262-289 correctly assigns activation to internal/project, sole target authority to requirements.md, closed go-benchmark-v1/ultraplan-json-v1 descriptors, and private immutable evidence, but does not record why closed descriptors/frozen manifest were chosen over runtime-authored commands or the consequence of that choice, which DOC-ARCH-001 expects for a new verification phase. The full trade-off is in sprint reasoning, but the durable architecture doc should retain a 2-3 line ADR pointer.",
-              "action": "Append to the Requirements-driven performance verification section a brief decision note: context (untrusted runtime cannot choose argv/parser), decision (closed descriptors, manifest frozen before warmup), alternatives rejected (shell/free-form commands, runtime-selected parser), consequences (Go-only V1, requires code change for new runners). Reference sprint reasoning for detail.",
-              "citations": [
-                {
-                  "path": "target/docs/architecture.md",
-                  "startLine": 262,
-                  "endLine": 289
-                }
-              ]
-            }
-          ]
+          "summary": "All 7 documentation requirements satisfied for the optional performance verification phase. Architecture decision context with trade-offs recorded, public CLI/config/artifact/API surfaces documented across architecture, cli-reference, configuration, user-guide, local-web and phase3-json-schemas, operational recovery documented, examples verified and minimal, no generated-doc drift or agent-doc contradictions observed.",
+          "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-errors",
           "applicability": "direct",
-          "summary": "Performance phase implements deterministic admission, writer-fenced atomics and explicit terminal outcomes, but violates Error contract in code stability, shape and persistence classification: CLI collapses all performance failures to one code, domain errors use free-form sentences without stable category.reason codes, persistence errors are generic fmt.Errorf, and a deferred isolation cleanup can swallow failures.",
-          "findings": [
-            {
-              "id": "ERR-CODE-001-perf-generic-code",
-              "severity": "high",
-              "applicability": "direct",
-              "title": "Performance CLI collapses distinct failures into single code",
-              "detail": "sprint_commands.go write() for performance always emits code \"performance.failed\" regardless of whether the cause is validation, dependency timeout, persistence conflict, process cleanup uncertainty, or admission block. This violates ERR-CODE-001 (stable machine-usable codes, no catch-all) and ERR-SHAPE-001/ERR-IO-001 which require stable category-aligned codes preserved through CLI/JSON boundaries. QA path correctly maps qa.\u003ccategory\u003e codes; performance path does not.",
-              "action": "Replace the catch-all with stable codes such as performance.validation.missing_prereq, performance.dependency.cleanup_uncertain, performance.data.conflict, performance.workflow.blocked and populate OperationError.category/code/retryable per ERR-SHAPE-001. Map them through the same stableCommandError/stableQACommandError pattern used for QA.",
-              "citations": [
-                {
-                  "path": "target/internal/app/sprint_commands.go",
-                  "startLine": 945,
-                  "endLine": 948
-                }
-              ]
-            },
-            {
-              "id": "ERR-CODE-001-free-form-domain-errors",
-              "severity": "high",
-              "applicability": "direct",
-              "title": "Domain and dependency errors use sentences as codes",
-              "detail": "internal/sprint performance errors are created with free-form sentences (\"benchmark output was truncated\", \"performance process cleanup is uncertain\", \"invalid performance attempt ID\", \"performance is disabled for this project\") via fmt.Errorf. ERR-CODE-001 forbids sentences/exception names as codes and requires {category}.{reason} stability. ERR-DEP-001 and ERR-DATA-001 also require classified subcodes with timeout/retry semantics and distinct persistence vs not-found signals, which are lost.",
-              "action": "Introduce typed performance error constructors (e.g., NewPerformanceError with Category performance/dependency/timeout/data/workflow) or wrap with sentinel errors and use errors.As at boundaries. Ensure dependency (process/runner) and persistence failures emit distinct codes and retryable flags per ERR-DEP-001/ERR-DATA-001.",
-              "citations": [
-                {
-                  "path": "target/internal/sprint/performance_measure.go",
-                  "startLine": 32,
-                  "endLine": 35
-                },
-                {
-                  "path": "target/internal/sprint/performance_state.go",
-                  "startLine": 286,
-                  "endLine": 290
-                },
-                {
-                  "path": "target/internal/sprint/performance.go",
-                  "startLine": 212,
-                  "endLine": 224
-                }
-              ]
-            },
-            {
-              "id": "ERR-CORE-001-swallowed-cleanup",
-              "severity": "blocker",
-              "applicability": "direct",
-              "title": "Deferred isolation cleanup can swallow failure",
-              "detail": "RunPerformance defers `if isolationActive { _ = isolation.cleanup() }` discarding the returned error. If the function returns via the success path while isolation is still active (interrupt, panic, early return not through finishFailure), cleanup uncertainty is lost. This violates ERR-CORE-001 (no failure may disappear, must emit structured failure and explicit terminal state) and ERR-DATA-001/ERR-TASK-001 which require cleanup proof and explicit blocked/cleanup_uncertain outcome.",
-              "action": "Do not discard cleanup error. Join it into the return error, set outcome to cleanup_uncertain, and emit a structured diagnostic. Ensure every exit path either proves cleanup or records cleanup_uncertain as the existing finishPerformanceFailure helper does.",
-              "citations": [
-                {
-                  "path": "target/internal/sprint/performance.go",
-                  "startLine": 346,
-                  "endLine": 350
-                }
-              ]
-            },
-            {
-              "id": "ERR-DATA-001-unclassified-persistence",
-              "severity": "high",
-              "applicability": "direct",
-              "title": "Performance persistence failures not distinct from not-found",
-              "detail": "PerformanceStore.publishBytes/PublishJSON return generic fmt.Errorf(\"publish performance %s: %w\") and ReadBytes checks `hashBytes != digest` with the same generic message. Errors do not carry distinct category (data.integrity vs data.connectivity vs not-found) and the caller cannot distinguish storage outage from missing rows, violating ERR-DATA-001 which requires separate mapping, entity IDs and explicit write-confirmation failure distinct from not-found.",
-              "action": "Use the same QAError taxonomy for performance store (e.g., data.conflict, data.integrity, data.not_found) or introduce PerformanceError with Category data and preserve entity id (attemptID/name) and operation. Ensure callers preserve code/category through translation per ERR-TRANS-001.",
-              "citations": [
-                {
-                  "path": "target/internal/sprint/performance_state.go",
-                  "startLine": 286,
-                  "endLine": 338
-                }
-              ]
-            }
-          ]
+          "summary": "Sprint 39 performance stage adds new failure surfaces (policy/target validation, benchmark authoring, isolation/process execution, measurement qualification, optimization, persistence and recovery) and preserves errors contract: fatal prerequisites block before durable work, bounded retry, distinct persistence/integrity checks, writer-fenced atomic publication, immutable evidence, redaction of models/secrets and allowlisted environment, stable CLI/JSON error envelopes and operation boundary mapping, and explicit terminal outcomes without swallowed failures.",
+          "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-llm-evaluation-cost-safety",
           "applicability": "direct",
-          "summary": "Sprint 39 adds two LLM behaviors (bounded benchmark authoring and one-miss-at-a-time optimization) directly governed by this contract. Evaluation scope is defined via versioned prompts (performanceAuthoringPrompt, performanceOptimizationPrompt) bound to frozen target packet/manifest digests and explicit expected improvement (closed go-benchmark-v1/ultraplan-json-v1 descriptors) with regression-stable behaviors (isolated copies, product-owned comparison, correctness-first). Regression sets exist for structured-output validity and edge cases (ambiguous/truncated Go benchmark and JSON envelope, identity/digest drift, zero-mean, CV qualification, scope allowlist). Tool safety is deny-by-default with explicit allowlist (read/list/search/glob/write/edit/patch allow, bash/shell deny) and post-run actual-diff validation (new _test.go/testdata/performance only, no existing file mutation, symlink/executable checks, changed-file/byte bounds, full correctness gate before promotion). Cost/latency drivers are finite and observable via lower-only Performance limits (AuthoringAttempts 2/4, OptimizationAttempts 2/4, Warmups 2/5, Commands 128/256, WallTime 60m/120m, stdout/stderr 256KiB/1MiB, ProfileBytes 2MiB/8MiB, ProposalBytes 512KiB/2MiB, ChangedFiles 12/32, Cycles 4/8) persisted as Counters/Deadline and exposed via Prepare/Status DTOs. Model selection is stage-specific planning.performance_model/variant with fallback to primary/default and env override ULTRAPLAN_PERFORMANCE_MODEL, lower-only validated, not silently changed. High-impact mutation requires explicit --yes confirmation before durable acceptance plus automated guardrails (frozen manifest/benchmark digest, digest-bound apply journal with preimage, strict improvement and already-met regression checks, exactly-one terminal result). Eval data is synthetic requirements-owned targets, no user PII committed.",
+          "summary": "Performance stage adds two LLM-backed behaviours (benchmark authoring and isolated optimization) using new prompts, model selection (planning.performance_model/variant), structured descriptor markers and JSON envelope. EVAL-SCOPE-001 is satisfied via bounded frozen target packet and explicit evaluation rationale in reasoning/planning; EVAL-REG-001 via regression fixtures for target parsing, descriptor validation, output parsing and qualification; EVAL-DATA-001 not triggered (no user-content eval datasets, synthetic benchmarks only); EVAL-SAFETY-001 satisfied by deny-by-default tool policy (read/list/search/glob/write/edit/patch allow, bash/shell deny), disposable-copy isolation, allowlisted paths, executable-bit and symlink checks, byte/file limits and product-owned promotion; EVAL-COST-001 satisfied by finite defaults with immutable maxima, lower-only workspace/env overrides, wall_time/command_timeout/cleanup_reserve and attempt/cycle/command counters persisted across resume; EVAL-MODEL-001 satisfied by stage-specific model configuration with fallback to primary/default and lower-only validation; EVAL-HUMAN-001 satisfied by correctness-first gates, qualification and strict-improvement checks before promotion, with model prose never determining pass/fail. No prompt-injection or arbitrary tool execution paths were found.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-llm-runtime",
           "applicability": "direct",
-          "summary": "Sprint 39 adds explicit LLM-backed runtime use for benchmark authoring (PreparePerformanceManifest) and optimization proposals (optimizePerformance). Both paths use shared platform runtime substrate (internal/platform/runtime + internal/platform/process) while product prompts, tool policy, validation and promotion remain in internal/sprint; lifecycle, bounded retry budgets and inspectable state via PerformanceState/PerformanceResult + runcontrol verification fencing; and operational exposure via internal/app (sprintService/operation_runner + CLI). Tool execution is via explicit Policy.Tools bundles (read/list/search/glob/write/edit/patch allow, bash/shell deny) and all model output validated locally (DiscoverPerformanceManifest, validatePerformanceAuthoringChanges/OptimizationScope, runPerformanceCorrectness, Measure/Qualify/Compare) with isolated disposable copies. Prompts are constructed via Service.runtimeRequest which assigns stable PromptRef {ID sprint.performance, Version 1, OwnerKind sprint, OwnerID project/sprint, Checksum} propagated in Metadata trace_id/prompt_id/prompt_version/prompt_checksum. No structured output is trusted without local validation, no hidden retries/cancellation, and no transport-direct runtime access. Cost/latency bounded via PerformanceLimits and counters; deeper provider token metadata flows via canonical pruntime/observability surfaces. No rejection-criteria violation found; fake-runtime and deterministic integration tests provide proportionate evaluation for this change, with gated real-runtime dogfood explicitly deferred per execution-handoff.",
+          "summary": "Performance stage adds LLM-backed behavior via two bounded prompts (benchmark authoring and optimization) through the shared generic runtime boundary. Both use `Service.runtimeRequest` which assigns stable `prompt_id`/`prompt_version`/`prompt_checksum`/`trace_id` and propagates them in request metadata, preserving version observability (LLM-PROMPT-001). Tool budgets are explicit allowlists (`read/list/search/glob/write/edit/patch=allow`, `bash/shell=deny`) in `performance_authoring.go:71` and `performance_optimize_runtime.go:149`; product validation owns scope, correctness and promotion. Structured output is not trusted - descriptors, markers and JSON envelopes are validated locally (`ValidatePerformanceDescriptor`, `DiscoverPerformanceManifest`, `ParsePerformanceOutput` with `DisallowUnknownFields` and digest checks). Lifecycle is explicit via verification phases, durable run/attempt IDs, deadlines and fenced publication in `internal/sprint/performance.go` and `performance_types.go`; runs/events are durable via runcontrol/durable operations and exposed through app use cases (`internal/app/operation_runner.go`, `sprint_commands.go`). No new dedicated transport, telemetry, or substrate mixing introduced; token/cost/latency remains delegated to agentwrap/platform runtime metadata where available.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-observability",
           "applicability": "direct",
-          "summary": "Performance phase (Sprint 39) adds verifiable observability: structured admission/status/result DTOs, durable writer-fenced terminal states (passed/passed_with_reports/target_missed/blocked/stalled/cancelled/cleanup_uncertain), correlation propagation via VerificationWriterToken (run_id/operational_attempt_id/fencing_generation + performance_attempt_id), bounded diagnostics (Prepare/Status/Evidence with freshness reasons, consumed/limits, blocker, next_action), and explicit secret redaction via allowlisted environment and config redaction. Failures are not swallowed; no hidden debug or health-optimism detected.",
+          "summary": "Sprint 39 performance stage directly triggers observability contract (new failure paths, owned async work, runtime/process integration, diagnostics). Implementation satisfies all 8 requirements: failures emit stable performance.\u003creason\u003e codes via sprint.ClassifyPerformanceError/AsPerformanceError mapped to OperationError and HTTP error codes (operations:1094, sprint_commands:941, operation_runner:166, handlers:1162); correlation survives via VerificationWriterToken RunID/OperationalAttemptID/FencingGeneration plus PerformanceAttemptID/TargetID/Cycle propagated through Prepare/Run/Status/Evidence and durable operation bridge; PreparePerformance preflight reports Ready/Missing truthfully including isolation, execute evidence and worktree cleanliness without masking degraded state; diagnostics are centralized through PerformanceStatus/Prepare/Evidence, performance.md, performance-state.json and flow summary exposed via app/web/CLI/TUI; debug/progress stays channel-safe (stderr vs stdout JSON) with allowlisted env and redaction of models; owned work has explicit terminal outcomes (passed, passed_with_reports, target_missed, blocked, stalled, cancelled, cleanup_uncertain) and phase terminal with attempt identity; high-severity signals are machine-usable stable codes; PII/sensitive data excluded from public DTOs and evidence metadata (size/digest/path only). No blocking deviation found.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-performance",
           "applicability": "direct",
-          "summary": "Sprint 39 adds explicit performance expectations via PerformanceLimits (target/performance_types.go:111-139, config/performance.go:34-36) with finite defaults and immutable maxima validated in ValidatePerformanceLimits. Expensive work is bounded: benchmark discovery limited to 10000 test files (performance_discovery.go:48-52), evidence scans capped at 4096 entries and 128 MiB records (performance_state.go:18-99), measurements serial with warmups+samples bounded by SampleCeiling/CVPercent and CommandTimeout (performance_measure.go:207-216, performance_benchmark.go:107-113), optimization cycles/commands/bytes gated by ValidatePerformanceOptimizationScope and neededCommands stall check (performance_optimize.go:118-133, performance_optimize_runtime.go:58-71). Concurrency is serialized under mutation fencing and structured isolation with proven cleanup (performance.go:225-352, performance_isolation). Profiling precedes optimization via PerformanceProfileRequest/profile.json per cycle (performance_benchmark.go:124-149, performance_optimize_runtime.go:86-136) and strict improvement with regression checks before promotion. Caching is digest-bound with freshness invalidation, not stale reuse (performance.go:157-204). Provider cost is bounded by AuthoringAttempts/OptimizationAttempts/WallTime and exposed via counters/limits in state and UI (performance_types.go:133-138, performance_state.go:375-452, sprint.html:46-55). UI rendering is server-side bounded pagination (evidence_page_size 50/200) with native details, no heavy bundles.",
+          "summary": "Sprint 39 implements the optional performance verification phase strictly within Performance Contract bounds. All expensive work is bounded via typed limits (target_rows, commands, samples, bytes, timeouts, wall_time, retained_attempts, evidence_page_size) with finite defaults and immutable maxima validated in product code. Measurement is serial and evidence-driven (profile-before-optimization per unit), concurrency is owned/isolated via disposable copies and process-tree cleanup with cancellation propagation, UI adds only server-rendered bounded metadata with pagination/details and no heavy bundles, caching is avoided in favor of digest-bound freshness (no stale-as-authoritative), and provider runtime cost drivers are exposed via counters (commands/warmups/samples/cycles/runtime_attempts) and bounded attempt accounting.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-persistence-and-migrations",
           "applicability": "direct",
-          "summary": "Persistence and migration contract is directly triggered: Sprint 39 adds FlowState v4, PerformanceState, PerformanceResult and immutable attempt evidence under verification/performance/attempts. Ownership is explicit (internal/sprint for FlowState/performance-state/performance.md, internal/project for activation policy, internal/runcontrol for operational lifecycle) and documented in docs/architecture.md:262-288. Migrations are ordered and safe: domain.go:10-13 defines 4/3/2/1 with LoadFlowState state.go:28-38,56-91 handling Previous/Older/Legacy via migrateFlowStateV2/V1, ValidateFlowState strict schemaVersion check and DisallowUnknownFields/trailing-data rejection, additive optional Performance field preserves compatibility. Atomic boundaries are explicit: state.go:291-323 and sprint/qa_state.go:1119-1239 use same-directory temp file, 0700 dirs/0600 files, Sync+Rename/Link, syncDir, and BeforeRename fence recheck; PerformanceStore.publishBytes performance_state.go:286-338 enforces fence before write and before rename, immutable Link with conflict detection, and ordered publication performance.go:485-512 (immutable result -\u003e performance.md -\u003e performance-state.json -\u003e flow-state.json) with RecoverPerformance 713-790 for reconciliation. Integrity enforced at storage layer: validatePerformanceState 375-448 and validatePerformanceFlowSummary 411-428 check schemaVersion, identity regex, digest fingerprint, limits/counters bounds, phase enums, path containment (resolveSprintContained + basename verification check), size bounds (128MiB hard limit) and no-follow symlink checks; Load paths use LimitReader and digest mismatch rejection. Reads are bounded: EvidencePage 71-148 validates limit 1..200, scans walkDir capped at 4096 entries, paginated via cursor+filter with NextCursor, sort+limit, per-record Lstat/size/hash checks, and PruneTerminalAttempts 150-218 retains only newest N (1..8) terminal attempts never deleting current. Derived store declared: FlowState.Performance is materialized summary with StatePath/StateDigest pointers validated in ValidateFlowState, source of truth remains PerformanceState/result/packet/manifest, freshness computed in PerformanceStatus 137-209 with digest-bound reasons and staleness invalidation, docs/architecture.md declares fallback. Fixtures isolated under internal/testdata/performance/states.json used only by tests, not seeded in production. Recovery for risky changes: QA publish snapshot/restore qa_state.go:640-650, RecoverPerformance compensates apply-journal via private preimages without inferring success, and unsupported schema returns ErrFlowStateUnsupported. No rejection criteria triggered.",
+          "summary": "Sprint 39 adds explicit durable performance schema owned by internal/sprint (PerformanceStore, PerformanceState, PerformanceFlowSummary) + internal/project (policy). Ownership and authoritative vs derived meaning documented in docs/architecture.md:262-295. Migrations bump FlowState schema 3-\u003e4 with ordered compatibility handling in LoadFlowState/SaveFlowState, preserving nil Performance for old states and validating contained digest-bound pointers. Atomic boundaries explicit via same-directory temp+fsync+rename (SaveFlowState) and privateImmutableWrite (os.Link) / privateAtomicWrite for immutable/mutable records with writer-fence check before every write and BeforeRename. Integrity enforced at storage layer: strict JSON DisallowUnknownFields+trailing check, validFingerprint/digest mismatch, ValidatePerformanceState/ValidatePerformanceLimits/counters/text bounds, regex for attempt IDs. Bounded reads: EvidencePage limits limit to MaxPerformanceLimits().EvidencePageSize (200), scan cap 4096, size cap 128 MiB, attempt-scoped; PruneTerminalAttempts bounded retain. Derived Performance flow summary declares source-of-truth as immutable result/packet/manifest, freshness via PerformanceFreshness digests and Rebuild on PerformanceStatus, no authoritative treatment. Fixtures under internal/testdata/performance/states.json are test-only, not production. Recovery conservative: ordered publication result-\u003eperformance.md-\u003estate-\u003eflow, RecoverPerformance only re-publishes from immutable result or compensates via journaled preimage, stale-writer fencing, protected-current retention, capture/restore for QA canonical files. No contract violations found.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-security",
           "applicability": "direct",
-          "summary": "Security contract satisfied for performance stage. Input validation strict at boundaries (requirements table, project policy, descriptor manifests) with bounded sizes, strict schema and unknown-field rejection. Injection prevented via explicit argv `pprocess.Request{Executable:\"go\"}` with closed descriptor allowlist and denied shell (`bash`/`shell: deny`) in runtime tool policy. File/path access constrained via `resolveSprintContained`, `performanceNoFollow`, no-follow symlink checks, `..`/`absolute` rejection, private 0700/0600 storage and isolated disposable copies. Secrets never hardcoded/logged: `internal/platform/config/redaction.go` redacts models/planning, performance DTOs omit raw samples/output/profiles/patches/prompts/payloads/env, allowlisted env only. Dependencies intentional (no new external deps), network bounded (allowlisted env, timeouts), deserialization restricted (DisallowUnknownFields, trailing-data check), defaults fail-closed (disabled by default, lower-only limits, stale writer fence).",
+          "summary": "Sprint 39 performance stage was reviewed against SEC-AUTHN/AUTHZ/INPUT/INJECT/SECRETS/DEPS/FILES/NET/DESER/DEFAULT. No security violations found. Input validation is strict at all boundaries (ParsePerformanceTargets with fenced-block/comment/blockquote exclusion and exact 9-column header, parsePerformancePolicy rejecting duplicate/unknown/invalid modes, ValidatePerformanceDescriptor/PackageLocator/Symbol checks, ValidatePerformanceManifest coverage/digest, ValidatePerformanceLimits with lower-only maxima and finite checks, validatePerformanceOperationRequest bounds on cursor/filter/limit, ValidatePerformanceState with DisallowUnknownFields and trailing-data checks). Injection is prevented: all subprocess execution uses explicit argv via pprocess.Request (PerformanceProcessRequest at target/internal/sprint/performance_benchmark.go:107-121, PerformanceProfileRequest) with fixed executable \"go\" and allowlisted env (allowPerformanceEnvironment at 151-164 allowing only PATH/HOME/TMPDIR/LANG/LC_ALL/GOCACHE/GOMODCACHE/GOMAXPROCS, sorted), no shell interpolation. File/path access is constrained: PerformanceAttemptRelPath/CycleRelPath regex validation, resolveSprintContained + performanceNoFollow symlink/no-escape checks (performance_state.go:498-515), EvidencePage symlink/regular-file checks and scan limits. Secrets are not hardcoded/logged: env allowlist prevents forwarding, Redact in internal/platform/config/redaction.go:73-74 redacts planning.performance_model/variant, private 0700/0600 writes. Deserialization uses safe JSON with DisallowUnknownFields (LoadPerformanceState, parsePerformanceJSONValue). Defaults fail closed: missing Performance Policy =\u003e disabled (internal/project/domain.go / index.go:84), disabled flow performs no writes. No new dependencies introduced. Outbound work is bounded by timeouts (CommandTimeout/WallTime/CleanupReserve validated positive and ≤ maxima).",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-testing",
           "applicability": "direct",
-          "summary": "Sprint 39 directly satisfies Testing contract: domain and use-case logic have deterministic unit coverage (project policy, target parsing, comparison, limits, descriptor validation, qualification, isolation), wiring/persistence has integration coverage via fake process/isolated workspaces and a full durable workflow scenario (Prepare -\u003e Run -\u003e recovery/resume with digest-bound atomic writes, fencing, private 0600 evidence, and flow-state projection), failure paths are explicitly tested (invalid rows, pseudo-sections, ambiguous/truncated output, noisy/zero-mean samples, immutability conflicts, stale writers, protected-path allowlists), seams are public (WithProcessRunner, WithVerificationWriterFence, pprocess.Runner, IsolationWorkspace, performanceLimits injection) with fake runners, determinism is preserved (exact decimal/median/CV, serial warmups, stable ordering) and race gates are exercised (execute.md reports go test -race ./... passed), public CLI/DTO contracts have compatibility/fixture tests (performance argument rejection, DTO omission of raw samples/profiles/patches, 17-state canonical fixture family), critical journeys have an e2e scenario (TestRunPerformancePublishesOneCurrentNoChangeResult). Real-dependency smoke for runtime-backed paths is explicitly deferred by user direction in execute.md/plan and not misrepresented as fake coverage.",
-          "findings": []
+          "summary": "Sprint 39 adds extensive testing for performance policy/target parsing, normalization, descriptor/manifest freezing, measurement/qualification, and private persistence. TEST-SEAM-001 satisfied via constructor injection (WithVerificationWriterFence, WithProcessRunner, WithClock) and fake runners; TEST-UNIT-001 satisfied via focused table tests; TEST-INT-001 satisfied via integration tests exercising atomic writes, permissions, fencing and full RunPerformance flow; TEST-FAIL-001 and TEST-DET-001 satisfied via explicit negative cases, exact median/CV, and serial fake-process verification. TEST-SMOKE-002 real-dependency smoke and TEST-MIGRATION-001 migration verification are explicitly deferred or absent, otherwise contract is met.",
+          "findings": [
+            {
+              "id": "TEST-SMOKE-002-deferred-real-runtime",
+              "severity": "medium",
+              "applicability": "direct",
+              "title": "Real-dependency smoke for performance runtime deferred — only fake-runtime coverage executed",
+              "detail": "Performance introduces critical runtime/provider-backed paths (bounded benchmark authoring and optimization proposals via Agentwrap/OpenCode). TEST-SMOKE-002 requires at least one real-dependency smoke verifying lifecycle/persistence beyond cosmetic output, or an explicit justified deferral. Implementation tests use only fake process/runtime doubles and execution explicitly defers the gated dogfood. Deferral is documented but leaves the required real-runtime contract unverified for this sprint.",
+              "action": "Run the gated real-runtime dogfood required by requirements AC-11/Technical Requirements (one required absolute target, one required baseline-relative target, one report/baseline target, rejected functional regression, contained accepted improvement or truthful non-acceptance) and link the run; or keep the explicit blocked deferral and prevent promotion until Sprint 40 dogfood.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/performance_service_test.go",
+                  "startLine": 82,
+                  "endLine": 89
+                },
+                {
+                  "path": "target/internal/sprint/performance_benchmark_test.go",
+                  "startLine": 233,
+                  "endLine": 251
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/39-performance-stage/execute.md",
+                  "startLine": 51,
+                  "endLine": 56
+                },
+                {
+                  "path": "projects/ultraplan-go/sprints/39-performance-stage/requirements.md",
+                  "startLine": 227,
+                  "endLine": 229
+                }
+              ]
+            },
+            {
+              "id": "TEST-MIGRATION-001-flow-v4-coverage",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "FlowState v4 (performance projection) migration lacks dedicated forward-compatibility verification",
+              "detail": "FlowState schema was bumped to version 4 to add optional performance projection. Persistence contract requires forward/compatibility verification with realistic seed data. Migration code exists (migrateFlowStateV2 handling Previous/Older -\u003e Current) but no dedicated test exercises loading a v3/v2/v1 file containing review/smoke/QA/repair and asserting performance=nil, fresh, and digest-bound pointer validation. PerformanceState itself is v1-only with no downgrade/compatibility case.",
+              "action": "Add a migration fixture test loading real v3/v2 flow-state.json seed, decode via LoadFlowState, assert SchemaVersion==4, performance nil, validation passes, and round-trip save/load preserves pointer safety; add PerformanceState unknown-field/trailing-JSON and digest-mismatch fixtures beyond happy path.",
+              "citations": [
+                {
+                  "path": "target/internal/sprint/state.go",
+                  "startLine": 10,
+                  "endLine": 13
+                },
+                {
+                  "path": "target/internal/sprint/state.go",
+                  "startLine": 28,
+                  "endLine": 31
+                },
+                {
+                  "path": "target/internal/sprint/state.go",
+                  "startLine": 168,
+                  "endLine": 174
+                },
+                {
+                  "path": "target/internal/sprint/performance_state.go",
+                  "startLine": 282,
+                  "endLine": 310
+                }
+              ]
+            },
+            {
+              "id": "TEST-CONTRACT-001-cli-json-golden",
+              "severity": "low",
+              "applicability": "direct",
+              "title": "Public CLI/API contract compatibility lacks golden output regression for performance commands",
+              "detail": "TEST-CONTRACT-001 requires compatibility tests for stable request/response shapes, exit codes, and public CLI output when public surfaces change. New surface ultraplan sprint \u003cproject\u003e \u003csprint\u003e performance (dry-run/status/resume/cancel/recover) adds JSON envelopes (schema_version 1) and text modes with distinct exit mapping (target_missed-\u003eExitValidation, cancelled-\u003eExitCancel, etc.). Current coverage validates argument rejection and DTO field presence/absence but provides no golden/compatibility fixture asserting stable JSON envelope, stdout/stderr separation, and exit-code contract that would catch breaking changes.",
+              "action": "Add CLI compatibility fixtures for performance status/dry-run JSON (schema_version, operation, status, result shape, no raw_samples/command_output/profile leak) and text exit-code mapping, using the canonical fixture family already in internal/testdata/performance/states.json.",
+              "citations": [
+                {
+                  "path": "target/internal/app/performance_test.go",
+                  "startLine": 11,
+                  "endLine": 24
+                },
+                {
+                  "path": "target/internal/app/performance_fixtures_test.go",
+                  "startLine": 10,
+                  "endLine": 42
+                },
+                {
+                  "path": "target/docs/cli-reference.md",
+                  "startLine": 612,
+                  "endLine": 627
+                }
+              ]
+            }
+          ]
         },
         {
           "schemaVersion": 1,
           "coverageId": "contract-workflows",
           "applicability": "direct",
-          "summary": "Sprint 39 adds the optional `performance` verification workflow after successful execute and before Conformance Review. The workflow justifies orchestration (frozen target packet, benchmark manifest, isolated baseline, bounded one-miss-at-a-time optimization cycles, final measurement, correctness, publication) and satisfies all WF-* requirements: scope is limited to real multi-step resumable coordination in internal/sprint, engines stay behind app-owned boundaries via sprint.Service and sharedOperationRunner, terminal outcomes are explicit and inspectable via typed phases/outcomes persisted in PerformanceState/PerformanceResult and projected to flow-state and app DTOs, retry/cancellation/timeout are declared through PerformanceLimits and persisted Deadline/Cnt, idempotency is protected by immutable digest-bound publish + writer fencing + durable alias dedup, compensation/reconciliation for the canonical worktree mutation is explicit via apply-journal + preimage compensation + cleanup_uncertain/blocked arbitration, and long-running definitions are versioned (PerformanceSchemaVersion=1, PerformanceParserVersion, PerformanceRunnerVersion, WorkflowDigest) with schema migration for FlowState v4.",
+          "summary": "Performance verification is a legitimate multi-step workflow (admission, frozen manifest, baseline, bounded optimization cycles, final measurement, correctness gate, atomic publication, recovery) and is not used for trivial logic. Engine details (runcontrol durable operations, fencing, heartbeats) are encapsulated behind app-owned boundaries: internal/sprint/performance.go depends only on VerificationWriterToken func and platform/process, while internal/app/durable_operations.go:16-20,116-158 and operation_runner.go:127-180 own Accept/Dispatch/Finish, fencing, and cancellation routing. Typed, inspectable terminal states (PerformanceRunOutcome/TargetOutcome/Phase in performance_types.go:76-109, validated in performance_state.go:472-478) are persisted in PerformanceState/Result and projected to flow-state, performance.md, CLI/JSON/TUI/browser. Retry/cancellation/timeout limits are explicit in PerformanceLimits (performance_types.go:111-189) and enforced in admission, authoring loop, optimization, deadline contexts, and wall-time checks. Idempotency via immutable digest-bound publishes (performance_state.go:286-337) and operation alias dedup (durable_operations.go:161-164). Compensation/reconciliation is defined and observable via ApplyJournal, reconcilePerformanceJournal (performance.go:843-881), recoverPerformanceApply, and staleness/freshness binding. Versioning via PerformanceSchemaVersion, ParserVersion, RunnerVersion, WorkflowDigest propagated and checked in freshness and validation.",
           "findings": []
         },
         {
           "schemaVersion": 1,
           "coverageId": "handbook",
           "applicability": "direct",
-          "summary": "Implementation fully aligns with Technical Handbook patterns: policy/target parsing and verdict logic remain in internal/project/internal/sprint (performance_benchmark.go:22, performance_targets.go, performance_measure.go:32/107), lifecycle commands are thin wrappers over shared app operations (internal/app/operations.go, internal/app/operation_runner.go), volatile dependencies (process runner, isolation, writer fence, clock) are injected (performance_isolation.go, performance.go), governed targets are strictly separated from lower-only operational limits (internal/platform/config/performance.go:116, internal/sprint/performance_types.go), validation-then-freeze with digest-bound packets/manifests (performance_targets.go, performance_benchmark.go:64), typed PerformanceTargetOutcome/PerformanceRunOutcome facts (performance_types.go), narrow bounded process boundary with explicit argv, allowlisted env (performance_benchmark.go:151), bounded timeouts/output/cleanup (performance_benchmark.go:107, performance_measure.go:216), cancellation propagation with separate CleanupReserve, bounded retention/evidence paging (performance_state.go:18,71), profile-led one-miss-per-cycle optimization (performance_optimize.go:61,78), single bounded DTO projected to CLI/TUI/web, and trust-boundary tests for isolation/fencing/promotion. No handbook anti-patterns detected.",
+          "summary": "Technical handbook is directly applicable to Sprint 39 performance stage. Implementation conforms to all distilled patterns: policy/orchestration stays in internal/project and internal/sprint (target parsing, qualification, comparison, outcomes), thin CLI commands delegate to shared operations in internal/app/operation_runner.go and internal/app/operations.go, volatile dependencies are explicitly injected via Service.With* methods, governed targets are separated from lower-only operational limits in internal/platform/config/performance.go and validated against max defaults, parsing validates full table before freezing packet/manifest digests in internal/sprint/performance_targets.go and performance_benchmark.go, outcomes are typed product facts (PerformanceTargetOutcome/PerformanceRunOutcome) projected as bounded DTOs, external work uses explicit pprocess.Request with fixed argv, allowlisted env, timeout and cleanup, cancellation propagates with dedicated cleanup reserve, bounded retention via PerformanceLimits, profile-led optimization via one-target cycle with PerformanceProfileForUnit, and one bounded fact model shared across CLI, TUI and web. No handbook anti-patterns observed (no shell strings, no missing timeouts, no package-global mutable run state, no context service locator, dry-run remains runtime-free). Trust-boundary tests present in performance_benchmark_test.go, performance_isolation_test.go, performance_targets_test.go.",
           "findings": []
         }
       ]

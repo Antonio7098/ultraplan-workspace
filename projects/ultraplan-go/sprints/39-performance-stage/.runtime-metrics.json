@@ -2,7 +2,7 @@
   "schema_version": 2,
   "project": "ultraplan-go",
   "sprint": "39-performance-stage",
-  "updated_at": "2026-09-06T12:19:06.722335526Z",
+  "updated_at": "2026-09-06T13:11:53.136889723Z",
   "runs": [
     {
       "sequence": 1,
@@ -2774,6 +2774,1240 @@
       "continuation": false,
       "duration_ms": 93172,
       "time_to_first_output_ms": 92906
+    },
+    {
+      "sequence": 38,
+      "stage_sequence": 29,
+      "stage": "review",
+      "coverage": "contract-documentation",
+      "call_id": "opencode-2",
+      "trace_id": "77d2bce859e1c1f1f0c1c9870cb6e20c",
+      "run_id": "opencode-2",
+      "session_id": "ses_f8953775bffe55JVQ7QyetT2yJ",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1201501,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1106075,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 49203
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 137
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1236
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 272497
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 323073
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:23:30.437166101+01:00",
+      "finished_at": "2026-09-06T13:24:25.236330363+01:00",
+      "tool_calls": 9,
+      "tool_calls_by_kind": {
+        "read": 9
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 22,
+      "retained_events": 22,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 73090,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 54799,
+      "time_to_first_output_ms": 54238
+    },
+    {
+      "sequence": 39,
+      "stage_sequence": 30,
+      "stage": "review",
+      "coverage": "contract-architecture",
+      "call_id": "opencode-3",
+      "trace_id": "1e6686cd97d79645fea61a32214f8f19",
+      "run_id": "opencode-3",
+      "session_id": "ses_f895377d0ffeN9a54bNwPOrdY6",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1209048,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1113622,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 22670
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 290
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 902
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 356081
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 379943
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:23:30.440845431+01:00",
+      "finished_at": "2026-09-06T13:24:42.476441943+01:00",
+      "tool_calls": 13,
+      "tool_calls_by_kind": {
+        "grep": 1,
+        "read": 12
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 30,
+      "retained_events": 30,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 93889,
+      "repeated_reads": 0,
+      "search_calls": 1,
+      "continuation": false,
+      "duration_ms": 72035,
+      "time_to_first_output_ms": 71465
+    },
+    {
+      "sequence": 40,
+      "stage_sequence": 31,
+      "stage": "review",
+      "coverage": "contract-configuration",
+      "call_id": "opencode-1",
+      "trace_id": "b43c017cd464a7578104cb1244db74ff",
+      "run_id": "opencode-1",
+      "session_id": "ses_f89537771ffeAI7oFvwc2RCLpN",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1203723,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1108297,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 1196
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 397
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 722
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 353905
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 356220
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:23:30.434836286+01:00",
+      "finished_at": "2026-09-06T13:25:15.820619283+01:00",
+      "tool_calls": 14,
+      "tool_calls_by_kind": {
+        "grep": 2,
+        "read": 12
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 35,
+      "retained_events": 35,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 82514,
+      "repeated_reads": 0,
+      "search_calls": 2,
+      "continuation": false,
+      "duration_ms": 105385,
+      "time_to_first_output_ms": 104601
+    },
+    {
+      "sequence": 41,
+      "stage_sequence": 32,
+      "stage": "review",
+      "coverage": "contract-cli-surface",
+      "call_id": "opencode-5",
+      "trace_id": "10aaa84e8ac341fc89342aecf3e64454",
+      "run_id": "opencode-5",
+      "session_id": "ses_f895376e4ffeYqx7M16Pnaeaop",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1204021,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1108595,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 11819
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 408
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 2712
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 356465
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 371404
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:23:30.455946019+01:00",
+      "finished_at": "2026-09-06T13:25:18.193607116+01:00",
+      "tool_calls": 13,
+      "tool_calls_by_kind": {
+        "grep": 3,
+        "read": 10
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 34,
+      "retained_events": 34,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 77724,
+      "repeated_reads": 0,
+      "search_calls": 3,
+      "continuation": false,
+      "duration_ms": 107737,
+      "time_to_first_output_ms": 107265
+    },
+    {
+      "sequence": 42,
+      "stage_sequence": 33,
+      "stage": "review",
+      "coverage": "contract-llm-evaluation-cost-safety",
+      "call_id": "opencode-6",
+      "trace_id": "f0f677fe51b6d3c106439d65b576aa5f",
+      "run_id": "opencode-6",
+      "session_id": "ses_f89528c02ffednUETXfOaqXKF7",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1202740,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1107314,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 23042
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 360
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1385
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 291697
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 316484
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:24:32.293596255+01:00",
+      "finished_at": "2026-09-06T13:25:34.328202931+01:00",
+      "tool_calls": 8,
+      "tool_calls_by_kind": {
+        "read": 8
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 25,
+      "retained_events": 25,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 65278,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 62034,
+      "time_to_first_output_ms": 61308
+    },
+    {
+      "sequence": 43,
+      "stage_sequence": 34,
+      "stage": "review",
+      "coverage": "contract-llm-runtime",
+      "call_id": "opencode-7",
+      "trace_id": "10a0b4edab28e547f4807aa04e971e3a",
+      "run_id": "opencode-7",
+      "session_id": "ses_f89524a2affeGNPQ814imivFHC",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1216640,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1121214,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 3387
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 333
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1200
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 331377
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 336297
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:24:49.422619534+01:00",
+      "finished_at": "2026-09-06T13:26:07.462400984+01:00",
+      "tool_calls": 14,
+      "tool_calls_by_kind": {
+        "grep": 5,
+        "read": 9
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 33,
+      "retained_events": 33,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 52794,
+      "repeated_reads": 0,
+      "search_calls": 5,
+      "continuation": false,
+      "duration_ms": 78039,
+      "time_to_first_output_ms": 77455
+    },
+    {
+      "sequence": 44,
+      "stage_sequence": 35,
+      "stage": "review",
+      "coverage": "contract-errors",
+      "call_id": "opencode-4",
+      "trace_id": "152882f1125112774b9a2a603f418634",
+      "run_id": "opencode-4",
+      "session_id": "ses_f8953775fffevdY3O3Ai5PKwT3",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1211721,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1116295,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 13502
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 189
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1340
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 368113
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 383144
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:23:30.454921405+01:00",
+      "finished_at": "2026-09-06T13:26:29.8827085+01:00",
+      "tool_calls": 25,
+      "tool_calls_by_kind": {
+        "grep": 13,
+        "read": 12
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 86,
+      "retained_events": 86,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 82021,
+      "repeated_reads": 0,
+      "search_calls": 13,
+      "continuation": false,
+      "duration_ms": 179427,
+      "time_to_first_output_ms": 178125
+    },
+    {
+      "sequence": 45,
+      "stage_sequence": 36,
+      "stage": "review",
+      "coverage": "contract-performance",
+      "call_id": "opencode-9",
+      "trace_id": "91fe9578c2b1028970413448dab2a3a0",
+      "run_id": "opencode-9",
+      "session_id": "ses_f8951bd7cffedHAtDLZMJOEkJH",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1203041,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1107615,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 29176
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 224
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1064
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 316913
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 347377
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:25:24.941454267+01:00",
+      "finished_at": "2026-09-06T13:26:31.738536972+01:00",
+      "tool_calls": 12,
+      "tool_calls_by_kind": {
+        "read": 12
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 31,
+      "retained_events": 31,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 97881,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 66797,
+      "time_to_first_output_ms": 66614
+    },
+    {
+      "sequence": 46,
+      "stage_sequence": 37,
+      "stage": "review",
+      "coverage": "contract-persistence-and-migrations",
+      "call_id": "opencode-10",
+      "trace_id": "7420310fd348468a596ad6a19f03b53f",
+      "run_id": "opencode-10",
+      "session_id": "ses_f89517ffaffeq1E9Q7XD00CBFm",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1204359,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1108933,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 23007
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 436
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 2105
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 311409
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 336957
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:25:41.200540511+01:00",
+      "finished_at": "2026-09-06T13:27:23.204019987+01:00",
+      "tool_calls": 8,
+      "tool_calls_by_kind": {
+        "read": 8
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 33,
+      "retained_events": 33,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 65750,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 102003,
+      "time_to_first_output_ms": 101378
+    },
+    {
+      "sequence": 47,
+      "stage_sequence": 38,
+      "stage": "review",
+      "coverage": "contract-observability",
+      "call_id": "opencode-8",
+      "trace_id": "6257ef6d4a2b02f27c72cdcb9e0ea7b5",
+      "run_id": "opencode-8",
+      "session_id": "ses_f8951c70cffeu2fcOuumPV5QlU",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1205967,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1110541,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 13592
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 366
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1501
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 388337
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 403796
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:25:22.716130273+01:00",
+      "finished_at": "2026-09-06T13:27:39.98866984+01:00",
+      "tool_calls": 25,
+      "tool_calls_by_kind": {
+        "grep": 11,
+        "read": 14
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 68,
+      "retained_events": 68,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 104226,
+      "repeated_reads": 0,
+      "search_calls": 11,
+      "continuation": false,
+      "duration_ms": 137272,
+      "time_to_first_output_ms": 136724
+    },
+    {
+      "sequence": 48,
+      "stage_sequence": 39,
+      "stage": "review",
+      "coverage": "contract-workflows",
+      "call_id": "opencode-13",
+      "trace_id": "d63ec6c329e85f3e22fce240dcf7580b",
+      "run_id": "opencode-13",
+      "session_id": "ses_f89509e8cffecQFOJmvkF3qoGq",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1202038,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1106612,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 13192
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 373
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1394
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 315121
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 330080
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:26:38.383422071+01:00",
+      "finished_at": "2026-09-06T13:27:41.747976545+01:00",
+      "tool_calls": 8,
+      "tool_calls_by_kind": {
+        "read": 8
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 25,
+      "retained_events": 25,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 65063,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 63364,
+      "time_to_first_output_ms": 62703
+    },
+    {
+      "sequence": 49,
+      "stage_sequence": 40,
+      "stage": "review",
+      "coverage": "contract-security",
+      "call_id": "opencode-11",
+      "trace_id": "23f4bada65fe5a926733018ad7029eed",
+      "run_id": "opencode-11",
+      "session_id": "ses_f89510008ffeGCUDXilzEADCBG",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1206984,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1111558,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 22032
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 493
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1603
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 312049
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 336177
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:26:13.88260804+01:00",
+      "finished_at": "2026-09-06T13:27:43.705740509+01:00",
+      "tool_calls": 11,
+      "tool_calls_by_kind": {
+        "read": 11
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 36,
+      "retained_events": 36,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 81781,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 89823,
+      "time_to_first_output_ms": 88939
+    },
+    {
+      "sequence": 50,
+      "stage_sequence": 41,
+      "stage": "review",
+      "coverage": "contract-testing",
+      "call_id": "opencode-12",
+      "trace_id": "1884d8184e8e135adb92024a797be18f",
+      "run_id": "opencode-12",
+      "session_id": "ses_f8950a577ffe9rNvVE2DTJie60",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1205100,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1109674,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 6240
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 1118
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 1474
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 326641
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 335473
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:26:36.862744735+01:00",
+      "finished_at": "2026-09-06T13:28:21.677966522+01:00",
+      "tool_calls": 18,
+      "tool_calls_by_kind": {
+        "grep": 3,
+        "read": 15
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 43,
+      "retained_events": 43,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 84394,
+      "repeated_reads": 0,
+      "search_calls": 3,
+      "continuation": false,
+      "duration_ms": 104815,
+      "time_to_first_output_ms": 104156
+    },
+    {
+      "sequence": 51,
+      "stage_sequence": 42,
+      "stage": "review",
+      "coverage": "handbook",
+      "call_id": "opencode-14",
+      "trace_id": "89143eab602be880fc5965fb85e5b94d",
+      "run_id": "opencode-14",
+      "session_id": "ses_f894fd63fffeCSGt0iS5hH3lmd",
+      "status": "completed",
+      "provider": "opencode",
+      "model": "muse-spark-1.2-contributor-free",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 1230117,
+      "shared_prefix_bytes": 95426,
+      "stage_suffix_bytes": 1134691,
+      "shared_prefix_sha256": "32b168382757bbe129c339acf93e1cb736d9822032f31d61e647f1a865728ca1",
+      "cache_key": "ultraplan-sprint-v1-32b168382757bbe129c339acf93e1cb7",
+      "cache_mode": "stable-prefix",
+      "cache_transport": "agentwrap-metadata-only",
+      "input_tokens": {
+        "known": true,
+        "value": 5779
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 316
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 302
+      },
+      "cache_read_tokens": {
+        "known": true,
+        "value": 290545
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 296942
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "2026-09-06T13:27:30.206892872+01:00",
+      "finished_at": "2026-09-06T13:28:26.723548761+01:00",
+      "tool_calls": 4,
+      "tool_calls_by_kind": {
+        "grep": 1,
+        "read": 3
+      },
+      "tool_call_count_exact": true,
+      "runtime_events": 23,
+      "retained_events": 23,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 3,
+      "distinct_files_read": 0,
+      "read_bytes": 24655,
+      "repeated_reads": 0,
+      "search_calls": 1,
+      "continuation": false,
+      "duration_ms": 56516,
+      "time_to_first_output_ms": 55936
+    },
+    {
+      "sequence": 52,
+      "stage_sequence": 1,
+      "stage": "qa",
+      "operation": "qa-map",
+      "role": "semantic-mapper",
+      "task": "qa-v1-map-e2c6f49ccca4fe168f1d3542",
+      "qa_attempt_id": "qa-v1-attempt-43e4e9d0af621e8189e8e6f6",
+      "map_id": "qa-v1-map-e2c6f49ccca4fe168f1d3542",
+      "call_id": "runtime-call-52",
+      "trace_id": "7cb17742f9a677ada0effe7f9cf711fc",
+      "status": "cancelled",
+      "provider": "minimax-coding-plan",
+      "model": "MiniMax-M3",
+      "variant": "high",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 516847,
+      "shared_prefix_bytes": 470818,
+      "stage_suffix_bytes": 46029,
+      "shared_prefix_sha256": "cc874686c502fbe06c90f9c42901f2bedd89f905484737ef74c372ed1819d76d",
+      "cache_key": "qa-mapper/5977ecb5a58e0446c2991c3c0fb0fbcdc8438abb5cb976a77c0205d2643fe9d8/minimax-coding-plan/MiniMax-M3/high",
+      "cache_mode": "stable-prefix",
+      "input_tokens": {
+        "known": false
+      },
+      "output_tokens": {
+        "known": false
+      },
+      "reasoning_tokens": {
+        "known": false
+      },
+      "cache_read_tokens": {
+        "known": false
+      },
+      "cache_write_tokens": {
+        "known": false
+      },
+      "total_tokens": {
+        "known": false
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "0001-01-01T00:00:00Z",
+      "finished_at": "0001-01-01T00:00:00Z",
+      "error_category": "cancellation",
+      "error_detail": "validation: cancellation: validation run was cancelled",
+      "tool_calls": 0,
+      "tool_call_count_exact": true,
+      "runtime_events": 4,
+      "retained_events": 4,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "unsupported_tools": 0,
+      "permission_audits": 0,
+      "distinct_files_read": 0,
+      "read_bytes": 0,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false
+    },
+    {
+      "sequence": 53,
+      "stage_sequence": 2,
+      "stage": "qa",
+      "operation": "qa-map",
+      "role": "semantic-mapper",
+      "task": "qa-v1-map-adf41d9bc2eead405c8f0d0a",
+      "qa_attempt_id": "qa-v1-attempt-29a1a22c3d351fa1ebd0b2d8",
+      "map_id": "qa-v1-map-adf41d9bc2eead405c8f0d0a",
+      "call_id": "runtime-call-53",
+      "trace_id": "b32879bf5bd8e0367372d3d0707573d3",
+      "status": "cancelled",
+      "provider": "openai",
+      "model": "got-5.6-sol",
+      "variant": "low",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 516847,
+      "shared_prefix_bytes": 470818,
+      "stage_suffix_bytes": 46029,
+      "shared_prefix_sha256": "cc874686c502fbe06c90f9c42901f2bedd89f905484737ef74c372ed1819d76d",
+      "cache_key": "qa-mapper/5977ecb5a58e0446c2991c3c0fb0fbcdc8438abb5cb976a77c0205d2643fe9d8/openai/got-5.6-sol/low",
+      "cache_mode": "stable-prefix",
+      "input_tokens": {
+        "known": false
+      },
+      "output_tokens": {
+        "known": false
+      },
+      "reasoning_tokens": {
+        "known": false
+      },
+      "cache_read_tokens": {
+        "known": false
+      },
+      "cache_write_tokens": {
+        "known": false
+      },
+      "total_tokens": {
+        "known": false
+      },
+      "turns": {
+        "known": false
+      },
+      "started_at": "0001-01-01T00:00:00Z",
+      "finished_at": "0001-01-01T00:00:00Z",
+      "error_category": "cancellation",
+      "error_detail": "validation: cancellation: validation run was cancelled",
+      "tool_calls": 0,
+      "tool_call_count_exact": true,
+      "runtime_events": 8,
+      "retained_events": 8,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "unsupported_tools": 0,
+      "permission_audits": 0,
+      "distinct_files_read": 0,
+      "read_bytes": 0,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false
+    },
+    {
+      "sequence": 54,
+      "stage_sequence": 3,
+      "stage": "qa",
+      "operation": "qa-map",
+      "role": "semantic-mapper",
+      "task": "qa-v1-map-0ce19d014b123dbd4b9d4d44",
+      "qa_attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "map_id": "qa-v1-map-0ce19d014b123dbd4b9d4d44",
+      "call_id": "opencode-1",
+      "trace_id": "fd0a7fd1d4ba96b3219bdf447470a813",
+      "run_id": "opencode-1",
+      "session_id": "ses_f89292f97ffeNcig1VH1koI6bn",
+      "status": "completed",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "fallback": false,
+      "final_target_index": 0,
+      "sandbox": "read_only",
+      "prompt_bytes": 516847,
+      "shared_prefix_bytes": 470818,
+      "stage_suffix_bytes": 46029,
+      "shared_prefix_sha256": "cc874686c502fbe06c90f9c42901f2bedd89f905484737ef74c372ed1819d76d",
+      "cache_key": "qa-mapper/5977ecb5a58e0446c2991c3c0fb0fbcdc8438abb5cb976a77c0205d2643fe9d8/openai/gpt-5.6-sol/low",
+      "cache_mode": "stable-prefix",
+      "input_tokens": {
+        "known": true,
+        "value": 152245
+      },
+      "output_tokens": {
+        "known": true,
+        "value": 6291
+      },
+      "reasoning_tokens": {
+        "known": true,
+        "value": 254
+      },
+      "cache_read_tokens": {
+        "known": true
+      },
+      "cache_write_tokens": {
+        "known": true
+      },
+      "total_tokens": {
+        "known": true,
+        "value": 158790
+      },
+      "turns": {
+        "known": false
+      },
+      "cost_amount": 1.0449505000000001,
+      "cost_currency": "USD",
+      "cost_estimated": true,
+      "cost_source": "model_priced",
+      "started_at": "2026-09-06T14:09:42.471346176+01:00",
+      "finished_at": "2026-09-06T14:11:48.093543996+01:00",
+      "tool_calls": 0,
+      "tool_call_count_exact": true,
+      "runtime_events": 11,
+      "retained_events": 11,
+      "dropped_events": 0,
+      "runtime_attempts": 1,
+      "warning_count": 0,
+      "permission_mode": "restricted",
+      "permission_default": "deny",
+      "unsupported_tools": 0,
+      "permission_audits": 9,
+      "distinct_files_read": 0,
+      "read_bytes": 0,
+      "repeated_reads": 0,
+      "search_calls": 0,
+      "continuation": false,
+      "duration_ms": 125622,
+      "time_to_first_output_ms": 125185
     }
   ]
 }
