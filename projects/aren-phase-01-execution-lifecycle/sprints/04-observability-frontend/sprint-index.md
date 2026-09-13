@@ -22,10 +22,14 @@ This index is prepared in advance. Before Sprint 4 starts, confirm every named p
 
 | Contract | Why Selected |
 |---|---|
-| Architecture | Governs runtime versus projection authority, process ownership, dependency direction, and the local service boundary. |
-| Errors | Governs structured runtime failures plus transport, schema, connection, and rendering failure truth. |
-| Observability | Governs canonical evidence, diagnostic distinction, correlation, sequence order, passive observation, and cross-view agreement. |
-| Testing | Requires component, contract, browser, accessibility, integration, failure, race, isolation, and bounded-performance evidence. |
+| Aren Development Doctrine | Keeps the frontend a bounded Phase 1 observation slice rather than a dashboard platform, control plane, daemon, or speculative universal observability system. |
+| Aren Runtime Architecture | Governs runtime-versus-projection authority, process ownership, dependency direction, thin local-service boundaries, and the rule that browser code cannot become lifecycle authority. |
+| Aren Execution Lifecycle | Fixes the lifecycle, outcome, failure, timing, and cancellation meanings the browser is allowed to present; the UI may project but not reinterpret them. |
+| Aren Cancellation And Lifetimes | Governs process-scoped service/client support lifetimes, cancellation, shutdown, abandonment, and proof that disconnected observers cannot strand runtime work. |
+| Aren Events Observation And Waiting | Governs canonical history, sequence order, replay/live handoff, cursor semantics, terminal drain, late observation, and delivery limits exposed through the read-only projection. |
+| Aren Verification | Requires interface agreement, real runtime/browser paths, controlled connection schedules, failure explainability, mutation/isolation checks, bounded-performance evidence, and review traceability. |
+| Aren Observability | Primary Sprint 4 evidence contract. Governs canonical-versus-diagnostic distinction, passive observation, DTO/UI projection authority, correlation, retention, failure explainability, sensitive data, and the Phase 1 observability gate. |
+| Aren Performance Engineering | Governs payload/update/rendering bounds, client/resource growth, observation overhead, saturation behaviour, and preservation of the accepted Sprint 3 measurement method and baseline semantics. |
 | Documentation | Governs observation schema, local service, user workflow, accessibility, limitations, and final contract promotion. |
 | CLI Surface | Governs the development command that starts bounded observable scenarios and reports service failures. |
 | Frontend | Governs feature ownership, dependency direction, state placement, typed transport access, component tests, and rendering cost. |
@@ -33,7 +37,6 @@ This index is prepared in advance. Before Sprint 4 starts, confirm every named p
 | API Contracts | Governs the explicit versioned read-only DTO, compatibility, collection bounds, and stable errors. |
 | Privacy And Data | Governs diagnostic and failure payload minimization, redaction, and safe browser presentation. |
 | Security | Governs loopback binding, safe defaults, input bounds, browser transport, and prevention of accidental remote exposure. |
-| Performance | Governs payload and rendering bounds, client concurrency, live update cost, layout stability, and measurement through the Sprint 3 method. |
 
 ## Selected Evidence Reports
 
@@ -73,7 +76,7 @@ The available report catalog does not contain comparative browser information-ar
 | Events and observation | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/04-events-observation-waiting-and-replay.md` | Governs sequence order, replay, late observation, terminal completion, and delivery limits. |
 | Verification and Go correctness | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/05-verification-and-go-correctness.md` | Keeps runtime invariants authoritative across DTO, frontend, and browser tests. |
 
-The amended PRD, roadmap, and observability mandate govern Sprint 4 where the earlier project synthesis is silent about the browser frontend.
+The amended PRD, roadmap, observability mandate, performance document, and active Aren contracts govern Sprint 4 where the earlier project synthesis is silent about the browser frontend.
 
 ## Prior Decisions To Carry Forward
 
