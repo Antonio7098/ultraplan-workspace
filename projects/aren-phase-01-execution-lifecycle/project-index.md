@@ -35,16 +35,19 @@
 
 Contracts are selected per sprint through `sprint-index.md`. Inclusion in this pool does not mean every clause applies to every sprint.
 
+The Aren-specific contracts are the authoritative project narrowing layer. Generic workspace architecture, error, observability, testing, and workflow contracts are intentionally not in the normal Aren pool where their broader application assumptions could force semantics or abstractions that Aren has explicitly deferred.
+
 | Contract | Path | Applies To | Selection Notes |
 |---|---|---|---|
-| Architecture | `system/contracts/core/architecture.md` | Both sprints | Package ownership, dependency direction, thin entrypoints, earned abstractions. |
-| Errors | `system/contracts/core/errors.md` | Both sprints | Cause preservation, failure classification, invariant visibility. |
-| Observability | `system/contracts/core/observability.md` | Lifecycle events and diagnostics | Select only event truthfulness, ordering, and diagnostic requirements relevant to local in-process runs. |
-| Testing | `system/contracts/core/testing.md` | Both sprints | Contract tests, deterministic tests, negative paths, race detection, stress evidence. |
-| Documentation | `system/contracts/core/documentation.md` | Both sprints | Decision context, public behaviour, lifecycle contract promotion. |
-| CLI Surface | `system/contracts/surfaces/cli.md` | Diagnostic CLI work | Apply only to `aren dev run ...` behaviour and exit statuses. |
-| Workflows | `system/contracts/runtime/workflows.md` | Select narrowly | Use only lifecycle, cancellation, terminal-state, and concurrency clauses relevant to one in-process run. Do not import durable workflow requirements. |
-| Performance | `system/contracts/runtime/performance.md` | Concurrency hardening | Select only bounded resource use, leak resistance, and stress expectations. |
+| Aren Development Doctrine | `projects/aren-phase-01-execution-lifecycle/contracts/01-development-doctrine.md` | Both sprints | Select for every Aren sprint. Governs scope, earned abstractions, vertical slices, failure discipline, and real-use-before-broadening. |
+| Aren Runtime Architecture | `projects/aren-phase-01-execution-lifecycle/contracts/02-runtime-architecture.md` | Both sprints | Select for every runtime implementation sprint. Governs authority, ownership boundaries, public surface, thin entrypoints, and concrete-before-interface architecture. |
+| Aren Execution Lifecycle | `projects/aren-phase-01-execution-lifecycle/contracts/03-execution-lifecycle.md` | Both sprints | Governs run identity, state machine, terminal resolution, outcome validity, coherent publication, timing, and invariant visibility. |
+| Aren Cancellation And Lifetimes | `projects/aren-phase-01-execution-lifecycle/contracts/04-cancellation-and-lifetimes.md` | Sprint 2; any sprint with owned asynchronous support | Select when cancellation, parent context integration, support goroutines, or resource release are in scope. Sprint 1 may select it narrowly for owned-lifetime obligations. |
+| Aren Events Observation And Waiting | `projects/aren-phase-01-execution-lifecycle/contracts/05-events-observation-and-waiting.md` | Both sprints | Sprint 1 applies retained history and waiting clauses; Sprint 2 applies the full cursor, replay, live observation, abandonment, and delivery contract. |
+| Aren Verification | `projects/aren-phase-01-execution-lifecycle/contracts/06-verification.md` | Both sprints | Select for every implementation sprint. Governs independent oracles, controlled schedules, negative controls, race detection, release evidence, stress, and real runtime proof. |
+| Documentation | `system/contracts/core/documentation.md` | Both sprints | Decision context, public behaviour, lifecycle contract promotion, and accurate guarantee boundaries. |
+| CLI Surface | `system/contracts/surfaces/cli.md` | Diagnostic CLI work | Apply only to `aren dev run ...` behaviour, output, and exit statuses. |
+| Performance | `system/contracts/runtime/performance.md` | Concurrency hardening or demonstrated resource pressure | Select narrowly for bounded resource use, leak resistance, stress evidence, and measured performance claims. |
 
 ## Available Studies
 
