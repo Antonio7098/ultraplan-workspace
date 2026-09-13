@@ -29,6 +29,8 @@ This index is ready for use after project reasoning receives a passing review. I
 | Aren Cancellation And Lifetimes | Selected narrowly for invocation-carrier ownership, context/resource lifetime, release paths, and truthful boundaries; caller cancellation semantics remain Sprint 2. |
 | Aren Events Observation And Waiting | Applies the Sprint 1 subset for canonical retained history, sequence identity, defensive event publication, and reusable multi-waiter outcome observation. Live cursors and abandonment remain deferred. |
 | Aren Verification | Governs independent transition/outcome oracles, controlled schedules, negative controls, race execution, mutation attacks, release evidence, and real runtime proof. |
+| Aren Observability | Requires the first lifecycle slice to be explainable from structured canonical evidence, keeps diagnostics distinct from truth, and requires observation to remain passive without introducing a telemetry platform. |
+| Aren Performance Engineering | Applies qualitative Phase 1 invariants now: no accidental global serialization, owned runtime-task growth, explainable retention, correctness-before-speed, and evidence before optimization. Sprint 3 owns the formal method and baseline. |
 | Documentation | Requires stable lifecycle behavior and realized decisions to remain inspectable and promotable after review. |
 
 ## Selected Evidence Reports
