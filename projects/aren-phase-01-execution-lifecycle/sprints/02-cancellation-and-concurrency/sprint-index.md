@@ -29,9 +29,10 @@ This index is prepared in advance. Before Sprint 2 starts, confirm that every na
 | Aren Cancellation And Lifetimes | Governs explicit and parent cancellation, first accepted cause, acceptance-before-signal ordering, cancellation dispositions, uncooperative work, goroutine ownership, teardown, and release. |
 | Aren Events Observation And Waiting | Governs canonical history, sequence identity, replay/live handoff, cursor boundaries, observer independence, terminal drain, waiting, and delivery limits. |
 | Aren Verification | Requires deterministic collisions, independent oracles, negative controls, race runs, repeated stress, mutation attacks, release/leak evidence, and real CLI proof. |
+| Aren Observability | Requires cancellation, terminal-resolution, replay, failure, and concurrency behaviour to remain explainable from structured evidence while observers stay passive and diagnostics remain distinct from canonical truth. |
+| Aren Performance Engineering | Governs cancellation/observer cost, owned runtime-task growth, retained memory, contention, high-volume bounds, stress/saturation evidence, and correctness-preserving optimization. Sprint 3 later formalizes the baseline method. |
 | Documentation | Requires final lifecycle semantics, superseding decisions, public behavior, guarantee boundaries, and Phase 1 evidence to be recorded accurately. |
 | CLI Surface | Governs `aren dev run` diagnostics, injected IO, exit behavior, stable output, and command-level evidence. |
-| Performance | Selected narrowly for bounded observer/support resources, leak resistance, stress evidence, and measured performance/resource claims. |
 
 ## Selected Evidence Reports
 
