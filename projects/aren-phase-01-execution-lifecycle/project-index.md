@@ -37,19 +37,25 @@
 
 Contracts are selected per sprint through `sprint-index.md`. Inclusion in this pool does not mean every clause applies to every sprint.
 
-The Aren-specific contracts are the authoritative project narrowing layer. Generic workspace architecture, error, observability, testing, and workflow contracts are intentionally not in the normal Aren pool where their broader application assumptions could force semantics or abstractions that Aren has explicitly deferred.
+The Aren-specific contracts are the authoritative project narrowing layer. Generic workspace architecture, error, observability, testing, workflow, and performance contracts are intentionally not in the normal Aren pool where their broader application assumptions could force semantics or abstractions that Aren has explicitly deferred. Generic surface contracts remain selectable where a concrete surface such as the CLI or Phase 1 browser frontend actually exists.
 
 | Contract | Path | Applies To | Selection Notes |
 |---|---|---|---|
-<| Aren Development Doctrine | `projects/aren-phase-01-execution-lifecycle/contracts/01-development-doctrine.md` | Both sprints | Select for every Aren sprint. Governs scope, earned abstractions, vertical slices, failure discipline, and real-use-before-broadening. |
-| Aren Runtime Architecture | `projects/aren-phase-01-execution-lifecycle/contracts/02-runtime-architecture.md` | Both sprints | Select for every runtime implementation sprint. Governs authority, ownership boundaries, public surface, thin entrypoints, and concrete-before-interface architecture. |
-| Aren Execution Lifecycle | `projects/aren-phase-01-execution-lifecycle/contracts/03-execution-lifecycle.md` | Both sprints | Governs run identity, state machine, terminal resolution, outcome validity, coherent publication, timing, and invariant visibility. |
-| Aren Cancellation And Lifetimes | `projects/aren-phase-01-execution-lifecycle/contracts/04-cancellation-and-lifetimes.md` | Sprint 2; any sprint with owned asynchronous support | Select when cancellation, parent context integration, support goroutines, or resource release are in scope. Sprint 1 may select it narrowly for owned-lifetime obligations. |
-| Aren Events Observation And Waiting | `projects/aren-phase-01-execution-lifecycle/contracts/05-events-observation-and-waiting.md` | Both sprints | Sprint 1 applies retained history and waiting clauses; Sprint 2 applies the full cursor, replay, live observation, abandonment, and delivery contract. |
-| Aren Verification | `projects/aren-phase-01-execution-lifecycle/contracts/06-verification.md` | Both sprints | Select for every implementation sprint. Governs independent oracles, controlled schedules, negative controls, race detection, release evidence, stress, and real runtime proof. |
-| Documentation | `system/contracts/core/documentation.md` | Both sprints | Decision context, public behaviour, lifecycle contract promotion, and accurate guarantee boundaries. |
-| CLI Surface | `system/contracts/surfaces/cli.md` | Diagnostic CLI work | Apply only to `aren dev run ...` behaviour, output, and exit statuses. |
-| Performance | `system/contracts/runtime/performance.md` | Concurrency hardening or demonstrated resource pressure | Select narrowly for bounded resource use, leak resistance, stress evidence, and measured performance claims. |
+| Aren Development Doctrine | `projects/aren-phase-01-execution-lifecycle/contracts/01-development-doctrine.md` | All four Phase 1 sprints | Select for every Aren sprint. Governs scope, earned abstractions, vertical slices, failure discipline, and real-use-before-broadening. |
+| Aren Runtime Architecture | `projects/aren-phase-01-execution-lifecycle/contracts/02-runtime-architecture.md` | All four Phase 1 sprints | Select for every implementation sprint. Governs authority, ownership boundaries, public surface, thin entrypoints, and concrete-before-interface architecture. |
+| Aren Execution Lifecycle | `projects/aren-phase-01-execution-lifecycle/contracts/03-execution-lifecycle.md` | All four Phase 1 sprints | Governs run identity, state machine, terminal resolution, outcome validity, coherent publication, timing, and invariant visibility. Later sprints preserve rather than reinterpret these semantics. |
+| Aren Cancellation And Lifetimes | `projects/aren-phase-01-execution-lifecycle/contracts/04-cancellation-and-lifetimes.md` | Any sprint with owned asynchronous support; full semantics from Sprint 2 onward | Sprint 1 applies owned-lifetime obligations narrowly; Sprint 2 establishes cancellation semantics; Sprints 3 and 4 apply ownership, cancellation, shutdown, and release to benchmark/service support. |
+| Aren Events Observation And Waiting | `projects/aren-phase-01-execution-lifecycle/contracts/05-events-observation-and-waiting.md` | All four Phase 1 sprints | Sprint 1 applies retained history/waiting; Sprint 2 applies full cursor/replay/live observation; Sprints 3 and 4 preserve the realized canonical observation semantics. |
+| Aren Verification | `projects/aren-phase-01-execution-lifecycle/contracts/06-verification.md` | All four Phase 1 sprints | Select for every implementation sprint. Governs independent oracles, controlled schedules, negative controls, race detection, release evidence, failure explainability, performance provenance, and real runtime proof. |
+| Aren Observability | `projects/aren-phase-01-execution-lifecycle/contracts/07-observability.md` | All four Phase 1 sprints and later Aren capabilities | Project-wide explainability contract: canonical-versus-diagnostic evidence, passive observation, projection authority, correlation, retention, decision evidence, sensitive data, and phase-level observability gates. |
+| Aren Performance Engineering | `projects/aren-phase-01-execution-lifecycle/contracts/08-performance-engineering.md` | All four Phase 1 sprints and later Aren capabilities | Project-wide performance contract: correctness-before-speed, measurement/profiling discipline, attribution, scaling, resource growth, bounds, saturation/recovery, baselines, and evidence-driven gates. |
+| Documentation | `system/contracts/core/documentation.md` | All four Phase 1 sprints | Decision context, public behaviour, reproduction instructions, lifecycle/measurement/observation contract promotion, and accurate guarantee boundaries. |
+| CLI Surface | `system/contracts/surfaces/cli.md` | Diagnostic and benchmark CLI work | Apply to `aren dev run ...`, benchmark/measurement commands, output, injected IO, failures, and exit statuses. |
+| Frontend | `system/contracts/surfaces/frontend.md` | Sprint 4 browser frontend | Governs frontend feature ownership, dependency direction, state placement, typed transport access, tests, and rendering behaviour. |
+| Accessibility | `system/contracts/surfaces/accessibility.md` | Sprint 4 browser frontend | Governs semantic structure, keyboard operation, focus, non-colour status, reduced motion, and accessibility verification. |
+| API Contracts | `system/contracts/surfaces/api-contracts.md` | Sprint 4 read-only observation DTO/service | Governs the explicit versioned DTO, compatibility, collection bounds, and stable boundary errors. |
+| Privacy And Data | `system/contracts/core/privacy-and-data.md` | Sprint 4 and any capability exposing diagnostic payloads | Governs payload minimization, redaction, sensitive-data handling, and safe presentation. |
+| Security | `system/contracts/core/security.md` | Sprint 4 loopback service and browser boundary | Governs loopback binding, input bounds, safe defaults, transport exposure, and avoidance of accidental remote/public access. |
 
 ## Available Studies
 
@@ -193,7 +199,7 @@ Potential reasoning areas include:
 
 The sprint index decides which areas are needed. Do not create every possible reasoning document automatically.
 
-Project-wide Phase 1 synthesis templates live under `projects/aren-phase-01-execution-lifecycle/reasoning/project-wide/`. They are intentionally separate from the selectable sprint area templates above. The accepted synthesis primarily governs Sprints 1 and 2. Sprints 3 and 4 must preserve its lifecycle decisions while using the amended PRD, roadmap, observability mandate, and performance document for their new scope.
+Project-wide Phase 1 synthesis templates live under `projects/aren-phase-01-execution-lifecycle/reasoning/project-wide/`. They are intentionally separate from the selectable sprint area templates above. The accepted synthesis primarily governs Sprints 1 and 2. Sprints 3 and 4 must preserve its lifecycle decisions while using the amended PRD, roadmap, observability mandate, performance document, and Aren-specific observability/performance contracts for their new scope.
 
 ## Prior Decisions
 
@@ -243,5 +249,5 @@ Sprint 3 adds completed Sprint 2 artifacts to this set. Sprint 4 adds completed 
 - Phase 1 remains one UltraPlan project targeting the shared Aren repository.
 - Use four planned sprints. Sprint 1 establishes the lifecycle, Sprint 2 attacks it with cancellation and concurrency, Sprint 3 establishes the performance method and baseline, and Sprint 4 ships the first browser observation experience.
 - Do not defer all testing to Sprint 2. Each sprint must prove its own invariants.
-<- Do not create provider, tool, persistence, daemon, workflow, or generic executor designs inside this project.
-- Stable lifecycle semantics may be promoted into the Aren repository only after the phase exit review.
+- Do not create provider, tool, persistence, daemon, workflow, or generic executor designs inside this project.
+- Stable lifecycle, observability, and performance semantics may be promoted into the Aren repository only after the phase exit review.
