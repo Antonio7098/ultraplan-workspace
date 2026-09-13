@@ -20,7 +20,9 @@ Apply this contract when a change affects:
 - canonical events or observation;
 - waiting or publication;
 - public runtime or CLI behaviour;
-- concurrency or synchronization.
+- concurrency or synchronization;
+- observability evidence or projections;
+- performance/resource claims.
 
 ## Requirement Index
 
@@ -38,7 +40,8 @@ Apply this contract when a change affects:
 | AREN-VERIFY-010 | Retry-to-green is not acceptance | High |
 | AREN-VERIFY-011 | Real runtime paths matter | High |
 | AREN-VERIFY-012 | Evidence is requirement-linked | High |
-| AREN-VERIFY-013 | Measurements remain claims with boundaries | Medium |
+| AREN-VERIFY-013 | Performance evidence is reproducible and contract-bound | High |
+| AREN-VERIFY-014 | Failure paths must be explainable | High |
 
 ## Requirements
 
@@ -214,20 +217,33 @@ Verification evidence should identify:
 
 Do not substitute test counts for requirement coverage.
 
-### AREN-VERIFY-013 — Measurements Remain Claims With Boundaries
+### AREN-VERIFY-013 — Performance Evidence Is Reproducible And Contract-Bound
 
-When performance or resource behaviour is measured, record enough context to keep the claim honest, including relevant:
+Performance and resource evidence must satisfy `08-performance-engineering.md`.
 
-- revision and diff state;
-- toolchain;
-- workload;
-- repetitions/spread;
-- hardware where material;
-- artifact/binary identity where material.
+Verification is responsible for proving that the measurement:
 
-Measure before optimizing.
+- exercises the claimed real runtime path;
+- uses the declared workload and bounds;
+- records sufficient source, toolchain, environment, repetition, and artifact provenance;
+- separates failed/invalid measurements from successful samples;
+- can be reproduced closely enough to investigate material differences;
+- does not silently weaken correctness checks to obtain a better number.
 
-A benchmark or goroutine count must not be promoted into a production capacity guarantee without a representative workload and explicit budget.
+A benchmark, profile, latency sample, memory count, or goroutine count is a bounded claim about the measured scenario. It must not be promoted into a production capacity guarantee unless the performance contract's representative-workload and evidence requirements are met.
+
+### AREN-VERIFY-014 — Failure Paths Must Be Explainable
+
+Failure-path verification must ask both:
+
+1. did Aren produce the correct semantic outcome; and
+2. does the supported evidence explain the Aren-owned path that produced it?
+
+Where applicable, tests should verify that canonical facts, structured failure information, diagnostics, and correlation are sufficient to distinguish the meaningful path without adding temporary print statements after the failure occurs.
+
+Needing ad hoc instrumentation to understand an Aren-owned failure is evidence of a possible observability gap and must be evaluated under `07-observability.md`.
+
+This does not require every implementation detail to become permanent telemetry. The missing evidence may belong in a canonical event, structured diagnostic, state snapshot, metric, profile, or richer failure context depending on its semantic role.
 
 ## Minimum Phase 1 Gate
 
@@ -240,7 +256,7 @@ go test ./...
 go test -race ./...
 ```
 
-plus the controlled semantic, negative-control, release/leak, stress, and real CLI evidence required by the realized implementation.
+plus the controlled semantic, negative-control, release/leak, stress, observability/explainability, performance-evidence, and real CLI/browser evidence required by the realized implementation.
 
 ## Relationship To Generic Workspace Testing Rules
 
@@ -252,5 +268,9 @@ Test seams should be created when required to prove real behaviour, not as cerem
 
 - `projects/aren-phase-01-execution-lifecycle/docs/PRD.md`
 - `projects/aren-phase-01-execution-lifecycle/docs/final-language-decision.md`
+- `projects/aren-phase-01-execution-lifecycle/docs/observability-mandate.md`
+- `projects/aren-phase-01-execution-lifecycle/docs/performance-engineering.md`
 - `projects/aren-phase-01-execution-lifecycle/project-reasoning/reasoning.md`
 - `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/05-verification-and-go-correctness.md`
+- `projects/aren-phase-01-execution-lifecycle/contracts/07-observability.md`
+- `projects/aren-phase-01-execution-lifecycle/contracts/08-performance-engineering.md`
