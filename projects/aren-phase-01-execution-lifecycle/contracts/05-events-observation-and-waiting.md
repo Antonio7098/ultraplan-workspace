@@ -197,8 +197,30 @@ Pull-oriented reading of retained history is preferred because it avoids making 
 
 This is a design preference, not a mandatory public API shape. Another mechanism may be used if it proves the same canonical-history, isolation, handoff, and abandonment guarantees without adding speculative machinery.
 
+## Relationship To Broader Observability
+
+Canonical lifecycle history is one class of Aren observable evidence. It is intentionally not a universal telemetry schema.
+
+`07-observability.md` governs the broader evidence model, including diagnostic telemetry, structured logs, performance evidence, profiles, state snapshots, decision evidence, correlation, retention, redaction, and observation surfaces.
+
+Do not force logs, metrics, profiles, high-volume progress, token deltas, tool output, transport diagnostics, or later execution telemetry into this lifecycle event vocabulary merely to achieve uniformity.
+
+The boundary is:
+
+```text
+Aren lifecycle truth
+    -> this contract defines canonical lifecycle recording/reading
+
+Broader Aren evidence
+    -> 07-observability.md defines explainability and evidence classes
+```
+
+Both contracts require observation to remain passive and projections to agree with canonical runtime truth.
+
 ## Primary Governing Sources
 
 - `projects/aren-phase-01-execution-lifecycle/docs/PRD.md`
+- `projects/aren-phase-01-execution-lifecycle/docs/observability-mandate.md`
 - `projects/aren-phase-01-execution-lifecycle/project-reasoning/reasoning.md`
 - `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/04-events-observation-waiting-and-replay.md`
+- `projects/aren-phase-01-execution-lifecycle/contracts/07-observability.md`
