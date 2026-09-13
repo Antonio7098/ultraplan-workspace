@@ -7,7 +7,7 @@
 
 - **Project Slug:** `ultraplan-go`
 - **Repository:** `../ultraplan-go/`
-- **Target Implementation Directory:** `/home/antonioborgerees/coding/ultraplan/ultraplan-go`
+- **Target Implementation Directory:** `../ultraplan-go`
 - **Primary Goal:** Build a production-grade Go CLI, local TUI, and loopback-only Go-served browser UI for UltraPlan study workflows, governed project/sprint planning and execution, automated conformance review, deep smoke through `smoke`, and controlled Git publication after valid stage completion.
 - **Phase 1 Goal:** Study initialization, source analysis, synthesis, code-reference extraction, resumable orchestration, validation, and diagnostics.
 - **Phase 2 Goal:** Project cataloging plus sprint planning and execute artifacts: `requirements.md`, `sprint-index.md`, `technical-handbook.md`, `reasoning/*.md`, `reasoning.md`, `plan.md`, `execute.md`, `flow-state.json`, `.run-state.json`, and configurable global/per-stage models for sprint stages.
