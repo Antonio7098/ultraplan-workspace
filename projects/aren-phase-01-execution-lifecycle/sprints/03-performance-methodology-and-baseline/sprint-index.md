@@ -29,7 +29,7 @@ This index is prepared in advance. Before Sprint 3 starts, confirm every named p
 | Aren Events Observation And Waiting | Governs the canonical event/replay/wait paths being measured and prevents benchmark-only observation semantics. |
 | Aren Verification | Governs deterministic workloads, real-runtime execution, failure truth, reproducibility, negative controls, race checks, and provenance of every performance claim. |
 | Aren Observability | Governs attribution, correlation, canonical-versus-diagnostic separation, resource evidence, measurement visibility, and the rule that instrumentation must remain passive. |
-| Aren Performance Engineering | Primary Sprint 3 contract. Governs workload definition, measurement-before-optimization, scaling, memory/runtime-task/contension evidence, saturation/recovery, baseline interpretation, and the threshold for future numeric gates. |
+| Aren Performance Engineering | Primary Sprint 3 contract. Governs workload definition, measurement-before-optimization, scaling, memory/runtime-task/contention evidence, saturation/recovery, baseline interpretation, and the threshold for future numeric gates. |
 | Documentation | Requires exact reproduction commands, environment assumptions, result interpretation, and baseline limits. |
 | CLI Surface | Governs benchmark command discoverability, bounded flags, output, failures, and exit status. |
 
