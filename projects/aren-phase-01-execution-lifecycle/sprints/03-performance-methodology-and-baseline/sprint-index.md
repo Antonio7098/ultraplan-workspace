@@ -22,13 +22,16 @@ This index is prepared in advance. Before Sprint 3 starts, confirm every named p
 
 | Contract | Why Selected |
 |---|---|
-| Architecture | Keeps measurement code outside lifecycle authority, preserves dependency direction, and prevents a duplicate execution path. |
-| Errors | Governs invalid, partial, cancelled, timed-out, and failed measurements without false success. |
-| Observability | Governs attributable evidence, correlation, diagnostic separation, and measurement overhead visibility. |
-| Testing | Governs deterministic workloads, fixtures, repeatability, race checks, failure injection, and evidence traceability. |
+| Aren Development Doctrine | Prevents the performance sprint from becoming an optimization framework, scheduler, hosted benchmark service, or speculative architecture exercise; measurements must answer the current lifecycle questions. |
+| Aren Runtime Architecture | Keeps benchmark and measurement code outside lifecycle authority, preserves dependency direction, prevents duplicate execution paths, and keeps instrumentation subordinate to the real runtime. |
+| Aren Execution Lifecycle | Makes the realized lifecycle semantics non-negotiable while measuring them: benchmarks may not bypass transition, terminal, timing, or publication rules. |
+| Aren Cancellation And Lifetimes | Governs owned benchmark/support goroutines, cancellation, cleanup, quiescence, and direct evidence that measured resources release. |
+| Aren Events Observation And Waiting | Governs the canonical event/replay/wait paths being measured and prevents benchmark-only observation semantics. |
+| Aren Verification | Governs deterministic workloads, real-runtime execution, failure truth, reproducibility, negative controls, race checks, and provenance of every performance claim. |
+| Aren Observability | Governs attribution, correlation, canonical-versus-diagnostic separation, resource evidence, measurement visibility, and the rule that instrumentation must remain passive. |
+| Aren Performance Engineering | Primary Sprint 3 contract. Governs workload definition, measurement-before-optimization, scaling, memory/runtime-task/contension evidence, saturation/recovery, baseline interpretation, and the threshold for future numeric gates. |
 | Documentation | Requires exact reproduction commands, environment assumptions, result interpretation, and baseline limits. |
 | CLI Surface | Governs benchmark command discoverability, bounded flags, output, failures, and exit status. |
-| Performance | Governs workload bounds, measurement before optimization, concurrency, profiling, resource evidence, and future regression policy. |
 
 ## Selected Evidence Reports
 
@@ -62,7 +65,7 @@ This index is prepared in advance. Before Sprint 3 starts, confirm every named p
 | Events and observation | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/04-events-observation-waiting-and-replay.md` | Defines the observer and replay semantics whose costs Sprint 3 measures. |
 | Verification and Go correctness | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/05-verification-and-go-correctness.md` | Keeps correctness evidence authoritative when benchmark pressure suggests changes. |
 
-The amended PRD, roadmap, and performance mandate govern Sprint 3 where the earlier project synthesis is silent about the dedicated performance sprint.
+The amended PRD, roadmap, performance mandate, observability mandate, and active Aren contracts govern Sprint 3 where the earlier project synthesis is silent about the dedicated performance sprint.
 
 ## Prior Decisions To Carry Forward
 
