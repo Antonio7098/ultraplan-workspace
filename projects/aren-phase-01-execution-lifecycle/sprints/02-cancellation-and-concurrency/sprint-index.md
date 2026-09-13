@@ -23,14 +23,15 @@ This index is prepared in advance. Before Sprint 2 starts, confirm that every na
 
 | Contract | Why Selected |
 |---|---|
-| Architecture | Governs retained Sprint 1 ownership, any justified architecture delta, dependency direction, and capability boundaries. |
-| Errors | Governs cancellation causes, returned errors, panic, cleanup failures, terminal classification, and diagnostic identity. |
-| Observability | Governs cancellation events, canonical history, sequence ordering, replay, observer delivery, and correlation. |
-| Testing | Requires deterministic collisions, negative controls, race runs, repeated stress, leak checks, CLI evidence, and acceptance traceability. |
-| Documentation | Requires final lifecycle semantics, superseding decisions, public behavior, and Phase 1 evidence to be recorded. |
-| CLI Surface | Governs `aren dev run` diagnostics, injected IO, exit behavior, and command-level evidence. |
-| Workflows | Applies only local cancellation, terminal-state, concurrency, and lifecycle-history clauses. Persistence and durable replay remain excluded. |
-| Performance | Governs bounded observer resources, shutdown latency, leak resistance, and stress limits. |
+| Aren Development Doctrine | Keeps Sprint 2 bounded to cancellation/observation hardening, requires evidence before architecture expansion, and prevents later-phase machinery entering through concurrency work. |
+| Aren Runtime Architecture | Governs preservation of Sprint 1 ownership, any justified architecture delta, capability separation, public surface, and one lifecycle mutation authority. |
+| Aren Execution Lifecycle | Governs the fixed lifecycle vocabulary, nil-error success rule, cancellation-aware terminal resolution, one terminal commitment, coherent publication, timing, and invariant visibility. |
+| Aren Cancellation And Lifetimes | Governs explicit and parent cancellation, first accepted cause, acceptance-before-signal ordering, cancellation dispositions, uncooperative work, goroutine ownership, teardown, and release. |
+| Aren Events Observation And Waiting | Governs canonical history, sequence identity, replay/live handoff, cursor boundaries, observer independence, terminal drain, waiting, and delivery limits. |
+| Aren Verification | Requires deterministic collisions, independent oracles, negative controls, race runs, repeated stress, mutation attacks, release/leak evidence, and real CLI proof. |
+| Documentation | Requires final lifecycle semantics, superseding decisions, public behavior, guarantee boundaries, and Phase 1 evidence to be recorded accurately. |
+| CLI Surface | Governs `aren dev run` diagnostics, injected IO, exit behavior, stable output, and command-level evidence. |
+| Performance | Selected narrowly for bounded observer/support resources, leak resistance, stress evidence, and measured performance/resource claims. |
 
 ## Selected Evidence Reports
 
@@ -72,12 +73,12 @@ This index is prepared in advance. Before Sprint 2 starts, confirm that every na
 | Document | Path | Why Selected |
 |---|---|---|
 | Project synthesis | `projects/aren-phase-01-execution-lifecycle/project-reasoning/reasoning.md` | Supplies the accepted Phase 1 constraints and conclusions that Sprint 2 must preserve or explicitly supersede. |
-| Evidence assessment | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/evidence-assessment.md` | Preserves corpus limitations, contradictions, and negative-transfer warnings while Sprint 2 uses broader concurrency evidence. |
-| Lifecycle authority | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/lifecycle-authority-and-atomic-publication.md` | Keeps cancellation and observers behind the same Aren-owned lifecycle authority. |
-| Outcomes and terminal resolution | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/outcomes-failures-and-terminal-resolution.md` | Governs deterministic interpretation of completion, error, panic, and accepted cancellation facts. |
-| Cancellation and cleanup | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/cancellation-goroutine-ownership-and-cleanup.md` | Directly governs cancellation truthfulness, cause retention, goroutine ownership, joins, and cleanup. |
-| Events and observation | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/events-observation-waiting-and-replay.md` | Directly governs canonical history, replay, handoff, observers, waiting, and delivery limits. |
-| Verification and Go correctness | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/verification-and-go-correctness.md` | Governs adversarial schedules, race, stress, negative-control, leak, and Phase 1 exit evidence. |
+| Evidence assessment | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/00-evidence-map.md` | Preserves corpus limitations, contradictions, and negative-transfer warnings while Sprint 2 uses broader concurrency evidence. |
+| Lifecycle authority | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/01-lifecycle-authority-and-atomic-publication.md` | Keeps cancellation and observers behind the same Aren-owned lifecycle authority. |
+| Outcomes and terminal resolution | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/02-outcomes-failures-and-terminal-resolution.md` | Governs deterministic interpretation of completion, error, panic, and accepted cancellation facts. |
+| Cancellation and cleanup | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/03-cancellation-goroutine-ownership-and-cleanup.md` | Directly governs cancellation truthfulness, cause retention, goroutine ownership, joins, and cleanup. |
+| Events and observation | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/04-events-observation-waiting-and-replay.md` | Directly governs canonical history, replay, handoff, observers, waiting, and delivery limits. |
+| Verification and Go correctness | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/05-verification-and-go-correctness.md` | Governs adversarial schedules, race, stress, negative-control, leak, and Phase 1 exit evidence. |
 
 ## Prior Decisions To Carry Forward
 
