@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-778ecd174338b79a81252e5a",
+    "arbiter_group_id": "qa-v1-arbiter-group-537d8a66c7cb218ddb3adbfa",
+    "theory_ids": [
+      "qa-v1-theory-3d05000070c81fe10aa3579b"
+    ],
+    "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+    "gap": "Reachability of the discarded performanceSettings error through an actual sharedOperationRunner construction path remains unproven, and prior investigator tests did not match the failure signature.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that constructs the production shared operation runner through a real caller path using invalid effective performance settings.",
+    "required_observation": "The test must show either that runner construction or operation execution proceeds without returning the invalid performance configuration error, or that an upstream production guard deterministically rejects it before the runner is created.",
+    "control_requirement": "Use a control case with valid performance settings through the same caller path and assert that no operation side effect occurs before the invalid-settings result is observed.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "test_bundle_id": "qa-v2-test-e8a87a5395051ad698e6f00c",
+    "latest_run_id": "qa-v2-run-3f72d163f95bfd186c298c97",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

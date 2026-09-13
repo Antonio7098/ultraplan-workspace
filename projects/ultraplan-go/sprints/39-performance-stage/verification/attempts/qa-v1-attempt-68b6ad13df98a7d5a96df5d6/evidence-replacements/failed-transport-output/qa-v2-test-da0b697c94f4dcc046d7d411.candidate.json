@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "proof": {
+    "lineage_root": "qa-v2-test-da0b697c94f4dcc046d7d411",
+    "repair_session": "ses_f64eac694ffe3V6w0X6nYhV1I2",
+    "schema_version": 1,
+    "packet": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-cd99506cc5402d0a57db9ed3/issue-packet.json",
+      "digest": "be3129e2687ba80bef81758886cfe5c2199bd3529abd9ce3b811887b4e40324d"
+    },
+    "spec": {
+      "schema_version": 2,
+      "id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+      "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+      "evidence_request_id": "qa-v2-request-1cefed6a599adae46ba55ba6",
+      "theory_ids": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "claim": "The performance evidence API's advertised default request is unusable because omitting the limit query parameter sends limit 0 to a store that rejects every non-positive limit.",
+      "preconditions": [
+        "Define all required query fakes in the test, prove the omitted request reaches PerformanceEvidence and EvidencePage, and avoid an unrelated query-allowlist failure."
+      ],
+      "expected_behavior": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+      "predicted_failure": {
+        "test_name": "TestQAInvestigator_dae46ba55ba6",
+        "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6"
+      },
+      "inconclusive_conditions": [
+        "compile error",
+        "infrastructure error",
+        "mismatched assertion",
+        "timeout",
+        "truncated output",
+        "unrelated panic"
+      ],
+      "approved_test_paths": [
+        "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+      ],
+      "command": {
+        "id": "investigator-test-dae46ba55ba6",
+        "executable": "/usr/bin/go",
+        "args": [
+          "test",
+          ".",
+          "-v",
+          "-run",
+          "^TestQAInvestigator_dae46ba55ba6$",
+          "-count=1"
+        ],
+        "working_directory": "internal/tui",
+        "environment": [
+          "PATH"
+        ],
+        "timeout": 300000000000,
+        "output_limit": 262144,
+        "fingerprint": "c8d8c1d5e4f96dba509599f65fa5d69d5c4a3c88ff0576c600950057ec901d8f"
+      },
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "frozen_at": "2026-09-12T12:04:14.286180777Z"
+    },
+    "bundle": {
+      "schema_version": 0,
+      "id": "",
+      "spec_id": "",
+      "files": null,
+      "content_digest": ""
+    },
+    "before": {
+      "schema_version": 0,
+      "id": "",
+      "spec_id": "",
+      "test_bundle_id": "",
+      "target_identity": "",
+      "result": {
+        "executable": "",
+        "args_digest": "",
+        "exit_code": 0,
+        "duration": 0,
+        "output_bytes": 0,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": false
+      },
+      "failure_signature": {
+        "test_name": "",
+        "exit_class": "",
+        "output_matcher": ""
+      },
+      "outcome": "",
+      "reason_code": "",
+      "cleanup": {
+        "attempted": false,
+        "descendants_terminated": false,
+        "workspace_removed": false,
+        "complete": false
+      },
+      "completed_at": "0001-01-01T00:00:00Z"
+    },
+    "after": {
+      "schema_version": 0,
+      "id": "",
+      "spec_id": "",
+      "test_bundle_id": "",
+      "target_identity": "",
+      "result": {
+        "executable": "",
+        "args_digest": "",
+        "exit_code": 0,
+        "duration": 0,
+        "output_bytes": 0,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": false
+      },
+      "failure_signature": {
+        "test_name": "",
+        "exit_class": "",
+        "output_matcher": ""
+      },
+      "outcome": "",
+      "reason_code": "",
+      "cleanup": {
+        "attempted": false,
+        "descendants_terminated": false,
+        "workspace_removed": false,
+        "complete": false
+      },
+      "completed_at": "0001-01-01T00:00:00Z"
+    },
+    "author": {
+      "call_id": "",
+      "session_id": "",
+      "evidence_digest": "",
+      "outcome": "",
+      "valid": false,
+      "reason_code": ""
+    },
+    "reviewer": {
+      "call_id": "",
+      "session_id": "",
+      "evidence_digest": "",
+      "outcome": "",
+      "valid": false,
+      "reason_code": ""
+    },
+    "review": {
+      "malformed": false,
+      "preserves_claim": false,
+      "reason": "",
+      "assertions": null
+    },
+    "completed_at": "0001-01-01T00:00:00Z"
+  },
+  "diagnostic": "trailing replacement output"
+}

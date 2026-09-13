@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-a949dcf7df11e2fddcd3a9e4",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "boundary",
+  "title": "Cross-surface performance fact consistency",
+  "context_paths": [
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_usecases.go",
+    "internal/testdata/performance/states.json",
+    "internal/tui/model.go",
+    "internal/tui/views.go",
+    "internal/web/handlers.go",
+    "internal/web/routes.go",
+    "internal/web/templates/sprint.html"
+  ],
+  "overlap_paths": [
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_usecases.go",
+    "internal/testdata/performance/states.json",
+    "internal/tui/model.go",
+    "internal/tui/views.go",
+    "internal/web/handlers.go",
+    "internal/web/routes.go",
+    "internal/web/templates/sprint.html"
+  ],
+  "boundary_reason": "The same durable and product facts are projected through CLI text and JSON, TUI, HTML, and API surfaces.",
+  "behavioral_concerns": [
+    "Cancellation, blocking, staleness, cleanup uncertainty, resumability, history, and recovery conflict must not collapse into generic success.",
+    "Canonical states must produce consistent policy, phase, freshness, lifecycle, outcome, target, limit, blocker, evidence-reference, and next-action facts.",
+    "Public surfaces must agree without exposing private evidence."
+  ],
+  "expectation_refs": [
+    "contract-cli-surface",
+    "contract-documentation",
+    "contract-errors",
+    "contract-observability",
+    "contract-performance",
+    "contract-security",
+    "contract-testing"
+  ],
+  "risk_tags": [
+    "persistence",
+    "public-api"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-34db48e1e10bbcf28cc6bf2d",
+    "qa-v1-block-9d2f0e314212dfeb60cbb135",
+    "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 156702,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-a949dcf7df11e2fddcd3a9e4/1",
+      "number": 1,
+      "session_id": "ses_f6aa7296effeU6zsSANBLX585N",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "46bb836945dbd27c6623557e1d2e712838da7b913faa0ce726ea09cadc071122",
+      "started_at": "2026-09-12T11:20:18.214961827Z",
+      "completed_at": "2026-09-12T11:21:45.386941923Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "CLI text status omits lifecycle, cancellation, freshness reasons, blocker, counters or limits, and evidence references rendered by other public performance surfaces (qa-v1-block-a1c54f69a34aba9ad20c1302, qa-v1-block-b78a61cde5b699690eb3c5f2, qa-v1-block-23ffd3df512e9cb822d95ab8).",
+          "paths": [
+            "internal/app/sprint_commands.go",
+            "internal/tui/views.go",
+            "internal/web/templates/sprint.html"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 46836,
+        "output_tokens_known": true,
+        "output_tokens": 1282,
+        "total_tokens_known": true,
+        "total_tokens": 93941,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 383,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 45440,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 156702,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 87171980096
+      },
+      "estimated_cost": {
+        "amount": 0.11557999999999999,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-36aaddc649316456a0999299",
+      "shard_id": "qa-v1-shard-a949dcf7df11e2fddcd3a9e4",
+      "claim": "The performance CLI text status surface omits canonical operational facts, causing disagreement with browser and structured status surfaces for cancellation, cleanup uncertainty, blockers, limits, freshness reasons, and evidence references.",
+      "basis": "The CLI renderer exposes fewer status facts than the browser and TUI renderers, despite the requirement that interfaces agree for each outcome (qa-v1-block-a1c54f69a34aba9ad20c1302, qa-v1-block-b78a61cde5b699690eb3c5f2, qa-v1-block-23ffd3df512e9cb822d95ab8, qa-v1-block-ce45392d2ebc036986b89d13).",
+      "verification_surface": "Compare renderSprintPerformance's text fields with the web template, TUI summary, and canonical status DTO for cancelling, cleanup_uncertain, stale, evidence-gap, and recovery-conflict fixtures.",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-errors",
+        "contract-observability",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "For any canonical non-happy-path state, CLI text output lacks lifecycle, cancellation, blocker, limit/counter, freshness-reason, or evidence-reference facts available from the same PerformanceStatusResult while presenting itself as a status summary.",
+      "refutation_condition": "CLI text rendering or a shared rendering layer exposes all required canonical facts, or a governed contract explicitly permits the narrower presentation while preserving unambiguous next action and failure classification.",
+      "inconclusive_condition": "Omitted command code or compatibility tests establish a governed presentation contract that permits these omissions without ambiguity.",
+      "safe_evidence_strategy": "Use static field-by-field comparison and existing fixture-driven compatibility tests only; do not execute performance runtimes or inspect private evidence payloads.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-a949dcf7df11e2fddcd3a9e4/1",
+          "number": 1,
+          "session_id": "ses_f6aa7296effeU6zsSANBLX585N",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "46bb836945dbd27c6623557e1d2e712838da7b913faa0ce726ea09cadc071122",
+          "started_at": "2026-09-12T11:20:18.214961827Z",
+          "completed_at": "2026-09-12T11:21:45.386941923Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "CLI text status omits lifecycle, cancellation, freshness reasons, blocker, counters or limits, and evidence references rendered by other public performance surfaces (qa-v1-block-a1c54f69a34aba9ad20c1302, qa-v1-block-b78a61cde5b699690eb3c5f2, qa-v1-block-23ffd3df512e9cb822d95ab8).",
+              "paths": [
+                "internal/app/sprint_commands.go",
+                "internal/tui/views.go",
+                "internal/web/templates/sprint.html"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 46836,
+            "output_tokens_known": true,
+            "output_tokens": 1282,
+            "total_tokens_known": true,
+            "total_tokens": 93941,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 383,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 45440,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 156702,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 87171980096
+          },
+          "estimated_cost": {
+            "amount": 0.11557999999999999,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "CLI text status omits lifecycle, cancellation, freshness reasons, blocker, counters or limits, and evidence references rendered by other public performance surfaces (qa-v1-block-a1c54f69a34aba9ad20c1302, qa-v1-block-b78a61cde5b699690eb3c5f2, qa-v1-block-23ffd3df512e9cb822d95ab8).",
+          "paths": [
+            "internal/app/sprint_commands.go",
+            "internal/tui/views.go",
+            "internal/web/templates/sprint.html"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "The CLI renderer prints policy, phase, freshness, outcome, target count, next action, and target rows, while the browser additionally renders operational lifecycle, cancellation state, freshness reasons, blocker, effective limits, and evidence metadata; the TUI separately renders lifecycle (qa-v1-block-a1c54f69a34aba9ad20c1302, qa-v1-block-b78a61cde5b699690eb3c5f2, qa-v1-block-23ffd3df512e9cb822d95ab8). The governed requirements require interfaces to agree for every outcome using bounded summaries tied to immutable evidence (qa-v1-block-ce45392d2ebc036986b89d13)."
+    }
+  ]
+}

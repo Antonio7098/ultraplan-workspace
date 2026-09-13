@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "caaf016c0b1156e4fa468e6ddd984331a0e776f4674455cc51b8f190e4c58431",
+  "schema_version": 2,
+  "id": "qa-v2-run-ae0a0ff29536adb7eb667dd3",
+  "spec_id": "qa-v2-spec-435d32f51d8330d9b79401ca",
+  "test_bundle_id": "qa-v2-test-7db263cfd659a2861486f879",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_340a1300e236",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_340a1300e236",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236",
+    "executable": "go",
+    "args_digest": "c46aa00edb75205a1a88d0bcc63c067c4cfe46065466ac1aa5966ab0aa356409",
+    "exit_code": 1,
+    "duration": 27929179145,
+    "stdout_digest": "ed9719fb18cf6a5a8eee8b7d8000dc15df0be40978e06a43eb537882e709c4ce",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_340a1300e236\n    qa_investigator_340a1300e236_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236 assertion=Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\n--- FAIL: TestQAInvestigator_340a1300e236 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.009s\nFAIL\n",
+    "output_bytes": 473,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_340a1300e236",
+    "assertion": "Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:14:21.465263018Z"
+}

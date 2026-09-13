@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "repair-campaign-v1-dd5af342d0a51a34b01a7275",
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "assignment_mode": "per_issue",
+  "issues_per_agent": 1,
+  "execution_mode": "sequential",
+  "status": "failed",
+  "workers": [
+    {
+      "number": 1,
+      "session_id": "ses_f68a31367ffeye8qxf4Xsvpdh5",
+      "issues": [
+        {
+          "original_issue_id": "qa-v2-issue-01916e6c0e0566e8940471ab",
+          "current_issue_id": "qa-v2-issue-01916e6c0e0566e8940471ab",
+          "title": "Optimization continues after isolation cleanup failure",
+          "issue_class": "workflow_cleanup",
+          "location": "internal/sprint/performance_optimize_runtime.go",
+          "root_cause_claim": "Optimization rejection paths ignore isolation cleanup failures, allowing later optimization work and a stalled result instead of stopping with cleanup_uncertain.",
+          "repair_run_id": "repair-v1-run-99d53cdcca1098534de53e2d",
+          "outcome": "stalled",
+          "status": "failed",
+          "reason": "automatic repair reached a persisted bound without enough progress"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "issues": [
+        {
+          "original_issue_id": "qa-v2-issue-377a3311d04fcdd86069f900",
+          "title": "Performance CLI compatibility coverage is incomplete",
+          "issue_class": "test_coverage",
+          "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+          "root_cause_claim": "The new performance CLI lacks compatibility tests covering stable JSON envelopes, stdout/stderr separation, and outcome-to-exit-code behavior.",
+          "status": "queued"
+        }
+      ]
+    }
+  ],
+  "completed": 0,
+  "total": 2,
+  "started_at": "2026-09-12T20:43:55.29676507Z",
+  "updated_at": "2026-09-12T20:48:14.517327911Z"
+}

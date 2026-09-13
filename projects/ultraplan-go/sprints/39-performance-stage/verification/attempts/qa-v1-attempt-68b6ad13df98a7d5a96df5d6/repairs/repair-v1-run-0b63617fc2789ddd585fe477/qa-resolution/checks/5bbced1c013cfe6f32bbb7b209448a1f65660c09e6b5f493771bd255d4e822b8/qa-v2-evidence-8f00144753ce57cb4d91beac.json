@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-8f00144753ce57cb4d91beac",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+      "schema_version": 2,
+      "id": "qa-v2-run-983fdf83159d2a40dbfcfd32",
+      "spec_id": "qa-v2-spec-1df4354eda21384996ab893d",
+      "test_bundle_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+      "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_729d3c90109f",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_729d3c90109f",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "79def7b37ee19ec22dcb4fd7eefa6c60fb9439194b6e5ab7903091c2a739e835",
+        "exit_code": 0,
+        "duration": 32733407909,
+        "stdout_digest": "9fbfcec1f3c02d2568515fcc97450827481041a214282d1ec3c0397b1e01b204",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_729d3c90109f\n--- PASS: TestQAInvestigator_729d3c90109f (0.20s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.210s\n",
+        "output_bytes": 161,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_729d3c90109f",
+        "assertion": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cum",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T15:17:18.851020671Z"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-8350daaaec15bbbe50054e34",
+  "spec_id": "qa-v2-spec-5807f990c84a76eff8666229",
+  "files": [
+    {
+      "path": "internal/platform/config/qa_investigator_a4e36afcbad1_test.go",
+      "content": "package config\n\nimport (\n\t\"fmt\"\n\t\"go/ast\"\n\t\"go/parser\"\n\t\"go/token\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_a4e36afcbad1(t *testing.T) {\n\tdeclaredFunctions := func(t *testing.T, path string) map[string]bool {\n\t\tt.Helper()\n\t\tfile, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)\n\t\tif err != nil {\n\t\t\tt.Fatalf(\"parse %s: %v\", path, err)\n\t\t}\n\t\tfunctions := make(map[string]bool)\n\t\tfor _, declaration := range file.Decls {\n\t\t\tif function, ok := declaration.(*ast.FuncDecl); ok {\n\t\t\t\tfunctions[function.Name.Name] = true\n\t\t\t}\n\t\t}\n\t\treturn functions\n\t}\n\n\tt.Run(\"control_generic_config_infrastructure_is_allowed\", func(t *testing.T) {\n\t\tfunctions := declaredFunctions(t, \"config.go\")\n\t\tif !functions[\"Load\"] {\n\t\t\tt.Fatal(\"control failed: generic config Load function was not found\")\n\t\t}\n\t})\n\n\tfunctions := declaredFunctions(t, \"performance.go\")\n\tforbiddenPolicy := []string{\"DefaultPerformance\", \"validatePerformance\"}\n\tvar found []string\n\tfor _, name := range forbiddenPolicy {\n\t\tif functions[name] {\n\t\t\tfound = append(found, name)\n\t\t}\n\t}\n\tif len(found) != 0 {\n\t\tfmt.Println(\"assertion: Assert the current source defines product-specific performance defaults and validation under internal/platform.\")\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a4e36afcbad1\")\n\t\tt.Fail()\n\t}\n}\n",
+      "digest": "af1d28cb302a90c14bab7564b19723178a5cda6eb8d008012e4d95cc74231fcd",
+      "bytes": 1298
+    }
+  ],
+  "content_digest": "f06e4bb7fc6a7dc7d55fd0d1f84d0b10446d9f271455c955538905c402185059"
+}

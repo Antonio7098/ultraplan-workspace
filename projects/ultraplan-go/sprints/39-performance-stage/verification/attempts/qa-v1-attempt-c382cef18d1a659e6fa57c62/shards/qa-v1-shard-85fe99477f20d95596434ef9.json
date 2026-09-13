@@ -1,0 +1,842 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-85fe99477f20d95596434ef9",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Application projections and surface composition",
+  "changed_paths": [
+    "internal/app/performance_fixtures_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/tui_commands.go",
+    "internal/app/usecases.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/operations.go",
+    "internal/sprint/performance_state.go",
+    "internal/testdata/performance/states.json",
+    "internal/tui/model.go",
+    "internal/web/handlers.go"
+  ],
+  "behavioral_concerns": [
+    "Adapter-neutral performance DTOs expose bounded sample-free status, target qualification, limit provenance, and evidence metadata.",
+    "Dashboard, TUI, and web composition receive the same effective performance limits and sources.",
+    "Disabled or missing policy remains side-effect free and presentation fixtures cover every supported state.",
+    "Projection and error mapping sanitize hostile text and omit raw private evidence.",
+    "Status distinguishes performance attempt identity, durable run identity, operational lifecycle, freshness, and product outcome."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-errors"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1eb113303f71d851c8c728ae",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-35e4c5fcc8d7288b70a46a1e",
+    "qa-v1-block-3af424a097d973509acf6e57",
+    "qa-v1-block-41d933d34511fa71cb08d3d6",
+    "qa-v1-block-47f4c5b312c2957ed5bb1b43",
+    "qa-v1-block-78e13c26eb8ae322452c9951",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-9905b1b7d4d24397f5a85abc",
+    "qa-v1-block-c1bc237cbe63b9df34c97ed7",
+    "qa-v1-block-e419d1b4a19c773a764b15a0",
+    "qa-v1-block-e9d8077d15e68457fadc6be5",
+    "qa-v1-block-f1f433c9dcd2821fbf7229a1",
+    "qa-v1-block-f762c5dd3b25d606c5068cc4"
+  ],
+  "prepared_prompt_bytes": 98477,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1",
+      "number": 1,
+      "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "14b07f6978493a77cec4b159716c494a2a14a77e2b6976026f128b241ba8575c",
+      "started_at": "2026-09-06T14:30:51.449300466Z",
+      "completed_at": "2026-09-06T14:33:25.282986311Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The summary helper calls the raw performance projection, while only the public PerformanceStatus method consults RunUseCases to populate operational lifecycle and cancellation state.",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "PerformanceResult returns a plain fmt.Errorf when status.Result is nil; the web mapper's performance branch requires PerformanceUseCaseError.",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/app/performance_errors.go",
+            "internal/web/handlers.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 735,
+        "output_tokens_known": true,
+        "output_tokens": 1021,
+        "total_tokens_known": true,
+        "total_tokens": 36428,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 240,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 34432,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 25,
+      "retained_events": 25,
+      "observed_tool_calls": 6,
+      "context_metrics": {
+        "prompt_bytes": 98477,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 3,
+          "read": 3
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 11267,
+        "repeated_reads": 0,
+        "search_calls": 3,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 153833685845
+      },
+      "estimated_cost": {
+        "amount": 0.056673100000000004,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/2",
+      "number": 3,
+      "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "14b07f6978493a77cec4b159716c494a2a14a77e2b6976026f128b241ba8575c",
+      "started_at": "2026-09-07T13:05:07.900079258Z",
+      "completed_at": "2026-09-07T13:08:18.940779078Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 872,
+        "output_tokens_known": true,
+        "output_tokens": 46,
+        "total_tokens_known": true,
+        "total_tokens": 56562,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 348,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 55296,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 53,
+      "retained_events": 53,
+      "observed_tool_calls": 21,
+      "context_metrics": {
+        "prompt_bytes": 14180,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 11,
+          "read": 9
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 31800,
+        "repeated_reads": 0,
+        "search_calls": 11,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 191040699820
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/qa-v2-request-a53dc7379d6356bcf430b685/1",
+      "number": 3,
+      "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "36e0c37c033ba4a5217b3d5e85f8c9f08fb3f19db276bd11b6ac8fcf3087c67b",
+      "started_at": "2026-09-07T17:06:22.485357048Z",
+      "completed_at": "2026-09-07T17:07:34.168671105Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1176,
+        "output_tokens_known": true,
+        "output_tokens": 48,
+        "total_tokens_known": true,
+        "total_tokens": 66771,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 11,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 65536,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 21,
+      "retained_events": 21,
+      "observed_tool_calls": 4,
+      "context_metrics": {
+        "prompt_bytes": 20363,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 2,
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 2,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 71683314057
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/qa-v2-request-9f9d08c0c843340a1300e236/2",
+      "number": 4,
+      "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "36e0c37c033ba4a5217b3d5e85f8c9f08fb3f19db276bd11b6ac8fcf3087c67b",
+      "started_at": "2026-09-07T17:12:14.138553588Z",
+      "completed_at": "2026-09-07T17:13:25.030806402Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1692,
+        "output_tokens_known": true,
+        "output_tokens": 46,
+        "total_tokens_known": true,
+        "total_tokens": 75669,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 75,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 73856,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 25861,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 70892252814
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-17dafaf3fd4f0f4493af69b0",
+      "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+      "claim": "Sprint summary, TUI, and web performance projections omit operational lifecycle and cancellation state even when a durable run exists.",
+      "basis": "qa-v1-block-78e13c26eb8ae322452c9951 calls performanceStatusProjection directly for summaries; qa-v1-block-c1bc237cbe63b9df34c97ed7 embeds that summary into dashboard composition; qa-v1-block-95f9f726d965e7685184fba7 serves the embedded summary from the performance endpoint.",
+      "verification_surface": "internal/app/sprint_usecases.go performanceSummaryForSprint, PerformanceStatus, and SprintSummaries; internal/web/handlers.go api_sprint_performance; internal/tui/model.go performance navigation.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fields.",
+      "refutation_condition": "Sprint summary composition enriches the projection from the durable run manager, or all consuming adapters call the enriched PerformanceStatus use case instead of the raw projection.",
+      "inconclusive_condition": "The durable lifecycle enrichment or Sprint query implementation differs outside the cited excerpts such that the summary is enriched before presentation.",
+      "safe_evidence_strategy": "Use a read-only fixture containing a performance correlation run ID and a fake RunUseCases snapshot, then compare direct PerformanceStatus with SprintSummaries and the mapped web response without starting runtime work.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1",
+          "number": 1,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "14b07f6978493a77cec4b159716c494a2a14a77e2b6976026f128b241ba8575c",
+          "started_at": "2026-09-06T14:30:51.449300466Z",
+          "completed_at": "2026-09-06T14:33:25.282986311Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The summary helper calls the raw performance projection, while only the public PerformanceStatus method consults RunUseCases to populate operational lifecycle and cancellation state.",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/web/handlers.go",
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "static_source",
+              "summary": "PerformanceResult returns a plain fmt.Errorf when status.Result is nil; the web mapper's performance branch requires PerformanceUseCaseError.",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/app/performance_errors.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 735,
+            "output_tokens_known": true,
+            "output_tokens": 1021,
+            "total_tokens_known": true,
+            "total_tokens": 36428,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 240,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 34432,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 25,
+          "retained_events": 25,
+          "observed_tool_calls": 6,
+          "context_metrics": {
+            "prompt_bytes": 98477,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 3,
+              "read": 3
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 11267,
+            "repeated_reads": 0,
+            "search_calls": 3,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 153833685845
+          },
+          "estimated_cost": {
+            "amount": 0.056673100000000004,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "14b07f6978493a77cec4b159716c494a2a14a77e2b6976026f128b241ba8575c",
+          "started_at": "2026-09-07T13:05:07.900079258Z",
+          "completed_at": "2026-09-07T13:08:18.940779078Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 872,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 56562,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 348,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 55296,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 53,
+          "retained_events": 53,
+          "observed_tool_calls": 21,
+          "context_metrics": {
+            "prompt_bytes": 14180,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 11,
+              "read": 9
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 31800,
+            "repeated_reads": 0,
+            "search_calls": 11,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 191040699820
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/qa-v2-request-a53dc7379d6356bcf430b685/1",
+          "number": 3,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "36e0c37c033ba4a5217b3d5e85f8c9f08fb3f19db276bd11b6ac8fcf3087c67b",
+          "started_at": "2026-09-07T17:06:22.485357048Z",
+          "completed_at": "2026-09-07T17:07:34.168671105Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1176,
+            "output_tokens_known": true,
+            "output_tokens": 48,
+            "total_tokens_known": true,
+            "total_tokens": 66771,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 11,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 65536,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 21,
+          "retained_events": 21,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 20363,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 2,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 2,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 71683314057
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/qa-v2-request-9f9d08c0c843340a1300e236/2",
+          "number": 4,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "36e0c37c033ba4a5217b3d5e85f8c9f08fb3f19db276bd11b6ac8fcf3087c67b",
+          "started_at": "2026-09-07T17:12:14.138553588Z",
+          "completed_at": "2026-09-07T17:13:25.030806402Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1692,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 75669,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 75,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 73856,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 25861,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 70892252814
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The summary helper calls the raw performance projection, while only the public PerformanceStatus method consults RunUseCases to populate operational lifecycle and cancellation state.",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "PerformanceResult returns a plain fmt.Errorf when status.Result is nil; the web mapper's performance branch requires PerformanceUseCaseError.",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/app/performance_errors.go",
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-a53dc7379d6356bcf430b685: predicted_failure_reproduced\nRequired observation: Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fields.. Refute only if: Sprint summary composition enriches the projection from the durable run manager, or all consuming adapters call the enriched PerformanceStatus use case instead of the raw projection.. Otherwise: The durable lifecycle enrichment or Sprint query implementation differs outside the cited excerpts such that the summary is enriched before presentation.\nTest internal/app/qa_investigator_56bcf430b685_test.go:\npackage app\n\nimport (\n\t\"go/ast\"\n\t\"go/parser\"\n\t\"go/token\"\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_56bcf430b685(t *testing.T) {\n\tdata, err := os.ReadFile(\"sprint_usecases.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tfset := token.NewFileSet()\n\tfile, err := parser.ParseFile(fset, \"sprint_usecases.go\", data, 0)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tbodies := map[string]string{}\n\tfor _, decl := range file.Decls {\n\t\tfn, ok := decl.(*ast.FuncDecl)\n\t\tif !ok || fn.Body == nil || (fn.Name.Name != \"PerformanceStatus\" \u0026\u0026 fn.Name.Name != \"performanceSummaryForSprint\") {\n\t\t\tcontinue\n\t\t}\n\t\tstart := fset.Position(fn.Body.Pos()).Offset\n\t\tend := fset.Position(fn.Body.End()).Offset\n\t\tbodies[fn.Name.Name] = string(data[start:end])\n\t}\n\n\t// Controls: both claimed entry points are present, direct status consults\n\t// durable run control, and sprint summaries delegate to the raw projection.\n\tdirect, directOK := bodies[\"PerformanceStatus\"]\n\tsummary, summaryOK := bodies[\"performanceSummaryForSprint\"]\n\tif !directOK || !summaryOK {\n\t\tt.Fatalf(\"fixture entry points missing: direct=%t summary=%t\", directOK, summaryOK)\n\t}\n\tif !strings.Contains(direct, \"u.runs.Run(ctx\") || !strings.Contains(direct, \"OperationalLifecycle\") || !strings.Contains(direct, \"CancellationState\") {\n\t\tt.Fatalf(\"control direct status does not enrich durable lifecycle: %s\", direct)\n\t}\n\tif !strings.Contains(summary, \"performanceStatusProjection(service\") {\n\t\tt.Fatalf(\"control summary does not use the claimed projection entry point: %s\", summary)\n\t}\n\n\tif !strings.Contains(summary, \".Run(\") \u0026\u0026 !strings.Contains(summary, \"PerformanceStatus(\") {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685 assertion=Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fi\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_56bcf430b685\n    qa_investigator_56bcf430b685_test.go:48: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685 assertion=Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fi\n--- FAIL: TestQAInvestigator_56bcf430b685 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.011s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_56bcf430b685_test.go"
+          ],
+          "check_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+          "output_digest": "7faa5281fd6372f1288f121f260c140cc50dba675346be1a391bd8f97e879669"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-9f9d08c0c843340a1300e236: predicted_failure_reproduced\nRequired observation: Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\nTest internal/app/qa_investigator_340a1300e236_test.go:\npackage app\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_340a1300e236(t *testing.T) {\n\t// Passing control: the normal classifier creates the typed code/category\n\t// consumed by the performance-specific HTTP branch.\n\tcontrol := mapPerformanceUseCaseError(\"performance.result\", errors.New(\"performance result is unavailable\"))\n\ttypedControl, ok := AsPerformanceUseCaseError(control)\n\tif !ok || typedControl.Code != \"performance.persistence_unavailable\" || typedControl.Category != \"persistence\" {\n\t\tt.Fatalf(\"typed control = %#v, recognized=%t\", control, ok)\n\t}\n\thandlerSource, err := os.ReadFile(filepath.Join(\"..\", \"web\", \"handlers.go\"))\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\thandlerText := string(handlerSource)\n\tif !strings.Contains(handlerText, \"app.AsPerformanceUseCaseError(err)\") ||\n\t\t!strings.Contains(handlerText, \"case \\\"persistence\\\", \\\"process\\\", \\\"timeout\\\", \\\"cleanup\\\":\") ||\n\t\t!strings.Contains(handlerText, \"status = http.StatusServiceUnavailable\") {\n\t\tt.Fatal(\"passing control did not locate performance-specific HTTP mapping\")\n\t}\n\n\t// Exercise the real result entry point in a valid read-only, nonterminal\n\t// performance state. No runtime or mutation is needed to request a result.\n\troot := initializedWorkspace(t)\n\tprojectRoot := filepath.Join(root, \"projects\", \"alpha\")\n\twriteFixtureFileContent(t, projectRoot, \"# Project Index\\n\\n## Performance Policy\\n\\n- **Mode:** disabled\\n\", \"project-index.md\")\n\twriteFixtureFileContent(t, filepath.Join(projectRoot, \"sprints\", \"01-ready\"), \"# Requirements\\n\\nNo performance targets are enabled.\\n\", \"requirements.md\")\n\tu := dashboardUseCases{root: root, readOnly: true}\n\tstatus, err := u.PerformanceStatus(context.Background(), PerformanceRequest{Project: \"alpha\", Sprint: \"01-ready\"})\n\tif err != nil || status.Phase != \"ready\" || !status.Fresh || status.Result != nil {\n\t\tt.Fatalf(\"nonterminal fixture status = %#v, err=%v\", status, err)\n\t}\n\t_, resultErr := u.PerformanceResult(context.Background(), PerformanceRequest{Project: \"alpha\", Sprint: \"01-ready\"})\n\tif resultErr == nil {\n\t\tt.Fatal(\"nonterminal result unexpectedly available\")\n\t}\n\t_, resultTyped := AsPerformanceUseCaseError(resultErr)\n\n\t// Contract check for the aggregate entry point: direct status consults run\n\t// control, but the summary helper delegates to the un-enriched projection.\n\tuseCaseSource, err := os.ReadFile(\"sprint_usecases.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tuseCaseText := string(useCaseSource)\n\tdirectStart := strings.Index(useCaseText, \"func (u dashboardUseCases) PerformanceStatus(\")\n\tdirectEnd := strings.Index(useCaseText[directStart:], \"\\nfunc \")\n\tsummaryStart := strings.Index(useCaseText, \"func performanceSummaryForSprint(\")\n\tsummaryEnd := strings.Index(useCaseText[summaryStart:], \"\\nfunc \")\n\tif directStart \u003c 0 || directEnd \u003c 0 || summaryStart \u003c 0 || summaryEnd \u003c 0 {\n\t\tt.Fatal(\"lifecycle entry-point fixture could not be bounded\")\n\t}\n\tdirectBody := useCaseText[directStart : directStart+directEnd]\n\tsummaryBody := useCaseText[summaryStart : summaryStart+summaryEnd]\n\tif !strings.Contains(directBody, \"u.runs.Run(ctx\") || !strings.Contains(directBody, \"OperationalLifecycle\") || !strings.Contains(directBody, \"CancellationState\") {\n\t\tt.Fatal(\"passing control did not locate direct durable lifecycle enrichment\")\n\t}\n\taggregateOmitsRunEnrichment := strings.Contains(summaryBody, \"performanceStatusProjection(service\") \u0026\u0026 !strings.Contains(summaryBody, \".Run(\") \u0026\u0026 !strings.Contains(summaryBody, \"PerformanceStatus(\")\n\tif aggregateOmitsRunEnrichment \u0026\u0026 !resultTyped {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236 assertion=Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\")\n\t}\n\tif !aggregateOmitsRunEnrichment {\n\t\tt.Fatal(\"aggregate lifecycle path is enriched\")\n\t}\n\tt.Fatal(\"unavailable-result error is typed\")\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_340a1300e236\n    qa_investigator_340a1300e236_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236 assertion=Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\n--- FAIL: TestQAInvestigator_340a1300e236 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.009s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_340a1300e236_test.go"
+          ],
+          "check_id": "qa-v2-test-7db263cfd659a2861486f879",
+          "output_digest": "ed9719fb18cf6a5a8eee8b7d8000dc15df0be40978e06a43eb537882e709c4ce"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-7d9af7670be55a2e29a420d8",
+      "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+      "claim": "PerformanceResult returns an unclassified raw error when no terminal result exists, bypassing performance-specific transport error mapping.",
+      "basis": "qa-v1-block-35e4c5fcc8d7288b70a46a1e introduces the adapter-neutral PerformanceResult boundary; qa-v1-block-95f9f726d965e7685184fba7 forwards its error to handleQueryError; qa-v1-block-d5ce194480a423a58e7143af only applies performance HTTP classification to PerformanceUseCaseError values; qa-v1-block-307234c6bfff53948b392930 requires classified, context-preserving boundary errors.",
+      "verification_surface": "internal/app/sprint_usecases.go PerformanceResult and mapPerformanceUseCaseError; internal/web/handlers.go performance-result dispatch and handleQueryError.",
+      "expectation_refs": [
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Calling PerformanceResult for a valid nonterminal attempt returns the raw \"performance result is unavailable\" error, AsPerformanceUseCaseError returns false, and the web route falls through to generic error handling.",
+      "refutation_condition": "The unavailable-result branch wraps the error through mapPerformanceUseCaseError or another recognized typed error before returning.",
+      "inconclusive_condition": "An outer boundary not shown in the cited route always classifies this raw error before handleQueryError receives it.",
+      "safe_evidence_strategy": "Invoke the read-only PerformanceResult use case with a fake status lacking Result, assert the returned error type, and pass it through the web error mapper without executing commands or writing state.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1",
+          "number": 1,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "14b07f6978493a77cec4b159716c494a2a14a77e2b6976026f128b241ba8575c",
+          "started_at": "2026-09-06T14:30:51.449300466Z",
+          "completed_at": "2026-09-06T14:33:25.282986311Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The summary helper calls the raw performance projection, while only the public PerformanceStatus method consults RunUseCases to populate operational lifecycle and cancellation state.",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/web/handlers.go",
+                "internal/tui/model.go"
+              ]
+            },
+            {
+              "kind": "static_source",
+              "summary": "PerformanceResult returns a plain fmt.Errorf when status.Result is nil; the web mapper's performance branch requires PerformanceUseCaseError.",
+              "paths": [
+                "internal/app/sprint_usecases.go",
+                "internal/app/performance_errors.go",
+                "internal/web/handlers.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 735,
+            "output_tokens_known": true,
+            "output_tokens": 1021,
+            "total_tokens_known": true,
+            "total_tokens": 36428,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 240,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 34432,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 25,
+          "retained_events": 25,
+          "observed_tool_calls": 6,
+          "context_metrics": {
+            "prompt_bytes": 98477,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 3,
+              "read": 3
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 11267,
+            "repeated_reads": 0,
+            "search_calls": 3,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 153833685845
+          },
+          "estimated_cost": {
+            "amount": 0.056673100000000004,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "14b07f6978493a77cec4b159716c494a2a14a77e2b6976026f128b241ba8575c",
+          "started_at": "2026-09-07T13:05:07.900079258Z",
+          "completed_at": "2026-09-07T13:08:18.940779078Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 872,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 56562,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 348,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 55296,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 53,
+          "retained_events": 53,
+          "observed_tool_calls": 21,
+          "context_metrics": {
+            "prompt_bytes": 14180,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 11,
+              "read": 9
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 31800,
+            "repeated_reads": 0,
+            "search_calls": 11,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 191040699820
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/qa-v2-request-a53dc7379d6356bcf430b685/1",
+          "number": 3,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "36e0c37c033ba4a5217b3d5e85f8c9f08fb3f19db276bd11b6ac8fcf3087c67b",
+          "started_at": "2026-09-07T17:06:22.485357048Z",
+          "completed_at": "2026-09-07T17:07:34.168671105Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1176,
+            "output_tokens_known": true,
+            "output_tokens": 48,
+            "total_tokens_known": true,
+            "total_tokens": 66771,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 11,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 65536,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 21,
+          "retained_events": 21,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 20363,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 2,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 2,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 71683314057
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-85fe99477f20d95596434ef9/1/evidence/qa-v2-request-9f9d08c0c843340a1300e236/2",
+          "number": 4,
+          "session_id": "ses_f88deda66ffenoIc1VlWr2ecNR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "36e0c37c033ba4a5217b3d5e85f8c9f08fb3f19db276bd11b6ac8fcf3087c67b",
+          "started_at": "2026-09-07T17:12:14.138553588Z",
+          "completed_at": "2026-09-07T17:13:25.030806402Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1692,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 75669,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 75,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 73856,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 25861,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 70892252814
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The summary helper calls the raw performance projection, while only the public PerformanceStatus method consults RunUseCases to populate operational lifecycle and cancellation state.",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/web/handlers.go",
+            "internal/tui/model.go"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "PerformanceResult returns a plain fmt.Errorf when status.Result is nil; the web mapper's performance branch requires PerformanceUseCaseError.",
+          "paths": [
+            "internal/app/sprint_usecases.go",
+            "internal/app/performance_errors.go",
+            "internal/web/handlers.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-679ebce7e6dc6fe849fce7fe: predicted_failure_reproduced\nRequired observation: Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.\nTest internal/app/qa_investigator_6fe849fce7fe_test.go:\npackage app\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"path/filepath\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_6fe849fce7fe(t *testing.T) {\n\t// Control: the production classifier produces the typed shape consumed by\n\t// performance-specific transport mapping.\n\tcontrol := mapPerformanceUseCaseError(\"performance.result\", errors.New(\"performance result is unavailable\"))\n\ttypedControl, ok := AsPerformanceUseCaseError(control)\n\tif !ok || typedControl.Code != \"performance.persistence_unavailable\" || typedControl.Category != \"persistence\" {\n\t\tt.Fatalf(\"control performance mapping = %#v, typed=%t\", control, ok)\n\t}\n\n\troot := initializedWorkspace(t)\n\tprojectRoot := filepath.Join(root, \"projects\", \"alpha\")\n\twriteFixtureFileContent(t, projectRoot, \"# Project Index\\n\\n## Performance Policy\\n\\n- **Mode:** disabled\\n\", \"project-index.md\")\n\twriteFixtureFileContent(t, filepath.Join(projectRoot, \"sprints\", \"01-ready\"), \"# Requirements\\n\\nNo performance targets are enabled.\\n\", \"requirements.md\")\n\n\t_, err := (dashboardUseCases{root: root, readOnly: true}).PerformanceResult(context.Background(), PerformanceRequest{Project: \"alpha\", Sprint: \"01-ready\"})\n\tif err == nil {\n\t\tt.Fatal(\"expected a nonterminal performance result to be unavailable\")\n\t}\n\tif _, ok := AsPerformanceUseCaseError(err); !ok {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6fe849fce7fe assertion=Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_6fe849fce7fe\n    qa_investigator_6fe849fce7fe_test.go:29: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6fe849fce7fe assertion=Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.\n--- FAIL: TestQAInvestigator_6fe849fce7fe (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.008s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/app/qa_investigator_6fe849fce7fe_test.go"
+          ],
+          "check_id": "qa-v2-test-7493f58ee9a8736864f38cc9",
+          "output_digest": "4ae5fc456808d8a5a34540c39ea83d072cb7c2cbe10dadab5270d03ffca67ae5"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-9f9d08c0c843340a1300e236: predicted_failure_reproduced\nRequired observation: Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\nTest internal/app/qa_investigator_340a1300e236_test.go:\npackage app\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_340a1300e236(t *testing.T) {\n\t// Passing control: the normal classifier creates the typed code/category\n\t// consumed by the performance-specific HTTP branch.\n\tcontrol := mapPerformanceUseCaseError(\"performance.result\", errors.New(\"performance result is unavailable\"))\n\ttypedControl, ok := AsPerformanceUseCaseError(control)\n\tif !ok || typedControl.Code != \"performance.persistence_unavailable\" || typedControl.Category != \"persistence\" {\n\t\tt.Fatalf(\"typed control = %#v, recognized=%t\", control, ok)\n\t}\n\thandlerSource, err := os.ReadFile(filepath.Join(\"..\", \"web\", \"handlers.go\"))\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\thandlerText := string(handlerSource)\n\tif !strings.Contains(handlerText, \"app.AsPerformanceUseCaseError(err)\") ||\n\t\t!strings.Contains(handlerText, \"case \\\"persistence\\\", \\\"process\\\", \\\"timeout\\\", \\\"cleanup\\\":\") ||\n\t\t!strings.Contains(handlerText, \"status = http.StatusServiceUnavailable\") {\n\t\tt.Fatal(\"passing control did not locate performance-specific HTTP mapping\")\n\t}\n\n\t// Exercise the real result entry point in a valid read-only, nonterminal\n\t// performance state. No runtime or mutation is needed to request a result.\n\troot := initializedWorkspace(t)\n\tprojectRoot := filepath.Join(root, \"projects\", \"alpha\")\n\twriteFixtureFileContent(t, projectRoot, \"# Project Index\\n\\n## Performance Policy\\n\\n- **Mode:** disabled\\n\", \"project-index.md\")\n\twriteFixtureFileContent(t, filepath.Join(projectRoot, \"sprints\", \"01-ready\"), \"# Requirements\\n\\nNo performance targets are enabled.\\n\", \"requirements.md\")\n\tu := dashboardUseCases{root: root, readOnly: true}\n\tstatus, err := u.PerformanceStatus(context.Background(), PerformanceRequest{Project: \"alpha\", Sprint: \"01-ready\"})\n\tif err != nil || status.Phase != \"ready\" || !status.Fresh || status.Result != nil {\n\t\tt.Fatalf(\"nonterminal fixture status = %#v, err=%v\", status, err)\n\t}\n\t_, resultErr := u.PerformanceResult(context.Background(), PerformanceRequest{Project: \"alpha\", Sprint: \"01-ready\"})\n\tif resultErr == nil {\n\t\tt.Fatal(\"nonterminal result unexpectedly available\")\n\t}\n\t_, resultTyped := AsPerformanceUseCaseError(resultErr)\n\n\t// Contract check for the aggregate entry point: direct status consults run\n\t// control, but the summary helper delegates to the un-enriched projection.\n\tuseCaseSource, err := os.ReadFile(\"sprint_usecases.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tuseCaseText := string(useCaseSource)\n\tdirectStart := strings.Index(useCaseText, \"func (u dashboardUseCases) PerformanceStatus(\")\n\tdirectEnd := strings.Index(useCaseText[directStart:], \"\\nfunc \")\n\tsummaryStart := strings.Index(useCaseText, \"func performanceSummaryForSprint(\")\n\tsummaryEnd := strings.Index(useCaseText[summaryStart:], \"\\nfunc \")\n\tif directStart \u003c 0 || directEnd \u003c 0 || summaryStart \u003c 0 || summaryEnd \u003c 0 {\n\t\tt.Fatal(\"lifecycle entry-point fixture could not be bounded\")\n\t}\n\tdirectBody := useCaseText[directStart : directStart+directEnd]\n\tsummaryBody := useCaseText[summaryStart : summaryStart+summaryEnd]\n\tif !strings.Contains(directBody, \"u.runs.Run(ctx\") || !strings.Contains(directBody, \"OperationalLifecycle\") || !strings.Contains(directBody, \"CancellationState\") {\n\t\tt.Fatal(\"passing control did not locate direct durable lifecycle enrichment\")\n\t}\n\taggregateOmitsRunEnrichment := strings.Contains(summaryBody, \"performanceStatusProjection(service\") \u0026\u0026 !strings.Contains(summaryBody, \".Run(\") \u0026\u0026 !strings.Contains(summaryBody, \"PerformanceStatus(\")\n\tif aggregateOmitsRunEnrichment \u0026\u0026 !resultTyped {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236 assertion=Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\")\n\t}\n\tif !aggregateOmitsRunEnrichment {\n\t\tt.Fatal(\"aggregate lifecycle path is enriched\")\n\t}\n\tt.Fatal(\"unavailable-result error is typed\")\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_340a1300e236\n    qa_investigator_340a1300e236_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236 assertion=Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\n--- FAIL: TestQAInvestigator_340a1300e236 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.009s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_340a1300e236_test.go"
+          ],
+          "check_id": "qa-v2-test-7db263cfd659a2861486f879",
+          "output_digest": "ed9719fb18cf6a5a8eee8b7d8000dc15df0be40978e06a43eb537882e709c4ce"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

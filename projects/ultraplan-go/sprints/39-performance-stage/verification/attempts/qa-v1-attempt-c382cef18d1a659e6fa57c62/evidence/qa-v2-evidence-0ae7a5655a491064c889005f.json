@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-0ae7a5655a491064c889005f",
+  "plan_id": "qa-v2-plan-271079f6bb26e205e3d352e8",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+  "workspace_id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+  "workspace_identity": "49dce388e1554bcba98db4df735a19e7be63c041a6f9d6cf657f556564ade579",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "fa7596ed015482494703a50d192af3c42f91c44e600215ae83c2ad7d7eeaa059",
+      "exit_code": 1,
+      "duration": 433412567260,
+      "stdout_digest": "ea7a9d1eed500d8d97b4ff555e0a47b73df42b2261307d9536fe58bbc23e239e",
+      "stderr_digest": "5e9d3743683464c4db2259d972d600ae39119c30e1dd53fd95cc7fa1a3ed8bea",
+      "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project [setup failed]\nFAIL\n",
+      "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n# github.com/Antonio7098/ultraplan-go/internal/project\n../productstate/store.go:16:2: modernc.org/sqlite@v1.57.0: read \"https://proxy.golang.org/modernc.org/sqlite/@v/v1.57.0.zip\": read tcp 192.168.0.34:40494-\u003e142.250.140.207:443: read: connection reset by peer\n",
+      "output_bytes": 467,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/project/qa_investigator_76f9ef0d2260_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:48:35.491892036Z"
+}

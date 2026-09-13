@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-267a2f024601a2e21585e870",
+  "plan_id": "qa-v2-plan-d0e1997c33d3827f1795349c",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+  "workspace_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+  "workspace_identity": "b963e357183de197d6a1a7b88bfded93c5a0fef73d8c08af6c46b92a9dd59b3e",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_2d93974a2b11",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_2d93974a2b11",
+          "action": "fail"
+        }
+      ],
+      "executable": "go",
+      "args_digest": "8bc18418160d79b0ea3988605a450012a930b9b7a5f45184383b174b7daf40ee",
+      "exit_code": 1,
+      "duration": 25462155290,
+      "stdout_digest": "9462146eeb5ccc671bd540d5683834d42b39da3f4f19f8a1645d85ec232dd067",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_2d93974a2b11\n    qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}}\n--- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s\nFAIL\n",
+      "output_bytes": 427,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/tui/qa_investigator_2d93974a2b11_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:28:50.785141183Z"
+}

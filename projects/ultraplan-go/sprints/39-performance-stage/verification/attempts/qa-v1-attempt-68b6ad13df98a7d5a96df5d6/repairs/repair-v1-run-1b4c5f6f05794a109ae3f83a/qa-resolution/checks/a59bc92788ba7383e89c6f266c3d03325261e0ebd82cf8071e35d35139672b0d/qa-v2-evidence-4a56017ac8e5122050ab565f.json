@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-4a56017ac8e5122050ab565f",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "2d6233638f3b25ad12a9647a0f0083f98f0139321b37dde79927d68d36b5801d",
+      "schema_version": 2,
+      "id": "qa-v2-run-0deebf7b2cd0c026ff826e47",
+      "spec_id": "qa-v2-spec-b7390498db1e0035e096d2e0",
+      "test_bundle_id": "qa-v2-test-731bcfbd077beb53b1c37659",
+      "target_identity": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_6b0e9329abe5",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_6b0e9329abe5",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "36849206561ec92f819e8df04267b51f00050f39648cb667f7209fabea09311c",
+        "exit_code": 0,
+        "duration": 30693971248,
+        "stdout_digest": "0ac214c542de0238a5f8a007d39abf5d8f94ec9c7692aeab794948ef4d76f01d",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_6b0e9329abe5\n--- PASS: TestQAInvestigator_6b0e9329abe5 (0.03s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.040s\n",
+        "output_bytes": 158,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_6b0e9329abe5",
+        "assertion": "Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c i",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6b0e9329abe5"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T09:27:16.354837698Z"
+    }
+  }
+}

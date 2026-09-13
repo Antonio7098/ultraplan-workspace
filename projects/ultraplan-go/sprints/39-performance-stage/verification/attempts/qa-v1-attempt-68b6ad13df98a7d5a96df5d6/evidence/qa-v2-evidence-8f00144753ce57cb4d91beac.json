@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-8f00144753ce57cb4d91beac",
+  "plan_id": "qa-v2-plan-e86827663db8af602a0114fe",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+  "workspace_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+  "workspace_identity": "315804711f1bdc8e29bd18f112fa2efbcc1fda294c66b7de2a7b1ed4ed5cf232",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_729d3c90109f",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_729d3c90109f",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f",
+      "executable": "go",
+      "args_digest": "79def7b37ee19ec22dcb4fd7eefa6c60fb9439194b6e5ab7903091c2a739e835",
+      "exit_code": 1,
+      "duration": 26914799161,
+      "stdout_digest": "dec7dc246f7c5065ce023d04ea9ba4827ab6abab98ecc4553601f3edac7a93d0",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_729d3c90109f\n    qa_investigator_729d3c90109f_test.go:80: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f assertion=For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cum actual_calls=56 durable_commands=8 command_limit=40 output_matcher=ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f\n--- FAIL: TestQAInvestigator_729d3c90109f (0.34s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.344s\nFAIL\n",
+      "output_bytes": 671,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_729d3c90109f_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T13:17:43.177162409Z"
+}

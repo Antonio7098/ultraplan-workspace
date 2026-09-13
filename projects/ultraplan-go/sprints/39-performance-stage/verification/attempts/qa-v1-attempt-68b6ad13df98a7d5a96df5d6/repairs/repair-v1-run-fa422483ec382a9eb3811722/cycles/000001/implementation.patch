@@ -1,0 +1,62 @@
+--- a/internal/sprint/performance_repair.go
++++ b/internal/sprint/performance_repair.go
+@@ -54,6 +54,14 @@
+ 	if len(baseline) != len(packet.Targets) || environment.Identity != currentPerformanceEnvironment(os.Environ()).Identity {
+ 		return blocked(fmt.Errorf("frozen performance environment or baseline coverage changed"), true)
+ 	}
++	record.TargetPacketDigest = packet.PacketDigest
++	record.TargetIDs = make([]string, len(packet.Targets))
++	for index, performanceTarget := range packet.Targets {
++		record.TargetIDs[index] = performanceTarget.ID
++		if baseline[index].Target != performanceTarget {
++			return blocked(fmt.Errorf("frozen performance baseline target coverage changed"), true)
++		}
++	}
+ 	currentManifest, err := DiscoverPerformanceManifest(target, packet)
+ 	if err != nil || currentManifest.BenchmarkDigest != manifest.BenchmarkDigest {
+ 		return blocked(fmt.Errorf("frozen performance benchmark changed: %w", err), true)
+--- a/internal/sprint/qa_repair_state.go
++++ b/internal/sprint/qa_repair_state.go
+@@ -710,12 +710,25 @@
+ 	}
+ 	if value.Performance != nil {
+ 		performance := value.Performance
+-		if performance.SchemaVersion != PerformanceSchemaVersion || performance.AttemptID != "" && !performanceAttemptID.MatchString(performance.AttemptID) || performance.PriorResultDigest != "" && !validFingerprint(performance.PriorResultDigest) || performance.RepairedImplementation != "" && !validFingerprint(performance.RepairedImplementation) || performance.CompletedAt.IsZero() || !validPerformanceRunOutcome(performance.Outcome) || len(performance.Blocker) > 512 {
+-			return fmt.Errorf("repair performance reverification is invalid")
+-		}
+-		if performance.Outcome == PerformancePassed || performance.Outcome == PerformancePassedWithReports {
+-			if !performance.CleanupComplete || performance.AttemptID == "" || performance.PriorResultDigest == "" || performance.RepairedImplementation == "" {
+-				return fmt.Errorf("repair performance reverification passed without complete authority and cleanup proof")
++		if performance.SchemaVersion != PerformanceSchemaVersion || performance.AttemptID != "" && !performanceAttemptID.MatchString(performance.AttemptID) || performance.PriorResultDigest != "" && !validFingerprint(performance.PriorResultDigest) || performance.RepairedImplementation != "" && !validFingerprint(performance.RepairedImplementation) || performance.TargetPacketDigest != "" && !validFingerprint(performance.TargetPacketDigest) || performance.CompletedAt.IsZero() || !validPerformanceRunOutcome(performance.Outcome) || len(performance.Blocker) > 512 {
++			return fmt.Errorf("repair performance reverification is invalid")
++		}
++		if performance.Outcome == PerformancePassed || performance.Outcome == PerformancePassedWithReports {
++			if !performance.CleanupComplete || performance.AttemptID == "" || performance.PriorResultDigest == "" || performance.RepairedImplementation == "" || !validFingerprint(performance.TargetPacketDigest) || len(performance.TargetIDs) == 0 || len(performance.TargetIDs) > PerformanceMaxTargets || len(performance.TargetResults) != len(performance.TargetIDs) {
++				return fmt.Errorf("repair performance reverification passed without complete authority and cleanup proof")
++			}
++			seen := make(map[string]bool, len(performance.TargetIDs))
++			outcomes := make([]PerformanceTargetOutcome, len(performance.TargetResults))
++			for index, targetID := range performance.TargetIDs {
++				result := performance.TargetResults[index]
++				if !performanceTargetID.MatchString(targetID) || seen[targetID] || result.Target.ID != targetID || result.Comparison.TargetID != targetID {
++					return fmt.Errorf("repair performance reverification target coverage is invalid")
++				}
++				seen[targetID] = true
++				outcomes[index] = result.Comparison.Outcome
++			}
++			if DerivePerformanceRunOutcome(outcomes, false, false, false, false) != performance.Outcome {
++				return fmt.Errorf("repair performance reverification outcome disagrees with target results")
+ 			}
+ 		}
+ 	}
+--- a/internal/sprint/qa_types.go
++++ b/internal/sprint/qa_types.go
+@@ -655,6 +655,8 @@
+ 	AttemptID              string                    `json:"performance_attempt_id"`
+ 	PriorResultDigest      string                    `json:"prior_result_digest"`
+ 	RepairedImplementation string                    `json:"repaired_implementation"`
++	TargetPacketDigest     string                    `json:"target_packet_digest,omitempty"`
++	TargetIDs              []string                  `json:"target_ids,omitempty"`
+ 	TargetResults          []PerformanceTargetResult `json:"target_results,omitempty"`
+ 	Outcome                PerformanceRunOutcome     `json:"outcome"`
+ 	CleanupComplete        bool                      `json:"cleanup_complete"`

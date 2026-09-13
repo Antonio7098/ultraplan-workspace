@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-bd8fd861a8b2d54eb6480aba",
+  "plan_id": "qa-v2-plan-343099999d60a420ffad9d24",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "workspace_id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+  "workspace_identity": "623afb665e298cc97eb575abe73221383ceb0e9e14e5f89d4d7ffd95b484e064",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_2eaa2dbf06b2",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_2eaa2dbf06b2",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2eaa2dbf06b2",
+      "executable": "go",
+      "args_digest": "ae1821b9da1b7ebdc7c0d83a03c697dfad1b71037b965d1dd9f3a7e7ce0bd939",
+      "exit_code": 1,
+      "duration": 31761879359,
+      "stdout_digest": "d702e19adb403d203f01b063fa4c2140a8681eb50e31cc0eec5bd9693d468439",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_2eaa2dbf06b2\n    qa_investigator_2eaa2dbf06b2_test.go:22: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2eaa2dbf06b2 assertion=Assert the exact theories covered by exercising representative performance commands and checking stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. The\n--- FAIL: TestQAInvestigator_2eaa2dbf06b2 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.007s\nFAIL\n",
+      "output_bytes": 538,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_2eaa2dbf06b2_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T13:08:11.80709771Z"
+}

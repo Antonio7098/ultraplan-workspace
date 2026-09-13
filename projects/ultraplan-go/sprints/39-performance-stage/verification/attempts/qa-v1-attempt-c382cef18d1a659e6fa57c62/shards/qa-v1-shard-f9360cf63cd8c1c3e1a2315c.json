@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "CLI and durable performance operations",
+  "changed_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/performance_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance.go",
+    "internal/sprint/service.go"
+  ],
+  "behavioral_concerns": [
+    "CLI parsing requires explicit confirmation for start and resume while rejecting caller-selected target, command, parser, environment, model, timeout, and limit authority.",
+    "Cancellation targets the current correlated durable run and remains idempotent.",
+    "Configuration and runtime construction fail before durable workload acceptance or side effects.",
+    "Dry-run and status remain runtime-free and write-free; recovery starts no runtime or measurement process.",
+    "Performance errors retain classification, cause, guidance, retryability, and appropriate CLI exit behavior.",
+    "Start, resume, recover, and cancel use durable ownership and preserve distinct durable lifecycle and product outcome."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-errors",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-134574fc0193fda45c84778e",
+    "qa-v1-block-2c2250d328e30394d5f679db",
+    "qa-v1-block-2dd5890ebc7e1ca0d12f682f",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-32a21599abf48ac336ca2436",
+    "qa-v1-block-35a7dc27922895fd4cbd845a",
+    "qa-v1-block-539767426a292f490828efde",
+    "qa-v1-block-67646c233a191152dd14ff15",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-a1c54f69a34aba9ad20c1302",
+    "qa-v1-block-aaed09be66807f81a5a76a14",
+    "qa-v1-block-b6c200e050cc4b4c65bc2e9f",
+    "qa-v1-block-c1187b9b1fd6284859a3e765",
+    "qa-v1-block-d43a18872f08e8fc58ea9eb9",
+    "qa-v1-block-f4c1ff17dbcda6f72bc16e40",
+    "qa-v1-block-fdf550b0b7ba003a2a4a30df"
+  ],
+  "prepared_prompt_bytes": 116550,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-f9360cf63cd8c1c3e1a2315c/1",
+      "number": 1,
+      "session_id": "ses_f889f1214ffeTMMCkD0lvoKGEQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "b0dabdc1950447f0d4a2922411659ec940abfb7638d31dd92184b32486d59bce",
+      "started_at": "2026-09-06T15:40:33.52095358Z",
+      "completed_at": "2026-09-06T15:41:42.84953751Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The performance CLI error writer maps context cancellation to ExitCancel and all other classified performance errors to ExitValidation [qa-v1-block-a1c54f69a34aba9ad20c1302].",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+        },
+        {
+          "kind": "acceptance_criterion",
+          "summary": "The error contract requires narrow truthful categories and preservation of operational signals at CLI boundaries [qa-v1-block-307234c6bfff53948b392930].",
+          "paths": [
+            "system/contracts/core/errors.md"
+          ],
+          "output_digest": "e9e2ddda390c8fb3b6f4ad48030b576666b0be648a80952005db9e73d1566946"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 36495,
+        "output_tokens_known": true,
+        "output_tokens": 1160,
+        "total_tokens_known": true,
+        "total_tokens": 73249,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 522,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 35072,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 116550,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 69328583930
+      },
+      "estimated_cost": {
+        "amount": 0.2582921,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-f9360cf63cd8c1c3e1a2315c/1/evidence/2",
+      "number": 3,
+      "session_id": "ses_f889f1214ffeTMMCkD0lvoKGEQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "b0dabdc1950447f0d4a2922411659ec940abfb7638d31dd92184b32486d59bce",
+      "started_at": "2026-09-07T13:09:24.821282095Z",
+      "completed_at": "2026-09-07T13:11:03.531295457Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1515,
+        "output_tokens_known": true,
+        "output_tokens": 47,
+        "total_tokens_known": true,
+        "total_tokens": 48064,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 166,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 46336,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 27,
+      "retained_events": 27,
+      "observed_tool_calls": 8,
+      "context_metrics": {
+        "prompt_bytes": 9024,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 3,
+          "read": 4
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 10693,
+        "repeated_reads": 0,
+        "search_calls": 3,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 98710013362
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-f9360cf63cd8c1c3e1a2315c/1/evidence/qa-v2-request-922f451b9bb54eee4affff91/1",
+      "number": 3,
+      "session_id": "ses_f889f1214ffeTMMCkD0lvoKGEQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "80a48d59f4031727f914c6c6fd58eb4e37dec83099da323df636d55d365ef060",
+      "started_at": "2026-09-07T16:09:38.285612038Z",
+      "completed_at": "2026-09-07T16:09:53.740659751Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 11,
+      "retained_events": 11,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 13600,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 15455047713
+      },
+      "failure_kind": "original_session_unavailable",
+      "stop_reason": "original_session_unavailable"
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-f9360cf63cd8c1c3e1a2315c/1/evidence/qa-v2-request-2943a82794f42d463a0148d6/1",
+      "number": 4,
+      "session_id": "ses_f889f1214ffeTMMCkD0lvoKGEQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "80a48d59f4031727f914c6c6fd58eb4e37dec83099da323df636d55d365ef060",
+      "started_at": "2026-09-12T10:06:42.153545449Z",
+      "completed_at": "2026-09-12T10:06:50.71260715Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 3,
+      "retained_events": 3,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 13337,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 8559061701
+      },
+      "failure_kind": "original_session_unavailable",
+      "stop_reason": "original_session_unavailable"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e520dfe5bb32e35f0d545398",
+      "shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+      "claim": "The performance CLI collapses every classified non-cancellation performance failure into the validation exit class, so configuration, runtime, timeout, dependency, and persistence failures do not retain appropriate CLI exit behavior.",
+      "basis": "The CLI handles context cancellation specially but returns every other classified performance error through ExitValidation [qa-v1-block-a1c54f69a34aba9ad20c1302]. The error contract requires narrow truthful categories and preservation of operational signals at CLI boundaries [qa-v1-block-307234c6bfff53948b392930].",
+      "verification_surface": "internal/app/sprint_commands.go error rendering and exit classification in runSprintPerformance",
+      "expectation_refs": [
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A classified non-cancellation performance error is unconditionally wrapped with ExitValidation instead of an exit class corresponding to its category.",
+      "refutation_condition": "The complete command path or classified function preserves a category-specific non-validation exit class despite the explicit ExitValidation wrapper.",
+      "inconclusive_condition": "The omitted classified or ClassifyPerformanceError implementation changes the effective exit class in a way not visible in the cited block.",
+      "safe_evidence_strategy": "Statically inspect the CLI classification path and use product-owned tests, if available, to assert exit classes for representative performance configuration, runtime, timeout, and data failures.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-f9360cf63cd8c1c3e1a2315c/1",
+          "number": 1,
+          "session_id": "ses_f889f1214ffeTMMCkD0lvoKGEQ",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "b0dabdc1950447f0d4a2922411659ec940abfb7638d31dd92184b32486d59bce",
+          "started_at": "2026-09-06T15:40:33.52095358Z",
+          "completed_at": "2026-09-06T15:41:42.84953751Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The performance CLI error writer maps context cancellation to ExitCancel and all other classified performance errors to ExitValidation [qa-v1-block-a1c54f69a34aba9ad20c1302].",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+            },
+            {
+              "kind": "acceptance_criterion",
+              "summary": "The error contract requires narrow truthful categories and preservation of operational signals at CLI boundaries [qa-v1-block-307234c6bfff53948b392930].",
+              "paths": [
+                "system/contracts/core/errors.md"
+              ],
+              "output_digest": "e9e2ddda390c8fb3b6f4ad48030b576666b0be648a80952005db9e73d1566946"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 36495,
+            "output_tokens_known": true,
+            "output_tokens": 1160,
+            "total_tokens_known": true,
+            "total_tokens": 73249,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 522,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 35072,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 116550,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 69328583930
+          },
+          "estimated_cost": {
+            "amount": 0.2582921,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-f9360cf63cd8c1c3e1a2315c/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f889f1214ffeTMMCkD0lvoKGEQ",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "b0dabdc1950447f0d4a2922411659ec940abfb7638d31dd92184b32486d59bce",
+          "started_at": "2026-09-07T13:09:24.821282095Z",
+          "completed_at": "2026-09-07T13:11:03.531295457Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1515,
+            "output_tokens_known": true,
+            "output_tokens": 47,
+            "total_tokens_known": true,
+            "total_tokens": 48064,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 166,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 46336,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 27,
+          "retained_events": 27,
+          "observed_tool_calls": 8,
+          "context_metrics": {
+            "prompt_bytes": 9024,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 3,
+              "read": 4
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 10693,
+            "repeated_reads": 0,
+            "search_calls": 3,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 98710013362
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The performance CLI error writer maps context cancellation to ExitCancel and all other classified performance errors to ExitValidation [qa-v1-block-a1c54f69a34aba9ad20c1302].",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+        },
+        {
+          "kind": "acceptance_criterion",
+          "summary": "The error contract requires narrow truthful categories and preservation of operational signals at CLI boundaries [qa-v1-block-307234c6bfff53948b392930].",
+          "paths": [
+            "system/contracts/core/errors.md"
+          ],
+          "output_digest": "e9e2ddda390c8fb3b6f4ad48030b576666b0be648a80952005db9e73d1566946"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-8879630e73c2765e01a64feb: unrelated_compile_or_panic_failure\nRequired observation: Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.\nTest internal/app/qa_investigator_765e01a64feb_test.go:\npackage app\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_765e01a64feb(t *testing.T) {\n\t// Control: classification retains distinct causes and categories before the\n\t// CLI boundary wraps them in an application exit class.\n\tcases := []struct {\n\t\tname     string\n\t\terr      error\n\t\tcategory string\n\t}{\n\t\t{name: \"timeout\", err: context.DeadlineExceeded, category: \"timeout\"},\n\t\t{name: \"process\", err: errors.New(\"process exited with status 1\"), category: \"process\"},\n\t\t{name: \"persistence\", err: os.ErrNotExist, category: \"persistence\"},\n\t\t{name: \"configuration\", err: \u0026sprint.PerformanceError{Code: \"performance.config\", Category: \"configuration\", Operation: \"performance.run\", Guidance: \"repair configuration\", Cause: errors.New(\"invalid performance configuration\")}, category: \"configuration\"},\n\t\t{name: \"cancellation\", err: context.Canceled, category: \"cancellation\"},\n\t}\n\tfor _, tc := range cases {\n\t\tclassifiedErr := sprint.ClassifyPerformanceError(\"performance.run\", tc.err)\n\t\tperformanceErr, ok := sprint.AsPerformanceError(classifiedErr)\n\t\tif !ok || performanceErr.Category != tc.category {\n\t\t\tt.Fatalf(\"control %s category = %q, want %q\", tc.name, performanceErr.Category, tc.category)\n\t\t}\n\t}\n\n\t// Verify the production boundary itself still has the reported collapse and\n\t// that cancellation remains its distinct passing control.\n\tsource, err := os.ReadFile(\"sprint_commands.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttext := string(source)\n\tcancelBranch := `if errors.Is(runErr, context.Canceled) {\n\t\t\t\treturn classified(ExitCancel, \"sprint.performance: %w\", runErr)\n\t\t\t}`\n\tvalidationBranch := `return classified(ExitValidation, \"sprint.performance: %w\", runErr)`\n\tif !strings.Contains(text, cancelBranch) {\n\t\tt.Fatalf(\"passing control missing cancellation ExitCancel branch\")\n\t}\n\tif !strings.Contains(text, validationBranch) {\n\t\tt.Fatalf(\"performance failures no longer share the ExitValidation branch\")\n\t}\n\n\t// The distinct timeout, process, persistence, and configuration categories\n\t// all reach the unconditional non-cancellation branch above.\n\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_765e01a64feb\")\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed]\nFAIL\n\nObserved stderr:\n[REDACTED]",
+          "paths": [
+            "internal/app/qa_investigator_765e01a64feb_test.go"
+          ],
+          "check_id": "qa-v2-test-3eb9bf244922555688a36248",
+          "output_digest": "255a2f4017b992b0b70cb276903aa97b06700c2e3bb803c6405f99cfeebac753"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "unrelated_compile_or_panic_failure"
+    }
+  ]
+}

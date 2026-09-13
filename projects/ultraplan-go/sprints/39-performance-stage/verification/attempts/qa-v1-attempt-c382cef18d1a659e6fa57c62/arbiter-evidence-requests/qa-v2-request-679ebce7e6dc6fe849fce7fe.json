@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-679ebce7e6dc6fe849fce7fe",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-7d9af7670be55a2e29a420d8"
+    ],
+    "origin_shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+    "gap": "The classification defect has only static evidence.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer invoking PerformanceResult for a valid nonterminal attempt and passing its error through web mapping.",
+    "required_observation": "Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.",
+    "control_requirement": "Include a typed performance error that receives performance-specific status and code mapping.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 2,
+    "attempts": 1,
+    "evidence_fingerprint": "4737010b084358709b345236eb71f27e37499d700e961eaf9b6963ec906dbd64",
+    "test_bundle_id": "qa-v2-test-7493f58ee9a8736864f38cc9",
+    "latest_run_id": "qa-v2-run-534e299b366e68bf800de407",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

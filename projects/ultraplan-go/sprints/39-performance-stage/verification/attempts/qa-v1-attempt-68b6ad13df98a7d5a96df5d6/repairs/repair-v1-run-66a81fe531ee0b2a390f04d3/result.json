@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-66a81fe531ee0b2a390f04d3",
+  "mode": "automatic",
+  "outcome": "blocked",
+  "reason": "isolated proposal did not pass its frozen provisional checks",
+  "stop_reason": "required_check_failed",
+  "consumed": {
+    "cycles": 0,
+    "mutation_cycles": 0,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 0,
+    "changed_bytes": 0,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 0,
+    "output_bytes": 0
+  },
+  "runtime": {
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "variant": "high",
+    "session_id": "ses_f65caf0d6ffekRXfAlrzzQCYyh",
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 138725,
+      "output_tokens_known": true,
+      "output_tokens": 205,
+      "total_tokens_known": true,
+      "total_tokens": 143099,
+      "reasoning_tokens_known": true,
+      "reasoning_tokens": 4169,
+      "cache_read_tokens_known": true,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "estimated_cost": {
+      "amount": 0.27949999999999997,
+      "currency": "USD",
+      "estimate": true,
+      "source": "model_priced"
+    },
+    "started_at": "2026-09-13T09:59:20.967714911Z",
+    "completed_at": "2026-09-13T10:02:01.564532927Z",
+    "duration": 160596818016,
+    "duration_ms": 160596,
+    "runtime_events": 12,
+    "retained_events": 12,
+    "observed_tool_calls": 0,
+    "provisional_checks": [
+      {
+        "gate": "exact_reproducer",
+        "status": "failed",
+        "reason": "frozen check did not pass in the isolated proposal workspace",
+        "exit_code": 1,
+        "duration": 39919113474,
+        "duration_ms": 39919,
+        "output_digest": "425b638c7f1694479b413047d28ca00e11e0272b4bfc173284f30975765ee8c0",
+        "output_bytes": 1011,
+        "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_b7efe9eb62a1 ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1     qa_investigator_b7efe9eb62a1_test.go:143: Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab --- FAIL: TestQAInvestigator_b7efe9eb62a1 (0.19s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.199s FAIL  go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db go: downloading modernc.org/sqlite v1.57.0 go: downloading golang.org/x/sys v0.47.0 go: downloading modernc.org/libc v1.74.4 go: downloading github.com/dustin/go-humanize v1.0.1 go: downloading github.com/google/uuid v1.6.0 go: downloading modernc.org/memory v1.11.0 go: downloading modernc.org/mathutil v1.7.1 go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec"
+      }
+    ],
+    "provisional_passed": false
+  },
+  "target": {
+    "fingerprint": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "2ca7f83934acf70e96f4e63fc577c35bb43e3054bb20cdb754502d11cca42973"
+  },
+  "cleanup_complete": true,
+  "production_applied": false,
+  "complete_ladder": false,
+  "unresolved_issues": [
+    "qa-v2-issue-7972b68261d6362477e5dfe2"
+  ],
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-66a81fe531ee0b2a390f04d3/issue-packet.json",
+      "digest": "8d45c4d8352e39aa02913078d55fed8077868633497accddf860194b006638b5"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-66a81fe531ee0b2a390f04d3/confirmation.json",
+      "digest": "f71db0813620d93f9361aba3f6bb5b7b6256751b470293d5d5e27ee3f46adc0c"
+    }
+  ],
+  "next_action": "Restore the named prerequisite and resume only from the latest proven boundary.",
+  "completed_at": "2026-09-13T10:02:46.511070694Z"
+}

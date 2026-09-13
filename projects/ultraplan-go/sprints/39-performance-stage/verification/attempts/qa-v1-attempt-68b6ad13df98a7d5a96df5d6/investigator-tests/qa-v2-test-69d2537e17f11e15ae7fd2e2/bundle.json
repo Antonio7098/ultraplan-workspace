@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+  "spec_id": "qa-v2-spec-e2721c42c3167585652edf65",
+  "files": [
+    {
+      "path": "internal/sprint/qa_investigator_78d7bc49d841_test.go",
+      "content": "package sprint\n\nimport (\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_78d7bc49d841(t *testing.T) {\n\troot := t.TempDir()\n\tsp := Sprint{Project: \"proj\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"proj\", \"sprints\", \"39-performance\")}\n\tstate := PerformanceState{Phase: PerformancePhaseTerminal, Fresh: true, Outcome: PerformancePassed, AttemptID: \"performance-v1-attempt-0123456789abcdef01234567\", NextAction: \"Run Conformance Review.\"}\n\tstateRef := PerformanceArtifactRef{Path: PerformanceStateRelPath(sp), Digest: strings.Repeat(\"a\", 64)}\n\tmet := []PerformanceComparison{{TargetID: \"PERF-ONE\", Outcome: PerformanceTargetMet}}\n\n\tcontrol := performanceFlowSummary(state, stateRef, []PerformanceTarget{{ID: \"PERF-ONE\", Gate: PerformanceRequired}}, met)\n\tif control.Required != 1 || control.Reports != 0 || control.Met != 1 || control.Missed != 0 {\n\t\tt.Fatalf(\"required-target control summary = %#v\", control)\n\t}\n\tif err := validatePerformanceFlowSummary(root, sp, *control, \"flow-state.json\"); err != nil {\n\t\tt.Fatalf(\"required-target control should validate: %v\", err)\n\t}\n\n\treproduced := performanceFlowSummary(state, stateRef, []PerformanceTarget{{ID: \"PERF-ONE\", Gate: PerformanceReport}}, met)\n\tif reproduced.Required != 0 || reproduced.Reports != 1 || reproduced.Met != 1 || reproduced.Missed != 0 {\n\t\tt.Fatalf(\"report-only reproduction summary = %#v\", reproduced)\n\t}\n\tif err := validatePerformanceFlowSummary(root, sp, *reproduced, \"flow-state.json\"); err != nil {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841 assertion=The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure. report-only summary should validate: %v\", err)\n\t}\n}\n",
+      "digest": "417c6943e74ff6d5de8b3c06508738f1ea058bb4de326a5cfc0c5af9ffcbd5c7",
+      "bytes": 1803
+    }
+  ],
+  "content_digest": "36ed26500eaa0a12ce03f9d3422236c8becaefbf11ca88fc5f7f0d13a1a81889"
+}

@@ -1,0 +1,1403 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "repair_run_id": "repair-v1-run-6ff9161f9cefc5e8476899e2",
+  "issue": {
+    "id": "qa-v2-issue-ddc69af5ba4581d855926d14",
+    "root_cause_group_id": "qa-v2-group-03ac36b9dfd152e3f9a13f52",
+    "title": "Pseudo headings cause false policy mismatches",
+    "issue_class": "validation_false_positive",
+    "severity": "medium",
+    "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+    "evidence_ids": [
+      "qa-v2-evidence-422e088a80c954d3484c5b31",
+      "qa-v2-evidence-f204eab54fbdf17aa495223b"
+    ],
+    "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+    "repair_eligible": true,
+    "regression_candidate": true
+  },
+  "root_cause_group": {
+    "id": "qa-v2-group-03ac36b9dfd152e3f9a13f52",
+    "claim": "Pseudo target headings trigger disabled-policy mismatch findings.",
+    "issue_class": "validation_false_positive",
+    "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+    "evidence_ids": [
+      "qa-v2-evidence-422e088a80c954d3484c5b31",
+      "qa-v2-evidence-f204eab54fbdf17aa495223b"
+    ]
+  },
+  "adjudication_id": "qa-v2-adjudication-072b84dd980b90c154589e97",
+  "evidence_ids": [
+    "qa-v2-evidence-422e088a80c954d3484c5b31",
+    "qa-v2-evidence-f204eab54fbdf17aa495223b"
+  ],
+  "plan_ids": [
+    "qa-v2-plan-860623f0cd3c7a5add1789fb",
+    "qa-v2-plan-a168d0293890d26037a3eff8"
+  ],
+  "map_id": "qa-v1-map-0ce19d014b123dbd4b9d4d44",
+  "shard_ids": [
+    "qa-v1-shard-55c75ed35ae9a28675ef8779",
+    "qa-v1-shard-c87368a3bbba771839680683"
+  ],
+  "theory_ids": [
+    "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+    "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+  ],
+  "expectation_refs": [
+    "qa-v2-spec-138ad4c26d4c06e9132d0428",
+    "qa-v2-spec-15ff752f09f91485aa49f8e4"
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+      "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+      "claim": "A fenced or HTML-commented `## Performance Targets` pseudo-heading causes disabled-policy requirements validation to emit a false `performance policy mismatch`, even though target parsing ignores that pseudo-section.",
+      "basis": "ValidateRequirementsContentWithPolicy uses a separate heading-presence check for policy enforcement, while ParsePerformanceTargets explicitly ignores fenced and commented pseudo-sections [qa-v1-block-3cceb141b86f4e4c3b8609e8, qa-v1-block-9c5f43b294578fed6796f5b9, qa-v1-block-e119c25baa75d6da3419c82e].",
+      "verification_surface": "internal/sprint/index.go:ValidateRequirementsContentWithPolicy and markdownHeadingPresent; internal/sprint/performance_targets.go:ParsePerformanceTargets",
+      "expectation_refs": [
+        "handbook"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "With disabled performance policy, requirements containing `## Performance Targets` only inside a fenced block or HTML comment produce a `performance policy mismatch` while ParsePerformanceTargets returns no targets or findings.",
+      "refutation_condition": "The declaration check applies the same fence, comment, quote, and indentation exclusions as ParsePerformanceTargets, so pseudo-headings do not produce a policy mismatch.",
+      "inconclusive_condition": "The implementation of markdownHeadingPresent or its interaction with validation cannot be inspected.",
+      "safe_evidence_strategy": "Statically compare pseudo-section handling in ParsePerformanceTargets with markdownHeadingPresent and inspect existing table-driven tests without executing or mutating the repository.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-c87368a3bbba771839680683/1",
+          "number": 1,
+          "session_id": "ses_f884c291effeqQhnMJnkIyz8OX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8fa00834c56b6b1e03943cf74219f979d968f0ab1a8419e44ced0f1220ebc2b9",
+          "started_at": "2026-09-06T17:11:06.746519669Z",
+          "completed_at": "2026-09-06T17:12:07.542469218Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Bounded inspection confirmed that markdownHeadingPresent returns true for any trimmed matching heading line, including lines inside fences or multiline HTML comments; ParsePerformanceTargets applies exclusions for those constructs [qa-v1-block-9c5f43b294578fed6796f5b9].",
+              "paths": [
+                "internal/sprint/index.go",
+                "internal/sprint/performance_targets.go",
+                "internal/sprint/performance_targets_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1901,
+            "output_tokens_known": true,
+            "output_tokens": 1131,
+            "total_tokens_known": true,
+            "total_tokens": 53554,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 218,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 50304,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 28,
+          "retained_events": 28,
+          "observed_tool_calls": 2,
+          "context_metrics": {
+            "prompt_bytes": 79308,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 2160,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 60795949549
+          },
+          "estimated_cost": {
+            "amount": 0.0754457,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-c87368a3bbba771839680683/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f884c291effeqQhnMJnkIyz8OX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8fa00834c56b6b1e03943cf74219f979d968f0ab1a8419e44ced0f1220ebc2b9",
+          "started_at": "2026-09-07T13:02:42.911712833Z",
+          "completed_at": "2026-09-07T13:04:05.152010579Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1221,
+            "output_tokens_known": true,
+            "output_tokens": 35,
+            "total_tokens_known": true,
+            "total_tokens": 33126,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 254,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 31616,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 23,
+          "retained_events": 23,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 8773,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 4397,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 82240297746
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Bounded inspection confirmed that markdownHeadingPresent returns true for any trimmed matching heading line, including lines inside fences or multiline HTML comments; ParsePerformanceTargets applies exclusions for those constructs [qa-v1-block-9c5f43b294578fed6796f5b9].",
+          "paths": [
+            "internal/sprint/index.go",
+            "internal/sprint/performance_targets.go",
+            "internal/sprint/performance_targets_test.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-65ab8ebe1800185c6f8e76f6: predicted_failure_reproduced\nRequired observation: Assert false policy mismatch findings are emitted for pseudo-headings.\nTest internal/project/qa_investigator_185c6f8e76f6_test.go:\npackage project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_185c6f8e76f6(t *testing.T) {\n\tconst requiredSections = `## Sprint Goal\nx\n## Required Outputs\nx\n## Acceptance Criteria\nx\n## Non-Goals\nx\n## Constraints\nx\n## Dependencies\nx\n## Review Expectations\nx\n`\n\tconst table = `## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-QA | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\n`\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\tpseudoSections := map[string]string{\n\t\t\"fenced\":   \"```md\\n\" + table + \"```\\n\",\n\t\t\"commented\": \"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tpacket, parserFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parserFindings) != 0 {\n\t\t\tt.Fatalf(\"control %s: parser did not ignore pseudo-heading: targets=%d findings=%v\", name, len(packet.Targets), parserFindings)\n\t\t}\n\t}\n\n\trealPacket, realParserFindings := sprint.ParsePerformanceTargets(table)\n\tif len(realPacket.Targets) != 1 || len(realParserFindings) != 0 {\n\t\tt.Fatalf(\"control real heading: targets=%d findings=%v\", len(realPacket.Targets), realParserFindings)\n\t}\n\tif !hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+table, disabled)) {\n\t\tt.Fatal(\"control real heading: disabled policy did not detect declared targets\")\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tif hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+pseudo, disabled)) {\n\t\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=%s\", name)\n\t\t}\n\t}\n}\n\nfunc hasPerformancePolicyMismatch(findings []sprint.ValidationFinding) bool {\n\tfor _, finding := range findings {\n\t\tif finding.Problem == \"performance policy mismatch\" {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn false\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_185c6f8e76f6\n    qa_investigator_185c6f8e76f6_test.go:55: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=fenced\n--- FAIL: TestQAInvestigator_185c6f8e76f6 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.009s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/project/qa_investigator_185c6f8e76f6_test.go"
+          ],
+          "check_id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+          "output_digest": "86fa7afbbda3b8dae53afe34943d460361d8fae83c8a392d772ed2c64950402e"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+      "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+      "claim": "A fenced or commented pseudo `## Performance Targets` heading is ignored by target parsing but still treated as a declaration during policy validation, causing a false `performance policy mismatch` when performance policy is disabled.",
+      "basis": "The target parser excludes fenced, commented, quoted, and indented pseudo-sections, while requirements validation separately derives `declared` through `markdownHeadingPresent`; existing tests establish that pseudo-sections should be ignored (qa-v1-block-9c5f43b294578fed6796f5b9, qa-v1-block-3cceb141b86f4e4c3b8609e8, qa-v1-block-e119c25baa75d6da3419c82e).",
+      "verification_surface": "ValidateRequirementsContentWithPolicy with disabled policy and otherwise-valid requirements containing `## Performance Targets` only inside a fenced or commented pseudo-section.",
+      "expectation_refs": [
+        "handbook"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Validation returns a performance-policy-mismatch finding even though ParsePerformanceTargets ignores the pseudo-section and returns no targets or findings.",
+      "refutation_condition": "Declaration detection applies the same fence, comment, quote, and indentation exclusions as ParsePerformanceTargets, so no policy-mismatch finding is returned.",
+      "inconclusive_condition": "The behavior of markdownHeadingPresent or the validation call path cannot be established from the supplied source.",
+      "safe_evidence_strategy": "Use static inspection of the cited parser and validation blocks; if executable evidence is authorized, add a focused product-owned table case alongside the existing pseudo-section and policy-agreement tests.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1",
+          "number": 1,
+          "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+          "started_at": "2026-09-06T14:29:14.329280131Z",
+          "completed_at": "2026-09-06T14:30:34.296792612Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Target parsing tracks fences and comments and skips quoted or indented content before recognizing the exact Performance Targets heading.",
+              "paths": [
+                "internal/sprint/performance_targets.go"
+              ],
+              "output_digest": "061c1b3184bfdcd17bd04fe089b0060d2c9873dbbde0ff1cde0d51911fc0a6ed"
+            },
+            {
+              "kind": "static_source",
+              "summary": "Requirements validation uses a separate heading-presence result to emit disabled-policy mismatch findings.",
+              "paths": [
+                "internal/sprint/index.go"
+              ],
+              "output_digest": "85d049b1bbf68763543dc02576fad164265cbe2c39470334bb3d4c2501cea0ca"
+            },
+            {
+              "kind": "static_test",
+              "summary": "Existing tests require pseudo Performance Targets sections to produce no parsed targets or findings but only exercise ParsePerformanceTargets.",
+              "paths": [
+                "internal/sprint/performance_targets_test.go"
+              ],
+              "output_digest": "4968efa4a93a4957062e1f7a7faf82b24ade2c62e9a8f31fe1a2b9fb3c17ae68"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2206,
+            "output_tokens_known": true,
+            "output_tokens": 1384,
+            "total_tokens_known": true,
+            "total_tokens": 62571,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 357,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 58624,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 31,
+          "retained_events": 31,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 84022,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 10714,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 79967512481
+          },
+          "estimated_cost": {
+            "amount": 0.09004820000000001,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+          "started_at": "2026-09-07T11:39:39.076932683Z",
+          "completed_at": "2026-09-07T11:40:54.016873288Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 3912,
+            "output_tokens_known": true,
+            "output_tokens": 81,
+            "total_tokens_known": true,
+            "total_tokens": 38496,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 71,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 34432,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 9548,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 5595,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 74939940605
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+          "started_at": "2026-09-07T13:00:56.439933523Z",
+          "completed_at": "2026-09-07T13:01:48.461074725Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1109,
+            "output_tokens_known": true,
+            "output_tokens": 76,
+            "total_tokens_known": true,
+            "total_tokens": 43553,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 42368,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 13971,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 52021141202
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Target parsing tracks fences and comments and skips quoted or indented content before recognizing the exact Performance Targets heading.",
+          "paths": [
+            "internal/sprint/performance_targets.go"
+          ],
+          "output_digest": "061c1b3184bfdcd17bd04fe089b0060d2c9873dbbde0ff1cde0d51911fc0a6ed"
+        },
+        {
+          "kind": "static_source",
+          "summary": "Requirements validation uses a separate heading-presence result to emit disabled-policy mismatch findings.",
+          "paths": [
+            "internal/sprint/index.go"
+          ],
+          "output_digest": "85d049b1bbf68763543dc02576fad164265cbe2c39470334bb3d4c2501cea0ca"
+        },
+        {
+          "kind": "static_test",
+          "summary": "Existing tests require pseudo Performance Targets sections to produce no parsed targets or findings but only exercise ParsePerformanceTargets.",
+          "paths": [
+            "internal/sprint/performance_targets_test.go"
+          ],
+          "output_digest": "4968efa4a93a4957062e1f7a7faf82b24ade2c62e9a8f31fe1a2b9fb3c17ae68"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-349c950bcf2476f9ef0d2260: failure_signature_mismatch\nRequired observation: Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.\nTest internal/project/qa_investigator_76f9ef0d2260_test.go:\npackage project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_76f9ef0d2260(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst table = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+\"ordinary prose\\n\", disabled); len(findings) != 0 {\n\t\tt.Fatalf(\"ordinary prose control unexpectedly produced findings: %#v\", findings)\n\t}\n\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+table, disabled); len(findings) == 0 {\n\t\tt.Fatal(\"real target section control did not produce a disabled-policy mismatch\")\n\t}\n\n\tpseudoSections := []string{\n\t\t\"```md\\n\" + table + \"```\\n\",\n\t\t\"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\tmisclassified := false\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"pseudo-section parser control failed: packet=%#v findings=%#v\", packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo, disabled); len(findings) != 0 {\n\t\t\tmisclassified = true\n\t\t}\n\t}\n\tif misclassified {\n\t\tt.Log(\"assertion: disabled-policy validation must not report a policy mismatch for fenced or HTML-commented pseudo Performance Targets headings when parsing returns no targets or findings\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76f9ef0d2260\")\n\t}\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project [setup failed]\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n# github.com/Antonio7098/ultraplan-go/internal/project\n../productstate/store.go:16:2: modernc.org/sqlite@v1.57.0: read \"https://proxy.golang.org/modernc.org/sqlite/@v/v1.57.0.zip\": read tcp 192.168.0.34:40494-\u003e142.250.140.207:443: read: connection reset by peer\n",
+          "paths": [
+            "internal/project/qa_investigator_76f9ef0d2260_test.go"
+          ],
+          "check_id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+          "output_digest": "ea7a9d1eed500d8d97b4ff555e0a47b73df42b2261307d9536fe58bbc23e239e"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-2d5e3f9d9571a0300a83f89e: predicted_failure_reproduced\nRequired observation: Assert each input produces a policy mismatch while target parsing returns no targets or findings.\nTest internal/project/qa_investigator_a0300a83f89e_test.go:\npackage project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_a0300a83f89e(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst targets = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tcontrols := []struct {\n\t\tname         string\n\t\tcontent      string\n\t\twantFindings bool\n\t}{\n\t\t{name: \"ordinary prose is not a declaration\", content: requirements + \"ordinary prose\\n\"},\n\t\t{name: \"real section is a declaration\", content: requirements + targets, wantFindings: true},\n\t}\n\tfor _, control := range controls {\n\t\tfindings := sprint.ValidateRequirementsContentWithPolicy(control.content, disabled)\n\t\tif (len(findings) != 0) != control.wantFindings {\n\t\t\tt.Fatalf(\"control %q findings = %#v\", control.name, findings)\n\t\t}\n\t}\n\n\tpseudoSections := []struct {\n\t\tname    string\n\t\tcontent string\n\t}{\n\t\t{name: \"fenced\", content: \"```md\\n\" + targets + \"```\\n\"},\n\t\t{name: \"HTML commented\", content: \"\u003c!--\\n\" + targets + \"--\u003e\\n\"},\n\t}\n\tobservedMismatch := 0\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo.content)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"%s parser observation failed: packet=%#v findings=%#v\", pseudo.name, packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo.content, disabled); len(findings) != 0 {\n\t\t\tobservedMismatch++\n\t\t}\n\t}\n\tif observedMismatch == len(pseudoSections) {\n\t\tt.Log(\"Assert each input produces a policy mismatch while target parsing returns no targets or findings.\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_a0300a83f89e\n    qa_investigator_a0300a83f89e_test.go:48: Assert each input produces a policy mismatch while target parsing returns no targets or findings.\n    qa_investigator_a0300a83f89e_test.go:49: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\n--- FAIL: TestQAInvestigator_a0300a83f89e (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.012s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/project/qa_investigator_a0300a83f89e_test.go"
+          ],
+          "check_id": "qa-v2-test-67d46aa887025191de4cafaa",
+          "output_digest": "ac6c83c2eb9f4716c7a7f968c69a7ebbc3713383b902c21550e876ad1180c3ec"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ],
+  "evidence": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-evidence-422e088a80c954d3484c5b31",
+      "plan_id": "qa-v2-plan-a168d0293890d26037a3eff8",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+      "workspace_id": "qa-v2-test-67d46aa887025191de4cafaa",
+      "workspace_identity": "a77ba617e30477c9e36898e8554d9cfadcb738c4b07b22c44603665e2c1d27de",
+      "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+      "commands": [
+        {
+          "executable": "go",
+          "args_digest": "4d2c5b4c30ceb040a0624e48dbf4b1c01ee4157173644a5b6e02f512edf291ce",
+          "exit_code": 1,
+          "duration": 29665981669,
+          "stdout_digest": "ac6c83c2eb9f4716c7a7f968c69a7ebbc3713383b902c21550e876ad1180c3ec",
+          "stderr_digest": "9b027c861932219353434f35240362f7a380f59f4a07da9c1e2a53858b4b202f",
+          "stdout": "=== RUN   TestQAInvestigator_a0300a83f89e\n    qa_investigator_a0300a83f89e_test.go:48: Assert each input produces a policy mismatch while target parsing returns no targets or findings.\n    qa_investigator_a0300a83f89e_test.go:49: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\n--- FAIL: TestQAInvestigator_a0300a83f89e (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.012s\nFAIL\n",
+          "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "output_bytes": 897,
+          "truncated": false,
+          "redacted": false,
+          "timed_out": false,
+          "cancelled": false,
+          "cleanup_attempted": false,
+          "cleanup_complete": true
+        }
+      ],
+      "changed_paths": [
+        "internal/project/qa_investigator_a0300a83f89e_test.go"
+      ],
+      "outcome": "fail",
+      "reason_code": "predicted_failure_reproduced",
+      "repeatable": true,
+      "contained": true,
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-07T13:02:35.045785743Z"
+    },
+    {
+      "schema_version": 2,
+      "id": "qa-v2-evidence-f204eab54fbdf17aa495223b",
+      "plan_id": "qa-v2-plan-860623f0cd3c7a5add1789fb",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+      "workspace_id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+      "workspace_identity": "6d693782d17e666d51b5d3b8c53201c999bb6b8490e39c276140529bc98a8ddd",
+      "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+      "commands": [
+        {
+          "executable": "go",
+          "args_digest": "a5f25b120eb31e369ea6747051c1c033f751efbabc5a98404c0e36cb03c487c6",
+          "exit_code": 1,
+          "duration": 31014063567,
+          "stdout_digest": "86fa7afbbda3b8dae53afe34943d460361d8fae83c8a392d772ed2c64950402e",
+          "stderr_digest": "0869e4bad03824d55d56f2e598ceb0b93445fc71df9e050b256bc7fb99376e89",
+          "stdout": "=== RUN   TestQAInvestigator_185c6f8e76f6\n    qa_investigator_185c6f8e76f6_test.go:55: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=fenced\n--- FAIL: TestQAInvestigator_185c6f8e76f6 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.009s\nFAIL\n",
+          "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "output_bytes": 848,
+          "truncated": false,
+          "redacted": false,
+          "timed_out": false,
+          "cancelled": false,
+          "cleanup_attempted": false,
+          "cleanup_complete": true
+        }
+      ],
+      "changed_paths": [
+        "internal/project/qa_investigator_185c6f8e76f6_test.go"
+      ],
+      "outcome": "fail",
+      "reason_code": "predicted_failure_reproduced",
+      "repeatable": true,
+      "contained": true,
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-07T13:04:59.643095401Z"
+    }
+  ],
+  "evidence_plans": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-plan-860623f0cd3c7a5add1789fb",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+      "theory_ids": [
+        "qa-v1-theory-2913ff7ebea753d4cf4c76b2"
+      ],
+      "expectation_refs": [
+        "qa-v2-spec-15ff752f09f91485aa49f8e4"
+      ],
+      "kind": "behavioral",
+      "confirmation_condition": "the frozen investigator-authored test matches its predicted failure signature",
+      "refutation_condition": "the frozen investigator-authored test passes on the frozen implementation",
+      "inconclusive_condition": "compile error; infrastructure error; mismatched assertion; timeout; truncated output; unrelated panic",
+      "approved_paths": [
+        "internal/project/qa_investigator_185c6f8e76f6_test.go"
+      ],
+      "check_id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_185c6f8e76f6$",
+        "-count=1"
+      ],
+      "working_directory": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "analyzer_calls": 0,
+      "cleanup_required": true,
+      "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+      "frozen_at": "2026-09-07T13:02:35.673442635Z"
+    },
+    {
+      "schema_version": 2,
+      "id": "qa-v2-plan-a168d0293890d26037a3eff8",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+      "theory_ids": [
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "expectation_refs": [
+        "qa-v2-spec-138ad4c26d4c06e9132d0428"
+      ],
+      "kind": "behavioral",
+      "confirmation_condition": "the frozen investigator-authored test matches its predicted failure signature",
+      "refutation_condition": "the frozen investigator-authored test passes on the frozen implementation",
+      "inconclusive_condition": "compile error; infrastructure error; mismatched assertion; timeout; truncated output; unrelated panic",
+      "approved_paths": [
+        "internal/project/qa_investigator_a0300a83f89e_test.go"
+      ],
+      "check_id": "qa-v2-test-67d46aa887025191de4cafaa",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_a0300a83f89e$",
+        "-count=1"
+      ],
+      "working_directory": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "analyzer_calls": 0,
+      "cleanup_required": true,
+      "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+      "frozen_at": "2026-09-07T13:00:50.888384764Z"
+    }
+  ],
+  "issue_coverage": {
+    "schema_version": 2,
+    "issue_id": "qa-v2-issue-ddc69af5ba4581d855926d14",
+    "theory_ids": [
+      "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+      "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+    ],
+    "test_bundle_ids": [
+      "qa-v2-test-67d46aa887025191de4cafaa",
+      "qa-v2-test-f48cb3204fa5dd172883deaf"
+    ],
+    "evidence_ids": [
+      "qa-v2-evidence-422e088a80c954d3484c5b31",
+      "qa-v2-evidence-f204eab54fbdf17aa495223b"
+    ],
+    "coverage": {
+      "qa-v1-theory-2913ff7ebea753d4cf4c76b2": [
+        "qa-v2-evidence-f204eab54fbdf17aa495223b",
+        "qa-v2-test-f48cb3204fa5dd172883deaf"
+      ],
+      "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe": [
+        "qa-v2-evidence-422e088a80c954d3484c5b31",
+        "qa-v2-test-67d46aa887025191de4cafaa"
+      ]
+    },
+    "primary_reproducers": [
+      "qa-v2-test-67d46aa887025191de4cafaa",
+      "qa-v2-test-f48cb3204fa5dd172883deaf"
+    ]
+  },
+  "reproduction_specs": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-spec-138ad4c26d4c06e9132d0428",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+      "evidence_request_id": "qa-v2-request-2d5e3f9d9571a0300a83f89e",
+      "theory_ids": [
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "claim": "A fenced or commented pseudo `## Performance Targets` heading is ignored by target parsing but still treated as a declaration during policy validation, causing a false `performance policy mismatch` when performance policy is disabled.",
+      "preconditions": [
+        "Include ordinary prose and a real target section as declaration controls."
+      ],
+      "expected_behavior": "Assert each input produces a policy mismatch while target parsing returns no targets or findings.",
+      "predicted_failure": {
+        "test_name": "TestQAInvestigator_a0300a83f89e",
+        "assertion": "Assert each input produces a policy mismatch while target parsing returns no targets or findings.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e"
+      },
+      "inconclusive_conditions": [
+        "compile error",
+        "infrastructure error",
+        "mismatched assertion",
+        "timeout",
+        "truncated output",
+        "unrelated panic"
+      ],
+      "approved_test_paths": [
+        "internal/project/qa_investigator_a0300a83f89e_test.go"
+      ],
+      "command": {
+        "id": "investigator-test-a0300a83f89e",
+        "executable": "/usr/bin/go",
+        "args": [
+          "test",
+          ".",
+          "-v",
+          "-run",
+          "^TestQAInvestigator_a0300a83f89e$",
+          "-count=1"
+        ],
+        "working_directory": "internal/project",
+        "environment": [
+          "PATH"
+        ],
+        "timeout": 300000000000,
+        "output_limit": 262144,
+        "fingerprint": "a17de821384c428e850732c225b9665c6ba8683b4a99bf7698577d6c2a28d617"
+      },
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "frozen_at": "2026-09-07T13:00:50.888384764Z"
+    },
+    {
+      "schema_version": 2,
+      "id": "qa-v2-spec-15ff752f09f91485aa49f8e4",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+      "evidence_request_id": "qa-v2-request-65ab8ebe1800185c6f8e76f6",
+      "theory_ids": [
+        "qa-v1-theory-2913ff7ebea753d4cf4c76b2"
+      ],
+      "claim": "A fenced or HTML-commented `## Performance Targets` pseudo-heading causes disabled-policy requirements validation to emit a false `performance policy mismatch`, even though target parsing ignores that pseudo-section.",
+      "preconditions": [
+        "Assert the target parser ignores the same inputs and detects a real heading."
+      ],
+      "expected_behavior": "Assert false policy mismatch findings are emitted for pseudo-headings.",
+      "predicted_failure": {
+        "test_name": "TestQAInvestigator_185c6f8e76f6",
+        "assertion": "Assert false policy mismatch findings are emitted for pseudo-headings.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6"
+      },
+      "inconclusive_conditions": [
+        "compile error",
+        "infrastructure error",
+        "mismatched assertion",
+        "timeout",
+        "truncated output",
+        "unrelated panic"
+      ],
+      "approved_test_paths": [
+        "internal/project/qa_investigator_185c6f8e76f6_test.go"
+      ],
+      "command": {
+        "id": "investigator-test-185c6f8e76f6",
+        "executable": "/usr/bin/go",
+        "args": [
+          "test",
+          ".",
+          "-v",
+          "-run",
+          "^TestQAInvestigator_185c6f8e76f6$",
+          "-count=1"
+        ],
+        "working_directory": "internal/project",
+        "environment": [
+          "PATH"
+        ],
+        "timeout": 300000000000,
+        "output_limit": 262144,
+        "fingerprint": "5966572744fcdb48b928849e0427d34a8c49ecab3574f8baba9055831be0348a"
+      },
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "frozen_at": "2026-09-07T13:02:35.673442635Z"
+    }
+  ],
+  "regression_tests": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-test-67d46aa887025191de4cafaa",
+      "spec_id": "qa-v2-spec-138ad4c26d4c06e9132d0428",
+      "files": [
+        {
+          "path": "internal/project/qa_investigator_a0300a83f89e_test.go",
+          "content": "package project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_a0300a83f89e(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst targets = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tcontrols := []struct {\n\t\tname         string\n\t\tcontent      string\n\t\twantFindings bool\n\t}{\n\t\t{name: \"ordinary prose is not a declaration\", content: requirements + \"ordinary prose\\n\"},\n\t\t{name: \"real section is a declaration\", content: requirements + targets, wantFindings: true},\n\t}\n\tfor _, control := range controls {\n\t\tfindings := sprint.ValidateRequirementsContentWithPolicy(control.content, disabled)\n\t\tif (len(findings) != 0) != control.wantFindings {\n\t\t\tt.Fatalf(\"control %q findings = %#v\", control.name, findings)\n\t\t}\n\t}\n\n\tpseudoSections := []struct {\n\t\tname    string\n\t\tcontent string\n\t}{\n\t\t{name: \"fenced\", content: \"```md\\n\" + targets + \"```\\n\"},\n\t\t{name: \"HTML commented\", content: \"\u003c!--\\n\" + targets + \"--\u003e\\n\"},\n\t}\n\tobservedMismatch := 0\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo.content)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"%s parser observation failed: packet=%#v findings=%#v\", pseudo.name, packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo.content, disabled); len(findings) != 0 {\n\t\t\tobservedMismatch++\n\t\t}\n\t}\n\tif observedMismatch == len(pseudoSections) {\n\t\tt.Log(\"Assert each input produces a policy mismatch while target parsing returns no targets or findings.\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\")\n\t}\n}\n",
+          "digest": "e6a7d5ea3d180c9fe0ed6615a0378dec9dccfceadf175a6941ee733f33a855cb",
+          "bytes": 2158
+        }
+      ],
+      "content_digest": "a77ba617e30477c9e36898e8554d9cfadcb738c4b07b22c44603665e2c1d27de"
+    },
+    {
+      "schema_version": 2,
+      "id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+      "spec_id": "qa-v2-spec-15ff752f09f91485aa49f8e4",
+      "files": [
+        {
+          "path": "internal/project/qa_investigator_185c6f8e76f6_test.go",
+          "content": "package project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_185c6f8e76f6(t *testing.T) {\n\tconst requiredSections = `## Sprint Goal\nx\n## Required Outputs\nx\n## Acceptance Criteria\nx\n## Non-Goals\nx\n## Constraints\nx\n## Dependencies\nx\n## Review Expectations\nx\n`\n\tconst table = `## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-QA | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\n`\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\tpseudoSections := map[string]string{\n\t\t\"fenced\":   \"```md\\n\" + table + \"```\\n\",\n\t\t\"commented\": \"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tpacket, parserFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parserFindings) != 0 {\n\t\t\tt.Fatalf(\"control %s: parser did not ignore pseudo-heading: targets=%d findings=%v\", name, len(packet.Targets), parserFindings)\n\t\t}\n\t}\n\n\trealPacket, realParserFindings := sprint.ParsePerformanceTargets(table)\n\tif len(realPacket.Targets) != 1 || len(realParserFindings) != 0 {\n\t\tt.Fatalf(\"control real heading: targets=%d findings=%v\", len(realPacket.Targets), realParserFindings)\n\t}\n\tif !hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+table, disabled)) {\n\t\tt.Fatal(\"control real heading: disabled policy did not detect declared targets\")\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tif hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+pseudo, disabled)) {\n\t\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=%s\", name)\n\t\t}\n\t}\n}\n\nfunc hasPerformancePolicyMismatch(findings []sprint.ValidationFinding) bool {\n\tfor _, finding := range findings {\n\t\tif finding.Problem == \"performance policy mismatch\" {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn false\n}\n",
+          "digest": "c227c3ca99c11dcc249a2fca0ca746911b7c2d8a5b38c014537ce186f8b7ce29",
+          "bytes": 2159
+        }
+      ],
+      "content_digest": "6d693782d17e666d51b5d3b8c53201c999bb6b8490e39c276140529bc98a8ddd"
+    }
+  ],
+  "regression_test_paths": [
+    "internal/project/qa_investigator_185c6f8e76f6_test.go",
+    "internal/project/qa_investigator_a0300a83f89e_test.go"
+  ],
+  "context_blocks": [
+    {
+      "id": "qa-v1-block-14ad9ba28ff86d49493c483f",
+      "kind": "change",
+      "path": "internal/sprint/index.go",
+      "start_line": 1,
+      "end_line": 25,
+      "content": "diff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -181,11 +197,18 @@ func parseMarkdownRow(line string) []string {\n \n func separatorRow(cells []string) bool {\n \tfor _, cell := range cells {\n-\t\tif cell == \"\" {\n+\t\tcell = strings.TrimSpace(cell)\n+\t\tif strings.HasPrefix(cell, \":\") {\n+\t\t\tcell = strings.TrimPrefix(cell, \":\")\n+\t\t}\n+\t\tif strings.HasSuffix(cell, \":\") {\n+\t\t\tcell = strings.TrimSuffix(cell, \":\")\n+\t\t}\n+\t\tif len(cell) \u003c 3 {\n \t\t\treturn false\n \t\t}\n \t\tfor _, r := range cell {\n-\t\t\tif r != '-' \u0026\u0026 r != ':' \u0026\u0026 r != ' ' {\n+\t\t\tif r != '-' {\n \t\t\t\treturn false\n \t\t\t}\n \t\t}",
+      "content_sha256": "11a06f38f2ee71d337c6877e4c7a9fcd24db449abb96c1596f7c2b8531a6b561",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/sprint/index.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-19e471996aa5f3432aae4add",
+      "kind": "evidence",
+      "start_line": 1,
+      "end_line": 1,
+      "content": "[{\"id\":\"go-format-diff\",\"fingerprint\":\"950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012\"},{\"id\":\"go-source-integrity\",\"fingerprint\":\"0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e\"}]",
+      "content_sha256": "592645a4ea67c56197466bc776c90b3ee2159441a1dc5bd187481eaf75c8f9c8",
+      "provenance": "approved product-owned check catalog",
+      "related_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/configuration.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md",
+        "internal/app/durable_operations.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/performance_fixtures_test.go",
+        "internal/app/performance_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/tui_commands.go",
+        "internal/app/usecases.go",
+        "internal/app/web_usecases.go",
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/performance.go",
+        "internal/platform/config/performance_test.go",
+        "internal/platform/config/redaction.go",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/domain.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_authoring.go",
+        "internal/sprint/performance_benchmark.go",
+        "internal/sprint/performance_benchmark_test.go",
+        "internal/sprint/performance_discovery.go",
+        "internal/sprint/performance_isolation.go",
+        "internal/sprint/performance_isolation_test.go",
+        "internal/sprint/performance_measure.go",
+        "internal/sprint/performance_optimize.go",
+        "internal/sprint/performance_optimize_runtime.go",
+        "internal/sprint/performance_optimize_test.go",
+        "internal/sprint/performance_repair.go",
+        "internal/sprint/performance_service_test.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/testdata/performance/states.json",
+        "internal/tui/model.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views.go",
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/routes.go",
+        "internal/web/routes_test.go",
+        "internal/web/templates/sprint.html",
+        "internal/web/test_fakes_test.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ]
+    },
+    {
+      "id": "qa-v1-block-3776349208938d80daa86cfd",
+      "kind": "change",
+      "path": "internal/sprint/index.go",
+      "start_line": 1,
+      "end_line": 13,
+      "content": "diff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -5,6 +5,8 @@ import (\n \t\"regexp\"\n \t\"sort\"\n \t\"strings\"\n+\n+\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n )\n \n var unresolvedTemplatePlaceholder = regexp.MustCompile(`\\{\\{\\s*[A-Za-z][A-Za-z0-9_-]*\\s*\\}\\}`)",
+      "content_sha256": "7e9ce3e5946e7768b30cfa277546cd0685bbaf9a7020547325d797b744cce91b",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/sprint/index.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-3cceb141b86f4e4c3b8609e8",
+      "kind": "change",
+      "path": "internal/sprint/index.go",
+      "start_line": 1,
+      "end_line": 21,
+      "content": "diff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -47,6 +53,16 @@ func ValidateRequirementsContent(content string) []ValidationFinding {\n \t\t\tfindings = append(findings, finding(\"requirements.md\", heading, \"\", \"missing required section\", \"section was not found\", \"Add the required requirements.md section.\"))\n \t\t}\n \t}\n+\tpacket, targetFindings := ParsePerformanceTargets(content)\n+\tfindings = append(findings, targetFindings...)\n+\tdeclared := markdownHeadingPresent(content, \"Performance Targets\")\n+\tif policy.Enabled() {\n+\t\tif !declared || len(packet.Targets) == 0 {\n+\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"performance targets required\", \"project Performance Policy is enabled but no valid target row exists\", \"Add the exact Performance Targets table with at least one governed row.\"))\n+\t\t}\n+\t} else if declared {\n+\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"performance policy mismatch\", \"targets are declared while project performance policy is disabled\", \"Enable Performance Policy in project-index.md or remove the target table.\"))\n+\t}\n \tsortSprintFindings(findings)\n \treturn findings\n }",
+      "content_sha256": "85d049b1bbf68763543dc02576fad164265cbe2c39470334bb3d4c2501cea0ca",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/sprint/index.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-48c6857d00104cbd93313ce3",
+      "kind": "change",
+      "path": "internal/project/index.go",
+      "start_line": 1,
+      "end_line": 16,
+      "content": "diff --git a/internal/project/index.go b/internal/project/index.go\nindex 06dea297ccfb37c78c22adf3f2b73b7e274f7211..e946d09f1f79cada19c5bd31f7241efb9496df9e 100644\n--- a/internal/project/index.go\n+++ b/internal/project/index.go\n@@ -19,8 +21,9 @@ var recognizedSections = map[string]CatalogSection{\n }\n \n func ParseProjectIndex(content string) (ProjectIndex, []ValidationFinding) {\n-\tvar index ProjectIndex\n-\tvar findings []ValidationFinding\n+\tpolicy, policyFindings := parsePerformancePolicy(content)\n+\tindex := ProjectIndex{PerformancePolicy: policy}\n+\tfindings := append([]ValidationFinding(nil), policyFindings...)\n \tvar section CatalogSection\n \tvar headers []string\n \tlines := strings.Split(content, \"\\n\")",
+      "content_sha256": "a677c512002c9bb64d227f8c329fbbdeaaa346c1ca79e9e561bde5768ef19962",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/project/index.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-78c0cce59406ddc972262b95",
+      "kind": "authority",
+      "start_line": 1,
+      "end_line": 1,
+      "content": "{\"readable_paths\":[\"docs/architecture.md\",\"docs/cli-reference.md\",\"docs/configuration.md\",\"docs/local-web.md\",\"docs/phase3-json-schemas.md\",\"docs/recovery.md\",\"docs/release-checklist.md\",\"docs/user-guide.md\",\"internal/app/durable_operations.go\",\"internal/app/operation_runner.go\",\"internal/app/operations.go\",\"internal/app/performance_fixtures_test.go\",\"internal/app/performance_test.go\",\"internal/app/run_control_inventory_test.go\",\"internal/app/serve_commands.go\",\"internal/app/sprint_commands.go\",\"internal/app/sprint_commands_test.go\",\"internal/app/sprint_usecases.go\",\"internal/app/tui_commands.go\",\"internal/app/usecases.go\",\"internal/app/web_usecases.go\",\"internal/platform/config/config.go\",\"internal/platform/config/config_test.go\",\"internal/platform/config/performance.go\",\"internal/platform/config/performance_test.go\",\"internal/platform/config/redaction.go\",\"internal/project/domain.go\",\"internal/project/index.go\",\"internal/project/performance_policy_test.go\",\"internal/sprint/domain.go\",\"internal/sprint/index.go\",\"internal/sprint/performance.go\",\"internal/sprint/performance_authoring.go\",\"internal/sprint/performance_benchmark.go\",\"internal/sprint/performance_benchmark_test.go\",\"internal/sprint/performance_discovery.go\",\"internal/sprint/performance_isolation.go\",\"internal/sprint/performance_isolation_test.go\",\"internal/sprint/performance_measure.go\",\"internal/sprint/performance_optimize.go\",\"internal/sprint/performance_optimize_runtime.go\",\"internal/sprint/performance_optimize_test.go\",\"internal/sprint/performance_repair.go\",\"internal/sprint/performance_service_test.go\",\"internal/sprint/performance_state.go\",\"internal/sprint/performance_targets.go\",\"internal/sprint/performance_targets_test.go\",\"internal/sprint/performance_types.go\",\"internal/sprint/qa.go\",\"internal/sprint/qa_repair.go\",\"internal/sprint/qa_repair_state.go\",\"internal/sprint/qa_reproduction.go\",\"internal/sprint/qa_state.go\",\"internal/sprint/qa_types.go\",\"internal/sprint/service.go\",\"internal/sprint/state.go\",\"internal/sprint/verification_phase.go\",\"internal/sprint/verification_phase_test.go\",\"internal/sprint/verify.go\",\"internal/testdata/performance/states.json\",\"internal/tui/model.go\",\"internal/tui/qa_view_test.go\",\"internal/tui/views.go\",\"internal/web/handlers.go\",\"internal/web/operation_handlers.go\",\"internal/web/operations_contract_test.go\",\"internal/web/routes.go\",\"internal/web/routes_test.go\",\"internal/web/templates/sprint.html\",\"internal/web/test_fakes_test.go\",\"internal/workspace/scaffold/prompts/create-requirements.md\"],\"writable_paths\":null,\"live_read_policy\":\"frozen blocks first; bounded live reads only for declared omissions\",\"prompt_bytes\":524288}",
+      "content_sha256": "9f8fa03d47c51d3f1c0fc7fa85b8445fb5c3bcfe625e670c615f95dc4dd355cb",
+      "provenance": "product QA policy",
+      "related_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/configuration.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md",
+        "internal/app/durable_operations.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/performance_fixtures_test.go",
+        "internal/app/performance_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/tui_commands.go",
+        "internal/app/usecases.go",
+        "internal/app/web_usecases.go",
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/performance.go",
+        "internal/platform/config/performance_test.go",
+        "internal/platform/config/redaction.go",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/domain.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_authoring.go",
+        "internal/sprint/performance_benchmark.go",
+        "internal/sprint/performance_benchmark_test.go",
+        "internal/sprint/performance_discovery.go",
+        "internal/sprint/performance_isolation.go",
+        "internal/sprint/performance_isolation_test.go",
+        "internal/sprint/performance_measure.go",
+        "internal/sprint/performance_optimize.go",
+        "internal/sprint/performance_optimize_runtime.go",
+        "internal/sprint/performance_optimize_test.go",
+        "internal/sprint/performance_repair.go",
+        "internal/sprint/performance_service_test.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/testdata/performance/states.json",
+        "internal/tui/model.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views.go",
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/routes.go",
+        "internal/web/routes_test.go",
+        "internal/web/templates/sprint.html",
+        "internal/web/test_fakes_test.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ]
+    },
+    {
+      "id": "qa-v1-block-88233abe9fdd214bea48c441",
+      "kind": "change",
+      "path": "internal/workspace/scaffold/prompts/create-requirements.md",
+      "start_line": 1,
+      "end_line": 13,
+      "content": "diff --git a/internal/workspace/scaffold/prompts/create-requirements.md b/internal/workspace/scaffold/prompts/create-requirements.md\nindex 6b35b7da1d78a4d4fee5dfca9e965b71de2e469c..c1df613e700a446c24a624bc4597305a4902f8af 100644\n--- a/internal/workspace/scaffold/prompts/create-requirements.md\n+++ b/internal/workspace/scaffold/prompts/create-requirements.md\n@@ -33,6 +33,9 @@ Write to: `.ultra/projects/{project}/sprints/{sprint-slug}/requirements.md`\n    - **Constraints**: architectural, technical, or process constraints.\n    - **Dependencies**: prior sprints or external inputs this sprint needs.\n    - **Review Expectations**: what will be checked at review and how.\n+   - **Performance Targets**: include the exact governed nine-column table only\n+     when the project `Performance Policy` is enabled. Derive each value from a\n+     product requirement or measured baseline; never invent a threshold.\n \n ## Quality Bar",
+      "content_sha256": "19338fe011ee44a265d7a01540d8043689097a094b18e4c6a675af29b5407a78",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ]
+    },
+    {
+      "id": "qa-v1-block-9c5f43b294578fed6796f5b9",
+      "kind": "change",
+      "path": "internal/sprint/performance_targets.go",
+      "start_line": 1,
+      "end_line": 239,
+      "content": "diff --git a/internal/sprint/performance_targets.go b/internal/sprint/performance_targets.go\nnew file mode 100644\nindex 0000000000000000000000000000000000000000..3c7a5173be07baef08327f68da4cd6f4cdef013e\n--- /dev/null\n+++ b/internal/sprint/performance_targets.go\n@@ -0,0 +1,311 @@\n+package sprint\n+\n+import (\n+\t\"crypto/sha256\"\n+\t\"encoding/hex\"\n+\t\"encoding/json\"\n+\t\"fmt\"\n+\t\"math/big\"\n+\t\"regexp\"\n+\t\"sort\"\n+\t\"strconv\"\n+\t\"strings\"\n+\t\"unicode/utf8\"\n+)\n+\n+var performanceTargetID = regexp.MustCompile(`^PERF-[A-Z0-9-]+$`)\n+var performanceDecimal = regexp.MustCompile(`^-?[0-9]+(?:\\.[0-9]+)?$`)\n+var performanceHeaders = []string{\"ID\", \"Scenario\", \"Metric\", \"Comparator\", \"Value\", \"Unit\", \"Gate\", \"Samples\", \"Basis\"}\n+\n+func ParsePerformanceTargets(content string) (PerformanceTargetPacket, []ValidationFinding) {\n+\tdigest := sha256.Sum256([]byte(content))\n+\tpacket := PerformanceTargetPacket{SchemaVersion: PerformanceSchemaVersion, ParserVersion: PerformanceParserVersion, RequirementsDigest: hex.EncodeToString(digest[:])}\n+\tlines := strings.Split(content, \"\\n\")\n+\tvar findings []ValidationFinding\n+\tinFence, inComment, found, collecting := false, false, false, false\n+\tvar table [][]string\n+\tfor i, raw := range lines {\n+\t\tline := strings.TrimSpace(raw)\n+\t\tif inComment {\n+\t\t\tif end := strings.Index(line, \"--\u003e\"); end \u003e= 0 {\n+\t\t\t\tline, inComment = strings.TrimSpace(line[end+3:]), false\n+\t\t\t} else {\n+\t\t\t\tcontinue\n+\t\t\t}\n+\t\t}\n+\t\tif start := strings.Index(line, \"\u003c!--\"); start \u003e= 0 {\n+\t\t\tif end := strings.Index(line[start+4:], \"--\u003e\"); end \u003c 0 {\n+\t\t\t\tinComment = true\n+\t\t\t}\n+\t\t\tline = strings.TrimSpace(line[:start])\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"```\") || strings.HasPrefix(line, \"~~~\") {\n+\t\t\tinFence = !inFence\n+\t\t\tcontinue\n+\t\t}\n+\t\tif inFence || strings.HasPrefix(line, \"\u003e\") || strings.HasPrefix(raw, \"    \") || strings.HasPrefix(raw, \"\\t\") {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"#\") {\n+\t\t\tcollecting = false\n+\t\t\tif line == \"## Performance Targets\" {\n+\t\t\t\tif found {\n+\t\t\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"duplicate performance targets section\", fmt.Sprintf(\"line %d: section appears more than once\", i+1), \"Keep exactly one Performance Targets section.\"))\n+\t\t\t\t}\n+\t\t\t\tfound, collecting, table = true, true, nil\n+\t\t\t}\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !collecting {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif line == \"\" \u0026\u0026 len(table) == 0 {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !strings.HasPrefix(line, \"|\") {\n+\t\t\tif len(table) == 0 {\n+\t\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"missing immediate target table\", fmt.Sprintf(\"line %d: expected a table directly after the heading\", i+1), \"Add the exact V1 target table.\"))\n+\t\t\t}\n+\t\t\tcollecting = false\n+\t\t\tcontinue\n+\t\t}\n+\t\ttable = append(table, parseMarkdownRow(line))\n+\t}\n+\tif !found {\n+\t\treturn packet, findings\n+\t}\n+\tif len(table) \u003c 3 {\n+\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"empty or malformed target table\", \"the table needs a header, separator, and at least one row\", \"Add at least one valid performance target.\"))\n+\t\treturn packet, findings\n+\t}\n+\tif !sameCells(table[0], performanceHeaders) || len(table[1]) != len(performanceHeaders) || !separatorRow(table[1]) {\n+\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"invalid target table shape\", \"headers must match the exact ordered V1 schema\", \"Use ID, Scenario, Metric, Comparator, Value, Unit, Gate, Samples, Basis.\"))\n+\t\treturn packet, findings\n+\t}\n+\tseen := map[string]bool{}\n+\tfor rowIndex, cells := range table[2:] {\n+\t\tif len(cells) != len(performanceHeaders) || separatorRow(cells) {\n+\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"malformed target row\", fmt.Sprintf(\"row %d has %d cells\", rowIndex+1, len(cells)), \"Use exactly nine cells.\"))\n+\t\t\tcontinue\n+\t\t}\n+\t\ttarget, err := parsePerformanceTarget(cells)\n+\t\tif err != nil {\n+\t\t\tfindings = append(findings, finding(\"Performance Targets\", cells[0], \"\", \"invalid performance target\", fmt.Sprintf(\"row %d: %s\", rowIndex+1, err), \"Fix the target to match the V1 cell contract.\"))\n+\t\t\tcontinue\n+\t\t}\n+\t\tif seen\n\n[... bounded excerpt ...]\n\n decimal\")\n+\t}\n+\tnegative := strings.HasPrefix(value, \"-\")\n+\tvalue = strings.TrimPrefix(value, \"-\")\n+\tparts := strings.SplitN(value, \".\", 2)\n+\tparts[0] = strings.TrimLeft(parts[0], \"0\")\n+\tif parts[0] == \"\" {\n+\t\tparts[0] = \"0\"\n+\t}\n+\tvalue = parts[0]\n+\tif len(parts) == 2 {\n+\t\tfraction := strings.TrimRight(parts[1], \"0\")\n+\t\tif fraction != \"\" {\n+\t\t\tvalue += \".\" + fraction\n+\t\t}\n+\t}\n+\tif negative \u0026\u0026 rat.Sign() != 0 {\n+\t\tvalue = \"-\" + value\n+\t}\n+\treturn value, rat, nil\n+}\n+\n+func ComparePerformanceTarget(target PerformanceTarget, baseline, candidate string, qualified, blocked bool) (PerformanceComparison, error) {\n+\tout := PerformanceComparison{TargetID: target.ID, Baseline: baseline, Candidate: candidate}\n+\tif blocked {\n+\t\tout.Outcome, out.Reason = PerformanceTargetBlocked, \"measurement authority is blocked\"\n+\t\treturn out, nil\n+\t}\n+\tif !qualified {\n+\t\tout.Outcome, out.Reason = PerformanceTargetInconclusive, \"measurement did not qualify\"\n+\t\treturn out, nil\n+\t}\n+\t_, candidateRat, err := canonicalPerformanceDecimal(candidate)\n+\tif err != nil {\n+\t\treturn out, fmt.Errorf(\"candidate: %w\", err)\n+\t}\n+\tif target.Comparator == PerformanceBaseline {\n+\t\tout.ComparedValue, out.Outcome = exactPerformanceDecimal(candidateRat), PerformanceTargetBaselineRecorded\n+\t\treturn out, nil\n+\t}\n+\t_, threshold, err := canonicalPerformanceDecimal(target.Value)\n+\tif err != nil {\n+\t\treturn out, fmt.Errorf(\"threshold: %w\", err)\n+\t}\n+\tcompared := new(big.Rat).Set(candidateRat)\n+\tif target.Basis == PerformanceRelative {\n+\t\t_, baselineRat, parseErr := canonicalPerformanceDecimal(baseline)\n+\t\tif parseErr != nil {\n+\t\t\treturn out, fmt.Errorf(\"baseline: %w\", parseErr)\n+\t\t}\n+\t\tif baselineRat.Sign() == 0 {\n+\t\t\tout.Outcome, out.Reason = PerformanceTargetInconclusive, \"baseline is zero\"\n+\t\t\treturn out, nil\n+\t\t}\n+\t\tcompared.Sub(candidateRat, baselineRat)\n+\t\tcompared.Mul(compared, big.NewRat(100, 1))\n+\t\tcompared.Quo(compared, baselineRat)\n+\t}\n+\tout.ComparedValue = exactPerformanceDecimal(compared)\n+\tmet := target.Comparator == PerformanceLessOrEqual \u0026\u0026 compared.Cmp(threshold) \u003c= 0 || target.Comparator == PerformanceGreaterOrEqual \u0026\u0026 compared.Cmp(threshold) \u003e= 0\n+\tif target.Gate == PerformanceReport {\n+\t\tout.Outcome = PerformanceTargetReportOnly\n+\t} else if met {\n+\t\tout.Outcome = PerformanceTargetMet\n+\t} else {\n+\t\tout.Outcome = PerformanceTargetMissed\n+\t}\n+\treturn out, nil\n+}\n+\n+func DerivePerformanceRunOutcome(outcomes []PerformanceTargetOutcome, cancelled, cleanupUncertain, blocked, stalled bool) PerformanceRunOutcome {\n+\tif cleanupUncertain {\n+\t\treturn PerformanceCleanupUncertain\n+\t}\n+\tif cancelled {\n+\t\treturn PerformanceCancelled\n+\t}\n+\tif blocked {\n+\t\treturn PerformanceBlocked\n+\t}\n+\tif stalled {\n+\t\treturn PerformanceStalled\n+\t}\n+\treports := false\n+\tfor _, outcome := range outcomes {\n+\t\tswitch outcome {\n+\t\tcase PerformanceTargetBlocked, PerformanceTargetInconclusive:\n+\t\t\treturn PerformanceBlocked\n+\t\tcase PerformanceTargetMissed:\n+\t\t\treturn PerformanceTargetMiss\n+\t\tcase PerformanceTargetReportOnly, PerformanceTargetBaselineRecorded:\n+\t\t\treports = true\n+\t\t}\n+\t}\n+\tif reports {\n+\t\treturn PerformancePassedWithReports\n+\t}\n+\treturn PerformancePassed\n+}\n+\n+func BindPerformancePacketPolicy(packet PerformanceTargetPacket, policyDigest string) PerformanceTargetPacket {\n+\tpacket.PolicyDigest = policyDigest\n+\tpacket.PacketDigest = performancePacketDigest(packet)\n+\treturn packet\n+}\n+\n+func performancePacketDigest(packet PerformanceTargetPacket) string {\n+\tcopyPacket := packet\n+\tcopyPacket.PacketDigest = \"\"\n+\tdata, _ := json.Marshal(copyPacket)\n+\tsum := sha256.Sum256(data)\n+\treturn hex.EncodeToString(sum[:])\n+}\n+\n+func sameCells(a, b []string) bool {\n+\tif len(a) != len(b) {\n+\t\treturn false\n+\t}\n+\tfor i := range a {\n+\t\tif a[i] != b[i] {\n+\t\t\treturn false\n+\t\t}\n+\t}\n+\treturn true\n+}\n+\n+func supportedPerformanceUnit(unit PerformanceUnit) bool {\n+\tswitch unit {\n+\tcase PerformanceNSPerOp, PerformanceBytesPerOp, PerformanceAllocsPerOp, PerformanceMS, PerformanceMiB, PerformanceOpsPerSec, PerformanceTasksPerRun, PerformancePercent:\n+\t\treturn true\n+\tdefault:\n+\t\treturn false\n+\t}\n+}",
+      "content_sha256": "061c1b3184bfdcd17bd04fe089b0060d2c9873dbbde0ff1cde0d51911fc0a6ed",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/sprint/performance_targets.go"
+      ],
+      "omitted_bytes": 3942
+    },
+    {
+      "id": "qa-v1-block-a2be3dc15f8fe2f32433a558",
+      "kind": "change",
+      "path": "internal/project/domain.go",
+      "start_line": 1,
+      "end_line": 30,
+      "content": "diff --git a/internal/project/domain.go b/internal/project/domain.go\nindex f6e0cc6e4051f9a3f85405dabf17cbcfd55c5675..ef9ab7129a28a7a8dc866357a5bb2353566c10db 100644\n--- a/internal/project/domain.go\n+++ b/internal/project/domain.go\n@@ -21,8 +22,25 @@ const (\n type ProjectIndex struct {\n \tEntries                []CatalogEntry\n \tProjectReasoningPolicy ProjectReasoningPolicy\n+\tPerformancePolicy      PerformancePolicy\n }\n \n+type PerformanceMode string\n+\n+const (\n+\tPerformanceDisabled PerformanceMode = \"disabled\"\n+\tPerformanceEnabled  PerformanceMode = \"enabled\"\n+)\n+\n+// PerformancePolicy controls activation only. Performance targets remain\n+// owned by the current sprint requirements document.\n+type PerformancePolicy struct {\n+\tMode         PerformanceMode `json:\"mode\"`\n+\tSourceDigest string          `json:\"source_digest\"`\n+}\n+\n+func (p PerformancePolicy) Enabled() bool { return p.Mode == PerformanceEnabled }\n+\n type ProjectReasoningMode string\n \n const (",
+      "content_sha256": "69fe8938b4e7e835a4307a639e74f3d3b838341b8a702d50507eafd2bdf85bba",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/project/domain.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-a40b7fcd37a6d9f6f1fa3482",
+      "kind": "change",
+      "path": "internal/project/domain.go",
+      "start_line": 1,
+      "end_line": 12,
+      "content": "diff --git a/internal/project/domain.go b/internal/project/domain.go\nindex f6e0cc6e4051f9a3f85405dabf17cbcfd55c5675..ef9ab7129a28a7a8dc866357a5bb2353566c10db 100644\n--- a/internal/project/domain.go\n+++ b/internal/project/domain.go\n@@ -9,6 +9,7 @@ type CatalogSection string\n \n const (\n \tSectionProjectReasoningPolicy     CatalogSection = \"Project Reasoning Policy\"\n+\tSectionPerformancePolicy          CatalogSection = \"Performance Policy\"\n \tSectionProjectReasoningTemplates  CatalogSection = \"Available Project Reasoning Templates\"\n \tSectionSourceDocuments            CatalogSection = \"Source Documents\"\n \tSectionActiveContractPool         CatalogSection = \"Active Contract Pool\"",
+      "content_sha256": "46bbe2dcd062c07d50a2ea710c46acf1a6b44e715190f1a7a343f82d25539947",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/project/domain.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-ad737872e14b4ef0d73f4cc3",
+      "kind": "change",
+      "path": "internal/project/index.go",
+      "start_line": 1,
+      "end_line": 13,
+      "content": "diff --git a/internal/project/index.go b/internal/project/index.go\nindex 06dea297ccfb37c78c22adf3f2b73b7e274f7211..e946d09f1f79cada19c5bd31f7241efb9496df9e 100644\n--- a/internal/project/index.go\n+++ b/internal/project/index.go\n@@ -1,6 +1,8 @@\n package project\n \n import (\n+\t\"crypto/sha256\"\n+\t\"encoding/hex\"\n \t\"fmt\"\n \t\"net/url\"\n \t\"path/filepath\"",
+      "content_sha256": "bc940792fd0a186a28ef3ab15957a4cd18385fffee637a8ab5c2e44b9b3c8839",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/project/index.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-c60e8152c304432fc78d7a0c",
+      "kind": "change",
+      "path": "internal/project/index.go",
+      "start_line": 1,
+      "end_line": 87,
+      "content": "diff --git a/internal/project/index.go b/internal/project/index.go\nindex 06dea297ccfb37c78c22adf3f2b73b7e274f7211..e946d09f1f79cada19c5bd31f7241efb9496df9e 100644\n--- a/internal/project/index.go\n+++ b/internal/project/index.go\n@@ -76,6 +79,82 @@ func ParseProjectIndex(content string) (ProjectIndex, []ValidationFinding) {\n \treturn index, findings\n }\n \n+func parsePerformancePolicy(content string) (PerformancePolicy, []ValidationFinding) {\n+\tdigest := sha256.Sum256([]byte(content))\n+\tpolicy := PerformancePolicy{Mode: PerformanceDisabled, SourceDigest: hex.EncodeToString(digest[:])}\n+\tvar findings []ValidationFinding\n+\tlines := strings.Split(content, \"\\n\")\n+\tinFence, inComment, inSection, seenSection, seenMode := false, false, false, false, false\n+\tfor i, raw := range lines {\n+\t\tline := strings.TrimSpace(raw)\n+\t\tif inComment {\n+\t\t\tif end := strings.Index(line, \"--\u003e\"); end \u003e= 0 {\n+\t\t\t\tline, inComment = strings.TrimSpace(line[end+3:]), false\n+\t\t\t} else {\n+\t\t\t\tcontinue\n+\t\t\t}\n+\t\t}\n+\t\tif start := strings.Index(line, \"\u003c!--\"); start \u003e= 0 {\n+\t\t\tif end := strings.Index(line[start+4:], \"--\u003e\"); end \u003c 0 {\n+\t\t\t\tinComment = true\n+\t\t\t}\n+\t\t\tline = strings.TrimSpace(line[:start])\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"```\") || strings.HasPrefix(line, \"~~~\") {\n+\t\t\tinFence = !inFence\n+\t\t\tcontinue\n+\t\t}\n+\t\tif inFence || strings.HasPrefix(line, \"\u003e\") || strings.HasPrefix(raw, \"    \") || strings.HasPrefix(raw, \"\\t\") {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"#\") {\n+\t\t\tinSection = false\n+\t\t\tif line == \"## Performance Policy\" {\n+\t\t\t\tif seenSection {\n+\t\t\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"duplicate performance policy section\", Cause: fmt.Sprintf(\"line %d: Performance Policy appears more than once\", i+1), Suggestion: \"Keep exactly one Performance Policy section.\"})\n+\t\t\t\t}\n+\t\t\t\tseenSection, inSection = true, true\n+\t\t\t}\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !inSection || line == \"\" {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !strings.HasPrefix(line, \"-\") {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"invalid performance policy entry\", Cause: fmt.Sprintf(\"line %d: expected '- **Mode:** disabled|enabled'\", i+1), Suggestion: \"Keep only the Mode setting in Performance Policy.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tentry := strings.TrimSpace(strings.TrimPrefix(line, \"-\"))\n+\t\tentry = strings.ReplaceAll(entry, \"**\", \"\")\n+\t\tparts := strings.SplitN(entry, \":\", 2)\n+\t\tif len(parts) != 2 {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"malformed performance policy setting\", Cause: fmt.Sprintf(\"line %d: missing key/value separator\", i+1), Suggestion: \"Use '- **Mode:** disabled' or '- **Mode:** enabled'.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tkey := strings.Trim(strings.TrimSpace(parts[0]), \"*`\")\n+\t\tvalue := strings.ToLower(strings.Trim(strings.TrimSpace(parts[1]), \"`\"))\n+\t\tif key != \"Mode\" {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"unknown performance policy setting\", Cause: fmt.Sprintf(\"line %d: %s\", i+1, key), Suggestion: \"Performance Policy accepts Mode only; put targets in sprint requirements.md.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tif seenMode {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"duplicate performance policy mode\", Cause: fmt.Sprintf(\"line %d: Mode appears more than once\", i+1), Suggestion: \"Keep one Mode setting.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tseenMode = true\n+\t\tswitch PerformanceMode(value) {\n+\t\tcase PerformanceDisabled, PerformanceEnabled:\n+\t\t\tpolicy.Mode = PerformanceMode(value)\n+\t\tdefault:\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"invalid performance policy mode\", Cause: fmt.Sprintf(\"line %d: expected disabled or enabled\", i+1), Suggestion: \"Set Mode to disabled or enabled.\"})\n+\t\t}\n+\t}\n+\tif seenSection \u0026\u0026 !seenMode {\n+\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"missing performance policy mode\", Cause: \"Performance Policy has no Mode setting\", Suggestion: \"Add '- **Mode:** disabled' or '- **Mode:** enabled'.\"})\n+\t}\n+\treturn policy, findings\n+}\n+\n func rowMap(headers, cells []string) map[string]string {\n \trow := map[string]string{}\n \tfor i, h := range headers {",
+      "content_sha256": "dc21706ed820a6b01ca965736d6b5e0a7c16b77329e945d89f6598d8aeb20776",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/project/index.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-dce6e3499650f8824cc582f6",
+      "kind": "change",
+      "path": "internal/sprint/index.go",
+      "start_line": 1,
+      "end_line": 15,
+      "content": "diff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -35,6 +37,10 @@ var sprintIndexSections = map[string]string{\n }\n \n func ValidateRequirementsContent(content string) []ValidationFinding {\n+\treturn ValidateRequirementsContentWithPolicy(content, project.PerformancePolicy{Mode: project.PerformanceDisabled})\n+}\n+\n+func ValidateRequirementsContentWithPolicy(content string, policy project.PerformancePolicy) []ValidationFinding {\n \tvar findings []ValidationFinding\n \tif strings.TrimSpace(content) == \"\" {\n \t\treturn []ValidationFinding{finding(\"requirements.md\", \"\", \"\", \"empty requirements.md\", \"file has no content\", \"Generate or write sprint-specific requirements.\")}",
+      "content_sha256": "78792645aeac629bfdc02351622752327f1db51deb965b2ebf3fd396a5a5c2ce",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/sprint/index.go"
+      ]
+    }
+  ],
+  "arbiter_overrides": [
+    {
+      "id": "qa-v1-override-05833ef36649f86e0e4c66ea",
+      "theory_ids": [
+        "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "action": "merge",
+      "outcome": "confirmed",
+      "replacement_claim": "Fenced or HTML-commented pseudo Performance Targets headings are ignored by target parsing but treated as declarations during disabled-policy validation.",
+      "reason": "Both theories describe one heading-recognition defect. Executable evidence confirms pseudo-headings produce policy mismatches while target parsing ignores them; real headings and ordinary prose provide controls.",
+      "reason_refs": [
+        "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "confidence": 0.99
+    }
+  ],
+  "target_delta": "diff --git a/internal/project/domain.go b/internal/project/domain.go\nindex f6e0cc6e4051f9a3f85405dabf17cbcfd55c5675..ef9ab7129a28a7a8dc866357a5bb2353566c10db 100644\n--- a/internal/project/domain.go\n+++ b/internal/project/domain.go\n@@ -21,8 +22,25 @@ const (\n type ProjectIndex struct {\n \tEntries                []CatalogEntry\n \tProjectReasoningPolicy ProjectReasoningPolicy\n+\tPerformancePolicy      PerformancePolicy\n }\n \n+type PerformanceMode string\n+\n+const (\n+\tPerformanceDisabled PerformanceMode = \"disabled\"\n+\tPerformanceEnabled  PerformanceMode = \"enabled\"\n+)\n+\n+// PerformancePolicy controls activation only. Performance targets remain\n+// owned by the current sprint requirements document.\n+type PerformancePolicy struct {\n+\tMode         PerformanceMode `json:\"mode\"`\n+\tSourceDigest string          `json:\"source_digest\"`\n+}\n+\n+func (p PerformancePolicy) Enabled() bool { return p.Mode == PerformanceEnabled }\n+\n type ProjectReasoningMode string\n \n const (\ndiff --git a/internal/project/domain.go b/internal/project/domain.go\nindex f6e0cc6e4051f9a3f85405dabf17cbcfd55c5675..ef9ab7129a28a7a8dc866357a5bb2353566c10db 100644\n--- a/internal/project/domain.go\n+++ b/internal/project/domain.go\n@@ -9,6 +9,7 @@ type CatalogSection string\n \n const (\n \tSectionProjectReasoningPolicy     CatalogSection = \"Project Reasoning Policy\"\n+\tSectionPerformancePolicy          CatalogSection = \"Performance Policy\"\n \tSectionProjectReasoningTemplates  CatalogSection = \"Available Project Reasoning Templates\"\n \tSectionSourceDocuments            CatalogSection = \"Source Documents\"\n \tSectionActiveContractPool         CatalogSection = \"Active Contract Pool\"\ndiff --git a/internal/project/index.go b/internal/project/index.go\nindex 06dea297ccfb37c78c22adf3f2b73b7e274f7211..e946d09f1f79cada19c5bd31f7241efb9496df9e 100644\n--- a/internal/project/index.go\n+++ b/internal/project/index.go\n@@ -19,8 +21,9 @@ var recognizedSections = map[string]CatalogSection{\n }\n \n func ParseProjectIndex(content string) (ProjectIndex, []ValidationFinding) {\n-\tvar index ProjectIndex\n-\tvar findings []ValidationFinding\n+\tpolicy, policyFindings := parsePerformancePolicy(content)\n+\tindex := ProjectIndex{PerformancePolicy: policy}\n+\tfindings := append([]ValidationFinding(nil), policyFindings...)\n \tvar section CatalogSection\n \tvar headers []string\n \tlines := strings.Split(content, \"\\n\")\ndiff --git a/internal/project/index.go b/internal/project/index.go\nindex 06dea297ccfb37c78c22adf3f2b73b7e274f7211..e946d09f1f79cada19c5bd31f7241efb9496df9e 100644\n--- a/internal/project/index.go\n+++ b/internal/project/index.go\n@@ -1,6 +1,8 @@\n package project\n \n import (\n+\t\"crypto/sha256\"\n+\t\"encoding/hex\"\n \t\"fmt\"\n \t\"net/url\"\n \t\"path/filepath\"\ndiff --git a/internal/project/index.go b/internal/project/index.go\nindex 06dea297ccfb37c78c22adf3f2b73b7e274f7211..e946d09f1f79cada19c5bd31f7241efb9496df9e 100644\n--- a/internal/project/index.go\n+++ b/internal/project/index.go\n@@ -76,6 +79,82 @@ func ParseProjectIndex(content string) (ProjectIndex, []ValidationFinding) {\n \treturn index, findings\n }\n \n+func parsePerformancePolicy(content string) (PerformancePolicy, []ValidationFinding) {\n+\tdigest := sha256.Sum256([]byte(content))\n+\tpolicy := PerformancePolicy{Mode: PerformanceDisabled, SourceDigest: hex.EncodeToString(digest[:])}\n+\tvar findings []ValidationFinding\n+\tlines := strings.Split(content, \"\\n\")\n+\tinFence, inComment, inSection, seenSection, seenMode := false, false, false, false, false\n+\tfor i, raw := range lines {\n+\t\tline := strings.TrimSpace(raw)\n+\t\tif inComment {\n+\t\t\tif end := strings.Index(line, \"--\u003e\"); end \u003e= 0 {\n+\t\t\t\tline, inComment = strings.TrimSpace(line[end+3:]), false\n+\t\t\t} else {\n+\t\t\t\tcontinue\n+\t\t\t}\n+\t\t}\n+\t\tif start := strings.Index(line, \"\u003c!--\"); start \u003e= 0 {\n+\t\t\tif end := strings.Index(line[start+4:], \"--\u003e\"); end \u003c 0 {\n+\t\t\t\tinComment = true\n+\t\t\t}\n+\t\t\tline = strings.TrimSpace(line[:start])\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"```\") || strings.HasPrefix(line, \"~~~\") {\n+\t\t\tinFence = !inFence\n+\t\t\tcontinue\n+\t\t}\n+\t\tif inFence || strings.HasPrefix(line, \"\u003e\") || strings.HasPrefix(raw, \"    \") || strings.HasPrefix(raw, \"\\t\") {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"#\") {\n+\t\t\tinSection = false\n+\t\t\tif line == \"## Performance Policy\" {\n+\t\t\t\tif seenSection {\n+\t\t\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"duplicate performance policy section\", Cause: fmt.Sprintf(\"line %d: Performance Policy appears more than once\", i+1), Suggestion: \"Keep exactly one Performance Policy section.\"})\n+\t\t\t\t}\n+\t\t\t\tseenSection, inSection = true, true\n+\t\t\t}\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !inSection || line == \"\" {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !strings.HasPrefix(line, \"-\") {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"invalid performance policy entry\", Cause: fmt.Sprintf(\"line %d: expected '- **Mode:** disabled|enabled'\", i+1), Suggestion: \"Keep only the Mode setting in Performance Policy.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tentry := strings.TrimSpace(strings.TrimPrefix(line, \"-\"))\n+\t\tentry = strings.ReplaceAll(entry, \"**\", \"\")\n+\t\tparts := strings.SplitN(entry, \":\", 2)\n+\t\tif len(parts) != 2 {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"malformed performance policy setting\", Cause: fmt.Sprintf(\"line %d: missing key/value separator\", i+1), Suggestion: \"Use '- **Mode:** disabled' or '- **Mode:** enabled'.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tkey := strings.Trim(strings.TrimSpace(parts[0]), \"*`\")\n+\t\tvalue := strings.ToLower(strings.Trim(strings.TrimSpace(parts[1]), \"`\"))\n+\t\tif key != \"Mode\" {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"unknown performance policy setting\", Cause: fmt.Sprintf(\"line %d: %s\", i+1, key), Suggestion: \"Performance Policy accepts Mode only; put targets in sprint requirements.md.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tif seenMode {\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"duplicate performance policy mode\", Cause: fmt.Sprintf(\"line %d: Mode appears more than once\", i+1), Suggestion: \"Keep one Mode setting.\"})\n+\t\t\tcontinue\n+\t\t}\n+\t\tseenMode = true\n+\t\tswitch PerformanceMode(value) {\n+\t\tcase PerformanceDisabled, PerformanceEnabled:\n+\t\t\tpolicy.Mode = PerformanceMode(value)\n+\t\tdefault:\n+\t\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"invalid performance policy mode\", Cause: fmt.Sprintf(\"line %d: expected disabled or enabled\", i+1), Suggestion: \"Set Mode to disabled or enabled.\"})\n+\t\t}\n+\t}\n+\tif seenSection \u0026\u0026 !seenMode {\n+\t\tfindings = append(findings, ValidationFinding{Severity: SeverityError, Section: SectionPerformancePolicy, Problem: \"missing performance policy mode\", Cause: \"Performance Policy has no Mode setting\", Suggestion: \"Add '- **Mode:** disabled' or '- **Mode:** enabled'.\"})\n+\t}\n+\treturn policy, findings\n+}\n+\n func rowMap(headers, cells []string) map[string]string {\n \trow := map[string]string{}\n \tfor i, h := range headers {\ndiff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -181,11 +197,18 @@ func parseMarkdownRow(line string) []string {\n \n func separatorRow(cells []string) bool {\n \tfor _, cell := range cells {\n-\t\tif cell == \"\" {\n+\t\tcell = strings.TrimSpace(cell)\n+\t\tif strings.HasPrefix(cell, \":\") {\n+\t\t\tcell = strings.TrimPrefix(cell, \":\")\n+\t\t}\n+\t\tif strings.HasSuffix(cell, \":\") {\n+\t\t\tcell = strings.TrimSuffix(cell, \":\")\n+\t\t}\n+\t\tif len(cell) \u003c 3 {\n \t\t\treturn false\n \t\t}\n \t\tfor _, r := range cell {\n-\t\t\tif r != '-' \u0026\u0026 r != ':' \u0026\u0026 r != ' ' {\n+\t\t\tif r != '-' {\n \t\t\t\treturn false\n \t\t\t}\n \t\t}\ndiff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -5,6 +5,8 @@ import (\n \t\"regexp\"\n \t\"sort\"\n \t\"strings\"\n+\n+\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n )\n \n var unresolvedTemplatePlaceholder = regexp.MustCompile(`\\{\\{\\s*[A-Za-z][A-Za-z0-9_-]*\\s*\\}\\}`)\ndiff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -47,6 +53,16 @@ func ValidateRequirementsContent(content string) []ValidationFinding {\n \t\t\tfindings = append(findings, finding(\"requirements.md\", heading, \"\", \"missing required section\", \"section was not found\", \"Add the required requirements.md section.\"))\n \t\t}\n \t}\n+\tpacket, targetFindings := ParsePerformanceTargets(content)\n+\tfindings = append(findings, targetFindings...)\n+\tdeclared := markdownHeadingPresent(content, \"Performance Targets\")\n+\tif policy.Enabled() {\n+\t\tif !declared || len(packet.Targets) == 0 {\n+\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"performance targets required\", \"project Performance Policy is enabled but no valid target row exists\", \"Add the exact Performance Targets table with at least one governed row.\"))\n+\t\t}\n+\t} else if declared {\n+\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"performance policy mismatch\", \"targets are declared while project performance policy is disabled\", \"Enable Performance Policy in project-index.md or remove the target table.\"))\n+\t}\n \tsortSprintFindings(findings)\n \treturn findings\n }\ndiff --git a/internal/sprint/index.go b/internal/sprint/index.go\nindex b410baf00868d731f09a1bdec209a6447b665df1..a9e6639891fa9870ee78ceaeb29dc46f154036d4 100644\n--- a/internal/sprint/index.go\n+++ b/internal/sprint/index.go\n@@ -35,6 +37,10 @@ var sprintIndexSections = map[string]string{\n }\n \n func ValidateRequirementsContent(content string) []ValidationFinding {\n+\treturn ValidateRequirementsContentWithPolicy(content, project.PerformancePolicy{Mode: project.PerformanceDisabled})\n+}\n+\n+func ValidateRequirementsContentWithPolicy(content string, policy project.PerformancePolicy) []ValidationFinding {\n \tvar findings []ValidationFinding\n \tif strings.TrimSpace(content) == \"\" {\n \t\treturn []ValidationFinding{finding(\"requirements.md\", \"\", \"\", \"empty requirements.md\", \"file has no content\", \"Generate or write sprint-specific requirements.\")}\ndiff --git a/internal/sprint/performance_targets.go b/internal/sprint/performance_targets.go\nnew file mode 100644\nindex 0000000000000000000000000000000000000000..3c7a5173be07baef08327f68da4cd6f4cdef013e\n--- /dev/null\n+++ b/internal/sprint/performance_targets.go\n@@ -0,0 +1,311 @@\n+package sprint\n+\n+import (\n+\t\"crypto/sha256\"\n+\t\"encoding/hex\"\n+\t\"encoding/json\"\n+\t\"fmt\"\n+\t\"math/big\"\n+\t\"regexp\"\n+\t\"sort\"\n+\t\"strconv\"\n+\t\"strings\"\n+\t\"unicode/utf8\"\n+)\n+\n+var performanceTargetID = regexp.MustCompile(`^PERF-[A-Z0-9-]+$`)\n+var performanceDecimal = regexp.MustCompile(`^-?[0-9]+(?:\\.[0-9]+)?$`)\n+var performanceHeaders = []string{\"ID\", \"Scenario\", \"Metric\", \"Comparator\", \"Value\", \"Unit\", \"Gate\", \"Samples\", \"Basis\"}\n+\n+func ParsePerformanceTargets(content string) (PerformanceTargetPacket, []ValidationFinding) {\n+\tdigest := sha256.Sum256([]byte(content))\n+\tpacket := PerformanceTargetPacket{SchemaVersion: PerformanceSchemaVersion, ParserVersion: PerformanceParserVersion, RequirementsDigest: hex.EncodeToString(digest[:])}\n+\tlines := strings.Split(content, \"\\n\")\n+\tvar findings []ValidationFinding\n+\tinFence, inComment, found, collecting := false, false, false, false\n+\tvar table [][]string\n+\tfor i, raw := range lines {\n+\t\tline := strings.TrimSpace(raw)\n+\t\tif inComment {\n+\t\t\tif end := strings.Index(line, \"--\u003e\"); end \u003e= 0 {\n+\t\t\t\tline, inComment = strings.TrimSpace(line[end+3:]), false\n+\t\t\t} else {\n+\t\t\t\tcontinue\n+\t\t\t}\n+\t\t}\n+\t\tif start := strings.Index(line, \"\u003c!--\"); start \u003e= 0 {\n+\t\t\tif end := strings.Index(line[start+4:], \"--\u003e\"); end \u003c 0 {\n+\t\t\t\tinComment = true\n+\t\t\t}\n+\t\t\tline = strings.TrimSpace(line[:start])\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"```\") || strings.HasPrefix(line, \"~~~\") {\n+\t\t\tinFence = !inFence\n+\t\t\tcontinue\n+\t\t}\n+\t\tif inFence || strings.HasPrefix(line, \"\u003e\") || strings.HasPrefix(raw, \"    \") || strings.HasPrefix(raw, \"\\t\") {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif strings.HasPrefix(line, \"#\") {\n+\t\t\tcollecting = false\n+\t\t\tif line == \"## Performance Targets\" {\n+\t\t\t\tif found {\n+\t\t\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"duplicate performance targets section\", fmt.Sprintf(\"line %d: section appears more than once\", i+1), \"Keep exactly one Performance Targets section.\"))\n+\t\t\t\t}\n+\t\t\t\tfound, collecting, table = true, true, nil\n+\t\t\t}\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !collecting {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif line == \"\" \u0026\u0026 len(table) == 0 {\n+\t\t\tcontinue\n+\t\t}\n+\t\tif !strings.HasPrefix(line, \"|\") {\n+\t\t\tif len(table) == 0 {\n+\t\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"missing immediate target table\", fmt.Sprintf(\"line %d: expected a table directly after the heading\", i+1), \"Add the exact V1 target table.\"))\n+\t\t\t}\n+\t\t\tcollecting = false\n+\t\t\tcontinue\n+\t\t}\n+\t\ttable = append(table, parseMarkdownRow(line))\n+\t}\n+\tif !found {\n+\t\treturn packet, findings\n+\t}\n+\tif len(table) \u003c 3 {\n+\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"empty or malformed target table\", \"the table needs a header, separator, and at least one row\", \"Add at least one valid performance target.\"))\n+\t\treturn packet, findings\n+\t}\n+\tif !sameCells(table[0], performanceHeaders) || len(table[1]) != len(performanceHeaders) || !separatorRow(table[1]) {\n+\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"invalid target table shape\", \"headers must match the exact ordered V1 schema\", \"Use ID, Scenario, Metric, Comparator, Value, Unit, Gate, Samples, Basis.\"))\n+\t\treturn packet, findings\n+\t}\n+\tseen := map[string]bool{}\n+\tfor rowIndex, cells := range table[2:] {\n+\t\tif len(cells) != len(performanceHeaders) || separatorRow(cells) {\n+\t\t\tfindings = append(findings, finding(\"Performance Targets\", \"\", \"\", \"malformed target row\", fmt.Sprintf(\"row %d has %d cells\", rowIndex+1, len(cells)), \"Use exactly nine cells.\"))\n+\t\t\tcontinue\n+\t\t}\n+\t\ttarget, err := parsePerformanceTarget(cells)\n+\t\tif err != nil {\n+\t\t\tfindings = append(findings, finding(\"Performance Targets\", cells[0], \"\", \"invalid performance target\", fmt.Sprintf(\"row %d: %s\", rowIndex+1, err), \"Fix the target to match the V1 cell contract.\"))\n+\t\t\tcontinue\n+\t\t}\n+\t\tif seen\n\n[... bounded excerpt ...]\n\n decimal\")\n+\t}\n+\tnegative := strings.HasPrefix(value, \"-\")\n+\tvalue = strings.TrimPrefix(value, \"-\")\n+\tparts := strings.SplitN(value, \".\", 2)\n+\tparts[0] = strings.TrimLeft(parts[0], \"0\")\n+\tif parts[0] == \"\" {\n+\t\tparts[0] = \"0\"\n+\t}\n+\tvalue = parts[0]\n+\tif len(parts) == 2 {\n+\t\tfraction := strings.TrimRight(parts[1], \"0\")\n+\t\tif fraction != \"\" {\n+\t\t\tvalue += \".\" + fraction\n+\t\t}\n+\t}\n+\tif negative \u0026\u0026 rat.Sign() != 0 {\n+\t\tvalue = \"-\" + value\n+\t}\n+\treturn value, rat, nil\n+}\n+\n+func ComparePerformanceTarget(target PerformanceTarget, baseline, candidate string, qualified, blocked bool) (PerformanceComparison, error) {\n+\tout := PerformanceComparison{TargetID: target.ID, Baseline: baseline, Candidate: candidate}\n+\tif blocked {\n+\t\tout.Outcome, out.Reason = PerformanceTargetBlocked, \"measurement authority is blocked\"\n+\t\treturn out, nil\n+\t}\n+\tif !qualified {\n+\t\tout.Outcome, out.Reason = PerformanceTargetInconclusive, \"measurement did not qualify\"\n+\t\treturn out, nil\n+\t}\n+\t_, candidateRat, err := canonicalPerformanceDecimal(candidate)\n+\tif err != nil {\n+\t\treturn out, fmt.Errorf(\"candidate: %w\", err)\n+\t}\n+\tif target.Comparator == PerformanceBaseline {\n+\t\tout.ComparedValue, out.Outcome = exactPerformanceDecimal(candidateRat), PerformanceTargetBaselineRecorded\n+\t\treturn out, nil\n+\t}\n+\t_, threshold, err := canonicalPerformanceDecimal(target.Value)\n+\tif err != nil {\n+\t\treturn out, fmt.Errorf(\"threshold: %w\", err)\n+\t}\n+\tcompared := new(big.Rat).Set(candidateRat)\n+\tif target.Basis == PerformanceRelative {\n+\t\t_, baselineRat, parseErr := canonicalPerformanceDecimal(baseline)\n+\t\tif parseErr != nil {\n+\t\t\treturn out, fmt.Errorf(\"baseline: %w\", parseErr)\n+\t\t}\n+\t\tif baselineRat.Sign() == 0 {\n+\t\t\tout.Outcome, out.Reason = PerformanceTargetInconclusive, \"baseline is zero\"\n+\t\t\treturn out, nil\n+\t\t}\n+\t\tcompared.Sub(candidateRat, baselineRat)\n+\t\tcompared.Mul(compared, big.NewRat(100, 1))\n+\t\tcompared.Quo(compared, baselineRat)\n+\t}\n+\tout.ComparedValue = exactPerformanceDecimal(compared)\n+\tmet := target.Comparator == PerformanceLessOrEqual \u0026\u0026 compared.Cmp(threshold) \u003c= 0 || target.Comparator == PerformanceGreaterOrEqual \u0026\u0026 compared.Cmp(threshold) \u003e= 0\n+\tif target.Gate == PerformanceReport {\n+\t\tout.Outcome = PerformanceTargetReportOnly\n+\t} else if met {\n+\t\tout.Outcome = PerformanceTargetMet\n+\t} else {\n+\t\tout.Outcome = PerformanceTargetMissed\n+\t}\n+\treturn out, nil\n+}\n+\n+func DerivePerformanceRunOutcome(outcomes []PerformanceTargetOutcome, cancelled, cleanupUncertain, blocked, stalled bool) PerformanceRunOutcome {\n+\tif cleanupUncertain {\n+\t\treturn PerformanceCleanupUncertain\n+\t}\n+\tif cancelled {\n+\t\treturn PerformanceCancelled\n+\t}\n+\tif blocked {\n+\t\treturn PerformanceBlocked\n+\t}\n+\tif stalled {\n+\t\treturn PerformanceStalled\n+\t}\n+\treports := false\n+\tfor _, outcome := range outcomes {\n+\t\tswitch outcome {\n+\t\tcase PerformanceTargetBlocked, PerformanceTargetInconclusive:\n+\t\t\treturn PerformanceBlocked\n+\t\tcase PerformanceTargetMissed:\n+\t\t\treturn PerformanceTargetMiss\n+\t\tcase PerformanceTargetReportOnly, PerformanceTargetBaselineRecorded:\n+\t\t\treports = true\n+\t\t}\n+\t}\n+\tif reports {\n+\t\treturn PerformancePassedWithReports\n+\t}\n+\treturn PerformancePassed\n+}\n+\n+func BindPerformancePacketPolicy(packet PerformanceTargetPacket, policyDigest string) PerformanceTargetPacket {\n+\tpacket.PolicyDigest = policyDigest\n+\tpacket.PacketDigest = performancePacketDigest(packet)\n+\treturn packet\n+}\n+\n+func performancePacketDigest(packet PerformanceTargetPacket) string {\n+\tcopyPacket := packet\n+\tcopyPacket.PacketDigest = \"\"\n+\tdata, _ := json.Marshal(copyPacket)\n+\tsum := sha256.Sum256(data)\n+\treturn hex.EncodeToString(sum[:])\n+}\n+\n+func sameCells(a, b []string) bool {\n+\tif len(a) != len(b) {\n+\t\treturn false\n+\t}\n+\tfor i := range a {\n+\t\tif a[i] != b[i] {\n+\t\t\treturn false\n+\t\t}\n+\t}\n+\treturn true\n+}\n+\n+func supportedPerformanceUnit(unit PerformanceUnit) bool {\n+\tswitch unit {\n+\tcase PerformanceNSPerOp, PerformanceBytesPerOp, PerformanceAllocsPerOp, PerformanceMS, PerformanceMiB, PerformanceOpsPerSec, PerformanceTasksPerRun, PerformancePercent:\n+\t\treturn true\n+\tdefault:\n+\t\treturn false\n+\t}\n+}\ndiff --git a/internal/workspace/scaffold/prompts/create-requirements.md b/internal/workspace/scaffold/prompts/create-requirements.md\nindex 6b35b7da1d78a4d4fee5dfca9e965b71de2e469c..c1df613e700a446c24a624bc4597305a4902f8af 100644\n--- a/internal/workspace/scaffold/prompts/create-requirements.md\n+++ b/internal/workspace/scaffold/prompts/create-requirements.md\n@@ -33,6 +33,9 @@ Write to: `.ultra/projects/{project}/sprints/{sprint-slug}/requirements.md`\n    - **Constraints**: architectural, technical, or process constraints.\n    - **Dependencies**: prior sprints or external inputs this sprint needs.\n    - **Review Expectations**: what will be checked at review and how.\n+   - **Performance Targets**: include the exact governed nine-column table only\n+     when the project `Performance Policy` is enabled. Derive each value from a\n+     product requirement or measured baseline; never invent a threshold.\n \n ## Quality Bar",
+  "exact_reproducer": {
+    "id": "repair-v1-check-3444a447f8ab52e935bfb940",
+    "gate": "exact_reproducer",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_a0300a83f89e$",
+      "-count=1"
+    ],
+    "workdir": "internal/project",
+    "environment_names": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "expected": "the frozen investigator-authored test passes on the frozen implementation",
+    "source_plan_id": "qa-v2-plan-a168d0293890d26037a3eff8"
+  },
+  "checks": [
+    {
+      "id": "repair-v1-check-3444a447f8ab52e935bfb940",
+      "gate": "exact_reproducer",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_a0300a83f89e$",
+        "-count=1"
+      ],
+      "workdir": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "the frozen investigator-authored test passes on the frozen implementation",
+      "source_plan_id": "qa-v2-plan-a168d0293890d26037a3eff8"
+    },
+    {
+      "id": "repair-v1-check-d8c426360ba9778691b928cc",
+      "gate": "primary_shards",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_a0300a83f89e$",
+        "-count=1"
+      ],
+      "workdir": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen primary_shards conditions pass",
+      "source_plan_id": "qa-v2-plan-a168d0293890d26037a3eff8"
+    },
+    {
+      "id": "repair-v1-check-4d455177cd22a3219d953361",
+      "gate": "linked_theories",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_a0300a83f89e$",
+        "-count=1"
+      ],
+      "workdir": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen linked_theories conditions pass",
+      "source_plan_id": "qa-v2-plan-a168d0293890d26037a3eff8"
+    },
+    {
+      "id": "repair-v1-check-ea156f91fcf08d2d8aee2546",
+      "gate": "follow_up_shards",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_a0300a83f89e$",
+        "-count=1"
+      ],
+      "workdir": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen follow_up_shards conditions pass",
+      "source_plan_id": "qa-v2-plan-a168d0293890d26037a3eff8"
+    },
+    {
+      "id": "repair-v1-check-46b76ea14f3c3cfc5363f1c5",
+      "gate": "containing_qa",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_a0300a83f89e$",
+        "-count=1"
+      ],
+      "workdir": "internal/project",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen containing_qa conditions pass",
+      "source_plan_id": "qa-v2-plan-a168d0293890d26037a3eff8"
+    }
+  ],
+  "allowed_paths": [
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/qa_investigator_185c6f8e76f6_test.go",
+    "internal/project/qa_investigator_a0300a83f89e_test.go",
+    "internal/sprint/index.go",
+    "internal/sprint/index.go; internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets.go",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "forbidden_paths": [
+    ".gitattributes",
+    ".gitignore",
+    ".gitmodules",
+    "go.mod",
+    "go.sum",
+    "ultraplan.yml"
+  ],
+  "acceptance_criteria": [
+    "the frozen investigator-authored test passes on the frozen implementation"
+  ],
+  "mode": "manual",
+  "budgets": {
+    "max_cycles": 1,
+    "max_mutation_cycles": 1,
+    "max_reopenings": 1,
+    "stagnation_limit": 1,
+    "max_files_per_cycle": 8,
+    "max_files_per_run": 16,
+    "max_bytes_per_cycle": 262144,
+    "max_bytes_per_run": 524288,
+    "max_patch_bytes": 524288,
+    "wall_time": 2700000000000,
+    "runtime_attempts": 3,
+    "model_turns": 12,
+    "command_count": 32,
+    "command_timeout": 600000000000,
+    "output_bytes": 1048576,
+    "retained_cycles": 8,
+    "cleanup_timeout": 30000000000
+  },
+  "budget_sources": [
+    {
+      "field": "qa.repair.max_cycles",
+      "source": "manual_policy"
+    },
+    {
+      "field": "qa.repair.max_mutation_cycles",
+      "source": "manual_policy"
+    },
+    {
+      "field": "qa.repair.max_reopenings",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.stagnation_limit",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_patch_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.wall_time",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.runtime_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.model_turns",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_count",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.retained_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.cleanup_timeout",
+      "source": "default"
+    }
+  ],
+  "target": {
+    "fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+    "scope": "current_checkout",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "fe187a20b63576fd0797b05957bfe4ca8d5dee75b6db3625282d1dba3dcd64a1",
+    "workspace_branch": "ultraplan/ultraplan-go/39-performance-stage",
+    "workspace_baseline": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "baseline_relation": "at_baseline"
+  },
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "review_fingerprint": "5a1318314307929406ebca976a8369ae4927f395a7ffd3e73d50a653d71a6e87",
+  "policy_fingerprint": "b84b3c352fbfea20e0c3bf2481cba2b9d268ed30d542c4a578f65ac1b578b3ef",
+  "isolation_fingerprint": "d94d107f6e8692ebbcbd62f079a0626dca229edd3cea7c06eff0265e241e3d9c",
+  "prepared_at": "2026-09-12T10:10:07.033345678Z",
+  "packet_digest": "693eba02e17ecc01ab780d1044e0d8ecbc1b8f27f01e0f43d8757b3c2bdab0ba"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "retirement": {
+    "id": "qa-v2-retirement-8eaa6ab3f18f8c78235b2125",
+    "request_id": "qa-v2-request-07d95cd845e0108c780842e4",
+    "operator": "antonioborgerees",
+    "reason": "Frozen test runs a private two-iteration fake loop and deliberately calls its own propose method twice; it never exercises product cleanup behavior, so no governed product repair can satisfy it.",
+    "diagnostic": "operator_retirement",
+    "records": [
+      {
+        "evidence_id": "qa-v2-evidence-372461ad324508ca6636dcb7",
+        "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+        "bundle_digest": "727b404f304d7621468898c0f3f6d979f13fe1347b8f5e50af3bfd8d387a1f4e",
+        "evidence_digest": "5ea34616063330fd82567aafadfc3f96d951cc8951eb8c6ea92a1ba3a05faafa"
+      }
+    ],
+    "source_adjudication": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8eaa6ab3f18f8c78235b2125/adjudication.json",
+      "digest": "f1781ea4d3ead01fa2f2dd99381ddb29e2cfb54948b773446a5c0638f10cb697"
+    },
+    "source_assessment": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8eaa6ab3f18f8c78235b2125/assessment.json",
+      "digest": "d0d5bdc2b8ad78fa1aac0a12777d5ccd1e44a3b5c47aec1a5a3c15b4510c13f9"
+    },
+    "source_coverage": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8eaa6ab3f18f8c78235b2125/issue-evidence-coverage.json",
+      "digest": "e76e0a24e35d12c160fca61e5aa8301b36997e9b9546df96ae0fad8015c59e34"
+    },
+    "recorded_at": "2026-09-12T17:56:47.242227306Z"
+  }
+}

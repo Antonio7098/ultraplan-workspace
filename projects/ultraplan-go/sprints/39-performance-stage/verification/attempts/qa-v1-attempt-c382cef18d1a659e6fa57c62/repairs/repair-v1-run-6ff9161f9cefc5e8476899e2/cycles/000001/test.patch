@@ -1,0 +1,124 @@
+--- a/internal/project/qa_investigator_185c6f8e76f6_test.go
++++ b/internal/project/qa_investigator_185c6f8e76f6_test.go
+@@ -1,0 +1,67 @@
++package project_test
++
++import (
++	"testing"
++
++	"github.com/Antonio7098/ultraplan-go/internal/project"
++	"github.com/Antonio7098/ultraplan-go/internal/sprint"
++)
++
++func TestQAInvestigator_185c6f8e76f6(t *testing.T) {
++	const requiredSections = `## Sprint Goal
++x
++## Required Outputs
++x
++## Acceptance Criteria
++x
++## Non-Goals
++x
++## Constraints
++x
++## Dependencies
++x
++## Review Expectations
++x
++`
++	const table = `## Performance Targets
++
++| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |
++| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |
++| PERF-QA | package benchmark | latency | <= | 10 | ns/op | required | 5 | absolute |
++`
++	disabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}
++	pseudoSections := map[string]string{
++		"fenced":   "```md\n" + table + "```\n",
++		"commented": "<!--\n" + table + "-->\n",
++	}
++
++	for name, pseudo := range pseudoSections {
++		packet, parserFindings := sprint.ParsePerformanceTargets(pseudo)
++		if len(packet.Targets) != 0 || len(parserFindings) != 0 {
++			t.Fatalf("control %s: parser did not ignore pseudo-heading: targets=%d findings=%v", name, len(packet.Targets), parserFindings)
++		}
++	}
++
++	realPacket, realParserFindings := sprint.ParsePerformanceTargets(table)
++	if len(realPacket.Targets) != 1 || len(realParserFindings) != 0 {
++		t.Fatalf("control real heading: targets=%d findings=%v", len(realPacket.Targets), realParserFindings)
++	}
++	if !hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+table, disabled)) {
++		t.Fatal("control real heading: disabled policy did not detect declared targets")
++	}
++
++	for name, pseudo := range pseudoSections {
++		if hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+pseudo, disabled)) {
++			t.Fatalf("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=%s", name)
++		}
++	}
++}
++
++func hasPerformancePolicyMismatch(findings []sprint.ValidationFinding) bool {
++	for _, finding := range findings {
++		if finding.Problem == "performance policy mismatch" {
++			return true
++		}
++	}
++	return false
++}
+--- a/internal/project/qa_investigator_a0300a83f89e_test.go
++++ b/internal/project/qa_investigator_a0300a83f89e_test.go
+@@ -1,0 +1,51 @@
++package project_test
++
++import (
++	"testing"
++
++	"github.com/Antonio7098/ultraplan-go/internal/project"
++	"github.com/Antonio7098/ultraplan-go/internal/sprint"
++)
++
++func TestQAInvestigator_a0300a83f89e(t *testing.T) {
++	const requirements = "## Sprint Goal\nx\n## Required Outputs\nx\n## Acceptance Criteria\nx\n## Non-Goals\nx\n## Constraints\nx\n## Dependencies\nx\n## Review Expectations\nx\n"
++	const targets = "## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-A | package benchmark | latency | <= | 10 | ns/op | required | 5 | absolute |\n"
++	disabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}
++
++	controls := []struct {
++		name         string
++		content      string
++		wantFindings bool
++	}{
++		{name: "ordinary prose is not a declaration", content: requirements + "ordinary prose\n"},
++		{name: "real section is a declaration", content: requirements + targets, wantFindings: true},
++	}
++	for _, control := range controls {
++		findings := sprint.ValidateRequirementsContentWithPolicy(control.content, disabled)
++		if (len(findings) != 0) != control.wantFindings {
++			t.Fatalf("control %q findings = %#v", control.name, findings)
++		}
++	}
++
++	pseudoSections := []struct {
++		name    string
++		content string
++	}{
++		{name: "fenced", content: "```md\n" + targets + "```\n"},
++		{name: "HTML commented", content: "<!--\n" + targets + "-->\n"},
++	}
++	observedMismatch := 0
++	for _, pseudo := range pseudoSections {
++		packet, parseFindings := sprint.ParsePerformanceTargets(pseudo.content)
++		if len(packet.Targets) != 0 || len(parseFindings) != 0 {
++			t.Fatalf("%s parser observation failed: packet=%#v findings=%#v", pseudo.name, packet, parseFindings)
++		}
++		if findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo.content, disabled); len(findings) != 0 {
++			observedMismatch++
++		}
++	}
++	if observedMismatch == len(pseudoSections) {
++		t.Log("Assert each input produces a policy mismatch while target parsing returns no targets or findings.")
++		t.Error("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e")
++	}
++}

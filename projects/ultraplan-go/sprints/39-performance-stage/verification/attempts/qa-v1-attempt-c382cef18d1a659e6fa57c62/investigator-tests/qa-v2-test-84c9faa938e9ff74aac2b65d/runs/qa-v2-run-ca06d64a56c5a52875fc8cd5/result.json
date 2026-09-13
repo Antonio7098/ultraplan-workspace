@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "caaf016c0b1156e4fa468e6ddd984331a0e776f4674455cc51b8f190e4c58431",
+  "schema_version": 2,
+  "id": "qa-v2-run-ca06d64a56c5a52875fc8cd5",
+  "spec_id": "qa-v2-spec-c0e286def24fc5ebd5dc63ba",
+  "test_bundle_id": "qa-v2-test-84c9faa938e9ff74aac2b65d",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_b652f4844a27",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_b652f4844a27",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27",
+    "executable": "go",
+    "args_digest": "c0c71e6c4abd818c3e6e66be976bdfd600c285014b934a6d3572d6faabc070ba",
+    "exit_code": 1,
+    "duration": 25686961748,
+    "stdout_digest": "5cdc241957ba1039cf05c7bf8003566f468999f1afcbe739e78b26eb178f2978",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_b652f4844a27\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27\n    qa_investigator_b652f4844a27_test.go:50: Assert DiscoverPerformanceManifest accepts both separated-marker cases.\n--- FAIL: TestQAInvestigator_b652f4844a27 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\nFAIL\n",
+    "output_bytes": 346,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_b652f4844a27",
+    "assertion": "Assert DiscoverPerformanceManifest accepts both separated-marker cases.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:10:44.195994232Z"
+}

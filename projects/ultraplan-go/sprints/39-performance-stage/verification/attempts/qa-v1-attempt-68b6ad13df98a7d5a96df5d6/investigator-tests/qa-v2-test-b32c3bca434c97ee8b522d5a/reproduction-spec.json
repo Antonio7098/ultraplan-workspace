@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-ae36bfdce63a28fb202bf0a7",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+  "evidence_request_id": "qa-v2-request-0eecea176f2cdd232b1d46ba",
+  "theory_ids": [
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+  ],
+  "claim": "Optimization paths discard isolation cleanup failures and may continue into another mutation cycle instead of publishing cleanup_uncertain and stopping new work.",
+  "preconditions": [
+    "Include an otherwise identical successful-cleanup control. Do not assume source changes or a new hook; if existing seams cannot induce cleanup failure, report verification_unavailable and retain the missing cleanup-failure injection prerequisite."
+  ],
+  "expected_behavior": "Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_dd232b1d46ba",
+    "assertion": "Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dd232b1d46ba"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_dd232b1d46ba_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-dd232b1d46ba",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_dd232b1d46ba$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "6183521ef6c31344de0b3454c8e910b1bcf66fd17d851ab6b9cf1847ae901046"
+  },
+  "implementation_fingerprint": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+  "frozen_at": "2026-09-12T20:27:38.164336827Z"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-bf89bfc3571b28046531ef0d",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-8777e689a2caaaafff1d1064"
+    ],
+    "origin_shard_id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+    "gap": "The decisive failure-path fence ordering remains unproven by executable evidence.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that installs a deterministic verification fence, advances ownership at the final failure-publication boundary, and invokes the actual performance failure path.",
+    "required_observation": "Record whether SaveFlowState mutates flow state after the token becomes stale and whether the returned error reports stale ownership.",
+    "control_requirement": "Run the same path without advancing ownership and assert that normal flow-state publication succeeds, proving the fixture reaches the intended boundary.",
+    "priority": "high",
+    "status": "inconclusive",
+    "next_action": "original_session_unavailable"
+  }
+}

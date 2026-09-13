@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+  "spec_id": "qa-v2-spec-99331ab78ce7109c93c12cea",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_3fdd9404fbd7_test.go",
+      "content": "package app\n\nimport (\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_3fdd9404fbd7(t *testing.T) {\n\tconst theory = \"qa-v1-theory-7ef7c4876857c8e4b85d4c0c\"\n\tconst assertion = \"Execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.\"\n\tfail := func(detail string) {\n\t\tt.Helper()\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_3fdd9404fbd7 assertion=%s theory=%s detail=%s\", assertion, theory, detail)\n\t}\n\n\t// Healthy non-performance command control.\n\tstdout, stderr, status := runForTest([]string{\"sprint\", \"--help\"})\n\tif status != ExitOK || stderr != \"\" || !strings.Contains(stdout, \"ultraplan sprint\") {\n\t\tt.Fatalf(\"%s healthy control: status=%d stdout=%q stderr=%q\", theory, status, stdout, stderr)\n\t}\n\n\tworkspace := initializedWorkspace(t)\n\twriteCommandSprintProject(t, workspace, \"proj\", \"01-alpha\")\n\n\t// Operational-failure control keeps failure output visible and non-successful.\n\tstdout, stderr, status = runForTest([]string{\"--workspace\", workspace, \"sprint\", \"missing\", \"01\", \"performance\", \"status\", \"--json\"})\n\tif status == ExitOK || stdout == \"\" || stderr == \"\" {\n\t\tt.Fatalf(\"%s operational-failure control: status=%d stdout=%q stderr=%q\", theory, status, stdout, stderr)\n\t}\n\n\t// Cancellation is the only semantic action exposed without starting a new runtime.\n\tstdout, stderr, status = runForTest([]string{\"--workspace\", workspace, \"sprint\", \"proj\", \"01\", \"performance\", \"cancel\", \"--json\"})\n\tif status != ExitCancel {\n\t\tfail(\"cancellation exit=\" + string(rune(status)) + \" stdout=\" + stdout + \" stderr=\" + stderr)\n\t}\n\n\tfor _, tc := range []struct {\n\t\taction string\n\t\twant   int\n\t}{\n\t\t{action: \"target-miss\", want: ExitValidation},\n\t\t{action: \"partial\", want: ExitPartial},\n\t} {\n\t\tstdout, stderr, status = runForTest([]string{\"--workspace\", workspace, \"sprint\", \"proj\", \"01\", \"performance\", tc.action, \"--json\"})\n\t\tif status != tc.want {\n\t\t\tfail(tc.action + \" mapping did not produce its contract exit\")\n\t\t}\n\t\tif stdout == \"\" || stderr != \"\" {\n\t\t\tfail(tc.action + \" stream contract was unstable\")\n\t\t}\n\t\tcontinue finder\n\t}\n}\n",
+      "digest": "0741d2c12726004f72965f5beefb6edc65ff5955e5d8a3b219879ff7b8702278",
+      "bytes": 2194
+    }
+  ],
+  "content_digest": "f3346d395c7b3eee0d8b32f104ed20816be5defe124f6924ec7f674cd67c148e"
+}

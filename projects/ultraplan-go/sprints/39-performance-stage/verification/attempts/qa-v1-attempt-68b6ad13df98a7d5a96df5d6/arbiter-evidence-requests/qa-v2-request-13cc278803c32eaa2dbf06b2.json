@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T13:07:24.559303475Z",
+        "completed_at": "2026-09-12T13:08:12.369742283Z",
+        "run_id": "qa-v2-run-66042f87d9a87d73ebc8ec7c"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-13cc278803c32eaa2dbf06b2",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+    ],
+    "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+    "gap": "The coverage absence is statically supported, but promotion readiness lacks executable compatibility assertions from this origin shard.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go compatibility reproducer in the approved private workspace for the performance CLI.",
+    "required_observation": "Assert the exact theories covered by exercising representative performance commands and checking stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. The test supports promotion readiness and must not be presented as proof that coverage was previously absent.",
+    "control_requirement": "Include healthy success controls and at least one non-performance command compatibility control using only existing command seams and deterministic fixtures.",
+    "priority": "medium",
+    "status": "superseded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "d483e448caa58e7850ffd87115ec2e4ab66d98803ae6d2d9f0580961d8ac52ff",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-21ae0de596606b0e9329abe5",
+    "test_bundle_id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+    "latest_run_id": "qa-v2-run-66042f87d9a87d73ebc8ec7c",
+    "next_action": "Inspect replacement evidence request qa-v2-request-21ae0de596606b0e9329abe5."
+  }
+}

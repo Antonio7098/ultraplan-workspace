@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "correction_granted_at": "2026-09-12T13:28:09.181900041Z",
+    "correction_attempts": 3,
+    "correction_allowance": 3,
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-c418b7d27881f9b5b43f7e46",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T13:43:58.113142726Z",
+        "completed_at": "2026-09-12T13:44:41.677928914Z",
+        "run_id": "qa-v2-run-a6441247538a6d5215a941b5"
+      }
+    ],
+    "preparation_attempts": 2,
+    "id": "qa-v2-request-bc9cd81c85d4d094a0cec36e",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+    ],
+    "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+    "gap": "The latest semantic-branch test did not compile because it referenced an undefined continue label, so it provides no behavioral observation of target-miss, cancellation, or partial mappings.",
+    "requested_evidence": "Strengthen the executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "required_observation": "Using existing command or operation seams, execute target-miss, cancellation, and partial outcomes and assert stable JSON or text output, stdout/stderr behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "control_requirement": "Retain the healthy dry-run or status control and operational-failure control. The test must compile and exercise valid public actions or existing deterministic seams; do not substitute source-token searches or invented actions for behavioral assertions. Treat frozen product-test evidence, not the investigator-authored reproducer, as proof of prior coverage absence.",
+    "priority": "medium",
+    "status": "evidence_recorded",
+    "evidence_round": 5,
+    "attempts": 2,
+    "evidence_fingerprint": "68d788a3e38f8c5414adcfa741a6ec003920616f8e81a525cc6c603821e13a54",
+    "superseded_by": "qa-v2-request-60e89ec8bc0db079f41d230d",
+    "test_bundle_id": "qa-v2-test-c418b7d27881f9b5b43f7e46",
+    "latest_run_id": "qa-v2-run-a6441247538a6d5215a941b5",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

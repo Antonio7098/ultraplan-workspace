@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-7db263cfd659a2861486f879",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-07T17:13:37.475498037Z",
+        "completed_at": "2026-09-07T17:14:21.467272014Z",
+        "run_id": "qa-v2-run-ae0a0ff29536adb7eb667dd3"
+      }
+    ],
+    "preparation_attempts": 1,
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+    "recovery_reason": "evidence_authoring_inconclusive",
+    "id": "qa-v2-request-9f9d08c0c843340a1300e236",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-17dafaf3fd4f0f4493af69b0",
+      "qa-v1-theory-7d9af7670be55a2e29a420d8"
+    ],
+    "origin_shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+    "gap": "The aggregate lifecycle omission and raw unavailable-result error have only static confirmation.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer comparing direct PerformanceStatus with SprintSummaries for a fake durable run, and invoking PerformanceResult for a valid nonterminal attempt.",
+    "required_observation": "Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.",
+    "control_requirement": "Show the direct status path is enriched and a typed performance error receives performance-specific HTTP mapping.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 4,
+    "attempts": 2,
+    "evidence_fingerprint": "d3fbd9747ebb4cb9d48538b6ac9b339c667431efe9c8f674b73ffb73a6e29567",
+    "test_bundle_id": "qa-v2-test-7db263cfd659a2861486f879",
+    "latest_run_id": "qa-v2-run-ae0a0ff29536adb7eb667dd3",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

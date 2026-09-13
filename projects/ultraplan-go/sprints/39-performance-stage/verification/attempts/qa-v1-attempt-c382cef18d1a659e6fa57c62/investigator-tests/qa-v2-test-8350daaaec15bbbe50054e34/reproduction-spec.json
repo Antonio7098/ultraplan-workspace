@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-5807f990c84a76eff8666229",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-c00693067b3601e16b414101",
+  "evidence_request_id": "qa-v2-request-a0813a5d1ac4a4e36afcbad1",
+  "theory_ids": [
+    "qa-v1-theory-2e47a0d5379914251c03302b"
+  ],
+  "claim": "Performance-specific defaults and lower-only validation are implemented in the generic platform config package, violating the requirement that product defaults and bounded-context validation remain in the owning product module.",
+  "preconditions": [
+    "Restrict the assertion to named performance policy symbols so generic configuration infrastructure remains allowed."
+  ],
+  "expected_behavior": "Assert the current source defines product-specific performance defaults and validation under internal/platform.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_a4e36afcbad1",
+    "assertion": "Assert the current source defines product-specific performance defaults and validation under internal/platform.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a4e36afcbad1"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/platform/config/qa_investigator_a4e36afcbad1_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-a4e36afcbad1",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_a4e36afcbad1$",
+      "-count=1"
+    ],
+    "working_directory": "internal/platform/config",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "586974c5c8b282556a6556a6de13fa4ca7daf586dfef0fd631485990283f7f6f"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T13:11:50.748831073Z"
+}

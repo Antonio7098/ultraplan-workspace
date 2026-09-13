@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-1fa19463cf6244f4c29a9b08",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-3d05000070c81fe10aa3579b"
+    ],
+    "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+    "gap": "Existing tests have failure-signature mismatches.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer that makes performanceSettings fail during shared operation-runner setup.",
+    "required_observation": "Assert the runner reaches preparation or execution without returning the configuration failure.",
+    "control_requirement": "Include a valid-configuration control and prove whether the operation boundary was reached.",
+    "priority": "high",
+    "status": "inconclusive",
+    "reason_code": "evidence_round_budget_exhausted",
+    "superseded_by": "qa-v2-request-c50b470e137164d1a8040f90",
+    "next_action": "Evidence remains unresolved: evidence_round_budget_exhausted. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+  }
+}

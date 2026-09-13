@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-18e8449e2e3c62ad4ac6a124",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+  "evidence_request_id": "qa-v2-request-b6170cb8d2c9b7efe9eb62a1",
+  "theory_ids": [
+    "qa-v1-theory-1007492d20bbcc01841fb291",
+    "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+  ],
+  "claim": "Repair performance reverification can compare a target against another target's baseline because baseline coverage is validated only by slice length and then accessed by packet index without checking target identity.; Persisted repair reverification validation accepts a passing performance record with no target results, so it does not validate complete digest-bound performance reverification.",
+  "preconditions": [
+    "Use valid digests and authority fields so failures or acceptance cannot be attributed to unrelated schema, digest, cleanup, or environment checks."
+  ],
+  "expected_behavior": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishable targets and reordered baseline entries to prove which baseline median each target receives.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_b7efe9eb62a1",
+    "assertion": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_b7efe9eb62a1_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-b7efe9eb62a1",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_b7efe9eb62a1$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "8d4d21163f78192be7608c52d830321990c1646bc7a9a8d693d73c621fb438f0"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:36:31.748937143Z"
+}

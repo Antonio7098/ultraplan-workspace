@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "correction_granted_at": "2026-09-12T10:04:46.259524557Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "preparation_attempts": 2,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable",
+      "retryable": false
+    },
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-12T10:05:35.972080954Z",
+    "recovery_reason": "original_session_unavailable",
+    "id": "qa-v2-request-10876e3025aa9353fcf1007e",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-fc3744e6e8886693c1c4a689"
+    ],
+    "origin_shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+    "gap": "The theory needs sufficient executable evidence for a final decision: The performance failure path can publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState.",
+    "requested_evidence": "Create an executable test of the claim at internal/sprint/performance.go finishPerformanceFailure and internal/sprint/state.go SaveFlowState. Exercise the actual claimed entry point. Use a contract or static assertion if behavioral reproduction is unsuitable. Preserve the frozen requirements; report why verification is unavailable if no valid check can be constructed.",
+    "required_observation": "Confirm only if: Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.. Refute only if: SaveFlowState performs the complete verification writer-token check immediately before publication, or a cited ownership guarantee proves the generation cannot change during this interval.. Otherwise: The ownership lifecycle or SaveFlowState behavior differs from the cited source and available evidence cannot establish whether ownership can change across the interval.",
+    "control_requirement": "Include a passing control reaching the same entry point and assert fixture preconditions before the defect assertion.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 4,
+    "attempts": 3,
+    "evidence_fingerprint": "c73a52cba353d0ff257492abf745ce916a75fc349eade28cbd619be4d9561c41",
+    "reason_code": "original_session_unavailable",
+    "test_bundle_id": "qa-v2-test-4a637ac7b98dd57ba5b0448b",
+    "latest_run_id": "qa-v2-run-265c9079f358c7c5dcd3ad91",
+    "next_action": "Evidence remains unresolved: original_session_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable"
+  }
+}

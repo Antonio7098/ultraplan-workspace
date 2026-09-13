@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-c43f7fa79c255becb8b4a113",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Performance orchestration, state, and recovery",
+  "changed_paths": [
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_repair.go",
+    "internal/sprint/performance_service_test.go",
+    "internal/sprint/performance_state.go"
+  ],
+  "context_paths": [
+    "internal/sprint/qa_repair_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "Admission is runtime-free and write-free, while accepted runs freeze packet, manifest, environment, correctness commands, limits, counters, deadline, and implementation identity.",
+    "Exactly one terminal product result wins across cancellation, timeout, drift, persistence failure, cleanup uncertainty, interruption, late completion, resume, and recovery.",
+    "Private records are contained, no-follow, private, immutable, digest-bound, writer-fenced, and strictly decoded; evidence scans and pages remain bounded and content-free.",
+    "Recovery launches no runtime or measurement work, never infers a pass, and either republishes one valid immutable result or compensates exact journaled postimages conservatively.",
+    "Repair performance reverification runs only after the functional ladder and cannot reuse pre-repair samples as current evidence."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-263b3a5636c57033d940e0e1",
+    "qa-v1-block-2acbb7e6b01c74fbf4b507e8",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-39157bba7e320f90ed456997",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-68cfca988b5aef1e551fa430",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-838f2bc54a460ab71dd7e174",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-8f8a4ae8bd3139a59faad0d4",
+    "qa-v1-block-c078874b88891afca30b25f5",
+    "qa-v1-block-c25943706b1ab26f0bcf0111",
+    "qa-v1-block-c771dfa1e6823a4da4c4b2e2",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f3519512e9ac52dff09fe19e",
+    "qa-v1-block-f3fb75f977e94c447ac6429f"
+  ],
+  "prepared_prompt_bytes": 137246,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "mapped"
+}

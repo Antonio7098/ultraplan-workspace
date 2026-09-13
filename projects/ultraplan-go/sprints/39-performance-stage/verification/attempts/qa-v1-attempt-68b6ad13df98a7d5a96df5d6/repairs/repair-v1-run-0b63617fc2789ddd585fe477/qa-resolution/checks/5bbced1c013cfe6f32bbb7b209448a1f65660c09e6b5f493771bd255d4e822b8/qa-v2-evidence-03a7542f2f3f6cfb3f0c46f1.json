@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-03a7542f2f3f6cfb3f0c46f1",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+      "schema_version": 2,
+      "id": "qa-v2-run-b8c2eb2785bc5dcd68e767e5",
+      "spec_id": "qa-v2-spec-b0528f6da14d3fd01dc2c1d8",
+      "test_bundle_id": "qa-v2-test-30aa4e77884683ef74f1e437",
+      "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_8cee749d8094",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_8cee749d8094",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "351f3eacc4bbac45c346cdfd5abc2a217b3bdd4ad906bb821edf47b9911369ca",
+        "exit_code": 0,
+        "duration": 32793546957,
+        "stdout_digest": "4e8ff7b997086e99481b940d4d7bb27c4b0abb424a722e1b9f7dc270c2516394",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_8cee749d8094\n--- PASS: TestQAInvestigator_8cee749d8094 (0.04s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.045s\n",
+        "output_bytes": 158,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_8cee749d8094",
+        "assertion": "For qa-v1-theory-3ba88b4e640cc758bd4724ff, assert the returned error for JSON and text modes when stdout fails, and separately assert whether a simultaneous operation error preserves both the operation and output failures.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8cee749d8094"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T15:14:01.584689397Z"
+    }
+  }
+}

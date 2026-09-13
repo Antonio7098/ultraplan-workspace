@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "correction_granted_at": "2026-09-12T10:07:06.477433975Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "preparation_attempts": 2,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable",
+      "retryable": false
+    },
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-07T16:07:56.994344795Z",
+    "recovery_reason": "evidence_round_budget_exhausted",
+    "id": "qa-v2-request-a26146fe1f9e39609588ef10",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-b120687ce5ad252ba59d75ad"
+    ],
+    "origin_shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+    "gap": "The submitted test stopped on a missing template dependency before testing metadata exposure.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go API and workbench reproducer using the product handler or complete template set with synthetic evidence metadata.",
+    "required_observation": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+    "control_requirement": "Assert raw artifact contents are absent to isolate metadata exposure.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 4,
+    "attempts": 2,
+    "evidence_fingerprint": "ba0b5d579822b24bf838fe52f8f19060c998086ea73f98742355cb6cf7e1a9c3",
+    "reason_code": "original_session_unavailable",
+    "next_action": "Evidence remains unresolved: original_session_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable"
+  }
+}

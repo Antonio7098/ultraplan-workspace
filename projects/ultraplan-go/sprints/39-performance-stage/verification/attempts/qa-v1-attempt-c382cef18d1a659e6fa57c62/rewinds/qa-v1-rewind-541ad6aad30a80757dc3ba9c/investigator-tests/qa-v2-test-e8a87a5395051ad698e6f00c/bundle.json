@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-e8a87a5395051ad698e6f00c",
+  "spec_id": "qa-v2-spec-adba644b4a133b2003ff958e",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_333605f09ff9_test.go",
+      "content": "package app\n\nimport (\n\t\"context\"\n\t\"io\"\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/platform/config\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/workspace\"\n)\n\nfunc TestQAInvestigator_333605f09ff9(t *testing.T) {\n\teffective, err := config.Load(config.LoadOptions{Env: func(string) string { return \"\" }})\n\tif err != nil {\n\t\tt.Fatalf(\"control: load default effective configuration: %v\", err)\n\t}\n\tif _, _, err := performanceSettings(effective); err != nil {\n\t\tt.Fatalf(\"control: default effective performance settings: %v\", err)\n\t}\n\n\teffective.Config.Performance.CommandTimeout = \"not-a-duration\"\n\tif _, _, err := performanceSettings(effective); err == nil {\n\t\tt.Fatal(\"fixture: invalid performance command timeout was accepted\")\n\t}\n\n\troot := workspace.Root{Path: t.TempDir()}\n\tdeps := dependencies{stdout: io.Discard, stderr: io.Discard, ctx: context.Background(), env: map[string]string{}}\n\trunner := sharedOperationRunner(deps, root, effective, dashboardUseCases{root: root.Path})\n\temitted := false\n\t_, runErr := runner(context.Background(), OperationRequest{Kind: OperationSmokeStart, Project: \"missing-project\", Sprint: \"missing-sprint\"}, func(OperationEvent) {\n\t\temitted = true\n\t})\n\tif emitted {\n\t\tt.Fatal(\"operation emitted progress before invalid configuration was rejected\")\n\t}\n\tentries, readErr := os.ReadDir(root.Path)\n\tif readErr != nil {\n\t\tt.Fatalf(\"inspect operation side effects: %v\", readErr)\n\t}\n\tif len(entries) != 0 {\n\t\tt.Fatalf(\"operation wrote %d filesystem entries before invalid configuration was rejected\", len(entries))\n\t}\n\tif runErr == nil || !strings.Contains(runErr.Error(), \"performance.config\") {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_333605f09ff9 assertion: shared operation runner must reject invalid performance.command_timeout before operation dispatch; got error %v\", runErr)\n\t}\n}\n",
+      "digest": "71e6470e39a1cf1b9e265ab155342eb74663902f40b3746f0d762bd8ef95cb81",
+      "bytes": 1869
+    }
+  ],
+  "content_digest": "7092863e66aaff04b46d5897ee84d87fbef6dd022e361dc482509f9251f5f484"
+}

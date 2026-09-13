@@ -1,0 +1,298 @@
+--- a/internal/app/sprint_commands.go
++++ b/internal/app/sprint_commands.go
+@@ -942,146 +942,155 @@
+ 		if runErr != nil {
+ 			status = "failed"
+ 		}
+-		if command.JSON {
+-			payload := map[string]any{"schema_version": 1, "operation": "sprint.performance." + command.Action, "status": status, "result": value}
+-			if runErr != nil {
+-				performanceErr, _ := sprint.AsPerformanceError(runErr)
+-				payload["error"] = map[string]string{"code": performanceErr.Code, "message": displaySafe(runErr.Error()), "recovery": performanceErr.Guidance}
+-			}
+-			_ = json.NewEncoder(deps.stdout).Encode(payload)
+-		} else {
+-			renderSprintPerformance(deps, command.Action, value)
+-		}
+-		if runErr != nil {
+-			if errors.Is(runErr, context.Canceled) {
+-				return classified(ExitCancel, "sprint.performance: %w", runErr)
+-			}
+-			return classified(ExitValidation, "sprint.performance: %w", runErr)
+-		}
+-		return nil
+-	}
+-	switch command.Action {
+-	case "dry-run":
+-		prepared, prepareErr := service.PreparePerformance(projectRef, sprintRef, true)
+-		return write("ok", performancePrepareProjection(prepared), prepareErr)
+-	case "status":
+-		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
+-		return write("ok", status, statusErr)
+-	case "cancel":
+-		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
+-		if statusErr != nil {
+-			return write("failed", status, statusErr)
+-		}
+-		if status.OperationRunID == "" {
+-			return write("failed", status, errors.New("current performance state has no durable operation run"))
+-		}
+-		repository, _, repositoryErr := runRepository(deps)
+-		if repositoryErr == nil {
+-			_, _, repositoryErr = repository.RequestCancellation(deps.ctx, runcontrol.RunID(status.OperationRunID), "user_requested")
+-		}
+-		return write("cancel_requested", status, repositoryErr)
+-	case "resume", "recover":
+-		kind := OperationPerformanceResume
+-		if command.Action == "recover" {
+-			kind = OperationPerformanceRecover
+-		}
+-		durable, durableErr := beginDurableCLICommand(deps, OperationRequest{Kind: kind, Project: projectRef, Sprint: sprintRef})
+-		if durableErr != nil {
+-			return write("failed", PerformanceStatusResult{}, durableErr)
+-		}
+-		token, fence, ownershipErr := durable.VerificationWriterToken()
+-		if ownershipErr != nil {
+-			return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, ownershipErr))
+-		}
+-		owned := service.WithVerificationWriterFence(fence)
+-		var runErr error
+-		if command.Action == "recover" {
+-			_, runErr = owned.RecoverPerformance(durable.Context(), projectRef, sprintRef, token)
+-		} else {
+-			runtimeService, runtimeErr := sprintRuntimeService(deps, root)
+-			if runtimeErr != nil {
+-				return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, runtimeErr))
+-			}
+-			owned = runtimeService.WithVerificationWriterFence(fence)
+-			_, runErr = owned.RunPerformance(durable.Context(), projectRef, sprintRef, sprint.PerformanceRunRequest{WriterToken: token, Resume: true, Environment: environmentList(deps.env)})
+-		}
+-		runErr = finishDurableCLICommand(durable, runErr)
+-		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
+-		operationStatus := "complete"
+-		if runErr != nil {
+-			operationStatus = "failed"
+-		}
+-		return write(operationStatus, status, errors.Join(runErr, statusErr))
+-	case "run":
+-		prepared, prepareErr := service.PreparePerformance(projectRef, sprintRef, false)
+-		if prepareErr != nil {
+-			return write("failed", performancePrepareProjection(prepared), prepareErr)
+-		}
+-		if !prepared.Ready {
+-			return write("blocked", performancePrepareProjection(prepared), fmt.Errorf("performance admission blocked: %s", strings.Join(prepared.Missing, "; ")))
+-		}
+-		durable, durableErr := beginDurableCLICommand(deps, OperationRequest{Kind: OperationPerformanceStart, Project: projectRef, Sprint: sprintRef})
+-		if durableErr != nil {
+-			return write("failed", PerformanceStatusResult{}, durableErr)
+-		}
+-		token, fence, ownershipErr := durable.VerificationWriterToken()
+-		if ownershipErr != nil {
+-			return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, ownershipErr))
+-		}
+-		runtimeService, runtimeErr := sprintRuntimeService(deps, root)
+-		if runtimeErr != nil {
+-			return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, runtimeErr))
+-		}
+-		owned := runtimeService.WithVerificationWriterFence(fence)
+-		acceptedAt := time.Now().UTC()
+-		prepared, prepareErr = owned.PreparePerformance(projectRef, sprintRef, false)
+-		if prepareErr != nil {
+-			return write("failed", performancePrepareProjection(prepared), finishDurableCLICommand(durable, prepareErr))
+-		}
+-		manifest, authoringAttempts, manifestErr := owned.PreparePerformanceManifest(durable.Context(), projectRef, sprintRef, prepared, environmentList(deps.env), acceptedAt, token)
+-		if manifestErr != nil {
+-			return write("failed", performancePrepareProjection(prepared), finishDurableCLICommand(durable, manifestErr))
+-		}
+-		result, runErr := owned.RunPerformance(durable.Context(), projectRef, sprintRef, sprint.PerformanceRunRequest{WriterToken: token, Manifest: manifest, Environment: environmentList(deps.env), AuthoringAttempts: authoringAttempts, AcceptedAt: acceptedAt})
+-		runErr = finishDurableCLICommand(durable, runErr)
+-		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
+-		runErr = errors.Join(runErr, statusErr)
+-		if runErr == nil {
+-			switch result.Outcome {
+-			case sprint.PerformancePassed, sprint.PerformancePassedWithReports:
+-				return write("complete", status, nil)
+-			case sprint.PerformanceTargetMiss:
+-				_ = write("complete", status, nil)
+-				return classified(ExitValidation, "sprint.performance: required target missed")
+-			case sprint.PerformanceCancelled:
+-				_ = write("complete", status, nil)
+-				return classified(ExitCancel, "sprint.performance: cancelled")
+-			default:
+-				_ = write("complete", status, nil)
+-				return classified(ExitPartial, "sprint.performance: outcome %s", result.Outcome)
+-			}
+-		}
+-		return write("failed", status, runErr)
+-	default:
+-		return classified(ExitUsage, "sprint.performance: unsupported action %q", command.Action)
+-	}
+-}
+-
+-func renderSprintPerformance(deps dependencies, action string, value any) {
+-	switch result := value.(type) {
+-	case PerformancePrepareResult:
+-		fmt.Fprintf(deps.stdout, "Performance %s: %s/%s\nPolicy: %s\nReady: %t\nTargets: %d\nNext: %s\n", action, result.Project, result.Sprint, result.PolicyMode, result.Ready, len(result.Targets), result.NextAction)
+-		for _, missing := range result.Missing {
+-			fmt.Fprintf(deps.stdout, "- missing: %s\n", missing)
+-		}
+-	case PerformanceStatusResult:
+-		fmt.Fprintf(deps.stdout, "Performance %s: %s/%s\nPolicy: %s\nPhase: %s\nFresh: %t\nOutcome: %s\nTargets: %d\nNext: %s\n", action, result.Project, result.Sprint, result.PolicyMode, result.Phase, result.Fresh, operationFirstNonEmpty(result.Outcome, "none"), len(result.Targets), result.NextAction)
+-		for _, target := range result.Targets {
+-			fmt.Fprintf(deps.stdout, "- %s: %s %s %s %s (%s, %s) outcome=%s\n", target.ID, target.Metric, target.Comparator, target.Value, target.Unit, target.Gate, target.Basis, operationFirstNonEmpty(target.Outcome, "pending"))
+-		}
+-	default:
+-		fmt.Fprintf(deps.stdout, "Performance %s\n", action)
+-	}
++		var writeErr error
++		if command.JSON {
++			payload := map[string]any{"schema_version": 1, "operation": "sprint.performance." + command.Action, "status": status, "result": value}
++			if runErr != nil {
++				performanceErr, _ := sprint.AsPerformanceError(runErr)
++				payload["error"] = map[string]string{"code": performanceErr.Code, "message": displaySafe(runErr.Error()), "recovery": performanceErr.Guidance}
++			}
++			writeErr = json.NewEncoder(deps.stdout).Encode(payload)
++		} else {
++			writeErr = renderSprintPerformance(deps, command.Action, value)
++		}
++		runErr = errors.Join(runErr, writeErr)
++		if runErr != nil {
++			if errors.Is(runErr, context.Canceled) {
++				return classified(ExitCancel, "sprint.performance: %w", runErr)
++			}
++			return classified(ExitValidation, "sprint.performance: %w", runErr)
++		}
++		return nil
++	}
++	switch command.Action {
++	case "dry-run":
++		prepared, prepareErr := service.PreparePerformance(projectRef, sprintRef, true)
++		return write("ok", performancePrepareProjection(prepared), prepareErr)
++	case "status":
++		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
++		return write("ok", status, statusErr)
++	case "cancel":
++		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
++		if statusErr != nil {
++			return write("failed", status, statusErr)
++		}
++		if status.OperationRunID == "" {
++			return write("failed", status, errors.New("current performance state has no durable operation run"))
++		}
++		repository, _, repositoryErr := runRepository(deps)
++		if repositoryErr == nil {
++			_, _, repositoryErr = repository.RequestCancellation(deps.ctx, runcontrol.RunID(status.OperationRunID), "user_requested")
++		}
++		return write("cancel_requested", status, repositoryErr)
++	case "resume", "recover":
++		kind := OperationPerformanceResume
++		if command.Action == "recover" {
++			kind = OperationPerformanceRecover
++		}
++		durable, durableErr := beginDurableCLICommand(deps, OperationRequest{Kind: kind, Project: projectRef, Sprint: sprintRef})
++		if durableErr != nil {
++			return write("failed", PerformanceStatusResult{}, durableErr)
++		}
++		token, fence, ownershipErr := durable.VerificationWriterToken()
++		if ownershipErr != nil {
++			return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, ownershipErr))
++		}
++		owned := service.WithVerificationWriterFence(fence)
++		var runErr error
++		if command.Action == "recover" {
++			_, runErr = owned.RecoverPerformance(durable.Context(), projectRef, sprintRef, token)
++		} else {
++			runtimeService, runtimeErr := sprintRuntimeService(deps, root)
++			if runtimeErr != nil {
++				return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, runtimeErr))
++			}
++			owned = runtimeService.WithVerificationWriterFence(fence)
++			_, runErr = owned.RunPerformance(durable.Context(), projectRef, sprintRef, sprint.PerformanceRunRequest{WriterToken: token, Resume: true, Environment: environmentList(deps.env)})
++		}
++		runErr = finishDurableCLICommand(durable, runErr)
++		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
++		operationStatus := "complete"
++		if runErr != nil {
++			operationStatus = "failed"
++		}
++		return write(operationStatus, status, errors.Join(runErr, statusErr))
++	case "run":
++		prepared, prepareErr := service.PreparePerformance(projectRef, sprintRef, false)
++		if prepareErr != nil {
++			return write("failed", performancePrepareProjection(prepared), prepareErr)
++		}
++		if !prepared.Ready {
++			return write("blocked", performancePrepareProjection(prepared), fmt.Errorf("performance admission blocked: %s", strings.Join(prepared.Missing, "; ")))
++		}
++		durable, durableErr := beginDurableCLICommand(deps, OperationRequest{Kind: OperationPerformanceStart, Project: projectRef, Sprint: sprintRef})
++		if durableErr != nil {
++			return write("failed", PerformanceStatusResult{}, durableErr)
++		}
++		token, fence, ownershipErr := durable.VerificationWriterToken()
++		if ownershipErr != nil {
++			return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, ownershipErr))
++		}
++		runtimeService, runtimeErr := sprintRuntimeService(deps, root)
++		if runtimeErr != nil {
++			return write("failed", PerformanceStatusResult{}, finishDurableCLICommand(durable, runtimeErr))
++		}
++		owned := runtimeService.WithVerificationWriterFence(fence)
++		acceptedAt := time.Now().UTC()
++		prepared, prepareErr = owned.PreparePerformance(projectRef, sprintRef, false)
++		if prepareErr != nil {
++			return write("failed", performancePrepareProjection(prepared), finishDurableCLICommand(durable, prepareErr))
++		}
++		manifest, authoringAttempts, manifestErr := owned.PreparePerformanceManifest(durable.Context(), projectRef, sprintRef, prepared, environmentList(deps.env), acceptedAt, token)
++		if manifestErr != nil {
++			return write("failed", performancePrepareProjection(prepared), finishDurableCLICommand(durable, manifestErr))
++		}
++		result, runErr := owned.RunPerformance(durable.Context(), projectRef, sprintRef, sprint.PerformanceRunRequest{WriterToken: token, Manifest: manifest, Environment: environmentList(deps.env), AuthoringAttempts: authoringAttempts, AcceptedAt: acceptedAt})
++		runErr = finishDurableCLICommand(durable, runErr)
++		status, statusErr := performanceStatusProjection(service, projectRef, sprintRef)
++		runErr = errors.Join(runErr, statusErr)
++		if runErr == nil {
++			switch result.Outcome {
++			case sprint.PerformancePassed, sprint.PerformancePassedWithReports:
++				return write("complete", status, nil)
++			case sprint.PerformanceTargetMiss:
++				return errors.Join(classified(ExitValidation, "sprint.performance: required target missed"), write("complete", status, nil))
++			case sprint.PerformanceCancelled:
++				return errors.Join(classified(ExitCancel, "sprint.performance: cancelled"), write("complete", status, nil))
++			default:
++				return errors.Join(classified(ExitPartial, "sprint.performance: outcome %s", result.Outcome), write("complete", status, nil))
++			}
++		}
++		return write("failed", status, runErr)
++	default:
++		return classified(ExitUsage, "sprint.performance: unsupported action %q", command.Action)
++	}
++}
++
++func renderSprintPerformance(deps dependencies, action string, value any) error {
++	switch result := value.(type) {
++	case PerformancePrepareResult:
++		if _, err := fmt.Fprintf(deps.stdout, "Performance %s: %s/%s\nPolicy: %s\nReady: %t\nTargets: %d\nNext: %s\n", action, result.Project, result.Sprint, result.PolicyMode, result.Ready, len(result.Targets), result.NextAction); err != nil {
++			return err
++		}
++		for _, missing := range result.Missing {
++			if _, err := fmt.Fprintf(deps.stdout, "- missing: %s\n", missing); err != nil {
++				return err
++			}
++		}
++	case PerformanceStatusResult:
++		if _, err := fmt.Fprintf(deps.stdout, "Performance %s: %s/%s\nPolicy: %s\nPhase: %s\nFresh: %t\nOutcome: %s\nTargets: %d\nNext: %s\n", action, result.Project, result.Sprint, result.PolicyMode, result.Phase, result.Fresh, operationFirstNonEmpty(result.Outcome, "none"), len(result.Targets), result.NextAction); err != nil {
++			return err
++		}
++		for _, target := range result.Targets {
++			if _, err := fmt.Fprintf(deps.stdout, "- %s: %s %s %s %s (%s, %s) outcome=%s\n", target.ID, target.Metric, target.Comparator, target.Value, target.Unit, target.Gate, target.Basis, operationFirstNonEmpty(target.Outcome, "pending")); err != nil {
++				return err
++			}
++		}
++	default:
++		_, err := fmt.Fprintf(deps.stdout, "Performance %s\n", action)
++		return err
++	}
++	return nil
+ }
+ 
+ func environmentList(values map[string]string) []string {

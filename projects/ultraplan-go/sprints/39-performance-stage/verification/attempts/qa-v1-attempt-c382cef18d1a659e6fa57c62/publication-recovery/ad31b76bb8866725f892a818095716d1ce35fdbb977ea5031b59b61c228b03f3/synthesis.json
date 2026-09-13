@@ -1,0 +1,2552 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-synthesis-815727e1bb74f720051cb40f",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "map_id": "qa-v1-map-0ce19d014b123dbd4b9d4d44",
+  "theory_ids": [
+    "qa-v1-theory-1158b01023e7f48c5250faeb",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0",
+    "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+    "qa-v1-theory-2e47a0d5379914251c03302b",
+    "qa-v1-theory-3d05000070c81fe10aa3579b",
+    "qa-v1-theory-5aa810b32a6484259611977f",
+    "qa-v1-theory-60e255ab711c15643830dc69",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8",
+    "qa-v1-theory-8777e689a2caaaafff1d1064",
+    "qa-v1-theory-8f427e11c59f76989883dc31",
+    "qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-b120687ce5ad252ba59d75ad",
+    "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+  ],
+  "arbitration": {
+    "schema_version": 1,
+    "map_id": "qa-v1-map-0ce19d014b123dbd4b9d4d44",
+    "model": "openai/gpt-5.6-sol",
+    "overrides": [
+      {
+        "id": "qa-v1-override-6271b9395a96b5301793ad00",
+        "theory_ids": [
+          "qa-v1-theory-1158b01023e7f48c5250faeb",
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+        ],
+        "action": "merge",
+        "outcome": "confirmed",
+        "replacement_claim": "Aggregate performance projections omit durable lifecycle and cancellation state because they bypass durable-run enrichment.",
+        "reason": "Both theories describe one projection defect. Executable evidence confirms direct status has durable lifecycle fields while aggregate API, TUI, and HTML paths use an unenriched projection.",
+        "reason_refs": [
+          "qa-v1-theory-1158b01023e7f48c5250faeb",
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-0953148399e9f9914a000e6a",
+        "theory_ids": [
+          "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The performance evidence endpoint can return an unversioned artifact payload instead of the versioned PerformanceEvidenceResult DTO.",
+        "reason": "Executable evidence reaches the compatibility branch and observes a successful payload without schema_version or records, while the control returns the versioned DTO.",
+        "reason_refs": [
+          "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-a9446cc3edcc7df7545c7693",
+        "theory_ids": [
+          "qa-v1-theory-5aa810b32a6484259611977f"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Runtime validation rejects documented performance maxima above built-in defaults.",
+        "reason": "Executable evidence confirms that the documented commands maximum of 256 is rejected while the default and lower values load.",
+        "reason_refs": [
+          "qa-v1-theory-5aa810b32a6484259611977f"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-b140e6c8271eaf5cd3e57d4b",
+        "theory_ids": [
+          "qa-v1-theory-7d9af7670be55a2e29a420d8"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "PerformanceResult returns an unclassified raw error when no terminal result exists, bypassing performance-specific transport mapping.",
+        "reason": "Executable evidence confirms that a valid nonterminal result returns an error not recognized as PerformanceUseCaseError, while the control classifier produces the typed persistence shape.",
+        "reason_refs": [
+          "qa-v1-theory-7d9af7670be55a2e29a420d8"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-a3de05f92cf341552536ab9c",
+        "theory_ids": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The shared operation runner discards invalid performance configuration and can continue instead of failing preflight.",
+        "reason": "Static evidence shows the runner discards the error returned by performanceSettings. Submitted tests have failure-signature mismatches, so executable evidence remains insufficient.",
+        "reason_refs": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ],
+        "confidence": 0.96
+      },
+      {
+        "id": "qa-v1-override-5b9a2056aa3b4b3bf4fafc84",
+        "theory_ids": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The performance CLI maps every classified non-cancellation failure to the validation exit class.",
+        "reason": "Static evidence shows the CLI distinguishes cancellation only and wraps every other performance failure with ExitValidation. The submitted test failed to compile before its assertions ran.",
+        "reason_refs": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "id": "qa-v1-override-c3975215cb8044d7a3ff9832",
+        "theory_ids": [
+          "qa-v1-theory-8777e689a2caaaafff1d1064",
+          "qa-v1-theory-fc3744e6e8886693c1c4a689"
+        ],
+        "action": "merge",
+        "outcome": "confirmed",
+        "replacement_claim": "The performance failure path can publish flow state after its verification writer token becomes stale because it lacks a final writer-fence check before SaveFlowState.",
+        "reason": "Both theories describe the same stale-writer defect. Executable evidence revokes ownership during state publication and observes that the failure path still publishes the flow summary.",
+        "reason_refs": [
+          "qa-v1-theory-8777e689a2caaaafff1d1064",
+          "qa-v1-theory-fc3744e6e8886693c1c4a689"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-02d1d0cc9cdffafb9b293b98",
+        "theory_ids": [
+          "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "ValidateRepairReverification accepts malformed nested performance target results because it validates only top-level fields.",
+        "reason": "Executable evidence confirms acceptance of malformed target identity and invalid comparison outcome while valid nested data passes and malformed top-level authority is rejected.",
+        "reason_refs": [
+          "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-27433b3a4e5bf15247b05482",
+        "theory_ids": [
+          "qa-v1-theory-60e255ab711c15643830dc69"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The performance-output parser accepts malformed trailing content after a valid envelope because it does not require EOF.",
+        "reason": "Executable evidence confirms malformed trailing JSON is accepted and returns the canonical value, while whitespace-only trailing content succeeds and a second valid JSON value is rejected.",
+        "reason_refs": [
+          "qa-v1-theory-60e255ab711c15643830dc69"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-5c60688ab9aeaa952e13e1f5",
+        "theory_ids": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The performance-evidence API exposes retained artifact paths and digests, and the workbench renders evidence digests.",
+        "reason": "Static evidence establishes the exposure. The submitted executable test stopped on a missing template dependency before reaching its exposure assertions.",
+        "reason_refs": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "id": "qa-v1-override-3af2cebfd49a6f3e2266ec66",
+        "theory_ids": [
+          "qa-v1-theory-ac5be59947bfccdb558de158"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The TUI exposes mutating performance actions for a disabled project when a historical attempt exists.",
+        "reason": "Executable evidence confirms that disabled historical state exposes start, resume, cancel, and recover, while disabled-without-history and enabled-current-attempt controls behave as expected.",
+        "reason_refs": [
+          "qa-v1-theory-ac5be59947bfccdb558de158"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-05833ef36649f86e0e4c66ea",
+        "theory_ids": [
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+        ],
+        "action": "merge",
+        "outcome": "confirmed",
+        "replacement_claim": "Fenced or HTML-commented pseudo Performance Targets headings are ignored by target parsing but treated as declarations during disabled-policy validation.",
+        "reason": "Both theories describe one heading-recognition defect. Executable evidence confirms pseudo-headings produce policy mismatches while target parsing ignores them; real headings and ordinary prose provide controls.",
+        "reason_refs": [
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-0873fff2c649b59eda5f13b5",
+        "theory_ids": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Performance manifest discovery accepts descriptor markers separated from a function by blank lines or comments despite requiring immediate adjacency.",
+        "reason": "Executable evidence confirms discovery accepts both blank-line and comment-separated markers, while adjacent markers pass and an intervening source statement is rejected.",
+        "reason_refs": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-54f8317e0ffd4962aff20ea7",
+        "theory_ids": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Performance-specific defaults and product validation are implemented in the generic platform config package instead of the owning product module.",
+        "reason": "Static source and the architecture contract establish the ownership violation. An executable static contract test confirms both DefaultPerformance and validatePerformance are defined under internal/platform while generic Load remains an allowed control.",
+        "reason_refs": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ],
+        "confidence": 0.99
+      }
+    ],
+    "groups": [
+      {
+        "id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-1158b01023e7f48c5250faeb",
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0",
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+          "qa-v1-theory-2e47a0d5379914251c03302b",
+          "qa-v1-theory-3d05000070c81fe10aa3579b",
+          "qa-v1-theory-5aa810b32a6484259611977f",
+          "qa-v1-theory-60e255ab711c15643830dc69",
+          "qa-v1-theory-7d9af7670be55a2e29a420d8",
+          "qa-v1-theory-8777e689a2caaaafff1d1064",
+          "qa-v1-theory-8f427e11c59f76989883dc31",
+          "qa-v1-theory-ac5be59947bfccdb558de158",
+          "qa-v1-theory-b120687ce5ad252ba59d75ad",
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+          "qa-v1-theory-e520dfe5bb32e35f0d545398",
+          "qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+          "qa-v1-theory-fc3744e6e8886693c1c4a689",
+          "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+        ],
+        "context_block_ids": [
+          "qa-v1-block-0341fea992e92e328c21862c",
+          "qa-v1-block-06f056cf8a8ebf03d29f1cc8",
+          "qa-v1-block-07cafd8da2302e65407e1d1d",
+          "qa-v1-block-1260f19e7df1964e71a3a4b2",
+          "qa-v1-block-134574fc0193fda45c84778e",
+          "qa-v1-block-14ad9ba28ff86d49493c483f",
+          "qa-v1-block-18a26cd00a25dde194f23d59",
+          "qa-v1-block-19b788e77983efe53fe3919d",
+          "qa-v1-block-1a75438ebb56d69b56b8227b",
+          "qa-v1-block-1b60986a6ab4bfd58330b6d6",
+          "qa-v1-block-1bec30a6414976c9c25b5d55",
+          "qa-v1-block-1eb113303f71d851c8c728ae",
+          "qa-v1-block-1f23acf7acba759b630b1af5",
+          "qa-v1-block-20ec4df6fbc548e812b7cdb0",
+          "qa-v1-block-23ffd3df512e9cb822d95ab8",
+          "qa-v1-block-263b3a5636c57033d940e0e1",
+          "qa-v1-block-26f674a3d24b675fa55b8463",
+          "qa-v1-block-2acbb7e6b01c74fbf4b507e8",
+          "qa-v1-block-2b1170d0855a26e01484faff",
+          "qa-v1-block-2c2250d328e30394d5f679db",
+          "qa-v1-block-2dd5890ebc7e1ca0d12f682f",
+          "qa-v1-block-2fa5eb620169346ab567a9ec",
+          "qa-v1-block-2fce131e71a4ce4470c83148",
+          "qa-v1-block-301ceb35cffc4e9cbb84c232",
+          "qa-v1-block-307234c6bfff53948b392930",
+          "qa-v1-block-32a21599abf48ac336ca2436",
+          "qa-v1-block-32fed93c9abfff4d8a2ce8f3",
+          "qa-v1-block-346546314e3525f831931e2f",
+          "qa-v1-block-34db48e1e10bbcf28cc6bf2d",
+          "qa-v1-block-35a7dc27922895fd4cbd845a",
+          "qa-v1-block-35e4c5fcc8d7288b70a46a1e",
+          "qa-v1-block-3776349208938d80daa86cfd",
+          "qa-v1-block-38c5bd0a2296ef14c6f51c48",
+          "qa-v1-block-39157bba7e320f90ed456997",
+          "qa-v1-block-3af424a097d973509acf6e57",
+          "qa-v1-block-3b40edcffc78652dcea95d75",
+          "qa-v1-block-3c0ada83dabcefdc6a43ace5",
+          "qa-v1-block-3cceb141b86f4e4c3b8609e8",
+          "qa-v1-block-3fc28e59a1a16fbb0297f005",
+          "qa-v1-block-41d933d34511fa71cb08d3d6",
+          "qa-v1-block-443d71f5174ceb9a0f759678",
+          "qa-v1-block-47daa8231dfb1f22c7f5e074",
+          "qa-v1-block-47f4c5b312c2957ed5bb1b43",
+          "qa-v1-block-48c6857d00104cbd93313ce3",
+          "qa-v1-block-4c2e9e074e2f61478a2c1b5d",
+          "qa-v1-block-511427422aa3768ace792f15",
+          "qa-v1-block-515419a1da1cb19817e9abbb",
+          "qa-v1-block-539767426a292f490828efde",
+          "qa-v1-block-57922e6bf45c6838d64959df",
+          "qa-v1-block-5915b359f0187966290c73a4",
+          "qa-v1-block-592dadf860c3927ace3cecf7",
+          "qa-v1-block-5e1a3f9fa0a73f004d4d6232",
+          "qa-v1-block-60d9d4670700f4fa65726e0a",
+          "qa-v1-block-62228805341f8858180f40fa",
+          "qa-v1-block-623828422e66dc32034672e4",
+          "qa-v1-block-67646c233a191152dd14ff15",
+          "qa-v1-block-68cfca988b5aef1e551fa430",
+          "qa-v1-block-6b3d316eb085c04c5c6ecfb7",
+          "qa-v1-block-6cd7cc90b6bc5026f654e802",
+          "qa-v1-block-6cecdbcdc6bcb6f4298ec62e",
+          "qa-v1-block-6fa1ac5555890a0fa404e61e",
+          "qa-v1-block-70267bd7eddd76912370199c",
+          "qa-v1-block-725dbb008cc3fee6ceb83b28",
+          "qa-v1-block-76be07ab5d25adb0b9e502d6",
+          "qa-v1-block-788a9359634df945f8a33f85",
+          "qa-v1-block-78e13c26eb8ae322452c9951",
+          "qa-v1-block-7afd95f645aa1750fb57bc20",
+          "qa-v1-block-8324c0cee5d3239f7cacd82b",
+          "qa-v1-block-85f968d2a586b6a41a86723a",
+          "qa-v1-block-88233abe9fdd214bea48c441",
+          "qa-v1-block-893a62e81780679e0845739e",
+          "qa-v1-block-8af63023a02416b710685bbe",
+          "qa-v1-block-8c7877f8aebe78c8eba91774",
+          "qa-v1-block-93319d60c8f44378e2d09a2c",
+          "qa-v1-block-95f9f726d965e7685184fba7",
+          "qa-v1-block-96d405446e5593c2ca9d832d",
+          "qa-v1-block-9905b1b7d4d24397f5a85abc",
+          "qa-v1-block-9a637580a721b349e21044c1",
+          "qa-v1-block-9bca81dafa402982a1abe706",
+          "qa-v1-block-9c5f43b294578fed6796f5b9",
+          "qa-v1-block-9f50cd9470412063551dc33b",
+          "qa-v1-block-a11b800e9abfe97c390d8c4b",
+          "qa-v1-block-a1c54f69a34aba9ad20c1302",
+          "qa-v1-block-a2be3dc15f8fe2f32433a558",
+          "qa-v1-block-a40b7fcd37a6d9f6f1fa3482",
+          "qa-v1-block-a42ba81ee3aabfa3bef7fe97",
+          "qa-v1-block-a4433213f2515f9d53c23882",
+          "qa-v1-block-aaed09be66807f81a5a76a14",
+          "qa-v1-block-ad737872e14b4ef0d73f4cc3",
+          "qa-v1-block-af5f117594728fd0aab939e2",
+          "qa-v1-block-aface9f7fead0283d2f0519a",
+          "qa-v1-block-b6c200e050cc4b4c65bc2e9f",
+          "qa-v1-block-b78a61cde5b699690eb3c5f2",
+          "qa-v1-block-ba0416d19c460900bc2e3242",
+          "qa-v1-block-bb40e0380b7ace9a221dbe2a",
+          "qa-v1-block-c0c387c762da8df5d477265c",
+          "qa-v1-block-c1187b9b1fd6284859a3e765",
+          "qa-v1-block-c1bc237cbe63b9df34c97ed7",
+          "qa-v1-block-c276d57650dc0a87dcedf6df",
+          "qa-v1-block-c393a08baf9f860f8e857a38",
+          "qa-v1-block-c60e8152c304432fc78d7a0c",
+          "qa-v1-block-c7ea9c7c067b889ab44bcf61",
+          "qa-v1-block-cb87eff49588fdd2399eadaa",
+          "qa-v1-block-cd78cb7e117fcb707e6ff489",
+          "qa-v1-block-cddc9044100638241d3eaec1",
+          "qa-v1-block-d16d7f7b34fef6ef0b67aee4",
+          "qa-v1-block-d20c43d47f3c55e480768bbb",
+          "qa-v1-block-d2dce1396f4a46ea6104f90d",
+          "qa-v1-block-d426fe03f263ee22b548d2fe",
+          "qa-v1-block-d43a18872f08e8fc58ea9eb9",
+          "qa-v1-block-d5ce194480a423a58e7143af",
+          "qa-v1-block-d67eac718fa4a64f22a93a4a",
+          "qa-v1-block-d7d9db107220d7449e6920b6",
+          "qa-v1-block-da260796c6b6d91797a634d4",
+          "qa-v1-block-dbf7e69765ab615487ff3a15",
+          "qa-v1-block-dce6e3499650f8824cc582f6",
+          "qa-v1-block-de76b1625a760c538ab97441",
+          "qa-v1-block-defc85998115158f67bf051d",
+          "qa-v1-block-e119c25baa75d6da3419c82e",
+          "qa-v1-block-e1a84c0b5f740d467452bae6",
+          "qa-v1-block-e419d1b4a19c773a764b15a0",
+          "qa-v1-block-e58670b0f3e1a35d74e45750",
+          "qa-v1-block-e9031fe55080b29279a3647a",
+          "qa-v1-block-e9d8077d15e68457fadc6be5",
+          "qa-v1-block-ea232c5c3031d0b90ef37f5a",
+          "qa-v1-block-f129eb795b7b08c72978a40b",
+          "qa-v1-block-f1f433c9dcd2821fbf7229a1",
+          "qa-v1-block-f4c1ff17dbcda6f72bc16e40",
+          "qa-v1-block-f762c5dd3b25d606c5068cc4",
+          "qa-v1-block-faf2b7185f87b7b37f988de6",
+          "qa-v1-block-fb16f1d2c78a4a5f601c7573",
+          "qa-v1-block-fc458c67c2497c81a297f17f",
+          "qa-v1-block-fc8f8aa155d13c00e77a839c",
+          "qa-v1-block-fdf550b0b7ba003a2a4a30df",
+          "qa-v1-block-fe1e5ad7e5acfd29117bcf70"
+        ],
+        "session_id": "ses_f84616441ffeEp1kbvKb6U6Lz7",
+        "provider": "openai",
+        "model": "openai/gpt-5.6-sol",
+        "variant": "low",
+        "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+        "workspace_id": "1a54b97ca0e8956c5a59625e88ebe18c3999d19c5f52cef8bdddea2f4a6b3680",
+        "round": 4,
+        "overrides": [
+          {
+            "id": "qa-v1-override-6271b9395a96b5301793ad00",
+            "theory_ids": [
+              "qa-v1-theory-1158b01023e7f48c5250faeb",
+              "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+            ],
+            "action": "merge",
+            "outcome": "confirmed",
+            "replacement_claim": "Aggregate performance projections omit durable lifecycle and cancellation state because they bypass durable-run enrichment.",
+            "reason": "Both theories describe one projection defect. Executable evidence confirms direct status has durable lifecycle fields while aggregate API, TUI, and HTML paths use an unenriched projection.",
+            "reason_refs": [
+              "qa-v1-theory-1158b01023e7f48c5250faeb",
+              "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-0953148399e9f9914a000e6a",
+            "theory_ids": [
+              "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The performance evidence endpoint can return an unversioned artifact payload instead of the versioned PerformanceEvidenceResult DTO.",
+            "reason": "Executable evidence reaches the compatibility branch and observes a successful payload without schema_version or records, while the control returns the versioned DTO.",
+            "reason_refs": [
+              "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-a9446cc3edcc7df7545c7693",
+            "theory_ids": [
+              "qa-v1-theory-5aa810b32a6484259611977f"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Runtime validation rejects documented performance maxima above built-in defaults.",
+            "reason": "Executable evidence confirms that the documented commands maximum of 256 is rejected while the default and lower values load.",
+            "reason_refs": [
+              "qa-v1-theory-5aa810b32a6484259611977f"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-b140e6c8271eaf5cd3e57d4b",
+            "theory_ids": [
+              "qa-v1-theory-7d9af7670be55a2e29a420d8"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "PerformanceResult returns an unclassified raw error when no terminal result exists, bypassing performance-specific transport mapping.",
+            "reason": "Executable evidence confirms that a valid nonterminal result returns an error not recognized as PerformanceUseCaseError, while the control classifier produces the typed persistence shape.",
+            "reason_refs": [
+              "qa-v1-theory-7d9af7670be55a2e29a420d8"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-a3de05f92cf341552536ab9c",
+            "theory_ids": [
+              "qa-v1-theory-3d05000070c81fe10aa3579b"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The shared operation runner discards invalid performance configuration and can continue instead of failing preflight.",
+            "reason": "Static evidence shows the runner discards the error returned by performanceSettings. Submitted tests have failure-signature mismatches, so executable evidence remains insufficient.",
+            "reason_refs": [
+              "qa-v1-theory-3d05000070c81fe10aa3579b"
+            ],
+            "confidence": 0.96
+          },
+          {
+            "id": "qa-v1-override-5b9a2056aa3b4b3bf4fafc84",
+            "theory_ids": [
+              "qa-v1-theory-e520dfe5bb32e35f0d545398"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The performance CLI maps every classified non-cancellation failure to the validation exit class.",
+            "reason": "Static evidence shows the CLI distinguishes cancellation only and wraps every other performance failure with ExitValidation. The submitted test failed to compile before its assertions ran.",
+            "reason_refs": [
+              "qa-v1-theory-e520dfe5bb32e35f0d545398"
+            ],
+            "confidence": 0.98
+          },
+          {
+            "id": "qa-v1-override-c3975215cb8044d7a3ff9832",
+            "theory_ids": [
+              "qa-v1-theory-8777e689a2caaaafff1d1064",
+              "qa-v1-theory-fc3744e6e8886693c1c4a689"
+            ],
+            "action": "merge",
+            "outcome": "confirmed",
+            "replacement_claim": "The performance failure path can publish flow state after its verification writer token becomes stale because it lacks a final writer-fence check before SaveFlowState.",
+            "reason": "Both theories describe the same stale-writer defect. Executable evidence revokes ownership during state publication and observes that the failure path still publishes the flow summary.",
+            "reason_refs": [
+              "qa-v1-theory-8777e689a2caaaafff1d1064",
+              "qa-v1-theory-fc3744e6e8886693c1c4a689"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-02d1d0cc9cdffafb9b293b98",
+            "theory_ids": [
+              "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "ValidateRepairReverification accepts malformed nested performance target results because it validates only top-level fields.",
+            "reason": "Executable evidence confirms acceptance of malformed target identity and invalid comparison outcome while valid nested data passes and malformed top-level authority is rejected.",
+            "reason_refs": [
+              "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-27433b3a4e5bf15247b05482",
+            "theory_ids": [
+              "qa-v1-theory-60e255ab711c15643830dc69"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The performance-output parser accepts malformed trailing content after a valid envelope because it does not require EOF.",
+            "reason": "Executable evidence confirms malformed trailing JSON is accepted and returns the canonical value, while whitespace-only trailing content succeeds and a second valid JSON value is rejected.",
+            "reason_refs": [
+              "qa-v1-theory-60e255ab711c15643830dc69"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-5c60688ab9aeaa952e13e1f5",
+            "theory_ids": [
+              "qa-v1-theory-b120687ce5ad252ba59d75ad"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The performance-evidence API exposes retained artifact paths and digests, and the workbench renders evidence digests.",
+            "reason": "Static evidence establishes the exposure. The submitted executable test stopped on a missing template dependency before reaching its exposure assertions.",
+            "reason_refs": [
+              "qa-v1-theory-b120687ce5ad252ba59d75ad"
+            ],
+            "confidence": 0.98
+          },
+          {
+            "id": "qa-v1-override-3af2cebfd49a6f3e2266ec66",
+            "theory_ids": [
+              "qa-v1-theory-ac5be59947bfccdb558de158"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The TUI exposes mutating performance actions for a disabled project when a historical attempt exists.",
+            "reason": "Executable evidence confirms that disabled historical state exposes start, resume, cancel, and recover, while disabled-without-history and enabled-current-attempt controls behave as expected.",
+            "reason_refs": [
+              "qa-v1-theory-ac5be59947bfccdb558de158"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-05833ef36649f86e0e4c66ea",
+            "theory_ids": [
+              "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+              "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+            ],
+            "action": "merge",
+            "outcome": "confirmed",
+            "replacement_claim": "Fenced or HTML-commented pseudo Performance Targets headings are ignored by target parsing but treated as declarations during disabled-policy validation.",
+            "reason": "Both theories describe one heading-recognition defect. Executable evidence confirms pseudo-headings produce policy mismatches while target parsing ignores them; real headings and ordinary prose provide controls.",
+            "reason_refs": [
+              "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+              "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-0873fff2c649b59eda5f13b5",
+            "theory_ids": [
+              "qa-v1-theory-8f427e11c59f76989883dc31"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Performance manifest discovery accepts descriptor markers separated from a function by blank lines or comments despite requiring immediate adjacency.",
+            "reason": "Executable evidence confirms discovery accepts both blank-line and comment-separated markers, while adjacent markers pass and an intervening source statement is rejected.",
+            "reason_refs": [
+              "qa-v1-theory-8f427e11c59f76989883dc31"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-54f8317e0ffd4962aff20ea7",
+            "theory_ids": [
+              "qa-v1-theory-2e47a0d5379914251c03302b"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Performance-specific defaults and product validation are implemented in the generic platform config package instead of the owning product module.",
+            "reason": "Static source and the architecture contract establish the ownership violation. An executable static contract test confirms both DefaultPerformance and validatePerformance are defined under internal/platform while generic Load remains an allowed control.",
+            "reason_refs": [
+              "qa-v1-theory-2e47a0d5379914251c03302b"
+            ],
+            "confidence": 0.99
+          }
+        ],
+        "issues": [
+          {
+            "id": "qa-v1-arbiter-issue-1f48c2fe6e6418f33a4ca9e0",
+            "theory_ids": [
+              "qa-v1-theory-7d9af7670be55a2e29a420d8"
+            ],
+            "claim": "Unavailable performance results bypass performance-specific error classification.",
+            "title": "Unavailable results lose error classification",
+            "issue_class": "error_handling",
+            "severity": "high",
+            "location": "internal/app/sprint_usecases.go; internal/web/handlers.go",
+            "reason": "Executable evidence confirms the result use case returns an untyped error where transport mapping expects PerformanceUseCaseError.",
+            "evidence_refs": [
+              "qa-v1-theory-7d9af7670be55a2e29a420d8"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-55c02760b01129ffc2660899",
+            "theory_ids": [
+              "qa-v1-theory-ac5be59947bfccdb558de158"
+            ],
+            "claim": "Disabled historical performance states expose mutating TUI actions.",
+            "title": "TUI exposes mutations while policy is disabled",
+            "issue_class": "authorization_ui",
+            "severity": "high",
+            "location": "internal/tui/model.go",
+            "reason": "Executable evidence shows a historical attempt exposes four mutation actions despite disabled policy.",
+            "evidence_refs": [
+              "qa-v1-theory-ac5be59947bfccdb558de158"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-564a59edb3f00332cbccb1dc",
+            "theory_ids": [
+              "qa-v1-theory-e520dfe5bb32e35f0d545398"
+            ],
+            "claim": "All non-cancellation performance failures map to ExitValidation.",
+            "title": "Performance CLI collapses operational exit classes",
+            "issue_class": "error_handling",
+            "severity": "high",
+            "location": "internal/app/sprint_commands.go",
+            "reason": "Distinct runtime, timeout, dependency, persistence, and configuration failures become validation failures.",
+            "evidence_refs": [
+              "qa-v1-theory-e520dfe5bb32e35f0d545398"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-7a7432e04de0b6fa24715b58",
+            "theory_ids": [
+              "qa-v1-theory-1158b01023e7f48c5250faeb",
+              "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+            ],
+            "claim": "Aggregate projections omit durable lifecycle and cancellation state.",
+            "title": "Performance surfaces omit durable lifecycle state",
+            "issue_class": "behavioral_regression",
+            "severity": "high",
+            "location": "internal/app/sprint_usecases.go; internal/web; internal/tui",
+            "reason": "Executable evidence shows aggregate surfaces use an unenriched projection while direct status has current durable state.",
+            "evidence_refs": [
+              "qa-v1-theory-1158b01023e7f48c5250faeb",
+              "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-7c06f13eef59c1e0e7fb5c62",
+            "theory_ids": [
+              "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+            ],
+            "claim": "Repair reverification accepts malformed nested target results.",
+            "title": "Repair validation accepts malformed target results",
+            "issue_class": "data_validation",
+            "severity": "high",
+            "location": "internal/sprint/qa_repair_state.go",
+            "reason": "Executable evidence confirms invalid nested target identity and outcome values pass validation.",
+            "evidence_refs": [
+              "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-9034dddc1384dce50529aaff",
+            "theory_ids": [
+              "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+            ],
+            "claim": "The evidence endpoint can return an unversioned fallback shape.",
+            "title": "Evidence API fallback violates its versioned schema",
+            "issue_class": "api_contract",
+            "severity": "medium",
+            "location": "internal/web/handlers.go; internal/app/web_usecases.go",
+            "reason": "Executable evidence demonstrates two incompatible successful response shapes.",
+            "evidence_refs": [
+              "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-9768a0ee4f69cbf93faf2105",
+            "theory_ids": [
+              "qa-v1-theory-b120687ce5ad252ba59d75ad"
+            ],
+            "claim": "Public evidence responses expose artifact paths and digests.",
+            "title": "Performance evidence leaks artifact metadata",
+            "issue_class": "information_exposure",
+            "severity": "high",
+            "location": "internal/sprint/performance_state.go; internal/app/sprint_usecases.go; internal/web/templates/sprint.html",
+            "reason": "Private artifact identifiers pass through public projections and rendered output.",
+            "evidence_refs": [
+              "qa-v1-theory-b120687ce5ad252ba59d75ad"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-c08feb77354c8e0a4ac634cc",
+            "theory_ids": [
+              "qa-v1-theory-60e255ab711c15643830dc69"
+            ],
+            "claim": "Malformed trailing JSON after a valid performance envelope is accepted.",
+            "title": "Performance parser accepts malformed trailing data",
+            "issue_class": "parser_validation",
+            "severity": "high",
+            "location": "internal/sprint/performance_measure.go",
+            "reason": "Executable evidence confirms the parser accepts malformed trailing syntax instead of requiring EOF.",
+            "evidence_refs": [
+              "qa-v1-theory-60e255ab711c15643830dc69"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-c8d4a7d08b23860a4d9c33f9",
+            "theory_ids": [
+              "qa-v1-theory-5aa810b32a6484259611977f"
+            ],
+            "claim": "Documented performance maxima are rejected by validation.",
+            "title": "Documented performance maxima are unusable",
+            "issue_class": "documentation_runtime_mismatch",
+            "severity": "high",
+            "location": "docs/configuration.md; internal/platform/config/performance.go",
+            "reason": "An executable configuration load rejects a documented maximum while accepting default and lower values.",
+            "evidence_refs": [
+              "qa-v1-theory-5aa810b32a6484259611977f"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-dfac8de69a4aec4c6d685d34",
+            "theory_ids": [
+              "qa-v1-theory-8f427e11c59f76989883dc31"
+            ],
+            "claim": "Descriptor discovery permits blank or comment lines between a marker and function.",
+            "title": "Descriptor markers need not immediately precede functions",
+            "issue_class": "contract_validation",
+            "severity": "medium",
+            "location": "internal/sprint/performance_discovery.go",
+            "reason": "Executable evidence confirms discovery accepts both forbidden separated-marker layouts.",
+            "evidence_refs": [
+              "qa-v1-theory-8f427e11c59f76989883dc31"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-e851a5ec14ee1550777d022d",
+            "theory_ids": [
+              "qa-v1-theory-3d05000070c81fe10aa3579b"
+            ],
+            "claim": "The shared operation runner discards performance configuration errors.",
+            "title": "Operation runner ignores invalid configuration",
+            "issue_class": "preflight_failure",
+            "severity": "medium",
+            "location": "internal/app/operation_runner.go",
+            "reason": "A configuration failure can disappear instead of stopping setup before side effects.",
+            "evidence_refs": [
+              "qa-v1-theory-3d05000070c81fe10aa3579b"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-e91bd86c5bd2ed89342343ab",
+            "theory_ids": [
+              "qa-v1-theory-8777e689a2caaaafff1d1064",
+              "qa-v1-theory-fc3744e6e8886693c1c4a689"
+            ],
+            "claim": "A stale performance writer can publish flow state after ownership revocation.",
+            "title": "Stale writer can publish flow state",
+            "issue_class": "concurrency",
+            "severity": "medium",
+            "location": "internal/sprint/performance.go; internal/sprint/state.go",
+            "reason": "A deterministic test observes stale flow-summary publication after ownership becomes invalid.",
+            "evidence_refs": [
+              "qa-v1-theory-8777e689a2caaaafff1d1064",
+              "qa-v1-theory-fc3744e6e8886693c1c4a689"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-ece4cbec64d4542075680719",
+            "theory_ids": [
+              "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+              "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+            ],
+            "claim": "Pseudo target headings trigger disabled-policy mismatch findings.",
+            "title": "Pseudo headings cause false policy mismatches",
+            "issue_class": "validation_false_positive",
+            "severity": "medium",
+            "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+            "reason": "Executable evidence confirms policy validation and target parsing disagree about fenced and commented headings.",
+            "evidence_refs": [
+              "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+              "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-f5ba123f081a8fd65e682581",
+            "theory_ids": [
+              "qa-v1-theory-2e47a0d5379914251c03302b"
+            ],
+            "claim": "The platform config package owns performance product policy.",
+            "title": "Performance policy is embedded in platform config",
+            "issue_class": "architecture",
+            "severity": "high",
+            "location": "internal/platform/config/performance.go",
+            "reason": "An executable static contract test confirms product defaults and validation reside outside the owning bounded context.",
+            "evidence_refs": [
+              "qa-v1-theory-2e47a0d5379914251c03302b"
+            ]
+          }
+        ],
+        "evidence_requests": [
+          {
+            "id": "qa-v2-request-2943a82794f42d463a0148d6",
+            "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+            "theory_ids": [
+              "qa-v1-theory-e520dfe5bb32e35f0d545398"
+            ],
+            "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+            "gap": "The submitted CLI test failed to compile before its assertions ran.",
+            "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+            "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+            "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+            "priority": "high"
+          },
+          {
+            "id": "qa-v2-request-a26146fe1f9e39609588ef10",
+            "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+            "theory_ids": [
+              "qa-v1-theory-b120687ce5ad252ba59d75ad"
+            ],
+            "origin_shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+            "gap": "The submitted test stopped on a missing template dependency before testing metadata exposure.",
+            "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go API and workbench reproducer using the product handler or complete template set with synthetic evidence metadata.",
+            "required_observation": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+            "control_requirement": "Assert raw artifact contents are absent to isolate metadata exposure.",
+            "priority": "high"
+          },
+          {
+            "id": "qa-v2-request-c50b470e137164d1a8040f90",
+            "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+            "theory_ids": [
+              "qa-v1-theory-3d05000070c81fe10aa3579b"
+            ],
+            "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+            "gap": "Existing tests have failure-signature mismatches and do not establish preflight continuation.",
+            "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer that makes performanceSettings fail during shared operation-runner setup.",
+            "required_observation": "Assert the runner reaches preparation or execution without returning the configuration failure.",
+            "control_requirement": "Include a valid-configuration control and prove whether the operation boundary was reached.",
+            "priority": "high"
+          }
+        ],
+        "fallback": false
+      }
+    ],
+    "issues": [
+      {
+        "id": "qa-v1-arbiter-issue-01f207d406b73bbc38de8261",
+        "theory_ids": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ],
+        "claim": "Public evidence responses expose artifact paths and digests.",
+        "title": "Performance evidence leaks artifact metadata",
+        "issue_class": "information_exposure",
+        "severity": "high",
+        "location": "internal/sprint/performance_state.go; internal/app/sprint_usecases.go; internal/web/templates/sprint.html",
+        "reason": "Private artifact identifiers pass through public projections and rendered output.",
+        "evidence_refs": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-03784fe39d617e90da03556c",
+        "theory_ids": [
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+        ],
+        "claim": "Pseudo target headings trigger disabled-policy mismatch findings.",
+        "title": "Pseudo headings cause false policy mismatches",
+        "issue_class": "validation_false_positive",
+        "severity": "medium",
+        "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+        "reason": "Executable evidence confirms policy validation and target parsing disagree about fenced and commented headings.",
+        "evidence_refs": [
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-0417bac033c4e088bfb57877",
+        "theory_ids": [
+          "qa-v1-theory-7d9af7670be55a2e29a420d8"
+        ],
+        "claim": "Unavailable performance results bypass performance-specific error classification.",
+        "title": "Unavailable results lose error classification",
+        "issue_class": "error_handling",
+        "severity": "high",
+        "location": "internal/app/sprint_usecases.go; internal/web/handlers.go",
+        "reason": "Executable evidence confirms the result use case returns an untyped error where transport mapping expects PerformanceUseCaseError.",
+        "evidence_refs": [
+          "qa-v1-theory-7d9af7670be55a2e29a420d8"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-08a6b7a8e223bf8f4fd687df",
+        "theory_ids": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ],
+        "claim": "The shared operation runner discards performance configuration errors.",
+        "title": "Operation runner ignores invalid configuration",
+        "issue_class": "preflight_failure",
+        "severity": "medium",
+        "location": "internal/app/operation_runner.go",
+        "reason": "A configuration failure can disappear instead of stopping setup before side effects.",
+        "evidence_refs": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-22ccd8d78cc2bfa143445bc9",
+        "theory_ids": [
+          "qa-v1-theory-60e255ab711c15643830dc69"
+        ],
+        "claim": "Malformed trailing JSON after a valid performance envelope is accepted.",
+        "title": "Performance parser accepts malformed trailing data",
+        "issue_class": "parser_validation",
+        "severity": "high",
+        "location": "internal/sprint/performance_measure.go",
+        "reason": "Executable evidence confirms the parser accepts malformed trailing syntax instead of requiring EOF.",
+        "evidence_refs": [
+          "qa-v1-theory-60e255ab711c15643830dc69"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-4f4da5461b31ebea673c516a",
+        "theory_ids": [
+          "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+        ],
+        "claim": "Repair reverification accepts malformed nested target results.",
+        "title": "Repair validation accepts malformed target results",
+        "issue_class": "data_validation",
+        "severity": "high",
+        "location": "internal/sprint/qa_repair_state.go",
+        "reason": "Executable evidence confirms invalid nested target identity and outcome values pass validation.",
+        "evidence_refs": [
+          "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-6b2371496e91ad63f2e7902f",
+        "theory_ids": [
+          "qa-v1-theory-5aa810b32a6484259611977f"
+        ],
+        "claim": "Documented performance maxima are rejected by validation.",
+        "title": "Documented performance maxima are unusable",
+        "issue_class": "documentation_runtime_mismatch",
+        "severity": "high",
+        "location": "docs/configuration.md; internal/platform/config/performance.go",
+        "reason": "An executable configuration load rejects a documented maximum while accepting default and lower values.",
+        "evidence_refs": [
+          "qa-v1-theory-5aa810b32a6484259611977f"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-6d0dbc234f2c7e60e80baa7b",
+        "theory_ids": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ],
+        "claim": "Descriptor discovery permits blank or comment lines between a marker and function.",
+        "title": "Descriptor markers need not immediately precede functions",
+        "issue_class": "contract_validation",
+        "severity": "medium",
+        "location": "internal/sprint/performance_discovery.go",
+        "reason": "Executable evidence confirms discovery accepts both forbidden separated-marker layouts.",
+        "evidence_refs": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-ab974931fa77ee8951c1d7c3",
+        "theory_ids": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "claim": "All non-cancellation performance failures map to ExitValidation.",
+        "title": "Performance CLI collapses operational exit classes",
+        "issue_class": "error_handling",
+        "severity": "high",
+        "location": "internal/app/sprint_commands.go",
+        "reason": "Distinct runtime, timeout, dependency, persistence, and configuration failures become validation failures.",
+        "evidence_refs": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-b8934140738e499af56529d6",
+        "theory_ids": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ],
+        "claim": "The platform config package owns performance product policy.",
+        "title": "Performance policy is embedded in platform config",
+        "issue_class": "architecture",
+        "severity": "high",
+        "location": "internal/platform/config/performance.go",
+        "reason": "An executable static contract test confirms product defaults and validation reside outside the owning bounded context.",
+        "evidence_refs": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-befe5fb5fb4773d8a75ef8d6",
+        "theory_ids": [
+          "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+        ],
+        "claim": "The evidence endpoint can return an unversioned fallback shape.",
+        "title": "Evidence API fallback violates its versioned schema",
+        "issue_class": "api_contract",
+        "severity": "medium",
+        "location": "internal/web/handlers.go; internal/app/web_usecases.go",
+        "reason": "Executable evidence demonstrates two incompatible successful response shapes.",
+        "evidence_refs": [
+          "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-c35cab6c0d9fc340a9cf31a7",
+        "theory_ids": [
+          "qa-v1-theory-8777e689a2caaaafff1d1064",
+          "qa-v1-theory-fc3744e6e8886693c1c4a689"
+        ],
+        "claim": "A stale performance writer can publish flow state after ownership revocation.",
+        "title": "Stale writer can publish flow state",
+        "issue_class": "concurrency",
+        "severity": "medium",
+        "location": "internal/sprint/performance.go; internal/sprint/state.go",
+        "reason": "A deterministic test observes stale flow-summary publication after ownership becomes invalid.",
+        "evidence_refs": [
+          "qa-v1-theory-8777e689a2caaaafff1d1064",
+          "qa-v1-theory-fc3744e6e8886693c1c4a689"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-ca9329f76e4a6e9d5104e6c5",
+        "theory_ids": [
+          "qa-v1-theory-1158b01023e7f48c5250faeb",
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+        ],
+        "claim": "Aggregate projections omit durable lifecycle and cancellation state.",
+        "title": "Performance surfaces omit durable lifecycle state",
+        "issue_class": "behavioral_regression",
+        "severity": "high",
+        "location": "internal/app/sprint_usecases.go; internal/web; internal/tui",
+        "reason": "Executable evidence shows aggregate surfaces use an unenriched projection while direct status has current durable state.",
+        "evidence_refs": [
+          "qa-v1-theory-1158b01023e7f48c5250faeb",
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-d46087e8faf8f27d9548343c",
+        "theory_ids": [
+          "qa-v1-theory-ac5be59947bfccdb558de158"
+        ],
+        "claim": "Disabled historical performance states expose mutating TUI actions.",
+        "title": "TUI exposes mutations while policy is disabled",
+        "issue_class": "authorization_ui",
+        "severity": "high",
+        "location": "internal/tui/model.go",
+        "reason": "Executable evidence shows a historical attempt exposes four mutation actions despite disabled policy.",
+        "evidence_refs": [
+          "qa-v1-theory-ac5be59947bfccdb558de158"
+        ]
+      }
+    ],
+    "evidence_requests": [
+      {
+        "id": "qa-v2-request-10876e3025aa9353fcf1007e",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-fc3744e6e8886693c1c4a689"
+        ],
+        "origin_shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+        "gap": "The theory needs sufficient executable evidence for a final decision: The performance failure path can publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState.",
+        "requested_evidence": "Create an executable test of the claim at internal/sprint/performance.go finishPerformanceFailure and internal/sprint/state.go SaveFlowState. Exercise the actual claimed entry point. Use a contract or static assertion if behavioral reproduction is unsuitable. Preserve the frozen requirements; report why verification is unavailable if no valid check can be constructed.",
+        "required_observation": "Confirm only if: Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.. Refute only if: SaveFlowState performs the complete verification writer-token check immediately before publication, or a cited ownership guarantee proves the generation cannot change during this interval.. Otherwise: The ownership lifecycle or SaveFlowState behavior differs from the cited source and available evidence cannot establish whether ownership can change across the interval.",
+        "control_requirement": "Include a passing control reaching the same entry point and assert fixture preconditions before the defect assertion.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "71ba91294dc96ab01efa9c86382405ecb147df9ab5bcc4043cde632ac5f33c9c",
+        "reason_code": "evidence_round_budget_exhausted",
+        "test_bundle_id": "qa-v2-test-4a637ac7b98dd57ba5b0448b",
+        "latest_run_id": "qa-v2-run-265c9079f358c7c5dcd3ad91",
+        "next_action": "Evidence remains unresolved: evidence_round_budget_exhausted. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-1e9703c4e2bb7f17d2859fb1",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-5aa810b32a6484259611977f"
+        ],
+        "origin_shard_id": "qa-v1-shard-81e0d9c9e1087e58135f030b",
+        "gap": "The documentation/runtime contradiction is statically clear but lacks an executable contract assertion.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go contract reproducer that attempts to load representative values equal to documented hard maxima above defaults.",
+        "required_observation": "Assert configuration loading rejects those documented maximum values.",
+        "control_requirement": "Assert the corresponding default and a lower value load successfully.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "414affb592490eb07776eac2cd99ad1b33d8145755404c3cf21ba832f44d4b55",
+        "test_bundle_id": "qa-v2-test-1ccb50db637f7093384d4deb",
+        "latest_run_id": "qa-v2-run-b2d9e9f293eb33e1cffccb59",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-1fa19463cf6244f4c29a9b08",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ],
+        "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+        "gap": "Existing tests have failure-signature mismatches.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer that makes performanceSettings fail during shared operation-runner setup.",
+        "required_observation": "Assert the runner reaches preparation or execution without returning the configuration failure.",
+        "control_requirement": "Include a valid-configuration control and prove whether the operation boundary was reached.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "evidence_round_budget_exhausted",
+        "superseded_by": "qa-v2-request-c50b470e137164d1a8040f90",
+        "next_action": "Evidence remains unresolved: evidence_round_budget_exhausted. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-21836b45dff44c191617c383",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ],
+        "origin_shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+        "gap": "Metadata exposure lacks executable serialization and rendering evidence.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go API and template reproducer using synthetic evidence metadata.",
+        "required_observation": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+        "control_requirement": "Assert raw artifact contents are absent to isolate metadata exposure.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "dc97926eff441d6867e7e27081a624f7ae43ca307f66155cb1c8087da7025ef3",
+        "reason_code": "failure_signature_mismatch",
+        "superseded_by": "qa-v2-request-a26146fe1f9e39609588ef10",
+        "test_bundle_id": "qa-v2-test-83007529d2fd5144a4f8d32d",
+        "latest_run_id": "qa-v2-run-01569b23701d64d1ed99f3e3",
+        "next_action": "Evidence remains unresolved: failure_signature_mismatch. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-2943a82794f42d463a0148d6",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+        "gap": "The submitted CLI test failed to compile before its assertions ran.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+        "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+        "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+        "priority": "high",
+        "status": "pending",
+        "next_action": "Continue the original investigator session."
+      },
+      {
+        "id": "qa-v2-request-29d7435d9ca56ae404229a54",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-1158b01023e7f48c5250faeb",
+          "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+        ],
+        "origin_shard_id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+        "gap": "Static evidence confirms both web projection defects, but no executable surface assertions were supplied.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer covering an active and cancellation-requested durable run through the performance status API/workbench projection and an evidence request through an adapter lacking WebPerformanceEvidenceQueries.",
+        "required_observation": "Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.",
+        "control_requirement": "Include controls showing direct PerformanceStatus contains the durable fields and a full evidence-capability adapter returns the versioned DTO.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "86062503f35bc5d81f428f82a3e68ab7a0b83ae6679837f7b3dd99abe204678d",
+        "test_bundle_id": "qa-v2-test-96862b443a2bd04f15f7e7d1",
+        "latest_run_id": "qa-v2-run-75ef77b545dccdddcfaae618",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-2d5e3f9d9571a0300a83f89e",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+        ],
+        "origin_shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+        "gap": "The pseudo-heading test failed during dependency download before assertions ran.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go table reproducer for disabled policy with fenced and HTML-commented pseudo target sections.",
+        "required_observation": "Assert each input produces a policy mismatch while target parsing returns no targets or findings.",
+        "control_requirement": "Include ordinary prose and a real target section as declaration controls.",
+        "priority": "medium",
+        "status": "evidence_recorded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "fba9e2d71cb8ccf5e5937bb45e77ac1f39e8a6161cb7aa891653fce75e3bbbe2",
+        "test_bundle_id": "qa-v2-test-67d46aa887025191de4cafaa",
+        "latest_run_id": "qa-v2-run-dc37718aa0a9eb8b649fc531",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-2dacd623de9f8de5812444c7",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-8777e689a2caaaafff1d1064"
+        ],
+        "origin_shard_id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+        "gap": "The requested source expansion did not provide executable proof of the suspected stale-writer race.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer using a fence hook synchronized around finishPerformanceFailure's final state and flow publications.",
+        "required_observation": "Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation.",
+        "control_requirement": "Run the same path without revocation and verify normal flow publication succeeds.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "test_bundle_id": "qa-v2-test-ca19e0ea03ee34a7e85b06af",
+        "latest_run_id": "qa-v2-run-7ba5ef35da866b064707c3e1",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-349c950bcf2476f9ef0d2260",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+        ],
+        "origin_shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+        "gap": "The parser behavior is tested, but the disabled-policy validation path for pseudo-headings is not.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go table reproducer calling ValidateRequirementsContentWithPolicy with disabled policy and fenced and HTML-commented pseudo target sections.",
+        "required_observation": "Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.",
+        "control_requirement": "Include ordinary prose without the heading and a real target section as negative and positive declaration controls.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "254fad353e7f304cd31e49347dfe7f123047a25152087bda4b1d2dc6d0dad71f",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-2d5e3f9d9571a0300a83f89e",
+        "test_bundle_id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+        "latest_run_id": "qa-v2-run-e118d766d279f5736977950e",
+        "next_action": "Inspect replacement evidence request qa-v2-request-2d5e3f9d9571a0300a83f89e."
+      },
+      {
+        "id": "qa-v2-request-4b7360f4bb0d68ca61610636",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+        ],
+        "origin_shard_id": "qa-v1-shard-df7a2faaa81b6265c0367c83",
+        "gap": "Nested persisted-data acceptance is statically shown but not exercised.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer passing ValidateRepairReverification a valid top-level performance record with malformed target identity and invalid comparison outcome entries.",
+        "required_observation": "Assert the validator returns nil for each malformed nested TargetResults case.",
+        "control_requirement": "Include a valid target-result control and a malformed top-level control that is rejected.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "1f97b018b8fbf121d67ea58a9a77bfaac63d673e6cedec49f44878663a8c2bee",
+        "test_bundle_id": "qa-v2-test-71ced6668c4feb28f5bc5aba",
+        "latest_run_id": "qa-v2-run-8b9c787f2907c10ea9b3656a",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-84c9faa938e9ff74aac2b65d",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-07T17:09:46.883992637Z",
+            "completed_at": "2026-09-07T17:10:44.207327774Z",
+            "run_id": "qa-v2-run-ca06d64a56c5a52875fc8cd5"
+          }
+        ],
+        "preparation_attempts": 2,
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T16:07:56.994344795Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-4fd8a79cac34b652f4844a27",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ],
+        "origin_shard_id": "qa-v1-shard-e8285353570f0550ce50e011",
+        "gap": "The submitted discovery test did not execute because the environment ran out of space.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer with descriptor markers separated from functions by a blank line and by an unrelated comment.",
+        "required_observation": "Assert DiscoverPerformanceManifest accepts both separated-marker cases.",
+        "control_requirement": "Include an adjacent-marker control and an intervening source statement that is rejected.",
+        "priority": "medium",
+        "status": "evidence_recorded",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "f4732b0c4927ae89fe21b21a30a85caa8b45cd55371a10c20907bef99981e3e9",
+        "test_bundle_id": "qa-v2-test-84c9faa938e9ff74aac2b65d",
+        "latest_run_id": "qa-v2-run-ca06d64a56c5a52875fc8cd5",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-65ab8ebe1800185c6f8e76f6",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2"
+        ],
+        "origin_shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+        "gap": "This origin shard has no executable policy-validation assertion.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer for fenced and multiline HTML-commented Performance Targets headings under disabled policy.",
+        "required_observation": "Assert false policy mismatch findings are emitted for pseudo-headings.",
+        "control_requirement": "Assert the target parser ignores the same inputs and detects a real heading.",
+        "priority": "medium",
+        "status": "evidence_recorded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "27bf69bd5ec49e893fa69354a320bd15e339a3eec5fbb95604720bba9a1e969a",
+        "test_bundle_id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+        "latest_run_id": "qa-v2-run-93d4acf31d3d7a41de43faf7",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-401c04522e0c90c5b00e0f7f",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-07T17:11:45.722030908Z",
+            "completed_at": "2026-09-07T17:12:06.587649094Z",
+            "run_id": "qa-v2-run-dd17f540588b50ae8f6c35ff"
+          }
+        ],
+        "preparation_attempts": 2,
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T16:07:56.994344795Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-675a413673720c580cfa0ca8",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ],
+        "origin_shard_id": "qa-v1-shard-c00693067b3601e16b414101",
+        "gap": "The submitted architecture contract test did not execute because the environment ran out of space.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go static contract reproducer checking ownership of performance defaults and validation.",
+        "required_observation": "Assert the current source defines product-specific performance defaults and validation under internal/platform.",
+        "control_requirement": "Restrict the assertion to named performance policy symbols so generic configuration infrastructure remains allowed.",
+        "priority": "medium",
+        "status": "evidence_recorded",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "0d21df8a3ad0aa86cc14f3f68dd758efb0e4a142d7fca9c73c1c7a9ad66d62ae",
+        "test_bundle_id": "qa-v2-test-401c04522e0c90c5b00e0f7f",
+        "latest_run_id": "qa-v2-run-dd17f540588b50ae8f6c35ff",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-679ebce7e6dc6fe849fce7fe",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-7d9af7670be55a2e29a420d8"
+        ],
+        "origin_shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+        "gap": "The classification defect has only static evidence.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer invoking PerformanceResult for a valid nonterminal attempt and passing its error through web mapping.",
+        "required_observation": "Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.",
+        "control_requirement": "Include a typed performance error that receives performance-specific status and code mapping.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "4737010b084358709b345236eb71f27e37499d700e961eaf9b6963ec906dbd64",
+        "test_bundle_id": "qa-v2-test-7493f58ee9a8736864f38cc9",
+        "latest_run_id": "qa-v2-run-534e299b366e68bf800de407",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-6dcc389dd5fb297608a713ec",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-ac5be59947bfccdb558de158"
+        ],
+        "origin_shard_id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+        "gap": "Existing TUI coverage tests disabled policy only without a historical attempt.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer instantiating Enabled=false with a non-empty historical PerformanceAttemptID and evaluating navItems.",
+        "required_observation": "Assert start, resume, cancel, and recover operation kinds are present.",
+        "control_requirement": "Include disabled-without-attempt and enabled-current-attempt controls.",
+        "priority": "high",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "4c18e6b12d1a1a8b4cf28387a28f9838e424c29676199a7ad3174938ab17f705",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-c5b5b98d792e1bc58f90bf82",
+        "test_bundle_id": "qa-v2-test-b33b7988476beb7446f1e3c7",
+        "latest_run_id": "qa-v2-run-8dc3a19547cb63a5dcf1d86d",
+        "next_action": "Inspect replacement evidence request qa-v2-request-c5b5b98d792e1bc58f90bf82."
+      },
+      {
+        "id": "qa-v2-request-8879630e73c2765e01a64feb",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+        "gap": "No executable CLI exit-class evidence was supplied.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+        "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+        "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "e86c1a73773a9e9ed8e27b1247fe0987da1b1cf46b68d9664ab77e6963418203",
+        "reason_code": "unrelated_compile_or_panic_failure",
+        "superseded_by": "qa-v2-request-922f451b9bb54eee4affff91",
+        "test_bundle_id": "qa-v2-test-3eb9bf244922555688a36248",
+        "latest_run_id": "qa-v2-run-76690bc4f2e0e194458f6b38",
+        "next_action": "Evidence remains unresolved: unrelated_compile_or_panic_failure. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-8cc9991849234abdc0ca28c9",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ],
+        "origin_shard_id": "qa-v1-shard-e8285353570f0550ce50e011",
+        "gap": "Immediate-precedence violation has only static evidence.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer with valid descriptor markers separated from functions by a blank line and by an unrelated comment.",
+        "required_observation": "Assert DiscoverPerformanceManifest accepts both separated marker cases.",
+        "control_requirement": "Include an immediately adjacent marker control and an intervening non-comment source statement that is rejected.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "3b6d07b78da52853384a80f2d7fa1a34d54d0915cc94d7d38494c28371f1c95b",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-a8b62b758e3352669df1cac1",
+        "test_bundle_id": "qa-v2-test-ed04ad1d12af5f31e88cab21",
+        "latest_run_id": "qa-v2-run-180db81ecee52719fffda8b4",
+        "next_action": "Inspect replacement evidence request qa-v2-request-a8b62b758e3352669df1cac1."
+      },
+      {
+        "accounting_version": 2,
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "authoring",
+          "code": "unknown_failure",
+          "diagnostic": "opencode event: runtime_exit: OpenCode reported a fatal session error; qa continue investigator for evidence: original_session_unavailable",
+          "retryable": false
+        },
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T16:07:56.994344795Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-922f451b9bb54eee4affff91",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+        "gap": "The submitted CLI test failed to compile for an unrelated reason.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+        "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+        "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "9b59a6b684e91e1ecd81bca5409f68c3391c384cebda04e7912e0fc05b67ad4c",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-2943a82794f42d463a0148d6",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Infrastructure-blocked work may qualify for qa retry-infrastructure; other exhausted work requires a new governed attempt."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-7db263cfd659a2861486f879",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-07T17:13:37.475498037Z",
+            "completed_at": "2026-09-07T17:14:21.467272014Z",
+            "run_id": "qa-v2-run-ae0a0ff29536adb7eb667dd3"
+          }
+        ],
+        "preparation_attempts": 1,
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+        "recovery_reason": "evidence_authoring_inconclusive",
+        "id": "qa-v2-request-9f9d08c0c843340a1300e236",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0",
+          "qa-v1-theory-7d9af7670be55a2e29a420d8"
+        ],
+        "origin_shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+        "gap": "The aggregate lifecycle omission and raw unavailable-result error have only static confirmation.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer comparing direct PerformanceStatus with SprintSummaries for a fake durable run, and invoking PerformanceResult for a valid nonterminal attempt.",
+        "required_observation": "Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.",
+        "control_requirement": "Show the direct status path is enriched and a typed performance error receives performance-specific HTTP mapping.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 4,
+        "attempts": 2,
+        "evidence_fingerprint": "d3fbd9747ebb4cb9d48538b6ac9b339c667431efe9c8f674b73ffb73a6e29567",
+        "test_bundle_id": "qa-v2-test-7db263cfd659a2861486f879",
+        "latest_run_id": "qa-v2-run-ae0a0ff29536adb7eb667dd3",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-a0813a5d1ac4a4e36afcbad1",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ],
+        "origin_shard_id": "qa-v1-shard-c00693067b3601e16b414101",
+        "gap": "The architecture violation lacks an executable ownership-contract assertion.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go static contract reproducer checking ownership of performance defaults and validation.",
+        "required_observation": "Assert the current source defines product-specific performance defaults and validation under internal/platform.",
+        "control_requirement": "Restrict the assertion to named performance policy symbols so generic configuration infrastructure remains allowed.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "0649a545c3f5d06841a525995eda822ef49120b6c00c2e7ca6b831b48dde5ad9",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-675a413673720c580cfa0ca8",
+        "test_bundle_id": "qa-v2-test-8350daaaec15bbbe50054e34",
+        "latest_run_id": "qa-v2-run-06768d0975b7856b43c10a3b",
+        "next_action": "Inspect replacement evidence request qa-v2-request-675a413673720c580cfa0ca8."
+      },
+      {
+        "accounting_version": 2,
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "authoring",
+          "code": "unknown_failure",
+          "diagnostic": "opencode event: runtime_exit: OpenCode reported a fatal session error; qa continue investigator for evidence: original_session_unavailable",
+          "retryable": false
+        },
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T16:07:56.994344795Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-a26146fe1f9e39609588ef10",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ],
+        "origin_shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+        "gap": "The submitted test stopped on a missing template dependency before testing metadata exposure.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go API and workbench reproducer using the product handler or complete template set with synthetic evidence metadata.",
+        "required_observation": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+        "control_requirement": "Assert raw artifact contents are absent to isolate metadata exposure.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "ba0b5d579822b24bf838fe52f8f19060c998086ea73f98742355cb6cf7e1a9c3",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Infrastructure-blocked work may qualify for qa retry-infrastructure; other exhausted work requires a new governed attempt."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-07T17:07:41.169033118Z",
+            "completed_at": "2026-09-07T17:08:42.253777353Z",
+            "run_id": "qa-v2-run-075e9e46e60c71f2fa8cf256"
+          }
+        ],
+        "preparation_attempts": 1,
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-a53dc7379d6356bcf430b685",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+        ],
+        "origin_shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+        "gap": "The theory needs sufficient executable evidence for a final decision: Sprint summary, TUI, and web performance projections omit operational lifecycle and cancellation state even when a durable run exists.",
+        "requested_evidence": "Create an executable test of the claim at internal/app/sprint_usecases.go performanceSummaryForSprint, PerformanceStatus, and SprintSummaries; internal/web/handlers.go api_sprint_performance; internal/tui/model.go performance navigation.. Exercise the actual claimed entry point. Use a contract or static assertion if behavioral reproduction is unsuitable. Preserve the frozen requirements; report why verification is unavailable if no valid check can be constructed.",
+        "required_observation": "Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fields.. Refute only if: Sprint summary composition enriches the projection from the durable run manager, or all consuming adapters call the enriched PerformanceStatus use case instead of the raw projection.. Otherwise: The durable lifecycle enrichment or Sprint query implementation differs outside the cited excerpts such that the summary is enriched before presentation.",
+        "control_requirement": "Include a passing control reaching the same entry point and assert fixture preconditions before the defect assertion.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "b37767c95975bc664be478a82f88e458f3223cbade86973e4a82582f7759a4bc",
+        "test_bundle_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+        "latest_run_id": "qa-v2-run-075e9e46e60c71f2fa8cf256",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-a8b62b758e3352669df1cac1",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-8f427e11c59f76989883dc31"
+        ],
+        "origin_shard_id": "qa-v1-shard-e8285353570f0550ce50e011",
+        "gap": "The submitted discovery test did not execute because the environment ran out of space.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer with descriptor markers separated from functions by a blank line and by an unrelated comment.",
+        "required_observation": "Assert discovery accepts both separated-marker cases.",
+        "control_requirement": "Include an adjacent-marker control and an intervening source statement that is rejected.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "f4732b0c4927ae89fe21b21a30a85caa8b45cd55371a10c20907bef99981e3e9",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-4fd8a79cac34b652f4844a27",
+        "next_action": "Inspect replacement evidence request qa-v2-request-4fd8a79cac34b652f4844a27."
+      },
+      {
+        "id": "qa-v2-request-c2c103a4f7c68f1c4468f0a3",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-60e255ab711c15643830dc69"
+        ],
+        "origin_shard_id": "qa-v1-shard-b951f08c0478926a7e675a81",
+        "gap": "No executable parser reproducer was supplied.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer calling ParsePerformanceOutput with one valid matching envelope followed on the same line by malformed non-whitespace JSON.",
+        "required_observation": "Assert parsing succeeds and returns the canonical value despite malformed trailing content.",
+        "control_requirement": "Assert whitespace-only trailing content succeeds and a second valid JSON value is rejected.",
+        "priority": "high",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "f2242a8d8cd754c20f1ac908cd0e040d92461856f742cad07a4b078f54e2c1bc",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-feb09f2982cb2f5fd0db9fe4",
+        "next_action": "Inspect replacement evidence request qa-v2-request-feb09f2982cb2f5fd0db9fe4."
+      },
+      {
+        "id": "qa-v2-request-c50b470e137164d1a8040f90",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ],
+        "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+        "gap": "Existing tests have failure-signature mismatches and do not establish preflight continuation.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer that makes performanceSettings fail during shared operation-runner setup.",
+        "required_observation": "Assert the runner reaches preparation or execution without returning the configuration failure.",
+        "control_requirement": "Include a valid-configuration control and prove whether the operation boundary was reached.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "evidence_round_budget_exhausted",
+        "next_action": "Evidence remains unresolved: evidence_round_budget_exhausted. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-07T17:15:57.398836795Z",
+            "completed_at": "2026-09-07T17:16:50.398924774Z",
+            "run_id": "qa-v2-run-6ea296fdd3438731707140d8"
+          }
+        ],
+        "preparation_attempts": 1,
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-c5b5b98d792e1bc58f90bf82",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-ac5be59947bfccdb558de158"
+        ],
+        "origin_shard_id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+        "gap": "The submitted TUI test did not execute because the environment ran out of space.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer evaluating navItems with Enabled=false and a historical PerformanceAttemptID.",
+        "required_observation": "Assert start, resume, cancel, and recover operation kinds are present.",
+        "control_requirement": "Include disabled-without-attempt and enabled-current-attempt controls.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 3,
+        "attempts": 2,
+        "evidence_fingerprint": "7adf20b48e99f72c901a9d7d2546a1dcc98d8be57def0c06ca4265b0cfe90605",
+        "test_bundle_id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+        "latest_run_id": "qa-v2-run-6ea296fdd3438731707140d8",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-c97fb9ec65e8197293125009",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-b120687ce5ad252ba59d75ad"
+        ],
+        "origin_shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+        "gap": "The public metadata exposure has no executable serialization assertion.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go API/template reproducer using synthetic evidence metadata only.",
+        "required_observation": "Assert the JSON response contains path and digest fields and the server-rendered workbench contains the digest.",
+        "control_requirement": "Assert raw artifact contents are absent so the test isolates metadata exposure.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "dc97926eff441d6867e7e27081a624f7ae43ca307f66155cb1c8087da7025ef3",
+        "reason_code": "investigator_workspace_unavailable",
+        "superseded_by": "qa-v2-request-21836b45dff44c191617c383",
+        "next_action": "Evidence remains unresolved: investigator_workspace_unavailable. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-cf552fe1be692157e11633fa",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-2e47a0d5379914251c03302b"
+        ],
+        "origin_shard_id": "qa-v1-shard-c00693067b3601e16b414101",
+        "gap": "The architecture violation is statically established but lacks an executable ownership guard.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go static contract reproducer that inspects approved source ownership and fails when product-specific DefaultPerformance or lower-only performance validation is defined under internal/platform.",
+        "required_observation": "Assert the current source places both product defaults and validation policy in the platform config package.",
+        "control_requirement": "Restrict the assertion to named performance policy symbols so generic config parsing and runtime infrastructure remain allowed.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "0649a545c3f5d06841a525995eda822ef49120b6c00c2e7ca6b831b48dde5ad9",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-a0813a5d1ac4a4e36afcbad1",
+        "next_action": "Inspect replacement evidence request qa-v2-request-a0813a5d1ac4a4e36afcbad1."
+      },
+      {
+        "id": "qa-v2-request-d04679da94e7316ba76735ad",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-e520dfe5bb32e35f0d545398"
+        ],
+        "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+        "gap": "No executable CLI exit-class evidence was supplied.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer that feeds representative classified timeout, process, persistence, configuration, and cancellation errors through runSprintPerformance's error path.",
+        "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+        "control_requirement": "Verify the underlying PerformanceError categories remain distinct before CLI wrapping.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "e86c1a73773a9e9ed8e27b1247fe0987da1b1cf46b68d9664ab77e6963418203",
+        "reason_code": "investigator_workspace_unavailable",
+        "superseded_by": "qa-v2-request-8879630e73c2765e01a64feb",
+        "next_action": "Evidence remains unresolved: investigator_workspace_unavailable. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-dfc8c61e23f2a030e688cb0b",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-fc3744e6e8886693c1c4a689"
+        ],
+        "origin_shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+        "gap": "The stale-writer publication window remains unobserved.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a deterministic Go _test.go reproducer that advances the verification fencing generation after the failure path's last fenced state publication and before SaveFlowState.",
+        "required_observation": "Observe whether the stale failure path still changes the durable flow-state performance summary.",
+        "control_requirement": "Include a stable-generation control where the same failure path is allowed to publish, and assert exact pre/post flow-state bytes or digest.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "71ba91294dc96ab01efa9c86382405ecb147df9ab5bcc4043cde632ac5f33c9c",
+        "reason_code": "investigator_workspace_unavailable",
+        "superseded_by": "qa-v2-request-10876e3025aa9353fcf1007e",
+        "next_action": "Evidence remains unresolved: investigator_workspace_unavailable. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "id": "qa-v2-request-ef24e5d923f7cadd264bc3ea",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-3d05000070c81fe10aa3579b"
+        ],
+        "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+        "gap": "Supplied investigator tests reported failure_signature_mismatch and therefore do not reliably demonstrate the claimed preflight behavior.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer that constructs sharedOperationRunner with an Effective configuration whose performance duration or limits make performanceSettings fail.",
+        "required_observation": "Assert the runner can proceed to prepare an operation without returning the configuration failure.",
+        "control_requirement": "Use a valid configuration control and instrument the operation boundary to prove whether side-effecting preparation was reached.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "evidence_round_budget_exhausted",
+        "superseded_by": "qa-v2-request-1fa19463cf6244f4c29a9b08",
+        "next_action": "Evidence remains unresolved: evidence_round_budget_exhausted. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-07T17:19:54.118003722Z",
+            "completed_at": "2026-09-07T17:20:48.214732479Z",
+            "run_id": "qa-v2-run-5c3db048c33318c6bd34c6d9"
+          }
+        ],
+        "preparation_attempts": 1,
+        "recovery_allowance": 1,
+        "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+        "recovery_reason": "evidence_round_budget_exhausted",
+        "id": "qa-v2-request-feb09f2982cb2f5fd0db9fe4",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-60e255ab711c15643830dc69"
+        ],
+        "origin_shard_id": "qa-v1-shard-b951f08c0478926a7e675a81",
+        "gap": "No executable parser reproducer was supplied.",
+        "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer using a valid matching envelope followed by malformed non-whitespace JSON.",
+        "required_observation": "Assert parsing succeeds and returns the canonical value despite malformed trailing content.",
+        "control_requirement": "Assert whitespace-only trailing content succeeds and a second valid JSON value is rejected.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 3,
+        "attempts": 2,
+        "evidence_fingerprint": "f2242a8d8cd754c20f1ac908cd0e040d92461856f742cad07a4b078f54e2c1bc",
+        "test_bundle_id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+        "latest_run_id": "qa-v2-run-5c3db048c33318c6bd34c6d9",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "id": "qa-v2-request-ff3c664c921d82f41fd75263",
+        "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+        "theory_ids": [
+          "qa-v1-theory-2913ff7ebea753d4cf4c76b2"
+        ],
+        "origin_shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+        "gap": "Bounded inspection confirmed inconsistent recognition, but no executable policy-validation assertion was supplied.",
+        "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer for fenced and multiline HTML-commented Performance Targets headings under disabled policy.",
+        "required_observation": "Assert false performance policy mismatch findings are emitted for pseudo-headings.",
+        "control_requirement": "Assert the target parser ignores the same inputs and a real heading remains detectable.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "27bf69bd5ec49e893fa69354a320bd15e339a3eec5fbb95604720bba9a1e969a",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-65ab8ebe1800185c6f8e76f6",
+        "next_action": "Inspect replacement evidence request qa-v2-request-65ab8ebe1800185c6f8e76f6."
+      }
+    ],
+    "reconciliation": {
+      "model": "openai/gpt-5.6-sol",
+      "fallback": false
+    },
+    "fallback": false
+  },
+  "interactions": [
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-17dafaf3fd4f0f4493af69b0",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-2e47a0d5379914251c03302b",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-3d05000070c81fe10aa3579b",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-60e255ab711c15643830dc69",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-7d9af7670be55a2e29a420d8",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-8f427e11c59f76989883dc31",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-b120687ce5ad252ba59d75ad",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-1158b01023e7f48c5250faeb \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-2e47a0d5379914251c03302b",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-3d05000070c81fe10aa3579b",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-60e255ab711c15643830dc69",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-8f427e11c59f76989883dc31",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-b120687ce5ad252ba59d75ad",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0 \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-5aa810b32a6484259611977f",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-60e255ab711c15643830dc69",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-7d9af7670be55a2e29a420d8",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-8f427e11c59f76989883dc31",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-2e47a0d5379914251c03302b \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-7d9af7670be55a2e29a420d8",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-b120687ce5ad252ba59d75ad",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-3d05000070c81fe10aa3579b \u003c-\u003e qa-v1-theory-fc81f8d0e12d762d0dd1618b",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-7d9af7670be55a2e29a420d8",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-8f427e11c59f76989883dc31",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-60e255ab711c15643830dc69 \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-8f427e11c59f76989883dc31",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-b120687ce5ad252ba59d75ad",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-7d9af7670be55a2e29a420d8 \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-8f427e11c59f76989883dc31 \u003c-\u003e qa-v1-theory-ac5be59947bfccdb558de158",
+    "qa-v1-theory-8f427e11c59f76989883dc31 \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-8f427e11c59f76989883dc31 \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-8f427e11c59f76989883dc31 \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-8f427e11c59f76989883dc31 \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-ac5be59947bfccdb558de158 \u003c-\u003e qa-v1-theory-b120687ce5ad252ba59d75ad",
+    "qa-v1-theory-ac5be59947bfccdb558de158 \u003c-\u003e qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+    "qa-v1-theory-ac5be59947bfccdb558de158 \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-ac5be59947bfccdb558de158 \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-ac5be59947bfccdb558de158 \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-ac5be59947bfccdb558de158 \u003c-\u003e qa-v1-theory-fc81f8d0e12d762d0dd1618b",
+    "qa-v1-theory-b120687ce5ad252ba59d75ad \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-b120687ce5ad252ba59d75ad \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-b120687ce5ad252ba59d75ad \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-b120687ce5ad252ba59d75ad \u003c-\u003e qa-v1-theory-fc81f8d0e12d762d0dd1618b",
+    "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe \u003c-\u003e qa-v1-theory-e520dfe5bb32e35f0d545398",
+    "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-e520dfe5bb32e35f0d545398 \u003c-\u003e qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+    "qa-v1-theory-e520dfe5bb32e35f0d545398 \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-f70fbbde96aaaf96b63f5bdc \u003c-\u003e qa-v1-theory-fc3744e6e8886693c1c4a689",
+    "qa-v1-theory-fc3744e6e8886693c1c4a689 \u003c-\u003e qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+  ],
+  "follow_up_shards": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-c87368a3bbba771839680683",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "kind": "follow_up",
+      "title": "Follow up qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+      "context_paths": [
+        "docs/user-guide.md",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/service.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ],
+      "behavioral_concerns": [
+        "follow up: A fenced or commented pseudo `## Performance Targets` heading is ignored by target parsing but still treated as a declaration during policy validation, causing a false `performance policy mismatch` when performance policy is disabled."
+      ],
+      "expectation_refs": [
+        "handbook"
+      ],
+      "pack_complete": false,
+      "parent_theory_ids": [
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "phase": "completed",
+      "attempts": [
+        {
+          "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-c87368a3bbba771839680683/1",
+          "number": 1,
+          "session_id": "ses_f884c291effeqQhnMJnkIyz8OX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8fa00834c56b6b1e03943cf74219f979d968f0ab1a8419e44ced0f1220ebc2b9",
+          "started_at": "2026-09-06T17:11:06.746519669Z",
+          "completed_at": "2026-09-06T17:12:07.542469218Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Bounded inspection confirmed that markdownHeadingPresent returns true for any trimmed matching heading line, including lines inside fences or multiline HTML comments; ParsePerformanceTargets applies exclusions for those constructs [qa-v1-block-9c5f43b294578fed6796f5b9].",
+              "paths": [
+                "internal/sprint/index.go",
+                "internal/sprint/performance_targets.go",
+                "internal/sprint/performance_targets_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1901,
+            "output_tokens_known": true,
+            "output_tokens": 1131,
+            "total_tokens_known": true,
+            "total_tokens": 53554,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 218,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 50304,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 28,
+          "retained_events": 28,
+          "observed_tool_calls": 2,
+          "context_metrics": {
+            "prompt_bytes": 79308,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 2160,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 60795949549
+          },
+          "estimated_cost": {
+            "amount": 0.0754457,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-c87368a3bbba771839680683/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f884c291effeqQhnMJnkIyz8OX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8fa00834c56b6b1e03943cf74219f979d968f0ab1a8419e44ced0f1220ebc2b9",
+          "started_at": "2026-09-07T13:02:42.911712833Z",
+          "completed_at": "2026-09-07T13:04:05.152010579Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1221,
+            "output_tokens_known": true,
+            "output_tokens": 35,
+            "total_tokens_known": true,
+            "total_tokens": 33126,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 254,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 31616,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 23,
+          "retained_events": 23,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 8773,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 4397,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 82240297746
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "theories": [
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+          "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+          "claim": "A fenced or HTML-commented `## Performance Targets` pseudo-heading causes disabled-policy requirements validation to emit a false `performance policy mismatch`, even though target parsing ignores that pseudo-section.",
+          "basis": "ValidateRequirementsContentWithPolicy uses a separate heading-presence check for policy enforcement, while ParsePerformanceTargets explicitly ignores fenced and commented pseudo-sections [qa-v1-block-3cceb141b86f4e4c3b8609e8, qa-v1-block-9c5f43b294578fed6796f5b9, qa-v1-block-e119c25baa75d6da3419c82e].",
+          "verification_surface": "internal/sprint/index.go:ValidateRequirementsContentWithPolicy and markdownHeadingPresent; internal/sprint/performance_targets.go:ParsePerformanceTargets",
+          "expectation_refs": [
+            "handbook"
+          ],
+          "severity_if_confirmed": "medium",
+          "confirmation_condition": "With disabled performance policy, requirements containing `## Performance Targets` only inside a fenced block or HTML comment produce a `performance policy mismatch` while ParsePerformanceTargets returns no targets or findings.",
+          "refutation_condition": "The declaration check applies the same fence, comment, quote, and indentation exclusions as ParsePerformanceTargets, so pseudo-headings do not produce a policy mismatch.",
+          "inconclusive_condition": "The implementation of markdownHeadingPresent or its interaction with validation cannot be inspected.",
+          "safe_evidence_strategy": "Statically compare pseudo-section handling in ParsePerformanceTargets with markdownHeadingPresent and inspect existing table-driven tests without executing or mutating the repository.",
+          "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "attempt_history": [
+            {
+              "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-c87368a3bbba771839680683/1",
+              "number": 1,
+              "session_id": "ses_f884c291effeqQhnMJnkIyz8OX",
+              "provider": "openai",
+              "model": "gpt-5.6-sol",
+              "variant": "low",
+              "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+              "workspace_id": "8fa00834c56b6b1e03943cf74219f979d968f0ab1a8419e44ced0f1220ebc2b9",
+              "started_at": "2026-09-06T17:11:06.746519669Z",
+              "completed_at": "2026-09-06T17:12:07.542469218Z",
+              "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "evidence": [
+                {
+                  "kind": "static_source",
+                  "summary": "Bounded inspection confirmed that markdownHeadingPresent returns true for any trimmed matching heading line, including lines inside fences or multiline HTML comments; ParsePerformanceTargets applies exclusions for those constructs [qa-v1-block-9c5f43b294578fed6796f5b9].",
+                  "paths": [
+                    "internal/sprint/index.go",
+                    "internal/sprint/performance_targets.go",
+                    "internal/sprint/performance_targets_test.go"
+                  ]
+                }
+              ],
+              "usage": {
+                "input_tokens_known": true,
+                "input_tokens": 1901,
+                "output_tokens_known": true,
+                "output_tokens": 1131,
+                "total_tokens_known": true,
+                "total_tokens": 53554,
+                "reasoning_tokens_known": true,
+                "reasoning_tokens": 218,
+                "cache_read_tokens_known": true,
+                "cache_read_tokens": 50304,
+                "cache_write_tokens_known": true,
+                "turns_known": false
+              },
+              "runtime_events": 28,
+              "retained_events": 28,
+              "observed_tool_calls": 2,
+              "context_metrics": {
+                "prompt_bytes": 79308,
+                "prefix_bytes": 10944,
+                "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+                "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+                "tool_calls_by_kind": {
+                  "grep": 1,
+                  "read": 1
+                },
+                "distinct_files_read": 0,
+                "read_bytes": 2160,
+                "repeated_reads": 0,
+                "search_calls": 1,
+                "expansions": 0,
+                "continuation_bytes": 0,
+                "duration": 60795949549
+              },
+              "estimated_cost": {
+                "amount": 0.0754457,
+                "currency": "USD",
+                "estimate": true,
+                "source": "model_priced"
+              },
+              "stop_reason": "terminal investigator output accepted",
+              "repair": {
+                "attempted": true,
+                "max_attempts": 1,
+                "attempt_count": 1,
+                "exhausted": false,
+                "permission_denied": false,
+                "unsupported_same_session": false
+              }
+            },
+            {
+              "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-c87368a3bbba771839680683/1/evidence/2",
+              "number": 3,
+              "session_id": "ses_f884c291effeqQhnMJnkIyz8OX",
+              "provider": "openai",
+              "model": "gpt-5.6-sol",
+              "variant": "low",
+              "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+              "workspace_id": "8fa00834c56b6b1e03943cf74219f979d968f0ab1a8419e44ced0f1220ebc2b9",
+              "started_at": "2026-09-07T13:02:42.911712833Z",
+              "completed_at": "2026-09-07T13:04:05.152010579Z",
+              "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "usage": {
+                "input_tokens_known": true,
+                "input_tokens": 1221,
+                "output_tokens_known": true,
+                "output_tokens": 35,
+                "total_tokens_known": true,
+                "total_tokens": 33126,
+                "reasoning_tokens_known": true,
+                "reasoning_tokens": 254,
+                "cache_read_tokens_known": true,
+                "cache_read_tokens": 31616,
+                "cache_write_tokens_known": true,
+                "turns_known": false
+              },
+              "runtime_events": 23,
+              "retained_events": 23,
+              "observed_tool_calls": 4,
+              "context_metrics": {
+                "prompt_bytes": 8773,
+                "prefix_bytes": 0,
+                "tool_calls_by_kind": {
+                  "apply_patch": 1,
+                  "grep": 1,
+                  "read": 2
+                },
+                "distinct_files_read": 0,
+                "read_bytes": 4397,
+                "repeated_reads": 0,
+                "search_calls": 1,
+                "expansions": 0,
+                "continuation_bytes": 0,
+                "duration": 82240297746
+              },
+              "stop_reason": "investigator-authored test snapshotted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Bounded inspection confirmed that markdownHeadingPresent returns true for any trimmed matching heading line, including lines inside fences or multiline HTML comments; ParsePerformanceTargets applies exclusions for those constructs [qa-v1-block-9c5f43b294578fed6796f5b9].",
+              "paths": [
+                "internal/sprint/index.go",
+                "internal/sprint/performance_targets.go",
+                "internal/sprint/performance_targets_test.go"
+              ]
+            },
+            {
+              "kind": "investigator_test",
+              "summary": "Request qa-v2-request-65ab8ebe1800185c6f8e76f6: predicted_failure_reproduced\nRequired observation: Assert false policy mismatch findings are emitted for pseudo-headings.\nTest internal/project/qa_investigator_185c6f8e76f6_test.go:\npackage project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_185c6f8e76f6(t *testing.T) {\n\tconst requiredSections = `## Sprint Goal\nx\n## Required Outputs\nx\n## Acceptance Criteria\nx\n## Non-Goals\nx\n## Constraints\nx\n## Dependencies\nx\n## Review Expectations\nx\n`\n\tconst table = `## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-QA | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\n`\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\tpseudoSections := map[string]string{\n\t\t\"fenced\":   \"```md\\n\" + table + \"```\\n\",\n\t\t\"commented\": \"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tpacket, parserFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parserFindings) != 0 {\n\t\t\tt.Fatalf(\"control %s: parser did not ignore pseudo-heading: targets=%d findings=%v\", name, len(packet.Targets), parserFindings)\n\t\t}\n\t}\n\n\trealPacket, realParserFindings := sprint.ParsePerformanceTargets(table)\n\tif len(realPacket.Targets) != 1 || len(realParserFindings) != 0 {\n\t\tt.Fatalf(\"control real heading: targets=%d findings=%v\", len(realPacket.Targets), realParserFindings)\n\t}\n\tif !hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+table, disabled)) {\n\t\tt.Fatal(\"control real heading: disabled policy did not detect declared targets\")\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tif hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+pseudo, disabled)) {\n\t\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=%s\", name)\n\t\t}\n\t}\n}\n\nfunc hasPerformancePolicyMismatch(findings []sprint.ValidationFinding) bool {\n\tfor _, finding := range findings {\n\t\tif finding.Problem == \"performance policy mismatch\" {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn false\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_185c6f8e76f6\n    qa_investigator_185c6f8e76f6_test.go:55: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=fenced\n--- FAIL: TestQAInvestigator_185c6f8e76f6 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.009s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+              "paths": [
+                "internal/project/qa_investigator_185c6f8e76f6_test.go"
+              ],
+              "check_id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+              "output_digest": "86fa7afbbda3b8dae53afe34943d460361d8fae83c8a392d772ed2c64950402e"
+            }
+          ],
+          "outcome": "confirmed",
+          "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+        }
+      ]
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+      "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+      "kind": "follow_up",
+      "title": "Follow up qa-v1-theory-fc3744e6e8886693c1c4a689",
+      "context_paths": [
+        "internal/sprint/domain.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go"
+      ],
+      "behavioral_concerns": [
+        "follow up: The performance failure path can publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState."
+      ],
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors"
+      ],
+      "pack_complete": false,
+      "parent_theory_ids": [
+        "qa-v1-theory-fc3744e6e8886693c1c4a689"
+      ],
+      "phase": "completed",
+      "attempts": [
+        {
+          "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-d1e7efff65ff7d71f9163122/1",
+          "number": 1,
+          "session_id": "ses_f884c1f8cffe394YIg8hPcWl25",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "56a6f6c1041fb05e558ba564838e0c8da32147ee1569c8e68aa9e4beb95c263d",
+          "started_at": "2026-09-06T17:11:06.751963625Z",
+          "completed_at": "2026-09-06T17:11:31.210016354Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "context_requests": [
+            {
+              "id": "qa-v1-block-68cfca988b5aef1e551fa430:performance-failure-save",
+              "paths": [
+                "internal/sprint/performance.go"
+              ],
+              "reason": "Need the failure-path function(s) that build a PerformanceFlowSummary and invoke SaveFlowState, specifically the lines surrounding each such call, so we can confirm whether checkWriter/store.fence is executed immediately before SaveFlowState and whether the path holds an exclusive lock that also guards concurrent verification publication. The currently cited excerpt (qa-v1-block-68cfca988b5aef1e551fa430) explicitly omits 40797 bytes of internal/sprint/performance.go and does not show the failure-path tail.",
+              "approved": true
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 35775,
+            "output_tokens_known": true,
+            "output_tokens": 1994,
+            "total_tokens_known": true,
+            "total_tokens": 78353,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 146,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 40438,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 33,
+          "retained_events": 33,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 115773,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 1,
+            "continuation_bytes": 9494,
+            "duration": 24458052729
+          },
+          "estimated_cost": {
+            "amount": 0,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted"
+        },
+        {
+          "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-d1e7efff65ff7d71f9163122/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f884c1f8cffe394YIg8hPcWl25",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "56a6f6c1041fb05e558ba564838e0c8da32147ee1569c8e68aa9e4beb95c263d",
+          "started_at": "2026-09-07T11:35:48.354745556Z",
+          "completed_at": "2026-09-07T11:38:31.130510371Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 398,
+            "output_tokens_known": true,
+            "output_tokens": 34,
+            "total_tokens_known": true,
+            "total_tokens": 58049,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 145,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 57472,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 43,
+          "retained_events": 43,
+          "observed_tool_calls": 13,
+          "context_metrics": {
+            "prompt_bytes": 8756,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 5,
+              "read": 7
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 31103,
+            "repeated_reads": 0,
+            "search_calls": 5,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 162775764815
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "theories": [
+        {
+          "schema_version": 1,
+          "id": "qa-v1-theory-8777e689a2caaaafff1d1064",
+          "shard_id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+          "claim": "The performance failure path may publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState.",
+          "basis": "The assigned concern identifies a missing final fence check on the performance failure path. PerformanceStore.checkWriter validates the token and invokes the configured fence, while SaveFlowState accepts no writer token or fence and therefore cannot enforce ownership itself (qa-v1-block-263b3a5636c57033d940e0e1, qa-v1-block-c0c387c762da8df5d477265c). The success path's relevant ordering and the failure-path implementation are within the 39535 bytes omitted from the newly supplied performance.go source block, so the reported asymmetry is not visible in cited source (qa-v1-block-c4fb906542e2a86ee085321b).",
+          "verification_surface": "The complete finishPerformanceFailure function in internal/sprint/performance.go, especially the sequence from PublishState through LoadFlowState, performanceFlowSummary, and SaveFlowState, compared with the successful RunPerformance terminal-publication sequence.",
+          "expectation_refs": [
+            "contract-architecture",
+            "contract-errors"
+          ],
+          "severity_if_confirmed": "Blocker",
+          "confirmation_condition": "The cited failure-path source shows that after its last successful checkWriter or fenced store publication, finishPerformanceFailure performs LoadFlowState and then SaveFlowState without another store.checkWriter(token) immediately before SaveFlowState, leaving a window in which ownership can become stale and the stale writer can still mutate flow state.",
+          "refutation_condition": "The cited failure-path source shows an immediate store.checkWriter(token) between preparation of the flow summary and SaveFlowState, or shows equivalent serialization that prevents the token from becoming stale until SaveFlowState completes.",
+          "inconclusive_condition": "The exact finishPerformanceFailure publication sequence remains omitted from the cited frozen blocks, preventing static confirmation or refutation of the final fence ordering.",
+          "safe_evidence_strategy": "Provide only the bounded source lines containing finishPerformanceFailure, from its declaration through its return, including the final PublishState, LoadFlowState, SaveFlowState, and pruning operations. Static inspection is sufficient; no executable check is required.",
+          "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "attempt_history": [
+            {
+              "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-d1e7efff65ff7d71f9163122/1",
+              "number": 1,
+              "session_id": "ses_f884c1f8cffe394YIg8hPcWl25",
+              "provider": "openai",
+              "model": "gpt-5.6-sol",
+              "variant": "low",
+              "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+              "workspace_id": "56a6f6c1041fb05e558ba564838e0c8da32147ee1569c8e68aa9e4beb95c263d",
+              "started_at": "2026-09-06T17:11:06.751963625Z",
+              "completed_at": "2026-09-06T17:11:31.210016354Z",
+              "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "context_requests": [
+                {
+                  "id": "qa-v1-block-68cfca988b5aef1e551fa430:performance-failure-save",
+                  "paths": [
+                    "internal/sprint/performance.go"
+                  ],
+                  "reason": "Need the failure-path function(s) that build a PerformanceFlowSummary and invoke SaveFlowState, specifically the lines surrounding each such call, so we can confirm whether checkWriter/store.fence is executed immediately before SaveFlowState and whether the path holds an exclusive lock that also guards concurrent verification publication. The currently cited excerpt (qa-v1-block-68cfca988b5aef1e551fa430) explicitly omits 40797 bytes of internal/sprint/performance.go and does not show the failure-path tail.",
+                  "approved": true
+                }
+              ],
+              "usage": {
+                "input_tokens_known": true,
+                "input_tokens": 35775,
+                "output_tokens_known": true,
+                "output_tokens": 1994,
+                "total_tokens_known": true,
+                "total_tokens": 78353,
+                "reasoning_tokens_known": true,
+                "reasoning_tokens": 146,
+                "cache_read_tokens_known": true,
+                "cache_read_tokens": 40438,
+                "cache_write_tokens_known": true,
+                "turns_known": false
+              },
+              "runtime_events": 33,
+              "retained_events": 33,
+              "observed_tool_calls": 3,
+              "context_metrics": {
+                "prompt_bytes": 115773,
+                "prefix_bytes": 10944,
+                "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+                "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+                "distinct_files_read": 0,
+                "read_bytes": 0,
+                "repeated_reads": 0,
+                "search_calls": 0,
+                "expansions": 1,
+                "continuation_bytes": 9494,
+                "duration": 24458052729
+              },
+              "estimated_cost": {
+                "amount": 0,
+                "currency": "USD",
+                "estimate": true,
+                "source": "model_priced"
+              },
+              "stop_reason": "terminal investigator output accepted"
+            },
+            {
+              "id": "att_vjfw2peufwvaf3ykhhuuika74i/qa-v1-shard-d1e7efff65ff7d71f9163122/1/evidence/1",
+              "number": 2,
+              "session_id": "ses_f884c1f8cffe394YIg8hPcWl25",
+              "provider": "openai",
+              "model": "gpt-5.6-sol",
+              "variant": "low",
+              "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+              "workspace_id": "56a6f6c1041fb05e558ba564838e0c8da32147ee1569c8e68aa9e4beb95c263d",
+              "started_at": "2026-09-07T11:35:48.354745556Z",
+              "completed_at": "2026-09-07T11:38:31.130510371Z",
+              "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+              "usage": {
+                "input_tokens_known": true,
+                "input_tokens": 398,
+                "output_tokens_known": true,
+                "output_tokens": 34,
+                "total_tokens_known": true,
+                "total_tokens": 58049,
+                "reasoning_tokens_known": true,
+                "reasoning_tokens": 145,
+                "cache_read_tokens_known": true,
+                "cache_read_tokens": 57472,
+                "cache_write_tokens_known": true,
+                "turns_known": false
+              },
+              "runtime_events": 43,
+              "retained_events": 43,
+              "observed_tool_calls": 13,
+              "context_metrics": {
+                "prompt_bytes": 8756,
+                "prefix_bytes": 0,
+                "tool_calls_by_kind": {
+                  "apply_patch": 1,
+                  "grep": 5,
+                  "read": 7
+                },
+                "distinct_files_read": 0,
+                "read_bytes": 31103,
+                "repeated_reads": 0,
+                "search_calls": 5,
+                "expansions": 0,
+                "continuation_bytes": 0,
+                "duration": 162775764815
+              },
+              "stop_reason": "investigator-authored test snapshotted"
+            }
+          ],
+          "evidence": [
+            {
+              "kind": "investigator_test",
+              "summary": "Request qa-v2-request-2dacd623de9f8de5812444c7: predicted_failure_reproduced\nRequired observation: Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation.\nTest internal/sprint/qa_investigator_8de5812444c7_test.go:\npackage sprint\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"fmt\"\n\t\"testing\"\n\t\"time\"\n)\n\nfunc TestQAInvestigator_8de5812444c7(t *testing.T) {\n\tcontrolPublished, err := runPerformanceFailureFlowPublication(t, false)\n\tif err != nil {\n\t\tt.Fatalf(\"passing control could not exercise failure finalization: %v\", err)\n\t}\n\tif !controlPublished {\n\t\tt.Fatal(\"passing control did not publish the performance flow summary\")\n\t}\n\n\tstalePublished, err := runPerformanceFailureFlowPublication(t, true)\n\tif err != nil {\n\t\tt.Fatalf(\"revocation reproduction could not exercise failure finalization: %v\", err)\n\t}\n\tif stalePublished {\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8de5812444c7\")\n\t\tt.Fatal(\"Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation: stale writer published the performance flow summary\")\n\t}\n}\n\nfunc runPerformanceFailureFlowPublication(t *testing.T, revoke bool) (bool, error) {\n\tt.Helper()\n\troot := workspaceFixture(t)\n\tsp := sprintFixture(t, root, \"proj\", \"39-performance\")\n\tnow := time.Date(2026, 9, 7, 12, 0, 0, 0, time.UTC)\n\tif err := SaveFlowState(root, sp, NewFlowState(sp, completeStates(sp), now)); err != nil {\n\t\treturn false, err\n\t}\n\n\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\towned := true\n\tfence := func(got VerificationWriterToken) error {\n\t\tif got != token || !owned {\n\t\t\treturn context.Canceled\n\t\t}\n\t\treturn nil\n\t}\n\tattemptID := \"performance-v1-attempt-aaaaaaaaaaaaaaaaaaaaaaaa\"\n\tref := func(name string) PerformanceArtifactRef {\n\t\tpath, pathErr := PerformanceAttemptRelPath(sp, attemptID, name)\n\t\tif pathErr != nil {\n\t\t\tt.Fatal(pathErr)\n\t\t}\n\t\treturn PerformanceArtifactRef{Path: path, Digest: fingerprintOf(name)}\n\t}\n\tpacketRef, manifestRef, environmentRef := ref(\"target-packet.json\"), ref(\"benchmark-manifest.json\"), ref(\"environment.json\")\n\tstate := PerformanceState{\n\t\tSchemaVersion:      PerformanceSchemaVersion,\n\t\tProject:            sp.Project,\n\t\tSprint:             sp.Slug,\n\t\tAttemptID:          attemptID,\n\t\tPhase:              PerformancePhaseBaseline,\n\t\tFresh:              true,\n\t\tCorrelation:        token,\n\t\tDeadline:           now.Add(time.Hour),\n\t\tLimits:             DefaultPerformanceLimits(),\n\t\tPacket:             packetRef,\n\t\tTargetPacketDigest: fingerprintOf(\"packet\"),\n\t\tManifest:           \u0026manifestRef,\n\t\tEnvironment:        \u0026environmentRef,\n\t\tNextAction:         \"Measure the frozen baseline.\",\n\t\tUpdatedAt:          now,\n\t}\n\tprepared := PerformancePrepareResult{\n\t\tPacket: PerformanceTargetPacket{Targets: []PerformanceTarget{{ID: \"PERF-LATENCY\", Gate: PerformanceRequired}}},\n\t\tLimits: DefaultPerformanceLimits(),\n\t}\n\tstore := NewPerformanceStore(root, sp).WithWriterFence(fence).WithHooks(QAStateHooks{\n\t\tBeforeRename: func(kind, _ string) error {\n\t\t\tif revoke \u0026\u0026 kind == \"performance-state\" {\n\t\t\t\towned = false\n\t\t\t}\n\t\t\treturn nil\n\t\t},\n\t})\n\tcause := errors.New(\"measurement failed\")\n\tservice := NewService(root).WithClock(func() time.Time { return now })\n\t_, finishErr := service.finishPerformanceFailure(store, sp, prepared, state, packetRef, manifestRef, environmentRef, fingerprintOf(\"implementation\"), cause, token)\n\tif !errors.Is(finishErr, cause) {\n\t\treturn false, fmt.Errorf(\"failure finalization did not preserve its cause: %w\", finishErr)\n\t}\n\tflow, loadErr := LoadFlowState(root, sp)\n\tif loadErr != nil {\n\t\treturn false, loadErr\n\t}\n\treturn flow.Performance != nil \u0026\u0026 flow.Performance.AttemptID == attemptID, nil\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_8de5812444c7\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8de5812444c7\n    qa_investigator_8de5812444c7_test.go:26: Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation: stale writer published the performance flow summary\n--- FAIL: TestQAInvestigator_8de5812444c7 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.010s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+              "paths": [
+                "internal/sprint/qa_investigator_8de5812444c7_test.go"
+              ],
+              "check_id": "qa-v2-test-ca19e0ea03ee34a7e85b06af",
+              "output_digest": "9303f0cbff928d03f3c24b0cca10fd88f7691ad4b8f28c164b618af73ea86ac6"
+            }
+          ],
+          "outcome": "confirmed",
+          "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+        }
+      ]
+    }
+  ],
+  "outcome_counts": {
+    "confirmed": 17
+  },
+  "next_action": "Inspect the retained theory outcomes."
+}

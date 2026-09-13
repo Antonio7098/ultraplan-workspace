@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-2dacd623de9f8de5812444c7",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-8777e689a2caaaafff1d1064"
+    ],
+    "origin_shard_id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+    "gap": "The requested source expansion did not provide executable proof of the suspected stale-writer race.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer using a fence hook synchronized around finishPerformanceFailure's final state and flow publications.",
+    "required_observation": "Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation.",
+    "control_requirement": "Run the same path without revocation and verify normal flow publication succeeds.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "test_bundle_id": "qa-v2-test-ca19e0ea03ee34a7e85b06af",
+    "latest_run_id": "qa-v2-run-7ba5ef35da866b064707c3e1",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

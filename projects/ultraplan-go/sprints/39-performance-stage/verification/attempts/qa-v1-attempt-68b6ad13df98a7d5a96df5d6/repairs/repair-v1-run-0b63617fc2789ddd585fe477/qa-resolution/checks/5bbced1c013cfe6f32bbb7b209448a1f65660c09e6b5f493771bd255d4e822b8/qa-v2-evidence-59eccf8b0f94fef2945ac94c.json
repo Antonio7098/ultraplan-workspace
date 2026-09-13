@@ -1,0 +1,104 @@
+{
+  "schema_version": 2,
+  "check": {
+    "replacement": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-replacements/qa-v2-test-dc7bd57b7dd74e4b104afda0.json",
+      "digest": "2734cb33ff5ab0264f128ad6989342a67c38447f2545414d98e420c55645e6b9"
+    },
+    "evidence_id": "qa-v2-evidence-59eccf8b0f94fef2945ac94c",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+      "schema_version": 2,
+      "id": "qa-v2-run-38e757cc9cff4d7aa6d4d064",
+      "spec_id": "qa-v2-spec-18e8449e2e3c62ad4ac6a124",
+      "test_bundle_id": "qa-v2-test-97201aeaf68f5a6b7df50ea0",
+      "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/complete_target_results_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/complete_target_results_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "edbb77841d17e790eb11cd40c157457b4af19ca83120a37a282a0661a01d7123",
+        "exit_code": 0,
+        "duration": 31441472544,
+        "stdout_digest": "e7d2f6344b7496abd4c784ea4f5f5c5b4e082df04880dca3df6c89d1d2344415",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_b7efe9eb62a1\n=== RUN   TestQAInvestigator_b7efe9eb62a1/complete_target_results_control\n=== RUN   TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities\n--- PASS: TestQAInvestigator_b7efe9eb62a1 (0.16s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/complete_target_results_control (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities (0.16s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.169s\n",
+        "output_bytes": 963,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_b7efe9eb62a1",
+        "assertion": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T15:00:25.0755691Z"
+    }
+  }
+}

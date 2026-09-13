@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-75b6dc63274b8aea2a589039",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Browser performance workbench and API",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/templates/sprint.html",
+    "internal/web/test_fakes_test.go"
+  ],
+  "context_paths": [
+    "internal/app/web_usecases.go"
+  ],
+  "behavioral_concerns": [
+    "Disabled projects expose no mutation controls; server-rendered controls preserve confirmation and durable operation boundaries.",
+    "HTML and API routes expose current status, terminal result, and bounded evidence metadata with stable schema and safe error translation.",
+    "Operation decoding rejects caller-selected target, model, timeout, suite, parallelism, and other authority-bearing options.",
+    "Query limits, cursors, and filters are validated and bounded, hostile text is encoded for HTML, and raw samples, output, profiles, patches, prompts, environment values, and secrets are never returned."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2b729a3f34f22ffc27619786",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-43f6c6336f81c3ce55628909",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-60d9d4670700f4fa65726e0a",
+    "qa-v1-block-6b3d316eb085c04c5c6ecfb7",
+    "qa-v1-block-6fa1ac5555890a0fa404e61e",
+    "qa-v1-block-7985bad832d92491b9f91289",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-95f9f726d965e7685184fba7",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-a11b800e9abfe97c390d8c4b",
+    "qa-v1-block-a5a99f68244402bfc8e432b8",
+    "qa-v1-block-b78a61cde5b699690eb3c5f2",
+    "qa-v1-block-d16d7f7b34fef6ef0b67aee4",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-d5ce194480a423a58e7143af",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-e8f8d9a28d7be2d1fb220b0a",
+    "qa-v1-block-fc8f8aa155d13c00e77a839c"
+  ],
+  "prepared_prompt_bytes": 153001,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-75b6dc63274b8aea2a589039",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-75b6dc63274b8aea2a589039/1",
+      "number": 1,
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "2d94244a8f53e9ca4bb0278c43b12d928729c7e6d0d02ad4598f13a647002dd5",
+      "started_at": "2026-09-12T16:45:52.475863264Z",
+      "completed_at": "2026-09-12T16:45:52.500309012Z",
+      "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 0,
+      "retained_events": 0,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 153001,
+        "prefix_bytes": 19551,
+        "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+        "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 24445748
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-07T17:07:41.169033118Z",
+        "completed_at": "2026-09-07T17:08:42.253777353Z",
+        "run_id": "qa-v2-run-075e9e46e60c71f2fa8cf256"
+      }
+    ],
+    "preparation_attempts": 1,
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+    "recovery_reason": "evidence_round_budget_exhausted",
+    "id": "qa-v2-request-a53dc7379d6356bcf430b685",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+    ],
+    "origin_shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+    "gap": "The theory needs sufficient executable evidence for a final decision: Sprint summary, TUI, and web performance projections omit operational lifecycle and cancellation state even when a durable run exists.",
+    "requested_evidence": "Create an executable test of the claim at internal/app/sprint_usecases.go performanceSummaryForSprint, PerformanceStatus, and SprintSummaries; internal/web/handlers.go api_sprint_performance; internal/tui/model.go performance navigation.. Exercise the actual claimed entry point. Use a contract or static assertion if behavioral reproduction is unsuitable. Preserve the frozen requirements; report why verification is unavailable if no valid check can be constructed.",
+    "required_observation": "Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fields.. Refute only if: Sprint summary composition enriches the projection from the durable run manager, or all consuming adapters call the enriched PerformanceStatus use case instead of the raw projection.. Otherwise: The durable lifecycle enrichment or Sprint query implementation differs outside the cited excerpts such that the summary is enriched before presentation.",
+    "control_requirement": "Include a passing control reaching the same entry point and assert fixture preconditions before the defect assertion.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 3,
+    "attempts": 1,
+    "evidence_fingerprint": "b37767c95975bc664be478a82f88e458f3223cbade86973e4a82582f7759a4bc",
+    "test_bundle_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+    "latest_run_id": "qa-v2-run-075e9e46e60c71f2fa8cf256",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

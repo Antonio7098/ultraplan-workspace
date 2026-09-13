@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+  "spec_id": "qa-v2-spec-86a75b87821538120b9d3549",
+  "files": [
+    {
+      "path": "internal/sprint/qa_investigator_2f5fd0db9fe4_test.go",
+      "content": "package sprint\n\nimport \"testing\"\n\nfunc TestQAInvestigator_2f5fd0db9fe4(t *testing.T) {\n\tdescriptor := PerformanceDescriptor{Kind: PerformanceJSONRunner, RawUnit: PerformanceMS}\n\ttarget := PerformanceTarget{ID: \"PERF-LATENCY\", Scenario: \"request\", Metric: \"latency\"}\n\tvalid := performanceOutputLine(performanceJSONEnvelope{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tTargetID:      target.ID,\n\t\tScenario:      target.Scenario,\n\t\tMetric:        target.Metric,\n\t\tUnit:          descriptor.RawUnit,\n\t\tValue:         \"1.50\",\n\t})\n\n\tif got, err := ParsePerformanceOutput(descriptor, target, valid+\"   \", false); err != nil || got != \"1.5\" {\n\t\tt.Fatalf(\"control: whitespace-only trailing content: value=%q error=%v\", got, err)\n\t}\n\tif _, err := ParsePerformanceOutput(descriptor, target, valid+` {}`, false); err == nil {\n\t\tt.Fatal(\"control: second valid JSON value was accepted\")\n\t}\n\n\tgot, err := ParsePerformanceOutput(descriptor, target, valid+` {`, false)\n\tif err == nil \u0026\u0026 got == \"1.5\" {\n\t\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4: Assert parsing succeeds and returns the canonical value despite malformed trailing content.\")\n\t}\n\tif err == nil {\n\t\tt.Fatalf(\"malformed trailing content returned unexpected value %q\", got)\n\t}\n}\n",
+      "digest": "d6b828622375a2b24ffd5e2c5ccf23a1d86c065edf3c30c973d69e8da527cb33",
+      "bytes": 1255
+    }
+  ],
+  "content_digest": "9f91fdde252b623391db63533c14bb4f01fc53be68500f19975f0d52d7738c52"
+}

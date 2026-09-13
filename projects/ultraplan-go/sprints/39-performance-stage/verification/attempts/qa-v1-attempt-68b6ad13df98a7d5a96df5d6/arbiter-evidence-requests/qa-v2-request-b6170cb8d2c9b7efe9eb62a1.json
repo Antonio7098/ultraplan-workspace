@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:39:30.37962835Z",
+        "completed_at": "2026-09-12T11:40:12.018819228Z",
+        "run_id": "qa-v2-run-6c79c75ec0ce6818215084d9"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-b6170cb8d2c9b7efe9eb62a1",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-1007492d20bbcc01841fb291",
+      "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+    ],
+    "origin_shard_id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+    "gap": "Both repair-authority defects are statically confirmed, but neither has executable negative-case evidence.",
+    "requested_evidence": "Create or strengthen executable Go _test.go reproducers in the approved private workspace for persisted repair validation and reordered frozen baselines.",
+    "required_observation": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishable targets and reordered baseline entries to prove which baseline median each target receives.",
+    "control_requirement": "Use valid digests and authority fields so failures or acceptance cannot be attributed to unrelated schema, digest, cleanup, or environment checks.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "b171076af96ecfc98a9798ed8c2adccdcd3c376a3ee067f5808f68ba21703fe9",
+    "test_bundle_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+    "latest_run_id": "qa-v2-run-6c79c75ec0ce6818215084d9",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

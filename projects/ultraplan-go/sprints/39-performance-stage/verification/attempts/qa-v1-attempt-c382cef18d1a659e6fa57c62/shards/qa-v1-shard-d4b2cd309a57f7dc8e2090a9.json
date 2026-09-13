@@ -1,0 +1,436 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "TUI performance presentation",
+  "changed_paths": [
+    "internal/testdata/performance/states.json",
+    "internal/tui/model.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/app/operations.go",
+    "internal/app/sprint_usecases.go"
+  ],
+  "behavioral_concerns": [
+    "Every canonical presentation state, including stale, resumable, cleanup-uncertain, evidence-gap, and recovery-conflict, remains representable.",
+    "Mutation actions are hidden for disabled projects, while historical attempts remain inspectable.",
+    "Start and resume are visibly mutating operations; evidence pagination uses the server-issued cursor and effective page size.",
+    "TUI presents phase, freshness, product outcome, operational lifecycle, next action, target count, and bounded evidence consistently."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-errors"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1f23acf7acba759b630b1af5",
+    "qa-v1-block-23ffd3df512e9cb822d95ab8",
+    "qa-v1-block-2fce131e71a4ce4470c83148",
+    "qa-v1-block-5e1a3f9fa0a73f004d4d6232",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-9f50cd9470412063551dc33b"
+  ],
+  "prepared_prompt_bytes": 62361,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-d4b2cd309a57f7dc8e2090a9/1",
+      "number": 1,
+      "session_id": "ses_f88a42991ffeD3N9mGVXy9blGc",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "56ebafa039640076fbf4252655ab8e5b3f0afdd5436347dded46e9ae7cefdfb4",
+      "started_at": "2026-09-06T15:34:58.873863373Z",
+      "completed_at": "2026-09-06T15:35:49.565311289Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance navigation admits disabled states with an attempt and adds mutating operations.",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/testdata/performance/states.json",
+            "internal/tui/qa_view_test.go"
+          ],
+          "output_digest": "45ce308420c7d399b62cf1c21eb8fa51efac77cfc29dca0c4e59d3ef94fe2253"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 20596,
+        "output_tokens_known": true,
+        "output_tokens": 1008,
+        "total_tokens_known": true,
+        "total_tokens": 41236,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 304,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 19328,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 62361,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 50691447916
+      },
+      "estimated_cost": {
+        "amount": 0.1571724,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-d4b2cd309a57f7dc8e2090a9/1/evidence/1",
+      "number": 2,
+      "session_id": "ses_f88a42991ffeD3N9mGVXy9blGc",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "56ebafa039640076fbf4252655ab8e5b3f0afdd5436347dded46e9ae7cefdfb4",
+      "started_at": "2026-09-07T11:52:42.764344886Z",
+      "completed_at": "2026-09-07T11:53:57.557895725Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1189,
+        "output_tokens_known": true,
+        "output_tokens": 44,
+        "total_tokens_known": true,
+        "total_tokens": 29532,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 139,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 28160,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 20,
+      "retained_events": 20,
+      "observed_tool_calls": 3,
+      "context_metrics": {
+        "prompt_bytes": 7909,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "read": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 15708,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 74793550839
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-d4b2cd309a57f7dc8e2090a9/1/evidence/qa-v2-request-c5b5b98d792e1bc58f90bf82/2",
+      "number": 3,
+      "session_id": "ses_f88a42991ffeD3N9mGVXy9blGc",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "f7a0d0e279ff5caaf3b2397ae7788f928979b30263bac97a7026b5c5b6a7bd00",
+      "started_at": "2026-09-07T17:14:32.876053504Z",
+      "completed_at": "2026-09-07T17:15:50.050692294Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 935,
+        "output_tokens_known": true,
+        "output_tokens": 43,
+        "total_tokens_known": true,
+        "total_tokens": 37586,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 36608,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 18,
+      "retained_events": 18,
+      "observed_tool_calls": 2,
+      "context_metrics": {
+        "prompt_bytes": 17639,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 77174638790
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ac5be59947bfccdb558de158",
+      "shard_id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+      "claim": "The TUI exposes mutating performance actions for a disabled project when a historical performance attempt exists.",
+      "basis": "The canonical historical state has enabled=false, while navItems admits states with an existing attempt and then adds start, resume, cancel, and recover actions (qa-v1-block-9f50cd9470412063551dc33b, qa-v1-block-2fce131e71a4ce4470c83148).",
+      "verification_surface": "internal/tui/model.go navItems behavior for a sprint with Enabled=false and a non-empty PerformanceAttemptID",
+      "expectation_refs": [
+        "contract-architecture"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A disabled sprint with a historical attempt receives any mutating performance navigation action, including start, resume, cancel, or recover.",
+      "refutation_condition": "Disabled performance policy omits every mutating performance action while preserving historical status and evidence access regardless of PerformanceAttemptID.",
+      "inconclusive_condition": "An uncited presentation layer filters these mutating actions before users can access them.",
+      "safe_evidence_strategy": "Statically instantiate the canonical historical state, evaluate navItems, and inspect the resulting operation kinds without executing an operation.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-d4b2cd309a57f7dc8e2090a9/1",
+          "number": 1,
+          "session_id": "ses_f88a42991ffeD3N9mGVXy9blGc",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "56ebafa039640076fbf4252655ab8e5b3f0afdd5436347dded46e9ae7cefdfb4",
+          "started_at": "2026-09-06T15:34:58.873863373Z",
+          "completed_at": "2026-09-06T15:35:49.565311289Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Performance navigation admits disabled states with an attempt and adds mutating operations.",
+              "paths": [
+                "internal/tui/model.go",
+                "internal/testdata/performance/states.json",
+                "internal/tui/qa_view_test.go"
+              ],
+              "output_digest": "45ce308420c7d399b62cf1c21eb8fa51efac77cfc29dca0c4e59d3ef94fe2253"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 20596,
+            "output_tokens_known": true,
+            "output_tokens": 1008,
+            "total_tokens_known": true,
+            "total_tokens": 41236,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 304,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 19328,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 62361,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 50691447916
+          },
+          "estimated_cost": {
+            "amount": 0.1571724,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-d4b2cd309a57f7dc8e2090a9/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88a42991ffeD3N9mGVXy9blGc",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "56ebafa039640076fbf4252655ab8e5b3f0afdd5436347dded46e9ae7cefdfb4",
+          "started_at": "2026-09-07T11:52:42.764344886Z",
+          "completed_at": "2026-09-07T11:53:57.557895725Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1189,
+            "output_tokens_known": true,
+            "output_tokens": 44,
+            "total_tokens_known": true,
+            "total_tokens": 29532,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 139,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 28160,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 20,
+          "retained_events": 20,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 7909,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 15708,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 74793550839
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-d4b2cd309a57f7dc8e2090a9/1/evidence/qa-v2-request-c5b5b98d792e1bc58f90bf82/2",
+          "number": 3,
+          "session_id": "ses_f88a42991ffeD3N9mGVXy9blGc",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "f7a0d0e279ff5caaf3b2397ae7788f928979b30263bac97a7026b5c5b6a7bd00",
+          "started_at": "2026-09-07T17:14:32.876053504Z",
+          "completed_at": "2026-09-07T17:15:50.050692294Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 935,
+            "output_tokens_known": true,
+            "output_tokens": 43,
+            "total_tokens_known": true,
+            "total_tokens": 37586,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 36608,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 18,
+          "retained_events": 18,
+          "observed_tool_calls": 2,
+          "context_metrics": {
+            "prompt_bytes": 17639,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 77174638790
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance navigation admits disabled states with an attempt and adds mutating operations.",
+          "paths": [
+            "internal/tui/model.go",
+            "internal/testdata/performance/states.json",
+            "internal/tui/qa_view_test.go"
+          ],
+          "output_digest": "45ce308420c7d399b62cf1c21eb8fa51efac77cfc29dca0c4e59d3ef94fe2253"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-6dcc389dd5fb297608a713ec: unrelated_compile_or_panic_failure\nRequired observation: Assert start, resume, cancel, and recover operation kinds are present.\nTest internal/tui/qa_investigator_297608a713ec_test.go:\npackage tui\n\nimport (\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\nfunc TestQAInvestigator_297608a713ec(t *testing.T) {\n\tdata := fixtureDashboard()\n\tsummary := \u0026data.Sprints[0]\n\tmodel := Model{Data: data, Routes: []Route{{Kind: RouteSprint, Project: summary.Project, Sprint: summary.Slug}}}\n\n\tperformanceKinds := func() map[app.OperationKind]bool {\n\t\tkinds := make(map[app.OperationKind]bool)\n\t\tfor _, item := range model.navItems() {\n\t\t\tif item.Operation != nil \u0026\u0026 strings.HasPrefix(string(item.Operation.Kind), \"performance-\") {\n\t\t\t\tkinds[item.Operation.Kind] = true\n\t\t\t}\n\t\t}\n\t\treturn kinds\n\t}\n\n\t// Control: disabled policy without history exposes no performance actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"disabled\", Enabled: false}\n\tmodel.Data = data\n\tif kinds := performanceKinds(); len(kinds) != 0 {\n\t\tt.Fatalf(\"disabled-without-attempt control exposed performance operations: %v\", kinds)\n\t}\n\n\t// Control: an enabled current attempt exposes the expected mutation actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"enabled\", Enabled: true, PerformanceAttemptID: \"performance-v1-attempt-current\"}\n\tmodel.Data = data\n\tmutating := []app.OperationKind{app.OperationPerformanceStart, app.OperationPerformanceResume, app.OperationPerformanceCancel, app.OperationPerformanceRecover}\n\tcurrentKinds := performanceKinds()\n\tfor _, kind := range mutating {\n\t\tif !currentKinds[kind] {\n\t\t\tt.Fatalf(\"enabled-current-attempt control missing %s\", kind)\n\t\t}\n\t}\n\n\t// Historical attempts remain inspectable, but disabled policy must hide mutation actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"disabled\", Enabled: false, Phase: \"terminal\", Fresh: false, Outcome: \"passed\", PerformanceAttemptID: \"performance-v1-attempt-historical\"}\n\tmodel.Data = data\n\thistoricalKinds := performanceKinds()\n\tvar exposed []string\n\tfor _, kind := range mutating {\n\t\tif historicalKinds[kind] {\n\t\t\texposed = append(exposed, string(kind))\n\t\t}\n\t}\n\tif len(exposed) != 0 {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_297608a713ec assertion=Assert start, resume, cancel, and recover operation kinds are present. exposed_disabled_historical_mutations=%s\", strings.Join(exposed, \",\"))\n\t}\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed]\nFAIL\n\nObserved stderr:\ngo: downloading github.com/charmbracelet/glamour v1.0.0\ngo: downloading github.com/charmbracelet/bubbletea v1.3.10\ngo: downloading github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6\ngo: downloading github.com/muesli/cancelreader v0.2.2\ngo: downloading github.com/charmbracelet/x/ansi v0.10.2\ngo: downloading github.com/charmbracelet/x/term v0.2.1\ngo: downloading github.com/rivo/uniseg v0.4.7\ngo: downloading github.com/charmbracelet/x/cellbuf v0.0.13\ngo: downloading github.com/muesli/termenv v0.16.0\ngo: downloading github.com/mattn/go-runewidth v0.0.17\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc\ngo: downloading golang.org/x/term v0.36.0\ngo: downloading github.com/lucasb-eyer/go-colorful v1.3.0\ngo: downloading github.com/yuin/goldmark-emoji v1.0.6\ngo: downloading github.com/aymanbagabas/go-osc52/v2 v2.0.1\ngo: downloading github.com/alecthomas/chroma/v2 v2.20.0\ngo: downloading github.com/mattn/go-isatty v0.0.24\ngo: downloading github.com/charmbracelet/x/exp/slice v0.0.0-20250327172914-2fdc97757edf\ngo: downloading github.com/microcosm-cc/bluemonday v1.0.27\ngo: downloading github.com/muesli/reflow v0.3.0\ngo: downloading golang.org/x/text v0.30.0\ngo: downloading github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e\ngo: downloading golang.org/x/net v0.38.0\ngo: downloading github.com/aymerick/douceur v0.2.0\ngo: downloading github.com/gorilla/css v1.0.1\ngo: downloading github.com/dlclark/regexp2 v1.11.5\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\ncrypto/fips140: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b102/vet.cfg: no space left on device\ncrypto/internal/fips140/edwards25519/field: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b150/vet.cfg: no space left on device\ncrypto/internal/fips140/aes: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b082/vet.cfg: no space left on device\ncrypto/internal/fips140/tls12: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b176/vet.cfg: no space left on device\ncrypto/internal/fips140/bigmod: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b155/vet.cfg: no space left on device\ncrypto/internal/fips140/hkdf: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b167/vet.cfg: no space left on device\ncrypto/internal/fips140/edwards25519: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b165/vet.cfg: no space left on device\ncrypto/tls/internal/fips140tls: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b183/vet.cfg: no space left on device\ncrypto/internal/fips140/tls13: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b177/vet.cfg: no space left on device\n# io/fs\ncompile: writing output: write $WORK/b037/_pkg_.a: no space left on device\n# regexp\ncompile: writing output: write $WORK/b118/_pkg_.a: no space left on device\ncontext: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b063/vet.cfg: no space left on device\ncrypto/internal/fips140deps/time: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b099/vet.cfg: no space left on device\ncrypto/internal/entropy/v1.0.0: write /tmp/ultraplan-qa-authored-test-2938957967/qa-v2-test-b33b7988476beb7446f1e3c7-2931824098/.ultraplan-test-runtime/tmp/go-build2884978267/b098/vet.cfg: no space left on device\n# reflect\ncompile: writing output: write $WORK/b057/_pkg_.a: no space left on device\n# crypto/internal/fips140/nistec/fiat\ncompile: writing output: write $WORK/b149/_pkg_.a: no space left on device\n# internal/poll\ncompile: writing output: write $WORK/b053/_pkg_.a: no space left on device\n",
+          "paths": [
+            "internal/tui/qa_investigator_297608a713ec_test.go"
+          ],
+          "check_id": "qa-v2-test-b33b7988476beb7446f1e3c7",
+          "output_digest": "8b6096a45e4146a6f73459e83d77f98e534dc8d6c57291845bf193952ee6e3be"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-c5b5b98d792e1bc58f90bf82: predicted_failure_reproduced\nRequired observation: Assert start, resume, cancel, and recover operation kinds are present.\nTest internal/tui/qa_investigator_1bc58f90bf82_test.go:\npackage tui\n\nimport (\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\nfunc TestQAInvestigator_1bc58f90bf82(t *testing.T) {\n\tdata := fixtureDashboard()\n\tsummary := \u0026data.Sprints[0]\n\tmodel := Model{Data: data, Routes: []Route{{Kind: RouteSprint, Project: summary.Project, Sprint: summary.Slug}}}\n\n\tperformanceKinds := func() map[app.OperationKind]bool {\n\t\tkinds := make(map[app.OperationKind]bool)\n\t\tfor _, item := range model.navItems() {\n\t\t\tif item.Operation != nil \u0026\u0026 strings.HasPrefix(string(item.Operation.Kind), \"performance-\") {\n\t\t\t\tkinds[item.Operation.Kind] = true\n\t\t\t}\n\t\t}\n\t\treturn kinds\n\t}\n\tmutating := []app.OperationKind{\n\t\tapp.OperationPerformanceStart,\n\t\tapp.OperationPerformanceResume,\n\t\tapp.OperationPerformanceCancel,\n\t\tapp.OperationPerformanceRecover,\n\t}\n\n\t// Control: disabled policy without history exposes no performance actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"disabled\", Enabled: false}\n\tmodel.Data = data\n\tif kinds := performanceKinds(); len(kinds) != 0 {\n\t\tt.Fatalf(\"disabled-without-attempt control exposed performance operations: %v\", kinds)\n\t}\n\n\t// Control: an enabled current attempt exposes all expected mutation actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"enabled\", Enabled: true, PerformanceAttemptID: \"performance-v1-attempt-current\"}\n\tmodel.Data = data\n\tcurrentKinds := performanceKinds()\n\tfor _, kind := range mutating {\n\t\tif !currentKinds[kind] {\n\t\t\tt.Fatalf(\"enabled-current-attempt control missing %s\", kind)\n\t\t}\n\t}\n\n\t// Historical data remains inspectable, but disabled policy must hide mutations.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"disabled\", Enabled: false, Phase: \"terminal\", Fresh: false, Outcome: \"passed\", PerformanceAttemptID: \"performance-v1-attempt-historical\"}\n\tmodel.Data = data\n\thistoricalKinds := performanceKinds()\n\tvar exposed []string\n\tfor _, kind := range mutating {\n\t\tif historicalKinds[kind] {\n\t\t\texposed = append(exposed, string(kind))\n\t\t}\n\t}\n\tif len(exposed) != 0 {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1bc58f90bf82 assertion=Assert start, resume, cancel, and recover operation kinds are present. exposed_disabled_historical_mutations=%s\", strings.Join(exposed, \",\"))\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_1bc58f90bf82\n    qa_investigator_1bc58f90bf82_test.go:59: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1bc58f90bf82 assertion=Assert start, resume, cancel, and recover operation kinds are present. exposed_disabled_historical_mutations=performance-start,performance-resume,performance-cancel,performance-recover\n--- FAIL: TestQAInvestigator_1bc58f90bf82 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.024s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/tui/qa_investigator_1bc58f90bf82_test.go"
+          ],
+          "check_id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+          "output_digest": "7ce4106250753e89d3dc8b304e77c4c7658d59878bfdbd154fcc2c8257720028"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

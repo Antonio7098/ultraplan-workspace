@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-81a552c8dd5702af9a09ed76",
+  "mode": "automatic",
+  "outcome": "escalated",
+  "reason": "isolated proposal violated confirmed scope: derived proposal patch exceeds confirmed limit",
+  "stop_reason": "unsupported_change",
+  "consumed": {
+    "cycles": 0,
+    "mutation_cycles": 0,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 0,
+    "changed_bytes": 0,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 0,
+    "output_bytes": 0
+  },
+  "runtime": {
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "variant": "high",
+    "session_id": "ses_f69747048ffez7N3kp2fzF83VV",
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 839,
+      "output_tokens_known": true,
+      "output_tokens": 126,
+      "total_tokens_known": true,
+      "total_tokens": 99461,
+      "reasoning_tokens_known": true,
+      "reasoning_tokens": 192,
+      "cache_read_tokens_known": true,
+      "cache_read_tokens": 98304,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "estimated_cost": {
+      "amount": 0.0225988,
+      "currency": "USD",
+      "estimate": true,
+      "source": "model_priced"
+    },
+    "started_at": "2026-09-12T16:55:21.361073909Z",
+    "completed_at": "2026-09-12T17:02:09.342278995Z",
+    "duration": 407981205086,
+    "duration_ms": 407981,
+    "runtime_events": 109,
+    "retained_events": 109,
+    "observed_tool_calls": 54,
+    "provisional_passed": false
+  },
+  "target": {
+    "fingerprint": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "ab392936661e434a764e58465714d59ca78f5482f3f4b90a301d2824e6550c08"
+  },
+  "cleanup_complete": true,
+  "production_applied": false,
+  "complete_ladder": false,
+  "unresolved_issues": [
+    "qa-v2-issue-b7d939b9fd2a4515f261c14c"
+  ],
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-81a552c8dd5702af9a09ed76/issue-packet.json",
+      "digest": "dc6d98daee71a16de1dab6c877dbd268e0f3123e3a2bbbea6c460eb47d33d898"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-81a552c8dd5702af9a09ed76/confirmation.json",
+      "digest": "561a206518123c2c671fb95387c13af38b68fe97735d061c22548f79e4921c01"
+    }
+  ],
+  "next_action": "Inspect scope, drift, cleanup, and apply evidence before any further mutation.",
+  "completed_at": "2026-09-12T17:02:18.043887466Z"
+}

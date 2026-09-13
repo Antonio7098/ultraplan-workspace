@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-8f64ba11633e15cad2c2ee5e",
+  "spec_id": "qa-v2-spec-e2721c42c3167585652edf65",
+  "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_78d7bc49d841",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_78d7bc49d841",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841",
+    "executable": "go",
+    "args_digest": "594bcf11fc25993b09c03b11674c589c9e73a854db1987aa9a069eb184a93b62",
+    "exit_code": 1,
+    "duration": 22115972876,
+    "stdout_digest": "244f33444a9740c0b2d754479f23e919a5c0f4df35a924c9687444212cf77a7d",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_78d7bc49d841\n    qa_investigator_78d7bc49d841_test.go:29: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841 assertion=The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure. report-only summary should validate: flow state malformed: flow-state.json: invalid performance counts\n--- FAIL: TestQAInvestigator_78d7bc49d841 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.005s\nFAIL\n",
+    "output_bytes": 546,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_78d7bc49d841",
+    "assertion": "The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:42:26.002977808Z"
+}

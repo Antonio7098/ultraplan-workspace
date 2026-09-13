@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:43:41.323698925Z",
+        "completed_at": "2026-09-12T11:44:27.150692515Z",
+        "run_id": "qa-v2-run-ee90b3bb78731186156c3c86"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-ef633898930720f83a1a7704",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+    ],
+    "origin_shard_id": "qa-v1-shard-9a5eaeb04fc32c5820f521f3",
+    "gap": "Source proves case normalization, but existing executable parser tests omit uppercase and mixed-case policy values.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go parser reproducer in the approved private workspace for ENABLED, Enabled, DISABLED, and Disabled mode values.",
+    "required_observation": "The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.",
+    "control_requirement": "Exercise ParseProjectIndex directly with otherwise valid minimal project-index content and assert findings, not merely the resulting mode marker.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "b09e9cf3fb732c3133ce7580fbfa55c0f604a23eeb95117724233a80c7d225ac",
+    "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+    "latest_run_id": "qa-v2-run-ee90b3bb78731186156c3c86",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

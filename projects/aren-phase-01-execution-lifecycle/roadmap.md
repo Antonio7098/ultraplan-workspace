@@ -2,20 +2,22 @@
 
 > Project: `aren-phase-01-execution-lifecycle`  
 > Target repository: `../Aren/`  
-> Scope: define and prove the lifecycle of one supervised in-process execution.
+> Scope: define, prove, measure, and visually explain the lifecycle of one supervised in-process execution.
 
 ## 1. Scope Principle
 
 This project covers only Aren Phase 1.
 
-Its purpose is to prove that Aren can own one execution lifecycle without relying on an LLM, subprocess, network call, persistent store, workflow engine, or daemon.
+Its purpose is to prove that Aren can own one execution lifecycle without the supervised work relying on an LLM, subprocess, network call, persistent store, workflow engine, or persistent daemon. Phase 1 also establishes a repeatable performance baseline and a process-scoped browser view of the evidence that lifecycle produces.
 
-The project will not design later Aren capabilities in advance. Provider integration, tools, retries, persistence, workflows, pause/resume, remote execution, daemon hosting, and a universal executor abstraction remain deferred.
+The project will not design later Aren capabilities in advance. Provider integration, tools, retries, persistence, workflows, pause/resume, remote execution, persistent daemon hosting, and a universal executor abstraction remain deferred.
 
-The implementation is divided into two sprints because the lifecycle has two distinct uncertainties:
+The implementation is divided into four sprints because Phase 1 has four distinct uncertainties:
 
 1. Can Aren establish one coherent lifecycle and terminal outcome at all?
 2. Does that lifecycle remain truthful and race-free under cancellation, observation, and adversarial concurrency?
+3. Can Aren measure the realised lifecycle with a repeatable method that exposes overhead, scaling, memory, runtime-task growth, and contention?
+4. Can a browser frontend make that evidence understandable without becoming another source of lifecycle truth or affecting execution?
 
 The split is not by topic. Each sprint must end with a coherent, runnable, tested state.
 
@@ -34,7 +36,11 @@ Sprint 2 consumes Sprint 1 as prior project context
     ↓
 Sprint 2: Cancellation And Concurrency Hardening
     ↓
-Phase review + promoted lifecycle contract
+Sprint 3: Performance Methodology And Baseline
+    ↓
+Sprint 4: Observability Frontend
+    ↓
+Phase review + promoted lifecycle and observation contracts
 ```
 
 Each sprint uses the normal UltraPlan chain:
@@ -47,11 +53,11 @@ The technical handbook distills selected studies. It does not decide architectur
 
 ---
 
-## 3. Cross-Sprint Carry-Forward Rule
+## 3. Cross-sprint carry-forward rule
 
-Sprint 2 must not rediscover Sprint 1 from scratch.
+No sprint may rediscover earlier accepted work from scratch.
 
-Its planning inputs must explicitly include the completed Sprint 1 artifacts:
+Each sprint after Sprint 1 must include the completed artifacts of every sprint it depends on:
 
 ```text
 sprints/01-core-lifecycle/requirements.md
@@ -64,18 +70,18 @@ sprints/01-core-lifecycle/execute.md          # when present
 sprints/01-core-lifecycle/review.md           # when present
 ```
 
-The Sprint 2 `sprint-index.md` must classify them as prior project decisions and realised implementation context.
+Sprint 3 must add the equivalent completed Sprint 2 paths. Sprint 4 must add the equivalent completed Sprint 2 and Sprint 3 paths. Each `sprint-index.md` must classify them as prior project decisions and realised implementation context.
 
 Rules:
 
 - Sprint 1 `reasoning.md` is the authoritative synthesis of Sprint 1 decisions.
 - Sprint 1 area reasoning remains available for detailed rationale and rejected alternatives.
 - Sprint 1 technical-handbook evidence may be reused, but Sprint 2 should select additional reports targeted to cancellation, event delivery, and concurrency rather than regenerate the same handbook blindly.
-- Sprint 2 may supersede a Sprint 1 decision only when new evidence or realised implementation behaviour proves it insufficient or incorrect.
+- A later sprint may supersede an earlier decision only when new evidence or realised implementation behaviour proves it insufficient or incorrect.
 - A superseding decision must name the prior decision, explain the new evidence, describe the impact, and update the implementation plan accordingly.
 - Silence does not supersede a prior decision.
 
-This carry-forward rule should be copied into the Sprint 2 requirements and sprint index when that sprint is initialized.
+This carry-forward rule should be copied into each later sprint's requirements and sprint index when that sprint is initialized.
 
 ---
 
@@ -280,7 +286,7 @@ That section must state for each relevant Sprint 1 decision whether Sprint 2:
 - stress and race testing;
 - diagnostic CLI scenarios;
 - final lifecycle contract;
-- phase review and simplification review.
+- lifecycle hardening review and simplification review.
 
 #### Notes
 
@@ -321,7 +327,7 @@ Normal UltraPlan sprint artifacts plus:
 - leak-resistance evidence;
 - diagnostic CLI;
 - promoted execution-lifecycle contract;
-- Phase 1 review.
+- lifecycle hardening review.
 
 #### Commands
 
@@ -358,7 +364,7 @@ Sprint 2 is complete only when:
 - all tests pass under `go test -race`;
 - the diagnostic CLI exercises the real runtime;
 - the final lifecycle contract matches the realised implementation;
-- phase review finds no unresolved foundational ambiguity.
+- the lifecycle hardening review finds no unresolved foundational ambiguity before measurement and UI work begin.
 
 #### Evidence
 
@@ -378,9 +384,166 @@ The plan should name exact targeted test commands after reasoning selects packag
 
 ---
 
+## Implementation Wave 3 — Performance Methodology And Baseline
+
+### Sprint 3: Performance Methodology And Baseline
+
+> Slug: 03-performance-methodology-and-baseline
+> Status: planned
+> Depends On: 1, 2
+
+#### Goal
+
+Establish a repeatable performance experiment method over the realised Phase 1 lifecycle and record the first attributable baseline.
+
+At sprint completion, Aren must be able to measure lifecycle overhead, concurrency scaling, allocation, retained memory, runtime-task growth, tail latency, and contention without confusing controlled-work time with Aren cost.
+
+#### Uncertainty
+
+> Can Aren produce repeatable and interpretable performance evidence that remains comparable across implementation changes and later phases?
+
+#### Build
+
+- canonical synthetic workloads for immediate success, returned failure, cancellation, completed wait, event replay, concurrent completion, and blocked active runs;
+- microbenchmarks for lifecycle operations supported by the realised API;
+- bounded concurrency scenarios at the canonical Phase 1 levels that the host can run safely;
+- latency distribution, throughput, allocation, peak and retained memory, and runtime-task measurement;
+- CPU, heap, goroutine, mutex, block, and runtime-trace capture commands;
+- source revision, dirty state, Go toolchain, operating system, architecture, CPU, runtime settings, scenario parameters, duration, and sample metadata;
+- machine-readable result records;
+- human-readable statistical comparison using `benchstat` or an equivalent selected during reasoning;
+- quick local, pull-request, and extended execution tiers;
+- measured variance on the intended comparison environment;
+- documented rules for adding a benchmark when later phases introduce new costs;
+- the first Phase 1 performance baseline and interpretation report.
+
+#### Deferred
+
+- Sprint 3 measures the real Sprint 2 implementation. It does not build a parallel lifecycle model.
+- It does not invent universal throughput or latency targets before workload evidence exists.
+- It does not add a benchmark database, hosted service, fleet runner, or historical dashboard.
+- A benchmark result may justify a focused fix, but no optimization may weaken lifecycle, cancellation, ordering, observation, or failure semantics.
+- Correctness failures, leaks, unbounded growth, global serialization of independent runs, and observation that controls execution are release blockers. Other performance results establish the baseline.
+
+#### Deliverables
+
+- benchmark packages and scenario runner selected by Sprint 3 reasoning;
+- versioned workload and result schemas;
+- reproducible local commands;
+- pull-request and extended benchmark entry points;
+- profile capture and interpretation instructions;
+- machine-readable baseline evidence;
+- a human-readable Phase 1 baseline report;
+- tests for parsers, metadata, bounds, and benchmark determinism where practical;
+- Sprint 3 review.
+
+#### Acceptance
+
+Sprint 3 is complete only when:
+
+- every required workload exercises the real lifecycle implementation;
+- Aren time is distinguishable from controlled-work time where the workload contains a delay;
+- repeated samples can be compared statistically;
+- every retained result identifies its source and measurement environment;
+- the quick tier is suitable for ordinary development and the extended tier is explicitly bounded;
+- concurrency, blocked-run memory, retained memory, runtime-task growth, and contention have recorded evidence;
+- profile capture is demonstrated on at least one benchmark run;
+- normal variance is recorded before any regression threshold is proposed;
+- benchmark failures cannot be reported as successful measurements;
+- measurement code does not alter production lifecycle semantics;
+- `go test ./...`, `go test -race ./...`, and the selected benchmark commands pass;
+- the review records baseline limitations and does not overstate host-specific results.
+
+---
+
+## Implementation Wave 4 — Observability Frontend
+
+### Sprint 4: Observability Frontend
+
+> Slug: 04-observability-frontend
+> Status: planned
+> Depends On: 1, 2, 3
+
+#### Goal
+
+Ship the first dedicated Aren browser frontend for inspecting live and completed Phase 1 runs, failures, cancellation decisions, diagnostics, and performance evidence.
+
+At sprint completion, the browser must present the same canonical lifecycle truth as the runtime and CLI through a versioned read-only contract. Browser connection, slowness, disconnection, or failure must not affect execution.
+
+#### Uncertainty
+
+> Can Aren make its first lifecycle and performance evidence directly understandable in a browser without duplicating runtime semantics or introducing daemon architecture?
+
+#### Build
+
+- a versioned read-only observation DTO distinct from internal runtime types;
+- a process-scoped local observation service that binds to loopback;
+- a development command that runs or attaches the UI to a bounded diagnostic scenario without creating a persistent daemon;
+- run identity, state, timing, outcome, and cancellation summary;
+- an ordered event timeline keyed by sequence rather than timestamp;
+- structured returned-error, panic, cancellation, and invariant-diagnostic presentation;
+- visible distinction between canonical facts, diagnostics, and performance measurements;
+- live updates and complete late-connection reconstruction from retained in-memory history;
+- explicit empty, connecting, live, terminal, disconnected, malformed-evidence, and unsupported-version states;
+- keyboard navigation, visible focus, semantic landmarks and headings, non-colour state labels, reduced-motion support, and responsive layouts;
+- bounded payload, update, reconnection, and rendering behaviour;
+- agreement, observer-isolation, transport, frontend, accessibility, and browser tests.
+
+#### Deferred
+
+- The runtime remains the only owner of lifecycle truth. The service and frontend only project it.
+- The browser cannot commit transitions, cancel runs, or construct outcomes.
+- The local service is not durable, remotely accessible, multi-user, or a general Aren API.
+- Sprint 4 does not add authentication, production telemetry export, a global event stream, or persistent observation storage.
+- A UI requirement may not force false runtime events or instrumentation into the execution critical path.
+
+#### Deliverables
+
+- browser frontend and its design-system foundation;
+- process-scoped loopback observation service;
+- explicit observation schema and compatibility tests;
+- live and completed-run views;
+- lifecycle timeline and structured outcome, failure, cancellation, diagnostic, and performance views;
+- automated frontend, transport, integration, accessibility, and observer-isolation tests;
+- diagnostic commands for required lifecycle scenarios;
+- promoted lifecycle and observation contracts;
+- final Phase 1 review.
+
+#### Commands
+
+Exact command names remain a Sprint 4 reasoning decision. The delivered commands must cover equivalents of:
+
+```text
+aren dev observe success
+aren dev observe fail
+aren dev observe cancel
+aren dev observe race
+```
+
+#### Acceptance
+
+Sprint 4 is complete only when:
+
+- runtime, CLI, observation DTO, and browser agree on identity, state, sequence, timing, cancellation facts, failure, and outcome;
+- the UI never derives canonical truth from prose logs;
+- live updates preserve committed sequence order;
+- a late browser connection reconstructs the complete retained Phase 1 history;
+- slow, disconnected, or faulty clients cannot block lifecycle progress or leak Aren-owned producer tasks;
+- malformed evidence and unsupported schema versions fail visibly without presenting partial data as canonical;
+- loading, empty, live, terminal, and disconnected states are understandable;
+- keyboard-only operation works and focus remains visible and predictable;
+- status does not rely on colour, reduced-motion preferences are respected, and layouts remain usable at narrow and wide widths;
+- payload and rendering costs remain bounded and are measured with the Sprint 3 method where applicable;
+- the observation service binds only to loopback by default and stops with its owning process;
+- no durable daemon, public control API, or second lifecycle model has appeared;
+- all runtime, race, frontend, accessibility, and browser integration checks pass;
+- the final contracts and review match the realised implementation.
+
+---
+
 ## 4. Phase Exit Gate
 
-Aren Phase 1 is complete only when both sprints are accepted and the combined evidence proves:
+Aren Phase 1 is complete only when all four sprints are accepted and the combined evidence proves:
 
 1. Aren owns one coherent run lifecycle.
 2. Lifecycle transition is the atomic bookkeeping unit.
@@ -394,29 +557,20 @@ Aren Phase 1 is complete only when both sprints are accepted and the combined ev
 10. Arbitrary work effects are explicitly outside exactly-once and rollback guarantees.
 11. Race, stress, negative, panic, observer, waiter, and leak tests pass.
 12. Diagnostic execution provides runnable evidence outside isolated unit assertions.
-13. The final lifecycle contract is promoted and reflects tested reality.
-14. No later-phase feature has entered through speculative infrastructure.
+13. Performance workloads, environment capture, sampling, comparison, and profiling are reproducible.
+14. The Phase 1 baseline records lifecycle overhead, concurrency scaling, memory, runtime-task growth, tail latency, and contention without inventing unsupported universal targets.
+15. The browser frontend presents runtime-owned truth through a versioned read-only contract.
+16. Browser observation remains passive under slow consumption, disconnection, malformed evidence, and failure.
+17. The process-scoped local observation service remains distinct from persistent daemon hosting and remote APIs.
+18. Accessibility, responsive behaviour, and bounded frontend performance are proven.
+19. The final lifecycle and observation contracts are promoted and reflect tested reality.
+20. No later-phase feature has entered through speculative infrastructure.
 
 Open questions affecting these conditions block the phase. Naming, package-layout details already isolated behind tested behaviour, and questions belonging solely to later execution types do not.
 
 ---
 
-## 5. Optional Third Sprint Rule
-
-Do not schedule a third sprint upfront.
-
-A third Phase Closure sprint may be added only when Sprint 2 review demonstrates a distinct, bounded body of required work that cannot be completed honestly inside Sprint 2, such as:
-
-- substantial model-based or property-based verification;
-- a separate real-runtime smoke harness;
-- contract promotion requiring broad documentation reconciliation;
-- simplification work that materially changes public semantics.
-
-A third sprint must not be created merely to move unfinished tests, documentation, or review out of Sprint 2.
-
----
-
-## 6. Deferred Beyond This Project
+## 5. Deferred Beyond This Project
 
 The following belong to later Aren UltraPlan projects:
 
@@ -431,8 +585,9 @@ The following belong to later Aren UltraPlan projects:
 - pause/resume and approval;
 - agent loops;
 - workflows and routing;
-- daemon hosting;
-- remote APIs and multi-language clients.
+- persistent daemon hosting;
+- remote or general-purpose APIs and multi-language clients;
+- durable observability storage and production telemetry export;
+- multi-user observability and authentication.
 
 Phase 1 may record questions about these topics but must not design or implement them.
-

@@ -1,0 +1,981 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-83343899362a358a874d111b",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Performance CLI and application projections",
+  "changed_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/tui_commands.go",
+    "internal/app/usecases.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance.go",
+    "internal/testdata/performance/states.json",
+    "internal/web/routes.go"
+  ],
+  "boundary_reason": "Owns CLI behavior, application DTOs, adapter-neutral queries, runtime composition, and public summaries.",
+  "behavioral_concerns": [
+    "Public projections must be bounded, sample-free, sanitized, and consistent across CLI, TUI, and web consumers.",
+    "Run and resume require confirmation; unsupported authority overrides and invalid flag combinations must fail as usage errors.",
+    "Text and JSON output must preserve stable schema, status, exit behavior, and stdout/stderr separation."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-errors",
+    "contract-observability",
+    "contract-performance",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-2b729a3f34f22ffc27619786",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-9d2f0e314212dfeb60cbb135",
+    "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+    "qa-v1-block-c4b3c8428def60929d338d7a",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 161137,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1",
+      "number": 1,
+      "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+      "started_at": "2026-09-12T11:18:20.267654694Z",
+      "completed_at": "2026-09-12T11:19:37.446966752Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance JSON encoding errors and text writer errors are explicitly ignored in the CLI adapter (qa-v1-block-a1c54f69a34aba9ad20c1302).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+        },
+        {
+          "kind": "prior_review",
+          "summary": "The current conformance review reports missing performance CLI compatibility coverage for JSON shape, output separation, and exit behavior (qa-v1-block-afc7f1a02ec78c68dd9233f4).",
+          "paths": [
+            "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+            "internal/app/performance_test.go",
+            "internal/app/performance_fixtures_test.go"
+          ],
+          "output_digest": "38626f3268cf840aef239c1a302e48ec5d5dbbfc6c001c4d83a8ddb68abc28ce"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 47694,
+        "output_tokens_known": true,
+        "output_tokens": 1777,
+        "total_tokens_known": true,
+        "total_tokens": 96001,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 450,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 46080,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 161137,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 77179312058
+      },
+      "estimated_cost": {
+        "amount": 0.122374,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-41db99a55622e2eec52fa86d/1",
+      "number": 2,
+      "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+      "started_at": "2026-09-12T11:29:00.728460662Z",
+      "completed_at": "2026-09-12T11:31:51.859168924Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 588,
+        "output_tokens_known": true,
+        "output_tokens": 48,
+        "total_tokens_known": true,
+        "total_tokens": 70022,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 138,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 69248,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 70,
+      "retained_events": 70,
+      "observed_tool_calls": 23,
+      "context_metrics": {
+        "prompt_bytes": 14938,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 2,
+          "grep": 10,
+          "read": 11
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 33948,
+        "repeated_reads": 0,
+        "search_calls": 10,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 171130708262
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-717ddd9a741f8cee749d8094/1",
+      "number": 3,
+      "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+      "started_at": "2026-09-12T11:49:55.109930689Z",
+      "completed_at": "2026-09-12T11:50:48.613546878Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1773,
+        "output_tokens_known": true,
+        "output_tokens": 46,
+        "total_tokens_known": true,
+        "total_tokens": 79427,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 40,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 77568,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 26231,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 53503616189
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-f4eae8293aefb5a0ed7dad6d/1",
+      "number": 4,
+      "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+      "started_at": "2026-09-12T11:55:10.438360356Z",
+      "completed_at": "2026-09-12T11:55:30.12537418Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 10014,
+        "output_tokens_known": true,
+        "output_tokens": 132,
+        "total_tokens_known": true,
+        "total_tokens": 89512,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 134,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 79232,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 11,
+      "retained_events": 11,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 33303,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 19687013824
+      },
+      "stop_reason": "verification_unavailable: The CLI accepts a concrete sprint.Service and creates durable/runtime dependencies internally, so an approved app-package test cannot deterministically inject success, target_missed, cancelled, and partial RunPerformance outcomes without invoking the real performance workflow or modifying product source. The requested outcome branches therefore cannot all be reached with deterministic service and durable-operation fakes from the approved test path.. Required prerequisite: Provide an existing injectable performance command seam or approve a product-owned test adapter that controls PreparePerformance, RunPerformance, status projection, and durable-operation completion outcomes while retaining the real CLI envelope and exit translation."
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-71ae9de6dbec8d93317a7331/1",
+      "number": 5,
+      "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+      "started_at": "2026-09-12T12:08:59.834871222Z",
+      "completed_at": "2026-09-12T12:09:16.242238402Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 10293,
+        "output_tokens_known": true,
+        "output_tokens": 130,
+        "total_tokens_known": true,
+        "total_tokens": 99562,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 51,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 89088,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 11,
+      "retained_events": 11,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 33592,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 16407367180
+      },
+      "stop_reason": "verification_unavailable: The approved app test path cannot deterministically drive the concrete sprint.Service through successful, target_missed, cancelled, and partial RunPerformance branches. runSprintPerformance constructs and uses durable/runtime dependencies internally, and no injectable performance service or outcome seam exists. Reaching those branches would require the real workflow, contrary to the deterministic-fake requirement.. Required prerequisite: Provide or approve an existing test seam that injects performance preparation, durable ownership, runtime outcome, and status projection into the real CLI handler, enabling all four outcome branches without product-source changes or real runtime execution."
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-5d31c259c544d48db6847a74/1",
+      "number": 6,
+      "session_id": "ses_f68ada0f5ffeimiBpDWMcImM5W",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+      "started_at": "2026-09-12T20:32:30.452869052Z",
+      "completed_at": "2026-09-12T20:33:55.833940769Z",
+      "implementation_before": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+      "implementation_after": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1667,
+        "output_tokens_known": true,
+        "output_tokens": 87,
+        "total_tokens_known": true,
+        "total_tokens": 153179,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 129,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 151296,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 30,
+      "retained_events": 30,
+      "observed_tool_calls": 9,
+      "context_metrics": {
+        "prompt_bytes": 515913,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "glob": 1,
+          "grep": 4,
+          "read": 3
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 8935,
+        "repeated_reads": 0,
+        "search_calls": 4,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 85381071717
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+      "shard_id": "qa-v1-shard-83343899362a358a874d111b",
+      "claim": "Performance CLI output failures are silently discarded because JSON encoding and text rendering write errors are ignored.",
+      "basis": "The performance command assigns away `json.Encoder.Encode` errors, while `renderSprintPerformance` ignores every `fmt.Fprintf` result; the error contract forbids disappearing failures and requires boundary adapters to preserve operational signals (qa-v1-block-a1c54f69a34aba9ad20c1302, qa-v1-block-307234c6bfff53948b392930).",
+      "verification_surface": "internal/app/sprint_commands.go",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "The implementation returns success or only the underlying operation error when writing the performance result to stdout fails.",
+      "refutation_condition": "The complete implementation propagates stdout encoding and rendering failures through another mechanism not visible in the excerpt.",
+      "inconclusive_condition": "The omitted command implementation wraps the shown output behavior so write failures cannot disappear.",
+      "safe_evidence_strategy": "Statically inspect the performance output closure and renderer, then use existing writer-failure test doubles if product-owned compatibility coverage is available.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1",
+          "number": 1,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:18:20.267654694Z",
+          "completed_at": "2026-09-12T11:19:37.446966752Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Performance JSON encoding errors and text writer errors are explicitly ignored in the CLI adapter (qa-v1-block-a1c54f69a34aba9ad20c1302).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+            },
+            {
+              "kind": "prior_review",
+              "summary": "The current conformance review reports missing performance CLI compatibility coverage for JSON shape, output separation, and exit behavior (qa-v1-block-afc7f1a02ec78c68dd9233f4).",
+              "paths": [
+                "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+                "internal/app/performance_test.go",
+                "internal/app/performance_fixtures_test.go"
+              ],
+              "output_digest": "38626f3268cf840aef239c1a302e48ec5d5dbbfc6c001c4d83a8ddb68abc28ce"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 47694,
+            "output_tokens_known": true,
+            "output_tokens": 1777,
+            "total_tokens_known": true,
+            "total_tokens": 96001,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 450,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 46080,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 161137,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 77179312058
+          },
+          "estimated_cost": {
+            "amount": 0.122374,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-41db99a55622e2eec52fa86d/1",
+          "number": 2,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:29:00.728460662Z",
+          "completed_at": "2026-09-12T11:31:51.859168924Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 588,
+            "output_tokens_known": true,
+            "output_tokens": 48,
+            "total_tokens_known": true,
+            "total_tokens": 70022,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 138,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 69248,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 70,
+          "retained_events": 70,
+          "observed_tool_calls": 23,
+          "context_metrics": {
+            "prompt_bytes": 14938,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 2,
+              "grep": 10,
+              "read": 11
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 33948,
+            "repeated_reads": 0,
+            "search_calls": 10,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 171130708262
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-717ddd9a741f8cee749d8094/1",
+          "number": 3,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:49:55.109930689Z",
+          "completed_at": "2026-09-12T11:50:48.613546878Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1773,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 79427,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 40,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 77568,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 26231,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 53503616189
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance JSON encoding errors and text writer errors are explicitly ignored in the CLI adapter (qa-v1-block-a1c54f69a34aba9ad20c1302).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+        },
+        {
+          "kind": "prior_review",
+          "summary": "The current conformance review reports missing performance CLI compatibility coverage for JSON shape, output separation, and exit behavior (qa-v1-block-afc7f1a02ec78c68dd9233f4).",
+          "paths": [
+            "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+            "internal/app/performance_test.go",
+            "internal/app/performance_fixtures_test.go"
+          ],
+          "output_digest": "38626f3268cf840aef239c1a302e48ec5d5dbbfc6c001c4d83a8ddb68abc28ce"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-41db99a55622e2eec52fa86d: predicted_failure_reproduced\nRequired observation: Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr separation, and target_missed, cancelled, partial, and success exit mappings.\nTest internal/app/qa_investigator_e2eec52fa86d_test.go:\npackage app\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"errors\"\n\t\"io\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/workspace\"\n)\n\ntype qaInvestigatorFailWriter struct{}\n\nfunc (qaInvestigatorFailWriter) Write([]byte) (int, error) {\n\treturn 0, errors.New(\"injected stdout failure\")\n}\n\nfunc TestQAInvestigator_e2eec52fa86d(t *testing.T) {\n\tconst marker = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d\"\n\n\tprepare := PerformancePrepareResult{\n\t\tSchemaVersion: 1,\n\t\tProject:       \"proj\",\n\t\tSprint:        \"01-alpha\",\n\t\tPolicyMode:    \"disabled\",\n\t\tDryRun:        true,\n\t\tNextAction:    \"Enable Performance Policy in project-index.md to use this optional phase.\",\n\t}\n\n\t// Passing control: the text projection is written completely to a healthy writer.\n\tvar text bytes.Buffer\n\trenderSprintPerformance(dependencies{stdout: \u0026text}, \"dry-run\", prepare)\n\tif got := text.String(); !strings.Contains(got, \"Performance dry-run: proj/01-alpha\\n\") || !strings.Contains(got, \"Policy: disabled\\n\") {\n\t\tt.Fatalf(\"passing text control produced an unstable projection: %q\", got)\n\t}\n\n\trootPath := t.TempDir()\n\twriteCommandSprintProject(t, rootPath, \"proj\", \"01-alpha\")\n\tbase := filepath.Join(rootPath, \"projects\", \"proj\")\n\twriteFixtureFileContent(t, base, commandProjectIndex(t), \"project-index.md\")\n\twriteFixtureFileContent(t, base, commandValidRequirements(), \"sprints\", \"01-alpha\", \"requirements.md\")\n\twriteFixtureFileContent(t, base, commandValidSprintIndex(), \"sprints\", \"01-alpha\", \"sprint-index.md\")\n\tservice := sprint.NewService(rootPath)\n\troot := workspace.Root{Path: rootPath}\n\n\t// Passing control: runtime-free JSON dry-run succeeds with a healthy writer.\n\tvar jsonOutput bytes.Buffer\n\tgoodDeps := dependencies{stdout: \u0026jsonOutput, stderr: io.Discard, ctx: context.Background(), workDir: rootPath, env: map[string]string{}}\n\tif err := runSprintPerformance(goodDeps, root, service, \"proj\", \"01-alpha\", []string{\"--dry-run\", \"--json\"}); err != nil {\n\t\tt.Fatalf(\"passing JSON control returned error: %v\", err)\n\t}\n\tfor _, field := range []string{`\"schema_version\":1`, `\"operation\":\"sprint.performance.dry-run\"`, `\"status\":\"ok\"`, `\"result\":`} {\n\t\tif !strings.Contains(jsonOutput.String(), field) {\n\t\t\tt.Fatalf(\"passing JSON control missing %s: %s\", field, jsonOutput.String())\n\t\t}\n\t}\n\n\tbadDeps := goodDeps\n\tbadDeps.stdout = qaInvestigatorFailWriter{}\n\tjsonErr := runSprintPerformance(badDeps, root, service, \"proj\", \"01-alpha\", []string{\"--dry-run\", \"--json\"})\n\n\t// Text has no error-returning surface, while JSON incorrectly reports success.\n\trenderSprintPerformance(badDeps, \"dry-run\", prepare)\n\tif jsonErr == nil {\n\t\tt.Fatalf(\"%s assertion=Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se\", marker)\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_e2eec52fa86d\n    qa_investigator_e2eec52fa86d_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d assertion=Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se\n--- FAIL: TestQAInvestigator_e2eec52fa86d (0.03s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.041s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_e2eec52fa86d_test.go"
+          ],
+          "check_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+          "output_digest": "233860f75ceef613c7f313856f6c3b3283f573c1e68e463e706a4277e52a317f"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-717ddd9a741f8cee749d8094: predicted_failure_reproduced\nRequired observation: For qa-v1-theory-3ba88b4e640cc758bd4724ff, assert the returned error for JSON and text modes when stdout fails, and separately assert whether a simultaneous operation error preserves both the operation and output failures.\nTest internal/app/qa_investigator_8cee749d8094_test.go:\npackage app\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"errors\"\n\t\"io\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/workspace\"\n)\n\ntype qaInvestigator8ceeFailWriter struct{}\n\nfunc (qaInvestigator8ceeFailWriter) Write([]byte) (int, error) {\n\treturn 0, errors.New(\"injected stdout failure\")\n}\n\nfunc TestQAInvestigator_8cee749d8094(t *testing.T) {\n\tconst (\n\t\tmatcher   = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8cee749d8094\"\n\t\tassertion = \"For qa-v1-theory-3ba88b4e640cc758bd4724ff, assert the returned error for JSON and text modes when stdout fails, and separately assert whether a simultaneous operation error preserves both the operation and output failures.\"\n\t)\n\n\trootPath := t.TempDir()\n\twriteCommandSprintProject(t, rootPath, \"proj\", \"01-alpha\")\n\tbase := filepath.Join(rootPath, \"projects\", \"proj\")\n\twriteFixtureFileContent(t, base, commandProjectIndex(t), \"project-index.md\")\n\twriteFixtureFileContent(t, base, commandValidRequirements(), \"sprints\", \"01-alpha\", \"requirements.md\")\n\twriteFixtureFileContent(t, base, commandValidSprintIndex(), \"sprints\", \"01-alpha\", \"sprint-index.md\")\n\troot := workspace.Root{Path: rootPath}\n\tservice := sprint.NewService(rootPath)\n\n\trun := func(stdout io.Writer, args ...string) error {\n\t\treturn runSprintPerformance(dependencies{\n\t\t\tstdout:  stdout,\n\t\t\tstderr:  io.Discard,\n\t\t\tctx:     context.Background(),\n\t\t\tworkDir: rootPath,\n\t\t\tenv:     map[string]string{},\n\t\t}, root, service, \"proj\", \"01-alpha\", args)\n\t}\n\n\t// Passing controls establish that the identical runtime-free result succeeds\n\t// and produces the expected representation with a healthy writer.\n\tvar jsonControl bytes.Buffer\n\tif err := run(\u0026jsonControl, \"--dry-run\", \"--json\"); err != nil {\n\t\tt.Fatalf(\"JSON passing control returned error: %v\", err)\n\t}\n\tif got := jsonControl.String(); !strings.Contains(got, `\"operation\":\"sprint.performance.dry-run\"`) || !strings.Contains(got, `\"status\":\"ok\"`) {\n\t\tt.Fatalf(\"JSON passing control produced unexpected output: %q\", got)\n\t}\n\tvar textControl bytes.Buffer\n\tif err := run(\u0026textControl, \"--dry-run\"); err != nil {\n\t\tt.Fatalf(\"text passing control returned error: %v\", err)\n\t}\n\tif got := textControl.String(); !strings.Contains(got, \"Performance dry-run: proj/01-alpha\\n\") || !strings.Contains(got, \"Policy: disabled\\n\") {\n\t\tt.Fatalf(\"text passing control produced unexpected output: %q\", got)\n\t}\n\n\tvar defects []string\n\tif err := run(qaInvestigator8ceeFailWriter{}, \"--dry-run\", \"--json\"); err == nil || !strings.Contains(err.Error(), \"injected stdout failure\") {\n\t\tdefects = append(defects, \"JSON stdout failure was not returned\")\n\t}\n\tif err := run(qaInvestigator8ceeFailWriter{}, \"--dry-run\"); err == nil || !strings.Contains(err.Error(), \"injected stdout failure\") {\n\t\tdefects = append(defects, \"text stdout failure was not returned\")\n\t}\n\n\t// A missing project deterministically supplies an operation error. The\n\t// failing-writer result must retain both that error and the write failure.\n\trunMissing := func(stdout io.Writer) error {\n\t\treturn runSprintPerformance(dependencies{\n\t\t\tstdout: stdout, stderr: io.Discard, ctx: context.Background(), workDir: rootPath, env: map[string]string{},\n\t\t}, root, service, \"missing-project\", \"01-alpha\", []string{\"--dry-run\", \"--json\"})\n\t}\n\tvar operationOutput bytes.Buffer\n\toperationErr := runMissing(\u0026operationOutput)\n\tif operationErr == nil || strings.Contains(operationErr.Error(), \"injected stdout failure\") {\n\t\tt.Fatalf(\"operation-error passing control did not isolate the operation failure: %v\", operationErr)\n\t}\n\tcombinedErr := runMissing(qaInvestigator8ceeFailWriter{})\n\tif combinedErr == nil || !strings.Contains(combinedErr.Error(), operationErr.Error()) || !strings.Contains(combinedErr.Error(), \"injected stdout failure\") {\n\t\tdefects = append(defects, \"simultaneous operation and stdout failures did not preserve both causes\")\n\t}\n\n\tif len(defects) \u003e 0 {\n\t\tt.Fatalf(\"%s assertion=%s observed=%s\", matcher, assertion, strings.Join(defects, \"; \"))\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_8cee749d8094\n    qa_investigator_8cee749d8094_test.go:90: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8cee749d8094 assertion=For qa-v1-theory-3ba88b4e640cc758bd4724ff, assert the returned error for JSON and text modes when stdout fails, and separately assert whether a simultaneous operation error preserves both the operation and output failures. observed=JSON stdout failure was not returned; text stdout failure was not returned; simultaneous operation and stdout failures did not preserve both causes\n--- FAIL: TestQAInvestigator_8cee749d8094 (0.06s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.075s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_8cee749d8094_test.go"
+          ],
+          "check_id": "qa-v2-test-30aa4e77884683ef74f1e437",
+          "output_digest": "7052f311ba3f993f2a3022df4044ef610b9bd89ff63f1bc9618c6028c259f5e2"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-44d9a1998804c860f04368c4",
+      "shard_id": "qa-v1-shard-83343899362a358a874d111b",
+      "claim": "The new performance CLI lacks compatibility tests covering stable JSON envelopes, stdout/stderr separation, and outcome-to-exit-code behavior.",
+      "basis": "The conformance review records this exact coverage gap, while the testing contract requires compatibility tests for public CLI response shapes, exit codes, output formats, and stable behavior (qa-v1-block-afc7f1a02ec78c68dd9233f4, qa-v1-block-cd1988b71fec72095e20320d).",
+      "verification_surface": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go; internal/testdata/performance/states.json",
+      "expectation_refs": [
+        "contract-cli-surface",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "low",
+      "confirmation_condition": "No compatibility test asserts the performance command's complete JSON envelope, stdout/stderr behavior, and semantic outcome exit mapping.",
+      "refutation_condition": "Existing tests explicitly cover those public contracts across representative terminal outcomes.",
+      "inconclusive_condition": "Relevant test bodies omitted from the frozen packet contain the asserted compatibility coverage.",
+      "safe_evidence_strategy": "Inspect only the named performance CLI test files or request an existing product-owned compatibility check ID.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1",
+          "number": 1,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:18:20.267654694Z",
+          "completed_at": "2026-09-12T11:19:37.446966752Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Performance JSON encoding errors and text writer errors are explicitly ignored in the CLI adapter (qa-v1-block-a1c54f69a34aba9ad20c1302).",
+              "paths": [
+                "internal/app/sprint_commands.go"
+              ],
+              "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+            },
+            {
+              "kind": "prior_review",
+              "summary": "The current conformance review reports missing performance CLI compatibility coverage for JSON shape, output separation, and exit behavior (qa-v1-block-afc7f1a02ec78c68dd9233f4).",
+              "paths": [
+                "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+                "internal/app/performance_test.go",
+                "internal/app/performance_fixtures_test.go"
+              ],
+              "output_digest": "38626f3268cf840aef239c1a302e48ec5d5dbbfc6c001c4d83a8ddb68abc28ce"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 47694,
+            "output_tokens_known": true,
+            "output_tokens": 1777,
+            "total_tokens_known": true,
+            "total_tokens": 96001,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 450,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 46080,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 161137,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 77179312058
+          },
+          "estimated_cost": {
+            "amount": 0.122374,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-41db99a55622e2eec52fa86d/1",
+          "number": 2,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:29:00.728460662Z",
+          "completed_at": "2026-09-12T11:31:51.859168924Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 588,
+            "output_tokens_known": true,
+            "output_tokens": 48,
+            "total_tokens_known": true,
+            "total_tokens": 70022,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 138,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 69248,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 70,
+          "retained_events": 70,
+          "observed_tool_calls": 23,
+          "context_metrics": {
+            "prompt_bytes": 14938,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 2,
+              "grep": 10,
+              "read": 11
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 33948,
+            "repeated_reads": 0,
+            "search_calls": 10,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 171130708262
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-717ddd9a741f8cee749d8094/1",
+          "number": 3,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:49:55.109930689Z",
+          "completed_at": "2026-09-12T11:50:48.613546878Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1773,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 79427,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 40,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 77568,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 26231,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 53503616189
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-f4eae8293aefb5a0ed7dad6d/1",
+          "number": 4,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T11:55:10.438360356Z",
+          "completed_at": "2026-09-12T11:55:30.12537418Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 10014,
+            "output_tokens_known": true,
+            "output_tokens": 132,
+            "total_tokens_known": true,
+            "total_tokens": 89512,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 134,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 79232,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 11,
+          "retained_events": 11,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 33303,
+            "prefix_bytes": 0,
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 19687013824
+          },
+          "stop_reason": "verification_unavailable: The CLI accepts a concrete sprint.Service and creates durable/runtime dependencies internally, so an approved app-package test cannot deterministically inject success, target_missed, cancelled, and partial RunPerformance outcomes without invoking the real performance workflow or modifying product source. The requested outcome branches therefore cannot all be reached with deterministic service and durable-operation fakes from the approved test path.. Required prerequisite: Provide an existing injectable performance command seam or approve a product-owned test adapter that controls PreparePerformance, RunPerformance, status projection, and durable-operation completion outcomes while retaining the real CLI envelope and exit translation."
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-71ae9de6dbec8d93317a7331/1",
+          "number": 5,
+          "session_id": "ses_f6aa8fc82ffeV17jky8CWX95D8",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T12:08:59.834871222Z",
+          "completed_at": "2026-09-12T12:09:16.242238402Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 10293,
+            "output_tokens_known": true,
+            "output_tokens": 130,
+            "total_tokens_known": true,
+            "total_tokens": 99562,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 51,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 89088,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 11,
+          "retained_events": 11,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 33592,
+            "prefix_bytes": 0,
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 16407367180
+          },
+          "stop_reason": "verification_unavailable: The approved app test path cannot deterministically drive the concrete sprint.Service through successful, target_missed, cancelled, and partial RunPerformance branches. runSprintPerformance constructs and uses durable/runtime dependencies internally, and no injectable performance service or outcome seam exists. Reaching those branches would require the real workflow, contrary to the deterministic-fake requirement.. Required prerequisite: Provide or approve an existing test seam that injects performance preparation, durable ownership, runtime outcome, and status projection into the real CLI handler, enabling all four outcome branches without product-source changes or real runtime execution."
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-83343899362a358a874d111b/1/evidence/qa-v2-request-5d31c259c544d48db6847a74/1",
+          "number": 6,
+          "session_id": "ses_f68ada0f5ffeimiBpDWMcImM5W",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "85776f61859b0639fcbaa97cb0173df4e1beadcbc2a3ecc124f2e60dd1e9bc84",
+          "started_at": "2026-09-12T20:32:30.452869052Z",
+          "completed_at": "2026-09-12T20:33:55.833940769Z",
+          "implementation_before": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+          "implementation_after": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1667,
+            "output_tokens_known": true,
+            "output_tokens": 87,
+            "total_tokens_known": true,
+            "total_tokens": 153179,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 129,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 151296,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 30,
+          "retained_events": 30,
+          "observed_tool_calls": 9,
+          "context_metrics": {
+            "prompt_bytes": 515913,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "glob": 1,
+              "grep": 4,
+              "read": 3
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 8935,
+            "repeated_reads": 0,
+            "search_calls": 4,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 85381071717
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance JSON encoding errors and text writer errors are explicitly ignored in the CLI adapter (qa-v1-block-a1c54f69a34aba9ad20c1302).",
+          "paths": [
+            "internal/app/sprint_commands.go"
+          ],
+          "output_digest": "ee5aac9af8a75ddd1be885691f4fc0e61f38d18eeb4d0a91ce857205103ae98a"
+        },
+        {
+          "kind": "prior_review",
+          "summary": "The current conformance review reports missing performance CLI compatibility coverage for JSON shape, output separation, and exit behavior (qa-v1-block-afc7f1a02ec78c68dd9233f4).",
+          "paths": [
+            "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+            "internal/app/performance_test.go",
+            "internal/app/performance_fixtures_test.go"
+          ],
+          "output_digest": "38626f3268cf840aef239c1a302e48ec5d5dbbfc6c001c4d83a8ddb68abc28ce"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-41db99a55622e2eec52fa86d: predicted_failure_reproduced\nRequired observation: Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr separation, and target_missed, cancelled, partial, and success exit mappings.\nTest internal/app/qa_investigator_e2eec52fa86d_test.go:\npackage app\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"errors\"\n\t\"io\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/workspace\"\n)\n\ntype qaInvestigatorFailWriter struct{}\n\nfunc (qaInvestigatorFailWriter) Write([]byte) (int, error) {\n\treturn 0, errors.New(\"injected stdout failure\")\n}\n\nfunc TestQAInvestigator_e2eec52fa86d(t *testing.T) {\n\tconst marker = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d\"\n\n\tprepare := PerformancePrepareResult{\n\t\tSchemaVersion: 1,\n\t\tProject:       \"proj\",\n\t\tSprint:        \"01-alpha\",\n\t\tPolicyMode:    \"disabled\",\n\t\tDryRun:        true,\n\t\tNextAction:    \"Enable Performance Policy in project-index.md to use this optional phase.\",\n\t}\n\n\t// Passing control: the text projection is written completely to a healthy writer.\n\tvar text bytes.Buffer\n\trenderSprintPerformance(dependencies{stdout: \u0026text}, \"dry-run\", prepare)\n\tif got := text.String(); !strings.Contains(got, \"Performance dry-run: proj/01-alpha\\n\") || !strings.Contains(got, \"Policy: disabled\\n\") {\n\t\tt.Fatalf(\"passing text control produced an unstable projection: %q\", got)\n\t}\n\n\trootPath := t.TempDir()\n\twriteCommandSprintProject(t, rootPath, \"proj\", \"01-alpha\")\n\tbase := filepath.Join(rootPath, \"projects\", \"proj\")\n\twriteFixtureFileContent(t, base, commandProjectIndex(t), \"project-index.md\")\n\twriteFixtureFileContent(t, base, commandValidRequirements(), \"sprints\", \"01-alpha\", \"requirements.md\")\n\twriteFixtureFileContent(t, base, commandValidSprintIndex(), \"sprints\", \"01-alpha\", \"sprint-index.md\")\n\tservice := sprint.NewService(rootPath)\n\troot := workspace.Root{Path: rootPath}\n\n\t// Passing control: runtime-free JSON dry-run succeeds with a healthy writer.\n\tvar jsonOutput bytes.Buffer\n\tgoodDeps := dependencies{stdout: \u0026jsonOutput, stderr: io.Discard, ctx: context.Background(), workDir: rootPath, env: map[string]string{}}\n\tif err := runSprintPerformance(goodDeps, root, service, \"proj\", \"01-alpha\", []string{\"--dry-run\", \"--json\"}); err != nil {\n\t\tt.Fatalf(\"passing JSON control returned error: %v\", err)\n\t}\n\tfor _, field := range []string{`\"schema_version\":1`, `\"operation\":\"sprint.performance.dry-run\"`, `\"status\":\"ok\"`, `\"result\":`} {\n\t\tif !strings.Contains(jsonOutput.String(), field) {\n\t\t\tt.Fatalf(\"passing JSON control missing %s: %s\", field, jsonOutput.String())\n\t\t}\n\t}\n\n\tbadDeps := goodDeps\n\tbadDeps.stdout = qaInvestigatorFailWriter{}\n\tjsonErr := runSprintPerformance(badDeps, root, service, \"proj\", \"01-alpha\", []string{\"--dry-run\", \"--json\"})\n\n\t// Text has no error-returning surface, while JSON incorrectly reports success.\n\trenderSprintPerformance(badDeps, \"dry-run\", prepare)\n\tif jsonErr == nil {\n\t\tt.Fatalf(\"%s assertion=Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se\", marker)\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_e2eec52fa86d\n    qa_investigator_e2eec52fa86d_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d assertion=Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se\n--- FAIL: TestQAInvestigator_e2eec52fa86d (0.03s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.041s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_e2eec52fa86d_test.go"
+          ],
+          "check_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+          "output_digest": "233860f75ceef613c7f313856f6c3b3283f573c1e68e463e706a4277e52a317f"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-5d31c259c544d48db6847a74: predicted_failure_reproduced\nRequired observation: Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.\nTest internal/app/qa_investigator_d48db6847a74_test.go:\npackage app\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"io\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/workspace\"\n)\n\nfunc TestQAInvestigator_d48db6847a74(t *testing.T) {\n\tconst (\n\t\tmatcher   = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74\"\n\t\tassertion = \"Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.\"\n\t)\n\n\trootPath := t.TempDir()\n\twriteCommandSprintProject(t, rootPath, \"proj\", \"01-alpha\")\n\tbase := filepath.Join(rootPath, \"projects\", \"proj\")\n\twriteFixtureFileContent(t, base, commandProjectIndex(t), \"project-index.md\")\n\twriteFixtureFileContent(t, base, commandValidRequirements(), \"sprints\", \"01-alpha\", \"requirements.md\")\n\twriteFixtureFileContent(t, base, commandValidSprintIndex(), \"sprints\", \"01-alpha\", \"sprint-index.md\")\n\troot := workspace.Root{Path: rootPath}\n\tservice := sprint.NewService(rootPath)\n\n\t// Passing controls use the real command adapter and prove both public modes\n\t// are stable and silent on stderr without entering runtime-backed work.\n\trun := func(args ...string) (string, string, error) {\n\t\tvar stdout, stderr bytes.Buffer\n\t\terr := runSprintPerformance(dependencies{\n\t\t\tstdout: \u0026stdout, stderr: \u0026stderr, ctx: context.Background(), workDir: rootPath, env: map[string]string{},\n\t\t}, root, service, \"proj\", \"01-alpha\", args)\n\t\treturn stdout.String(), stderr.String(), err\n\t}\n\tjsonOut, jsonErrOut, err := run(\"--dry-run\", \"--json\")\n\tif err != nil || jsonErrOut != \"\" {\n\t\tt.Fatalf(\"JSON passing control err=%v stderr=%q\", err, jsonErrOut)\n\t}\n\tfor _, field := range []string{`\"schema_version\":1`, `\"operation\":\"sprint.performance.dry-run\"`, `\"status\":\"ok\"`, `\"result\":`} {\n\t\tif !strings.Contains(jsonOut, field) {\n\t\t\tt.Fatalf(\"JSON passing control missing %s: %s\", field, jsonOut)\n\t\t}\n\t}\n\ttextOut, textErrOut, err := run(\"--dry-run\")\n\tif err != nil || textErrOut != \"\" || !strings.Contains(textOut, \"Performance dry-run: proj/01-alpha\\n\") {\n\t\tt.Fatalf(\"text passing control err=%v stdout=%q stderr=%q\", err, textOut, textErrOut)\n\t}\n\n\t// Exercise the text projection for every semantic terminal family requested\n\t// by the arbiter; this remains independent of the stdout-writer defect.\n\tfor _, outcome := range []string{\"passed\", \"target_missed\", \"cancelled\", \"blocked\", \"stalled\"} {\n\t\tvar output bytes.Buffer\n\t\tstatus := PerformanceStatusResult{Project: \"proj\", Sprint: \"01-alpha\", Phase: \"terminal\", Fresh: true, Outcome: outcome, NextAction: \"inspect\"}\n\t\tif err := renderSprintPerformance(dependencies{stdout: \u0026output, stderr: io.Discard}, \"status\", status); err != nil {\n\t\t\tt.Fatalf(\"render %s: %v\", outcome, err)\n\t\t}\n\t\tif !strings.Contains(output.String(), \"Outcome: \"+outcome+\"\\n\") {\n\t\t\tt.Fatalf(\"render %s omitted outcome: %q\", outcome, output.String())\n\t\t}\n\t}\n\n\t// The defect is the absent compatibility coverage itself. Require the\n\t// approved product test files to name and execute all public mappings.\n\tvar productTests strings.Builder\n\tfor _, name := range []string{\"performance_test.go\", \"performance_fixtures_test.go\", \"sprint_commands_test.go\"} {\n\t\tdata, readErr := os.ReadFile(name)\n\t\tif readErr != nil {\n\t\t\tt.Fatalf(\"read approved product test %s: %v\", name, readErr)\n\t\t}\n\t\tproductTests.Write(data)\n\t}\n\ttestSource := productTests.String()\n\trequired := []string{\"runSprintPerformance\", \"PerformanceTargetMiss\", \"PerformanceCancelled\", \"ExitCancel\", \"ExitPartial\", \"operational failure\"}\n\tvar missing []string\n\tfor _, token := range required {\n\t\tif !strings.Contains(testSource, token) {\n\t\t\tmissing = append(missing, token)\n\t\t}\n\t}\n\tif len(missing) != 0 {\n\t\tt.Fatalf(\"%s assertion=%s missing_compatibility_cases=%s\", matcher, assertion, strings.Join(missing, \",\"))\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_d48db6847a74\n    qa_investigator_d48db6847a74_test.go:86: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74 assertion=Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4. missing_compatibility_cases=runSprintPerformance,PerformanceTargetMiss,PerformanceCancelled,ExitCancel,operational failure\n--- FAIL: TestQAInvestigator_d48db6847a74 (0.03s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.037s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/app/qa_investigator_d48db6847a74_test.go"
+          ],
+          "check_id": "qa-v2-test-16a0129229c8391e97b6af00",
+          "output_digest": "f0d77b6035f381b56228ed3cbedf4e761ee90a4df1ed142a9dc3f594705d70e4"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

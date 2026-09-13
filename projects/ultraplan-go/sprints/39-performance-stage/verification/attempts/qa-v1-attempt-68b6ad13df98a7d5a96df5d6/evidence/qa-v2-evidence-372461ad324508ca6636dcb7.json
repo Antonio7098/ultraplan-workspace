@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-372461ad324508ca6636dcb7",
+  "plan_id": "qa-v2-plan-eab7f6ef4dd372621db7ff8a",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+  "workspace_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+  "workspace_identity": "727b404f304d7621468898c0f3f6d979f13fe1347b8f5e50af3bfd8d387a1f4e",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_108c780842e4",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_108c780842e4",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4",
+      "executable": "go",
+      "args_digest": "26760e1c18d12fba388f3fdd40a0f02c754457fde08ecfb86100318a488fc012",
+      "exit_code": 1,
+      "duration": 41822602361,
+      "stdout_digest": "e169a155cd19655080b4e6b70b329bc8caddc489f356649fe49abb39f2e3af6d",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_108c780842e4\n    qa_investigator_108c780842e4_test.go:40: TestQAInvestigator_108c780842e4: For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification. ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4\n--- FAIL: TestQAInvestigator_108c780842e4 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.011s\nFAIL\n",
+      "output_bytes": 532,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_108c780842e4_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:49:40.301564074Z"
+}

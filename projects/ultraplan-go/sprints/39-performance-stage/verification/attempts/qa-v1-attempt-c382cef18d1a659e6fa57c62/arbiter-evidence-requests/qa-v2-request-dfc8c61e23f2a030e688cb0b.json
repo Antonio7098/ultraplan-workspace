@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-dfc8c61e23f2a030e688cb0b",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-fc3744e6e8886693c1c4a689"
+    ],
+    "origin_shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+    "gap": "The stale-writer publication window remains unobserved.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a deterministic Go _test.go reproducer that advances the verification fencing generation after the failure path's last fenced state publication and before SaveFlowState.",
+    "required_observation": "Observe whether the stale failure path still changes the durable flow-state performance summary.",
+    "control_requirement": "Include a stable-generation control where the same failure path is allowed to publish, and assert exact pre/post flow-state bytes or digest.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "71ba91294dc96ab01efa9c86382405ecb147df9ab5bcc4043cde632ac5f33c9c",
+    "reason_code": "investigator_workspace_unavailable",
+    "superseded_by": "qa-v2-request-10876e3025aa9353fcf1007e",
+    "next_action": "Evidence remains unresolved: investigator_workspace_unavailable. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+  }
+}

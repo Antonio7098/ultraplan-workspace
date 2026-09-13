@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-41a4c9496cd428a9dfe4081b",
+  "plan_id": "qa-v2-plan-79c8129f56ee8118c879515b",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+  "workspace_id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+  "workspace_identity": "6f992da2751bf7c4f1a3014f02052bbdec0112c40ecf5ddeb87385d1465d7f1a",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_1bc58f90bf82",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_1bc58f90bf82",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1bc58f90bf82",
+      "executable": "go",
+      "args_digest": "ac182c62390379e8aafd3fdff80233419d1f321d3b2d1979653d2c77ad85c67f",
+      "exit_code": 1,
+      "duration": 32140232565,
+      "stdout_digest": "7ce4106250753e89d3dc8b304e77c4c7658d59878bfdbd154fcc2c8257720028",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_1bc58f90bf82\n    qa_investigator_1bc58f90bf82_test.go:59: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1bc58f90bf82 assertion=Assert start, resume, cancel, and recover operation kinds are present. exposed_disabled_historical_mutations=performance-start,performance-resume,performance-cancel,performance-recover\n--- FAIL: TestQAInvestigator_1bc58f90bf82 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.024s\nFAIL\n",
+      "output_bytes": 466,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/tui/qa_investigator_1bc58f90bf82_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:16:50.397749545Z"
+}

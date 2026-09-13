@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+  "spec_id": "qa-v2-spec-944ff8d4ce332c78e8f5dc7c",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_56bcf430b685_test.go",
+      "content": "package app\n\nimport (\n\t\"go/ast\"\n\t\"go/parser\"\n\t\"go/token\"\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_56bcf430b685(t *testing.T) {\n\tdata, err := os.ReadFile(\"sprint_usecases.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tfset := token.NewFileSet()\n\tfile, err := parser.ParseFile(fset, \"sprint_usecases.go\", data, 0)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tbodies := map[string]string{}\n\tfor _, decl := range file.Decls {\n\t\tfn, ok := decl.(*ast.FuncDecl)\n\t\tif !ok || fn.Body == nil || (fn.Name.Name != \"PerformanceStatus\" \u0026\u0026 fn.Name.Name != \"performanceSummaryForSprint\") {\n\t\t\tcontinue\n\t\t}\n\t\tstart := fset.Position(fn.Body.Pos()).Offset\n\t\tend := fset.Position(fn.Body.End()).Offset\n\t\tbodies[fn.Name.Name] = string(data[start:end])\n\t}\n\n\t// Controls: both claimed entry points are present, direct status consults\n\t// durable run control, and sprint summaries delegate to the raw projection.\n\tdirect, directOK := bodies[\"PerformanceStatus\"]\n\tsummary, summaryOK := bodies[\"performanceSummaryForSprint\"]\n\tif !directOK || !summaryOK {\n\t\tt.Fatalf(\"fixture entry points missing: direct=%t summary=%t\", directOK, summaryOK)\n\t}\n\tif !strings.Contains(direct, \"u.runs.Run(ctx\") || !strings.Contains(direct, \"OperationalLifecycle\") || !strings.Contains(direct, \"CancellationState\") {\n\t\tt.Fatalf(\"control direct status does not enrich durable lifecycle: %s\", direct)\n\t}\n\tif !strings.Contains(summary, \"performanceStatusProjection(service\") {\n\t\tt.Fatalf(\"control summary does not use the claimed projection entry point: %s\", summary)\n\t}\n\n\tif !strings.Contains(summary, \".Run(\") \u0026\u0026 !strings.Contains(summary, \"PerformanceStatus(\") {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685 assertion=Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fi\")\n\t}\n}\n",
+      "digest": "a400489aa31a0655769678f9603fb93c4130f483e4fc6304a392ad23b6abfa57",
+      "bytes": 1965
+    }
+  ],
+  "content_digest": "74d73f15d612a020f11050915b2698a8f861f4bbd01243b5c89ccc1e6fa5197b"
+}

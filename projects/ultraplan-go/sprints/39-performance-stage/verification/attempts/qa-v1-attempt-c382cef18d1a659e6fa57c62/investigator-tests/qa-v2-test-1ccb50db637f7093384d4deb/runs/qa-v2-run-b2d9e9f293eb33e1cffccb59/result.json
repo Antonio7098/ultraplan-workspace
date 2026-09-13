@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-b2d9e9f293eb33e1cffccb59",
+  "spec_id": "qa-v2-spec-8ad409edf1f80c380c6d79f2",
+  "test_bundle_id": "qa-v2-test-1ccb50db637f7093384d4deb",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "bdf4be30aac5fc10a131037eb88782b06985665d2552470514303ec5ec51528e",
+    "exit_code": 1,
+    "duration": 30970010874,
+    "stdout_digest": "29252acec764430e0c618b4a01fc5e9512d0371f7737dd412f31df8d59236af7",
+    "stderr_digest": "241877f84ba0df841cbaaf6df00ce3d4e12b5bbc8a417f1bd7c9e6ac2bf0fe98",
+    "stdout": "=== RUN   TestQAInvestigator_7f17d2859fb1\n    qa_investigator_7f17d2859fb1_test.go:31: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_7f17d2859fb1 assertion=Assert configuration loading rejects those documented maximum values. documented performance.commands hard maximum 256 was rejected: performance.commands: must be positive and no greater than the built-in default 128\n--- FAIL: TestQAInvestigator_7f17d2859fb1 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.013s\nFAIL\n",
+    "stderr": "go: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+    "output_bytes": 1066,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_7f17d2859fb1",
+    "assertion": "Assert configuration loading rejects those documented maximum values.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_7f17d2859fb1"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:31:56.770003897Z"
+}

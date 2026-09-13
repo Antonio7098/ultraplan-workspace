@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-66e2bb4d026636f6ccd349d2",
+  "plan_id": "qa-v2-plan-154df1caad4d88da0e991553",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-83343899362a358a874d111b",
+  "workspace_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+  "workspace_identity": "4332e8e20a782d29afa065050083bde20a1326de007b866923bb3abd965af068",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_e2eec52fa86d",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_e2eec52fa86d",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d",
+      "executable": "go",
+      "args_digest": "36cb36e71aeda831e9a99a589e1638923a1afc9c0db89ceee8631ca0fba3c85b",
+      "exit_code": 1,
+      "duration": 22768771960,
+      "stdout_digest": "233860f75ceef613c7f313856f6c3b3283f573c1e68e463e706a4277e52a317f",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_e2eec52fa86d\n    qa_investigator_e2eec52fa86d_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d assertion=Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se\n--- FAIL: TestQAInvestigator_e2eec52fa86d (0.03s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.041s\nFAIL\n",
+      "output_bytes": 538,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_e2eec52fa86d_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:32:39.692238629Z"
+}

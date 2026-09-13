@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:48:25.330099875Z",
+        "completed_at": "2026-09-12T11:49:40.901207828Z",
+        "run_id": "qa-v2-run-445f4bc772f2aa0384e70ce6"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-07d95cd845e0108c780842e4",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+    ],
+    "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+    "gap": "The returned test is a source-string assertion and does not inject cleanup failure, observe another optimization step, or inspect cleanup_uncertain state.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go behavioral reproducer in the approved private workspace with controllable isolation cleanup failure on a rejection branch that normally continues.",
+    "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification.",
+    "control_requirement": "Use deterministic fake runtime and process collaborators with call counters; do not satisfy the request by reading source text or matching an ignored-cleanup string.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 2,
+    "attempts": 1,
+    "evidence_fingerprint": "f1012c3a57de1a46541604903467492363b38236ab54ff5f429a909964996a34",
+    "superseded_by": "qa-v2-request-559158551da72d320c37568b",
+    "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+    "latest_run_id": "qa-v2-run-445f4bc772f2aa0384e70ce6",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

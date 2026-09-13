@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-24036b4a3bc5ceecaf76b268",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "primary",
+  "title": "Shared verification ownership and post-repair gating",
+  "changed_paths": [
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_repair.go",
+    "internal/sprint/qa_repair_state.go",
+    "internal/sprint/qa_reproduction.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance_repair.go",
+    "internal/sprint/qa_repair_test.go",
+    "internal/sprint/qa_test.go",
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "Performance remains independent of planning-stage compatibility and gates Conformance Review only when enabled.",
+    "Pre-repair samples cannot verify repaired bytes; failed, stale, inconclusive, or cleanup-uncertain reverification blocks repair success.",
+    "QA, repair, reproduction, and performance share complete verification writer ownership without weakening existing QA fencing behavior.",
+    "Repair invalidates prior performance freshness after mutation and performs performance reverification only after the functional ladder succeeds.",
+    "Repair performance records require complete authority and cleanup proof before a passing outcome is valid."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-1a75438ebb56d69b56b8227b",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-32fed93c9abfff4d8a2ce8f3",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-41afbf779fc502e44998d33d",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-592dadf860c3927ace3cecf7",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-623828422e66dc32034672e4",
+    "qa-v1-block-6391c5670acb57367d6e196a",
+    "qa-v1-block-6cd7cc90b6bc5026f654e802",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-85f8ea81735d07d454d23d7e",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-cd78cb7e117fcb707e6ff489",
+    "qa-v1-block-dbe687ba7950f86d3ebeb491",
+    "qa-v1-block-fb16f1d2c78a4a5f601c7573"
+  ],
+  "prepared_prompt_bytes": 132389,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-24036b4a3bc5ceecaf76b268",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_d3pf42gtkpgahqdmabwlou4rne/qa-v1-shard-24036b4a3bc5ceecaf76b268/1",
+      "number": 1,
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "fc589fc64cfe6013942c7f6b0a52548ab52c3fbd2f4d6b51099b17dd42a00407",
+      "started_at": "2026-09-13T09:55:19.221663932Z",
+      "completed_at": "2026-09-13T09:55:34.751314296Z",
+      "implementation_before": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "implementation_after": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 4,
+      "retained_events": 4,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 456810,
+        "prefix_bytes": 19809,
+        "prefix_digest": "04d27b75d819b47405c8c54bd589a4c5c618f721eaa2435e70283196680507f5",
+        "cache_cohort": "qa-investigator/04d27b75d819b47405c8c54bd589a4c5c618f721eaa2435e70283196680507f5/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 15529650364
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

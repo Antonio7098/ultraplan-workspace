@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-a373c4886b2db377dbf4cd82",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-b78583de2ed2f9a939e03e9a",
+  "evidence_request_id": "qa-v2-request-96ab4d195642f558fdc3b798",
+  "theory_ids": [
+    "qa-v1-theory-bd5d5990c9d330ce736e467c"
+  ],
+  "claim": "The JSON performance output parser accepts malformed trailing data after an otherwise valid envelope.",
+  "preconditions": [
+    "Include controls for whitespace-only suffix acceptance and a second valid JSON value rejection, with identical descriptor and target identities."
+  ],
+  "expected_behavior": "The assertion must cover qa-v1-theory-bd5d5990c9d330ce736e467c by showing whether ParsePerformanceOutput returns the envelope value without an error for the malformed suffix.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_f558fdc3b798",
+    "assertion": "The assertion must cover qa-v1-theory-bd5d5990c9d330ce736e467c by showing whether ParsePerformanceOutput returns the envelope value without an error for the malformed suffix.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_f558fdc3b798_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-f558fdc3b798",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_f558fdc3b798$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "37ad68f8e98471018a0bda1c4318eebb375866200bd577ea75e49f8d9de7f2f4"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:32:40.101359669Z"
+}

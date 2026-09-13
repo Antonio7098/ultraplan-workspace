@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:41:38.832450109Z",
+        "completed_at": "2026-09-12T11:42:26.332806845Z",
+        "run_id": "qa-v2-run-8f64ba11633e15cad2c2ee5e"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-ba638561ab2878d7bc49d841",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-fa8487cda772b1748115a5c2"
+    ],
+    "origin_shard_id": "qa-v1-shard-9033b31413394dbcfc5e147e",
+    "gap": "The incompatible counting formulas are static; executable flow-state validation evidence is absent.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that builds a summary from one report-only target with a met comparison and validates or publishes the resulting flow state.",
+    "required_observation": "The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.",
+    "control_requirement": "Provide valid state pointers, digests, phase, and next action so only the target-count invariant determines the result.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "92b179d292c74cf02011f370c8b1dcdbd29f1ec40f31a889efa2fc2a2ae8a262",
+    "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+    "latest_run_id": "qa-v2-run-8f64ba11633e15cad2c2ee5e",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

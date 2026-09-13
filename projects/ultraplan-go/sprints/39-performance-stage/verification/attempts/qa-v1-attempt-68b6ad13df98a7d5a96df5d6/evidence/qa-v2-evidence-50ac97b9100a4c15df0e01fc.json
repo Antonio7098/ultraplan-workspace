@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-50ac97b9100a4c15df0e01fc",
+  "plan_id": "qa-v2-plan-f904479ffa46ab8887e8778d",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+  "workspace_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+  "workspace_identity": "faadf4868c0cf712b7c71a6ccf346f3ff6e9e68a81384422a602c7c083a1d149",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "executable": "go",
+      "args_digest": "3f94b3ae8891357581636d0d1d548b9c1456e77a868c1c18e66de431ef084d90",
+      "exit_code": 1,
+      "duration": 27792412059,
+      "stdout_digest": "8b6096a45e4146a6f73459e83d77f98e534dc8d6c57291845bf193952ee6e3be",
+      "stderr_digest": "2f516c1e1f65b985e2a7f4e7d1710db2c08e27826c5dcb6252a74ddfb9a64ae7",
+      "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed]\nFAIL\n",
+      "stderr": "# github.com/Antonio7098/ultraplan-go/internal/tui [github.com/Antonio7098/ultraplan-go/internal/tui.test]\n./qa_investigator_1ff716b0ebd2_test.go:35:14: undefined: qaPerformanceEvidenceQueries\n",
+      "output_bytes": 267,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/tui/qa_investigator_1ff716b0ebd2_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "unrelated_compile_or_panic_failure",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:55:04.064980894Z"
+}

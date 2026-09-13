@@ -1,0 +1,45 @@
+--- a/internal/sprint/qa_investigator_78d7bc49d841_test.go
++++ b/internal/sprint/qa_investigator_78d7bc49d841_test.go
+@@ -1,0 +1,31 @@
++package sprint
++
++import (
++	"path/filepath"
++	"strings"
++	"testing"
++)
++
++func TestQAInvestigator_78d7bc49d841(t *testing.T) {
++	root := t.TempDir()
++	sp := Sprint{Project: "proj", Slug: "39-performance", Path: filepath.Join(root, "projects", "proj", "sprints", "39-performance")}
++	state := PerformanceState{Phase: PerformancePhaseTerminal, Fresh: true, Outcome: PerformancePassed, AttemptID: "performance-v1-attempt-0123456789abcdef01234567", NextAction: "Run Conformance Review."}
++	stateRef := PerformanceArtifactRef{Path: PerformanceStateRelPath(sp), Digest: strings.Repeat("a", 64)}
++	met := []PerformanceComparison{{TargetID: "PERF-ONE", Outcome: PerformanceTargetMet}}
++
++	control := performanceFlowSummary(state, stateRef, []PerformanceTarget{{ID: "PERF-ONE", Gate: PerformanceRequired}}, met)
++	if control.Required != 1 || control.Reports != 0 || control.Met != 1 || control.Missed != 0 {
++		t.Fatalf("required-target control summary = %#v", control)
++	}
++	if err := validatePerformanceFlowSummary(root, sp, *control, "flow-state.json"); err != nil {
++		t.Fatalf("required-target control should validate: %v", err)
++	}
++
++	reproduced := performanceFlowSummary(state, stateRef, []PerformanceTarget{{ID: "PERF-ONE", Gate: PerformanceReport}}, met)
++	if reproduced.Required != 0 || reproduced.Reports != 1 || reproduced.Met != 1 || reproduced.Missed != 0 {
++		t.Fatalf("report-only reproduction summary = %#v", reproduced)
++	}
++	if err := validatePerformanceFlowSummary(root, sp, *reproduced, "flow-state.json"); err != nil {
++		t.Fatalf("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841 assertion=The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure. report-only summary should validate: %v", err)
++	}
++}
+--- a/internal/sprint/state.go
++++ b/internal/sprint/state.go
+@@ -414,7 +414,7 @@
+ 	default:
+ 		return fmt.Errorf("%w: %s: invalid performance phase", ErrFlowStateMalformed, path)
+ 	}
+-	if summary.Required < 0 || summary.Reports < 0 || summary.Met < 0 || summary.Missed < 0 || summary.Met+summary.Missed > summary.Required {
++	if summary.Required < 0 || summary.Reports < 0 || summary.Met < 0 || summary.Missed < 0 || summary.Met+summary.Missed > summary.Required+summary.Reports {
+ 		return fmt.Errorf("%w: %s: invalid performance counts", ErrFlowStateMalformed, path)
+ 	}
+ 	if summary.StatePath == "" || !validFingerprint(summary.StateDigest) || strings.TrimSpace(summary.NextAction) == "" {

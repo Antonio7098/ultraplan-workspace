@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-9a5eaeb04fc32c5820f521f3",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Project policy and requirements target authority",
+  "changed_paths": [
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/index.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go"
+  ],
+  "boundary_reason": "Owns project activation policy parsing while retaining target values exclusively in sprint requirements.",
+  "behavioral_concerns": [
+    "Missing policy must disable the stage without performance side effects.",
+    "Only the exact policy structure is authoritative; target-like overrides, duplicates, malformed fields, and pseudo-sections must be rejected.",
+    "The policy digest must deterministically bind the complete project-index bytes."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-performance",
+    "contract-security",
+    "contract-testing"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-27d2771fd1e216ea720fc578",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e5e9288e0d4e15abe068bed1"
+  ],
+  "prepared_prompt_bytes": 98915,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9a5eaeb04fc32c5820f521f3/1",
+      "number": 1,
+      "session_id": "ses_f6aa7507fffeOvnFVEo9Cgi6eM",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "8cdfd0ba3e6009434b79960c794a4705722f29cb24b06412d79b44522dc7a5c2",
+      "started_at": "2026-09-12T11:20:09.811474592Z",
+      "completed_at": "2026-09-12T11:21:16.991626724Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The policy parser lowercases Mode before checking the accepted constants [qa-v1-block-c60e8152c304432fc78d7a0c].",
+          "paths": [
+            "internal/project/index.go"
+          ]
+        },
+        {
+          "kind": "governed_requirement",
+          "summary": "The project-index contract specifies that Mode is exactly `disabled` or `enabled` and requires strict invalid-mode handling [qa-v1-block-ce45392d2ebc036986b89d13].",
+          "paths": [
+            "projects/ultraplan-go/sprints/39-performance-stage/requirements.md"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 31093,
+        "output_tokens_known": true,
+        "output_tokens": 1062,
+        "total_tokens_known": true,
+        "total_tokens": 62415,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 564,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 29696,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 98915,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 67180152132
+      },
+      "estimated_cost": {
+        "amount": 0.0787452,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9a5eaeb04fc32c5820f521f3/1/evidence/qa-v2-request-ef633898930720f83a1a7704/1",
+      "number": 2,
+      "session_id": "ses_f6aa7507fffeOvnFVEo9Cgi6eM",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "8cdfd0ba3e6009434b79960c794a4705722f29cb24b06412d79b44522dc7a5c2",
+      "started_at": "2026-09-12T11:42:37.754602378Z",
+      "completed_at": "2026-09-12T11:43:29.321974079Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 887,
+        "output_tokens_known": true,
+        "output_tokens": 55,
+        "total_tokens_known": true,
+        "total_tokens": 36380,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 110,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 35328,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 20,
+      "retained_events": 20,
+      "observed_tool_calls": 3,
+      "context_metrics": {
+        "prompt_bytes": 8790,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "read": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 2407,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 51567371701
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+      "shard_id": "qa-v1-shard-9a5eaeb04fc32c5820f521f3",
+      "claim": "The project performance-policy parser incorrectly accepts case-variant mode values such as `ENABLED`, allowing malformed policy input to activate the performance stage instead of being rejected.",
+      "basis": "The parser lowercases the supplied Mode value before validation, although the governed contract requires Mode to be exactly `disabled` or `enabled` and strict boundary validation to reject malformed input [qa-v1-block-c60e8152c304432fc78d7a0c, qa-v1-block-ce45392d2ebc036986b89d13, qa-v1-block-27d2771fd1e216ea720fc578].",
+      "verification_surface": "internal/project/index.go and internal/project/performance_policy_test.go",
+      "expectation_refs": [
+        "contract-performance",
+        "contract-security",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Parsing `## Performance Policy\\n- **Mode:** ENABLED\\n` returns PerformanceEnabled without an error finding.",
+      "refutation_condition": "An additional case-sensitive validation step rejects `ENABLED` before the policy can be consumed.",
+      "inconclusive_condition": "The frozen parser excerpt does not represent the effective implementation or another mandatory validation layer rejects case-variant modes.",
+      "safe_evidence_strategy": "Inspect or add a deterministic parser test for uppercase and mixed-case mode values without invoking runtime dependencies.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9a5eaeb04fc32c5820f521f3/1",
+          "number": 1,
+          "session_id": "ses_f6aa7507fffeOvnFVEo9Cgi6eM",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8cdfd0ba3e6009434b79960c794a4705722f29cb24b06412d79b44522dc7a5c2",
+          "started_at": "2026-09-12T11:20:09.811474592Z",
+          "completed_at": "2026-09-12T11:21:16.991626724Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The policy parser lowercases Mode before checking the accepted constants [qa-v1-block-c60e8152c304432fc78d7a0c].",
+              "paths": [
+                "internal/project/index.go"
+              ]
+            },
+            {
+              "kind": "governed_requirement",
+              "summary": "The project-index contract specifies that Mode is exactly `disabled` or `enabled` and requires strict invalid-mode handling [qa-v1-block-ce45392d2ebc036986b89d13].",
+              "paths": [
+                "projects/ultraplan-go/sprints/39-performance-stage/requirements.md"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 31093,
+            "output_tokens_known": true,
+            "output_tokens": 1062,
+            "total_tokens_known": true,
+            "total_tokens": 62415,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 564,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 29696,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 98915,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 67180152132
+          },
+          "estimated_cost": {
+            "amount": 0.0787452,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9a5eaeb04fc32c5820f521f3/1/evidence/qa-v2-request-ef633898930720f83a1a7704/1",
+          "number": 2,
+          "session_id": "ses_f6aa7507fffeOvnFVEo9Cgi6eM",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8cdfd0ba3e6009434b79960c794a4705722f29cb24b06412d79b44522dc7a5c2",
+          "started_at": "2026-09-12T11:42:37.754602378Z",
+          "completed_at": "2026-09-12T11:43:29.321974079Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 887,
+            "output_tokens_known": true,
+            "output_tokens": 55,
+            "total_tokens_known": true,
+            "total_tokens": 36380,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 110,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 35328,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 20,
+          "retained_events": 20,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 8790,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 2407,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 51567371701
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The policy parser lowercases Mode before checking the accepted constants [qa-v1-block-c60e8152c304432fc78d7a0c].",
+          "paths": [
+            "internal/project/index.go"
+          ]
+        },
+        {
+          "kind": "governed_requirement",
+          "summary": "The project-index contract specifies that Mode is exactly `disabled` or `enabled` and requires strict invalid-mode handling [qa-v1-block-ce45392d2ebc036986b89d13].",
+          "paths": [
+            "projects/ultraplan-go/sprints/39-performance-stage/requirements.md"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-ef633898930720f83a1a7704: predicted_failure_reproduced\nRequired observation: The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.\nTest internal/project/qa_investigator_20f83a1a7704_test.go:\npackage project\n\nimport \"testing\"\n\nfunc TestQAInvestigator_20f83a1a7704(t *testing.T) {\n\tcontrols := []struct {\n\t\tvalue string\n\t\tmode  PerformanceMode\n\t}{\n\t\t{value: \"enabled\", mode: PerformanceEnabled},\n\t\t{value: \"disabled\", mode: PerformanceDisabled},\n\t}\n\tfor _, control := range controls {\n\t\tindex, findings := ParseProjectIndex(\"## Performance Policy\\n\\n- **Mode:** \" + control.value + \"\\n\")\n\t\tif index.PerformancePolicy.Mode != control.mode || len(findings) != 0 {\n\t\t\tt.Fatalf(\"lowercase control %q: mode=%q findings=%#v\", control.value, index.PerformancePolicy.Mode, findings)\n\t\t}\n\t}\n\n\tvariants := []string{\"ENABLED\", \"Enabled\", \"DISABLED\", \"Disabled\"}\n\taccepted := false\n\tfor _, value := range variants {\n\t\tindex, findings := ParseProjectIndex(\"## Performance Policy\\n\\n- **Mode:** \" + value + \"\\n\")\n\t\tt.Logf(\"case variant %q: mode=%q findings=%#v\", value, index.PerformancePolicy.Mode, findings)\n\t\tif len(findings) == 0 {\n\t\t\taccepted = true\n\t\t}\n\t}\n\tif accepted {\n\t\tt.Log(\"assertion: case-variant Mode values must produce validation findings while lowercase enabled and disabled controls remain valid\")\n\t\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_20f83a1a7704\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"ENABLED\": mode=\"enabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Enabled\": mode=\"enabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"DISABLED\": mode=\"disabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Disabled\": mode=\"disabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:30: assertion: case-variant Mode values must produce validation findings while lowercase enabled and disabled controls remain valid\n    qa_investigator_20f83a1a7704_test.go:31: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704\n--- FAIL: TestQAInvestigator_20f83a1a7704 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.004s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/project/qa_investigator_20f83a1a7704_test.go"
+          ],
+          "check_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+          "output_digest": "df8a11f4d4c0cb6061e7f9c9a7a8196e6520e6d06a3fdc9e525660f73f6ce01e"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

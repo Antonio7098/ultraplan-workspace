@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-d04679da94e7316ba76735ad",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-e520dfe5bb32e35f0d545398"
+    ],
+    "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+    "gap": "No executable CLI exit-class evidence was supplied.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer that feeds representative classified timeout, process, persistence, configuration, and cancellation errors through runSprintPerformance's error path.",
+    "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+    "control_requirement": "Verify the underlying PerformanceError categories remain distinct before CLI wrapping.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "e86c1a73773a9e9ed8e27b1247fe0987da1b1cf46b68d9664ab77e6963418203",
+    "reason_code": "investigator_workspace_unavailable",
+    "superseded_by": "qa-v2-request-8879630e73c2765e01a64feb",
+    "next_action": "Evidence remains unresolved: investigator_workspace_unavailable. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-93bebdee9ed12bb8dbc0c3f4",
+  "plan_id": "qa-v2-plan-1292708488e9ee28e2e96aa2",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+  "workspace_id": "qa-v2-test-e8a87a5395051ad698e6f00c",
+  "workspace_identity": "7092863e66aaff04b46d5897ee84d87fbef6dd022e361dc482509f9251f5f484",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "1ee63b8571ce50b1f63e04dd4093e89c2b74d4e8bfeb0bf008b9466467f244d5",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "ab654b857b5b4f8977d7c1c52bc615a5de1ca72c2d67fc1d20aa4a6b2388e240",
+      "exit_code": 1,
+      "duration": 5921289577,
+      "stdout_digest": "63e0d212842e2a8e9c084c6edca4af761dbed09c06a7b9c3e35ad8d944871f30",
+      "stderr_digest": "d1d1b001ab891924d2e70b96e8d8fcac70c75fe1427db6306be2089f549d796a",
+      "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [setup failed]\nFAIL\n",
+      "stderr": "go: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\n-\u003e unzip /tmp/ultraplan-qa-authored-test-655833030/qa-v2-test-e8a87a5395051ad698e6f00c-3706000238/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/libc/@v/v1.74.4.zip: write /tmp/ultraplan-qa-authored-test-655833030/qa-v2-test-e8a87a5395051ad698e6f00c-3706000238/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/libc@v1.74.4/testdata/nsz.repo.hu/libc-test/src/functional/dlopen.c: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/app\n../../.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/conn.go:17:2: unzip /tmp/ultraplan-qa-authored-test-655833030/qa-v2-test-e8a87a5395051ad698e6f00c-3706000238/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/libc/@v/v1.74.4.zip: write /tmp/ultraplan-qa-authored-test-655833030/qa-v2-test-e8a87a5395051ad698e6f00c-3706000238/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/libc@v1.74.4/testdata/nsz.repo.hu/libc-test/src/functional/dlopen.c: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/app\n../../.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/conn.go:18:2: unzip /tmp/ultraplan-qa-authored-test-655833030/qa-v2-test-e8a87a5395051ad698e6f00c-3706000238/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/libc/@v/v1.74.4.zip: write /tmp/ultraplan-qa-authored-test-655833030/qa-v2-test-e8a87a5395051ad698e6f00c-3706000238/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/libc@v1.74.4/testdata/nsz.repo.hu/libc-test/src/functional/dlopen.c: no space left on device\n",
+      "output_bytes": 1912,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_333605f09ff9_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-06T15:47:15.933269801Z"
+}

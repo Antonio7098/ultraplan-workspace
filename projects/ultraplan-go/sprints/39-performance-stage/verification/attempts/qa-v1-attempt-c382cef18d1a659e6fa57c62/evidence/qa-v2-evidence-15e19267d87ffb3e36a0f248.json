@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-15e19267d87ffb3e36a0f248",
+  "plan_id": "qa-v2-plan-d946f2f45f8913956aa38831",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+  "workspace_id": "qa-v2-test-4a637ac7b98dd57ba5b0448b",
+  "workspace_identity": "5b2bc1c7ffe205e8284560330d8f3eaa480ebdf395be230cfbaf4872585915a8",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "e1f15fc14a4d7e2251ec071e3642bc6c950360d7d6b3b2109dfa1dd39174a563",
+      "exit_code": 1,
+      "duration": 29207311566,
+      "stdout_digest": "e54b74eb9192b48055c48d2062bffdd23469ef7d70f960ff1293a47f86c8eba2",
+      "stderr_digest": "45fae49e4f514dbc93e8fd66da38afc8fc59e76b269ac860a1a63bb163c129c7",
+      "stdout": "[REDACTED]",
+      "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+      "output_bytes": 489,
+      "truncated": false,
+      "redacted": true,
+      "redaction_count": 1,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_9353fcf1007e_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T12:57:54.436409415Z"
+}

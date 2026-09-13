@@ -1,0 +1,273 @@
+--- a/internal/sprint/performance_repair.go
++++ b/internal/sprint/performance_repair.go
+@@ -54,6 +54,14 @@
+ 	if len(baseline) != len(packet.Targets) || environment.Identity != currentPerformanceEnvironment(os.Environ()).Identity {
+ 		return blocked(fmt.Errorf("frozen performance environment or baseline coverage changed"), true)
+ 	}
++	record.TargetPacketDigest = packet.PacketDigest
++	record.TargetIDs = make([]string, len(packet.Targets))
++	for index, performanceTarget := range packet.Targets {
++		record.TargetIDs[index] = performanceTarget.ID
++		if baseline[index].Target != performanceTarget {
++			return blocked(fmt.Errorf("frozen performance baseline target coverage changed"), true)
++		}
++	}
+ 	currentManifest, err := DiscoverPerformanceManifest(target, packet)
+ 	if err != nil || currentManifest.BenchmarkDigest != manifest.BenchmarkDigest {
+ 		return blocked(fmt.Errorf("frozen performance benchmark changed: %w", err), true)
+--- a/internal/sprint/qa_investigator_b7efe9eb62a1_test.go
++++ b/internal/sprint/qa_investigator_b7efe9eb62a1_test.go
+@@ -1,0 +1,208 @@
++package sprint
++
++import (
++	"context"
++	"fmt"
++	"os"
++	"path/filepath"
++	"reflect"
++	"strings"
++	"testing"
++	"time"
++
++	pprocess "github.com/Antonio7098/ultraplan-go/internal/platform/process"
++)
++
++func TestQAInvestigator_b7efe9eb62a1(t *testing.T) {
++	now := time.Date(2026, 9, 12, 12, 0, 0, 0, time.UTC)
++	gates := make([]RepairGateResult, 0, len(RepairGateOrder()))
++	for _, gate := range RepairGateOrder() {
++		gates = append(gates, RepairGateResult{Gate: gate, Status: RepairGatePassed})
++	}
++	valid := RepairReverification{
++		SchemaVersion: QARepairSchemaVersion,
++		RepairRunID:   "repair-v1-run-0123456789abcdef01234567",
++		Cycle:         1,
++		Gates:         gates,
++		CompletedAt:   now,
++		Performance: &RepairPerformanceReverification{
++			SchemaVersion:          PerformanceSchemaVersion,
++			AttemptID:              "performance-v1-attempt-0123456789abcdef01234567",
++			PriorResultDigest:      fingerprintOf("prior-result"),
++			RepairedImplementation: fingerprintOf("repaired-implementation"),
++			TargetResults: []PerformanceTargetResult{
++				{
++					Target:     PerformanceTarget{ID: "PERF-A", Gate: PerformanceRequired},
++					Comparison: PerformanceComparison{TargetID: "PERF-A", Outcome: PerformanceTargetMet},
++				},
++				{
++					Target:     PerformanceTarget{ID: "PERF-B", Gate: PerformanceRequired},
++					Comparison: PerformanceComparison{TargetID: "PERF-B", Outcome: PerformanceTargetMet},
++				},
++			},
++			Outcome:         PerformancePassed,
++			CleanupComplete: true,
++			CompletedAt:     now,
++		},
++	}
++	qaSetRepairPerformanceCoverage(valid.Performance, fingerprintOf("target-packet"), []string{"PERF-A", "PERF-B"})
++
++	t.Run("complete target results control", func(t *testing.T) {
++		if err := ValidateRepairReverification(valid); err != nil {
++			t.Fatalf("control: complete passing performance reverification was rejected: %v", err)
++		}
++	})
++
++	t.Run("cleanup proof control", func(t *testing.T) {
++		control := valid
++		performance := *valid.Performance
++		performance.CleanupComplete = false
++		control.Performance = &performance
++		if err := ValidateRepairReverification(control); err == nil {
++			t.Fatal("control: passing performance reverification without cleanup proof was accepted")
++		}
++	})
++
++	t.Run("rejects zero target results", func(t *testing.T) {
++		missing := valid
++		performance := *valid.Performance
++		performance.TargetResults = nil
++		missing.Performance = &performance
++		if err := ValidateRepairReverification(missing); err == nil {
++			fmt.Println("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1")
++			t.Fatal("passing performance reverification with zero TargetResults was accepted")
++		}
++	})
++
++	t.Run("rejects incomplete target results", func(t *testing.T) {
++		incomplete := valid
++		performance := *valid.Performance
++		performance.TargetResults = append([]PerformanceTargetResult(nil), valid.Performance.TargetResults[:1]...)
++		incomplete.Performance = &performance
++		if err := ValidateRepairReverification(incomplete); err == nil {
++			fmt.Println("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1")
++			t.Fatal("passing performance reverification with incomplete TargetResults was accepted")
++		}
++	})
++
++	t.Run("rejects reordered baseline target identities", func(t *testing.T) {
++		root := workspaceFixture(t)
++		sp := sprintFixture(t, root, "proj", "39-performance")
++		target := gitFixture(t)
++		benchmark := `package performance
++
++// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-A
++func BenchmarkA() {}
++
++// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-B
++func BenchmarkB() {}
++`
++		if err := os.WriteFile(filepath.Join(target, "performance_test.go"), []byte(benchmark), 0o644); err != nil {
++			t.Fatal(err)
++		}
++		runGitTest(t, target, "add", "performance_test.go")
++		runGitTest(t, target, "commit", "-m", "add performance benchmarks")
++		writeFileContent(t, filepath.Join(root, "projects", "proj"), projectIndexForTarget(target)+"\n## Performance Policy\n\n- **Mode:** enabled\n", "project-index.md")
++		writeFileContent(t, sp.Path, `# Requirements
++
++## Performance Targets
++
++| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |
++| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |
++| PERF-A | operation A | latency change | <= | 10 | % | required | 5 | baseline |
++| PERF-B | operation B | latency change | <= | 10 | % | required | 5 | baseline |
++`, "requirements.md")
++		writeFileContent(t, sp.Path, "# Execute\n\nComplete.\n", "execute.md")
++		task := ExecuteTaskRecord{ID: "task-performance", Identity: ExecuteTaskIdentity{Name: "Performance implementation", PlanLine: 1}, Status: ExecuteTaskComplete, CreatedAt: now, UpdatedAt: now, CompletedAt: &now}
++		execute := NewExecuteRunState(sp, ExecuteTargetRef{Path: target, Source: "project-index.md"}, ArtifactRelPath(sp, StagePlan), fingerprintOf("plan"), []ExecuteTaskRecord{task}, now)
++		if err := SaveExecuteRunState(root, sp, execute); err != nil {
++			t.Fatal(err)
++		}
++		if err := SaveFlowState(root, sp, NewFlowState(sp, completeStates(sp), now)); err != nil {
++			t.Fatal(err)
++		}
++		token := VerificationWriterToken{RunID: "run-performance", OperationalAttemptID: "attempt-performance", FencingGeneration: 1}
++		runner := qaInvestigatorPerformanceRunner{}
++		service := NewService(root).WithClock(func() time.Time { return now }).WithProcessRunner(runner).WithVerificationWriterFence(func(got VerificationWriterToken) error {
++			if got != token {
++				return context.Canceled
++			}
++			return nil
++		})
++		prepared, err := service.PreparePerformance("proj", "39", true)
++		if err != nil || !prepared.Ready {
++			t.Fatalf("prepare performance: %#v, %v", prepared, err)
++		}
++		manifest := PerformanceBenchmarkManifest{
++			SchemaVersion: PerformanceSchemaVersion,
++			PacketDigest:  prepared.Packet.PacketDigest,
++			RunnerVersion: PerformanceRunnerVersion,
++			ParserVersion: PerformanceParserVersion,
++			Descriptors: []PerformanceDescriptor{
++				performanceDescriptor(PerformanceGoBenchmark, ".", "BenchmarkA", PerformanceNSPerOp, "PERF-A"),
++				performanceDescriptor(PerformanceGoBenchmark, ".", "BenchmarkB", PerformanceNSPerOp, "PERF-B"),
++			},
++		}
++		if err := ValidatePerformanceManifest(prepared.Packet, &manifest); err != nil {
++			t.Fatal(err)
++		}
++		if _, err := service.RunPerformance(context.Background(), "proj", "39", PerformanceRunRequest{WriterToken: token, Manifest: manifest, Environment: allowPerformanceEnvironment(os.Environ())}); err != nil {
++			t.Fatal(err)
++		}
++		ordered := service.runRepairPerformanceReverification(context.Background(), sp, target)
++		if ordered.Outcome != PerformancePassed || len(ordered.TargetResults) != 2 ||
++			ordered.TargetResults[0].Target.ID != "PERF-A" || ordered.TargetResults[0].BaselineQualification.Median != "100" ||
++			ordered.TargetResults[1].Target.ID != "PERF-B" || ordered.TargetResults[1].BaselineQualification.Median != "200" {
++			t.Fatalf("control: correctly ordered baselines were not associated by target: %#v", ordered)
++		}
++		state, err := LoadPerformanceState(root, sp)
++		if err != nil {
++			t.Fatal(err)
++		}
++		store := NewPerformanceStore(root, sp).WithWriterFence(service.verificationWriterFence)
++		var baseline []PerformanceMeasurement
++		if err := store.ReadJSON(*state.Baseline, &baseline); err != nil {
++			t.Fatal(err)
++		}
++		baseline[0], baseline[1] = baseline[1], baseline[0]
++		reorderedRef, err := store.PublishJSON(state.Baseline.Path, "baseline", baseline, false, token)
++		if err != nil {
++			t.Fatal(err)
++		}
++		state.Baseline = &reorderedRef
++		if _, err := store.PublishState(state, token); err != nil {
++			t.Fatal(err)
++		}
++		reordered := service.runRepairPerformanceReverification(context.Background(), sp, target)
++		if reordered.Outcome != PerformanceBlocked || len(reordered.TargetResults) != 0 || !reordered.CleanupComplete {
++			fmt.Println("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1")
++			t.Fatalf("reordered baseline entries were not rejected before target comparison: %#v", reordered)
++		}
++	})
++}
++
++// Set repaired-schema coverage fields reflectively so this test remains
++// executable against the frozen implementation that predates those fields.
++func qaSetRepairPerformanceCoverage(value *RepairPerformanceReverification, packetDigest string, targetIDs []string) {
++	reflected := reflect.ValueOf(value).Elem()
++	if field := reflected.FieldByName("TargetPacketDigest"); field.IsValid() && field.CanSet() {
++		field.SetString(packetDigest)
++	}
++	if field := reflected.FieldByName("TargetIDs"); field.IsValid() && field.CanSet() {
++		field.Set(reflect.ValueOf(append([]string(nil), targetIDs...)))
++	}
++}
++
++type qaInvestigatorPerformanceRunner struct{}
++
++func (qaInvestigatorPerformanceRunner) Run(_ context.Context, request pprocess.Request) (pprocess.Result, error) {
++	args := strings.Join(request.Args, " ")
++	stdout := ""
++	if strings.Contains(args, "-bench=^BenchmarkA$") {
++		stdout = "BenchmarkA-8 100 100 ns/op\n"
++	}
++	if strings.Contains(args, "-bench=^BenchmarkB$") {
++		stdout = "BenchmarkB-8 100 200 ns/op\n"
++	}
++	return pprocess.Result{Stdout: stdout, CleanupComplete: true}, nil
++}
+--- a/internal/sprint/qa_repair_state.go
++++ b/internal/sprint/qa_repair_state.go
+@@ -710,12 +710,25 @@
+ 	}
+ 	if value.Performance != nil {
+ 		performance := value.Performance
+-		if performance.SchemaVersion != PerformanceSchemaVersion || performance.AttemptID != "" && !performanceAttemptID.MatchString(performance.AttemptID) || performance.PriorResultDigest != "" && !validFingerprint(performance.PriorResultDigest) || performance.RepairedImplementation != "" && !validFingerprint(performance.RepairedImplementation) || performance.CompletedAt.IsZero() || !validPerformanceRunOutcome(performance.Outcome) || len(performance.Blocker) > 512 {
+-			return fmt.Errorf("repair performance reverification is invalid")
+-		}
+-		if performance.Outcome == PerformancePassed || performance.Outcome == PerformancePassedWithReports {
+-			if !performance.CleanupComplete || performance.AttemptID == "" || performance.PriorResultDigest == "" || performance.RepairedImplementation == "" {
+-				return fmt.Errorf("repair performance reverification passed without complete authority and cleanup proof")
++		if performance.SchemaVersion != PerformanceSchemaVersion || performance.AttemptID != "" && !performanceAttemptID.MatchString(performance.AttemptID) || performance.PriorResultDigest != "" && !validFingerprint(performance.PriorResultDigest) || performance.RepairedImplementation != "" && !validFingerprint(performance.RepairedImplementation) || performance.TargetPacketDigest != "" && !validFingerprint(performance.TargetPacketDigest) || performance.CompletedAt.IsZero() || !validPerformanceRunOutcome(performance.Outcome) || len(performance.Blocker) > 512 {
++			return fmt.Errorf("repair performance reverification is invalid")
++		}
++		if performance.Outcome == PerformancePassed || performance.Outcome == PerformancePassedWithReports {
++			if !performance.CleanupComplete || performance.AttemptID == "" || performance.PriorResultDigest == "" || performance.RepairedImplementation == "" || !validFingerprint(performance.TargetPacketDigest) || len(performance.TargetIDs) == 0 || len(performance.TargetIDs) > PerformanceMaxTargets || len(performance.TargetResults) != len(performance.TargetIDs) {
++				return fmt.Errorf("repair performance reverification passed without complete authority and cleanup proof")
++			}
++			seen := make(map[string]bool, len(performance.TargetIDs))
++			outcomes := make([]PerformanceTargetOutcome, len(performance.TargetResults))
++			for index, targetID := range performance.TargetIDs {
++				result := performance.TargetResults[index]
++				if !performanceTargetID.MatchString(targetID) || seen[targetID] || result.Target.ID != targetID || result.Comparison.TargetID != targetID {
++					return fmt.Errorf("repair performance reverification target coverage is invalid")
++				}
++				seen[targetID] = true
++				outcomes[index] = result.Comparison.Outcome
++			}
++			if DerivePerformanceRunOutcome(outcomes, false, false, false, false) != performance.Outcome {
++				return fmt.Errorf("repair performance reverification outcome disagrees with target results")
+ 			}
+ 		}
+ 	}
+--- a/internal/sprint/qa_types.go
++++ b/internal/sprint/qa_types.go
+@@ -655,6 +655,8 @@
+ 	AttemptID              string                    `json:"performance_attempt_id"`
+ 	PriorResultDigest      string                    `json:"prior_result_digest"`
+ 	RepairedImplementation string                    `json:"repaired_implementation"`
++	TargetPacketDigest     string                    `json:"target_packet_digest,omitempty"`
++	TargetIDs              []string                  `json:"target_ids,omitempty"`
+ 	TargetResults          []PerformanceTargetResult `json:"target_results,omitempty"`
+ 	Outcome                PerformanceRunOutcome     `json:"outcome"`
+ 	CleanupComplete        bool                      `json:"cleanup_complete"`

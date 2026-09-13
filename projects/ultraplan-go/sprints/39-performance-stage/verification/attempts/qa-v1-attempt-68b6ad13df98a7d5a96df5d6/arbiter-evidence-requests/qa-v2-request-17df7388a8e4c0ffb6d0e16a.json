@@ -1,0 +1,34 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "correction_granted_at": "2026-09-12T12:08:00.248877867Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "qa continue investigator for evidence: verification_unavailable: The sole approved path is in package internal/app, but the required failure occurs inside unexported internal/sprint optimizePerformance and performanceIsolation cleanup logic. The public orchestration API has no deterministic isolation cleanup injection seam. Reaching the branch from app would require filesystem sabotage of product-created temporary directories, which cannot reliably distinguish cleanup failure from infrastructure behavior and therefore would violate the frozen inconclusive conditions. Source matching and independent simulation were explicitly rejected.. Required prerequisite: Approve an internal/sprint/*_test.go path in package sprint, where optimizePerformance and performanceIsolation can be exercised directly, or expose an existing product-owned deterministic isolation/cleanup test hook through sprint.Service.",
+      "retryable": false
+    },
+    "id": "qa-v2-request-17df7388a8e4c0ffb6d0e16a",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+    ],
+    "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+    "gap": "The returned tests do not invoke optimizePerformance or observe product state; one checks source text and another runs an unrelated synthetic loop.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace that invokes the actual optimization path with a controllable isolation cleanup failure on a rejection branch that normally continues.",
+    "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after the injected cleanup failure and assert the actual returned or persisted cleanup classification.",
+    "control_requirement": "Exercise optimizePerformance or RunPerformance through real product orchestration with deterministic collaborators; an independent simulated loop or source-string assertion is not sufficient.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 3,
+    "attempts": 1,
+    "evidence_fingerprint": "bd984b63f605a28b3d542df874bc9c0508e6cd907044f3fa23a13adba6001ff3",
+    "reason_code": "verification_unavailable",
+    "superseded_by": "qa-v2-request-d1ba5b60ee106aa1d74ac997",
+    "next_action": "Evidence remains unresolved: verification_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. qa continue investigator for evidence: verification_unavailable: The sole approved path is in package internal/app, but the required failure occurs inside unexported internal/sprint optimizePerformance and performanceIsolation cleanup logic. The public orchestration API has no deterministic isolation cleanup injection seam. Reaching the branch from app would require filesystem sabotage of product-created temporary directories, which cannot reliably distinguish cleanup failure from infrastructure behavior and therefore would violate the frozen inconclusive conditions. Source matching and independent simulation were explicitly rejected.. Required prerequisite: Approve an internal/sprint/*_test.go path in package sprint, where optimizePerformance and performanceIsolation can be exercised directly, or expose an existing product-owned deterministic isolation/cleanup test hook through sprint.Service."
+  }
+}

@@ -1,0 +1,11 @@
+--- a/internal/sprint/state.go
++++ b/internal/sprint/state.go
+@@ -414,7 +414,7 @@
+ 	default:
+ 		return fmt.Errorf("%w: %s: invalid performance phase", ErrFlowStateMalformed, path)
+ 	}
+-	if summary.Required < 0 || summary.Reports < 0 || summary.Met < 0 || summary.Missed < 0 || summary.Met+summary.Missed > summary.Required {
++	if summary.Required < 0 || summary.Reports < 0 || summary.Met < 0 || summary.Missed < 0 || summary.Met+summary.Missed > summary.Required+summary.Reports {
+ 		return fmt.Errorf("%w: %s: invalid performance counts", ErrFlowStateMalformed, path)
+ 	}
+ 	if summary.StatePath == "" || !validFingerprint(summary.StateDigest) || strings.TrimSpace(summary.NextAction) == "" {

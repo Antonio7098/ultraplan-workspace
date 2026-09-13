@@ -1,0 +1,88 @@
+package app
+
+import (
+	"bytes"
+	"context"
+	"io"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+
+	"github.com/Antonio7098/ultraplan-go/internal/sprint"
+	"github.com/Antonio7098/ultraplan-go/internal/workspace"
+)
+
+func TestQAInvestigator_d48db6847a74(t *testing.T) {
+	const (
+		matcher   = "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74"
+		assertion = "Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4."
+	)
+
+	rootPath := t.TempDir()
+	writeCommandSprintProject(t, rootPath, "proj", "01-alpha")
+	base := filepath.Join(rootPath, "projects", "proj")
+	writeFixtureFileContent(t, base, commandProjectIndex(t), "project-index.md")
+	writeFixtureFileContent(t, base, commandValidRequirements(), "sprints", "01-alpha", "requirements.md")
+	writeFixtureFileContent(t, base, commandValidSprintIndex(), "sprints", "01-alpha", "sprint-index.md")
+	root := workspace.Root{Path: rootPath}
+	service := sprint.NewService(rootPath)
+
+	// Passing controls use the real command adapter and prove both public modes
+	// are stable and silent on stderr without entering runtime-backed work.
+	run := func(args ...string) (string, string, error) {
+		var stdout, stderr bytes.Buffer
+		err := runSprintPerformance(dependencies{
+			stdout: &stdout, stderr: &stderr, ctx: context.Background(), workDir: rootPath, env: map[string]string{},
+		}, root, service, "proj", "01-alpha", args)
+		return stdout.String(), stderr.String(), err
+	}
+	jsonOut, jsonErrOut, err := run("--dry-run", "--json")
+	if err != nil || jsonErrOut != "" {
+		t.Fatalf("JSON passing control err=%v stderr=%q", err, jsonErrOut)
+	}
+	for _, field := range []string{`"schema_version":1`, `"operation":"sprint.performance.dry-run"`, `"status":"ok"`, `"result":`} {
+		if !strings.Contains(jsonOut, field) {
+			t.Fatalf("JSON passing control missing %s: %s", field, jsonOut)
+		}
+	}
+	textOut, textErrOut, err := run("--dry-run")
+	if err != nil || textErrOut != "" || !strings.Contains(textOut, "Performance dry-run: proj/01-alpha\n") {
+		t.Fatalf("text passing control err=%v stdout=%q stderr=%q", err, textOut, textErrOut)
+	}
+
+	// Exercise the text projection for every semantic terminal family requested
+	// by the arbiter; this remains independent of the stdout-writer defect.
+	for _, outcome := range []string{"passed", "target_missed", "cancelled", "blocked", "stalled"} {
+		var output bytes.Buffer
+		status := PerformanceStatusResult{Project: "proj", Sprint: "01-alpha", Phase: "terminal", Fresh: true, Outcome: outcome, NextAction: "inspect"}
+		if err := renderSprintPerformance(dependencies{stdout: &output, stderr: io.Discard}, "status", status); err != nil {
+			t.Fatalf("render %s: %v", outcome, err)
+		}
+		if !strings.Contains(output.String(), "Outcome: "+outcome+"\n") {
+			t.Fatalf("render %s omitted outcome: %q", outcome, output.String())
+		}
+	}
+
+	// The defect is the absent compatibility coverage itself. Require the
+	// approved product test files to name and execute all public mappings.
+	var productTests strings.Builder
+	for _, name := range []string{"performance_test.go", "performance_fixtures_test.go", "sprint_commands_test.go"} {
+		data, readErr := os.ReadFile(name)
+		if readErr != nil {
+			t.Fatalf("read approved product test %s: %v", name, readErr)
+		}
+		productTests.Write(data)
+	}
+	testSource := productTests.String()
+	required := []string{"runSprintPerformance", "PerformanceTargetMiss", "PerformanceCancelled", "ExitCancel", "ExitPartial", "operational failure"}
+	var missing []string
+	for _, token := range required {
+		if !strings.Contains(testSource, token) {
+			missing = append(missing, token)
+		}
+	}
+	if len(missing) != 0 {
+		t.Fatalf("%s assertion=%s missing_compatibility_cases=%s", matcher, assertion, strings.Join(missing, ","))
+	}
+}

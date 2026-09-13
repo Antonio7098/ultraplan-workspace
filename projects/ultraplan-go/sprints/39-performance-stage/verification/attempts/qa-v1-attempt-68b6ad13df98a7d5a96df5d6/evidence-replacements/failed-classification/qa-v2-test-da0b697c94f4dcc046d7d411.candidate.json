@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "proof": {
+    "lineage_root": "qa-v2-test-da0b697c94f4dcc046d7d411",
+    "repair_session": "ses_f64e3c129ffeb96PrmAarJYiVt",
+    "schema_version": 1,
+    "packet": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-3060fd4f7a6a068d1c547920/issue-packet.json",
+      "digest": "8f997b209962f6b252f33a5f605793cb8d4e975fac90505a91f5f04afbeeadba"
+    },
+    "spec": {
+      "schema_version": 2,
+      "id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+      "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+      "evidence_request_id": "qa-v2-request-1cefed6a599adae46ba55ba6",
+      "theory_ids": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "claim": "The performance evidence API's advertised default request is unusable because omitting the limit query parameter sends limit 0 to a store that rejects every non-positive limit.",
+      "preconditions": [
+        "Define all required query fakes in the test, prove the omitted request reaches PerformanceEvidence and EvidencePage, and avoid an unrelated query-allowlist failure."
+      ],
+      "expected_behavior": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+      "predicted_failure": {
+        "test_name": "TestQAInvestigator_dae46ba55ba6",
+        "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6"
+      },
+      "inconclusive_conditions": [
+        "compile error",
+        "infrastructure error",
+        "mismatched assertion",
+        "timeout",
+        "truncated output",
+        "unrelated panic"
+      ],
+      "approved_test_paths": [
+        "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+      ],
+      "command": {
+        "id": "investigator-test-dae46ba55ba6",
+        "executable": "/usr/bin/go",
+        "args": [
+          "test",
+          ".",
+          "-v",
+          "-run",
+          "^TestQAInvestigator_dae46ba55ba6$",
+          "-count=1"
+        ],
+        "working_directory": "internal/tui",
+        "environment": [
+          "PATH"
+        ],
+        "timeout": 300000000000,
+        "output_limit": 262144,
+        "fingerprint": "c8d8c1d5e4f96dba509599f65fa5d69d5c4a3c88ff0576c600950057ec901d8f"
+      },
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "frozen_at": "2026-09-12T12:04:14.286180777Z"
+    },
+    "bundle": {
+      "schema_version": 2,
+      "id": "qa-v2-test-846a45fbc3e75d043344cbf2",
+      "spec_id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "files": [
+        {
+          "path": "internal/tui/qa_investigator_dae46ba55ba6_test.go",
+          "content": "package tui\n\nimport (\n\t\"context\"\n\t\"encoding/json\"\n\t\"io\"\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/web\"\n)\n\ntype qaDAEPerformanceQueries struct {\n\tstore     sprint.PerformanceStore\n\tattemptID string\n\tlimits    []int\n}\n\nfunc (*qaDAEPerformanceQueries) Dashboard(context.Context) (app.WebDashboardResult, error) {\n\treturn app.WebDashboardResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Projects(context.Context) (app.WebProjectsResult, error) {\n\treturn app.WebProjectsResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Project(context.Context, string) (app.WebProjectResult, error) {\n\treturn app.WebProjectResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Sprint(context.Context, string, string) (app.WebSprintResult, error) {\n\treturn app.WebSprintResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Studies(context.Context) (app.WebStudiesResult, error) {\n\treturn app.WebStudiesResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Study(context.Context, string) (app.WebStudyResult, error) {\n\treturn app.WebStudyResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Validations(context.Context, string, string) (app.WebValidationResult, error) {\n\treturn app.WebValidationResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Artifact(context.Context, string) (app.WebArtifactPreview, error) {\n\treturn app.WebArtifactPreview{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Health(context.Context) (app.WebHealthResult, error) {\n\treturn app.WebHealthResult{}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceEvidence(_ context.Context, req app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {\n\tq.limits = append(q.limits, req.Limit)\n\tpage, err := q.store.EvidencePage(q.attemptID, req.Cursor, req.Filter, req.Limit)\n\tif err != nil {\n\t\treturn app.PerformanceEvidenceResult{}, err\n\t}\n\treturn app.PerformanceEvidenceResult{SchemaVersion: 1, Records: page.Records, NextCursor: page.NextCursor, ReturnedCount: len(page.Records)}, nil\n}\n\nfunc TestQAInvestigator_dae46ba55ba6(t *testing.T) {\n\troot := t.TempDir()\n\tsp := sprint.Sprint{Project: \"alpha\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"alpha\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\tstore := sprint.NewPerformanceStore(root, sp).WithWriterFence(func(sprint.VerificationWriterToken) error { return nil })\n\trel, err := sprint.PerformanceAttemptRelPath(sp, attemptID, \"summary.json\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := sprint.VerificationWriterToken{RunID: \"run\", OperationalAttemptID: \"attempt\", FencingGeneration: 1}\n\tif _, err := store.PublishBytes(rel, \"qa-investigator\", []byte(`{\"status\":\"retained\"}`), true, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\n\tqueries := \u0026qaDAEPerformanceQueries{store: store, attemptID: attemptID}\n\thandler, err := web.NewHandler(web.HandlerOptions{Queries: queries, Authority: \"127.0.0.1:8080\", Diagnostics: io.Discard})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\n\tt.Run(\"omitted request uses bounded default\", func(t *testing.T) {\n\t\tresponse := httptest.NewRecorder()\n\t\trequest := httptest.NewRequest(http.MethodGet, \"/api/v1/projects/alpha/sprints/39-performance/performance/evidence\", nil)\n\t\trequest.Host = \"127.0.0.1:8080\"\n\t\thandler.ServeHTTP(response, request)\n\n\t\tif len(queries.limits) != 1 {\n\t\t\tt.Errorf(\"omitted request did not reach PerformanceEvidence and EvidencePage exactly once: limits=%v status=%d body=%s\", queries.limits, response.Code, response.Body.String())\n\t\t} else if queries.limits[0] != 50 {\n\t\t\tt.Errorf(\"omitted request did not use the advertised bounded default Limit=50: limits=%v status=%d body=%s\", queries.limits, response.Code, response.Body.String())\n\t\t}\n\t\tif response.Code != http.StatusOK {\n\t\t\tt.Errorf(\"omitted-limit request was unusable: status=%d body=%s\", response.Code, response.Body.String())\n\t\t}\n\n\t\tvar envelope struct {\n\t\t\tData app.PerformanceEvidenceResult `json:\"data\"`\n\t\t}\n\t\tif err := json.Unmarshal(response.Body.Bytes(), \u0026envelope); err != nil {\n\t\t\tt.Errorf(\"omitted-limit response body is not a success envelope: err=%v body=%s\", err, response.Body.String())\n\t\t} else if envelope.Data.SchemaVersion != 1 || envelope.Data.ReturnedCount != 1 || len(envelope.Data.Records) != 1 || envelope.Data.Records[0].Name != \"summary.json\" {\n\t\t\tt.Errorf(\"unexpected omitted-limit response body: data=%+v body=%s\", envelope.Data, response.Body.String())\n\t\t}\n\t})\n\n\tt.Run(\"bounded-success control\", func(t *testing.T) {\n\t\tcontrol, controlErr := queries.PerformanceEvidence(context.Background(), app.PerformanceRequest{Project: \"alpha\", Sprint: \"39-performance\", Limit: 1})\n\t\tif controlErr != nil || control.ReturnedCount != 1 || len(control.Records) != 1 || control.Records[0].Name != \"summary.json\" {\n\t\t\tt.Errorf(\"bounded-success control failed: result=%+v err=%v limits=%v\", control, controlErr, queries.limits)\n\t\t}\n\t\tif len(queries.limits) != 2 || queries.limits[1] != 1 {\n\t\t\tt.Errorf(\"bounded-success control did not reach EvidencePage with Limit=1: limits=%v\", queries.limits)\n\t\t}\n\t})\n\n\tt.Run(\"exact limits are independently comparable\", func(t *testing.T) {\n\t\tif len(queries.limits) != 2 {\n\t\t\tt.Fatalf(\"expected omitted and bounded invocations to be recorded independently: limits=%v\", queries.limits)\n\t\t}\n\t\tif queries.limits[0] != 50 || queries.limits[1] != 1 {\n\t\t\tt.Errorf(\"unexpected omitted/control limits: omitted=%d control=%d\", queries.limits[0], queries.limits[1])\n\t\t}\n\t})\n\n\tt.Log(\"assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\")\n}\n",
+          "digest": "1dddc3a0d0bc24d07fb4182665e6dad6343ac51758aba13d78b70ec2d7462672",
+          "bytes": 6268
+        }
+      ],
+      "content_digest": "5efc70dc7aeafa29caed0bed6cb4ad982b53f90acb05b03ea052ceb783078792",
+      "derived_from": "qa-v2-test-da0b697c94f4dcc046d7d411"
+    },
+    "before": {
+      "observed_outcome": "inconclusive",
+      "observed_reason_code": "failure_signature_mismatch",
+      "failure": {
+        "phase": "assertion",
+        "code": "unknown_failure",
+        "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_dae46ba55ba6 === RUN   TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default     qa_investigator_dae46ba55ba6_test.go:98: omitted request did not use the advertised bounded default Limit=50: limits=[0] status=500 body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"418bf3aa3d18f70f519bb82e03f4378f\"}}     qa_investigator_dae46ba55ba6_test.go:101: omitted-limit request was unusable: status=500 body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"418bf3aa3d18f70f519bb82e03f4378f\"}}     qa_investigator_dae46ba55ba6_test.go:110: unexpected omitted-limit response body: data={SchemaVersion:0 Records:[] NextCursor: ReturnedCount:0} body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"418bf3aa3d18f70f519bb82e03f4378f\"}} === RUN   TestQAInvestigator_dae46ba55ba6/bounded-success_control === RUN   TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable     qa_investigator_dae46ba55ba6_test.go:129: unexpected omitted/control limits: omitted=0 control=1 === NAME  TestQAInvestigator_dae46ba55ba6     qa_investigator_dae46ba55ba6_test.go:133: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation. --- FAIL: TestQAInvestigator_dae46ba55ba6 (0.03s)     --- FAIL: TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default (0.00s)     --- PASS: TestQAInvestigator_dae46ba55ba6/bounded-success_control (0.00s)     --- FAIL: TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable (0.00s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.079s FAIL",
+        "retryable": false
+      },
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "57c4ceff0d1a6e3fa67d8e9a7ea0814b463640fe9f9fd3dac762b2fd1f139a96",
+      "schema_version": 2,
+      "id": "qa-v2-run-ab2b918152826102f159ba64",
+      "spec_id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "test_bundle_id": "qa-v2-test-846a45fbc3e75d043344cbf2",
+      "target_identity": "05e33a044427a2b0c04db907ba491e13a9f56ad84f883311eb2328972a3be7cb",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/bounded-success_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6",
+            "action": "fail"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default",
+            "action": "fail"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/bounded-success_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable",
+            "action": "fail"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "ea6e7e506537d0df249c7704d6e57697d5a92bccb0ae3c116d9509b907efa21c",
+        "exit_code": 1,
+        "duration": 44413764983,
+        "stdout_digest": "eac44d6e2d349b8e74703b6b5d2d8b7973373555e505c06b087650ef0b51ee45",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_dae46ba55ba6\n=== RUN   TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default\n    qa_investigator_dae46ba55ba6_test.go:98: omitted request did not use the advertised bounded default Limit=50: limits=[0] status=500 body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"418bf3aa3d18f70f519bb82e03f4378f\"}}\n    qa_investigator_dae46ba55ba6_test.go:101: omitted-limit request was unusable: status=500 body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"418bf3aa3d18f70f519bb82e03f4378f\"}}\n    qa_investigator_dae46ba55ba6_test.go:110: unexpected omitted-limit response body: data={SchemaVersion:0 Records:[] NextCursor: ReturnedCount:0} body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"418bf3aa3d18f70f519bb82e03f4378f\"}}\n=== RUN   TestQAInvestigator_dae46ba55ba6/bounded-success_control\n=== RUN   TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable\n    qa_investigator_dae46ba55ba6_test.go:129: unexpected omitted/control limits: omitted=0 control=1\n=== NAME  TestQAInvestigator_dae46ba55ba6\n    qa_investigator_dae46ba55ba6_test.go:133: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\n--- FAIL: TestQAInvestigator_dae46ba55ba6 (0.03s)\n    --- FAIL: TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default (0.00s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/bounded-success_control (0.00s)\n    --- FAIL: TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.079s\nFAIL\n",
+        "output_bytes": 1948,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_dae46ba55ba6",
+        "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6"
+      },
+      "outcome": "inconclusive",
+      "reason_code": "failure_signature_mismatch",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T14:29:59.917769969Z"
+    },
+    "after": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "62f71af4c144d33090059a339c02490350ef0c84eba8bd75a80aa4f49310d056",
+      "schema_version": 2,
+      "id": "qa-v2-run-cfeca7a36a1ff32894476f39",
+      "spec_id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "test_bundle_id": "qa-v2-test-846a45fbc3e75d043344cbf2",
+      "target_identity": "36cd59f1d58c90a1607991748804df966f749fe42d6e21393d8a9e4443779bb0",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/bounded-success_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/bounded-success_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "ea6e7e506537d0df249c7704d6e57697d5a92bccb0ae3c116d9509b907efa21c",
+        "exit_code": 0,
+        "duration": 44406546606,
+        "stdout_digest": "95921f4e1ff8d3588c2dbb674160cc68939cfcc56fa95f4dc50b2565c89b13eb",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_dae46ba55ba6\n=== RUN   TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default\n=== RUN   TestQAInvestigator_dae46ba55ba6/bounded-success_control\n=== RUN   TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable\n=== NAME  TestQAInvestigator_dae46ba55ba6\n    qa_investigator_dae46ba55ba6_test.go:133: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\n--- PASS: TestQAInvestigator_dae46ba55ba6 (0.03s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/omitted_request_uses_bounded_default (0.00s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/bounded-success_control (0.00s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/exact_limits_are_independently_comparable (0.00s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.081s\n",
+        "output_bytes": 970,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_dae46ba55ba6",
+        "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T14:31:14.692185134Z"
+    },
+    "author": {
+      "call_id": "opencode-3",
+      "session_id": "ses_f64d6ca07ffeK1LR5D86mL9gnF",
+      "evidence_digest": "5efc70dc7aeafa29caed0bed6cb4ad982b53f90acb05b03ea052ceb783078792",
+      "outcome": "",
+      "valid": true,
+      "reason_code": ""
+    },
+    "reviewer": {
+      "call_id": "",
+      "session_id": "",
+      "evidence_digest": "",
+      "outcome": "",
+      "valid": false,
+      "reason_code": ""
+    },
+    "review": {
+      "malformed": false,
+      "preserves_claim": false,
+      "reason": "",
+      "assertions": null
+    },
+    "completed_at": "0001-01-01T00:00:00Z"
+  },
+  "diagnostic": "corrected evidence did not fail before and pass after the proposed repair"
+}

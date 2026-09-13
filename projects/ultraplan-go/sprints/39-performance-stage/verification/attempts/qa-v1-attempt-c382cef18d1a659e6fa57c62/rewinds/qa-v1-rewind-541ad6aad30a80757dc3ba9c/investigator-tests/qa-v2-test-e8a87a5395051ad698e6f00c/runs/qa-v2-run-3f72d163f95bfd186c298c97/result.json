@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-3f72d163f95bfd186c298c97",
+  "spec_id": "qa-v2-spec-adba644b4a133b2003ff958e",
+  "test_bundle_id": "qa-v2-test-e8a87a5395051ad698e6f00c",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "ab654b857b5b4f8977d7c1c52bc615a5de1ca72c2d67fc1d20aa4a6b2388e240",
+    "exit_code": 1,
+    "duration": 35863051405,
+    "stdout_digest": "3742209f9e008e4cd3ea1f8c7042f6516d4bd0f44ea64a9c1004e910dc8c1378",
+    "stderr_digest": "9d604bfa2fac734957a2c26f5fc56bdd2ba3ebe3d1361b8e17ea55c5c2450f3e",
+    "stdout": "--- FAIL: TestQAInvestigator_333605f09ff9 (0.00s)\n    qa_investigator_333605f09ff9_test.go:46: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_333605f09ff9 assertion: shared operation runner must reject invalid performance.command_timeout before operation dispatch; got error project reference \"missing-project\" not found\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.006s\nFAIL\n",
+    "stderr": "go: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+    "output_bytes": 963,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_333605f09ff9",
+    "assertion": "Show whether the runner is created or an operation begins despite performanceSettings failing, or whether composition rejects the configuration first.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_333605f09ff9"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-06T16:54:26.991754845Z"
+}

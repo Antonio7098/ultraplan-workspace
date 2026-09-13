@@ -1,0 +1,428 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "boundary",
+  "title": "Authority privacy and interface consistency",
+  "context_paths": [
+    "internal/app/sprint_usecases.go",
+    "internal/project/index.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/performance_targets.go",
+    "internal/tui/views.go",
+    "internal/web/templates/sprint.html"
+  ],
+  "overlap_paths": [
+    "internal/app/sprint_usecases.go",
+    "internal/project/index.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/performance_targets.go",
+    "internal/tui/views.go",
+    "internal/web/templates/sprint.html"
+  ],
+  "boundary_reason": "Project activation, requirements target authority, frozen benchmark identity, private evidence, and public projections must agree across product and presentation packages.",
+  "behavioral_concerns": [
+    "Missing or disabled policy preserves prior flow behavior and creates no performance artifacts.",
+    "No adapter, runtime, config source, or model can redefine requirements-owned targets, sample counts, commands, parsers, environment policy, or verdicts.",
+    "Policy, packet, manifest, environment, implementation, and result drift makes evidence stale rather than silently current.",
+    "Public surfaces agree on bounded facts while private samples, outputs, profiles, patches, prompts, preimages, provider payloads, environment values, and secrets remain undisclosed."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-errors"
+  ],
+  "risk_tags": [
+    "persistence",
+    "public-api"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-23ffd3df512e9cb822d95ab8",
+    "qa-v1-block-263b3a5636c57033d940e0e1",
+    "qa-v1-block-35e4c5fcc8d7288b70a46a1e",
+    "qa-v1-block-725dbb008cc3fee6ceb83b28",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-9bca81dafa402982a1abe706",
+    "qa-v1-block-9c5f43b294578fed6796f5b9",
+    "qa-v1-block-b78a61cde5b699690eb3c5f2",
+    "qa-v1-block-c60e8152c304432fc78d7a0c"
+  ],
+  "prepared_prompt_bytes": 80060,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b29b255f71007d67ac6ef323/1",
+      "number": 1,
+      "session_id": "ses_f88debd85ffeKhnPnK7StIPCvH",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "248e7445d1886f1bcce90fde4b5007ab09e7c24a7f41e8d9b2c28863a449e81e",
+      "started_at": "2026-09-06T14:30:57.313245163Z",
+      "completed_at": "2026-09-06T14:33:17.143175829Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The evidence record contains JSON-exposed path and digest fields, the use case returns raw records, and the web view renders evidence digests.",
+          "paths": [
+            "internal/sprint/performance_state.go",
+            "internal/app/sprint_usecases.go",
+            "internal/web/templates/sprint.html"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 26040,
+        "output_tokens_known": true,
+        "output_tokens": 923,
+        "total_tokens_known": true,
+        "total_tokens": 52058,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 519,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 24576,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 80060,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 139829930666
+      },
+      "estimated_cost": {
+        "amount": 0.18719579999999997,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b29b255f71007d67ac6ef323/1/evidence/2",
+      "number": 3,
+      "session_id": "ses_f88debd85ffeKhnPnK7StIPCvH",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "248e7445d1886f1bcce90fde4b5007ab09e7c24a7f41e8d9b2c28863a449e81e",
+      "started_at": "2026-09-07T12:58:02.33463148Z",
+      "completed_at": "2026-09-07T13:00:02.967908346Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1484,
+        "output_tokens_known": true,
+        "output_tokens": 47,
+        "total_tokens_known": true,
+        "total_tokens": 48184,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 189,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 46464,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 29,
+      "retained_events": 29,
+      "observed_tool_calls": 8,
+      "context_metrics": {
+        "prompt_bytes": 8012,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "glob": 1,
+          "grep": 2,
+          "read": 4
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 15782,
+        "repeated_reads": 0,
+        "search_calls": 2,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 120633276866
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b29b255f71007d67ac6ef323/1/evidence/qa-v2-request-a26146fe1f9e39609588ef10/1",
+      "number": 3,
+      "session_id": "ses_f88debd85ffeKhnPnK7StIPCvH",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "46ab291b15ce33b21ec4124f91fa287f5335317230c52a41532b17c11c1db4ec",
+      "started_at": "2026-09-07T16:10:08.606670988Z",
+      "completed_at": "2026-09-07T16:10:25.204173632Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 11,
+      "retained_events": 11,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 13934,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 16597502644
+      },
+      "failure_kind": "original_session_unavailable",
+      "stop_reason": "original_session_unavailable"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b29b255f71007d67ac6ef323/1/evidence/qa-v2-request-a26146fe1f9e39609588ef10/2",
+      "number": 4,
+      "session_id": "ses_f88debd85ffeKhnPnK7StIPCvH",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "46ab291b15ce33b21ec4124f91fa287f5335317230c52a41532b17c11c1db4ec",
+      "started_at": "2026-09-12T10:07:17.853919435Z",
+      "completed_at": "2026-09-12T10:07:23.835693652Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 3,
+      "retained_events": 3,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 14401,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 5981774217
+      },
+      "failure_kind": "original_session_unavailable",
+      "stop_reason": "original_session_unavailable"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-b120687ce5ad252ba59d75ad",
+      "shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+      "claim": "The bounded performance-evidence API discloses retained artifact paths and digests even though public surfaces must not disclose private paths or outputs.",
+      "basis": "PerformanceEvidenceRecord exposes Path and Digest as JSON fields, the application returns raw records, and the web template renders evidence digests (qa-v1-block-263b3a5636c57033d940e0e1, qa-v1-block-35e4c5fcc8d7288b70a46a1e, qa-v1-block-b78a61cde5b699690eb3c5f2).",
+      "verification_surface": "PerformanceEvidenceRecord serialization through PerformanceEvidenceResult and the performance evidence API response",
+      "expectation_refs": [
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A public evidence response serializes PerformanceEvidenceRecord.Path or Digest, or the server-rendered performance page displays retained evidence digests.",
+      "refutation_condition": "The public projection explicitly removes paths and digests before serialization and rendering.",
+      "inconclusive_condition": "The omitted PerformanceEvidenceResult definition or response encoder applies a field-level allowlist that excludes Path and Digest.",
+      "safe_evidence_strategy": "Statically trace PerformanceEvidenceRecord through PerformanceEvidenceResult to the API encoder; inspect only response field names and synthetic metadata, never retained artifact contents.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b29b255f71007d67ac6ef323/1",
+          "number": 1,
+          "session_id": "ses_f88debd85ffeKhnPnK7StIPCvH",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "248e7445d1886f1bcce90fde4b5007ab09e7c24a7f41e8d9b2c28863a449e81e",
+          "started_at": "2026-09-06T14:30:57.313245163Z",
+          "completed_at": "2026-09-06T14:33:17.143175829Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The evidence record contains JSON-exposed path and digest fields, the use case returns raw records, and the web view renders evidence digests.",
+              "paths": [
+                "internal/sprint/performance_state.go",
+                "internal/app/sprint_usecases.go",
+                "internal/web/templates/sprint.html"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 26040,
+            "output_tokens_known": true,
+            "output_tokens": 923,
+            "total_tokens_known": true,
+            "total_tokens": 52058,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 519,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 24576,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 80060,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 139829930666
+          },
+          "estimated_cost": {
+            "amount": 0.18719579999999997,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b29b255f71007d67ac6ef323/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88debd85ffeKhnPnK7StIPCvH",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "248e7445d1886f1bcce90fde4b5007ab09e7c24a7f41e8d9b2c28863a449e81e",
+          "started_at": "2026-09-07T12:58:02.33463148Z",
+          "completed_at": "2026-09-07T13:00:02.967908346Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1484,
+            "output_tokens_known": true,
+            "output_tokens": 47,
+            "total_tokens_known": true,
+            "total_tokens": 48184,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 189,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 46464,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 29,
+          "retained_events": 29,
+          "observed_tool_calls": 8,
+          "context_metrics": {
+            "prompt_bytes": 8012,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "glob": 1,
+              "grep": 2,
+              "read": 4
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 15782,
+            "repeated_reads": 0,
+            "search_calls": 2,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 120633276866
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The evidence record contains JSON-exposed path and digest fields, the use case returns raw records, and the web view renders evidence digests.",
+          "paths": [
+            "internal/sprint/performance_state.go",
+            "internal/app/sprint_usecases.go",
+            "internal/web/templates/sprint.html"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-21836b45dff44c191617c383: failure_signature_mismatch\nRequired observation: Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.\nTest internal/app/qa_investigator_4c191617c383_test.go:\npackage app\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"html/template\"\n\t\"path/filepath\"\n\t\"runtime\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_4c191617c383(t *testing.T) {\n\tconst (\n\t\tartifactPath    = \".ultraplan/performance/attempts/performance-v1-attempt-0123456789abcdef01234567/profile.json\"\n\t\tartifactDigest  = \"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\"\n\t\tartifactContent = \"synthetic-private-artifact-content\"\n\t)\n\trecord := sprint.PerformanceEvidenceRecord{\n\t\tAttemptID: \"performance-v1-attempt-0123456789abcdef01234567\",\n\t\tName:      \"profile.json\",\n\t\tPath:      artifactPath,\n\t\tDigest:    artifactDigest,\n\t\tSize:      int64(len(artifactContent)),\n\t}\n\tevidence := PerformanceEvidenceResult{SchemaVersion: 1, Records: []sprint.PerformanceEvidenceRecord{record}, ReturnedCount: 1}\n\n\tencoded, err := json.Marshal(evidence)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif bytes.Contains(encoded, []byte(artifactContent)) {\n\t\tt.Fatalf(\"control failed: JSON disclosed raw artifact contents\")\n\t}\n\n\t_, testFile, _, ok := runtime.Caller(0)\n\tif !ok {\n\t\tt.Fatal(\"locate test source\")\n\t}\n\ttemplatePath := filepath.Join(filepath.Dir(testFile), \"..\", \"web\", \"templates\", \"sprint.html\")\n\tpage, err := template.New(\"sprint\").Parse(`{{define \"layout/top\"}}{{end}}{{define \"layout/bottom\"}}{{end}}`)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tpage, err = page.ParseFiles(templatePath)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tdata := struct {\n\t\tPage   string\n\t\tSprint SprintSummary\n\t\tCSRF   string\n\t}{\n\t\tPage: \"performance\",\n\t\tSprint: SprintSummary{\n\t\t\tProject: \"synthetic-project\",\n\t\t\tSlug:    \"synthetic-sprint\",\n\t\t\tPerformance: PerformanceStatusResult{\n\t\t\t\tProject:              \"synthetic-project\",\n\t\t\t\tSprint:               \"synthetic-sprint\",\n\t\t\t\tEnabled:              true,\n\t\t\t\tPerformanceAttemptID: record.AttemptID,\n\t\t\t},\n\t\t\tPerformanceEvidence: evidence,\n\t\t},\n\t}\n\tvar rendered bytes.Buffer\n\tif err := page.ExecuteTemplate(\u0026rendered, \"page/sprint\", data); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif strings.Contains(rendered.String(), artifactContent) {\n\t\tt.Fatalf(\"control failed: workbench disclosed raw artifact contents\")\n\t}\n\n\tjsonExposesMetadata := bytes.Contains(encoded, []byte(`\"path\":\"`+artifactPath+`\"`)) \u0026\u0026\n\t\tbytes.Contains(encoded, []byte(`\"digest\":\"`+artifactDigest+`\"`))\n\trenderedExposesDigest := strings.Contains(rendered.String(), artifactDigest)\n\tif jsonExposesMetadata \u0026\u0026 renderedExposesDigest {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_4c191617c383 assertion: Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_4c191617c383\n    qa_investigator_4c191617c383_test.go:71: html/template:sprint.html:40:203: no such template \"component/findings\"\n--- FAIL: TestQAInvestigator_4c191617c383 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.019s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/app/qa_investigator_4c191617c383_test.go"
+          ],
+          "check_id": "qa-v2-test-83007529d2fd5144a4f8d32d",
+          "output_digest": "bd23cf43a9730c742b0012b875aafd65ef8398b05e181c448b2923bf25568e43"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "failure_signature_mismatch"
+    }
+  ]
+}

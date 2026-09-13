@@ -1,0 +1,546 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Web performance workbench and API",
+  "changed_paths": [
+    "internal/web/handlers.go",
+    "internal/web/operation_handlers.go",
+    "internal/web/operations_contract_test.go",
+    "internal/web/routes.go",
+    "internal/web/routes_test.go",
+    "internal/web/templates/sprint.html",
+    "internal/web/test_fakes_test.go"
+  ],
+  "context_paths": [
+    "docs/local-web.md",
+    "internal/app/sprint_usecases.go",
+    "internal/app/web_usecases.go",
+    "internal/sprint/performance_state.go"
+  ],
+  "behavioral_concerns": [
+    "Disabled projects expose no mutation controls; refreshing, navigation, session loss, or event disconnection does not cancel durable work.",
+    "Evidence cursor, filter, and page size remain bounded, and raw artifact contents are never returned.",
+    "HTML and API routes expose status, result, and bounded evidence metadata with schema-versioned sample-free DTOs.",
+    "Hostile target and status text is escaped in HTML and sanitized in public JSON.",
+    "The server-rendered no-JavaScript workbench shows authority, lifecycle, targets, qualification, limits and sources, blockers, next action, and evidence paging.",
+    "Transport decoding rejects caller-selected authority or execution options for performance operations.",
+    "Typed performance failures map to stable safe HTTP responses without leaking internal diagnostics or secrets."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-3fc28e59a1a16fbb0297f005",
+    "qa-v1-block-5915b359f0187966290c73a4",
+    "qa-v1-block-60d9d4670700f4fa65726e0a",
+    "qa-v1-block-62228805341f8858180f40fa",
+    "qa-v1-block-6b3d316eb085c04c5c6ecfb7",
+    "qa-v1-block-6cecdbcdc6bcb6f4298ec62e",
+    "qa-v1-block-6fa1ac5555890a0fa404e61e",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-8324c0cee5d3239f7cacd82b",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-95f9f726d965e7685184fba7",
+    "qa-v1-block-b78a61cde5b699690eb3c5f2",
+    "qa-v1-block-d16d7f7b34fef6ef0b67aee4",
+    "qa-v1-block-d426fe03f263ee22b548d2fe",
+    "qa-v1-block-d5ce194480a423a58e7143af",
+    "qa-v1-block-defc85998115158f67bf051d",
+    "qa-v1-block-fc8f8aa155d13c00e77a839c"
+  ],
+  "prepared_prompt_bytes": 96946,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-62b033bcef3afb3af1bba41c/1",
+      "number": 1,
+      "session_id": "ses_f88e0577bffetaz5aggucK33ER",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "43050b1aca455c4311c354966bbb6237ab170f2c6aa5c78f086d8f35e5779ae5",
+      "started_at": "2026-09-06T14:29:14.327390415Z",
+      "completed_at": "2026-09-06T14:30:24.599426518Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Status routing, aggregate projection, and template consumption show that operational lifecycle fields are not enriched on the surfaces that display them (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-78e13c26eb8ae322452c9951, qa-v1-block-b78a61cde5b699690eb3c5f2).",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/app/sprint_usecases.go",
+            "internal/web/templates/sprint.html"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "The evidence compatibility branch emits an ad hoc unversioned map, and the evidence capability is optional relative to status/result queries (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-4c2e9e074e2f61478a2c1b5d).",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 2146,
+        "output_tokens_known": true,
+        "output_tokens": 1091,
+        "total_tokens_known": true,
+        "total_tokens": 37805,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 392,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 34176,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 21,
+      "retained_events": 21,
+      "observed_tool_calls": 4,
+      "context_metrics": {
+        "prompt_bytes": 96946,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 2,
+          "read": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 7732,
+        "repeated_reads": 0,
+        "search_calls": 2,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 70272036103
+      },
+      "estimated_cost": {
+        "amount": 0.0666028,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-62b033bcef3afb3af1bba41c/1/evidence/1",
+      "number": 2,
+      "session_id": "ses_f88e0577bffetaz5aggucK33ER",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "43050b1aca455c4311c354966bbb6237ab170f2c6aa5c78f086d8f35e5779ae5",
+      "started_at": "2026-09-07T11:32:04.323786123Z",
+      "completed_at": "2026-09-07T11:34:46.877874953Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 2013,
+        "output_tokens_known": true,
+        "output_tokens": 50,
+        "total_tokens_known": true,
+        "total_tokens": 55561,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 250,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 53248,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 36,
+      "retained_events": 36,
+      "observed_tool_calls": 11,
+      "context_metrics": {
+        "prompt_bytes": 15586,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 4,
+          "read": 6
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 24041,
+        "repeated_reads": 0,
+        "search_calls": 4,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 162554088830
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1158b01023e7f48c5250faeb",
+      "shard_id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+      "claim": "The performance status API and server-rendered workbench omit durable operational lifecycle and cancellation state because they obtain performance data through the aggregate Sprint query rather than the dedicated PerformanceStatus query that enriches those fields.",
+      "basis": "The API status handler calls Sprint and returns result.Performance (qa-v1-block-95f9f726d965e7685184fba7), while aggregate summaries use performanceSummaryForSprint (qa-v1-block-c1bc237cbe63b9df34c97ed7), which only delegates to performanceStatusProjection (qa-v1-block-78e13c26eb8ae322452c9951). The workbench explicitly renders OperationalLifecycle and CancellationState from that aggregate result (qa-v1-block-b78a61cde5b699690eb3c5f2).",
+      "verification_surface": "GET performance status API and the no-JavaScript performance workbench during an active or cancellation-requested durable run.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "For a performance state with an operation run ID and an available durable run snapshot, the API and HTML still render empty/default operational lifecycle or cancellation state.",
+      "refutation_condition": "The aggregate Sprint query demonstrably enriches Performance with the durable run snapshot before either surface receives it.",
+      "inconclusive_condition": "The omitted Sprint query implementation contains an unshown enrichment step or the displayed fields are populated by another documented source.",
+      "safe_evidence_strategy": "Use a product-owned contract check or bounded static inspection to compare the aggregate Sprint projection with PerformanceStatus for a fixture carrying a durable run lifecycle and cancellation state; inspect metadata only.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-62b033bcef3afb3af1bba41c/1",
+          "number": 1,
+          "session_id": "ses_f88e0577bffetaz5aggucK33ER",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "43050b1aca455c4311c354966bbb6237ab170f2c6aa5c78f086d8f35e5779ae5",
+          "started_at": "2026-09-06T14:29:14.327390415Z",
+          "completed_at": "2026-09-06T14:30:24.599426518Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Status routing, aggregate projection, and template consumption show that operational lifecycle fields are not enriched on the surfaces that display them (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-78e13c26eb8ae322452c9951, qa-v1-block-b78a61cde5b699690eb3c5f2).",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/app/sprint_usecases.go",
+                "internal/web/templates/sprint.html"
+              ]
+            },
+            {
+              "kind": "static_source",
+              "summary": "The evidence compatibility branch emits an ad hoc unversioned map, and the evidence capability is optional relative to status/result queries (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-4c2e9e074e2f61478a2c1b5d).",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/app/web_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2146,
+            "output_tokens_known": true,
+            "output_tokens": 1091,
+            "total_tokens_known": true,
+            "total_tokens": 37805,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 392,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 34176,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 21,
+          "retained_events": 21,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 96946,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 2,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 7732,
+            "repeated_reads": 0,
+            "search_calls": 2,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 70272036103
+          },
+          "estimated_cost": {
+            "amount": 0.0666028,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-62b033bcef3afb3af1bba41c/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88e0577bffetaz5aggucK33ER",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "43050b1aca455c4311c354966bbb6237ab170f2c6aa5c78f086d8f35e5779ae5",
+          "started_at": "2026-09-07T11:32:04.323786123Z",
+          "completed_at": "2026-09-07T11:34:46.877874953Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2013,
+            "output_tokens_known": true,
+            "output_tokens": 50,
+            "total_tokens_known": true,
+            "total_tokens": 55561,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 250,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 53248,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 36,
+          "retained_events": 36,
+          "observed_tool_calls": 11,
+          "context_metrics": {
+            "prompt_bytes": 15586,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 4,
+              "read": 6
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 24041,
+            "repeated_reads": 0,
+            "search_calls": 4,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 162554088830
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Status routing, aggregate projection, and template consumption show that operational lifecycle fields are not enriched on the surfaces that display them (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-78e13c26eb8ae322452c9951, qa-v1-block-b78a61cde5b699690eb3c5f2).",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/app/sprint_usecases.go",
+            "internal/web/templates/sprint.html"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "The evidence compatibility branch emits an ad hoc unversioned map, and the evidence capability is optional relative to status/result queries (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-4c2e9e074e2f61478a2c1b5d).",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-29d7435d9ca56ae404229a54: predicted_failure_reproduced\nRequired observation: Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\nTest internal/web/qa_investigator_6ae404229a54_test.go:\npackage web\n\nimport (\n\t\"context\"\n\t\"encoding/json\"\n\t\"net/http\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\tsprintpkg \"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\ntype qaPerformanceStatusQueries struct {\n\t*fakeQueries\n\tdirect app.PerformanceStatusResult\n}\n\nfunc (q *qaPerformanceStatusQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn q.direct, nil\n}\n\nfunc (q *qaPerformanceStatusQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn q.direct, nil\n}\n\ntype qaPerformanceEvidenceQueries struct {\n\t*qaPerformanceStatusQueries\n\tevidence app.PerformanceEvidenceResult\n}\n\nfunc (q *qaPerformanceEvidenceQueries) PerformanceEvidence(context.Context, app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {\n\treturn q.evidence, nil\n}\n\nfunc TestQAInvestigator_6ae404229a54(t *testing.T) {\n\tbase := sampleQueries()\n\tbase.sprint.Performance = app.PerformanceStatusResult{\n\t\tSchemaVersion:        1,\n\t\tProject:              \"alpha\",\n\t\tSprint:               \"30-web\",\n\t\tEnabled:              true,\n\t\tPerformanceAttemptID: \"performance-v1-attempt-0123456789abcdef01234567\",\n\t\tOperationRunID:       \"durable-run-1\",\n\t\tState:                \u0026app.PerformanceArtifactSummary{Path: \"state.json\", Digest: strings.Repeat(\"a\", 64)},\n\t}\n\tdirect := base.sprint.Performance\n\tdirect.OperationalLifecycle = \"running\"\n\tdirect.CancellationState = \"requested\"\n\tcompat := \u0026qaPerformanceStatusQueries{fakeQueries: base, direct: direct}\n\n\t// Control: the dedicated query has the durable snapshot fields available.\n\tdirectStatus, err := compat.PerformanceStatus(context.Background(), app.PerformanceRequest{Project: \"alpha\", Sprint: \"30-web\"})\n\tif err != nil || directStatus.OperationalLifecycle != \"running\" || directStatus.CancellationState != \"requested\" {\n\t\tt.Fatalf(\"control direct performance status=%+v err=%v\", directStatus, err)\n\t}\n\n\tcompatHandler, err := NewHandler(HandlerOptions{Queries: compat, Authority: testAuthority, RequestID: func() string { return \"qa-request\" }})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tstatusResponse := request(compatHandler, http.MethodGet, \"/api/v1/projects/alpha/sprints/30-web/performance\", nil)\n\tvar statusEnvelope struct {\n\t\tData app.PerformanceStatusResult `json:\"data\"`\n\t}\n\tif err := json.Unmarshal(statusResponse.Body.Bytes(), \u0026statusEnvelope); err != nil {\n\t\tt.Fatalf(\"decode status response: %v body=%s\", err, statusResponse.Body.String())\n\t}\n\tstatusDefect := statusResponse.Code == http.StatusOK \u0026\u0026 statusEnvelope.Data.OperationalLifecycle == \"\" \u0026\u0026 statusEnvelope.Data.CancellationState == \"\"\n\n\thtmlResponse := request(compatHandler, http.MethodGet, \"/projects/alpha/sprints/30-web/performance\", nil)\n\thtmlDefect := htmlResponse.Code == http.StatusOK \u0026\u0026 strings.Contains(htmlResponse.Body.String(), \"not running\") \u0026\u0026 strings.Contains(htmlResponse.Body.String(), \"not requested\")\n\n\tevidenceResponse := request(compatHandler, http.MethodGet, \"/api/v1/projects/alpha/sprints/30-web/performance/evidence\", nil)\n\tvar evidenceEnvelope struct {\n\t\tData map[string]json.RawMessage `json:\"data\"`\n\t}\n\tif err := json.Unmarshal(evidenceResponse.Body.Bytes(), \u0026evidenceEnvelope); err != nil {\n\t\tt.Fatalf(\"decode compatibility evidence response: %v body=%s\", err, evidenceResponse.Body.String())\n\t}\n\t_, hasArtifacts := evidenceEnvelope.Data[\"artifacts\"]\n\t_, hasSchemaVersion := evidenceEnvelope.Data[\"schema_version\"]\n\t_, hasRecords := evidenceEnvelope.Data[\"records\"]\n\tevidenceDefect := evidenceResponse.Code == http.StatusOK \u0026\u0026 hasArtifacts \u0026\u0026 !hasSchemaVersion \u0026\u0026 !hasRecords\n\n\t// Control: an adapter with the full evidence capability returns the versioned DTO.\n\tfull := \u0026qaPerformanceEvidenceQueries{\n\t\tqaPerformanceStatusQueries: compat,\n\t\tevidence: app.PerformanceEvidenceResult{\n\t\t\tSchemaVersion: 1,\n\t\t\tRecords: []sprintpkg.PerformanceEvidenceRecord{{AttemptID: direct.PerformanceAttemptID, Name: \"summary.json\", Path: \"summary.json\", Digest: strings.Repeat(\"b\", 64), Size: 12}},\n\t\t\tReturnedCount: 1,\n\t\t},\n\t}\n\tfullHandler, err := NewHandler(HandlerOptions{Queries: full, Authority: testAuthority, RequestID: func() string { return \"qa-control\" }})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tcontrolResponse := request(fullHandler, http.MethodGet, \"/api/v1/projects/alpha/sprints/30-web/performance/evidence\", nil)\n\tvar controlEnvelope struct {\n\t\tData map[string]json.RawMessage `json:\"data\"`\n\t}\n\tif err := json.Unmarshal(controlResponse.Body.Bytes(), \u0026controlEnvelope); err != nil {\n\t\tt.Fatalf(\"decode evidence control response: %v body=%s\", err, controlResponse.Body.String())\n\t}\n\tif controlResponse.Code != http.StatusOK || string(controlEnvelope.Data[\"schema_version\"]) != \"1\" || controlEnvelope.Data[\"records\"] == nil || controlEnvelope.Data[\"artifacts\"] != nil {\n\t\tt.Fatalf(\"control versioned evidence status=%d body=%s\", controlResponse.Code, controlResponse.Body.String())\n\t}\n\n\tif statusDefect \u0026\u0026 htmlDefect \u0026\u0026 evidenceDefect {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6ae404229a54 assertion=Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\")\n\t}\n\tif !statusDefect || !htmlDefect || !evidenceDefect {\n\t\tt.Fatalf(\"reproduction mismatch: status_defect=%t html_defect=%t evidence_defect=%t status=%s html=%s evidence=%s\", statusDefect, htmlDefect, evidenceDefect, statusResponse.Body.String(), htmlResponse.Body.String(), evidenceResponse.Body.String())\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_6ae404229a54\n    qa_investigator_6ae404229a54_test.go:111: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6ae404229a54 assertion=Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\n--- FAIL: TestQAInvestigator_6ae404229a54 (0.02s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/web\t0.029s\nFAIL\n\nObserved stderr:\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/web/qa_investigator_6ae404229a54_test.go"
+          ],
+          "check_id": "qa-v2-test-96862b443a2bd04f15f7e7d1",
+          "output_digest": "25a366cf7fb3a9495bba6a87f298af6cc3e0c71ac2ca427d00387c0845981abc"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f70fbbde96aaaf96b63f5bdc",
+      "shard_id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+      "claim": "The performance evidence endpoint has a compatibility path that returns an unversioned ad hoc artifact payload instead of the schema-versioned PerformanceEvidenceResult DTO.",
+      "basis": "The evidence handler falls back to a map containing attempt_id, artifacts, and returned_count when WebPerformanceEvidenceQueries is unavailable, with no schema_version, records, or next_cursor fields (qa-v1-block-95f9f726d965e7685184fba7). The query capabilities are intentionally split so an implementation may satisfy WebPerformanceQueries without satisfying WebPerformanceEvidenceQueries (qa-v1-block-4c2e9e074e2f61478a2c1b5d). The documented endpoint promises bounded evidence references (qa-v1-block-a11b800e9abfe97c390d8c4b).",
+      "verification_surface": "GET performance evidence API with a query adapter implementing WebPerformanceQueries but not WebPerformanceEvidenceQueries.",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "The endpoint responds successfully with the fallback artifacts object and lacks the versioned evidence DTO fields.",
+      "refutation_condition": "All supported query implementations are required to implement WebPerformanceEvidenceQueries, making the fallback unreachable, or the fallback is wrapped into the same documented versioned DTO before serialization.",
+      "inconclusive_condition": "An omitted compatibility contract explicitly defines the fallback payload as a separately versioned supported schema.",
+      "safe_evidence_strategy": "Use a bounded adapter-level request with metadata-only artifact references and inspect only response field names and status.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-62b033bcef3afb3af1bba41c/1",
+          "number": 1,
+          "session_id": "ses_f88e0577bffetaz5aggucK33ER",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "43050b1aca455c4311c354966bbb6237ab170f2c6aa5c78f086d8f35e5779ae5",
+          "started_at": "2026-09-06T14:29:14.327390415Z",
+          "completed_at": "2026-09-06T14:30:24.599426518Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Status routing, aggregate projection, and template consumption show that operational lifecycle fields are not enriched on the surfaces that display them (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-78e13c26eb8ae322452c9951, qa-v1-block-b78a61cde5b699690eb3c5f2).",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/app/sprint_usecases.go",
+                "internal/web/templates/sprint.html"
+              ]
+            },
+            {
+              "kind": "static_source",
+              "summary": "The evidence compatibility branch emits an ad hoc unversioned map, and the evidence capability is optional relative to status/result queries (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-4c2e9e074e2f61478a2c1b5d).",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/app/web_usecases.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2146,
+            "output_tokens_known": true,
+            "output_tokens": 1091,
+            "total_tokens_known": true,
+            "total_tokens": 37805,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 392,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 34176,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 21,
+          "retained_events": 21,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 96946,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 2,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 7732,
+            "repeated_reads": 0,
+            "search_calls": 2,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 70272036103
+          },
+          "estimated_cost": {
+            "amount": 0.0666028,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-62b033bcef3afb3af1bba41c/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88e0577bffetaz5aggucK33ER",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "43050b1aca455c4311c354966bbb6237ab170f2c6aa5c78f086d8f35e5779ae5",
+          "started_at": "2026-09-07T11:32:04.323786123Z",
+          "completed_at": "2026-09-07T11:34:46.877874953Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2013,
+            "output_tokens_known": true,
+            "output_tokens": 50,
+            "total_tokens_known": true,
+            "total_tokens": 55561,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 250,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 53248,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 36,
+          "retained_events": 36,
+          "observed_tool_calls": 11,
+          "context_metrics": {
+            "prompt_bytes": 15586,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 4,
+              "read": 6
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 24041,
+            "repeated_reads": 0,
+            "search_calls": 4,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 162554088830
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Status routing, aggregate projection, and template consumption show that operational lifecycle fields are not enriched on the surfaces that display them (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-78e13c26eb8ae322452c9951, qa-v1-block-b78a61cde5b699690eb3c5f2).",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/app/sprint_usecases.go",
+            "internal/web/templates/sprint.html"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "The evidence compatibility branch emits an ad hoc unversioned map, and the evidence capability is optional relative to status/result queries (qa-v1-block-95f9f726d965e7685184fba7, qa-v1-block-4c2e9e074e2f61478a2c1b5d).",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/app/web_usecases.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-29d7435d9ca56ae404229a54: predicted_failure_reproduced\nRequired observation: Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\nTest internal/web/qa_investigator_6ae404229a54_test.go:\npackage web\n\nimport (\n\t\"context\"\n\t\"encoding/json\"\n\t\"net/http\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\tsprintpkg \"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\ntype qaPerformanceStatusQueries struct {\n\t*fakeQueries\n\tdirect app.PerformanceStatusResult\n}\n\nfunc (q *qaPerformanceStatusQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn q.direct, nil\n}\n\nfunc (q *qaPerformanceStatusQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn q.direct, nil\n}\n\ntype qaPerformanceEvidenceQueries struct {\n\t*qaPerformanceStatusQueries\n\tevidence app.PerformanceEvidenceResult\n}\n\nfunc (q *qaPerformanceEvidenceQueries) PerformanceEvidence(context.Context, app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {\n\treturn q.evidence, nil\n}\n\nfunc TestQAInvestigator_6ae404229a54(t *testing.T) {\n\tbase := sampleQueries()\n\tbase.sprint.Performance = app.PerformanceStatusResult{\n\t\tSchemaVersion:        1,\n\t\tProject:              \"alpha\",\n\t\tSprint:               \"30-web\",\n\t\tEnabled:              true,\n\t\tPerformanceAttemptID: \"performance-v1-attempt-0123456789abcdef01234567\",\n\t\tOperationRunID:       \"durable-run-1\",\n\t\tState:                \u0026app.PerformanceArtifactSummary{Path: \"state.json\", Digest: strings.Repeat(\"a\", 64)},\n\t}\n\tdirect := base.sprint.Performance\n\tdirect.OperationalLifecycle = \"running\"\n\tdirect.CancellationState = \"requested\"\n\tcompat := \u0026qaPerformanceStatusQueries{fakeQueries: base, direct: direct}\n\n\t// Control: the dedicated query has the durable snapshot fields available.\n\tdirectStatus, err := compat.PerformanceStatus(context.Background(), app.PerformanceRequest{Project: \"alpha\", Sprint: \"30-web\"})\n\tif err != nil || directStatus.OperationalLifecycle != \"running\" || directStatus.CancellationState != \"requested\" {\n\t\tt.Fatalf(\"control direct performance status=%+v err=%v\", directStatus, err)\n\t}\n\n\tcompatHandler, err := NewHandler(HandlerOptions{Queries: compat, Authority: testAuthority, RequestID: func() string { return \"qa-request\" }})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tstatusResponse := request(compatHandler, http.MethodGet, \"/api/v1/projects/alpha/sprints/30-web/performance\", nil)\n\tvar statusEnvelope struct {\n\t\tData app.PerformanceStatusResult `json:\"data\"`\n\t}\n\tif err := json.Unmarshal(statusResponse.Body.Bytes(), \u0026statusEnvelope); err != nil {\n\t\tt.Fatalf(\"decode status response: %v body=%s\", err, statusResponse.Body.String())\n\t}\n\tstatusDefect := statusResponse.Code == http.StatusOK \u0026\u0026 statusEnvelope.Data.OperationalLifecycle == \"\" \u0026\u0026 statusEnvelope.Data.CancellationState == \"\"\n\n\thtmlResponse := request(compatHandler, http.MethodGet, \"/projects/alpha/sprints/30-web/performance\", nil)\n\thtmlDefect := htmlResponse.Code == http.StatusOK \u0026\u0026 strings.Contains(htmlResponse.Body.String(), \"not running\") \u0026\u0026 strings.Contains(htmlResponse.Body.String(), \"not requested\")\n\n\tevidenceResponse := request(compatHandler, http.MethodGet, \"/api/v1/projects/alpha/sprints/30-web/performance/evidence\", nil)\n\tvar evidenceEnvelope struct {\n\t\tData map[string]json.RawMessage `json:\"data\"`\n\t}\n\tif err := json.Unmarshal(evidenceResponse.Body.Bytes(), \u0026evidenceEnvelope); err != nil {\n\t\tt.Fatalf(\"decode compatibility evidence response: %v body=%s\", err, evidenceResponse.Body.String())\n\t}\n\t_, hasArtifacts := evidenceEnvelope.Data[\"artifacts\"]\n\t_, hasSchemaVersion := evidenceEnvelope.Data[\"schema_version\"]\n\t_, hasRecords := evidenceEnvelope.Data[\"records\"]\n\tevidenceDefect := evidenceResponse.Code == http.StatusOK \u0026\u0026 hasArtifacts \u0026\u0026 !hasSchemaVersion \u0026\u0026 !hasRecords\n\n\t// Control: an adapter with the full evidence capability returns the versioned DTO.\n\tfull := \u0026qaPerformanceEvidenceQueries{\n\t\tqaPerformanceStatusQueries: compat,\n\t\tevidence: app.PerformanceEvidenceResult{\n\t\t\tSchemaVersion: 1,\n\t\t\tRecords: []sprintpkg.PerformanceEvidenceRecord{{AttemptID: direct.PerformanceAttemptID, Name: \"summary.json\", Path: \"summary.json\", Digest: strings.Repeat(\"b\", 64), Size: 12}},\n\t\t\tReturnedCount: 1,\n\t\t},\n\t}\n\tfullHandler, err := NewHandler(HandlerOptions{Queries: full, Authority: testAuthority, RequestID: func() string { return \"qa-control\" }})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tcontrolResponse := request(fullHandler, http.MethodGet, \"/api/v1/projects/alpha/sprints/30-web/performance/evidence\", nil)\n\tvar controlEnvelope struct {\n\t\tData map[string]json.RawMessage `json:\"data\"`\n\t}\n\tif err := json.Unmarshal(controlResponse.Body.Bytes(), \u0026controlEnvelope); err != nil {\n\t\tt.Fatalf(\"decode evidence control response: %v body=%s\", err, controlResponse.Body.String())\n\t}\n\tif controlResponse.Code != http.StatusOK || string(controlEnvelope.Data[\"schema_version\"]) != \"1\" || controlEnvelope.Data[\"records\"] == nil || controlEnvelope.Data[\"artifacts\"] != nil {\n\t\tt.Fatalf(\"control versioned evidence status=%d body=%s\", controlResponse.Code, controlResponse.Body.String())\n\t}\n\n\tif statusDefect \u0026\u0026 htmlDefect \u0026\u0026 evidenceDefect {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6ae404229a54 assertion=Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\")\n\t}\n\tif !statusDefect || !htmlDefect || !evidenceDefect {\n\t\tt.Fatalf(\"reproduction mismatch: status_defect=%t html_defect=%t evidence_defect=%t status=%s html=%s evidence=%s\", statusDefect, htmlDefect, evidenceDefect, statusResponse.Body.String(), htmlResponse.Body.String(), evidenceResponse.Body.String())\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_6ae404229a54\n    qa_investigator_6ae404229a54_test.go:111: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6ae404229a54 assertion=Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\n--- FAIL: TestQAInvestigator_6ae404229a54 (0.02s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/web\t0.029s\nFAIL\n\nObserved stderr:\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/web/qa_investigator_6ae404229a54_test.go"
+          ],
+          "check_id": "qa-v2-test-96862b443a2bd04f15f7e7d1",
+          "output_digest": "25a366cf7fb3a9495bba6a87f298af6cc3e0c71ac2ca427d00387c0845981abc"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

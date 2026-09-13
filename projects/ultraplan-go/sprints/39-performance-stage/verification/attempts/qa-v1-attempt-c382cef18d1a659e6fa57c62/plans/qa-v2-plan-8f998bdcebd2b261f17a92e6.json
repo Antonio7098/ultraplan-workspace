@@ -1,0 +1,41 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-plan-8f998bdcebd2b261f17a92e6",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+  "theory_ids": [
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+  ],
+  "expectation_refs": [
+    "qa-v2-spec-944ff8d4ce332c78e8f5dc7c"
+  ],
+  "kind": "behavioral",
+  "confirmation_condition": "the frozen investigator-authored test matches its predicted failure signature",
+  "refutation_condition": "the frozen investigator-authored test passes on the frozen implementation",
+  "inconclusive_condition": "compile error; infrastructure error; mismatched assertion; timeout; truncated output; unrelated panic",
+  "approved_paths": [
+    "internal/app/qa_investigator_56bcf430b685_test.go"
+  ],
+  "check_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+  "executable": "/usr/bin/go",
+  "args": [
+    "test",
+    ".",
+    "-v",
+    "-run",
+    "^TestQAInvestigator_56bcf430b685$",
+    "-count=1"
+  ],
+  "working_directory": "internal/app",
+  "environment_names": [
+    "PATH"
+  ],
+  "timeout": 300000000000,
+  "output_limit": 262144,
+  "analyzer_calls": 0,
+  "cleanup_required": true,
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "frozen_at": "2026-09-07T17:06:12.271946433Z"
+}

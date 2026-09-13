@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-6c5afae17f1449d3dc0b8845",
+  "plan_id": "qa-v2-plan-4a16dac33e58be8cba6e0a7b",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+  "workspace_id": "qa-v2-test-7493f58ee9a8736864f38cc9",
+  "workspace_identity": "c7fcd302caa2b284611db96250779c9acd76e6ee4a46fbecb20ef8eb19c70348",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "5b4bd71aeec9ef8926e9f42bfaa1be708ab559a95dd51f5c0fe18009cedbd025",
+      "exit_code": 1,
+      "duration": 33320930722,
+      "stdout_digest": "4ae5fc456808d8a5a34540c39ea83d072cb7c2cbe10dadab5270d03ffca67ae5",
+      "stderr_digest": "52745d40fb62cfceb8d8a755ec76289b90f696879aa242446c53d5ad1a598eea",
+      "stdout": "=== RUN   TestQAInvestigator_6fe849fce7fe\n    qa_investigator_6fe849fce7fe_test.go:29: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6fe849fce7fe assertion=Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.\n--- FAIL: TestQAInvestigator_6fe849fce7fe (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.008s\nFAIL\n",
+      "stderr": "go: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+      "output_bytes": 948,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_6fe849fce7fe_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T13:09:16.57018466Z"
+}

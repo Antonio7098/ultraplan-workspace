@@ -1,0 +1,1877 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-synthesis-d7ebe7da851436004d1050ba",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "map_id": "qa-v1-map-7be19334561f99672f5888b5",
+  "theory_ids": [
+    "qa-v1-theory-0012e548ef4b0f725b73b3df",
+    "qa-v1-theory-1007492d20bbcc01841fb291",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828",
+    "qa-v1-theory-36aaddc649316456a0999299",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+    "qa-v1-theory-44d9a1998804c860f04368c4",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-fa8487cda772b1748115a5c2"
+  ],
+  "arbitration": {
+    "schema_version": 1,
+    "map_id": "qa-v1-map-7be19334561f99672f5888b5",
+    "model": "openai/gpt-5.6-sol",
+    "overrides": [
+      {
+        "id": "qa-v1-override-846c0042fa51d4f47a25db2b",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4",
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "action": "merge",
+        "outcome": "confirmed",
+        "replacement_claim": "The public performance CLI lacks compatibility tests for stable JSON and text output, stream separation, and semantic outcome-to-exit mappings.",
+        "reason": "Both theories describe one coverage defect. Frozen product tests and review establish the gap. New evidence reached an operational persistence failure, not target-miss, cancellation, or partial semantics.",
+        "reason_refs": [
+          "qa-v1-theory-44d9a1998804c860f04368c4",
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-19220065b7853b7dbbee1469",
+        "theory_ids": [
+          "qa-v1-theory-4686bbc8ed7ce40fed77caa0"
+        ],
+        "action": "refute",
+        "outcome": "refuted",
+        "reason": "Production TUI and serve paths validate performance settings before constructing the shared runner.",
+        "reason_refs": [
+          "qa-v1-theory-4686bbc8ed7ce40fed77caa0"
+        ],
+        "confidence": 0.97
+      },
+      {
+        "id": "qa-v1-override-8fcce42b54671b904a918af9",
+        "theory_ids": [
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Performance CLI output failures are discarded because JSON encoding and text rendering write errors are ignored.",
+        "reason": "Executable tests observed JSON and text write failures omitted from returned errors, including alongside an operation failure.",
+        "reason_refs": [
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-07b00893a9db3b6aedffc1e2",
+        "theory_ids": [
+          "qa-v1-theory-36aaddc649316456a0999299"
+        ],
+        "action": "refute",
+        "outcome": "refuted",
+        "reason": "The CLI exposes phase, freshness, outcome, targets, and next action. Permitted presentation differences do not establish factual disagreement.",
+        "reason_refs": [
+          "qa-v1-theory-36aaddc649316456a0999299"
+        ],
+        "confidence": 0.87
+      },
+      {
+        "id": "qa-v1-override-76c5dcadf5980c121b3635b8",
+        "theory_ids": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The advertised performance evidence API request fails when limit is omitted because zero reaches pagination and is rejected.",
+        "reason": "Executable HTTP evidence observed Limit=0 and HTTP 500 when omitted, while Limit=1 succeeded.",
+        "reason_refs": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-15c66a8b1dc584aa62700591",
+        "theory_ids": [
+          "qa-v1-theory-0012e548ef4b0f725b73b3df"
+        ],
+        "action": "refute",
+        "outcome": "refuted",
+        "reason": "Validation rejects configurable values above defaults, matching the documented lower-only rule; hard maxima are separate ceilings.",
+        "reason_refs": [
+          "qa-v1-theory-0012e548ef4b0f725b73b3df"
+        ],
+        "confidence": 0.99
+      },
+      {
+        "id": "qa-v1-override-9b39e49b67a1077cb8fb1514",
+        "theory_ids": [
+          "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Persisted repair reverification validation accepts a passing performance record with no target results.",
+        "reason": "Executable evidence showed a passing record with valid authority and cleanup fields and zero target results passes validation.",
+        "reason_refs": [
+          "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-0264515c468d074d64b7cc59",
+        "theory_ids": [
+          "qa-v1-theory-1007492d20bbcc01841fb291"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Repair performance reverification associates baselines by slice position rather than target identity.",
+        "reason": "Executable two-target evidence reordered valid baselines and observed each target receiving the other's median.",
+        "reason_refs": [
+          "qa-v1-theory-1007492d20bbcc01841fb291"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-e5d9517d2cf1d4cddc8b8d14",
+        "theory_ids": [
+          "qa-v1-theory-fa8487cda772b1748115a5c2"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "A met report-only target produces a flow summary rejected because outcome counts are bounded only by required-target count.",
+        "reason": "Executable evidence produced Required=0, Reports=1, Met=1 and an invalid performance count.",
+        "reason_refs": [
+          "qa-v1-theory-fa8487cda772b1748115a5c2"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-b98e4406f6af3f87c7e394fa",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Optimization rejection paths ignore isolation cleanup failures and can continue without preserving cleanup uncertainty.",
+        "reason": "Frozen source ignores cleanup results before continuation. Investigator tests inspect source or simulate another loop rather than executing optimizePerformance.",
+        "reason_refs": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "confidence": 0.98
+      },
+      {
+        "id": "qa-v1-override-eae1f3c404571dfd6fb0585c",
+        "theory_ids": [
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "Failed measurements omit executed commands from durable counters, permitting later work against an understated command total.",
+        "reason": "Executable evidence observed 56 process calls against a limit of 40 while durable Commands remained 8.",
+        "reason_refs": [
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-72672290fd03cc35aa89adf9",
+        "theory_ids": [
+          "qa-v1-theory-bd5d5990c9d330ce736e467c"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The JSON performance parser accepts malformed trailing bytes after a valid envelope.",
+        "reason": "Executable evidence returned value 4.2 without error for a valid envelope followed by a malformed opening brace.",
+        "reason_refs": [
+          "qa-v1-theory-bd5d5990c9d330ce736e467c"
+        ],
+        "confidence": 1
+      },
+      {
+        "id": "qa-v1-override-54718c5bfb0317daab86d756",
+        "theory_ids": [
+          "qa-v1-theory-f1929f318a162a99b30f7803"
+        ],
+        "action": "refute",
+        "outcome": "refuted",
+        "reason": "Documentation limits workspace and environment values to lowering defaults. Hard maxima are separate immutable ceilings.",
+        "reason_refs": [
+          "qa-v1-theory-f1929f318a162a99b30f7803"
+        ],
+        "confidence": 0.95
+      },
+      {
+        "id": "qa-v1-override-db52f8c223bef4d960a1cc96",
+        "theory_ids": [
+          "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+        ],
+        "action": "confirm",
+        "outcome": "confirmed",
+        "replacement_claim": "The performance-policy parser accepts case-variant mode values despite the exact lowercase contract.",
+        "reason": "Executable evidence observed uppercase and mixed-case enabled and disabled values accepted without findings.",
+        "reason_refs": [
+          "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+        ],
+        "confidence": 1
+      }
+    ],
+    "groups": [
+      {
+        "id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-0012e548ef4b0f725b73b3df",
+          "qa-v1-theory-1007492d20bbcc01841fb291",
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828",
+          "qa-v1-theory-36aaddc649316456a0999299",
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+          "qa-v1-theory-44d9a1998804c860f04368c4",
+          "qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8",
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+          "qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+          "qa-v1-theory-bd5d5990c9d330ce736e467c",
+          "qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+          "qa-v1-theory-f1929f318a162a99b30f7803",
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+          "qa-v1-theory-fa8487cda772b1748115a5c2"
+        ],
+        "context_block_ids": [
+          "qa-v1-block-05eaed57808bf1570dba3ef6",
+          "qa-v1-block-1567aab5096c334803a5cf3d",
+          "qa-v1-block-16640fcab12eba4718294df9",
+          "qa-v1-block-1bec30a6414976c9c25b5d55",
+          "qa-v1-block-23ffd3df512e9cb822d95ab8",
+          "qa-v1-block-263b3a5636c57033d940e0e1",
+          "qa-v1-block-27d2771fd1e216ea720fc578",
+          "qa-v1-block-288742cf99fce5f4e3f007e3",
+          "qa-v1-block-2acbb7e6b01c74fbf4b507e8",
+          "qa-v1-block-2b729a3f34f22ffc27619786",
+          "qa-v1-block-2d09ea9408321e39866f0ffb",
+          "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+          "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+          "qa-v1-block-2fa5eb620169346ab567a9ec",
+          "qa-v1-block-307234c6bfff53948b392930",
+          "qa-v1-block-32fed93c9abfff4d8a2ce8f3",
+          "qa-v1-block-346546314e3525f831931e2f",
+          "qa-v1-block-34db48e1e10bbcf28cc6bf2d",
+          "qa-v1-block-357d02b85024955b15a6cb1c",
+          "qa-v1-block-3bf230d4d7d4d3f748ebe877",
+          "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+          "qa-v1-block-43f6c6336f81c3ce55628909",
+          "qa-v1-block-45569de6dacab66d160b4352",
+          "qa-v1-block-4d86b870fde783303fb750cc",
+          "qa-v1-block-539767426a292f490828efde",
+          "qa-v1-block-5a540b46eca643bf6640a391",
+          "qa-v1-block-5af1a807f7edb0681de5aec4",
+          "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+          "qa-v1-block-65249f5972392b6b782b071c",
+          "qa-v1-block-68cfca988b5aef1e551fa430",
+          "qa-v1-block-6f350ed25520275c4b37fc3d",
+          "qa-v1-block-76be07ab5d25adb0b9e502d6",
+          "qa-v1-block-7985bad832d92491b9f91289",
+          "qa-v1-block-80a16af2d655a61cc6762d41",
+          "qa-v1-block-81ecc6aa5bda08644552abb4",
+          "qa-v1-block-893a62e81780679e0845739e",
+          "qa-v1-block-8af63023a02416b710685bbe",
+          "qa-v1-block-95f9f726d965e7685184fba7",
+          "qa-v1-block-9a637580a721b349e21044c1",
+          "qa-v1-block-9d2f0e314212dfeb60cbb135",
+          "qa-v1-block-a1c54f69a34aba9ad20c1302",
+          "qa-v1-block-a42ba81ee3aabfa3bef7fe97",
+          "qa-v1-block-a4433213f2515f9d53c23882",
+          "qa-v1-block-af5f117594728fd0aab939e2",
+          "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+          "qa-v1-block-b452bd0ab01bbeddc215ea27",
+          "qa-v1-block-b78a61cde5b699690eb3c5f2",
+          "qa-v1-block-bbded94f1f6a431c45c9bd52",
+          "qa-v1-block-c46dffb145fa671331d12a4d",
+          "qa-v1-block-c4b3c8428def60929d338d7a",
+          "qa-v1-block-c60e8152c304432fc78d7a0c",
+          "qa-v1-block-c97e1078c55929fe79594127",
+          "qa-v1-block-cd1988b71fec72095e20320d",
+          "qa-v1-block-ce45392d2ebc036986b89d13",
+          "qa-v1-block-d19e106aa8552aa77a4f6b06",
+          "qa-v1-block-da24117cc66e2742d5a2bd79",
+          "qa-v1-block-dbf7e69765ab615487ff3a15",
+          "qa-v1-block-e5e9288e0d4e15abe068bed1",
+          "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+          "qa-v1-block-ebd21cdd229fbe3af0d1930e",
+          "qa-v1-block-f3519512e9ac52dff09fe19e"
+        ],
+        "session_id": "ses_f6a48cbfefferbOOByNiyRoZFI",
+        "provider": "openai",
+        "model": "openai/gpt-5.6-sol",
+        "variant": "low",
+        "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+        "workspace_id": "1a54b97ca0e8956c5a59625e88ebe18c3999d19c5f52cef8bdddea2f4a6b3680",
+        "round": 5,
+        "overrides": [
+          {
+            "id": "qa-v1-override-846c0042fa51d4f47a25db2b",
+            "theory_ids": [
+              "qa-v1-theory-44d9a1998804c860f04368c4",
+              "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+            ],
+            "action": "merge",
+            "outcome": "confirmed",
+            "replacement_claim": "The public performance CLI lacks compatibility tests for stable JSON and text output, stream separation, and semantic outcome-to-exit mappings.",
+            "reason": "Both theories describe one coverage defect. Frozen product tests and review establish the gap. New evidence reached an operational persistence failure, not target-miss, cancellation, or partial semantics.",
+            "reason_refs": [
+              "qa-v1-theory-44d9a1998804c860f04368c4",
+              "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-19220065b7853b7dbbee1469",
+            "theory_ids": [
+              "qa-v1-theory-4686bbc8ed7ce40fed77caa0"
+            ],
+            "action": "refute",
+            "outcome": "refuted",
+            "reason": "Production TUI and serve paths validate performance settings before constructing the shared runner.",
+            "reason_refs": [
+              "qa-v1-theory-4686bbc8ed7ce40fed77caa0"
+            ],
+            "confidence": 0.97
+          },
+          {
+            "id": "qa-v1-override-8fcce42b54671b904a918af9",
+            "theory_ids": [
+              "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Performance CLI output failures are discarded because JSON encoding and text rendering write errors are ignored.",
+            "reason": "Executable tests observed JSON and text write failures omitted from returned errors, including alongside an operation failure.",
+            "reason_refs": [
+              "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-07b00893a9db3b6aedffc1e2",
+            "theory_ids": [
+              "qa-v1-theory-36aaddc649316456a0999299"
+            ],
+            "action": "refute",
+            "outcome": "refuted",
+            "reason": "The CLI exposes phase, freshness, outcome, targets, and next action. Permitted presentation differences do not establish factual disagreement.",
+            "reason_refs": [
+              "qa-v1-theory-36aaddc649316456a0999299"
+            ],
+            "confidence": 0.87
+          },
+          {
+            "id": "qa-v1-override-76c5dcadf5980c121b3635b8",
+            "theory_ids": [
+              "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The advertised performance evidence API request fails when limit is omitted because zero reaches pagination and is rejected.",
+            "reason": "Executable HTTP evidence observed Limit=0 and HTTP 500 when omitted, while Limit=1 succeeded.",
+            "reason_refs": [
+              "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-15c66a8b1dc584aa62700591",
+            "theory_ids": [
+              "qa-v1-theory-0012e548ef4b0f725b73b3df"
+            ],
+            "action": "refute",
+            "outcome": "refuted",
+            "reason": "Validation rejects configurable values above defaults, matching the documented lower-only rule; hard maxima are separate ceilings.",
+            "reason_refs": [
+              "qa-v1-theory-0012e548ef4b0f725b73b3df"
+            ],
+            "confidence": 0.99
+          },
+          {
+            "id": "qa-v1-override-9b39e49b67a1077cb8fb1514",
+            "theory_ids": [
+              "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Persisted repair reverification validation accepts a passing performance record with no target results.",
+            "reason": "Executable evidence showed a passing record with valid authority and cleanup fields and zero target results passes validation.",
+            "reason_refs": [
+              "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-0264515c468d074d64b7cc59",
+            "theory_ids": [
+              "qa-v1-theory-1007492d20bbcc01841fb291"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Repair performance reverification associates baselines by slice position rather than target identity.",
+            "reason": "Executable two-target evidence reordered valid baselines and observed each target receiving the other's median.",
+            "reason_refs": [
+              "qa-v1-theory-1007492d20bbcc01841fb291"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-e5d9517d2cf1d4cddc8b8d14",
+            "theory_ids": [
+              "qa-v1-theory-fa8487cda772b1748115a5c2"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "A met report-only target produces a flow summary rejected because outcome counts are bounded only by required-target count.",
+            "reason": "Executable evidence produced Required=0, Reports=1, Met=1 and an invalid performance count.",
+            "reason_refs": [
+              "qa-v1-theory-fa8487cda772b1748115a5c2"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-b98e4406f6af3f87c7e394fa",
+            "theory_ids": [
+              "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Optimization rejection paths ignore isolation cleanup failures and can continue without preserving cleanup uncertainty.",
+            "reason": "Frozen source ignores cleanup results before continuation. Investigator tests inspect source or simulate another loop rather than executing optimizePerformance.",
+            "reason_refs": [
+              "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+            ],
+            "confidence": 0.98
+          },
+          {
+            "id": "qa-v1-override-eae1f3c404571dfd6fb0585c",
+            "theory_ids": [
+              "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "Failed measurements omit executed commands from durable counters, permitting later work against an understated command total.",
+            "reason": "Executable evidence observed 56 process calls against a limit of 40 while durable Commands remained 8.",
+            "reason_refs": [
+              "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-72672290fd03cc35aa89adf9",
+            "theory_ids": [
+              "qa-v1-theory-bd5d5990c9d330ce736e467c"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The JSON performance parser accepts malformed trailing bytes after a valid envelope.",
+            "reason": "Executable evidence returned value 4.2 without error for a valid envelope followed by a malformed opening brace.",
+            "reason_refs": [
+              "qa-v1-theory-bd5d5990c9d330ce736e467c"
+            ],
+            "confidence": 1
+          },
+          {
+            "id": "qa-v1-override-54718c5bfb0317daab86d756",
+            "theory_ids": [
+              "qa-v1-theory-f1929f318a162a99b30f7803"
+            ],
+            "action": "refute",
+            "outcome": "refuted",
+            "reason": "Documentation limits workspace and environment values to lowering defaults. Hard maxima are separate immutable ceilings.",
+            "reason_refs": [
+              "qa-v1-theory-f1929f318a162a99b30f7803"
+            ],
+            "confidence": 0.95
+          },
+          {
+            "id": "qa-v1-override-db52f8c223bef4d960a1cc96",
+            "theory_ids": [
+              "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+            ],
+            "action": "confirm",
+            "outcome": "confirmed",
+            "replacement_claim": "The performance-policy parser accepts case-variant mode values despite the exact lowercase contract.",
+            "reason": "Executable evidence observed uppercase and mixed-case enabled and disabled values accepted without findings.",
+            "reason_refs": [
+              "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+            ],
+            "confidence": 1
+          }
+        ],
+        "issues": [
+          {
+            "id": "qa-v1-arbiter-issue-002aee6e5997b8de7a1f0639",
+            "theory_ids": [
+              "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+            ],
+            "claim": "The advertised performance evidence API request fails when limit is omitted because zero reaches pagination and is rejected.",
+            "title": "Default performance evidence URL returns an error",
+            "issue_class": "api_behavior",
+            "severity": "medium",
+            "location": "internal/web/handlers.go; internal/sprint/performance_state.go; internal/web/templates/sprint.html",
+            "reason": "The generated URL omits limit, the handler forwards zero, and the store rejects it.",
+            "evidence_refs": [
+              "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-37cb80ec389ef2cfcde8c4bb",
+            "theory_ids": [
+              "qa-v1-theory-bd5d5990c9d330ce736e467c"
+            ],
+            "claim": "The JSON performance parser accepts malformed trailing bytes after a valid envelope.",
+            "title": "Performance JSON parser accepts malformed suffixes",
+            "issue_class": "input_validation",
+            "severity": "high",
+            "location": "internal/sprint/performance_measure.go",
+            "reason": "A trailing syntax error is accepted instead of requiring EOF.",
+            "evidence_refs": [
+              "qa-v1-theory-bd5d5990c9d330ce736e467c"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-3afdf29e6b134c36507c508f",
+            "theory_ids": [
+              "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+            ],
+            "claim": "Optimization rejection paths ignore isolation cleanup failures and can continue without preserving cleanup uncertainty.",
+            "title": "Optimization continues after uncertain cleanup",
+            "issue_class": "cleanup_safety",
+            "severity": "medium",
+            "location": "internal/sprint/performance_optimize_runtime.go",
+            "reason": "Later work can start despite an unproved disposable-workspace cleanup boundary.",
+            "evidence_refs": [
+              "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-4bd50b9d4e532f775f2fb3f7",
+            "theory_ids": [
+              "qa-v1-theory-fa8487cda772b1748115a5c2"
+            ],
+            "claim": "A met report-only target produces a flow summary rejected because outcome counts are bounded only by required-target count.",
+            "title": "Report-only outcomes make flow state invalid",
+            "issue_class": "workflow_state",
+            "severity": "high",
+            "location": "internal/sprint/performance.go; internal/sprint/state.go",
+            "reason": "Summary construction counts report outcomes while validation bounds outcomes by required targets.",
+            "evidence_refs": [
+              "qa-v1-theory-fa8487cda772b1748115a5c2"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-66231caf73ac6be467bafa8b",
+            "theory_ids": [
+              "qa-v1-theory-1007492d20bbcc01841fb291"
+            ],
+            "claim": "Repair performance reverification associates baselines by slice position rather than target identity.",
+            "title": "Repair reverification can use the wrong baseline",
+            "issue_class": "correctness",
+            "severity": "high",
+            "location": "internal/sprint/performance_repair.go",
+            "reason": "Reordered baselines alter target comparisons because identity is not checked.",
+            "evidence_refs": [
+              "qa-v1-theory-1007492d20bbcc01841fb291"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-719f14a6ac1be95e09b5897c",
+            "theory_ids": [
+              "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+            ],
+            "claim": "The performance-policy parser accepts case-variant mode values despite the exact lowercase contract.",
+            "title": "Performance policy mode parsing is not exact",
+            "issue_class": "input_validation",
+            "severity": "high",
+            "location": "internal/project/index.go",
+            "reason": "Lowercasing before validation turns malformed variants into valid modes.",
+            "evidence_refs": [
+              "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-73418eb6591a5baafcdaa87d",
+            "theory_ids": [
+              "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+            ],
+            "claim": "Performance CLI output failures are discarded because JSON encoding and text rendering write errors are ignored.",
+            "title": "Performance CLI drops stdout failures",
+            "issue_class": "error_handling",
+            "severity": "high",
+            "location": "internal/app/sprint_commands.go",
+            "reason": "Output failures can disappear or be lost beside an operation error.",
+            "evidence_refs": [
+              "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-8011227f6a88892ca0eb3a08",
+            "theory_ids": [
+              "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+            ],
+            "claim": "Persisted repair reverification validation accepts a passing performance record with no target results.",
+            "title": "Passing repair records need no target coverage",
+            "issue_class": "persistence_integrity",
+            "severity": "high",
+            "location": "internal/sprint/qa_repair_state.go",
+            "reason": "A persisted pass can validate without proving any frozen target was reverified.",
+            "evidence_refs": [
+              "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-ab44e45515916413ee3bcc73",
+            "theory_ids": [
+              "qa-v1-theory-44d9a1998804c860f04368c4",
+              "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+            ],
+            "claim": "The public performance CLI lacks compatibility tests for stable JSON and text output, stream separation, and semantic outcome-to-exit mappings.",
+            "title": "Performance CLI compatibility coverage is incomplete",
+            "issue_class": "test_coverage",
+            "severity": "low",
+            "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+            "reason": "Frozen product tests do not cover the complete public presentation and exit contract.",
+            "evidence_refs": [
+              "qa-v1-theory-44d9a1998804c860f04368c4",
+              "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+            ]
+          },
+          {
+            "id": "qa-v1-arbiter-issue-b826ce5a2366bfb37c45e176",
+            "theory_ids": [
+              "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+            ],
+            "claim": "Failed measurements omit executed commands from durable counters, permitting later work against an understated command total.",
+            "title": "Failed measurements evade the command budget",
+            "issue_class": "resource_bounding",
+            "severity": "high",
+            "location": "internal/sprint/performance_optimize_runtime.go; internal/sprint/performance_measure.go",
+            "reason": "Actual executions exceeded the command limit while durable accounting remained below it.",
+            "evidence_refs": [
+              "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+            ]
+          }
+        ],
+        "evidence_requests": [
+          {
+            "accounting_version": 2,
+            "id": "qa-v2-request-0eecea176f2cdd232b1d46ba",
+            "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+            "theory_ids": [
+              "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+            ],
+            "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+            "gap": "Existing tests inspect source or simulate another loop; neither executes optimizePerformance. No frozen cleanup-failure injection hook is demonstrated.",
+            "requested_evidence": "Ask the original investigator to create or strengthen a package-local executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-35a6a9cbcf6592fb04bb7828 using only existing seams.",
+            "required_observation": "Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828.",
+            "control_requirement": "Include an otherwise identical successful-cleanup control. Do not assume source changes or a new hook; if existing seams cannot induce cleanup failure, report verification_unavailable and retain the missing cleanup-failure injection prerequisite.",
+            "priority": "high"
+          },
+          {
+            "accounting_version": 2,
+            "id": "qa-v2-request-5d31c259c544d48db6847a74",
+            "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+            "theory_ids": [
+              "qa-v1-theory-44d9a1998804c860f04368c4"
+            ],
+            "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+            "gap": "Evidence verifies healthy JSON output and a separate writer defect but does not execute semantic success, target-miss, cancellation, and partial mappings for this theory.",
+            "requested_evidence": "Ask the original investigator to create or strengthen an executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-44d9a1998804c860f04368c4.",
+            "required_observation": "Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+            "control_requirement": "Include a passing status or dry-run control and isolate compatibility behavior from the writer-error defect. Frozen product tests establish prior coverage absence.",
+            "priority": "medium"
+          },
+          {
+            "accounting_version": 2,
+            "id": "qa-v2-request-60e89ec8bc0db079f41d230d",
+            "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+            "theory_ids": [
+              "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+            ],
+            "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+            "gap": "The latest test omitted required sprint inputs and observed an operational ExitValidation failure, not cancellation; target-miss and partial outcomes were not exercised.",
+            "requested_evidence": "Ask the original investigator to strengthen the executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+            "required_observation": "With a complete valid fixture and existing seams, execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+            "control_requirement": "Retain healthy and operational-failure controls. Do not use invented actions, source-token searches, or setup failures as semantic evidence. Frozen product tests establish prior coverage absence.",
+            "priority": "medium"
+          }
+        ],
+        "fallback": false
+      }
+    ],
+    "issues": [
+      {
+        "id": "qa-v1-arbiter-issue-08cff74d27beb7f3211e0b2b",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "claim": "Optimization rejection paths ignore isolation cleanup failures and can continue without preserving cleanup uncertainty.",
+        "title": "Optimization continues after uncertain cleanup",
+        "issue_class": "cleanup_safety",
+        "severity": "medium",
+        "location": "internal/sprint/performance_optimize_runtime.go",
+        "reason": "Later work can start despite an unproved disposable-workspace cleanup boundary.",
+        "evidence_refs": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-25869d7bcba158b46c2939bc",
+        "theory_ids": [
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+        ],
+        "claim": "Failed measurements omit executed commands from durable counters, permitting later work against an understated command total.",
+        "title": "Failed measurements evade the command budget",
+        "issue_class": "resource_bounding",
+        "severity": "high",
+        "location": "internal/sprint/performance_optimize_runtime.go; internal/sprint/performance_measure.go",
+        "reason": "Actual executions exceeded the command limit while durable accounting remained below it.",
+        "evidence_refs": [
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-29d408ce7cbe6a06789c2b10",
+        "theory_ids": [
+          "qa-v1-theory-fa8487cda772b1748115a5c2"
+        ],
+        "claim": "A met report-only target produces a flow summary rejected because outcome counts are bounded only by required-target count.",
+        "title": "Report-only outcomes make flow state invalid",
+        "issue_class": "workflow_state",
+        "severity": "high",
+        "location": "internal/sprint/performance.go; internal/sprint/state.go",
+        "reason": "Summary construction counts report outcomes while validation bounds outcomes by required targets.",
+        "evidence_refs": [
+          "qa-v1-theory-fa8487cda772b1748115a5c2"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-2b86cac8ad2e26ff0d455bb0",
+        "theory_ids": [
+          "qa-v1-theory-bd5d5990c9d330ce736e467c"
+        ],
+        "claim": "The JSON performance parser accepts malformed trailing bytes after a valid envelope.",
+        "title": "Performance JSON parser accepts malformed suffixes",
+        "issue_class": "input_validation",
+        "severity": "high",
+        "location": "internal/sprint/performance_measure.go",
+        "reason": "A trailing syntax error is accepted instead of requiring EOF.",
+        "evidence_refs": [
+          "qa-v1-theory-bd5d5990c9d330ce736e467c"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-3fc0239338c4992794a4a315",
+        "theory_ids": [
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+        ],
+        "claim": "Performance CLI output failures are discarded because JSON encoding and text rendering write errors are ignored.",
+        "title": "Performance CLI drops stdout failures",
+        "issue_class": "error_handling",
+        "severity": "high",
+        "location": "internal/app/sprint_commands.go",
+        "reason": "Output failures can disappear or be lost beside an operation error.",
+        "evidence_refs": [
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-975a098e24099a8548c2a1dc",
+        "theory_ids": [
+          "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+        ],
+        "claim": "The performance-policy parser accepts case-variant mode values despite the exact lowercase contract.",
+        "title": "Performance policy mode parsing is not exact",
+        "issue_class": "input_validation",
+        "severity": "high",
+        "location": "internal/project/index.go",
+        "reason": "Lowercasing before validation turns malformed variants into valid modes.",
+        "evidence_refs": [
+          "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-9fe2bf4d1bee572790241f2a",
+        "theory_ids": [
+          "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+        ],
+        "claim": "Persisted repair reverification validation accepts a passing performance record with no target results.",
+        "title": "Passing repair records need no target coverage",
+        "issue_class": "persistence_integrity",
+        "severity": "high",
+        "location": "internal/sprint/qa_repair_state.go",
+        "reason": "A persisted pass can validate without proving any frozen target was reverified.",
+        "evidence_refs": [
+          "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-b8580432baa198a71ba9a7d8",
+        "theory_ids": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ],
+        "claim": "The advertised performance evidence API request fails when limit is omitted because zero reaches pagination and is rejected.",
+        "title": "Default performance evidence URL returns an error",
+        "issue_class": "api_behavior",
+        "severity": "medium",
+        "location": "internal/web/handlers.go; internal/sprint/performance_state.go; internal/web/templates/sprint.html",
+        "reason": "The generated URL omits limit, the handler forwards zero, and the store rejects it.",
+        "evidence_refs": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-d5ce386323339e3284694bc8",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4",
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "claim": "The public performance CLI lacks compatibility tests for stable JSON and text output, stream separation, and semantic outcome-to-exit mappings.",
+        "title": "Performance CLI compatibility coverage is incomplete",
+        "issue_class": "test_coverage",
+        "severity": "low",
+        "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+        "reason": "Frozen product tests do not cover the complete public presentation and exit contract.",
+        "evidence_refs": [
+          "qa-v1-theory-44d9a1998804c860f04368c4",
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ]
+      },
+      {
+        "id": "qa-v1-arbiter-issue-fb320406b8b3e6ef42542186",
+        "theory_ids": [
+          "qa-v1-theory-1007492d20bbcc01841fb291"
+        ],
+        "claim": "Repair performance reverification associates baselines by slice position rather than target identity.",
+        "title": "Repair reverification can use the wrong baseline",
+        "issue_class": "correctness",
+        "severity": "high",
+        "location": "internal/sprint/performance_repair.go",
+        "reason": "Reordered baselines alter target comparisons because identity is not checked.",
+        "evidence_refs": [
+          "qa-v1-theory-1007492d20bbcc01841fb291"
+        ]
+      }
+    ],
+    "evidence_requests": [
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-00798e43bc0507a39e9dd20e",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "The retained test checked only a healthy dry-run envelope while its failure was triggered by the separate stdout-write defect; it did not execute the claimed outcome mappings or stdout/stderr contract.",
+        "requested_evidence": "Strengthen the executable Go _test.go compatibility reproducer in the approved private workspace for this theory alone.",
+        "required_observation": "Assert stable JSON and text output, appropriate stderr behavior, and semantic exit mappings for success, target_missed, cancelled, partial, and operational failure. Name qa-v1-theory-44d9a1998804c860f04368c4 in the assertions.",
+        "control_requirement": "Use existing deterministic command and service seams, include a passing status or dry-run control, and ensure any failure comes from a missing compatibility assertion rather than the separate writer-error defect.",
+        "priority": "medium",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-2fee3e6667c2aa721b50a6a9",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:48:25.330099875Z",
+            "completed_at": "2026-09-12T11:49:40.901207828Z",
+            "run_id": "qa-v2-run-445f4bc772f2aa0384e70ce6"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-07d95cd845e0108c780842e4",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "The returned test is a source-string assertion and does not inject cleanup failure, observe another optimization step, or inspect cleanup_uncertain state.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go behavioral reproducer in the approved private workspace with controllable isolation cleanup failure on a rejection branch that normally continues.",
+        "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification.",
+        "control_requirement": "Use deterministic fake runtime and process collaborators with call counters; do not satisfy the request by reading source text or matching an ignored-cleanup string.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "f1012c3a57de1a46541604903467492363b38236ab54ff5f429a909964996a34",
+        "superseded_by": "qa-v2-request-559158551da72d320c37568b",
+        "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+        "latest_run_id": "qa-v2-run-445f4bc772f2aa0384e70ce6",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-0eecea176f2cdd232b1d46ba",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "Existing tests inspect source or simulate another loop; neither executes optimizePerformance. No frozen cleanup-failure injection hook is demonstrated.",
+        "requested_evidence": "Ask the original investigator to create or strengthen a package-local executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-35a6a9cbcf6592fb04bb7828 using only existing seams.",
+        "required_observation": "Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828.",
+        "control_requirement": "Include an otherwise identical successful-cleanup control. Do not assume source changes or a new hook; if existing seams cannot induce cleanup failure, report verification_unavailable and retain the missing cleanup-failure injection prerequisite.",
+        "priority": "high",
+        "status": "pending",
+        "next_action": "Continue the original investigator session."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T13:07:24.559303475Z",
+            "completed_at": "2026-09-12T13:08:12.369742283Z",
+            "run_id": "qa-v2-run-66042f87d9a87d73ebc8ec7c"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-13cc278803c32eaa2dbf06b2",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+        "gap": "The coverage absence is statically supported, but promotion readiness lacks executable compatibility assertions from this origin shard.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go compatibility reproducer in the approved private workspace for the performance CLI.",
+        "required_observation": "Assert the exact theories covered by exercising representative performance commands and checking stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. The test supports promotion readiness and must not be presented as proof that coverage was previously absent.",
+        "control_requirement": "Include healthy success controls and at least one non-performance command compatibility control using only existing command seams and deterministic fixtures.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "d483e448caa58e7850ffd87115ec2e4ab66d98803ae6d2d9f0580961d8ac52ff",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-21ae0de596606b0e9329abe5",
+        "test_bundle_id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+        "latest_run_id": "qa-v2-run-66042f87d9a87d73ebc8ec7c",
+        "next_action": "Inspect replacement evidence request qa-v2-request-21ae0de596606b0e9329abe5."
+      },
+      {
+        "correction_granted_at": "2026-09-12T12:08:00.248877867Z",
+        "correction_attempts": 1,
+        "accounting_version": 2,
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "authoring",
+          "code": "unknown_failure",
+          "diagnostic": "qa continue investigator for evidence: verification_unavailable: The sole approved path is in package internal/app, but the required failure occurs inside unexported internal/sprint optimizePerformance and performanceIsolation cleanup logic. The public orchestration API has no deterministic isolation cleanup injection seam. Reaching the branch from app would require filesystem sabotage of product-created temporary directories, which cannot reliably distinguish cleanup failure from infrastructure behavior and therefore would violate the frozen inconclusive conditions. Source matching and independent simulation were explicitly rejected.. Required prerequisite: Approve an internal/sprint/*_test.go path in package sprint, where optimizePerformance and performanceIsolation can be exercised directly, or expose an existing product-owned deterministic isolation/cleanup test hook through sprint.Service.",
+          "retryable": false
+        },
+        "id": "qa-v2-request-17df7388a8e4c0ffb6d0e16a",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "The returned tests do not invoke optimizePerformance or observe product state; one checks source text and another runs an unrelated synthetic loop.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace that invokes the actual optimization path with a controllable isolation cleanup failure on a rejection branch that normally continues.",
+        "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after the injected cleanup failure and assert the actual returned or persisted cleanup classification.",
+        "control_requirement": "Exercise optimizePerformance or RunPerformance through real product orchestration with deterministic collaborators; an independent simulated loop or source-string assertion is not sufficient.",
+        "priority": "high",
+        "status": "inconclusive",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "bd984b63f605a28b3d542df874bc9c0508e6cd907044f3fa23a13adba6001ff3",
+        "reason_code": "verification_unavailable",
+        "superseded_by": "qa-v2-request-d1ba5b60ee106aa1d74ac997",
+        "next_action": "Evidence remains unresolved: verification_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. qa continue investigator for evidence: verification_unavailable: The sole approved path is in package internal/app, but the required failure occurs inside unexported internal/sprint optimizePerformance and performanceIsolation cleanup logic. The public orchestration API has no deterministic isolation cleanup injection seam. Reaching the branch from app would require filesystem sabotage of product-created temporary directories, which cannot reliably distinguish cleanup failure from infrastructure behavior and therefore would violate the frozen inconclusive conditions. Source matching and independent simulation were explicitly rejected.. Required prerequisite: Approve an internal/sprint/*_test.go path in package sprint, where optimizePerformance and performanceIsolation can be exercised directly, or expose an existing product-owned deterministic isolation/cleanup test hook through sprint.Service."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:27:49.478687426Z",
+            "completed_at": "2026-09-12T11:28:51.00994023Z",
+            "failure": {
+              "phase": "assertion",
+              "code": "unknown_failure",
+              "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_2d93974a2b11     qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}} --- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s FAIL",
+              "retryable": false
+            },
+            "run_id": "qa-v2-run-67fe371d627f8de97c176e31"
+          }
+        ],
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "assertion",
+          "code": "unknown_failure",
+          "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_2d93974a2b11     qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}} --- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s FAIL",
+          "retryable": false
+        },
+        "id": "qa-v2-request-1c048909b6582d93974a2b11",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ],
+        "origin_shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+        "gap": "The broken omitted-limit path is statically established but lacks an executable HTTP compatibility reproducer.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that requests the generated performance evidence endpoint without a limit query parameter.",
+        "required_observation": "The test must assert the actual HTTP status and response result for qa-v1-theory-f2dfc2c802889fddc3bbae5c and demonstrate that the request reaches evidence pagination with the omitted-limit value.",
+        "control_requirement": "Use a bounded retained-attempt fixture and compare against an explicit valid-limit request; do not inspect private artifact contents.",
+        "priority": "high",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "3ff5671b0a8591afea548a577a974dea32ae4cc126149e29ff5e4cc11ea63213",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-d6798f8083a31ff716b0ebd2",
+        "test_bundle_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+        "latest_run_id": "qa-v2-run-67fe371d627f8de97c176e31",
+        "next_action": "Inspect replacement evidence request qa-v2-request-d6798f8083a31ff716b0ebd2."
+      },
+      {
+        "correction_granted_at": "2026-09-12T12:04:14.011726604Z",
+        "correction_attempts": 1,
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T12:05:21.917026052Z",
+            "completed_at": "2026-09-12T12:06:05.289987208Z",
+            "run_id": "qa-v2-run-961b5fcafd5462cb06f87ea7"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-1cefed6a599adae46ba55ba6",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ],
+        "origin_shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+        "gap": "The latest behavioral reproducer did not compile because qaPerformanceEvidenceQueries was undefined; the earlier test failed before issuing the omitted-limit request.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace so it compiles independently and issues the omitted-limit request through the actual HTTP handler.",
+        "required_observation": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "control_requirement": "Define all required query fakes in the test, prove the omitted request reaches PerformanceEvidence and EvidencePage, and avoid an unrelated query-allowlist failure.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "ec03cf6681fa7c67370b406fb8acf02328936a1b87b75a0ef9580c61acb7e00c",
+        "test_bundle_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+        "latest_run_id": "qa-v2-run-961b5fcafd5462cb06f87ea7",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-731bcfbd077beb53b1c37659",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T13:14:56.107863654Z",
+            "completed_at": "2026-09-12T13:15:41.459152313Z",
+            "run_id": "qa-v2-run-0be988eba86db2c9238ad7e8"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-21ae0de596606b0e9329abe5",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+        "gap": "The new test checked only help registration and then failed unconditionally; it did not execute any requested performance result or exit mapping.",
+        "requested_evidence": "Strengthen the executable Go _test.go compatibility reproducer in the approved private workspace for this theory.",
+        "required_observation": "Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c in the assertions. This supports promotion readiness and must not be presented as proof that coverage was previously absent.",
+        "control_requirement": "Include healthy success controls and at least one non-performance command compatibility control using only existing command and service seams; do not fail unconditionally or rely on a marker.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "c6e21e7ddc50ddb30fa0d3a61570c0c381988d3a7046b9a69261d49c50268b68",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-6a05f64ec6673fdd9404fbd7",
+        "test_bundle_id": "qa-v2-test-731bcfbd077beb53b1c37659",
+        "latest_run_id": "qa-v2-run-0be988eba86db2c9238ad7e8",
+        "next_action": "Inspect replacement evidence request qa-v2-request-6a05f64ec6673fdd9404fbd7."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-2fee3e6667c2aa721b50a6a9",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "The retained test does not execute semantic outcome mappings, and its failure is triggered by the separate stdout-write defect.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "required_observation": "Execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable output, stream behavior, and semantic exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "control_requirement": "Use existing deterministic command and service seams, include a passing status or dry-run control, and ensure failures arise from missing compatibility behavior rather than the writer-error defect. Treat static product-test evidence, not the newly authored reproducer, as proof of prior coverage absence.",
+        "priority": "medium",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-e09890ed99f95258216f09e9",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-36cb5bfb47aa55a5e699f720",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "Existing tests inspect source or simulate an unrelated loop rather than executing optimizePerformance and observing cleanup classification.",
+        "requested_evidence": "Create or strengthen a package-local executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-35a6a9cbcf6592fb04bb7828 using only existing service, runner, runtime, and isolation seams.",
+        "required_observation": "Induce an actual optimization rejection followed by isolation cleanup failure, then assert for qa-v1-theory-35a6a9cbcf6592fb04bb7828 whether later proposal, profile, correctness, measurement, or mutation work starts and whether returned or persisted state is cleanup_uncertain.",
+        "control_requirement": "Include an otherwise identical successful-cleanup control that may continue according to the frozen workflow. Do not assume a new cleanup injection hook or source modification; if cleanup failure cannot be induced through an existing hook, retain that missing prerequisite as verification_unavailable.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-9148ec87db83fa186204264b",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:32:00.026595363Z",
+            "completed_at": "2026-09-12T11:32:39.864924731Z",
+            "run_id": "qa-v2-run-1af593fd70957d004baf45b3"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-41db99a55622e2eec52fa86d",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "Static evidence confirms discarded writes and the review confirms a compatibility-test gap, but no executable reproducer proves writer-failure behavior or the complete public contract.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace using a failing stdout writer and representative performance outcomes.",
+        "required_observation": "Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr separation, and target_missed, cancelled, partial, and success exit mappings.",
+        "control_requirement": "Use injected writers and deterministic service or durable-operation fakes; do not invoke a real performance runtime or rely on output markers alone.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "2d1308bb9e8c35b7da983e88e67451c7de039a4a20c244f3f96bdd56625b320d",
+        "test_bundle_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+        "latest_run_id": "qa-v2-run-1af593fd70957d004baf45b3",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-559158551da72d320c37568b",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "The latest test exercises only a locally written loop and fake types; it never calls optimizePerformance or observes product state, so it supplies no behavioral evidence for the claimed path.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace that invokes the actual optimization path with a controllable isolation cleanup failure on a rejection branch that normally continues.",
+        "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after the injected cleanup failure and assert the actual returned or persisted cleanup classification.",
+        "control_requirement": "The test must exercise optimizePerformance or RunPerformance using real product orchestration with deterministic collaborators; an independent simulated loop or source-string assertion is not sufficient.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-17df7388a8e4c0ffb6d0e16a",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-5d31c259c544d48db6847a74",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "Evidence verifies healthy JSON output and a separate writer defect but does not execute semantic success, target-miss, cancellation, and partial mappings for this theory.",
+        "requested_evidence": "Ask the original investigator to create or strengthen an executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "required_observation": "Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "control_requirement": "Include a passing status or dry-run control and isolate compatibility behavior from the writer-error defect. Frozen product tests establish prior coverage absence.",
+        "priority": "medium",
+        "status": "pending",
+        "next_action": "Continue the original investigator session."
+      },
+      {
+        "correction_granted_at": "2026-09-12T13:28:09.181900041Z",
+        "correction_attempts": 3,
+        "correction_allowance": 3,
+        "accounting_version": 2,
+        "id": "qa-v2-request-60e89ec8bc0db079f41d230d",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+        "gap": "The latest test omitted required sprint inputs and observed an operational ExitValidation failure, not cancellation; target-miss and partial outcomes were not exercised.",
+        "requested_evidence": "Ask the original investigator to strengthen the executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+        "required_observation": "With a complete valid fixture and existing seams, execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+        "control_requirement": "Retain healthy and operational-failure controls. Do not use invented actions, source-token searches, or setup failures as semantic evidence. Frozen product tests establish prior coverage absence.",
+        "priority": "medium",
+        "status": "pending",
+        "next_action": "Continue the original investigator session."
+      },
+      {
+        "correction_granted_at": "2026-09-12T13:28:09.181900041Z",
+        "correction_attempts": 1,
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T13:29:51.358365989Z",
+            "completed_at": "2026-09-12T13:30:42.697364059Z",
+            "failure": {
+              "phase": "compile",
+              "code": "compile_failure",
+              "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/app [github.com/Antonio7098/ultraplan-go/internal/app.test] ./qa_investigator_3fdd9404fbd7_test.go:51:12: continue label not defined: finder",
+              "retryable": false
+            },
+            "run_id": "qa-v2-run-bb4f75197803d2c285038788"
+          }
+        ],
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "compile",
+          "code": "compile_failure",
+          "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/app [github.com/Antonio7098/ultraplan-go/internal/app.test] ./qa_investigator_3fdd9404fbd7_test.go:51:12: continue label not defined: finder",
+          "retryable": false
+        },
+        "id": "qa-v2-request-6a05f64ec6673fdd9404fbd7",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+        "gap": "The revised test covers output behavior and operational failure but uses source-token searches instead of executing semantic outcome mappings.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+        "required_observation": "Execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+        "control_requirement": "Retain healthy and operational-failure controls, use existing deterministic seams, and do not substitute source-token searches for behavioral assertions. Treat the static product-test evidence, not the newly authored reproducer, as proof of prior coverage absence.",
+        "priority": "medium",
+        "status": "superseded",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "490c796516c4b7c30d0b07260c8be057b273f3abea2e755da3a90912e0655f88",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-bc9cd81c85d4d094a0cec36e",
+        "test_bundle_id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+        "latest_run_id": "qa-v2-run-bb4f75197803d2c285038788",
+        "next_action": "Inspect replacement evidence request qa-v2-request-bc9cd81c85d4d094a0cec36e."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-30aa4e77884683ef74f1e437",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:51:00.368865016Z",
+            "completed_at": "2026-09-12T11:52:14.401535795Z",
+            "run_id": "qa-v2-run-76007dc9213496f933d1778f"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-717ddd9a741f8cee749d8094",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-3ba88b4e640cc758bd4724ff"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "The returned test proves JSON writer failure is swallowed but does not independently observe text-mode failure propagation or whether output failure is preserved when an underlying operation error also exists.",
+        "requested_evidence": "Strengthen the executable Go _test.go reproducer in the approved private workspace with separate JSON and text writer-failure cases, including an operation-error case.",
+        "required_observation": "For qa-v1-theory-3ba88b4e640cc758bd4724ff, assert the returned error for JSON and text modes when stdout fails, and separately assert whether a simultaneous operation error preserves both the operation and output failures.",
+        "control_requirement": "Use deterministic failing and healthy writers and the same command result in each mode; do not infer text behavior merely from renderSprintPerformance having no return value.",
+        "priority": "medium",
+        "status": "evidence_recorded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "31c89ae4d3a978e221b21f6d5d71c15a77b73bdfc997a7cecf8df200e2051783",
+        "test_bundle_id": "qa-v2-test-30aa4e77884683ef74f1e437",
+        "latest_run_id": "qa-v2-run-76007dc9213496f933d1778f",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "correction_granted_at": "2026-09-12T12:08:51.485111958Z",
+        "correction_attempts": 1,
+        "accounting_version": 2,
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "authoring",
+          "code": "unknown_failure",
+          "diagnostic": "qa continue investigator for evidence: verification_unavailable: The approved app test path cannot deterministically drive the concrete sprint.Service through successful, target_missed, cancelled, and partial RunPerformance branches. runSprintPerformance constructs and uses durable/runtime dependencies internally, and no injectable performance service or outcome seam exists. Reaching those branches would require the real workflow, contrary to the deterministic-fake requirement.. Required prerequisite: Provide or approve an existing test seam that injects performance preparation, durable ownership, runtime outcome, and status projection into the real CLI handler, enabling all four outcome branches without product-source changes or real runtime execution.",
+          "retryable": false
+        },
+        "id": "qa-v2-request-71ae9de6dbec8d93317a7331",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "Returned tests still do not execute representative target_missed, cancelled, partial, and successful outcome branches or verify the complete stdout and stderr contract.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for representative success, target_missed, cancelled, and partial performance outcomes.",
+        "required_observation": "For qa-v1-theory-44d9a1998804c860f04368c4, assert parsed complete JSON envelope structure, stdout and stderr separation, and exact semantic exit classification for each representative outcome.",
+        "control_requirement": "Use deterministic service and durable-operation fakes and ensure every case reaches its intended result-outcome branch rather than only dry-run preparation.",
+        "priority": "medium",
+        "status": "inconclusive",
+        "evidence_round": 4,
+        "attempts": 1,
+        "evidence_fingerprint": "3ac66f9ec42efffcff4c552f46ae51dbe9e0133975b9b833378d4b1ad317084f",
+        "reason_code": "verification_unavailable",
+        "superseded_by": "qa-v2-request-d61db1d879f08759356cb157",
+        "next_action": "Evidence remains unresolved: verification_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. qa continue investigator for evidence: verification_unavailable: The approved app test path cannot deterministically drive the concrete sprint.Service through successful, target_missed, cancelled, and partial RunPerformance branches. runSprintPerformance constructs and uses durable/runtime dependencies internally, and no injectable performance service or outcome seam exists. Reaching those branches would require the real workflow, contrary to the deterministic-fake requirement.. Required prerequisite: Provide or approve an existing test seam that injects performance preparation, durable ownership, runtime outcome, and status projection into the real CLI handler, enabling all four outcome branches without product-source changes or real runtime execution."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-9148ec87db83fa186204264b",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "Existing investigator tests inspect source text or simulate an unrelated loop; neither executes optimizePerformance nor observes its cleanup classification. No frozen cleanup-failure injection hook has been demonstrated.",
+        "requested_evidence": "Create or strengthen a package-local executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-35a6a9cbcf6592fb04bb7828 using only existing Service hooks, process-runner seams, runtime seams, and isolation behavior.",
+        "required_observation": "Induce an actual optimization rejection followed by isolation cleanup failure, then assert for qa-v1-theory-35a6a9cbcf6592fb04bb7828 whether later proposal, profile, correctness, measurement, or mutation work starts and whether returned or persisted state is cleanup_uncertain.",
+        "control_requirement": "Include an otherwise identical successful-cleanup control that may continue according to the frozen workflow. Do not assume a new cleanup injection hook or source modification; if cleanup failure cannot be induced through an existing hook, report verification_unavailable and identify the missing cleanup-failure injection prerequisite.",
+        "priority": "high",
+        "status": "pending",
+        "superseded_by": "qa-v2-request-0eecea176f2cdd232b1d46ba",
+        "next_action": "Continue the original investigator session."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-d2b77ae8796965482151be3d",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:33:27.045398772Z",
+            "completed_at": "2026-09-12T11:34:02.424705776Z",
+            "run_id": "qa-v2-run-24817ed013d98879c0dff5ef"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-96ab4d195642f558fdc3b798",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-bd5d5990c9d330ce736e467c"
+        ],
+        "origin_shard_id": "qa-v1-shard-b78583de2ed2f9a939e03e9a",
+        "gap": "The decoder control-flow defect is static and the existing test evidence does not cover malformed trailing bytes.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go parser reproducer in the approved private workspace using one valid matching envelope followed by malformed non-whitespace bytes.",
+        "required_observation": "The assertion must cover qa-v1-theory-bd5d5990c9d330ce736e467c by showing whether ParsePerformanceOutput returns the envelope value without an error for the malformed suffix.",
+        "control_requirement": "Include controls for whitespace-only suffix acceptance and a second valid JSON value rejection, with identical descriptor and target identities.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "19cde03e583d4d4f9255c0682df36d7710a3a0faa29065d1eeedee91d115b0b5",
+        "test_bundle_id": "qa-v2-test-d2b77ae8796965482151be3d",
+        "latest_run_id": "qa-v2-run-24817ed013d98879c0dff5ef",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T13:10:59.876156275Z",
+            "completed_at": "2026-09-12T13:11:40.977184641Z",
+            "failure": {
+              "phase": "assertion",
+              "code": "unknown_failure",
+              "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_76299fb53a2e     qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit --- FAIL: TestQAInvestigator_76299fb53a2e (0.04s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s FAIL",
+              "retryable": false
+            },
+            "run_id": "qa-v2-run-bf3b0196181e9ba74d785f8e"
+          }
+        ],
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "assertion",
+          "code": "unknown_failure",
+          "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_76299fb53a2e     qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit --- FAIL: TestQAInvestigator_76299fb53a2e (0.04s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s FAIL",
+          "retryable": false
+        },
+        "id": "qa-v2-request-a1444642403e76299fb53a2e",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+        ],
+        "origin_shard_id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+        "gap": "The claim has static evidence but no executable observation of actual runner calls, persisted counters, and subsequent cycle admission.",
+        "requested_evidence": "Create a package-local executable Go _test.go reproducer in the approved private workspace using the existing process-runner and runtime seams.",
+        "required_observation": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands exceed the configured limit.",
+        "control_requirement": "Use deterministic outputs and an otherwise identical successful-measurement control whose actual calls equal persisted accounting; do not modify source or assume a new collaborator hook.",
+        "priority": "high",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "2b149097bfe1575699efc7a80a785d55240f8a9c52c6463eebbc78cc9c450f18",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-b2ae680281cd729d3c90109f",
+        "test_bundle_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+        "latest_run_id": "qa-v2-run-bf3b0196181e9ba74d785f8e",
+        "next_action": "Inspect replacement evidence request qa-v2-request-b2ae680281cd729d3c90109f."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T13:16:59.886402152Z",
+            "completed_at": "2026-09-12T13:17:43.526592204Z",
+            "run_id": "qa-v2-run-ec32b8262d8cca3a68e90855"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-b2ae680281cd729d3c90109f",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+        ],
+        "origin_shard_id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+        "gap": "The new reproducer failed before optimization because its passing control used two samples, which QualifyPerformanceSamples rejected, so no command-accounting observation was reached.",
+        "requested_evidence": "Strengthen the package-local executable Go _test.go reproducer in the approved private workspace using the existing process-runner and runtime seams.",
+        "required_observation": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cumulative commands exceed the configured limit.",
+        "control_requirement": "First require the healthy measurement control to pass qualification with actual calls equal to persisted accounting; then use otherwise identical deterministic failing output without modifying source or assuming a new hook.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "369a25e1ba6a34c5af3f9311cb31c8e4b03eff3dca2fa98ee7e951b77c618503",
+        "test_bundle_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+        "latest_run_id": "qa-v2-run-ec32b8262d8cca3a68e90855",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-aec431cf121861ff9963d55b",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:35:50.942750804Z",
+            "completed_at": "2026-09-12T11:36:31.49760633Z",
+            "run_id": "qa-v2-run-b8f62d114725d4eb6d49f46f"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-b3c6e2f02bc6a02b8a23413a",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "Ignored cleanup calls are visible statically, but no executable test demonstrates continued work or incorrect terminal classification after cleanup failure.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace with a controllable isolation cleanup failure on an optimization rejection branch.",
+        "required_observation": "The assertions must cover qa-v1-theory-35a6a9cbcf6592fb04bb7828 by proving whether another proposal or mutation step starts after cleanup failure and whether the resulting state preserves cleanup_uncertain.",
+        "control_requirement": "Use fake runtime and process collaborators, count subsequent calls, and avoid real canonical-worktree mutation.",
+        "priority": "high",
+        "status": "superseded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "63a35302bb17c4d1716c3ebeeb9afd4b7fc346b7dfe68dc415a4abc039372190",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-07d95cd845e0108c780842e4",
+        "test_bundle_id": "qa-v2-test-aec431cf121861ff9963d55b",
+        "latest_run_id": "qa-v2-run-b8f62d114725d4eb6d49f46f",
+        "next_action": "Inspect replacement evidence request qa-v2-request-07d95cd845e0108c780842e4."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:39:30.37962835Z",
+            "completed_at": "2026-09-12T11:40:12.018819228Z",
+            "run_id": "qa-v2-run-6c79c75ec0ce6818215084d9"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-b6170cb8d2c9b7efe9eb62a1",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-1007492d20bbcc01841fb291",
+          "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+        ],
+        "origin_shard_id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+        "gap": "Both repair-authority defects are statically confirmed, but neither has executable negative-case evidence.",
+        "requested_evidence": "Create or strengthen executable Go _test.go reproducers in the approved private workspace for persisted repair validation and reordered frozen baselines.",
+        "required_observation": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishable targets and reordered baseline entries to prove which baseline median each target receives.",
+        "control_requirement": "Use valid digests and authority fields so failures or acceptance cannot be attributed to unrelated schema, digest, cleanup, or environment checks.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "b171076af96ecfc98a9798ed8c2adccdcd3c376a3ee067f5808f68ba21703fe9",
+        "test_bundle_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+        "latest_run_id": "qa-v2-run-6c79c75ec0ce6818215084d9",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-b688feab2392d3e81ee473d4",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "Existing investigator tests inspect source text or simulate an unrelated local loop; neither executes optimizePerformance or observes its cleanup classification.",
+        "requested_evidence": "Create or strengthen a package-local executable Go _test.go reproducer in the approved private workspace using only existing Service hooks, process-runner seams, runtime seams, and isolation behavior.",
+        "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, induce an actual optimization rejection followed by isolation cleanup failure, then assert whether any later proposal, profile, correctness, measurement, or mutation call starts and whether returned or persisted state is cleanup_uncertain.",
+        "control_requirement": "Include an otherwise identical successful-cleanup control that may continue according to the frozen workflow; do not assume a new cleanup injection hook or source change.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-36cb5bfb47aa55a5e699f720",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:41:38.832450109Z",
+            "completed_at": "2026-09-12T11:42:26.332806845Z",
+            "run_id": "qa-v2-run-8f64ba11633e15cad2c2ee5e"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-ba638561ab2878d7bc49d841",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-fa8487cda772b1748115a5c2"
+        ],
+        "origin_shard_id": "qa-v1-shard-9033b31413394dbcfc5e147e",
+        "gap": "The incompatible counting formulas are static; executable flow-state validation evidence is absent.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that builds a summary from one report-only target with a met comparison and validates or publishes the resulting flow state.",
+        "required_observation": "The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.",
+        "control_requirement": "Provide valid state pointers, digests, phase, and next action so only the target-count invariant determines the result.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "92b179d292c74cf02011f370c8b1dcdbd29f1ec40f31a889efa2fc2a2ae8a262",
+        "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+        "latest_run_id": "qa-v2-run-8f64ba11633e15cad2c2ee5e",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "correction_granted_at": "2026-09-12T13:28:09.181900041Z",
+        "correction_attempts": 3,
+        "correction_allowance": 3,
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-c418b7d27881f9b5b43f7e46",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T13:43:58.113142726Z",
+            "completed_at": "2026-09-12T13:44:41.677928914Z",
+            "run_id": "qa-v2-run-a6441247538a6d5215a941b5"
+          }
+        ],
+        "preparation_attempts": 2,
+        "id": "qa-v2-request-bc9cd81c85d4d094a0cec36e",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+        ],
+        "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+        "gap": "The latest semantic-branch test did not compile because it referenced an undefined continue label, so it provides no behavioral observation of target-miss, cancellation, or partial mappings.",
+        "requested_evidence": "Strengthen the executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+        "required_observation": "Using existing command or operation seams, execute target-miss, cancellation, and partial outcomes and assert stable JSON or text output, stdout/stderr behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+        "control_requirement": "Retain the healthy dry-run or status control and operational-failure control. The test must compile and exercise valid public actions or existing deterministic seams; do not substitute source-token searches or invented actions for behavioral assertions. Treat frozen product-test evidence, not the investigator-authored reproducer, as proof of prior coverage absence.",
+        "priority": "medium",
+        "status": "evidence_recorded",
+        "evidence_round": 5,
+        "attempts": 2,
+        "evidence_fingerprint": "68d788a3e38f8c5414adcfa741a6ec003920616f8e81a525cc6c603821e13a54",
+        "superseded_by": "qa-v2-request-60e89ec8bc0db079f41d230d",
+        "test_bundle_id": "qa-v2-test-c418b7d27881f9b5b43f7e46",
+        "latest_run_id": "qa-v2-run-a6441247538a6d5215a941b5",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-d1ba5b60ee106aa1d74ac997",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+        ],
+        "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+        "gap": "Existing investigator tests inspect source text or simulate an unrelated local loop; neither executes optimizePerformance or observes its state classification.",
+        "requested_evidence": "Create a package-local executable Go _test.go reproducer in the approved private workspace using only existing Service hooks, process-runner seams, runtime seams, and isolation behavior.",
+        "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, induce a real optimization rejection followed by an isolation cleanup failure, then assert whether any later proposal, profile, correctness, measurement, or mutation call starts and whether returned or persisted state is cleanup_uncertain.",
+        "control_requirement": "Include an otherwise identical successful-cleanup control that may continue according to the frozen workflow; do not assume a new cleanup injection hook or source change.",
+        "priority": "high",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-b688feab2392d3e81ee473d4",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-d61db1d879f08759356cb157",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "The retained test checked only a healthy dry-run envelope while its failure marker was triggered by the separate stdout-write defect; it did not execute the claimed exit mappings or stdout/stderr contract.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go compatibility reproducer in the approved private workspace for this theory alone.",
+        "required_observation": "Assert stable JSON and text output, empty or appropriate stderr, and semantic exit mappings for success, target_missed, cancelled, partial, and operational failure. Name qa-v1-theory-44d9a1998804c860f04368c4 in the assertions.",
+        "control_requirement": "Use existing deterministic command/service seams and fixtures; include a passing status or dry-run control and do not rely on a matching marker alone.",
+        "priority": "medium",
+        "status": "inconclusive",
+        "reason_code": "tests_per_theory_budget_exhausted",
+        "superseded_by": "qa-v2-request-00798e43bc0507a39e9dd20e",
+        "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:54:22.763669043Z",
+            "completed_at": "2026-09-12T11:55:04.221571974Z",
+            "failure": {
+              "phase": "compile",
+              "code": "compile_failure",
+              "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/tui [github.com/Antonio7098/ultraplan-go/internal/tui.test] ./qa_investigator_1ff716b0ebd2_test.go:35:14: undefined: qaPerformanceEvidenceQueries",
+              "retryable": false
+            },
+            "run_id": "qa-v2-run-ef6c62a9de9233e51d9d688b"
+          }
+        ],
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "compile",
+          "code": "compile_failure",
+          "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/tui [github.com/Antonio7098/ultraplan-go/internal/tui.test] ./qa_investigator_1ff716b0ebd2_test.go:35:14: undefined: qaPerformanceEvidenceQueries",
+          "retryable": false
+        },
+        "id": "qa-v2-request-d6798f8083a31ff716b0ebd2",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+        ],
+        "origin_shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+        "gap": "The returned HTTP test fails in its explicit-limit control before issuing the omitted-limit request, so it does not observe the claimed default path.",
+        "requested_evidence": "Strengthen the executable Go _test.go reproducer in the approved private workspace so the omitted-limit request is issued first and the control uses query parameters accepted by the actual route contract.",
+        "required_observation": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted-limit request's actual HTTP status and body and record the exact Limit received by PerformanceEvidence; then compare with a reachable bounded-success control.",
+        "control_requirement": "Do not terminate on an unrelated query-allowlist failure, and prove the omitted request reaches PerformanceEvidence and EvidencePage before attributing its response to limit validation.",
+        "priority": "high",
+        "status": "superseded",
+        "evidence_round": 2,
+        "attempts": 1,
+        "evidence_fingerprint": "ad28ffe09d53e0e30693dee5b798e0db1ec2dd2b19be73d0191689c4d632012a",
+        "reason_code": "replaced_by_answered_evidence_request",
+        "superseded_by": "qa-v2-request-1cefed6a599adae46ba55ba6",
+        "test_bundle_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+        "latest_run_id": "qa-v2-run-ef6c62a9de9233e51d9d688b",
+        "next_action": "Inspect replacement evidence request qa-v2-request-1cefed6a599adae46ba55ba6."
+      },
+      {
+        "accounting_version": 2,
+        "id": "qa-v2-request-e09890ed99f95258216f09e9",
+        "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "Existing investigator evidence verifies healthy JSON output and the separate stdout-write defect but does not execute semantic success, target-miss, cancellation, and partial exit mappings for this theory.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "required_observation": "Using existing command or operation seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text fields, stdout/stderr behavior, and the corresponding exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "control_requirement": "Include a passing status or dry-run control and ensure failures arise from missing compatibility behavior rather than the separate writer-error defect. Treat frozen product-test evidence, not the investigator-authored reproducer, as proof of prior coverage absence.",
+        "priority": "medium",
+        "status": "pending",
+        "superseded_by": "qa-v2-request-5d31c259c544d48db6847a74",
+        "next_action": "Continue the original investigator session."
+      },
+      {
+        "accounting_version": 2,
+        "execution_attempts": [
+          {
+            "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+            "number": 1,
+            "phase": "execution",
+            "started_at": "2026-09-12T11:43:41.323698925Z",
+            "completed_at": "2026-09-12T11:44:27.150692515Z",
+            "run_id": "qa-v2-run-ee90b3bb78731186156c3c86"
+          }
+        ],
+        "preparation_attempts": 1,
+        "id": "qa-v2-request-ef633898930720f83a1a7704",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+        ],
+        "origin_shard_id": "qa-v1-shard-9a5eaeb04fc32c5820f521f3",
+        "gap": "Source proves case normalization, but existing executable parser tests omit uppercase and mixed-case policy values.",
+        "requested_evidence": "Create or strengthen an executable Go _test.go parser reproducer in the approved private workspace for ENABLED, Enabled, DISABLED, and Disabled mode values.",
+        "required_observation": "The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.",
+        "control_requirement": "Exercise ParseProjectIndex directly with otherwise valid minimal project-index content and assert findings, not merely the resulting mode marker.",
+        "priority": "high",
+        "status": "evidence_recorded",
+        "evidence_round": 1,
+        "attempts": 1,
+        "evidence_fingerprint": "b09e9cf3fb732c3133ce7580fbfa55c0f604a23eeb95117724233a80c7d225ac",
+        "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+        "latest_run_id": "qa-v2-run-ee90b3bb78731186156c3c86",
+        "next_action": "Inspect the retained reproduction run and arbitration outcome."
+      },
+      {
+        "accounting_version": 2,
+        "preparation_attempts": 1,
+        "failure": {
+          "phase": "authoring",
+          "code": "unknown_failure",
+          "diagnostic": "qa continue investigator for evidence: verification_unavailable: The CLI accepts a concrete sprint.Service and creates durable/runtime dependencies internally, so an approved app-package test cannot deterministically inject success, target_missed, cancelled, and partial RunPerformance outcomes without invoking the real performance workflow or modifying product source. The requested outcome branches therefore cannot all be reached with deterministic service and durable-operation fakes from the approved test path.. Required prerequisite: Provide an existing injectable performance command seam or approve a product-owned test adapter that controls PreparePerformance, RunPerformance, status projection, and durable-operation completion outcomes while retaining the real CLI envelope and exit translation.",
+          "retryable": false
+        },
+        "id": "qa-v2-request-f4eae8293aefb5a0ed7dad6d",
+        "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+        "theory_ids": [
+          "qa-v1-theory-44d9a1998804c860f04368c4"
+        ],
+        "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+        "gap": "The returned test only checks a dry-run JSON happy path and does not execute the required stdout/stderr or terminal outcome exit-code assertions.",
+        "requested_evidence": "Strengthen the executable Go _test.go compatibility reproducer in the approved private workspace for representative success, target_missed, cancelled, and partial performance outcomes.",
+        "required_observation": "For qa-v1-theory-44d9a1998804c860f04368c4, assert complete stable JSON envelope structure, absence of output on stderr where appropriate, and the exact semantic exit classification for each representative outcome.",
+        "control_requirement": "Use deterministic service and durable-operation fakes, inspect parsed JSON rather than substring markers, and ensure each outcome case reaches its intended branch.",
+        "priority": "medium",
+        "status": "inconclusive",
+        "evidence_round": 3,
+        "attempts": 1,
+        "evidence_fingerprint": "3ac66f9ec42efffcff4c552f46ae51dbe9e0133975b9b833378d4b1ad317084f",
+        "reason_code": "verification_unavailable",
+        "superseded_by": "qa-v2-request-71ae9de6dbec8d93317a7331",
+        "next_action": "Evidence remains unresolved: verification_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. qa continue investigator for evidence: verification_unavailable: The CLI accepts a concrete sprint.Service and creates durable/runtime dependencies internally, so an approved app-package test cannot deterministically inject success, target_missed, cancelled, and partial RunPerformance outcomes without invoking the real performance workflow or modifying product source. The requested outcome branches therefore cannot all be reached with deterministic service and durable-operation fakes from the approved test path.. Required prerequisite: Provide an existing injectable performance command seam or approve a product-owned test adapter that controls PreparePerformance, RunPerformance, status projection, and durable-operation completion outcomes while retaining the real CLI envelope and exit translation."
+      }
+    ],
+    "reconciliation": {
+      "model": "openai/gpt-5.6-sol",
+      "fallback": false
+    },
+    "fallback": false
+  },
+  "interactions": [
+    "qa-v1-theory-0012e548ef4b0f725b73b3df \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-35a6a9cbcf6592fb04bb7828",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-36aaddc649316456a0999299",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-3ba88b4e640cc758bd4724ff",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-44d9a1998804c860f04368c4",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-53f10905cf5035b40ecbb1e8",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-1007492d20bbcc01841fb291 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-36aaddc649316456a0999299",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-3ba88b4e640cc758bd4724ff",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-44d9a1998804c860f04368c4",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-53f10905cf5035b40ecbb1e8",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-3ba88b4e640cc758bd4724ff",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-44d9a1998804c860f04368c4",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-36aaddc649316456a0999299 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-53f10905cf5035b40ecbb1e8",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-4686bbc8ed7ce40fed77caa0",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-53f10905cf5035b40ecbb1e8",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-44d9a1998804c860f04368c4 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-53f10905cf5035b40ecbb1e8",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-4686bbc8ed7ce40fed77caa0 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-7ef7c4876857c8e4b85d4c0c",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c \u003c-\u003e qa-v1-theory-9a2d3dba12c4d353a09f5c53",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53 \u003c-\u003e qa-v1-theory-bd5d5990c9d330ce736e467c",
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53 \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53 \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-bd5d5990c9d330ce736e467c \u003c-\u003e qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+    "qa-v1-theory-bd5d5990c9d330ce736e467c \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-bd5d5990c9d330ce736e467c \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-bd5d5990c9d330ce736e467c \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-ea7c7adacc9ea256c6314ce8 \u003c-\u003e qa-v1-theory-f1929f318a162a99b30f7803",
+    "qa-v1-theory-ea7c7adacc9ea256c6314ce8 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-ea7c7adacc9ea256c6314ce8 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-f1929f318a162a99b30f7803 \u003c-\u003e qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+    "qa-v1-theory-f1929f318a162a99b30f7803 \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2",
+    "qa-v1-theory-f2dfc2c802889fddc3bbae5c \u003c-\u003e qa-v1-theory-fa8487cda772b1748115a5c2"
+  ],
+  "outcome_counts": {
+    "confirmed": 11,
+    "refuted": 4
+  },
+  "next_action": "Inspect the retained theory outcomes."
+}

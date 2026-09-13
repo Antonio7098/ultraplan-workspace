@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-408040e1837c91fedfe288e1",
+  "plan_id": "qa-v2-plan-47a0a3c456730aaea994ced0",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-9a5eaeb04fc32c5820f521f3",
+  "workspace_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+  "workspace_identity": "083202a47949f78c3d4a7c3efd069a112e6f6d73b46b34e7520afa40b204bea8",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_20f83a1a7704",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_20f83a1a7704",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704",
+      "executable": "go",
+      "args_digest": "92be879965726b4022211246444d642970af7aedc6d7b630e2b24f51041a7975",
+      "exit_code": 1,
+      "duration": 22340760285,
+      "stdout_digest": "df8a11f4d4c0cb6061e7f9c9a7a8196e6520e6d06a3fdc9e525660f73f6ce01e",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_20f83a1a7704\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"ENABLED\": mode=\"enabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Enabled\": mode=\"enabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"DISABLED\": mode=\"disabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Disabled\": mode=\"disabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:30: assertion: case-variant Mode values must produce validation findings while lowercase enabled and disabled controls remain valid\n    qa_investigator_20f83a1a7704_test.go:31: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704\n--- FAIL: TestQAInvestigator_20f83a1a7704 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.004s\nFAIL\n",
+      "output_bytes": 956,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/project/qa_investigator_20f83a1a7704_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:44:26.659561302Z"
+}

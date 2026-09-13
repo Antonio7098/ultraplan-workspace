@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-e1e2152c68deb3ad78d749ac",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "evidence_request_id": "qa-v2-request-bc9cd81c85d4d094a0cec36e",
+  "theory_ids": [
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+  ],
+  "claim": "The new public performance CLI surface lacks compatibility tests for stable JSON envelopes, text output, stdout/stderr behavior, and semantic exit-code mappings.",
+  "preconditions": [
+    "Retain the healthy dry-run or status control and operational-failure control. The test must compile and exercise valid public actions or existing deterministic seams; do not substitute source-token searches or invented actions for behavioral assertions. Treat frozen product-test evidence, not the investigator-authored reproducer, as proof of prior coverage absence."
+  ],
+  "expected_behavior": "Using existing command or operation seams, execute target-miss, cancellation, and partial outcomes and assert stable JSON or text output, stdout/stderr behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_d094a0cec36e",
+    "assertion": "Using existing command or operation seams, execute target-miss, cancellation, and partial outcomes and assert stable JSON or text output, stdout/stderr behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d094a0cec36e"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_d094a0cec36e_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-d094a0cec36e",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_d094a0cec36e$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "936c93f2fc3b93ef697fd0bceaa1eb3923ea4d4e29ad1306b6edcddfa605e7cb"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T13:42:17.96080532Z"
+}

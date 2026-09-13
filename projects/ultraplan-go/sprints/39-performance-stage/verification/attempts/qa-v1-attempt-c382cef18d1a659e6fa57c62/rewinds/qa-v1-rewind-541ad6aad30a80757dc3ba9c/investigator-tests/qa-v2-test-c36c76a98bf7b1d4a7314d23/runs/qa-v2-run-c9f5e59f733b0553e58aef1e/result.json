@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-c9f5e59f733b0553e58aef1e",
+  "spec_id": "qa-v2-spec-c6abe79f9600d52d0df83f4d",
+  "test_bundle_id": "qa-v2-test-c36c76a98bf7b1d4a7314d23",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "3204164be7fcd01fb075d115bbdf15f05a5cd6b8edd9f24371dbddd47779608f",
+    "exit_code": 1,
+    "duration": 6795736605,
+    "stdout_digest": "63e0d212842e2a8e9c084c6edca4af761dbed09c06a7b9c3e35ad8d944871f30",
+    "stderr_digest": "379b47fbba5541840629f09022d81c8fac6a56b5bd7c004f122c652c306a010e",
+    "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [setup failed]\nFAIL\n",
+    "stderr": "go: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\n-\u003e unzip /tmp/ultraplan-qa-authored-test-3529938204/qa-v2-test-c36c76a98bf7b1d4a7314d23-381327749/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/libc/@v/v1.74.4.zip: write /tmp/ultraplan-qa-authored-test-3529938204/qa-v2-test-c36c76a98bf7b1d4a7314d23-381327749/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/libc@v1.74.4/netdb/netdb_linux_amd64.go: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/app\n../../.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/conn.go:17:2: unzip /tmp/ultraplan-qa-authored-test-3529938204/qa-v2-test-c36c76a98bf7b1d4a7314d23-381327749/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/libc/@v/v1.74.4.zip: write /tmp/ultraplan-qa-authored-test-3529938204/qa-v2-test-c36c76a98bf7b1d4a7314d23-381327749/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/libc@v1.74.4/netdb/netdb_linux_amd64.go: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/app\n../../.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/conn.go:18:2: unzip /tmp/ultraplan-qa-authored-test-3529938204/qa-v2-test-c36c76a98bf7b1d4a7314d23-381327749/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/libc/@v/v1.74.4.zip: write /tmp/ultraplan-qa-authored-test-3529938204/qa-v2-test-c36c76a98bf7b1d4a7314d23-381327749/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/libc@v1.74.4/netdb/netdb_linux_amd64.go: no space left on device\n",
+    "output_bytes": 1828,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_5bfbf0e7c399",
+    "assertion": "Show whether the runner still executes an operation or whether composition rejects the same configuration before runner invocation.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_5bfbf0e7c399"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-06T15:52:45.280337327Z"
+}

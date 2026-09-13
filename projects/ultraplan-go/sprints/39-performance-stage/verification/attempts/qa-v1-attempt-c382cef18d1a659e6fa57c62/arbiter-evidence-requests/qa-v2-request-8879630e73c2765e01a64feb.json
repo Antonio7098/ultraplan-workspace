@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-8879630e73c2765e01a64feb",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-e520dfe5bb32e35f0d545398"
+    ],
+    "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+    "gap": "No executable CLI exit-class evidence was supplied.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+    "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+    "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 2,
+    "attempts": 1,
+    "evidence_fingerprint": "e86c1a73773a9e9ed8e27b1247fe0987da1b1cf46b68d9664ab77e6963418203",
+    "reason_code": "unrelated_compile_or_panic_failure",
+    "superseded_by": "qa-v2-request-922f451b9bb54eee4affff91",
+    "test_bundle_id": "qa-v2-test-3eb9bf244922555688a36248",
+    "latest_run_id": "qa-v2-run-76690bc4f2e0e194458f6b38",
+    "next_action": "Evidence remains unresolved: unrelated_compile_or_panic_failure. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-plan-aab4921958157555298a0a34",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+  "theory_ids": [],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-errors",
+    "handbook"
+  ],
+  "kind": "fact",
+  "confirmation_condition": "approved check exits successfully and satisfies its output policy",
+  "refutation_condition": "approved check exits unsuccessfully or violates its output policy",
+  "inconclusive_condition": "approved check is unavailable or incomplete",
+  "approved_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/performance_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/service.go"
+  ],
+  "check_id": "go-source-integrity",
+  "args": [
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/performance_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/service.go"
+  ],
+  "timeout": 300000000000,
+  "output_limit": 262144,
+  "analyzer_calls": 0,
+  "cleanup_required": true,
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "frozen_at": "2026-09-06T15:40:33.52095358Z"
+}

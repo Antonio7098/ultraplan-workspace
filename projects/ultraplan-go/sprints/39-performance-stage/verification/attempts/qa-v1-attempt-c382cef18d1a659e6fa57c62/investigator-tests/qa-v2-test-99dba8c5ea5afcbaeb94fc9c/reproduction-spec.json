@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-3a53004598f18b6c3e860c28",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+  "evidence_request_id": "qa-v2-request-349c950bcf2476f9ef0d2260",
+  "theory_ids": [
+    "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+  ],
+  "claim": "A fenced or commented pseudo `## Performance Targets` heading is ignored by target parsing but still treated as a declaration during policy validation, causing a false `performance policy mismatch` when performance policy is disabled.",
+  "preconditions": [
+    "Include ordinary prose without the heading and a real target section as negative and positive declaration controls."
+  ],
+  "expected_behavior": "Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_76f9ef0d2260",
+    "assertion": "Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76f9ef0d2260"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/project/qa_investigator_76f9ef0d2260_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-76f9ef0d2260",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_76f9ef0d2260$",
+      "-count=1"
+    ],
+    "working_directory": "internal/project",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "1e9d7599d56f69ac7c09f52c2ad68179de43a92dbb7f4434d5d6552661437777"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T11:39:31.484365455Z"
+}

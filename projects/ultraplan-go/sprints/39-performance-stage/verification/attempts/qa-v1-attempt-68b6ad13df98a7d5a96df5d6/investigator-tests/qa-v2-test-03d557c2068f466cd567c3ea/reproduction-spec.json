@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-e1d32b7b4136830a22081535",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+  "evidence_request_id": "qa-v2-request-07d95cd845e0108c780842e4",
+  "theory_ids": [
+    "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+  ],
+  "claim": "Optimization paths discard isolation cleanup failures and may continue into another mutation cycle instead of publishing cleanup_uncertain and stopping new work.",
+  "preconditions": [
+    "Use deterministic fake runtime and process collaborators with call counters; do not satisfy the request by reading source text or matching an ignored-cleanup string."
+  ],
+  "expected_behavior": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_108c780842e4",
+    "assertion": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_108c780842e4_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-108c780842e4",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_108c780842e4$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "be9725a826eedd4751aa4ac6cb5609a33b007a42e43567a7f60756af7644c5ee"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:46:13.018354387Z"
+}

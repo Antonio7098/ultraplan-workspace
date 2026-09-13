@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+  "spec_id": "qa-v2-spec-15ff752f09f91485aa49f8e4",
+  "files": [
+    {
+      "path": "internal/project/qa_investigator_185c6f8e76f6_test.go",
+      "content": "package project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_185c6f8e76f6(t *testing.T) {\n\tconst requiredSections = `## Sprint Goal\nx\n## Required Outputs\nx\n## Acceptance Criteria\nx\n## Non-Goals\nx\n## Constraints\nx\n## Dependencies\nx\n## Review Expectations\nx\n`\n\tconst table = `## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-QA | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\n`\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\tpseudoSections := map[string]string{\n\t\t\"fenced\":   \"```md\\n\" + table + \"```\\n\",\n\t\t\"commented\": \"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tpacket, parserFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parserFindings) != 0 {\n\t\t\tt.Fatalf(\"control %s: parser did not ignore pseudo-heading: targets=%d findings=%v\", name, len(packet.Targets), parserFindings)\n\t\t}\n\t}\n\n\trealPacket, realParserFindings := sprint.ParsePerformanceTargets(table)\n\tif len(realPacket.Targets) != 1 || len(realParserFindings) != 0 {\n\t\tt.Fatalf(\"control real heading: targets=%d findings=%v\", len(realPacket.Targets), realParserFindings)\n\t}\n\tif !hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+table, disabled)) {\n\t\tt.Fatal(\"control real heading: disabled policy did not detect declared targets\")\n\t}\n\n\tfor name, pseudo := range pseudoSections {\n\t\tif hasPerformancePolicyMismatch(sprint.ValidateRequirementsContentWithPolicy(requiredSections+pseudo, disabled)) {\n\t\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=%s\", name)\n\t\t}\n\t}\n}\n\nfunc hasPerformancePolicyMismatch(findings []sprint.ValidationFinding) bool {\n\tfor _, finding := range findings {\n\t\tif finding.Problem == \"performance policy mismatch\" {\n\t\t\treturn true\n\t\t}\n\t}\n\treturn false\n}\n",
+      "digest": "c227c3ca99c11dcc249a2fca0ca746911b7c2d8a5b38c014537ce186f8b7ce29",
+      "bytes": 2159
+    }
+  ],
+  "content_digest": "6d693782d17e666d51b5d3b8c53201c999bb6b8490e39c276140529bc98a8ddd"
+}

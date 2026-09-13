@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-d2b77ae8796965482151be3d",
+  "spec_id": "qa-v2-spec-a373c4886b2db377dbf4cd82",
+  "files": [
+    {
+      "path": "internal/sprint/qa_investigator_f558fdc3b798_test.go",
+      "content": "package sprint\n\nimport \"testing\"\n\nfunc TestQAInvestigator_f558fdc3b798(t *testing.T) {\n\ttarget := PerformanceTarget{ID: \"PERF-QA\", Scenario: \"qa scenario\", Metric: \"latency\", Unit: PerformanceMS}\n\tdescriptor := performanceDescriptor(PerformanceJSONRunner, \".\", \"TestQA\", PerformanceMS, target.ID)\n\tline := performanceOutputLine(performanceJSONEnvelope{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tTargetID:      target.ID,\n\t\tScenario:      target.Scenario,\n\t\tMetric:        target.Metric,\n\t\tUnit:          target.Unit,\n\t\tValue:         \"4.2\",\n\t})\n\n\tif value, err := ParsePerformanceOutput(descriptor, target, line+\"   \\t\", false); err != nil || value != \"4.2\" {\n\t\tt.Fatalf(\"whitespace-only suffix control failed: value=%q err=%v\", value, err)\n\t}\n\tif _, err := ParsePerformanceOutput(descriptor, target, line+\" {}\", false); err == nil {\n\t\tt.Fatal(\"second valid JSON value control failed: parser accepted trailing value\")\n\t}\n\tif value, err := ParsePerformanceOutput(descriptor, target, line+\" {\", false); err == nil {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798: parser accepted malformed trailing bytes with value=%q\", value)\n\t}\n}\n",
+      "digest": "e042ab69326f42f8ae568e6be222113544995e9ff2681259281d7ab2d75403dc",
+      "bytes": 1162
+    }
+  ],
+  "content_digest": "40ac4b87e5d745ca45a31b8cccd34c4d12bb89de1b7a875bed248b316241511c"
+}

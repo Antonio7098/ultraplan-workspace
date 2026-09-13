@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-4856e20e4f9d247505434b0b",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "evidence_request_id": "qa-v2-request-13cc278803c32eaa2dbf06b2",
+  "theory_ids": [
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+  ],
+  "claim": "The new public performance CLI surface lacks compatibility tests for stable JSON envelopes, text output, stdout/stderr behavior, and semantic exit-code mappings.",
+  "preconditions": [
+    "Include healthy success controls and at least one non-performance command compatibility control using only existing command seams and deterministic fixtures."
+  ],
+  "expected_behavior": "Assert the exact theories covered by exercising representative performance commands and checking stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. The test supports promotion readiness and must not be presented as proof that coverage was previously absent.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_2eaa2dbf06b2",
+    "assertion": "Assert the exact theories covered by exercising representative performance commands and checking stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. The",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2eaa2dbf06b2"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_2eaa2dbf06b2_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-2eaa2dbf06b2",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_2eaa2dbf06b2$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "9e560fff9ed5dd2d1cf3e36599a9dfafce01ebcb83b49a91fb5453d99ab5d8a2"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T13:05:48.476701063Z"
+}

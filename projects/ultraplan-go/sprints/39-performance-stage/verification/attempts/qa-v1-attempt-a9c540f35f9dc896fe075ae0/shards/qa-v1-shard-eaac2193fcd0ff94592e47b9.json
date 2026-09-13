@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-eaac2193fcd0ff94592e47b9",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Performance documentation and authoring guidance",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/configuration.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "behavioral_concerns": [
+    "Examples and scaffold guidance must not invent thresholds or imply caller-controlled commands, parsers, samples, environment values, or verdicts.",
+    "Public documentation consistently describes the optional performance phase, requirements-owned targets, lower-only limits, lifecycle actions, recovery, schemas, and interface behavior."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0341fea992e92e328c21862c",
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-1bec30a6414976c9c25b5d55",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-357d02b85024955b15a6cb1c",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-511427422aa3768ace792f15",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-85f968d2a586b6a41a86723a",
+    "qa-v1-block-88233abe9fdd214bea48c441",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-9a637580a721b349e21044c1",
+    "qa-v1-block-a11b800e9abfe97c390d8c4b",
+    "qa-v1-block-c0f93dd89e2dfe1872e14355",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-ea232c5c3031d0b90ef37f5a",
+    "qa-v1-block-f3519512e9ac52dff09fe19e",
+    "qa-v1-block-faf2b7185f87b7b37f988de6"
+  ],
+  "prepared_prompt_bytes": 121704,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "mapped"
+}

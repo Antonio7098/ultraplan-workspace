@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-b33d8901229d9700f4d235bf",
+  "plan_id": "qa-v2-plan-ec0d0bd4408b9fb205145806",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+  "workspace_id": "qa-v2-test-7db263cfd659a2861486f879",
+  "workspace_identity": "75942674d56a06eef96b8f1ba18d50a925fc98f6e7dd658f0497477c2e17f2e1",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_340a1300e236",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_340a1300e236",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236",
+      "executable": "go",
+      "args_digest": "c46aa00edb75205a1a88d0bcc63c067c4cfe46065466ac1aa5966ab0aa356409",
+      "exit_code": 1,
+      "duration": 27929179145,
+      "stdout_digest": "ed9719fb18cf6a5a8eee8b7d8000dc15df0be40978e06a43eb537882e709c4ce",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_340a1300e236\n    qa_investigator_340a1300e236_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_340a1300e236 assertion=Assert that the aggregate result omits lifecycle or cancellation fields and that the unavailable-result error is not recognized as a PerformanceUseCaseError and receives generic web handling.\n--- FAIL: TestQAInvestigator_340a1300e236 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.009s\nFAIL\n",
+      "output_bytes": 473,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_340a1300e236_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:14:21.465263018Z"
+}

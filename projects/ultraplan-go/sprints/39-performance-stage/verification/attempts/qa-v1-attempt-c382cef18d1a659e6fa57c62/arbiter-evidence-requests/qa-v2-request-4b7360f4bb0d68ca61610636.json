@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-4b7360f4bb0d68ca61610636",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+    ],
+    "origin_shard_id": "qa-v1-shard-df7a2faaa81b6265c0367c83",
+    "gap": "Nested persisted-data acceptance is statically shown but not exercised.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer passing ValidateRepairReverification a valid top-level performance record with malformed target identity and invalid comparison outcome entries.",
+    "required_observation": "Assert the validator returns nil for each malformed nested TargetResults case.",
+    "control_requirement": "Include a valid target-result control and a malformed top-level control that is rejected.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "1f97b018b8fbf121d67ea58a9a77bfaac63d673e6cedec49f44878663a8c2bee",
+    "test_bundle_id": "qa-v2-test-71ced6668c4feb28f5bc5aba",
+    "latest_run_id": "qa-v2-run-8b9c787f2907c10ea9b3656a",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

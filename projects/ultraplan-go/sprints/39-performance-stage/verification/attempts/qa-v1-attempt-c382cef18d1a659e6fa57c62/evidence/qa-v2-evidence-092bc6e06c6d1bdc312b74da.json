@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-092bc6e06c6d1bdc312b74da",
+  "plan_id": "qa-v2-plan-8068e0e7f64420bfef6f9a52",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+  "workspace_id": "qa-v2-test-83007529d2fd5144a4f8d32d",
+  "workspace_identity": "b552c9f630fceba822744c13d236903e3858fb869f27b7bf05f66102f34c52f7",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "0f36046b5932e52c6c701e3b6e792263ba571e400c7efff23a326883a21e0060",
+      "exit_code": 1,
+      "duration": 33722463879,
+      "stdout_digest": "bd23cf43a9730c742b0012b875aafd65ef8398b05e181c448b2923bf25568e43",
+      "stderr_digest": "bbb2b7dd587f2d3247a58352d8f911ec8d9ca0522297ec5d51636102b380fa94",
+      "stdout": "=== RUN   TestQAInvestigator_4c191617c383\n    qa_investigator_4c191617c383_test.go:71: html/template:sprint.html:40:203: no such template \"component/findings\"\n--- FAIL: TestQAInvestigator_4c191617c383 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.019s\nFAIL\n",
+      "stderr": "go: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+      "output_bytes": 848,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_4c191617c383_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T13:00:50.47911977Z"
+}

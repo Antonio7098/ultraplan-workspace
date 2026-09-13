@@ -1,0 +1,337 @@
+--- a/internal/sprint/performance_optimize_runtime.go
++++ b/internal/sprint/performance_optimize_runtime.go
+@@ -86,172 +86,168 @@
+ 		}
+ 		profileKind, err := PerformanceProfileForUnit(descriptors[selected.ID].RawUnit)
+ 		if err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		profileOutput := filepath.Join(isolation.parent, fmt.Sprintf("profile-%06d.pprof", cycle))
+-		profileRequest, err := PerformanceProfileRequest(isolation.workspace.Path, profileOutput, descriptors[selected.ID], profileKind, state.Limits, env)
+-		if err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		state.Counters.Commands++
+-		profileResult, profileErr := isolation.runner(baseRunner).Run(ctx, profileRequest)
+-		if profileErr != nil || !profileResult.CleanupComplete || profileResult.StdoutTruncated || profileResult.StderrTruncated {
+-			cleanupErr := isolation.cleanup()
+-			return out, errors.Join(fmt.Errorf("performance profile command failed: %w", profileErr), cleanupErr)
+-		}
+-		profileBytes := []byte(profileResult.Stdout)
+-		if info, statErr := os.Lstat(profileOutput); statErr == nil {
+-			if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 || info.Size() > int64(state.Limits.ProfileBytes) {
+-				_ = isolation.cleanup()
+-				return out, fmt.Errorf("performance profile output is unsafe or exceeds its retained-byte limit")
+-			}
+-			if retained, readErr := os.ReadFile(profileOutput); readErr == nil {
+-				profileBytes = retained
+-			} else {
+-				_ = isolation.cleanup()
+-				return out, readErr
+-			}
+-		} else if !errors.Is(statErr, fs.ErrNotExist) {
+-			_ = isolation.cleanup()
+-			return out, statErr
+-		}
+-		if removeErr := os.Remove(profileOutput); removeErr != nil && !errors.Is(removeErr, fs.ErrNotExist) {
+-			_ = isolation.cleanup()
+-			return out, removeErr
+-		}
+-		if len(profileBytes) == 0 {
+-			profileBytes = []byte("profile command completed without retained output\n")
+-		}
+-		if len(profileBytes) > state.Limits.ProfileBytes {
+-			_ = isolation.cleanup()
+-			return out, fmt.Errorf("performance profile exceeds retained-byte limit")
+-		}
+-		profileDataPath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "profile.pprof")
+-		profileDataRef, err := store.PublishBytes(profileDataPath, "cycle-profile-data", profileBytes, true, token)
+-		if err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		profile := PerformanceProfile{SchemaVersion: PerformanceSchemaVersion, Cycle: cycle, TargetID: selected.ID, Kind: profileKind, Implementation: identity, Digest: profileDataRef.Digest, Bytes: len(profileBytes), Artifact: profileDataRef}
+-		profilePath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "profile.json")
+-		if _, err := store.PublishJSON(profilePath, "cycle-profile", profile, true, token); err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		state.Counters.RuntimeAttempts++
+-		if _, err := store.PublishState(*state, token); err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		prompt := performanceOptimizationPrompt(selected, profile)
+-		request := s.runtimeRequest(prompt, map[string]string{"project": prepared.Project, "sprint": prepared.Sprint, "stage": string(VerificationPhasePerformance), "operation": "performance-optimization", "cycle": fmt.Sprint(cycle), "target": selected.ID})
+-		if override, ok := s.verificationRuntime[VerificationPhasePerformance]; ok {
+-			request.Provider, request.Model = splitProviderModel(override.Model)
+-			request.Metadata["variant"] = override.Variant
+-		}
+-		request.WorkDir, request.Timeout, request.Sandbox, request.Permissions = isolation.workspace.Path, state.Limits.WallTime, "workspace_write", "restricted"
+-		request.Policy.Default = "deny"
+-		request.Policy.Tools = map[string]string{"read": "allow", "list": "allow", "search": "allow", "glob": "allow", "write": "allow", "edit": "allow", "patch": "allow", "bash": "deny", "shell": "deny"}
+-		runtimeResult, runErr := s.runtime.StartRun(ctx, request)
+-		if cleanupErr := s.deleteCompletedSessions(context.WithoutCancel(ctx), runtimeResult); cleanupErr != nil {
+-			runErr = errors.Join(runErr, cleanupErr)
+-		}
+-		if runErr != nil {
+-			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, fmt.Errorf("runtime proposal failed: %w", runErr))
+-			_ = isolation.cleanup()
+-			if ctx.Err() != nil {
+-				return out, ctx.Err()
+-			}
+-			if state.Counters.RuntimeAttempts >= state.Limits.OptimizationCycles*state.Limits.OptimizationAttempts {
+-				out.Stalled = true
+-				return out, nil
+-			}
+-			continue
+-		}
+-		changed, diffErr := pprocess.CompareTrees(context.WithoutCancel(ctx), prepared.Target.Path, isolation.workspace.Path, pprocess.IsolationLimits{MaxFiles: performanceIsolationFiles, MaxBytes: performanceIsolationBytes, MaxFileSize: performanceIsolationFileSize, Timeout: state.Limits.CommandTimeout})
+-		replacements, preimages, changedBytes, deriveErr := derivePerformanceProductionProposal(prepared.Target.Path, isolation.workspace.Path, changed, state.Limits)
+-		if diffErr != nil || deriveErr != nil {
+-			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, errors.Join(diffErr, deriveErr))
+-			_ = isolation.cleanup()
+-			continue
+-		}
+-		patch := []byte(renderPerformancePatch(prepared.Target.Path, isolation.workspace.Path, changed))
+-		if len(patch) == 0 || len(patch) > state.Limits.ProposalBytes {
+-			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, fmt.Errorf("proposal patch exceeds retained-byte limit"))
+-			_ = isolation.cleanup()
+-			continue
+-		}
+-		proposalPath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "proposal.patch")
+-		if _, err := store.PublishBytes(proposalPath, "cycle-proposal", patch, true, token); err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		hypothesis := PerformanceHypothesis{SchemaVersion: PerformanceSchemaVersion, Cycle: cycle, TargetID: selected.ID, Summary: boundRepairText(runtimeResult.TerminalOutput, 512), ProfileDigest: profile.Digest}
+-		if hypothesis.Summary == "" {
+-			hypothesis.Summary = "Runtime proposed one target-linked production change."
+-		}
+-		hypothesisPath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "hypothesis.json")
+-		if _, err := store.PublishJSON(hypothesisPath, "cycle-hypothesis", hypothesis, true, token); err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		scope := PerformanceProposalScope{SchemaVersion: PerformanceSchemaVersion, Cycle: cycle, TargetID: selected.ID, Before: identity, Paths: changed, ChangedBytes: changedBytes, Allowed: true}
+-		candidateIdentity, identityErr := targetIdentity(isolation.workspace.Path)
+-		if identityErr != nil {
+-			_ = isolation.cleanup()
+-			return out, identityErr
+-		}
+-		scope.Candidate = candidateIdentity
+-		scopePath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "scope.json")
+-		if _, err := store.PublishJSON(scopePath, "cycle-scope", scope, true, token); err != nil {
+-			_ = isolation.cleanup()
+-			return out, err
+-		}
+-		if err := runPerformanceCorrectness(ctx, isolation.runner(baseRunner), isolation.workspace.Path, prepared.CorrectnessCommands, state.Limits, env, &state.Counters); err != nil {
+-			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, fmt.Errorf("candidate correctness failed: %w", err))
+-			_ = isolation.cleanup()
+-			continue
+-		}
+-		candidateRunner := &performanceMeasurementAccountingRunner{delegate: isolation.runner(baseRunner), counters: &state.Counters, limits: state.Limits}
+-		candidate, err := MeasurePerformanceTarget(ctx, candidateRunner, isolation.workspace.Path, descriptors[selected.ID], selected, state.Limits, env, prepared.Packet.PacketDigest, manifest.BenchmarkDigest, currentPerformanceEnvironment(env).Identity)
+-		if _, publishErr := store.PublishState(*state, token); publishErr != nil {
+-			_ = isolation.cleanup()
+-			return out, publishErr
+-		}
+-		if err != nil {
+-			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, err)
+-			_ = isolation.cleanup()
+-			continue
+-		}
+-		alreadyMet := performanceAlreadyMet(prepared.Packet.Targets, comparisons, current)
+-		remeasurements := make(map[string]PerformanceMeasurement, len(alreadyMet))
+-		for i := range alreadyMet {
+-			target := alreadyMet[i].Target
+-			remeasurementRunner := &performanceMeasurementAccountingRunner{delegate: isolation.runner(baseRunner), counters: &state.Counters, limits: state.Limits}
+-			remeasured, measureErr := MeasurePerformanceTarget(ctx, remeasurementRunner, isolation.workspace.Path, descriptors[target.ID], target, state.Limits, env, prepared.Packet.PacketDigest, manifest.BenchmarkDigest, currentPerformanceEnvironment(env).Identity)
+-			if _, publishErr := store.PublishState(*state, token); publishErr != nil {
+-				_ = isolation.cleanup()
+-				return out, publishErr
+-			}
+-			if measureErr != nil {
+-				alreadyMet[i].Comparison.Outcome = PerformanceTargetInconclusive
+-				alreadyMet[i].FinalQualification = PerformanceQualification{Reason: measureErr.Error()}
+-				continue
+-			}
+-			remeasurements[target.ID] = remeasured
+-			comparison, compareErr := ComparePerformanceTarget(target, baselineMeasurement(baseline, target.ID).Qualification.Median, remeasured.Qualification.Median, remeasured.Qualification.Qualified, false)
+-			if compareErr != nil {
+-				alreadyMet[i].Comparison.Outcome = PerformanceTargetBlocked
+-				alreadyMet[i].FinalQualification = PerformanceQualification{Reason: compareErr.Error()}
+-				continue
+-			}
+-			alreadyMet[i].Comparison, alreadyMet[i].FinalQualification = comparison, remeasured.Qualification
+-		}
+-		if err := ValidatePerformanceRegressionSet(selected, current[selected.ID], candidate, alreadyMet); err != nil {
+-			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, err)
+-			_ = isolation.cleanup()
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		profileOutput := filepath.Join(isolation.parent, fmt.Sprintf("profile-%06d.pprof", cycle))
++		profileRequest, err := PerformanceProfileRequest(isolation.workspace.Path, profileOutput, descriptors[selected.ID], profileKind, state.Limits, env)
++		if err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		state.Counters.Commands++
++		profileResult, profileErr := isolation.runner(baseRunner).Run(ctx, profileRequest)
++		if profileErr != nil || !profileResult.CleanupComplete || profileResult.StdoutTruncated || profileResult.StderrTruncated {
++			cleanupErr := isolation.cleanup()
++			return out, errors.Join(fmt.Errorf("performance profile command failed: %w", profileErr), cleanupErr)
++		}
++		profileBytes := []byte(profileResult.Stdout)
++		if info, statErr := os.Lstat(profileOutput); statErr == nil {
++			if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 || info.Size() > int64(state.Limits.ProfileBytes) {
++				return out, errors.Join(fmt.Errorf("performance profile output is unsafe or exceeds its retained-byte limit"), isolation.cleanup())
++			}
++			if retained, readErr := os.ReadFile(profileOutput); readErr == nil {
++				profileBytes = retained
++			} else {
++				return out, errors.Join(readErr, isolation.cleanup())
++			}
++		} else if !errors.Is(statErr, fs.ErrNotExist) {
++			return out, errors.Join(statErr, isolation.cleanup())
++		}
++		if removeErr := os.Remove(profileOutput); removeErr != nil && !errors.Is(removeErr, fs.ErrNotExist) {
++			return out, errors.Join(removeErr, isolation.cleanup())
++		}
++		if len(profileBytes) == 0 {
++			profileBytes = []byte("profile command completed without retained output\n")
++		}
++		if len(profileBytes) > state.Limits.ProfileBytes {
++			return out, errors.Join(fmt.Errorf("performance profile exceeds retained-byte limit"), isolation.cleanup())
++		}
++		profileDataPath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "profile.pprof")
++		profileDataRef, err := store.PublishBytes(profileDataPath, "cycle-profile-data", profileBytes, true, token)
++		if err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		profile := PerformanceProfile{SchemaVersion: PerformanceSchemaVersion, Cycle: cycle, TargetID: selected.ID, Kind: profileKind, Implementation: identity, Digest: profileDataRef.Digest, Bytes: len(profileBytes), Artifact: profileDataRef}
++		profilePath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "profile.json")
++		if _, err := store.PublishJSON(profilePath, "cycle-profile", profile, true, token); err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		state.Counters.RuntimeAttempts++
++		if _, err := store.PublishState(*state, token); err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		prompt := performanceOptimizationPrompt(selected, profile)
++		request := s.runtimeRequest(prompt, map[string]string{"project": prepared.Project, "sprint": prepared.Sprint, "stage": string(VerificationPhasePerformance), "operation": "performance-optimization", "cycle": fmt.Sprint(cycle), "target": selected.ID})
++		if override, ok := s.verificationRuntime[VerificationPhasePerformance]; ok {
++			request.Provider, request.Model = splitProviderModel(override.Model)
++			request.Metadata["variant"] = override.Variant
++		}
++		request.WorkDir, request.Timeout, request.Sandbox, request.Permissions = isolation.workspace.Path, state.Limits.WallTime, "workspace_write", "restricted"
++		request.Policy.Default = "deny"
++		request.Policy.Tools = map[string]string{"read": "allow", "list": "allow", "search": "allow", "glob": "allow", "write": "allow", "edit": "allow", "patch": "allow", "bash": "deny", "shell": "deny"}
++		runtimeResult, runErr := s.runtime.StartRun(ctx, request)
++		if cleanupErr := s.deleteCompletedSessions(context.WithoutCancel(ctx), runtimeResult); cleanupErr != nil {
++			runErr = errors.Join(runErr, cleanupErr)
++		}
++		if runErr != nil {
++			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, fmt.Errorf("runtime proposal failed: %w", runErr))
++			if cleanupErr := isolation.cleanup(); cleanupErr != nil {
++				return out, errors.Join(runErr, cleanupErr)
++			}
++			if ctx.Err() != nil {
++				return out, ctx.Err()
++			}
++			if state.Counters.RuntimeAttempts >= state.Limits.OptimizationCycles*state.Limits.OptimizationAttempts {
++				out.Stalled = true
++				return out, nil
++			}
++			continue
++		}
++		changed, diffErr := pprocess.CompareTrees(context.WithoutCancel(ctx), prepared.Target.Path, isolation.workspace.Path, pprocess.IsolationLimits{MaxFiles: performanceIsolationFiles, MaxBytes: performanceIsolationBytes, MaxFileSize: performanceIsolationFileSize, Timeout: state.Limits.CommandTimeout})
++		replacements, preimages, changedBytes, deriveErr := derivePerformanceProductionProposal(prepared.Target.Path, isolation.workspace.Path, changed, state.Limits)
++		if diffErr != nil || deriveErr != nil {
++			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, errors.Join(diffErr, deriveErr))
++			if cleanupErr := isolation.cleanup(); cleanupErr != nil {
++				return out, errors.Join(diffErr, deriveErr, cleanupErr)
++			}
++			continue
++		}
++		patch := []byte(renderPerformancePatch(prepared.Target.Path, isolation.workspace.Path, changed))
++		if len(patch) == 0 || len(patch) > state.Limits.ProposalBytes {
++			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, fmt.Errorf("proposal patch exceeds retained-byte limit"))
++			if cleanupErr := isolation.cleanup(); cleanupErr != nil {
++				return out, cleanupErr
++			}
++			continue
++		}
++		proposalPath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "proposal.patch")
++		if _, err := store.PublishBytes(proposalPath, "cycle-proposal", patch, true, token); err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		hypothesis := PerformanceHypothesis{SchemaVersion: PerformanceSchemaVersion, Cycle: cycle, TargetID: selected.ID, Summary: boundRepairText(runtimeResult.TerminalOutput, 512), ProfileDigest: profile.Digest}
++		if hypothesis.Summary == "" {
++			hypothesis.Summary = "Runtime proposed one target-linked production change."
++		}
++		hypothesisPath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "hypothesis.json")
++		if _, err := store.PublishJSON(hypothesisPath, "cycle-hypothesis", hypothesis, true, token); err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		scope := PerformanceProposalScope{SchemaVersion: PerformanceSchemaVersion, Cycle: cycle, TargetID: selected.ID, Before: identity, Paths: changed, ChangedBytes: changedBytes, Allowed: true}
++		candidateIdentity, identityErr := targetIdentity(isolation.workspace.Path)
++		if identityErr != nil {
++			return out, errors.Join(identityErr, isolation.cleanup())
++		}
++		scope.Candidate = candidateIdentity
++		scopePath, _ := PerformanceCycleRelPath(store.sprint, state.AttemptID, cycle, "scope.json")
++		if _, err := store.PublishJSON(scopePath, "cycle-scope", scope, true, token); err != nil {
++			return out, errors.Join(err, isolation.cleanup())
++		}
++		if err := runPerformanceCorrectness(ctx, isolation.runner(baseRunner), isolation.workspace.Path, prepared.CorrectnessCommands, state.Limits, env, &state.Counters); err != nil {
++			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, fmt.Errorf("candidate correctness failed: %w", err))
++			if cleanupErr := isolation.cleanup(); cleanupErr != nil {
++				return out, errors.Join(err, cleanupErr)
++			}
++			continue
++		}
++		candidateRunner := &performanceMeasurementAccountingRunner{delegate: isolation.runner(baseRunner), counters: &state.Counters, limits: state.Limits}
++		candidate, err := MeasurePerformanceTarget(ctx, candidateRunner, isolation.workspace.Path, descriptors[selected.ID], selected, state.Limits, env, prepared.Packet.PacketDigest, manifest.BenchmarkDigest, currentPerformanceEnvironment(env).Identity)
++		if _, publishErr := store.PublishState(*state, token); publishErr != nil {
++			return out, errors.Join(publishErr, isolation.cleanup())
++		}
++		if err != nil {
++			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, err)
++			if cleanupErr := isolation.cleanup(); cleanupErr != nil {
++				return out, errors.Join(err, cleanupErr)
++			}
++			continue
++		}
++		alreadyMet := performanceAlreadyMet(prepared.Packet.Targets, comparisons, current)
++		remeasurements := make(map[string]PerformanceMeasurement, len(alreadyMet))
++		for i := range alreadyMet {
++			target := alreadyMet[i].Target
++			remeasurementRunner := &performanceMeasurementAccountingRunner{delegate: isolation.runner(baseRunner), counters: &state.Counters, limits: state.Limits}
++			remeasured, measureErr := MeasurePerformanceTarget(ctx, remeasurementRunner, isolation.workspace.Path, descriptors[target.ID], target, state.Limits, env, prepared.Packet.PacketDigest, manifest.BenchmarkDigest, currentPerformanceEnvironment(env).Identity)
++			if _, publishErr := store.PublishState(*state, token); publishErr != nil {
++				return out, errors.Join(publishErr, isolation.cleanup())
++			}
++			if measureErr != nil {
++				alreadyMet[i].Comparison.Outcome = PerformanceTargetInconclusive
++				alreadyMet[i].FinalQualification = PerformanceQualification{Reason: measureErr.Error()}
++				continue
++			}
++			remeasurements[target.ID] = remeasured
++			comparison, compareErr := ComparePerformanceTarget(target, baselineMeasurement(baseline, target.ID).Qualification.Median, remeasured.Qualification.Median, remeasured.Qualification.Qualified, false)
++			if compareErr != nil {
++				alreadyMet[i].Comparison.Outcome = PerformanceTargetBlocked
++				alreadyMet[i].FinalQualification = PerformanceQualification{Reason: compareErr.Error()}
++				continue
++			}
++			alreadyMet[i].Comparison, alreadyMet[i].FinalQualification = comparison, remeasured.Qualification
++		}
++		if err := ValidatePerformanceRegressionSet(selected, current[selected.ID], candidate, alreadyMet); err != nil {
++			_ = publishPerformanceRejection(store, state, token, cycle, selected.ID, err)
++			if cleanupErr := isolation.cleanup(); cleanupErr != nil {
++				return out, errors.Join(err, cleanupErr)
++			}
+ 			continue
+ 		}
+ 		if cleanupErr := isolation.cleanup(); cleanupErr != nil {

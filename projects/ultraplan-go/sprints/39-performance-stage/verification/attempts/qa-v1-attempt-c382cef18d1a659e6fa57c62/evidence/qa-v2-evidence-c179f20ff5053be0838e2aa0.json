@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-c179f20ff5053be0838e2aa0",
+  "plan_id": "qa-v2-plan-09bb0a345d3db51315abc521",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+  "workspace_id": "qa-v2-test-96862b443a2bd04f15f7e7d1",
+  "workspace_identity": "d4d653903edc7b4ea58d589decb2e74d08bd80538612a12c823e7339879ac153",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "6c88fd46d1c7036e80f37ad70e2333434e2191df59781a273481a1ab975bd6b1",
+      "exit_code": 1,
+      "duration": 31007056934,
+      "stdout_digest": "25a366cf7fb3a9495bba6a87f298af6cc3e0c71ac2ca427d00387c0845981abc",
+      "stderr_digest": "73bfe20bf9b43e60d0199b60782d19be76cb7127de8f84a7d141d11d1716e6f6",
+      "stdout": "=== RUN   TestQAInvestigator_6ae404229a54\n    qa_investigator_6ae404229a54_test.go:111: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6ae404229a54 assertion=Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.\n--- FAIL: TestQAInvestigator_6ae404229a54 (0.02s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/web\t0.029s\nFAIL\n",
+      "stderr": "go: downloading modernc.org/sqlite v1.57.0\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+      "output_bytes": 1058,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/web/qa_investigator_6ae404229a54_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:35:40.526456884Z"
+}

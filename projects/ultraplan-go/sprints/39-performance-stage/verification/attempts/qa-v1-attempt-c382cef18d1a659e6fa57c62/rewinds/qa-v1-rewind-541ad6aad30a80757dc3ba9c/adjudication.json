@@ -1,0 +1,883 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-adjudication-e4000ed9405ed334d63903c9",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "map_fingerprint": "1ee63b8571ce50b1f63e04dd4093e89c2b74d4e8bfeb0bf008b9466467f244d5",
+  "accepted_evidence_ids": [
+    "qa-v2-evidence-00dbf90eb8bd3fb7bafe24e5",
+    "qa-v2-evidence-14b29a0ed41b25ad9b6691c1",
+    "qa-v2-evidence-1e81f0cb77c6d0fd7ddc7a86",
+    "qa-v2-evidence-24ad942f17348380c0a64cfd",
+    "qa-v2-evidence-2e14e530b280e545e92c6989",
+    "qa-v2-evidence-32840b5cd1df0243c4bed24e",
+    "qa-v2-evidence-37ec38bb11681c3e3874fbcf",
+    "qa-v2-evidence-3bc66810797a2c15ecf0e6af",
+    "qa-v2-evidence-515a9349ab1e38d3bacffbb2",
+    "qa-v2-evidence-5ac4ce346fa6bace9cc10d80",
+    "qa-v2-evidence-61dc129e7128336484283c7d",
+    "qa-v2-evidence-68bb93e04be58e050319697b",
+    "qa-v2-evidence-79a6d251bd02763160125d85",
+    "qa-v2-evidence-7ad1d2d79cdd153a166122e2",
+    "qa-v2-evidence-7f08761e25e1a2a48ec22c28",
+    "qa-v2-evidence-83daf2823f1110ab34e0f926",
+    "qa-v2-evidence-8b8e792871f357c04458bf7c",
+    "qa-v2-evidence-8cb5b9ced79072ab9e252b3d",
+    "qa-v2-evidence-96a8f6227ababbab0c097672",
+    "qa-v2-evidence-aa7a27c3807649fd206f2122",
+    "qa-v2-evidence-b1acb6b3c341536cea0525ea",
+    "qa-v2-evidence-b3f2138562e576213b297633",
+    "qa-v2-evidence-ba717168c668291afe6f1bd2",
+    "qa-v2-evidence-ba9bfa88fee4b87debe62179",
+    "qa-v2-evidence-cf61f3d66cc505154c711916",
+    "qa-v2-evidence-d6a19ad118982283d1201b7b",
+    "qa-v2-evidence-e3e09efe1bb94479a48975e7",
+    "qa-v2-evidence-e511b3db0edf4953ab5d3b01",
+    "qa-v2-evidence-eb38e2fa4d1a71fff4b1e062",
+    "qa-v2-evidence-ee8e63fdf4bdb98fb781baac",
+    "qa-v2-evidence-f500af63bda7e21bb3118a2d",
+    "qa-v2-evidence-ffaefcf62364921459cad551"
+  ],
+  "rejected_evidence": [],
+  "unpromoted_issue_candidates": [
+    {
+      "candidate_id": "qa-v1-arbiter-issue-00b760b8ff1978cdd8ae29b1",
+      "theory_ids": [
+        "qa-v1-theory-1158b01023e7f48c5250faeb",
+        "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+      ],
+      "title": "Performance status surfaces omit durable run state",
+      "issue_class": "behavioral",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go; internal/tui",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-08185f25ca285909f34b8a92",
+      "theory_ids": [
+        "qa-v1-theory-1158b01023e7f48c5250faeb",
+        "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+      ],
+      "title": "Performance surfaces omit durable lifecycle state",
+      "issue_class": "behavioral_regression",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-0e251f225cb386ec9c98e70b",
+      "theory_ids": [
+        "qa-v1-theory-079b2cbf870bf2f83996de95",
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "title": "Policy validation mistakes pseudo target headings for declarations",
+      "issue_class": "input_validation",
+      "severity": "medium",
+      "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-16d4c8ca368f724c50bd7b51",
+      "theory_ids": [
+        "qa-v1-theory-7d9af7670be55a2e29a420d8"
+      ],
+      "title": "Unavailable result loses error classification",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-1869d0041e03aadabc2cb167",
+      "theory_ids": [
+        "qa-v1-theory-834ae2001fa8a71d2a367c54",
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "title": "Policy validation misclassifies fenced and commented headings",
+      "issue_class": "validation",
+      "severity": "medium",
+      "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-1f3867631e4cd4140e2bbda0",
+      "theory_ids": [
+        "qa-v1-theory-f2a69e609bbc16e79b49f85e",
+        "qa-v1-theory-fc3744e6e8886693c1c4a689"
+      ],
+      "title": "Stale performance writer can publish flow summary",
+      "issue_class": "concurrency",
+      "severity": "medium",
+      "location": "internal/sprint/performance.go; internal/sprint/state.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-20ca7d37a2089084589974fa",
+      "theory_ids": [
+        "qa-v1-theory-1158b01023e7f48c5250faeb",
+        "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+      ],
+      "title": "Performance surfaces omit durable run state",
+      "issue_class": "behavioral_regression",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-22c7f47af2883036849b3f4e",
+      "theory_ids": [
+        "qa-v1-theory-079b2cbf870bf2f83996de95",
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "title": "Pseudo target headings cause false policy mismatch",
+      "issue_class": "validation",
+      "severity": "medium",
+      "location": "internal/sprint/index.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-260bb2ee701726d0c2f255d8",
+      "theory_ids": [
+        "qa-v1-theory-f2a69e609bbc16e79b49f85e",
+        "qa-v1-theory-fc3744e6e8886693c1c4a689"
+      ],
+      "title": "Failure flow publication lacks final writer fence",
+      "issue_class": "concurrency",
+      "severity": "medium",
+      "location": "internal/sprint/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-2700697cfb03c0cc3b555aae",
+      "theory_ids": [
+        "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+      ],
+      "title": "Evidence fallback violates the versioned response contract",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-2a8495df2dfd7fc7706d8e9f",
+      "theory_ids": [
+        "qa-v1-theory-3d05000070c81fe10aa3579b"
+      ],
+      "title": "Operation runner swallows performance configuration failure",
+      "issue_class": "error_handling",
+      "severity": "medium",
+      "location": "internal/app/operation_runner.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-2b28ac6f55450609429d374e",
+      "theory_ids": [
+        "qa-v1-theory-8f427e11c59f76989883dc31"
+      ],
+      "title": "Descriptor markers need not immediately precede functions",
+      "issue_class": "input_validation",
+      "severity": "medium",
+      "location": "internal/sprint/performance_discovery.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-2c49684e0f83c9f59a9d540b",
+      "theory_ids": [
+        "qa-v1-theory-1158b01023e7f48c5250faeb",
+        "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+      ],
+      "title": "Performance surfaces omit durable lifecycle state",
+      "issue_class": "behavioral",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go; internal/web/templates/sprint.html; internal/tui",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-2f886a31bee5a57d3cf50632",
+      "theory_ids": [
+        "qa-v1-theory-7d9af7670be55a2e29a420d8"
+      ],
+      "title": "Missing performance result returns an unclassified error",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-30111861767dfd2670c9551e",
+      "theory_ids": [
+        "qa-v1-theory-8f427e11c59f76989883dc31"
+      ],
+      "title": "Descriptor discovery weakens marker adjacency",
+      "issue_class": "input_validation",
+      "severity": "medium",
+      "location": "internal/sprint/performance_discovery.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-3467039c2c57b94a7ee30779",
+      "theory_ids": [
+        "qa-v1-theory-2e47a0d5379914251c03302b"
+      ],
+      "title": "Performance policy is embedded in platform config",
+      "issue_class": "architecture",
+      "severity": "high",
+      "location": "internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-3b4b9f094c1e1ed89af4d76b",
+      "theory_ids": [
+        "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+      ],
+      "title": "Repair reverification accepts malformed target results",
+      "issue_class": "data_validation",
+      "severity": "high",
+      "location": "internal/sprint/qa_repair_state.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-46d5f6069848caca0ffba83f",
+      "theory_ids": [
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "title": "Pseudo performance headings trigger policy mismatch",
+      "issue_class": "validation",
+      "severity": "medium",
+      "location": "internal/sprint/index.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-4a1182f9829203d097b9a34c",
+      "theory_ids": [
+        "qa-v1-theory-5aa810b32a6484259611977f"
+      ],
+      "title": "Documented performance maxima are rejected",
+      "issue_class": "documentation_contract",
+      "severity": "high",
+      "location": "docs/configuration.md",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-510175ad99d31a759a8ea2bb",
+      "theory_ids": [
+        "qa-v1-theory-ac5be59947bfccdb558de158"
+      ],
+      "title": "Disabled projects expose performance mutations",
+      "issue_class": "authorization_ui",
+      "severity": "high",
+      "location": "internal/tui/model.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-54f56fed54dd5675a39cb4d4",
+      "theory_ids": [
+        "qa-v1-theory-ac5be59947bfccdb558de158"
+      ],
+      "title": "TUI exposes mutations for disabled performance policy",
+      "issue_class": "authorization",
+      "severity": "high",
+      "location": "internal/tui/model.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-5755b409e74945ba6a47642d",
+      "theory_ids": [
+        "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+      ],
+      "title": "Repair reverification accepts malformed nested performance results",
+      "issue_class": "data_validation",
+      "severity": "high",
+      "location": "internal/sprint/qa_repair_state.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-5d247538c0eefca99f87c4b0",
+      "theory_ids": [
+        "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+      ],
+      "title": "Evidence fallback violates the versioned response contract",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-5ec354e4ce0c317e6d6c6bea",
+      "theory_ids": [
+        "qa-v1-theory-5aa810b32a6484259611977f"
+      ],
+      "title": "Performance limit documentation contradicts validation",
+      "issue_class": "configuration",
+      "severity": "high",
+      "location": "docs/configuration.md; internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-5fc5c8443fd53a722e69d7b5",
+      "theory_ids": [
+        "qa-v1-theory-2e47a0d5379914251c03302b"
+      ],
+      "title": "Platform config contains bounded-context performance policy",
+      "issue_class": "architecture",
+      "severity": "high",
+      "location": "internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-60a41a36a418052a408fa47f",
+      "theory_ids": [
+        "qa-v1-theory-60e255ab711c15643830dc69"
+      ],
+      "title": "Performance JSON parser accepts malformed trailing data",
+      "issue_class": "validation",
+      "severity": "high",
+      "location": "internal/sprint/performance_measure.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-69f05dc7057e52426b65660a",
+      "theory_ids": [
+        "qa-v1-theory-ac5be59947bfccdb558de158"
+      ],
+      "title": "Disabled historical performance states expose mutations",
+      "issue_class": "authorization_ui",
+      "severity": "high",
+      "location": "internal/tui/model.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-6d489eecd4f1d7901fe9455c",
+      "theory_ids": [
+        "qa-v1-theory-e520dfe5bb32e35f0d545398"
+      ],
+      "title": "Performance CLI loses failure exit categories",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_commands.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-71eebcecdaa868156132da3c",
+      "theory_ids": [
+        "qa-v1-theory-5aa810b32a6484259611977f"
+      ],
+      "title": "Performance limit documentation contradicts validation",
+      "issue_class": "documentation",
+      "severity": "high",
+      "location": "docs/configuration.md; internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-766c1e0ae77b0e2872f8cdba",
+      "theory_ids": [
+        "qa-v1-theory-1158b01023e7f48c5250faeb",
+        "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+      ],
+      "title": "Performance summaries omit durable lifecycle state",
+      "issue_class": "behavioral",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go; internal/web/templates/sprint.html; internal/tui",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-807647a2078d976b603817fa",
+      "theory_ids": [
+        "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+      ],
+      "title": "Evidence API has an incompatible fallback schema",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-83eae721403c69628743568d",
+      "theory_ids": [
+        "qa-v1-theory-2e47a0d5379914251c03302b"
+      ],
+      "title": "Platform config owns performance product policy",
+      "issue_class": "architecture",
+      "severity": "high",
+      "location": "internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-8459b233ed457ad16187ea73",
+      "theory_ids": [
+        "qa-v1-theory-7d9af7670be55a2e29a420d8"
+      ],
+      "title": "Unavailable result returns an unclassified error",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-84a0ee8828f3e415b400863e",
+      "theory_ids": [
+        "qa-v1-theory-60e255ab711c15643830dc69"
+      ],
+      "title": "Performance JSON parser accepts malformed trailing bytes",
+      "issue_class": "input_validation",
+      "severity": "high",
+      "location": "internal/sprint/performance_measure.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-84ca632f1f983370da8e43b4",
+      "theory_ids": [
+        "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+      ],
+      "title": "Evidence fallback violates versioned response contract",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-86fc652cabc152633bbd1088",
+      "theory_ids": [
+        "qa-v1-theory-2913ff7ebea753d4cf4c76b2",
+        "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+      ],
+      "title": "Pseudo performance headings trigger policy mismatch",
+      "issue_class": "validation",
+      "severity": "medium",
+      "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-88cb9c677536a12726659e7a",
+      "theory_ids": [
+        "qa-v1-theory-8f427e11c59f76989883dc31"
+      ],
+      "title": "Descriptor markers need not immediately precede functions",
+      "issue_class": "validation",
+      "severity": "medium",
+      "location": "internal/sprint/performance_discovery.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-89c0d8c263f701eda12ff78d",
+      "theory_ids": [
+        "qa-v1-theory-7d9af7670be55a2e29a420d8"
+      ],
+      "title": "Unavailable performance result is returned unclassified",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-8c8c86a4dddf2af73083d609",
+      "theory_ids": [
+        "qa-v1-theory-60e255ab711c15643830dc69"
+      ],
+      "title": "Performance JSON parser accepts malformed trailing data",
+      "issue_class": "input_validation",
+      "severity": "high",
+      "location": "internal/sprint/performance_measure.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-8f73380166c68c44207b9363",
+      "theory_ids": [
+        "qa-v1-theory-e520dfe5bb32e35f0d545398"
+      ],
+      "title": "Performance CLI collapses operational exit classes",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_commands.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-9b7b566eda8a3201f07fc46b",
+      "theory_ids": [
+        "qa-v1-theory-2e47a0d5379914251c03302b"
+      ],
+      "title": "Performance product policy is embedded in platform config",
+      "issue_class": "architecture",
+      "severity": "high",
+      "location": "internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-9ef8e3508eb4d2defab3b64e",
+      "theory_ids": [
+        "qa-v1-theory-ac5be59947bfccdb558de158"
+      ],
+      "title": "Disabled performance policy still exposes TUI mutations",
+      "issue_class": "authorization",
+      "severity": "high",
+      "location": "internal/tui/model.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-a5bc1f6e7c25dffd9c5c6994",
+      "theory_ids": [
+        "qa-v1-theory-3d05000070c81fe10aa3579b",
+        "qa-v1-theory-a90dfa6cddba24459a366b4d"
+      ],
+      "title": "Operation runner swallows performance configuration errors",
+      "issue_class": "error_handling",
+      "severity": "medium",
+      "location": "internal/app/operation_runner.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-a85a5b53963e8ba4393f2e2f",
+      "theory_ids": [
+        "qa-v1-theory-1158b01023e7f48c5250faeb",
+        "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+      ],
+      "title": "Performance summaries omit durable run state",
+      "issue_class": "projection",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-b2a1e60b83cd15fc34b8b8fe",
+      "theory_ids": [
+        "qa-v1-theory-fc3744e6e8886693c1c4a689"
+      ],
+      "title": "Flow-state failure publication lacks a final writer fence",
+      "issue_class": "concurrency",
+      "severity": "medium",
+      "location": "internal/sprint/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-b3df58b1b95e02beea4a1b89",
+      "theory_ids": [
+        "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+      ],
+      "title": "Evidence compatibility response breaks schema",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-b87289beabb2a581ef90aa73",
+      "theory_ids": [
+        "qa-v1-theory-8f427e11c59f76989883dc31"
+      ],
+      "title": "Descriptor discovery weakens immediate-precedence rule",
+      "issue_class": "validation",
+      "severity": "medium",
+      "location": "internal/sprint/performance_discovery.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-b93c47b4944ae4b5a829ec93",
+      "theory_ids": [
+        "qa-v1-theory-7d9af7670be55a2e29a420d8"
+      ],
+      "title": "Unavailable performance results bypass typed error mapping",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-bbab961b7867b4b527d27409",
+      "theory_ids": [
+        "qa-v1-theory-e520dfe5bb32e35f0d545398"
+      ],
+      "title": "Performance CLI collapses operational exit classes",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_commands.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-bcc3a3ac83e9c7a85319226d",
+      "theory_ids": [
+        "qa-v1-theory-3d05000070c81fe10aa3579b",
+        "qa-v1-theory-d25a9ee88281ec8a92a60dca"
+      ],
+      "title": "Operation runner discards fatal performance configuration errors",
+      "issue_class": "error_handling",
+      "severity": "medium",
+      "location": "internal/app/operation_runner.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-bf8fdf8d2ac392561f31448f",
+      "theory_ids": [
+        "qa-v1-theory-e7cee7f1ee0f0bccfbfc2086",
+        "qa-v1-theory-fc3744e6e8886693c1c4a689"
+      ],
+      "title": "Failure summary publication is not writer-fenced",
+      "issue_class": "concurrency",
+      "severity": "medium",
+      "location": "internal/sprint/performance.go; internal/sprint/state.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-c573658a8955e11efd23b875",
+      "theory_ids": [
+        "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+      ],
+      "title": "Repair reverification omits nested performance validation",
+      "issue_class": "data_validation",
+      "severity": "high",
+      "location": "internal/sprint/qa_repair_state.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-c6028d29cd7aa6fc06f11842",
+      "theory_ids": [
+        "qa-v1-theory-e520dfe5bb32e35f0d545398"
+      ],
+      "title": "Performance CLI loses category-specific exit behavior",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_commands.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-c9117dbdcdb2f825dfa8a906",
+      "theory_ids": [
+        "qa-v1-theory-60e255ab711c15643830dc69"
+      ],
+      "title": "Performance JSON parser does not require EOF",
+      "issue_class": "input_validation",
+      "severity": "high",
+      "location": "internal/sprint/performance_measure.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-ca217848a5c9009952979e82",
+      "theory_ids": [
+        "qa-v1-theory-e520dfe5bb32e35f0d545398"
+      ],
+      "title": "Performance CLI loses failure-specific exit behavior",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_commands.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-cbf5cb5e27d2a210dbb475b1",
+      "theory_ids": [
+        "qa-v1-theory-5aa810b32a6484259611977f"
+      ],
+      "title": "Performance limit documentation contradicts validation",
+      "issue_class": "documentation",
+      "severity": "high",
+      "location": "docs/configuration.md",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-ce3a3a55d063c08f2364af7b",
+      "theory_ids": [
+        "qa-v1-theory-ac5be59947bfccdb558de158"
+      ],
+      "title": "Disabled projects expose historical performance mutations in TUI",
+      "issue_class": "authorization",
+      "severity": "high",
+      "location": "internal/tui/model.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-e9df984cd57a06dd6a2db153",
+      "theory_ids": [
+        "qa-v1-theory-5aa810b32a6484259611977f"
+      ],
+      "title": "Performance limit documentation contradicts validation",
+      "issue_class": "documentation",
+      "severity": "high",
+      "location": "docs/configuration.md; internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-eadbd1b5233ad8107cd689c7",
+      "theory_ids": [
+        "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+      ],
+      "title": "Repair reverification omits nested performance validation",
+      "issue_class": "data_validation",
+      "severity": "high",
+      "location": "internal/sprint/qa_repair_state.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-eb4a05bdecf39114ffae473a",
+      "theory_ids": [
+        "qa-v1-theory-5aa810b32a6484259611977f"
+      ],
+      "title": "Documented performance maxima are rejected",
+      "issue_class": "documentation_contract",
+      "severity": "high",
+      "location": "docs/configuration.md; internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-ee2a2ec706ae7d40fa7bd258",
+      "theory_ids": [
+        "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+      ],
+      "title": "Evidence API fallback violates the versioned response schema",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-ef0827fa91c4b61ca8341289",
+      "theory_ids": [
+        "qa-v1-theory-2e47a0d5379914251c03302b"
+      ],
+      "title": "Platform config contains performance business policy",
+      "issue_class": "architecture",
+      "severity": "high",
+      "location": "internal/platform/config/performance.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-f5f6a18e980b4ba76a08ee8f",
+      "theory_ids": [
+        "qa-v1-theory-8f427e11c59f76989883dc31"
+      ],
+      "title": "Discovery weakens marker adjacency rule",
+      "issue_class": "contract_validation",
+      "severity": "medium",
+      "location": "internal/sprint/performance_discovery.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    },
+    {
+      "candidate_id": "qa-v1-arbiter-issue-f7529d27f24b197684317376",
+      "theory_ids": [
+        "qa-v1-theory-7d9af7670be55a2e29a420d8"
+      ],
+      "title": "Unavailable performance results lose error classification",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go",
+      "reason_code": "promotion_evidence_missing",
+      "detail": "no accepted failing evidence was linked to this candidate"
+    }
+  ],
+  "root_cause_groups": [
+    {
+      "id": "qa-v2-group-b2aaecd731a5dc52fa8a5c0c",
+      "claim": "The shared operation runner silently discards invalid performance configuration, allowing operations using that runner to continue instead of failing preflight.",
+      "issue_class": "error_handling",
+      "location": "internal/app/operation_runner.go",
+      "evidence_ids": [
+        "qa-v2-evidence-515a9349ab1e38d3bacffbb2",
+        "qa-v2-evidence-68bb93e04be58e050319697b"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "qa-v2-issue-b6303030807f9608fa8ec3ad",
+      "root_cause_group_id": "qa-v2-group-b2aaecd731a5dc52fa8a5c0c",
+      "title": "Shared operation runner drops performance configuration failures",
+      "issue_class": "error_handling",
+      "severity": "medium",
+      "location": "internal/app/operation_runner.go",
+      "evidence_ids": [
+        "qa-v2-evidence-515a9349ab1e38d3bacffbb2",
+        "qa-v2-evidence-68bb93e04be58e050319697b"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    }
+  ],
+  "suggested_repair_groups": [
+    {
+      "id": "qa-v2-group-a3025402ebb7841ab752cb44",
+      "issue_ids": [
+        "qa-v2-issue-b6303030807f9608fa8ec3ad"
+      ],
+      "reason": "shared adjudicated root cause: The shared operation runner silently discards invalid performance configuration, allowing operations using that runner to continue instead of failing preflight."
+    }
+  ],
+  "repair_assignments": [
+    {
+      "agent": 1,
+      "issue_ids": [
+        "qa-v2-issue-b6303030807f9608fa8ec3ad"
+      ],
+      "grouping_reasons": [
+        "shared adjudicated root cause: The shared operation runner silently discards invalid performance configuration, allowing operations using that runner to continue instead of failing preflight."
+      ]
+    }
+  ],
+  "replay": {
+    "source_adjudication_id": "qa-v2-adjudication-dc9a08e50864e14aef959bde",
+    "source_assessment_id": "qa-v2-assessment-7da74a5468f71171cf0e3a46",
+    "source_policy_fingerprint": "f40f4ace453357f132e41a2f70b97b5e6239a1a7f209ce028b779ec28ce9b479",
+    "applied_policy_fingerprint": "94fe8c6768a7f8492408ec7866ec0d240f2882f2a484d1a461692e0a31f5f3c9",
+    "reason": "reapplied deterministic candidate coverage and promotion rules to retained evidence"
+  },
+  "completed_at": "2026-09-07T09:24:52.654351274Z"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-3eb9bf244922555688a36248",
+  "spec_id": "qa-v2-spec-910fb5d215bccf3fb04e486d",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_765e01a64feb_test.go",
+      "content": "package app\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_765e01a64feb(t *testing.T) {\n\t// Control: classification retains distinct causes and categories before the\n\t// CLI boundary wraps them in an application exit class.\n\tcases := []struct {\n\t\tname     string\n\t\terr      error\n\t\tcategory string\n\t}{\n\t\t{name: \"timeout\", err: context.DeadlineExceeded, category: \"timeout\"},\n\t\t{name: \"process\", err: errors.New(\"process exited with status 1\"), category: \"process\"},\n\t\t{name: \"persistence\", err: os.ErrNotExist, category: \"persistence\"},\n\t\t{name: \"configuration\", err: \u0026sprint.PerformanceError{Code: \"performance.config\", Category: \"configuration\", Operation: \"performance.run\", Guidance: \"repair configuration\", Cause: errors.New(\"invalid performance configuration\")}, category: \"configuration\"},\n\t\t{name: \"cancellation\", err: context.Canceled, category: \"cancellation\"},\n\t}\n\tfor _, tc := range cases {\n\t\tclassifiedErr := sprint.ClassifyPerformanceError(\"performance.run\", tc.err)\n\t\tperformanceErr, ok := sprint.AsPerformanceError(classifiedErr)\n\t\tif !ok || performanceErr.Category != tc.category {\n\t\t\tt.Fatalf(\"control %s category = %q, want %q\", tc.name, performanceErr.Category, tc.category)\n\t\t}\n\t}\n\n\t// Verify the production boundary itself still has the reported collapse and\n\t// that cancellation remains its distinct passing control.\n\tsource, err := os.ReadFile(\"sprint_commands.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttext := string(source)\n\tcancelBranch := `if errors.Is(runErr, context.Canceled) {\n\t\t\t\treturn classified(ExitCancel, \"sprint.performance: %w\", runErr)\n\t\t\t}`\n\tvalidationBranch := `return classified(ExitValidation, \"sprint.performance: %w\", runErr)`\n\tif !strings.Contains(text, cancelBranch) {\n\t\tt.Fatalf(\"passing control missing cancellation ExitCancel branch\")\n\t}\n\tif !strings.Contains(text, validationBranch) {\n\t\tt.Fatalf(\"performance failures no longer share the ExitValidation branch\")\n\t}\n\n\t// The distinct timeout, process, persistence, and configuration categories\n\t// all reach the unconditional non-cancellation branch above.\n\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_765e01a64feb\")\n}\n",
+      "digest": "b56c6ec1ea9983e52d81f4ba0c9293d4e1335cc8f28c8a66e93fea728924e36c",
+      "bytes": 2232
+    }
+  ],
+  "content_digest": "87f613949d669790c99f8346e27f2f3c5ee23c14db32d5e026916eab32180f3d"
+}

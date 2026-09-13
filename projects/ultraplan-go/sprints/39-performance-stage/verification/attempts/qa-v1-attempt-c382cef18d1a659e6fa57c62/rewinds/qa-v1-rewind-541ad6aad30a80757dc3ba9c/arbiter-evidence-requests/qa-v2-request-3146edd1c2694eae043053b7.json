@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-3146edd1c2694eae043053b7",
+    "arbiter_group_id": "qa-v1-arbiter-group-c20674c2cd496b45035915c3",
+    "theory_ids": [
+      "qa-v1-theory-3d05000070c81fe10aa3579b"
+    ],
+    "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+    "gap": "Both prior executable reproducers produced a failure-signature mismatch and did not determine whether the discarded helper error is reachable through normal production composition.",
+    "requested_evidence": "Ask the original investigator to strengthen an executable Go _test.go reproducer in its approved private workspace so it constructs the shared operation runner through the actual production composition path with an Effective value for which performanceSettings demonstrably returns an error.",
+    "required_observation": "Show whether production composition rejects the invalid configuration before runner construction or whether an operation proceeds after the runner discards the error.",
+    "control_requirement": "Assert performanceSettings fails for the exact Effective value used, exercise the same composition entrypoint used by a shipped adapter, and use a deterministic operation side-effect sentinel to prove whether execution began.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "test_bundle_id": "qa-v2-test-e8a87a5395051ad698e6f00c",
+    "latest_run_id": "qa-v2-run-3f72d163f95bfd186c298c97",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

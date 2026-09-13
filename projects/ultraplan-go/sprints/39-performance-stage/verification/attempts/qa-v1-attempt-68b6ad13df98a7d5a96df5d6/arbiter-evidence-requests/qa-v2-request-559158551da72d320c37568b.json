@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "id": "qa-v2-request-559158551da72d320c37568b",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+    ],
+    "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+    "gap": "The latest test exercises only a locally written loop and fake types; it never calls optimizePerformance or observes product state, so it supplies no behavioral evidence for the claimed path.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace that invokes the actual optimization path with a controllable isolation cleanup failure on a rejection branch that normally continues.",
+    "required_observation": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after the injected cleanup failure and assert the actual returned or persisted cleanup classification.",
+    "control_requirement": "The test must exercise optimizePerformance or RunPerformance using real product orchestration with deterministic collaborators; an independent simulated loop or source-string assertion is not sufficient.",
+    "priority": "high",
+    "status": "inconclusive",
+    "reason_code": "tests_per_theory_budget_exhausted",
+    "superseded_by": "qa-v2-request-17df7388a8e4c0ffb6d0e16a",
+    "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+  }
+}

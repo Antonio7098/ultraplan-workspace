@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-ee90b3bb78731186156c3c86",
+  "spec_id": "qa-v2-spec-230281d8d953ac0d05157157",
+  "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_20f83a1a7704",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_20f83a1a7704",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704",
+    "executable": "go",
+    "args_digest": "92be879965726b4022211246444d642970af7aedc6d7b630e2b24f51041a7975",
+    "exit_code": 1,
+    "duration": 22340760285,
+    "stdout_digest": "df8a11f4d4c0cb6061e7f9c9a7a8196e6520e6d06a3fdc9e525660f73f6ce01e",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_20f83a1a7704\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"ENABLED\": mode=\"enabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Enabled\": mode=\"enabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"DISABLED\": mode=\"disabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Disabled\": mode=\"disabled\" findings=[]project.ValidationFinding(nil)\n    qa_investigator_20f83a1a7704_test.go:30: assertion: case-variant Mode values must produce validation findings while lowercase enabled and disabled controls remain valid\n    qa_investigator_20f83a1a7704_test.go:31: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704\n--- FAIL: TestQAInvestigator_20f83a1a7704 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.004s\nFAIL\n",
+    "output_bytes": 956,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_20f83a1a7704",
+    "assertion": "The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:44:26.659561302Z"
+}

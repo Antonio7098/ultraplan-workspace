@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-3f1c233ad43860efffc99a06",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "primary",
+  "title": "Policy and requirements-owned target authority",
+  "changed_paths": [
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go",
+    "internal/sprint/index.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go",
+    "internal/sprint/performance_types.go"
+  ],
+  "context_paths": [
+    "internal/sprint/service.go",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "behavioral_concerns": [
+    "Absolute and baseline-relative comparisons handle equality, negative thresholds, zero baselines, report-only rows, and outcome precedence correctly.",
+    "Missing project policy defaults to disabled; the exact policy section accepts only one valid Mode setting and cannot redefine targets.",
+    "Normalization and packet digests are stable, while any requirements or policy byte change invalidates authority.",
+    "Only the exact requirements table supplies targets, with pseudo-sections in fences, comments, quotes, or indentation ignored.",
+    "Rows enforce exact headers, unique IDs, bounded text and samples, closed comparators, units, gates, and basis combinations."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-18a26cd00a25dde194f23d59",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-2dda06a4edb85a29b6e8d7c7",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-3a600d1ab88c7df2395e78aa",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-43f6c6336f81c3ce55628909",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-9c5f43b294578fed6796f5b9",
+    "qa-v1-block-a2be3dc15f8fe2f32433a558",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e119c25baa75d6da3419c82e",
+    "qa-v1-block-e3c3c76f01e1938f7367959a",
+    "qa-v1-block-e8f8d9a28d7be2d1fb220b0a",
+    "qa-v1-block-e9031fe55080b29279a3647a"
+  ],
+  "prepared_prompt_bytes": 161347,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-3f1c233ad43860efffc99a06",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_d3pf42gtkpgahqdmabwlou4rne/qa-v1-shard-3f1c233ad43860efffc99a06/1",
+      "number": 1,
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "c485759827c6b4c9ecbd6b2db3252e503d182f463fd2d11a886f572ef7b55381",
+      "started_at": "2026-09-13T09:55:39.772274044Z",
+      "completed_at": "2026-09-13T09:55:39.793029615Z",
+      "implementation_before": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "implementation_after": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 0,
+      "retained_events": 0,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 301319,
+        "prefix_bytes": 19809,
+        "prefix_digest": "04d27b75d819b47405c8c54bd589a4c5c618f721eaa2435e70283196680507f5",
+        "cache_cohort": "qa-investigator/04d27b75d819b47405c8c54bd589a4c5c618f721eaa2435e70283196680507f5/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 20755571
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-1ccb50db637f7093384d4deb",
+  "spec_id": "qa-v2-spec-8ad409edf1f80c380c6d79f2",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_7f17d2859fb1_test.go",
+      "content": "package app\n\nimport (\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/platform/config\"\n)\n\nfunc TestQAInvestigator_7f17d2859fb1(t *testing.T) {\n\tloadWithCommands := func(value string) error {\n\t\t_, err := config.Load(config.LoadOptions{Env: func(key string) string {\n\t\t\tif key == \"ULTRAPLAN_PERFORMANCE_COMMANDS\" {\n\t\t\t\treturn value\n\t\t\t}\n\t\t\treturn \"\"\n\t\t}})\n\t\treturn err\n\t}\n\n\tif err := loadWithCommands(\"\"); err != nil {\n\t\tt.Fatalf(\"default performance.commands should load: %v\", err)\n\t}\n\tif err := loadWithCommands(\"64\"); err != nil {\n\t\tt.Fatalf(\"lower performance.commands value should load: %v\", err)\n\t}\n\tif err := loadWithCommands(\"256\"); err != nil {\n\t\tif !strings.Contains(err.Error(), \"performance.commands\") {\n\t\t\tt.Fatalf(\"documented maximum failed for an unrelated reason: %v\", err)\n\t\t}\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_7f17d2859fb1 assertion=Assert configuration loading rejects those documented maximum values. documented performance.commands hard maximum 256 was rejected: %v\", err)\n\t}\n}\n",
+      "digest": "56a2a034e0684e8ca5bb6be41c3a9b643f9b80a4b68aea001fa682aec363aa7f",
+      "bytes": 1047
+    }
+  ],
+  "content_digest": "bce247b0c6adfd8c310e8da2473fdd38884bf9088939f1fa33a19615605e66d7"
+}

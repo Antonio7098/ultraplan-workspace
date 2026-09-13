@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-plan-f08d8f1ac493828f26eb941a",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+  "theory_ids": [],
+  "expectation_refs": [
+    "handbook"
+  ],
+  "kind": "fact",
+  "confirmation_condition": "approved check exits successfully and satisfies its output policy",
+  "refutation_condition": "approved check exits unsuccessfully or violates its output policy",
+  "inconclusive_condition": "approved check is unavailable or incomplete",
+  "approved_paths": [
+    "docs/user-guide.md",
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go",
+    "internal/sprint/index.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go",
+    "internal/sprint/performance_types.go",
+    "internal/sprint/service.go",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "check_id": "go-format-diff",
+  "executable": "/usr/bin/gofmt",
+  "args": [
+    "-d",
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go",
+    "internal/sprint/index.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go",
+    "internal/sprint/performance_types.go",
+    "internal/sprint/service.go"
+  ],
+  "timeout": 300000000000,
+  "output_limit": 262144,
+  "require_empty_stdout": true,
+  "analyzer_calls": 0,
+  "cleanup_required": true,
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "1ee63b8571ce50b1f63e04dd4093e89c2b74d4e8bfeb0bf008b9466467f244d5",
+  "frozen_at": "2026-09-06T16:44:08.650355161Z"
+}

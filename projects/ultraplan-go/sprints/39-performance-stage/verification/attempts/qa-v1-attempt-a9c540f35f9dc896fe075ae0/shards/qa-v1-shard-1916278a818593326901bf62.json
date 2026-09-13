@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-1916278a818593326901bf62",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Performance configuration and redaction",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/performance.go",
+    "internal/platform/config/performance_test.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "behavioral_concerns": [
+    "Defaults, workspace values, and namespaced environment overrides resolve with explicit precedence and source attribution.",
+    "Every numeric and duration limit is typed, finite, positive, and lower-only; malformed, zero, negative, overflowed, non-finite, or upward values fail before work starts.",
+    "Performance model identity is redacted while non-secret operational limits remain safely inspectable."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-01c03e9ca8d7a91b9b0cc7ae",
+    "qa-v1-block-2b729a3f34f22ffc27619786",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-301ceb35cffc4e9cbb84c232",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-515419a1da1cb19817e9abbb",
+    "qa-v1-block-65249f5972392b6b782b071c",
+    "qa-v1-block-80a16af2d655a61cc6762d41",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-a42ba81ee3aabfa3bef7fe97",
+    "qa-v1-block-b164a57b07f64dd07c353b27",
+    "qa-v1-block-c276d57650dc0a87dcedf6df",
+    "qa-v1-block-c393a08baf9f860f8e857a38",
+    "qa-v1-block-cb87eff49588fdd2399eadaa",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-d2dce1396f4a46ea6104f90d",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 129752,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-1916278a818593326901bf62/1",
+      "number": 1,
+      "session_id": "ses_f697ea81dffebqOOMAemtyMiMF",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "ddc7acc5461970bc2dd23e8540e609ae9fe831d9224b35a9917aa74f4923302d",
+      "started_at": "2026-09-12T16:44:11.563696156Z",
+      "completed_at": "2026-09-12T16:45:06.976685208Z",
+      "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance duration fields remain strings after setters and validation.",
+          "paths": [
+            "internal/platform/config/performance.go"
+          ],
+          "output_digest": "qa-v1-block-a42ba81ee3aabfa3bef7fe97"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 37844,
+        "output_tokens_known": true,
+        "output_tokens": 887,
+        "total_tokens_known": true,
+        "total_tokens": 75788,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 449,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 36608,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 129752,
+        "prefix_bytes": 19551,
+        "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+        "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 55412989052
+      },
+      "estimated_cost": {
+        "amount": 0.09187959999999999,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-5f7d79bb80c34b712753ef10",
+      "shard_id": "qa-v1-shard-1916278a818593326901bf62",
+      "claim": "Performance duration limits are stored as raw strings rather than typed durations, so configuration remains stringly typed after validation.",
+      "basis": "Performance declares duration fields as strings and only parses temporary values during validation [qa-v1-block-a42ba81ee3aabfa3bef7fe97], while configuration values must be parsed into typed settings before use [qa-v1-block-b164a57b07f64dd07c353b27] and sprint controls must be typed [qa-v1-block-ce45392d2ebc036986b89d13].",
+      "verification_surface": "internal/platform/config/performance.go",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "The effective Performance configuration exposes CommandTimeout, WallTime, and CleanupReserve as strings after loading and validation, requiring downstream consumers to parse or interpret them again.",
+      "refutation_condition": "All consumers receive these fields through a typed effective projection that converts them to time.Duration before use.",
+      "inconclusive_condition": "The omitted source contains a mandatory typed projection used by every consumer instead of the string-bearing Performance structure.",
+      "safe_evidence_strategy": "Statically inspect the Performance field types, setters, validation, and consumer-facing effective configuration without executing runtime work.",
+      "implementation_fingerprint": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "attempt_history": [
+        {
+          "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-1916278a818593326901bf62/1",
+          "number": 1,
+          "session_id": "ses_f697ea81dffebqOOMAemtyMiMF",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "ddc7acc5461970bc2dd23e8540e609ae9fe831d9224b35a9917aa74f4923302d",
+          "started_at": "2026-09-12T16:44:11.563696156Z",
+          "completed_at": "2026-09-12T16:45:06.976685208Z",
+          "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+          "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Performance duration fields remain strings after setters and validation.",
+              "paths": [
+                "internal/platform/config/performance.go"
+              ],
+              "output_digest": "qa-v1-block-a42ba81ee3aabfa3bef7fe97"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 37844,
+            "output_tokens_known": true,
+            "output_tokens": 887,
+            "total_tokens_known": true,
+            "total_tokens": 75788,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 449,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 36608,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 129752,
+            "prefix_bytes": 19551,
+            "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+            "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 55412989052
+          },
+          "estimated_cost": {
+            "amount": 0.09187959999999999,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Performance duration fields remain strings after setters and validation.",
+          "paths": [
+            "internal/platform/config/performance.go"
+          ],
+          "output_digest": "qa-v1-block-a42ba81ee3aabfa3bef7fe97"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "The cited implementation stores CommandTimeout, WallTime, and CleanupReserve as strings, assigns raw input, and parses only local validation values without replacing the stored strings [qa-v1-block-a42ba81ee3aabfa3bef7fe97]. This explicitly conflicts with typed-config requirements [qa-v1-block-b164a57b07c353b27] and the sprint's typed-control requirement [qa-v1-block-ce45392d2ebc036986b89d13]."
+    }
+  ]
+}

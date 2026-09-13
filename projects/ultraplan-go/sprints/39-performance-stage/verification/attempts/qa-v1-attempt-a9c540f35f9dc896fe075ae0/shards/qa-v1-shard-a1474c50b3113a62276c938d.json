@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-a1474c50b3113a62276c938d",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "boundary",
+  "title": "Runtime authoring safety and real-dependency behavior",
+  "context_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_optimize_runtime.go"
+  ],
+  "overlap_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_optimize_runtime.go"
+  ],
+  "boundary_reason": "Model-selected authoring and optimization cross configuration, durable runtime, process isolation, validation, cost bounds, and promotion boundaries.",
+  "behavioral_concerns": [
+    "Attempts, cycles, commands, wall time, output, profile, proposal, file, and byte budgets remain explicit and inspectable.",
+    "Critical real-runtime behavior requires gated smoke or an explicit promotion-blocking deferral.",
+    "Dedicated model and variant selection follows documented fallback and does not grant target, command, parser, environment, or verdict authority.",
+    "Model output cannot execute arbitrary tools, mutate canonical files directly, alter protected files, or bypass local validation and correctness checks."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "runtime",
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-11210d5b81f0c291627952b3",
+    "qa-v1-block-1260f19e7df1964e71a3a4b2",
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-2b1170d0855a26e01484faff",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-34db48e1e10bbcf28cc6bf2d",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-43f6c6336f81c3ce55628909",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-9bca81dafa402982a1abe706",
+    "qa-v1-block-af5f117594728fd0aab939e2",
+    "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+    "qa-v1-block-b452bd0ab01bbeddc215ea27",
+    "qa-v1-block-c4b3c8428def60929d338d7a",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e8f8d9a28d7be2d1fb220b0a",
+    "qa-v1-block-fdf550b0b7ba003a2a4a30df"
+  ],
+  "prepared_prompt_bytes": 170194,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "mapped"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-9518d90bfd68594c8d83fffb",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+  "evidence_request_id": "qa-v2-request-c5b5b98d792e1bc58f90bf82",
+  "theory_ids": [
+    "qa-v1-theory-ac5be59947bfccdb558de158"
+  ],
+  "claim": "The TUI exposes mutating performance actions for a disabled project when a historical performance attempt exists.",
+  "preconditions": [
+    "Include disabled-without-attempt and enabled-current-attempt controls."
+  ],
+  "expected_behavior": "Assert start, resume, cancel, and recover operation kinds are present.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_1bc58f90bf82",
+    "assertion": "Assert start, resume, cancel, and recover operation kinds are present.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1bc58f90bf82"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/tui/qa_investigator_1bc58f90bf82_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-1bc58f90bf82",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_1bc58f90bf82$",
+      "-count=1"
+    ],
+    "working_directory": "internal/tui",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "d8295acea93936af5a7ae87c90634be89b63a97e5fa756ebe7a2579265c10ddc"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T17:14:22.201270863Z"
+}

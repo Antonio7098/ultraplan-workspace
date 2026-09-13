@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-76ab3eea962c51dbbd501de3",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "primary",
+  "title": "Requirements authoring guidance",
+  "changed_paths": [
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "context_paths": [
+    "docs/user-guide.md",
+    "internal/project/index.go",
+    "internal/sprint/performance_targets.go"
+  ],
+  "behavioral_concerns": [
+    "Agent-facing instructions do not permit performance targets outside sprint requirements.",
+    "Generated guidance preserves the exact nine-column authority and explicitly forbids invented numeric thresholds.",
+    "The authoring prompt includes the performance table only when project policy is enabled."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-09c45c74301d2ddf0c84ab93",
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-1a75438ebb56d69b56b8227b",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-357d02b85024955b15a6cb1c",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-43f6c6336f81c3ce55628909",
+    "qa-v1-block-80a16af2d655a61cc6762d41",
+    "qa-v1-block-88233abe9fdd214bea48c441",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e8f8d9a28d7be2d1fb220b0a",
+    "qa-v1-block-eebfb2d4e88a75f8482eb0e1"
+  ],
+  "prepared_prompt_bytes": 114665,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "mapped"
+}

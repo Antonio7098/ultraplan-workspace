@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-14bfd76ca14ed4aad23d8ec5",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "follow_up",
+  "title": "Follow up qa-v1-theory-3d05000070c81fe10aa3579b",
+  "context_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/sprint_commands.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/state.go",
+    "internal/web/handlers.go"
+  ],
+  "behavioral_concerns": [
+    "follow up: The shared operation runner silently discards invalid performance configuration, allowing operations using that runner to continue instead of failing preflight."
+  ],
+  "expectation_refs": [
+    "contract-errors"
+  ],
+  "pack_complete": false,
+  "parent_theory_ids": [
+    "qa-v1-theory-3d05000070c81fe10aa3579b"
+  ],
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_6mlxkonfcaapp5f52x44lc6qua/qa-v1-shard-14bfd76ca14ed4aad23d8ec5/1",
+      "number": 1,
+      "session_id": "ses_f8855c12dffes8yq6Y3v8eBiKB",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "082d909dcdbb364f183b600409b67b1281a10029262b85c24a24471d94a1ffcc",
+      "started_at": "2026-09-06T17:00:38.546846994Z",
+      "completed_at": "2026-09-06T17:01:49.440715335Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The shared runner discards the performanceSettings error even though that function returns configuration parsing and validation failures (qa-v1-block-539767426a292f490828efde, qa-v1-block-fdf550b0b7ba003a2a4a30df).",
+          "paths": [
+            "internal/app/operation_runner.go",
+            "internal/app/sprint_commands.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 4819,
+        "output_tokens_known": true,
+        "output_tokens": 1174,
+        "total_tokens_known": true,
+        "total_tokens": 69243,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 402,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 62848,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 26,
+      "retained_events": 26,
+      "observed_tool_calls": 2,
+      "context_metrics": {
+        "prompt_bytes": 94958,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 1,
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 8218,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 70893868341
+      },
+      "estimated_cost": {
+        "amount": 0.09981290000000001,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-d25a9ee88281ec8a92a60dca",
+      "shard_id": "qa-v1-shard-14bfd76ca14ed4aad23d8ec5",
+      "claim": "The shared operation runner discards errors returned by performanceSettings, allowing operations to continue instead of failing setup when effective performance configuration is invalid.",
+      "basis": "sharedOperationRunner assigns the performanceSettings error to the blank identifier (qa-v1-block-539767426a292f490828efde), while performanceSettings explicitly returns duration parsing and limit validation errors (qa-v1-block-fdf550b0b7ba003a2a4a30df). This violates the requirement that known-fatal configuration prerequisites stop work before acceptance or side effects (qa-v1-block-3b40edcffc78652dcea95d75, qa-v1-block-1f23acf7acba759b630b1af5).",
+      "verification_surface": "Trace invalid performance settings through sharedOperationRunner construction and operation dispatch in internal/app/operation_runner.go, comparing the explicit propagation used by sprintRuntimeService in internal/app/sprint_commands.go.",
+      "expectation_refs": [
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "blocker",
+      "confirmation_condition": "sharedOperationRunner ignores the performanceSettings error and returns an executable runner, while at least one operation can proceed without independently rejecting the same invalid configuration.",
+      "refutation_condition": "Runner construction or every operation invocation deterministically propagates the performanceSettings error before accepting workload or causing side effects.",
+      "inconclusive_condition": "An external preflight not shown in the cited blocks always validates and rejects the same settings before the shared runner is created or invoked.",
+      "safe_evidence_strategy": "Use static source inspection of the shared runner and its bounded call sites; request a product-owned check only if one specifically covers invalid performance configuration at this boundary.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_6mlxkonfcaapp5f52x44lc6qua/qa-v1-shard-14bfd76ca14ed4aad23d8ec5/1",
+          "number": 1,
+          "session_id": "ses_f8855c12dffes8yq6Y3v8eBiKB",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "082d909dcdbb364f183b600409b67b1281a10029262b85c24a24471d94a1ffcc",
+          "started_at": "2026-09-06T17:00:38.546846994Z",
+          "completed_at": "2026-09-06T17:01:49.440715335Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The shared runner discards the performanceSettings error even though that function returns configuration parsing and validation failures (qa-v1-block-539767426a292f490828efde, qa-v1-block-fdf550b0b7ba003a2a4a30df).",
+              "paths": [
+                "internal/app/operation_runner.go",
+                "internal/app/sprint_commands.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 4819,
+            "output_tokens_known": true,
+            "output_tokens": 1174,
+            "total_tokens_known": true,
+            "total_tokens": 69243,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 402,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 62848,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 26,
+          "retained_events": 26,
+          "observed_tool_calls": 2,
+          "context_metrics": {
+            "prompt_bytes": 94958,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 8218,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 70893868341
+          },
+          "estimated_cost": {
+            "amount": 0.09981290000000001,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The shared runner discards the performanceSettings error even though that function returns configuration parsing and validation failures (qa-v1-block-539767426a292f490828efde, qa-v1-block-fdf550b0b7ba003a2a4a30df).",
+          "paths": [
+            "internal/app/operation_runner.go",
+            "internal/app/sprint_commands.go"
+          ]
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "The discarded error is explicit in qa-v1-block-539767426a292f490828efde, and the discarded value represents real parse or validation failures according to qa-v1-block-fdf550b0b7ba003a2a4a30df. The resulting silent setup path is forbidden by qa-v1-block-3b40edcffc78652dcea95d75 and qa-v1-block-1f23acf7acba759b630b1af5."
+    }
+  ]
+}

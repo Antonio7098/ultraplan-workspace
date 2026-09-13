@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-0511f9ffd8dd92c40a8f10de",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "boundary",
+  "title": "Runtime authoring and optimization safety",
+  "context_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_optimize_runtime.go",
+    "internal/sprint/performance_state.go"
+  ],
+  "overlap_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/platform/config/config.go",
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_optimize_runtime.go",
+    "internal/sprint/performance_state.go"
+  ],
+  "boundary_reason": "Model selection and bounded runtime execution cross configuration, application composition, isolated workspaces, product-owned validation, canonical promotion, and durable evidence boundaries.",
+  "behavioral_concerns": [
+    "Authoring and optimization attempts are bounded, observable, isolated, and locally validated before any canonical mutation.",
+    "Model output cannot define targets, commands, parsers, verdicts, environment policy, or accepted paths.",
+    "Only new measurement files may be authored; only approved production files may be optimized.",
+    "Prompt/runtime identity and attempt counters remain inspectable, with no hidden retries or provider fallback."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "public-api",
+    "runtime",
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0667be7b3bac24ff6ce325d7",
+    "qa-v1-block-1260f19e7df1964e71a3a4b2",
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-23e6f8a9f919b3c799900fcf",
+    "qa-v1-block-263b3a5636c57033d940e0e1",
+    "qa-v1-block-2b1170d0855a26e01484faff",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-43f6c6336f81c3ce55628909",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-9bca81dafa402982a1abe706",
+    "qa-v1-block-a42ba81ee3aabfa3bef7fe97",
+    "qa-v1-block-c771dfa1e6823a4da4c4b2e2",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e5e9288e0d4e15abe068bed1",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-fcce72a20c998ce4878057ed"
+  ],
+  "prepared_prompt_bytes": 190421,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-0511f9ffd8dd92c40a8f10de",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_d3pf42gtkpgahqdmabwlou4rne/qa-v1-shard-0511f9ffd8dd92c40a8f10de/1",
+      "number": 1,
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "3f309e252f8b7c93af855af866533710506e98287f947c60f4c99598e8458ad4",
+      "started_at": "2026-09-13T09:55:22.72228498Z",
+      "completed_at": "2026-09-13T09:55:29.792148835Z",
+      "implementation_before": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "implementation_after": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 2,
+      "retained_events": 2,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 353347,
+        "prefix_bytes": 19809,
+        "prefix_digest": "04d27b75d819b47405c8c54bd589a4c5c618f721eaa2435e70283196680507f5",
+        "cache_cohort": "qa-investigator/04d27b75d819b47405c8c54bd589a4c5c618f721eaa2435e70283196680507f5/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 7069863855
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

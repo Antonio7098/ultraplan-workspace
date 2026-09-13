@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-8b9c787f2907c10ea9b3656a",
+  "spec_id": "qa-v2-spec-4f022c656671771922ff83a1",
+  "test_bundle_id": "qa-v2-test-71ced6668c4feb28f5bc5aba",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "27c59089fd03e6eb338ead314bff074c9eb3dfc55a1c8ae6103d6dfa57104473",
+    "exit_code": 1,
+    "duration": 29702794562,
+    "stdout_digest": "94795e8a864c6cda69f88ccb6107438af9c9d4fddca2beec0408be3a4c3f9507",
+    "stderr_digest": "09d2bcc60b2557604ac70e65276f1878be382c4f20c5e703dba3cf9cdc437140",
+    "stdout": "=== RUN   TestQAInvestigator_68ca61610636\nAssert the validator returns nil for each malformed nested TargetResults case.\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_68ca61610636\n    qa_investigator_68ca61610636_test.go:83: validator accepted malformed nested TargetResults: [invalid comparison outcome malformed target identity]\n--- FAIL: TestQAInvestigator_68ca61610636 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.010s\nFAIL\n",
+    "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+    "output_bytes": 938,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_68ca61610636",
+    "assertion": "Assert the validator returns nil for each malformed nested TargetResults case.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_68ca61610636"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:52:34.52403738Z"
+}

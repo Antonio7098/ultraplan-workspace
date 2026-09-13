@@ -1,0 +1,59 @@
+{
+  "observed_outcome": "inconclusive",
+  "observed_reason_code": "failure_signature_mismatch",
+  "failure": {
+    "phase": "assertion",
+    "code": "unknown_failure",
+    "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_2d93974a2b11     qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}} --- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s FAIL",
+    "retryable": false
+  },
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-67fe371d627f8de97c176e31",
+  "spec_id": "qa-v2-spec-c42411801c177cc5f8f73c71",
+  "test_bundle_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_2d93974a2b11",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_2d93974a2b11",
+        "action": "fail"
+      }
+    ],
+    "executable": "go",
+    "args_digest": "8bc18418160d79b0ea3988605a450012a930b9b7a5f45184383b174b7daf40ee",
+    "exit_code": 1,
+    "duration": 25462155290,
+    "stdout_digest": "9462146eeb5ccc671bd540d5683834d42b39da3f4f19f8a1645d85ec232dd067",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_2d93974a2b11\n    qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}}\n--- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s\nFAIL\n",
+    "output_bytes": 427,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_2d93974a2b11",
+    "assertion": "The test must assert the actual HTTP status and response result for qa-v1-theory-f2dfc2c802889fddc3bbae5c and demonstrate that the request reaches evidence pagination with the omitted-limit value.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2d93974a2b11"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:28:50.785141183Z"
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-731bcfbd077beb53b1c37659",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T13:14:56.107863654Z",
+        "completed_at": "2026-09-12T13:15:41.459152313Z",
+        "run_id": "qa-v2-run-0be988eba86db2c9238ad7e8"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-21ae0de596606b0e9329abe5",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+    ],
+    "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+    "gap": "The new test checked only help registration and then failed unconditionally; it did not execute any requested performance result or exit mapping.",
+    "requested_evidence": "Strengthen the executable Go _test.go compatibility reproducer in the approved private workspace for this theory.",
+    "required_observation": "Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c in the assertions. This supports promotion readiness and must not be presented as proof that coverage was previously absent.",
+    "control_requirement": "Include healthy success controls and at least one non-performance command compatibility control using only existing command and service seams; do not fail unconditionally or rely on a marker.",
+    "priority": "medium",
+    "status": "superseded",
+    "evidence_round": 2,
+    "attempts": 1,
+    "evidence_fingerprint": "c6e21e7ddc50ddb30fa0d3a61570c0c381988d3a7046b9a69261d49c50268b68",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-6a05f64ec6673fdd9404fbd7",
+    "test_bundle_id": "qa-v2-test-731bcfbd077beb53b1c37659",
+    "latest_run_id": "qa-v2-run-0be988eba86db2c9238ad7e8",
+    "next_action": "Inspect replacement evidence request qa-v2-request-6a05f64ec6673fdd9404fbd7."
+  }
+}

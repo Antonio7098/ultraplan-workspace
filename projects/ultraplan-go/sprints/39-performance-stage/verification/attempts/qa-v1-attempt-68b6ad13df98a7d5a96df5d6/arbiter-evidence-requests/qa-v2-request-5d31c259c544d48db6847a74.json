@@ -1,0 +1,143 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "renewal": {
+      "review_started_at": "2026-09-12T20:34:46.673724777Z",
+      "review": {
+        "evidence_digest": "4af66763ac7929d7fabf5b1d09a17cc09a16fa7a2be631917c523dbf05416aab",
+        "group": {
+          "id": "qa-v1-arbiter-group-4af66763ac7929d7fabf5b1d",
+          "theory_ids": [
+            "qa-v1-theory-44d9a1998804c860f04368c4"
+          ],
+          "context_block_ids": [
+            "qa-v1-block-19e471996aa5f3432aae4add",
+            "qa-v1-block-1eb113303f71d851c8c728ae",
+            "qa-v1-block-2b729a3f34f22ffc27619786",
+            "qa-v1-block-2d09ea9408321e39866f0ffb",
+            "qa-v1-block-2d47ee3c25b503c87b30c56c",
+            "qa-v1-block-307234c6bfff53948b392930",
+            "qa-v1-block-3473f5910689582dea130e19",
+            "qa-v1-block-35e4c5fcc8d7288b70a46a1e",
+            "qa-v1-block-3af424a097d973509acf6e57",
+            "qa-v1-block-41d933d34511fa71cb08d3d6",
+            "qa-v1-block-47f4c5b312c2957ed5bb1b43",
+            "qa-v1-block-4c2e9e074e2f61478a2c1b5d",
+            "qa-v1-block-5427584885246a8b28a0e933",
+            "qa-v1-block-60d9d4670700f4fa65726e0a",
+            "qa-v1-block-68cfca988b5aef1e551fa430",
+            "qa-v1-block-7093d2fc275917f1a5c52e54",
+            "qa-v1-block-76be07ab5d25adb0b9e502d6",
+            "qa-v1-block-78bde6407c585099aaf5e342",
+            "qa-v1-block-78e13c26eb8ae322452c9951",
+            "qa-v1-block-7bfbd38c507f82c00e5f773e",
+            "qa-v1-block-8af63023a02416b710685bbe",
+            "qa-v1-block-9905b1b7d4d24397f5a85abc",
+            "qa-v1-block-9d2f0e314212dfeb60cbb135",
+            "qa-v1-block-9f50cd9470412063551dc33b",
+            "qa-v1-block-a1c54f69a34aba9ad20c1302",
+            "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+            "qa-v1-block-b2676a65e977fc5e398b4719",
+            "qa-v1-block-c1bc237cbe63b9df34c97ed7",
+            "qa-v1-block-c4b3c8428def60929d338d7a",
+            "qa-v1-block-cd1988b71fec72095e20320d",
+            "qa-v1-block-ce45392d2ebc036986b89d13",
+            "qa-v1-block-d0bc3bf79dd5df5a59cbdec0",
+            "qa-v1-block-d16d7f7b34fef6ef0b67aee4",
+            "qa-v1-block-d43a18872f08e8fc58ea9eb9",
+            "qa-v1-block-d5844cb601400dfa0f329c46",
+            "qa-v1-block-e419d1b4a19c773a764b15a0",
+            "qa-v1-block-e9d8077d15e68457fadc6be5",
+            "qa-v1-block-f12b0c48c64d57ed5e4488de",
+            "qa-v1-block-f3519512e9ac52dff09fe19e",
+            "qa-v1-block-f762c5dd3b25d606c5068cc4",
+            "qa-v1-block-fdf550b0b7ba003a2a4a30df",
+            "renewal-4af66763ac7929d7fabf5b1d"
+          ],
+          "session_id": "ses_f68ab880effeT8ky0eH5On7SEG",
+          "provider": "openai",
+          "model": "openai/gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "1a54b97ca0e8956c5a59625e88ebe18c3999d19c5f52cef8bdddea2f4a6b3680",
+          "round": 1,
+          "overrides": [
+            {
+              "id": "qa-v1-override-4d8cf99d1485bd788e42de5d",
+              "theory_ids": [
+                "qa-v1-theory-44d9a1998804c860f04368c4"
+              ],
+              "action": "confirm",
+              "outcome": "confirmed",
+              "replacement_claim": "The new performance CLI lacks compatibility tests covering stable JSON envelopes, stdout/stderr separation, and outcome-to-exit-code behavior.",
+              "reason": "The executable package-local contract test passed healthy JSON and text dry-run controls, then inspected the named product test files and failed because core performance command and semantic outcome mappings were absent. This confirms that the existing product tests do not provide the complete public CLI compatibility coverage required by the theory. The test does not mistake its marker for proof; the decisive observation is the reported missing compatibility cases.",
+              "reason_refs": [
+                "qa-v1-theory-44d9a1998804c860f04368c4",
+                "renewal-4af66763ac7929d7fabf5b1d"
+              ],
+              "confidence": 0.96
+            }
+          ],
+          "issues": [
+            {
+              "id": "qa-v1-arbiter-issue-36dc3a610c4a9a05ae866e50",
+              "theory_ids": [
+                "qa-v1-theory-44d9a1998804c860f04368c4"
+              ],
+              "claim": "The new performance CLI lacks compatibility tests covering stable JSON envelopes, stdout/stderr separation, and outcome-to-exit-code behavior.",
+              "title": "Performance CLI compatibility coverage is incomplete",
+              "issue_class": "test_coverage",
+              "severity": "low",
+              "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+              "reason": "Existing product tests do not exercise the performance CLI across representative success, target-missed, cancellation, partial, and operational-failure outcomes while asserting its JSON/text contracts, stream separation, and exit mappings.",
+              "evidence_refs": [
+                "qa-v1-theory-44d9a1998804c860f04368c4",
+                "renewal-4af66763ac7929d7fabf5b1d"
+              ]
+            }
+          ],
+          "fallback": false
+        }
+      },
+      "granted_at": "2026-09-12T20:32:17.739067931Z",
+      "target_fingerprint": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+      "prior_reason": "",
+      "base_attempts": 0,
+      "base_preparations": 0,
+      "started_at": "2026-09-12T20:32:29.312413645Z",
+      "test_bundle_id": "qa-v2-test-16a0129229c8391e97b6af00",
+      "completed_at": "2026-09-12T20:35:38.88364554Z"
+    },
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-16a0129229c8391e97b6af00",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T20:34:02.312469259Z",
+        "completed_at": "2026-09-12T20:34:44.280923688Z",
+        "run_id": "qa-v2-run-0f98e9ffdfffc417c65259cf"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-5d31c259c544d48db6847a74",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-44d9a1998804c860f04368c4"
+    ],
+    "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+    "gap": "Evidence verifies healthy JSON output and a separate writer defect but does not execute semantic success, target-miss, cancellation, and partial mappings for this theory.",
+    "requested_evidence": "Ask the original investigator to create or strengthen an executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-44d9a1998804c860f04368c4.",
+    "required_observation": "Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+    "control_requirement": "Include a passing status or dry-run control and isolate compatibility behavior from the writer-error defect. Frozen product tests establish prior coverage absence.",
+    "priority": "medium",
+    "status": "evidence_recorded",
+    "evidence_round": 5,
+    "attempts": 1,
+    "evidence_fingerprint": "3ac66f9ec42efffcff4c552f46ae51dbe9e0133975b9b833378d4b1ad317084f",
+    "test_bundle_id": "qa-v2-test-16a0129229c8391e97b6af00",
+    "latest_run_id": "qa-v2-run-0f98e9ffdfffc417c65259cf",
+    "next_action": "The renewed assertions and execution received a conclusive semantic review."
+  }
+}

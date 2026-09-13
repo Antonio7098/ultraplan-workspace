@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-53b03de369a9bfd58bd53512",
+  "plan_id": "qa-v2-plan-98e1a3fccc808a37154e6d3d",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-9033b31413394dbcfc5e147e",
+  "workspace_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+  "workspace_identity": "36ed26500eaa0a12ce03f9d3422236c8becaefbf11ca88fc5f7f0d13a1a81889",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_78d7bc49d841",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_78d7bc49d841",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841",
+      "executable": "go",
+      "args_digest": "594bcf11fc25993b09c03b11674c589c9e73a854db1987aa9a069eb184a93b62",
+      "exit_code": 1,
+      "duration": 22115972876,
+      "stdout_digest": "244f33444a9740c0b2d754479f23e919a5c0f4df35a924c9687444212cf77a7d",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_78d7bc49d841\n    qa_investigator_78d7bc49d841_test.go:29: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841 assertion=The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure. report-only summary should validate: flow state malformed: flow-state.json: invalid performance counts\n--- FAIL: TestQAInvestigator_78d7bc49d841 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.005s\nFAIL\n",
+      "output_bytes": 546,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_78d7bc49d841_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:42:26.002977808Z"
+}

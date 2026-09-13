@@ -1,0 +1,446 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Immutable state and flow compatibility",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/performance_types.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance.go",
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_repair.go",
+    "internal/sprint/qa_reproduction.go"
+  ],
+  "behavioral_concerns": [
+    "Conformance Review is gated only by current fresh passed or passed_with_reports performance evidence when policy is enabled.",
+    "Every verification publication checks the complete durable writer token immediately before publication; stale generations cannot publish.",
+    "Flow schema v4 validates bounded performance pointers and counts while schemas v1 through v3 remain readable through migration.",
+    "Performance state strictly rejects unknown fields, trailing JSON, malformed identities, invalid references, text overflow, and counters above persisted limits.",
+    "Planning refreshes preserve existing performance summaries, while implementation mutation marks prior verification evidence stale.",
+    "Private records are contained, no-follow, permission-restricted, immutable, digest-verified, and rejected on conflicting bytes.",
+    "The performance phase remains outside planning-stage compatibility and shared verification ownership does not regress QA or repair publication."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-errors"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-06f056cf8a8ebf03d29f1cc8",
+    "qa-v1-block-07cafd8da2302e65407e1d1d",
+    "qa-v1-block-18a26cd00a25dde194f23d59",
+    "qa-v1-block-1a75438ebb56d69b56b8227b",
+    "qa-v1-block-20ec4df6fbc548e812b7cdb0",
+    "qa-v1-block-263b3a5636c57033d940e0e1",
+    "qa-v1-block-26f674a3d24b675fa55b8463",
+    "qa-v1-block-2fa5eb620169346ab567a9ec",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-7afd95f645aa1750fb57bc20",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-ba0416d19c460900bc2e3242",
+    "qa-v1-block-cd78cb7e117fcb707e6ff489",
+    "qa-v1-block-cddc9044100638241d3eaec1",
+    "qa-v1-block-d67eac718fa4a64f22a93a4a",
+    "qa-v1-block-d7d9db107220d7449e6920b6",
+    "qa-v1-block-de76b1625a760c538ab97441",
+    "qa-v1-block-e58670b0f3e1a35d74e45750",
+    "qa-v1-block-f129eb795b7b08c72978a40b"
+  ],
+  "prepared_prompt_bytes": 97423,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-65c6fc03c89d778911b504e3/1",
+      "number": 1,
+      "session_id": "ses_f88e0572effeCpzPldBlRAJ5wQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "0555f872ed8418c0dd302f875a7733fa02c7b00df19d068113eee7a4b335d56f",
+      "started_at": "2026-09-06T14:29:14.329089647Z",
+      "completed_at": "2026-09-06T14:30:37.418168904Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The cited failure path calls PublishState, then LoadFlowState and SaveFlowState without a writer-fence check immediately before flow-state publication.",
+          "paths": [
+            "internal/sprint/performance.go",
+            "internal/sprint/state.go"
+          ],
+          "output_digest": "fbb9ff8bf58ab5db79ccac889a304dca6b9fb72ecd0ee999387c02b2444aade3"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 10978,
+        "output_tokens_known": true,
+        "output_tokens": 1003,
+        "total_tokens_known": true,
+        "total_tokens": 84625,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 452,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 72192,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 36,
+      "retained_events": 36,
+      "observed_tool_calls": 8,
+      "context_metrics": {
+        "prompt_bytes": 97423,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 4,
+          "read": 4
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 20256,
+        "repeated_reads": 0,
+        "search_calls": 4,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 83089079257
+      },
+      "estimated_cost": {
+        "amount": 0.1331836,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-65c6fc03c89d778911b504e3/1/evidence/2",
+      "number": 3,
+      "session_id": "ses_f88e0572effeCpzPldBlRAJ5wQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "0555f872ed8418c0dd302f875a7733fa02c7b00df19d068113eee7a4b335d56f",
+      "started_at": "2026-09-07T12:54:18.305674695Z",
+      "completed_at": "2026-09-07T12:57:03.468260298Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1648,
+        "output_tokens_known": true,
+        "output_tokens": 82,
+        "total_tokens_known": true,
+        "total_tokens": 59485,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 283,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 57472,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 35,
+      "retained_events": 35,
+      "observed_tool_calls": 11,
+      "context_metrics": {
+        "prompt_bytes": 9642,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 4,
+          "read": 6
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 27895,
+        "repeated_reads": 0,
+        "search_calls": 4,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 165162585603
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-65c6fc03c89d778911b504e3/1/evidence/qa-v2-request-10876e3025aa9353fcf1007e/2",
+      "number": 3,
+      "session_id": "ses_f88e0572effeCpzPldBlRAJ5wQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "ee6a70d1cdbc60539b70c4814c0d3ccbb72e8bc707491602804146de09c1d4ed",
+      "started_at": "2026-09-12T10:05:01.75064014Z",
+      "completed_at": "2026-09-12T10:05:09.998035533Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 3,
+      "retained_events": 3,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 18985,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 8247395393
+      },
+      "failure_kind": "original_session_unavailable",
+      "stop_reason": "original_session_unavailable"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-65c6fc03c89d778911b504e3/1/evidence/qa-v2-request-10876e3025aa9353fcf1007e/3",
+      "number": 4,
+      "session_id": "ses_f88e0572effeCpzPldBlRAJ5wQ",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "ee6a70d1cdbc60539b70c4814c0d3ccbb72e8bc707491602804146de09c1d4ed",
+      "started_at": "2026-09-12T10:05:55.36913214Z",
+      "completed_at": "2026-09-12T10:06:04.095956244Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 3,
+      "retained_events": 3,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 19505,
+        "prefix_bytes": 0,
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 8726824104
+      },
+      "failure_kind": "original_session_unavailable",
+      "stop_reason": "original_session_unavailable"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fc3744e6e8886693c1c4a689",
+      "shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+      "claim": "The performance failure path can publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState.",
+      "basis": "qa-v1-block-68cfca988b5aef1e551fa430 shows PublishState followed by LoadFlowState and SaveFlowState without another writer check; qa-v1-block-26f674a3d24b675fa55b8463 defines the complete shared verification writer token.",
+      "verification_surface": "internal/sprint/performance.go finishPerformanceFailure and internal/sprint/state.go SaveFlowState",
+      "expectation_refs": [
+        "contract-architecture",
+        "contract-errors"
+      ],
+      "severity_if_confirmed": "blocker",
+      "confirmation_condition": "Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.",
+      "refutation_condition": "SaveFlowState performs the complete verification writer-token check immediately before publication, or a cited ownership guarantee proves the generation cannot change during this interval.",
+      "inconclusive_condition": "The ownership lifecycle or SaveFlowState behavior differs from the cited source and available evidence cannot establish whether ownership can change across the interval.",
+      "safe_evidence_strategy": "Use a deterministic product-owned fence hook that advances the generation after PublishState and before SaveFlowState, then inspect whether the stale failure path changes durable flow state.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-65c6fc03c89d778911b504e3/1",
+          "number": 1,
+          "session_id": "ses_f88e0572effeCpzPldBlRAJ5wQ",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "0555f872ed8418c0dd302f875a7733fa02c7b00df19d068113eee7a4b335d56f",
+          "started_at": "2026-09-06T14:29:14.329089647Z",
+          "completed_at": "2026-09-06T14:30:37.418168904Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The cited failure path calls PublishState, then LoadFlowState and SaveFlowState without a writer-fence check immediately before flow-state publication.",
+              "paths": [
+                "internal/sprint/performance.go",
+                "internal/sprint/state.go"
+              ],
+              "output_digest": "fbb9ff8bf58ab5db79ccac889a304dca6b9fb72ecd0ee999387c02b2444aade3"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 10978,
+            "output_tokens_known": true,
+            "output_tokens": 1003,
+            "total_tokens_known": true,
+            "total_tokens": 84625,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 452,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 72192,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 36,
+          "retained_events": 36,
+          "observed_tool_calls": 8,
+          "context_metrics": {
+            "prompt_bytes": 97423,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 4,
+              "read": 4
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 20256,
+            "repeated_reads": 0,
+            "search_calls": 4,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 83089079257
+          },
+          "estimated_cost": {
+            "amount": 0.1331836,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-65c6fc03c89d778911b504e3/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88e0572effeCpzPldBlRAJ5wQ",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "0555f872ed8418c0dd302f875a7733fa02c7b00df19d068113eee7a4b335d56f",
+          "started_at": "2026-09-07T12:54:18.305674695Z",
+          "completed_at": "2026-09-07T12:57:03.468260298Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1648,
+            "output_tokens_known": true,
+            "output_tokens": 82,
+            "total_tokens_known": true,
+            "total_tokens": 59485,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 283,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 57472,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 35,
+          "retained_events": 35,
+          "observed_tool_calls": 11,
+          "context_metrics": {
+            "prompt_bytes": 9642,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 4,
+              "read": 6
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 27895,
+            "repeated_reads": 0,
+            "search_calls": 4,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 165162585603
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The cited failure path calls PublishState, then LoadFlowState and SaveFlowState without a writer-fence check immediately before flow-state publication.",
+          "paths": [
+            "internal/sprint/performance.go",
+            "internal/sprint/state.go"
+          ],
+          "output_digest": "fbb9ff8bf58ab5db79ccac889a304dca6b9fb72ecd0ee999387c02b2444aade3"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-10876e3025aa9353fcf1007e: failure_signature_mismatch\nRequired observation: Confirm only if: Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.. Refute only if: SaveFlowState performs the complete verification writer-token check immediately before publication, or a cited ownership guarantee proves the generation cannot change during this interval.. Otherwise: The ownership lifecycle or SaveFlowState behavior differs from the cited source and available evidence cannot establish whether ownership can change across the interval.\nTest internal/sprint/qa_investigator_9353fcf1007e_test.go:\npackage sprint\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"fmt\"\n\t\"testing\"\n\t\"time\"\n)\n\nfunc TestQAInvestigator_9353fcf1007e(t *testing.T) {\n\tconst matcher = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_9353fcf1007e\"\n\tconst assertion = \"Confirm only if: Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.. Refute only if: SaveFlowState performs the complete verification\"\n\n\trun := func(t *testing.T, revokeAfterStateFence bool) (bool, bool) {\n\t\tt.Helper()\n\t\troot := workspaceFixture(t)\n\t\tsp := sprintFixture(t, root, \"proj\", \"39-performance\")\n\t\tnow := time.Date(2026, 9, 7, 12, 0, 0, 0, time.UTC)\n\t\tif err := SaveFlowState(root, sp, NewFlowState(sp, completeStates(sp), now)); err != nil {\n\t\t\tt.Fatalf(\"fixture flow state: %v\", err)\n\t\t}\n\n\t\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\t\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\t\tref := func(name string) PerformanceArtifactRef {\n\t\t\tpath, err := PerformanceAttemptRelPath(sp, attemptID, name)\n\t\t\tif err != nil {\n\t\t\t\tt.Fatalf(\"fixture reference %s: %v\", name, err)\n\t\t\t}\n\t\t\treturn PerformanceArtifactRef{Path: path, Digest: fingerprintOf(name)}\n\t\t}\n\t\tpacket, manifest, environment := ref(\"target-packet.json\"), ref(\"benchmark-manifest.json\"), ref(\"environment.json\")\n\t\tstate := PerformanceState{\n\t\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\t\tProject: sp.Project,\n\t\t\tSprint: sp.Slug,\n\t\t\tAttemptID: attemptID,\n\t\t\tPhase: PerformancePhaseBaseline,\n\t\t\tFresh: true,\n\t\t\tCorrelation: token,\n\t\t\tDeadline: now.Add(time.Hour),\n\t\t\tLimits: DefaultPerformanceLimits(),\n\t\t\tPacket: packet,\n\t\t\tTargetPacketDigest: fingerprintOf(\"packet\"),\n\t\t\tManifest: \u0026manifest,\n\t\t\tEnvironment: \u0026environment,\n\t\t\tNextAction: \"Measure performance.\",\n\t\t\tUpdatedAt: now,\n\t\t}\n\t\tstale := false\n\t\tstateFenceReached := false\n\t\tstore := NewPerformanceStore(root, sp).WithWriterFence(func(got VerificationWriterToken) error {\n\t\t\tif got != token || stale {\n\t\t\t\treturn context.Canceled\n\t\t\t}\n\t\t\treturn nil\n\t\t}).WithHooks(QAStateHooks{BeforeRename: func(kind, _ string) error {\n\t\t\tif kind == \"performance-state\" {\n\t\t\t\tstateFenceReached = true\n\t\t\t\tif revokeAfterStateFence {\n\t\t\t\t\tstale = true\n\t\t\t\t}\n\t\t\t}\n\t\t\treturn nil\n\t\t}})\n\t\tservice := NewService(root).WithClock(func() time.Time { return now })\n\t\t_, err := service.finishPerformanceFailure(store, sp, PerformancePrepareResult{Limits: DefaultPerformanceLimits()}, state, packet, manifest, environment, fingerprintOf(\"implementation\"), errors.New(\"measurement failed\"), token)\n\t\tif err == nil || !errors.Is(err, context.Canceled) \u0026\u0026 err.Error() != \"measurement failed\" {\n\t\t\tt.Fatalf(\"fixture did not reach the expected failure publication: %v\", err)\n\t\t}\n\t\tflow, loadErr := LoadFlowState(root, sp)\n\t\tif loadErr != nil {\n\t\t\tt.Fatalf(\"load resulting flow state: %v\", loadErr)\n\t\t}\n\t\treturn stateFenceReached, flow.Performance != nil\n\t}\n\n\tt.Run(\"control-current-owner\", func(t *testing.T) {\n\t\tstateFenceReached, flowPublished := run(t, false)\n\t\tif !stateFenceReached || !flowPublished {\n\t\t\tt.Fatalf(\"control did not reach the same entry point: stateFenceReached=%t flowPublished=%t\", stateFenceReached, flowPublished)\n\t\t}\n\t})\n\n\tstateFenceReached, staleFlowPublished := run(t, true)\n\tif !stateFenceReached {\n\t\tt.Fatal(\"fixture precondition failed: ownership was not revoked after the performance-state fence\")\n\t}\n\tif staleFlowPublished {\n\t\tt.Log(assertion)\n\t\tfmt.Println(matcher)\n\t\tt.Fatalf(\"%s: stale verification owner published the durable flow summary\", assertion)\n\t}\n}\n\nObserved stdout:\n[REDACTED]\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/sprint/qa_investigator_9353fcf1007e_test.go"
+          ],
+          "check_id": "qa-v2-test-4a637ac7b98dd57ba5b0448b",
+          "output_digest": "e54b74eb9192b48055c48d2062bffdd23469ef7d70f960ff1293a47f86c8eba2"
+        }
+      ],
+      "outcome": "inconclusive",
+      "outcome_reason": "failure_signature_mismatch"
+    }
+  ]
+}

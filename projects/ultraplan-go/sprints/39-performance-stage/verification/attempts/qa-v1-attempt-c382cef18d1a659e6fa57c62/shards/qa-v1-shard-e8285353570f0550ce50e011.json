@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-e8285353570f0550ce50e011",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Benchmark discovery and measurement",
+  "changed_paths": [
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_benchmark_test.go",
+    "internal/sprint/performance_discovery.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_isolation_test.go",
+    "internal/sprint/performance_measure.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_types.go",
+    "internal/sprint/service.go"
+  ],
+  "behavioral_concerns": [
+    "Authoring occurs only in disposable copies and may promote only new bounded measurement test or performance testdata files after frozen correctness checks.",
+    "Discovery accepts only exact immediately preceding markers in contained regular Go test files and proves complete unique target coverage.",
+    "Manifest identity, parser version, output identity, exact argv, package locator, symbol, and raw unit are product-owned and digest-frozen.",
+    "Measurement commands cannot mutate the frozen disposable benchmark workspace or canonical target.",
+    "Process environments are allowlisted, executions are serial, and output truncation, ambiguity, identity drift, process failure, or uncertain cleanup blocks qualification.",
+    "Warmups are excluded, complete declared sample sets are required, medians are exact, and CV equal to the configured maximum is valid."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1260f19e7df1964e71a3a4b2",
+    "qa-v1-block-1b60986a6ab4bfd58330b6d6",
+    "qa-v1-block-2b1170d0855a26e01484faff",
+    "qa-v1-block-3b40edcffc78652dcea95d75",
+    "qa-v1-block-788a9359634df945f8a33f85",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-9bca81dafa402982a1abe706",
+    "qa-v1-block-bb40e0380b7ace9a221dbe2a",
+    "qa-v1-block-d20c43d47f3c55e480768bbb",
+    "qa-v1-block-da260796c6b6d91797a634d4",
+    "qa-v1-block-dbf7e69765ab615487ff3a15"
+  ],
+  "prepared_prompt_bytes": 106882,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-e8285353570f0550ce50e011/1",
+      "number": 1,
+      "session_id": "ses_f88a0e811ffergZf7LEOo3ANgD",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "ad2770d858c6126b4a7ab9806aef4bbbbe4c54f2c75ff7424567c56d82d3df4c",
+      "started_at": "2026-09-06T15:38:33.25363113Z",
+      "completed_at": "2026-09-06T15:39:31.269996589Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The discovery loop retains a pending descriptor across blank and comment lines, contradicting the same file's immediate-precedence contract.",
+          "paths": [
+            "internal/sprint/performance_discovery.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 33130,
+        "output_tokens_known": true,
+        "output_tokens": 766,
+        "total_tokens_known": true,
+        "total_tokens": 66193,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 553,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 31744,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 106882,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 58016365459
+      },
+      "estimated_cost": {
+        "amount": 0.2249522,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-e8285353570f0550ce50e011/1/evidence/1",
+      "number": 2,
+      "session_id": "ses_f88a0e811ffergZf7LEOo3ANgD",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "ad2770d858c6126b4a7ab9806aef4bbbbe4c54f2c75ff7424567c56d82d3df4c",
+      "started_at": "2026-09-07T11:54:44.123869711Z",
+      "completed_at": "2026-09-07T11:56:08.20881633Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1266,
+        "output_tokens_known": true,
+        "output_tokens": 46,
+        "total_tokens_known": true,
+        "total_tokens": 39646,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 190,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 38144,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 20,
+      "retained_events": 20,
+      "observed_tool_calls": 3,
+      "context_metrics": {
+        "prompt_bytes": 7672,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 1,
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 6664,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 84084946619
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-e8285353570f0550ce50e011/1/evidence/qa-v2-request-4fd8a79cac34b652f4844a27/1",
+      "number": 3,
+      "session_id": "ses_f88a0e811ffergZf7LEOo3ANgD",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "1bd74158e3e6ade3636f8cc1db731746b97789c9ff8050506b614206558ecba6",
+      "started_at": "2026-09-07T17:08:52.290570904Z",
+      "completed_at": "2026-09-07T17:09:37.028916068Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 875,
+        "output_tokens_known": true,
+        "output_tokens": 38,
+        "total_tokens_known": true,
+        "total_tokens": 44177,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 43264,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 12881,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 44738345164
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-8f427e11c59f76989883dc31",
+      "shard_id": "qa-v1-shard-e8285353570f0550ce50e011",
+      "claim": "Performance manifest discovery accepts descriptor markers separated from a function declaration by blank lines or additional comments, despite requiring the marker to immediately precede the function.",
+      "basis": "qa-v1-block-1b60986a6ab4bfd58330b6d6 documents immediate precedence, but discoverPerformanceFile continues past empty and comment lines while a marker is pending.",
+      "verification_surface": "internal/sprint/performance_discovery.go:discoverPerformanceFile",
+      "expectation_refs": [
+        "handbook"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "DiscoverPerformanceManifest accepts a contained *_test.go file having a valid marker, an intervening blank or comment line, and then a matching function.",
+      "refutation_condition": "Discovery rejects every marker whose next source line is not its function declaration.",
+      "inconclusive_condition": "The product definition of immediately preceding explicitly permits intervening blank or comment lines, contrary to qa-v1-block-1b60986a6ab4bfd58330b6d6.",
+      "safe_evidence_strategy": "Use static inspection or a temporary-file unit test with a blank or unrelated comment between a valid marker and function, then call DiscoverPerformanceManifest without modifying product files.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-e8285353570f0550ce50e011/1",
+          "number": 1,
+          "session_id": "ses_f88a0e811ffergZf7LEOo3ANgD",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "ad2770d858c6126b4a7ab9806aef4bbbbe4c54f2c75ff7424567c56d82d3df4c",
+          "started_at": "2026-09-06T15:38:33.25363113Z",
+          "completed_at": "2026-09-06T15:39:31.269996589Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The discovery loop retains a pending descriptor across blank and comment lines, contradicting the same file's immediate-precedence contract.",
+              "paths": [
+                "internal/sprint/performance_discovery.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 33130,
+            "output_tokens_known": true,
+            "output_tokens": 766,
+            "total_tokens_known": true,
+            "total_tokens": 66193,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 553,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 31744,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 106882,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 58016365459
+          },
+          "estimated_cost": {
+            "amount": 0.2249522,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-e8285353570f0550ce50e011/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88a0e811ffergZf7LEOo3ANgD",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "ad2770d858c6126b4a7ab9806aef4bbbbe4c54f2c75ff7424567c56d82d3df4c",
+          "started_at": "2026-09-07T11:54:44.123869711Z",
+          "completed_at": "2026-09-07T11:56:08.20881633Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1266,
+            "output_tokens_known": true,
+            "output_tokens": 46,
+            "total_tokens_known": true,
+            "total_tokens": 39646,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 190,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 38144,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 20,
+          "retained_events": 20,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 7672,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 6664,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 84084946619
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-e8285353570f0550ce50e011/1/evidence/qa-v2-request-4fd8a79cac34b652f4844a27/1",
+          "number": 3,
+          "session_id": "ses_f88a0e811ffergZf7LEOo3ANgD",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "1bd74158e3e6ade3636f8cc1db731746b97789c9ff8050506b614206558ecba6",
+          "started_at": "2026-09-07T17:08:52.290570904Z",
+          "completed_at": "2026-09-07T17:09:37.028916068Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 875,
+            "output_tokens_known": true,
+            "output_tokens": 38,
+            "total_tokens_known": true,
+            "total_tokens": 44177,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 43264,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 12881,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 44738345164
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The discovery loop retains a pending descriptor across blank and comment lines, contradicting the same file's immediate-precedence contract.",
+          "paths": [
+            "internal/sprint/performance_discovery.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-8cc9991849234abdc0ca28c9: failure_signature_mismatch\nRequired observation: Assert DiscoverPerformanceManifest accepts both separated marker cases.\nTest internal/sprint/qa_investigator_4abdc0ca28c9_test.go:\npackage sprint\n\nimport (\n\t\"fmt\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_4abdc0ca28c9(t *testing.T) {\n\tpacket := PerformanceTargetPacket{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tParserVersion: PerformanceParserVersion,\n\t\tPacketDigest:  \"qa-investigator-packet\",\n\t\tTargets: []PerformanceTarget{{\n\t\t\tID:    \"PERF-QA\",\n\t\t\tUnit:  PerformanceNSPerOp,\n\t\t\tBasis: PerformanceAbsolute,\n\t\t}},\n\t}\n\n\tdiscover := func(t *testing.T, separator string) error {\n\t\tt.Helper()\n\t\troot := t.TempDir()\n\t\tsource := \"package sample\\n\\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-QA\\n\" + separator + \"func BenchmarkQA() {}\\n\"\n\t\tif err := os.WriteFile(filepath.Join(root, \"performance_test.go\"), []byte(source), 0o600); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\t_, err := DiscoverPerformanceManifest(root, packet)\n\t\treturn err\n\t}\n\n\tif err := discover(t, \"\"); err != nil {\n\t\tt.Fatalf(\"adjacent marker control was rejected: %v\", err)\n\t}\n\tif err := discover(t, \"var intervening = true\\n\"); err == nil {\n\t\tt.Fatal(\"non-comment source statement control was accepted\")\n\t}\n\n\tblankErr := discover(t, \"\\n\")\n\tcommentErr := discover(t, \"// unrelated comment\\n\")\n\tif blankErr == nil \u0026\u0026 commentErr == nil {\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_4abdc0ca28c9\")\n\t\tt.Fatal(\"Assert DiscoverPerformanceManifest accepts both separated marker cases.\")\n\t}\n\tif blankErr != nil {\n\t\tt.Fatalf(\"blank-line reproduction was not accepted: %v\", blankErr)\n\t}\n\tt.Fatalf(\"comment-line reproduction was not accepted: %v\", commentErr)\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint [setup failed]\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n-\u003e unzip /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/sqlite/@v/v1.57.0.zip: write /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/lib/sqlite_g_0000000000018000.go: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/sprint\n../productstate/store.go:16:2: unzip /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/sqlite/@v/v1.57.0.zip: write /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/lib/sqlite_g_0000000000018000.go: no space left on device\n",
+          "paths": [
+            "internal/sprint/qa_investigator_4abdc0ca28c9_test.go"
+          ],
+          "check_id": "qa-v2-test-ed04ad1d12af5f31e88cab21",
+          "output_digest": "ebc0875bb9027c6a27a0439f5022a69ce815c289d20f9e890143516df65511cb"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-4fd8a79cac34b652f4844a27: predicted_failure_reproduced\nRequired observation: Assert DiscoverPerformanceManifest accepts both separated-marker cases.\nTest internal/sprint/qa_investigator_b652f4844a27_test.go:\npackage sprint\n\nimport (\n\t\"fmt\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_b652f4844a27(t *testing.T) {\n\tpacket := PerformanceTargetPacket{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tParserVersion: PerformanceParserVersion,\n\t\tPacketDigest:  \"qa-investigator-packet\",\n\t\tTargets: []PerformanceTarget{{\n\t\t\tID:    \"PERF-QA\",\n\t\t\tUnit:  PerformanceNSPerOp,\n\t\t\tBasis: PerformanceAbsolute,\n\t\t}},\n\t}\n\n\tdiscover := func(t *testing.T, separator string) error {\n\t\tt.Helper()\n\t\troot := t.TempDir()\n\t\tsource := \"package sample\\n\\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-QA\\n\" + separator + \"func BenchmarkQA() {}\\n\"\n\t\tif err := os.WriteFile(filepath.Join(root, \"performance_test.go\"), []byte(source), 0o600); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\t_, err := DiscoverPerformanceManifest(root, packet)\n\t\treturn err\n\t}\n\n\tif err := discover(t, \"\"); err != nil {\n\t\tt.Fatalf(\"adjacent marker control was rejected: %v\", err)\n\t}\n\tif err := discover(t, \"var intervening = true\\n\"); err == nil {\n\t\tt.Fatal(\"intervening source statement control was accepted\")\n\t}\n\n\tblankErr := discover(t, \"\\n\")\n\tcommentErr := discover(t, \"// unrelated comment\\n\")\n\tif blankErr != nil {\n\t\tt.Fatalf(\"blank-line reproduction was not accepted: %v\", blankErr)\n\t}\n\tif commentErr != nil {\n\t\tt.Fatalf(\"comment-line reproduction was not accepted: %v\", commentErr)\n\t}\n\n\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27\")\n\tt.Fatal(\"Assert DiscoverPerformanceManifest accepts both separated-marker cases.\")\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_b652f4844a27\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27\n    qa_investigator_b652f4844a27_test.go:50: Assert DiscoverPerformanceManifest accepts both separated-marker cases.\n--- FAIL: TestQAInvestigator_b652f4844a27 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_b652f4844a27_test.go"
+          ],
+          "check_id": "qa-v2-test-84c9faa938e9ff74aac2b65d",
+          "output_digest": "5cdc241957ba1039cf05c7bf8003566f468999f1afcbe739e78b26eb178f2978"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

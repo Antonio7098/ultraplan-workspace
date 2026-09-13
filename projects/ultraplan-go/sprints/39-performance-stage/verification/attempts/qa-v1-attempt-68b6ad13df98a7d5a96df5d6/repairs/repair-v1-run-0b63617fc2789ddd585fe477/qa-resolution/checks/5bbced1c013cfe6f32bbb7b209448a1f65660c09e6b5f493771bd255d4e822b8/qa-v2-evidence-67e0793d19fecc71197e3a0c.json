@@ -1,0 +1,88 @@
+{
+  "schema_version": 2,
+  "check": {
+    "replacement": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-replacements/qa-v2-test-da0b697c94f4dcc046d7d411.json",
+      "digest": "c06cb9e529af730f6b1b6cfdf61dad144a23b868a073c34bcfb4c802a5a7a837"
+    },
+    "evidence_id": "qa-v2-evidence-67e0793d19fecc71197e3a0c",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+      "schema_version": 2,
+      "id": "qa-v2-run-aa10864ff46ad21aff08b29c",
+      "spec_id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "test_bundle_id": "qa-v2-test-eb210061780b8edccf10409f",
+      "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/omitted_request",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/bounded_success_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/default_and_bounded_control_comparison",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/omitted_request",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/bounded_success_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_dae46ba55ba6/default_and_bounded_control_comparison",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "ea6e7e506537d0df249c7704d6e57697d5a92bccb0ae3c116d9509b907efa21c",
+        "exit_code": 0,
+        "duration": 38205415916,
+        "stdout_digest": "5e2565e74368895aad3f795b82d74e6ebe0bce7309304fa5be861ce4a80cf14c",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_dae46ba55ba6\n=== RUN   TestQAInvestigator_dae46ba55ba6/omitted_request\n=== RUN   TestQAInvestigator_dae46ba55ba6/bounded_success_control\n=== RUN   TestQAInvestigator_dae46ba55ba6/default_and_bounded_control_comparison\n=== NAME  TestQAInvestigator_dae46ba55ba6\n    qa_investigator_dae46ba55ba6_test.go:125: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\n    qa_investigator_dae46ba55ba6_test.go:126: omitted_status=success omitted_limit=50 control_status=success control_limit=1\n--- PASS: TestQAInvestigator_dae46ba55ba6 (0.02s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/omitted_request (0.00s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/bounded_success_control (0.00s)\n    --- PASS: TestQAInvestigator_dae46ba55ba6/default_and_bounded_control_comparison (0.00s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.042s\n",
+        "output_bytes": 1047,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_dae46ba55ba6",
+        "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T15:16:31.167414466Z"
+    }
+  }
+}

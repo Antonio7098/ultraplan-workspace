@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b951f08c0478926a7e675a81",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Performance workflow and optimization",
+  "changed_paths": [
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_optimize.go",
+    "internal/sprint/performance_optimize_runtime.go",
+    "internal/sprint/performance_optimize_test.go",
+    "internal/sprint/performance_repair.go",
+    "internal/sprint/performance_service_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_measure.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/qa_repair.go"
+  ],
+  "behavioral_concerns": [
+    "Admission is runtime-free and write-free and blocks incomplete execute evidence, dirty unrelated changes, isolation gaps, insufficient samples, or insufficient command budget.",
+    "Canonical apply journals digest-bound preimages and postimages so recovery can compensate exact bytes without runtime work.",
+    "Correctness executes before candidate or terminal verdict publication, and functional regression cannot produce a passing outcome.",
+    "Optimization selects one required miss, permits only bounded existing production-file changes, requires strict improvement, and remeasures already-met required targets.",
+    "Repair first passes its functional ladder, then remeasures frozen performance targets against the repaired implementation without reusing pre-repair samples.",
+    "Runs preserve frozen packet, manifest, environment, correctness commands, counters, and absolute deadline across resumable boundaries.",
+    "Terminal publication produces one current immutable result, report, state pointer, and flow summary; recovery never infers or replaces a pass."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "handbook"
+  ],
+  "risk_tags": [
+    "runtime",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-2acbb7e6b01c74fbf4b507e8",
+    "qa-v1-block-39157bba7e320f90ed456997",
+    "qa-v1-block-3b40edcffc78652dcea95d75",
+    "qa-v1-block-68cfca988b5aef1e551fa430",
+    "qa-v1-block-788a9359634df945f8a33f85",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-af5f117594728fd0aab939e2",
+    "qa-v1-block-aface9f7fead0283d2f0519a",
+    "qa-v1-block-c7ea9c7c067b889ab44bcf61"
+  ],
+  "prepared_prompt_bytes": 110397,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b951f08c0478926a7e675a81/1",
+      "number": 1,
+      "session_id": "ses_f88db382dffewKlJeEaf4lGebr",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "b4b6bf180c1f0af5888239d3c8a314016ea3f292391322a752290940e9e690d8",
+      "started_at": "2026-09-06T14:33:41.256910276Z",
+      "completed_at": "2026-09-06T14:36:04.45270006Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "parsePerformanceJSONValue rejects a successfully decoded second JSON value but does not require io.EOF, allowing malformed trailing data.",
+          "paths": [
+            "internal/sprint/performance_measure.go"
+          ],
+          "output_digest": "e485788696a21db0dbdf8dc23577cab3b15c98e9c5fec750a7cc50611ac6716a"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 34079,
+        "output_tokens_known": true,
+        "output_tokens": 905,
+        "total_tokens_known": true,
+        "total_tokens": 68338,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 458,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 32896,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 110397,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 143195789784
+      },
+      "estimated_cost": {
+        "amount": 0.2353923,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b951f08c0478926a7e675a81/1/evidence/qa-v2-request-feb09f2982cb2f5fd0db9fe4/2",
+      "number": 2,
+      "session_id": "ses_f88db382dffewKlJeEaf4lGebr",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "e335e7fd601a23446b78c2382cc0b494cd2d402ae487115f9ea281aa123f2aa2",
+      "started_at": "2026-09-07T17:17:00.108760429Z",
+      "completed_at": "2026-09-07T17:19:45.668799344Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 796,
+        "output_tokens_known": true,
+        "output_tokens": 49,
+        "total_tokens_known": true,
+        "total_tokens": 41112,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 203,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 40064,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 31,
+      "retained_events": 31,
+      "observed_tool_calls": 8,
+      "context_metrics": {
+        "prompt_bytes": 8593,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 1,
+          "read": 6
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 7898,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 165560038915
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-60e255ab711c15643830dc69",
+      "shard_id": "qa-v1-shard-b951f08c0478926a7e675a81",
+      "claim": "The JSON performance-output parser accepts malformed trailing content after an otherwise valid envelope because it rejects only a second decode that succeeds; any non-EOF decoding error is treated as acceptable trailing data.",
+      "basis": "The parser's second Decode call only returns an error when decoding succeeds, while the handbook identifies schema validation as a security concern (qa-v1-block-dbf7e69765ab615487ff3a15, qa-v1-block-893a62e81780679e0845739e).",
+      "verification_surface": "ParsePerformanceOutput via parsePerformanceJSONValue with one valid ULTRAPLAN_PERFORMANCE_V1 envelope followed by malformed non-whitespace JSON content on the same line.",
+      "expectation_refs": [
+        "handbook"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A valid matching envelope followed by malformed trailing content returns its canonical value without an error.",
+      "refutation_condition": "The complete implementation requires the second decode error to be io.EOF, or a product-owned test demonstrates malformed trailing content is rejected.",
+      "inconclusive_condition": "The bounded excerpt differs materially from the complete parser implementation or another validated boundary rejects such output before parsing.",
+      "safe_evidence_strategy": "Use a product-owned unit check supplying a matching envelope followed by malformed trailing bytes and assert ParsePerformanceOutput returns an error; no external runtime is required.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b951f08c0478926a7e675a81/1",
+          "number": 1,
+          "session_id": "ses_f88db382dffewKlJeEaf4lGebr",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "b4b6bf180c1f0af5888239d3c8a314016ea3f292391322a752290940e9e690d8",
+          "started_at": "2026-09-06T14:33:41.256910276Z",
+          "completed_at": "2026-09-06T14:36:04.45270006Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "parsePerformanceJSONValue rejects a successfully decoded second JSON value but does not require io.EOF, allowing malformed trailing data.",
+              "paths": [
+                "internal/sprint/performance_measure.go"
+              ],
+              "output_digest": "e485788696a21db0dbdf8dc23577cab3b15c98e9c5fec750a7cc50611ac6716a"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 34079,
+            "output_tokens_known": true,
+            "output_tokens": 905,
+            "total_tokens_known": true,
+            "total_tokens": 68338,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 458,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 32896,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 110397,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 143195789784
+          },
+          "estimated_cost": {
+            "amount": 0.2353923,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-b951f08c0478926a7e675a81/1/evidence/qa-v2-request-feb09f2982cb2f5fd0db9fe4/2",
+          "number": 2,
+          "session_id": "ses_f88db382dffewKlJeEaf4lGebr",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "e335e7fd601a23446b78c2382cc0b494cd2d402ae487115f9ea281aa123f2aa2",
+          "started_at": "2026-09-07T17:17:00.108760429Z",
+          "completed_at": "2026-09-07T17:19:45.668799344Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 796,
+            "output_tokens_known": true,
+            "output_tokens": 49,
+            "total_tokens_known": true,
+            "total_tokens": 41112,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 203,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 40064,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 31,
+          "retained_events": 31,
+          "observed_tool_calls": 8,
+          "context_metrics": {
+            "prompt_bytes": 8593,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 1,
+              "read": 6
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 7898,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 165560038915
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "parsePerformanceJSONValue rejects a successfully decoded second JSON value but does not require io.EOF, allowing malformed trailing data.",
+          "paths": [
+            "internal/sprint/performance_measure.go"
+          ],
+          "output_digest": "e485788696a21db0dbdf8dc23577cab3b15c98e9c5fec750a7cc50611ac6716a"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-feb09f2982cb2f5fd0db9fe4: predicted_failure_reproduced\nRequired observation: Assert parsing succeeds and returns the canonical value despite malformed trailing content.\nTest internal/sprint/qa_investigator_2f5fd0db9fe4_test.go:\npackage sprint\n\nimport \"testing\"\n\nfunc TestQAInvestigator_2f5fd0db9fe4(t *testing.T) {\n\tdescriptor := PerformanceDescriptor{Kind: PerformanceJSONRunner, RawUnit: PerformanceMS}\n\ttarget := PerformanceTarget{ID: \"PERF-LATENCY\", Scenario: \"request\", Metric: \"latency\"}\n\tvalid := performanceOutputLine(performanceJSONEnvelope{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tTargetID:      target.ID,\n\t\tScenario:      target.Scenario,\n\t\tMetric:        target.Metric,\n\t\tUnit:          descriptor.RawUnit,\n\t\tValue:         \"1.50\",\n\t})\n\n\tif got, err := ParsePerformanceOutput(descriptor, target, valid+\"   \", false); err != nil || got != \"1.5\" {\n\t\tt.Fatalf(\"control: whitespace-only trailing content: value=%q error=%v\", got, err)\n\t}\n\tif _, err := ParsePerformanceOutput(descriptor, target, valid+` {}`, false); err == nil {\n\t\tt.Fatal(\"control: second valid JSON value was accepted\")\n\t}\n\n\tgot, err := ParsePerformanceOutput(descriptor, target, valid+` {`, false)\n\tif err == nil \u0026\u0026 got == \"1.5\" {\n\t\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4: Assert parsing succeeds and returns the canonical value despite malformed trailing content.\")\n\t}\n\tif err == nil {\n\t\tt.Fatalf(\"malformed trailing content returned unexpected value %q\", got)\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_2f5fd0db9fe4\n    qa_investigator_2f5fd0db9fe4_test.go:26: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4: Assert parsing succeeds and returns the canonical value despite malformed trailing content.\n--- FAIL: TestQAInvestigator_2f5fd0db9fe4 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_2f5fd0db9fe4_test.go"
+          ],
+          "check_id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+          "output_digest": "a0716e391129d22f34ceb281ae32fe24107962739e7e0957b12d168b8a1c55f4"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

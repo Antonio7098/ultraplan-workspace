@@ -1,0 +1,502 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Policy and target authority parsing",
+  "changed_paths": [
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go",
+    "internal/sprint/index.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "context_paths": [
+    "docs/user-guide.md",
+    "internal/sprint/performance_types.go",
+    "internal/sprint/service.go"
+  ],
+  "behavioral_concerns": [
+    "Equality satisfies inclusive target comparators, while relative comparisons with a zero baseline remain inconclusive.",
+    "Fenced, quoted, commented, duplicate, malformed, and unknown policy content cannot silently activate performance.",
+    "Missing project policy defaults to disabled; exactly one explicit enabled or disabled policy section controls activation only.",
+    "Requirements accept exactly one immediate nine-column target table and reject malformed contracts, duplicate IDs, pseudo-sections, and policy disagreement.",
+    "Scaffold guidance includes targets only when policy is enabled and forbids invented thresholds.",
+    "Target rows normalize deterministically, sort consistently, and bind requirements and policy digests without inventing thresholds."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-documentation",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-14ad9ba28ff86d49493c483f",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-3776349208938d80daa86cfd",
+    "qa-v1-block-3cceb141b86f4e4c3b8609e8",
+    "qa-v1-block-48c6857d00104cbd93313ce3",
+    "qa-v1-block-88233abe9fdd214bea48c441",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-9c5f43b294578fed6796f5b9",
+    "qa-v1-block-a2be3dc15f8fe2f32433a558",
+    "qa-v1-block-a40b7fcd37a6d9f6f1fa3482",
+    "qa-v1-block-ad737872e14b4ef0d73f4cc3",
+    "qa-v1-block-c60e8152c304432fc78d7a0c",
+    "qa-v1-block-dce6e3499650f8824cc582f6",
+    "qa-v1-block-e119c25baa75d6da3419c82e",
+    "qa-v1-block-e9031fe55080b29279a3647a"
+  ],
+  "prepared_prompt_bytes": 84022,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1",
+      "number": 1,
+      "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+      "started_at": "2026-09-06T14:29:14.329280131Z",
+      "completed_at": "2026-09-06T14:30:34.296792612Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Target parsing tracks fences and comments and skips quoted or indented content before recognizing the exact Performance Targets heading.",
+          "paths": [
+            "internal/sprint/performance_targets.go"
+          ],
+          "output_digest": "061c1b3184bfdcd17bd04fe089b0060d2c9873dbbde0ff1cde0d51911fc0a6ed"
+        },
+        {
+          "kind": "static_source",
+          "summary": "Requirements validation uses a separate heading-presence result to emit disabled-policy mismatch findings.",
+          "paths": [
+            "internal/sprint/index.go"
+          ],
+          "output_digest": "85d049b1bbf68763543dc02576fad164265cbe2c39470334bb3d4c2501cea0ca"
+        },
+        {
+          "kind": "static_test",
+          "summary": "Existing tests require pseudo Performance Targets sections to produce no parsed targets or findings but only exercise ParsePerformanceTargets.",
+          "paths": [
+            "internal/sprint/performance_targets_test.go"
+          ],
+          "output_digest": "4968efa4a93a4957062e1f7a7faf82b24ade2c62e9a8f31fe1a2b9fb3c17ae68"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 2206,
+        "output_tokens_known": true,
+        "output_tokens": 1384,
+        "total_tokens_known": true,
+        "total_tokens": 62571,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 357,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 58624,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 31,
+      "retained_events": 31,
+      "observed_tool_calls": 3,
+      "context_metrics": {
+        "prompt_bytes": 84022,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 1,
+          "read": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 10714,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 79967512481
+      },
+      "estimated_cost": {
+        "amount": 0.09004820000000001,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1/evidence/1",
+      "number": 2,
+      "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+      "started_at": "2026-09-07T11:39:39.076932683Z",
+      "completed_at": "2026-09-07T11:40:54.016873288Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 3912,
+        "output_tokens_known": true,
+        "output_tokens": 81,
+        "total_tokens_known": true,
+        "total_tokens": 38496,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 71,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 34432,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 3,
+      "context_metrics": {
+        "prompt_bytes": 9548,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 1,
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 5595,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 74939940605
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1/evidence/2",
+      "number": 3,
+      "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+      "started_at": "2026-09-07T13:00:56.439933523Z",
+      "completed_at": "2026-09-07T13:01:48.461074725Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1109,
+        "output_tokens_known": true,
+        "output_tokens": 76,
+        "total_tokens_known": true,
+        "total_tokens": 43553,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 42368,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 13971,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 52021141202
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe",
+      "shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+      "claim": "A fenced or commented pseudo `## Performance Targets` heading is ignored by target parsing but still treated as a declaration during policy validation, causing a false `performance policy mismatch` when performance policy is disabled.",
+      "basis": "The target parser excludes fenced, commented, quoted, and indented pseudo-sections, while requirements validation separately derives `declared` through `markdownHeadingPresent`; existing tests establish that pseudo-sections should be ignored (qa-v1-block-9c5f43b294578fed6796f5b9, qa-v1-block-3cceb141b86f4e4c3b8609e8, qa-v1-block-e119c25baa75d6da3419c82e).",
+      "verification_surface": "ValidateRequirementsContentWithPolicy with disabled policy and otherwise-valid requirements containing `## Performance Targets` only inside a fenced or commented pseudo-section.",
+      "expectation_refs": [
+        "handbook"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Validation returns a performance-policy-mismatch finding even though ParsePerformanceTargets ignores the pseudo-section and returns no targets or findings.",
+      "refutation_condition": "Declaration detection applies the same fence, comment, quote, and indentation exclusions as ParsePerformanceTargets, so no policy-mismatch finding is returned.",
+      "inconclusive_condition": "The behavior of markdownHeadingPresent or the validation call path cannot be established from the supplied source.",
+      "safe_evidence_strategy": "Use static inspection of the cited parser and validation blocks; if executable evidence is authorized, add a focused product-owned table case alongside the existing pseudo-section and policy-agreement tests.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1",
+          "number": 1,
+          "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+          "started_at": "2026-09-06T14:29:14.329280131Z",
+          "completed_at": "2026-09-06T14:30:34.296792612Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Target parsing tracks fences and comments and skips quoted or indented content before recognizing the exact Performance Targets heading.",
+              "paths": [
+                "internal/sprint/performance_targets.go"
+              ],
+              "output_digest": "061c1b3184bfdcd17bd04fe089b0060d2c9873dbbde0ff1cde0d51911fc0a6ed"
+            },
+            {
+              "kind": "static_source",
+              "summary": "Requirements validation uses a separate heading-presence result to emit disabled-policy mismatch findings.",
+              "paths": [
+                "internal/sprint/index.go"
+              ],
+              "output_digest": "85d049b1bbf68763543dc02576fad164265cbe2c39470334bb3d4c2501cea0ca"
+            },
+            {
+              "kind": "static_test",
+              "summary": "Existing tests require pseudo Performance Targets sections to produce no parsed targets or findings but only exercise ParsePerformanceTargets.",
+              "paths": [
+                "internal/sprint/performance_targets_test.go"
+              ],
+              "output_digest": "4968efa4a93a4957062e1f7a7faf82b24ade2c62e9a8f31fe1a2b9fb3c17ae68"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2206,
+            "output_tokens_known": true,
+            "output_tokens": 1384,
+            "total_tokens_known": true,
+            "total_tokens": 62571,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 357,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 58624,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 31,
+          "retained_events": 31,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 84022,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 10714,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 79967512481
+          },
+          "estimated_cost": {
+            "amount": 0.09004820000000001,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+          "started_at": "2026-09-07T11:39:39.076932683Z",
+          "completed_at": "2026-09-07T11:40:54.016873288Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 3912,
+            "output_tokens_known": true,
+            "output_tokens": 81,
+            "total_tokens_known": true,
+            "total_tokens": 38496,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 71,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 34432,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 9548,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 5595,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 74939940605
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-55c75ed35ae9a28675ef8779/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88e0577cffeAa07Ai7dEQXKBX",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "527f6fcf22a8ed0893a47957f81861c03171f2997af7140285486a2c6b26dbfe",
+          "started_at": "2026-09-07T13:00:56.439933523Z",
+          "completed_at": "2026-09-07T13:01:48.461074725Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1109,
+            "output_tokens_known": true,
+            "output_tokens": 76,
+            "total_tokens_known": true,
+            "total_tokens": 43553,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 42368,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 13971,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 52021141202
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Target parsing tracks fences and comments and skips quoted or indented content before recognizing the exact Performance Targets heading.",
+          "paths": [
+            "internal/sprint/performance_targets.go"
+          ],
+          "output_digest": "061c1b3184bfdcd17bd04fe089b0060d2c9873dbbde0ff1cde0d51911fc0a6ed"
+        },
+        {
+          "kind": "static_source",
+          "summary": "Requirements validation uses a separate heading-presence result to emit disabled-policy mismatch findings.",
+          "paths": [
+            "internal/sprint/index.go"
+          ],
+          "output_digest": "85d049b1bbf68763543dc02576fad164265cbe2c39470334bb3d4c2501cea0ca"
+        },
+        {
+          "kind": "static_test",
+          "summary": "Existing tests require pseudo Performance Targets sections to produce no parsed targets or findings but only exercise ParsePerformanceTargets.",
+          "paths": [
+            "internal/sprint/performance_targets_test.go"
+          ],
+          "output_digest": "4968efa4a93a4957062e1f7a7faf82b24ade2c62e9a8f31fe1a2b9fb3c17ae68"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-349c950bcf2476f9ef0d2260: failure_signature_mismatch\nRequired observation: Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.\nTest internal/project/qa_investigator_76f9ef0d2260_test.go:\npackage project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_76f9ef0d2260(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst table = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+\"ordinary prose\\n\", disabled); len(findings) != 0 {\n\t\tt.Fatalf(\"ordinary prose control unexpectedly produced findings: %#v\", findings)\n\t}\n\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+table, disabled); len(findings) == 0 {\n\t\tt.Fatal(\"real target section control did not produce a disabled-policy mismatch\")\n\t}\n\n\tpseudoSections := []string{\n\t\t\"```md\\n\" + table + \"```\\n\",\n\t\t\"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\tmisclassified := false\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"pseudo-section parser control failed: packet=%#v findings=%#v\", packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo, disabled); len(findings) != 0 {\n\t\t\tmisclassified = true\n\t\t}\n\t}\n\tif misclassified {\n\t\tt.Log(\"assertion: disabled-policy validation must not report a policy mismatch for fenced or HTML-commented pseudo Performance Targets headings when parsing returns no targets or findings\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76f9ef0d2260\")\n\t}\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project [setup failed]\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n# github.com/Antonio7098/ultraplan-go/internal/project\n../productstate/store.go:16:2: modernc.org/sqlite@v1.57.0: read \"https://proxy.golang.org/modernc.org/sqlite/@v/v1.57.0.zip\": read tcp 192.168.0.34:40494-\u003e142.250.140.207:443: read: connection reset by peer\n",
+          "paths": [
+            "internal/project/qa_investigator_76f9ef0d2260_test.go"
+          ],
+          "check_id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+          "output_digest": "ea7a9d1eed500d8d97b4ff555e0a47b73df42b2261307d9536fe58bbc23e239e"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-2d5e3f9d9571a0300a83f89e: predicted_failure_reproduced\nRequired observation: Assert each input produces a policy mismatch while target parsing returns no targets or findings.\nTest internal/project/qa_investigator_a0300a83f89e_test.go:\npackage project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_a0300a83f89e(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst targets = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tcontrols := []struct {\n\t\tname         string\n\t\tcontent      string\n\t\twantFindings bool\n\t}{\n\t\t{name: \"ordinary prose is not a declaration\", content: requirements + \"ordinary prose\\n\"},\n\t\t{name: \"real section is a declaration\", content: requirements + targets, wantFindings: true},\n\t}\n\tfor _, control := range controls {\n\t\tfindings := sprint.ValidateRequirementsContentWithPolicy(control.content, disabled)\n\t\tif (len(findings) != 0) != control.wantFindings {\n\t\t\tt.Fatalf(\"control %q findings = %#v\", control.name, findings)\n\t\t}\n\t}\n\n\tpseudoSections := []struct {\n\t\tname    string\n\t\tcontent string\n\t}{\n\t\t{name: \"fenced\", content: \"```md\\n\" + targets + \"```\\n\"},\n\t\t{name: \"HTML commented\", content: \"\u003c!--\\n\" + targets + \"--\u003e\\n\"},\n\t}\n\tobservedMismatch := 0\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo.content)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"%s parser observation failed: packet=%#v findings=%#v\", pseudo.name, packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo.content, disabled); len(findings) != 0 {\n\t\t\tobservedMismatch++\n\t\t}\n\t}\n\tif observedMismatch == len(pseudoSections) {\n\t\tt.Log(\"Assert each input produces a policy mismatch while target parsing returns no targets or findings.\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_a0300a83f89e\n    qa_investigator_a0300a83f89e_test.go:48: Assert each input produces a policy mismatch while target parsing returns no targets or findings.\n    qa_investigator_a0300a83f89e_test.go:49: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\n--- FAIL: TestQAInvestigator_a0300a83f89e (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.012s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/project/qa_investigator_a0300a83f89e_test.go"
+          ],
+          "check_id": "qa-v2-test-67d46aa887025191de4cafaa",
+          "output_digest": "ac6c83c2eb9f4716c7a7f968c69a7ebbc3713383b902c21550e876ad1180c3ec"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

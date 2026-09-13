@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-be3cb76aefdeb3e0acf4dd5f",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "2d6233638f3b25ad12a9647a0f0083f98f0139321b37dde79927d68d36b5801d",
+      "schema_version": 2,
+      "id": "qa-v2-run-2eea6f9da3f151f94b04dfd9",
+      "spec_id": "qa-v2-spec-efbe9a3d71f1adf4bad905da",
+      "test_bundle_id": "qa-v2-test-16a0129229c8391e97b6af00",
+      "target_identity": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_d48db6847a74",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_d48db6847a74",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "abf83b96f58a8f8cc9f081cdbcf08dba4f690e9ac78db457a1cb2a705500a49b",
+        "exit_code": 0,
+        "duration": 28227185847,
+        "stdout_digest": "118c82ccb52bb9046b079b47593ed0d013a354b79fdac477f5522e5ec9c34cf6",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_d48db6847a74\n--- PASS: TestQAInvestigator_d48db6847a74 (0.03s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.041s\n",
+        "output_bytes": 158,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_d48db6847a74",
+        "assertion": "Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T09:30:27.791294703Z"
+    }
+  }
+}

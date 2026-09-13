@@ -1,0 +1,446 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-c00693067b3601e16b414101",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Performance configuration and redaction",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/performance.go",
+    "internal/platform/config/performance_test.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "context_paths": [
+    "docs/configuration.md",
+    "internal/app/sprint_commands.go"
+  ],
+  "behavioral_concerns": [
+    "Dedicated performance model and variant obey documented workspace and environment precedence with safe fallback.",
+    "Effective operational limits remain inspectable without exposing secret-bearing model or environment values.",
+    "Every performance setting is typed, centrally loaded, source-attributed, and validated before use.",
+    "Redacted diagnostics conceal performance model and variant while retaining non-secret limit values and provenance.",
+    "Workspace and environment limits may lower defaults but cannot be zero, negative, malformed, non-finite, overflowed, or increased."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-301ceb35cffc4e9cbb84c232",
+    "qa-v1-block-38c5bd0a2296ef14c6f51c48",
+    "qa-v1-block-3c0ada83dabcefdc6a43ace5",
+    "qa-v1-block-443d71f5174ceb9a0f759678",
+    "qa-v1-block-47daa8231dfb1f22c7f5e074",
+    "qa-v1-block-57922e6bf45c6838d64959df",
+    "qa-v1-block-8c7877f8aebe78c8eba91774",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-a42ba81ee3aabfa3bef7fe97",
+    "qa-v1-block-c276d57650dc0a87dcedf6df",
+    "qa-v1-block-c393a08baf9f860f8e857a38",
+    "qa-v1-block-cb87eff49588fdd2399eadaa",
+    "qa-v1-block-d2dce1396f4a46ea6104f90d",
+    "qa-v1-block-e1a84c0b5f740d467452bae6",
+    "qa-v1-block-fe1e5ad7e5acfd29117bcf70"
+  ],
+  "prepared_prompt_bytes": 83412,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-c00693067b3601e16b414101/1",
+      "number": 1,
+      "session_id": "ses_f88a52e1affeEwKvyJxwjpv3ZI",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "fc78a2f7d7d847011f2b4ae9d2c06531243f4ff26a7390667e420e9b8aac67c9",
+      "started_at": "2026-09-06T15:33:52.678610382Z",
+      "completed_at": "2026-09-06T15:34:44.074211217Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The cited platform source contains performance-domain defaults and lower-only validation, contrary to the cited architecture ownership rule.",
+          "paths": [
+            "internal/platform/config/performance.go",
+            "system/contracts/core/architecture.md"
+          ],
+          "output_digest": "qa-v1-block-a42ba81ee3aabfa3bef7fe97 and qa-v1-block-93319d60c8f44378e2d09a2c statically establish the implementation and violated criterion."
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 27577,
+        "output_tokens_known": true,
+        "output_tokens": 952,
+        "total_tokens_known": true,
+        "total_tokens": 55396,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 371,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 26496,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 83412,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 51395600835
+      },
+      "estimated_cost": {
+        "amount": 0.1976623,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-c00693067b3601e16b414101/1/evidence/2",
+      "number": 3,
+      "session_id": "ses_f88a52e1affeEwKvyJxwjpv3ZI",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "fc78a2f7d7d847011f2b4ae9d2c06531243f4ff26a7390667e420e9b8aac67c9",
+      "started_at": "2026-09-07T13:12:00.995214127Z",
+      "completed_at": "2026-09-07T13:13:09.184568042Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1095,
+        "output_tokens_known": true,
+        "output_tokens": 44,
+        "total_tokens_known": true,
+        "total_tokens": 34729,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 182,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 33408,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 21,
+      "retained_events": 21,
+      "observed_tool_calls": 4,
+      "context_metrics": {
+        "prompt_bytes": 8656,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "glob": 1,
+          "read": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 8985,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 68189353915
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-c00693067b3601e16b414101/1/evidence/qa-v2-request-675a413673720c580cfa0ca8/1",
+      "number": 3,
+      "session_id": "ses_f88a52e1affeEwKvyJxwjpv3ZI",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "f17e1ce0c0e4341e3d8ccf2dd50eb2e8fc1ec78ad077fb66ead84261e610dcd6",
+      "started_at": "2026-09-07T17:10:54.671713721Z",
+      "completed_at": "2026-09-07T17:11:38.459272398Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 789,
+        "output_tokens_known": true,
+        "output_tokens": 40,
+        "total_tokens_known": true,
+        "total_tokens": 40125,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 39296,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 19,
+      "retained_events": 19,
+      "observed_tool_calls": 2,
+      "context_metrics": {
+        "prompt_bytes": 15633,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "glob": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 43787558677
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-2e47a0d5379914251c03302b",
+      "shard_id": "qa-v1-shard-c00693067b3601e16b414101",
+      "claim": "Performance-specific defaults and lower-only validation are implemented in the generic platform config package, violating the requirement that product defaults and bounded-context validation remain in the owning product module.",
+      "basis": "The platform file defines performance workflow defaults and lower-only policy validation, while the architecture contract forbids product-specific defaults and validation rules in platform packages (qa-v1-block-a42ba81ee3aabfa3bef7fe97, qa-v1-block-93319d60c8f44378e2d09a2c).",
+      "verification_surface": "internal/platform/config/performance.go",
+      "expectation_refs": [
+        "contract-architecture"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "Static source defines performance workflow defaults and lower-only policy validation under internal/platform/config while the architecture contract explicitly forbids product-specific defaults and validation rules in platform packages.",
+      "refutation_condition": "The performance limits are generic runtime infrastructure without product workflow semantics, or the owning product module exclusively defines the defaults and policy validation.",
+      "inconclusive_condition": "The package ownership boundary or applicability of ARCH-SHARED-001 cannot be determined from the supplied source and contract.",
+      "safe_evidence_strategy": "Inspect the cited static source and architecture contract; no execution or mutation is required.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-c00693067b3601e16b414101/1",
+          "number": 1,
+          "session_id": "ses_f88a52e1affeEwKvyJxwjpv3ZI",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "fc78a2f7d7d847011f2b4ae9d2c06531243f4ff26a7390667e420e9b8aac67c9",
+          "started_at": "2026-09-06T15:33:52.678610382Z",
+          "completed_at": "2026-09-06T15:34:44.074211217Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The cited platform source contains performance-domain defaults and lower-only validation, contrary to the cited architecture ownership rule.",
+              "paths": [
+                "internal/platform/config/performance.go",
+                "system/contracts/core/architecture.md"
+              ],
+              "output_digest": "qa-v1-block-a42ba81ee3aabfa3bef7fe97 and qa-v1-block-93319d60c8f44378e2d09a2c statically establish the implementation and violated criterion."
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 27577,
+            "output_tokens_known": true,
+            "output_tokens": 952,
+            "total_tokens_known": true,
+            "total_tokens": 55396,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 371,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 26496,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 83412,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 51395600835
+          },
+          "estimated_cost": {
+            "amount": 0.1976623,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-c00693067b3601e16b414101/1/evidence/2",
+          "number": 3,
+          "session_id": "ses_f88a52e1affeEwKvyJxwjpv3ZI",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "fc78a2f7d7d847011f2b4ae9d2c06531243f4ff26a7390667e420e9b8aac67c9",
+          "started_at": "2026-09-07T13:12:00.995214127Z",
+          "completed_at": "2026-09-07T13:13:09.184568042Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1095,
+            "output_tokens_known": true,
+            "output_tokens": 44,
+            "total_tokens_known": true,
+            "total_tokens": 34729,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 182,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 33408,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 21,
+          "retained_events": 21,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 8656,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "glob": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 8985,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 68189353915
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_nzdrsi7byepi333yt4j446hz3y/qa-v1-shard-c00693067b3601e16b414101/1/evidence/qa-v2-request-675a413673720c580cfa0ca8/1",
+          "number": 3,
+          "session_id": "ses_f88a52e1affeEwKvyJxwjpv3ZI",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "f17e1ce0c0e4341e3d8ccf2dd50eb2e8fc1ec78ad077fb66ead84261e610dcd6",
+          "started_at": "2026-09-07T17:10:54.671713721Z",
+          "completed_at": "2026-09-07T17:11:38.459272398Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 789,
+            "output_tokens_known": true,
+            "output_tokens": 40,
+            "total_tokens_known": true,
+            "total_tokens": 40125,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 39296,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 19,
+          "retained_events": 19,
+          "observed_tool_calls": 2,
+          "context_metrics": {
+            "prompt_bytes": 15633,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "glob": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 43787558677
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The cited platform source contains performance-domain defaults and lower-only validation, contrary to the cited architecture ownership rule.",
+          "paths": [
+            "internal/platform/config/performance.go",
+            "system/contracts/core/architecture.md"
+          ],
+          "output_digest": "qa-v1-block-a42ba81ee3aabfa3bef7fe97 and qa-v1-block-93319d60c8f44378e2d09a2c statically establish the implementation and violated criterion."
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-a0813a5d1ac4a4e36afcbad1: unrelated_compile_or_panic_failure\nRequired observation: Assert the current source defines product-specific performance defaults and validation under internal/platform.\nTest internal/platform/config/qa_investigator_a4e36afcbad1_test.go:\npackage config\n\nimport (\n\t\"fmt\"\n\t\"go/ast\"\n\t\"go/parser\"\n\t\"go/token\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_a4e36afcbad1(t *testing.T) {\n\tdeclaredFunctions := func(t *testing.T, path string) map[string]bool {\n\t\tt.Helper()\n\t\tfile, err := parser.ParseFile(token.NewFileSet(), path, nil, 0)\n\t\tif err != nil {\n\t\t\tt.Fatalf(\"parse %s: %v\", path, err)\n\t\t}\n\t\tfunctions := make(map[string]bool)\n\t\tfor _, declaration := range file.Decls {\n\t\t\tif function, ok := declaration.(*ast.FuncDecl); ok {\n\t\t\t\tfunctions[function.Name.Name] = true\n\t\t\t}\n\t\t}\n\t\treturn functions\n\t}\n\n\tt.Run(\"control_generic_config_infrastructure_is_allowed\", func(t *testing.T) {\n\t\tfunctions := declaredFunctions(t, \"config.go\")\n\t\tif !functions[\"Load\"] {\n\t\t\tt.Fatal(\"control failed: generic config Load function was not found\")\n\t\t}\n\t})\n\n\tfunctions := declaredFunctions(t, \"performance.go\")\n\tforbiddenPolicy := []string{\"DefaultPerformance\", \"validatePerformance\"}\n\tvar found []string\n\tfor _, name := range forbiddenPolicy {\n\t\tif functions[name] {\n\t\t\tfound = append(found, name)\n\t\t}\n\t}\n\tif len(found) != 0 {\n\t\tfmt.Println(\"assertion: Assert the current source defines product-specific performance defaults and validation under internal/platform.\")\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a4e36afcbad1\")\n\t\tt.Fail()\n\t}\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/platform/config [build failed]\nFAIL\n\nObserved stderr:\n# crypto/internal/fips140deps/godebug\ncompile: writing output: write $WORK/b084/_pkg_.a: no space left on device\n# bytes\ncompile: writing output: write $WORK/b062/_pkg_.a: no space left on device\n# strings\ncompile: writing output: write $WORK/b068/_pkg_.a: no space left on device\n# math/rand\ncompile: writing output: write $WORK/b071/_pkg_.a: no space left on device\n# syscall\ncompile: writing output: write $WORK/b052/_pkg_.a: no space left on device\n# runtime\nvet: failed to export analysis facts: write $WORK/b009/vet.out: no space left on device\niter: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b048/vet.cfg: no space left on device\ninternal/reflectlite: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b004/vet.cfg: no space left on device\nsync: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b040/vet.cfg: no space left on device\nslices: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b046/vet.cfg: no space left on device\nerrors: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b003/vet.cfg: no space left on device\ninternal/bisect: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b051/vet.cfg: no space left on device\nstrconv: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b059/vet.cfg: no space left on device\ninternal/testlog: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b056/vet.cfg: no space left on device\npath: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b044/vet.cfg: no space left on device\ninternal/oserror: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b038/vet.cfg: no space left on device\nsort: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b113/vet.cfg: no space left on device\nio: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b039/vet.cfg: no space left on device\ninternal/godebug: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b050/vet.cfg: no space left on device\n# reflect\ncompile: writing output: write $WORK/b057/_pkg_.a: no space left on device\n",
+          "paths": [
+            "internal/platform/config/qa_investigator_a4e36afcbad1_test.go"
+          ],
+          "check_id": "qa-v2-test-8350daaaec15bbbe50054e34",
+          "output_digest": "81454442e52ce3bc675fcf7e309dfd870b52a7029f51bdbd151ed11f5e99a81a"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-675a413673720c580cfa0ca8: predicted_failure_reproduced\nRequired observation: Assert the current source defines product-specific performance defaults and validation under internal/platform.\nTest internal/platform/config/qa_investigator_0c580cfa0ca8_test.go:\npackage config\n\nimport (\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_0c580cfa0ca8(t *testing.T) {\n\treadSource := func(t *testing.T, path string) string {\n\t\tt.Helper()\n\t\tcontent, err := os.ReadFile(path)\n\t\tif err != nil {\n\t\t\tt.Fatalf(\"read %s: %v\", path, err)\n\t\t}\n\t\treturn string(content)\n\t}\n\n\tt.Run(\"control_generic_config_infrastructure_is_allowed\", func(t *testing.T) {\n\t\tif !strings.Contains(readSource(t, \"config.go\"), \"func Load(\") {\n\t\t\tt.Fatal(\"control failed: generic config Load function was not found\")\n\t\t}\n\t})\n\n\tperformanceSource := readSource(t, \"performance.go\")\n\thasProductDefaults := strings.Contains(performanceSource, \"func DefaultPerformance(\")\n\thasProductValidation := strings.Contains(performanceSource, \"func validatePerformance(\")\n\tif hasProductDefaults \u0026\u0026 hasProductValidation {\n\t\tprintln(\"assertion: Assert the current source defines product-specific performance defaults and validation under internal/platform.\")\n\t\tprintln(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_0c580cfa0ca8\")\n\t\tt.Fail()\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_0c580cfa0ca8\n=== RUN   TestQAInvestigator_0c580cfa0ca8/control_generic_config_infrastructure_is_allowed\nassertion: Assert the current source defines product-specific performance defaults and validation under internal/platform.\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_0c580cfa0ca8\n--- FAIL: TestQAInvestigator_0c580cfa0ca8 (0.00s)\n    --- PASS: TestQAInvestigator_0c580cfa0ca8/control_generic_config_infrastructure_is_allowed (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/platform/config\t0.004s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/platform/config/qa_investigator_0c580cfa0ca8_test.go"
+          ],
+          "check_id": "qa-v2-test-401c04522e0c90c5b00e0f7f",
+          "output_digest": "66a57bf38fab3e83e9b4f02d13d908597c693489e9ef5021ca73fab6d631ead8"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

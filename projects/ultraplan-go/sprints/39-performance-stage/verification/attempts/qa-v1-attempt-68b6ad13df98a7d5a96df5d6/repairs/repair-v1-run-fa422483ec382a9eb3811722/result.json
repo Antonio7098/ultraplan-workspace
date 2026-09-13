@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-fa422483ec382a9eb3811722",
+  "mode": "automatic",
+  "outcome": "verified_with_findings",
+  "reason": "the exact issue and required gates passed; current non-blocking findings remain",
+  "stop_reason": "verified",
+  "consumed": {
+    "cycles": 1,
+    "mutation_cycles": 1,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 4,
+    "changed_bytes": 11649,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 7,
+    "output_bytes": 10094
+  },
+  "runtime": {
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "variant": "high",
+    "session_id": "ses_f6507aa3affeDBdE5W6kLhKkM4",
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 443,
+      "output_tokens_known": true,
+      "output_tokens": 82,
+      "total_tokens_known": true,
+      "total_tokens": 163796,
+      "reasoning_tokens_known": true,
+      "reasoning_tokens": 839,
+      "cache_read_tokens_known": true,
+      "cache_read_tokens": 162432,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "estimated_cost": {
+      "amount": 0.0944801,
+      "currency": "USD",
+      "estimate": true,
+      "source": "model_priced"
+    },
+    "started_at": "2026-09-13T13:32:38.878933032Z",
+    "completed_at": "2026-09-13T13:35:27.87902489Z",
+    "duration": 169000091858,
+    "duration_ms": 169000,
+    "runtime_events": 43,
+    "retained_events": 43,
+    "observed_tool_calls": 16,
+    "provisional_checks": [
+      {
+        "gate": "exact_reproducer",
+        "status": "passed",
+        "reason": "frozen check passed in the isolated proposal workspace",
+        "duration": 34740789920,
+        "duration_ms": 34740,
+        "output_digest": "e1dce375bf22a8927188bc7e56995a9e867a8e6cfd509ad92f9fe21b01bca3a3",
+        "output_bytes": 1442
+      },
+      {
+        "gate": "linked_theories",
+        "status": "passed",
+        "reason": "every immutable primary reproducer passed unchanged",
+        "duration": 38370137453,
+        "duration_ms": 38370,
+        "output_digest": "10c6ed25dc0175292e1383c3a5f6f2376724fca2edb0d0703c5c796767a893ff",
+        "output_bytes": 1442
+      }
+    ],
+    "provisional_passed": true
+  },
+  "target": {
+    "fingerprint": "05e33a044427a2b0c04db907ba491e13a9f56ad84f883311eb2328972a3be7cb",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "7aad8bf7175a7e738e2af81ef0d31feae3b1cd1a0454dfde2b0b102594a89388"
+  },
+  "cleanup_complete": true,
+  "production_applied": true,
+  "complete_ladder": true,
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-replacements/qa-v2-test-dc7bd57b7dd74e4b104afda0.json",
+      "digest": "2734cb33ff5ab0264f128ad6989342a67c38447f2545414d98e420c55645e6b9"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/issue-packet.json",
+      "digest": "f4c9010d09e70b1d0ce5e4b77c930def304484f3c6fccd945af3b5d4caee2cdd"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/confirmation.json",
+      "digest": "d1a7de70265ab97570df827cfa0549942f94222cdfb0b5b8d8e0a8b8e8b9a2d2"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/cycles/000001/proposal.patch",
+      "digest": "3354986520f2cfcb95a026b4d49363a200b0f7f79362eb5c1b1cb686a1cafc2b"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/cycles/000001/scope.json",
+      "digest": "43bd2d2bf9a175c211263d78673a37a37fc64ebc7ed3d5c1595501265ca8f747"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/cycles/000001/apply-journal.json",
+      "digest": "0d2ee1a53d9fc84f070459b11b43b9b76cdca7eb73b0c576cd5433b6b28c4999"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/cycles/000001/reverification.json",
+      "digest": "63281b511c0dd7c4a24925c28fd3be1557fb7e3e7fec28d2a75745c89fdf33b4"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/cycles/000001/cleanup.json",
+      "digest": "ad1641fb037e8ba69fb354878c9480296db4c7e6f9861cdfbbc4b47daee6860b"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-fa422483ec382a9eb3811722/cycles/000001/cycle.json",
+      "digest": "334e101e395dfc464cb2872fe347630125c488d01db2007beaab5e92512b452e"
+    }
+  ],
+  "next_action": "Inspect the retained result and repaired-target QA evidence.",
+  "completed_at": "2026-09-13T13:38:34.625612256Z"
+}

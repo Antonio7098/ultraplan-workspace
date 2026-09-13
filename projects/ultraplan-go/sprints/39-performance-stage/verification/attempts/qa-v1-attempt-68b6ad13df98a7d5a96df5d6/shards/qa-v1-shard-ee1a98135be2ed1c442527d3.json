@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Isolated authoring and bounded optimization",
+  "changed_paths": [
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_isolation_test.go",
+    "internal/sprint/performance_optimize.go",
+    "internal/sprint/performance_optimize_runtime.go",
+    "internal/sprint/performance_optimize_test.go",
+    "internal/sprint/performance_repair.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_measure.go",
+    "internal/sprint/qa_repair.go"
+  ],
+  "boundary_reason": "Owns disposable-copy authoring, profiling, proposal validation, correctness-first optimization, promotion, and repair-time reverification.",
+  "behavioral_concerns": [
+    "Model work must remain bounded and isolated; protected paths and existing tests cannot be changed.",
+    "Product code must derive and validate actual diffs, enforce limits, run frozen correctness before measurement, and require strict improvement.",
+    "Profiles, prompts, proposals, and runtime attempts must remain bounded and inspectable without granting model output verdict authority.",
+    "Repair must invalidate prior freshness and pass reverification only against the repaired fingerprint."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows"
+  ],
+  "risk_tags": [
+    "runtime",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-27d2771fd1e216ea720fc578",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd"
+  ],
+  "prepared_prompt_bytes": 158765,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_it3qiz2wvqrpj5k3bv4rbov3v4/qa-v1-shard-ee1a98135be2ed1c442527d3/1",
+      "number": 1,
+      "session_id": "ses_f6a4ad812ffecZLiGLw8GTq3AR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "1a02f5b7bd7f5fb42fffdf0dd231be070ee5de91d148199db95a64af62645c3f",
+      "started_at": "2026-09-12T13:01:09.975276487Z",
+      "completed_at": "2026-09-12T13:02:16.590261264Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Candidate counters are incremented only after MeasurePerformanceTarget succeeds; failed already-met remeasurements continue before their counter increments, while later cycle admission uses state.Counters.Commands.",
+          "paths": [
+            "internal/sprint/performance_optimize_runtime.go",
+            "internal/sprint/performance_measure.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 5960,
+        "output_tokens_known": true,
+        "output_tokens": 1177,
+        "total_tokens_known": true,
+        "total_tokens": 101973,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 372,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 94464,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 25,
+      "retained_events": 25,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 158765,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 8218,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 66614984777
+      },
+      "estimated_cost": {
+        "amount": 0.0425828,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_it3qiz2wvqrpj5k3bv4rbov3v4/qa-v1-shard-ee1a98135be2ed1c442527d3/1/evidence/qa-v2-request-a1444642403e76299fb53a2e/1",
+      "number": 2,
+      "session_id": "ses_f6a4ad812ffecZLiGLw8GTq3AR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "1a02f5b7bd7f5fb42fffdf0dd231be070ee5de91d148199db95a64af62645c3f",
+      "started_at": "2026-09-12T13:08:18.80923538Z",
+      "completed_at": "2026-09-12T13:10:53.334045624Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1136,
+        "output_tokens_known": true,
+        "output_tokens": 33,
+        "total_tokens_known": true,
+        "total_tokens": 73919,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 302,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 72448,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 46,
+      "retained_events": 46,
+      "observed_tool_calls": 16,
+      "context_metrics": {
+        "prompt_bytes": 9703,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 9,
+          "read": 6
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 28469,
+        "repeated_reads": 0,
+        "search_calls": 9,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 154524810244
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    },
+    {
+      "id": "att_it3qiz2wvqrpj5k3bv4rbov3v4/qa-v1-shard-ee1a98135be2ed1c442527d3/1/evidence/qa-v2-request-b2ae680281cd729d3c90109f/1",
+      "number": 3,
+      "session_id": "ses_f6a4ad812ffecZLiGLw8GTq3AR",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "1a02f5b7bd7f5fb42fffdf0dd231be070ee5de91d148199db95a64af62645c3f",
+      "started_at": "2026-09-12T13:15:48.211746242Z",
+      "completed_at": "2026-09-12T13:16:53.327892158Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 2303,
+        "output_tokens_known": true,
+        "output_tokens": 33,
+        "total_tokens_known": true,
+        "total_tokens": 81734,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 166,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 79232,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 19948,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 65116145916
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-53f10905cf5035b40ecbb1e8",
+      "shard_id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+      "claim": "Failed candidate or regression-set measurements do not charge commands, warmups, or samples already executed, allowing later optimization cycles to admit work beyond the configured immutable command budget.",
+      "basis": "The optimization loop increments measurement counters only after successful measurements, while measurement-error branches continue without charging attempted commands; cycle admission relies on state.Counters.Commands (qa-v1-block-af5f117594728fd0aab939e2, qa-v1-block-3bf230d4d7d4d3f748ebe877). Governed requirements require immutable maxima and bounded expensive work (qa-v1-block-ce45392d2ebc036986b89d13, qa-v1-block-d19e106aa8552aa77a4f6b06).",
+      "verification_surface": "Inspect and deterministically test counter accounting and cycle admission in internal/sprint/performance_optimize_runtime.go using the measurement behavior in internal/sprint/performance_measure.go.",
+      "expectation_refs": [
+        "contract-performance",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A deterministic runner fails after executing one or more warmup or sample commands, optimizePerformance omits those executions from state.Counters, and a later cycle is admitted despite actual cumulative executions exceeding state.Limits.Commands.",
+      "refutation_condition": "Every attempted measurement command, including commands preceding a measurement error, is charged to durable counters or reserved so later cycle admission cannot exceed state.Limits.Commands.",
+      "inconclusive_condition": "The runner or measurement layer independently enforces the same aggregate command maximum, preventing omitted counter charges from permitting additional subprocess executions.",
+      "safe_evidence_strategy": "Use a deterministic process-runner double that counts invocations and fails during candidate and already-met remeasurement; compare invocation count, persisted counters, and cycle admission without a real runtime or canonical-worktree mutation.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_it3qiz2wvqrpj5k3bv4rbov3v4/qa-v1-shard-ee1a98135be2ed1c442527d3/1",
+          "number": 1,
+          "session_id": "ses_f6a4ad812ffecZLiGLw8GTq3AR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "1a02f5b7bd7f5fb42fffdf0dd231be070ee5de91d148199db95a64af62645c3f",
+          "started_at": "2026-09-12T13:01:09.975276487Z",
+          "completed_at": "2026-09-12T13:02:16.590261264Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Candidate counters are incremented only after MeasurePerformanceTarget succeeds; failed already-met remeasurements continue before their counter increments, while later cycle admission uses state.Counters.Commands.",
+              "paths": [
+                "internal/sprint/performance_optimize_runtime.go",
+                "internal/sprint/performance_measure.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 5960,
+            "output_tokens_known": true,
+            "output_tokens": 1177,
+            "total_tokens_known": true,
+            "total_tokens": 101973,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 372,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 94464,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 25,
+          "retained_events": 25,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 158765,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 8218,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 66614984777
+          },
+          "estimated_cost": {
+            "amount": 0.0425828,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_it3qiz2wvqrpj5k3bv4rbov3v4/qa-v1-shard-ee1a98135be2ed1c442527d3/1/evidence/qa-v2-request-a1444642403e76299fb53a2e/1",
+          "number": 2,
+          "session_id": "ses_f6a4ad812ffecZLiGLw8GTq3AR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "1a02f5b7bd7f5fb42fffdf0dd231be070ee5de91d148199db95a64af62645c3f",
+          "started_at": "2026-09-12T13:08:18.80923538Z",
+          "completed_at": "2026-09-12T13:10:53.334045624Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1136,
+            "output_tokens_known": true,
+            "output_tokens": 33,
+            "total_tokens_known": true,
+            "total_tokens": 73919,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 302,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 72448,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 46,
+          "retained_events": 46,
+          "observed_tool_calls": 16,
+          "context_metrics": {
+            "prompt_bytes": 9703,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 9,
+              "read": 6
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 28469,
+            "repeated_reads": 0,
+            "search_calls": 9,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 154524810244
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_it3qiz2wvqrpj5k3bv4rbov3v4/qa-v1-shard-ee1a98135be2ed1c442527d3/1/evidence/qa-v2-request-b2ae680281cd729d3c90109f/1",
+          "number": 3,
+          "session_id": "ses_f6a4ad812ffecZLiGLw8GTq3AR",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "1a02f5b7bd7f5fb42fffdf0dd231be070ee5de91d148199db95a64af62645c3f",
+          "started_at": "2026-09-12T13:15:48.211746242Z",
+          "completed_at": "2026-09-12T13:16:53.327892158Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2303,
+            "output_tokens_known": true,
+            "output_tokens": 33,
+            "total_tokens_known": true,
+            "total_tokens": 81734,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 166,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 79232,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 19948,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 65116145916
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Candidate counters are incremented only after MeasurePerformanceTarget succeeds; failed already-met remeasurements continue before their counter increments, while later cycle admission uses state.Counters.Commands.",
+          "paths": [
+            "internal/sprint/performance_optimize_runtime.go",
+            "internal/sprint/performance_measure.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-a1444642403e76299fb53a2e: failure_signature_mismatch\nRequired observation: For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands exceed the configured limit.\nTest internal/sprint/qa_investigator_76299fb53a2e_test.go:\npackage sprint\n\nimport (\n\t\"context\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n\n\tpprocess \"github.com/Antonio7098/ultraplan-go/internal/platform/process\"\n\tpruntime \"github.com/Antonio7098/ultraplan-go/internal/platform/runtime\"\n)\n\nfunc TestQAInvestigator_76299fb53a2e(t *testing.T) {\n\tconst marker = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76299fb53a2e\"\n\ttarget := gitFixture(t)\n\tif err := os.WriteFile(filepath.Join(target, \"work.go\"), []byte(\"package performance\\n\\nconst work = 1\\n\"), 0o644); err != nil {\n\t\tt.Fatal(err)\n\t}\n\trunGitTest(t, target, \"add\", \"work.go\")\n\trunGitTest(t, target, \"commit\", \"-m\", \"add production source\")\n\n\tperformanceTarget := PerformanceTarget{ID: \"PERF-LATENCY\", Scenario: \"package operation\", Metric: \"latency\", Comparator: PerformanceLessOrEqual, Value: \"10\", Unit: PerformanceNSPerOp, Gate: PerformanceRequired, Samples: 2, Basis: PerformanceAbsolute}\n\tdescriptor := performanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkLatency\", PerformanceNSPerOp, performanceTarget.ID)\n\tbaseline := PerformanceMeasurement{Target: performanceTarget, Qualification: PerformanceQualification{Median: \"20\", Qualified: true}}\n\tlimits := DefaultPerformanceLimits()\n\tlimits.Warmups = 1\n\tlimits.Commands = 20\n\tlimits.OptimizationCycles = 8\n\n\tcontrolRunner := \u0026qaPerformanceAccountingRunner{}\n\tcontrol, err := MeasurePerformanceTarget(context.Background(), controlRunner, target, descriptor, performanceTarget, limits, nil, fingerprintOf(\"packet\"), fingerprintOf(\"benchmark\"), fingerprintOf(\"environment\"))\n\tif err != nil || !control.Qualification.Qualified {\n\t\tt.Fatalf(\"passing control measurement = %#v, %v\", control, err)\n\t}\n\tcontrolCounters := PerformanceCounters{Commands: limits.Warmups + performanceTarget.Samples, Warmups: limits.Warmups, Samples: performanceTarget.Samples}\n\tif controlRunner.calls != controlCounters.Commands {\n\t\tt.Fatalf(\"passing control calls = %d, accounted = %d\", controlRunner.calls, controlCounters.Commands)\n\t}\n\n\troot := t.TempDir()\n\tsp := Sprint{Project: \"proj\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"proj\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\tref := func(name string) *PerformanceArtifactRef {\n\t\tpath, pathErr := PerformanceAttemptRelPath(sp, attemptID, name)\n\t\tif pathErr != nil {\n\t\t\tt.Fatal(pathErr)\n\t\t}\n\t\treturn \u0026PerformanceArtifactRef{Path: path, Digest: fingerprintOf(name)}\n\t}\n\tpacketRef := ref(\"target-packet.json\")\n\tstate := PerformanceState{\n\t\tSchemaVersion: PerformanceSchemaVersion, Project: sp.Project, Sprint: sp.Slug, AttemptID: attemptID,\n\t\tPhase: PerformancePhaseOptimizing, Correlation: token, Deadline: time.Now().Add(time.Hour), Limits: limits,\n\t\tPacket: *packetRef, TargetPacketDigest: packetRef.Digest, Manifest: ref(\"benchmark-manifest.json\"), Environment: ref(\"environment.json\"), Baseline: ref(\"baseline.json\"),\n\t\tCurrentImplementation: fingerprintOf(\"initial\"), NextAction: \"Optimize.\", UpdatedAt: time.Now(),\n\t}\n\tstore := NewPerformanceStore(root, sp).WithWriterFence(func(got VerificationWriterToken) error { return nil })\n\trunner := \u0026qaPerformanceAccountingRunner{failEveryThirdMeasurement: true}\n\tservice := NewService(root).WithRuntime(qaPerformanceAccountingRuntime{}).WithProcessRunner(runner)\n\tprepared := PerformancePrepareResult{Project: sp.Project, Sprint: sp.Slug, Packet: PerformanceTargetPacket{PacketDigest: packetRef.Digest, Targets: []PerformanceTarget{performanceTarget}}, Target: ExecuteTargetRef{Path: target}, Limits: limits}\n\tmanifest := PerformanceBenchmarkManifest{Descriptors: []PerformanceDescriptor{descriptor}, BenchmarkDigest: fingerprintOf(\"benchmark\")}\n\n\tresult, err := service.optimizePerformance(context.Background(), prepared, manifest, []PerformanceMeasurement{baseline}, store, \u0026state, token, nil)\n\tif err != nil {\n\t\tt.Fatalf(\"optimization reproduction returned unrelated error: %v\", err)\n\t}\n\tif !result.Stalled || state.Counters.OptimizationCycles != limits.OptimizationCycles {\n\t\tt.Fatalf(\"optimization did not reach the bounded-cycle control: result=%#v counters=%#v\", result, state.Counters)\n\t}\n\tif runner.calls \u003c= limits.Commands || state.Counters.Commands \u003e= runner.calls {\n\t\treturn\n\t}\n\tassertion := \"For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands ex\"\n\tt.Fatalf(\"%s assertion=%s actual_calls=%d durable_commands=%d command_limit=%d output_matcher=%s\", marker, assertion, runner.calls, state.Counters.Commands, limits.Commands, marker)\n}\n\ntype qaPerformanceAccountingRunner struct {\n\tcalls                     int\n\tmeasurementCalls          int\n\tfailEveryThirdMeasurement bool\n}\n\nfunc (r *qaPerformanceAccountingRunner) Run(_ context.Context, request pprocess.Request) (pprocess.Result, error) {\n\tr.calls++\n\tprofile := false\n\tfor _, arg := range request.Args {\n\t\tprofile = profile || strings.HasPrefix(arg, \"-cpuprofile=\")\n\t}\n\tif profile {\n\t\treturn pprocess.Result{Stdout: \"profile\", CleanupComplete: true}, nil\n\t}\n\tr.measurementCalls++\n\tif r.failEveryThirdMeasurement \u0026\u0026 r.measurementCalls%3 == 0 {\n\t\treturn pprocess.Result{Stdout: \"invalid benchmark output\\n\", CleanupComplete: true}, nil\n\t}\n\treturn pprocess.Result{Stdout: \"BenchmarkLatency-8 100 9 ns/op\\n\", CleanupComplete: true}, nil\n}\n\ntype qaPerformanceAccountingRuntime struct{}\n\nfunc (qaPerformanceAccountingRuntime) StartRun(_ context.Context, request pruntime.Request) (pruntime.Result, error) {\n\tpath := filepath.Join(request.WorkDir, \"work.go\")\n\tif err := os.WriteFile(path, []byte(\"package performance\\n\\nconst work = 2\\n\"), 0o644); err != nil {\n\t\treturn pruntime.Result{}, err\n\t}\n\treturn pruntime.Result{Status: \"success\", RunID: \"qa-performance-accounting\"}, nil\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_76299fb53a2e\n    qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit\n--- FAIL: TestQAInvestigator_76299fb53a2e (0.04s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_76299fb53a2e_test.go"
+          ],
+          "check_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+          "output_digest": "513b62bb168520cedb061c8ef6c703c94d82b966b8c0e0c50deac2b4a3ffd8f8"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-b2ae680281cd729d3c90109f: predicted_failure_reproduced\nRequired observation: For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cumulative commands exceed the configured limit.\nTest internal/sprint/qa_investigator_729d3c90109f_test.go:\npackage sprint\n\nimport (\n\t\"context\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n\n\tpprocess \"github.com/Antonio7098/ultraplan-go/internal/platform/process\"\n\tpruntime \"github.com/Antonio7098/ultraplan-go/internal/platform/runtime\"\n)\n\nfunc TestQAInvestigator_729d3c90109f(t *testing.T) {\n\tconst marker = \"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f\"\n\ttarget := gitFixture(t)\n\tif err := os.WriteFile(filepath.Join(target, \"work.go\"), []byte(\"package performance\\n\\nconst work = 1\\n\"), 0o644); err != nil {\n\t\tt.Fatal(err)\n\t}\n\trunGitTest(t, target, \"add\", \"work.go\")\n\trunGitTest(t, target, \"commit\", \"-m\", \"add production source\")\n\n\tperformanceTarget := PerformanceTarget{ID: \"PERF-LATENCY\", Scenario: \"package operation\", Metric: \"latency\", Comparator: PerformanceLessOrEqual, Value: \"10\", Unit: PerformanceNSPerOp, Gate: PerformanceRequired, Samples: 5, Basis: PerformanceAbsolute}\n\tdescriptor := performanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkLatency\", PerformanceNSPerOp, performanceTarget.ID)\n\tbaseline := PerformanceMeasurement{Target: performanceTarget, Qualification: PerformanceQualification{Median: \"20\", Qualified: true}}\n\tlimits := DefaultPerformanceLimits()\n\tlimits.Warmups = 1\n\tlimits.Commands = 40\n\tlimits.OptimizationCycles = 8\n\n\tcontrolRunner := \u0026qaPerformanceAccountingRunner729d{}\n\tcontrol, err := MeasurePerformanceTarget(context.Background(), controlRunner, target, descriptor, performanceTarget, limits, nil, fingerprintOf(\"packet\"), fingerprintOf(\"benchmark\"), fingerprintOf(\"environment\"))\n\tif err != nil || !control.Qualification.Qualified {\n\t\tt.Fatalf(\"passing control measurement = %#v, %v\", control, err)\n\t}\n\tcontrolCounters := PerformanceCounters{Commands: limits.Warmups + performanceTarget.Samples, Warmups: limits.Warmups, Samples: performanceTarget.Samples}\n\tif controlRunner.calls != controlCounters.Commands {\n\t\tt.Fatalf(\"passing control calls = %d, accounted = %d\", controlRunner.calls, controlCounters.Commands)\n\t}\n\n\troot := t.TempDir()\n\tsp := Sprint{Project: \"proj\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"proj\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\tref := func(name string) *PerformanceArtifactRef {\n\t\tpath, pathErr := PerformanceAttemptRelPath(sp, attemptID, name)\n\t\tif pathErr != nil {\n\t\t\tt.Fatal(pathErr)\n\t\t}\n\t\treturn \u0026PerformanceArtifactRef{Path: path, Digest: fingerprintOf(name)}\n\t}\n\tpacketRef := ref(\"target-packet.json\")\n\tstate := PerformanceState{\n\t\tSchemaVersion: PerformanceSchemaVersion, Project: sp.Project, Sprint: sp.Slug, AttemptID: attemptID,\n\t\tPhase: PerformancePhaseOptimizing, Correlation: token, Deadline: time.Now().Add(time.Hour), Limits: limits,\n\t\tPacket: *packetRef, TargetPacketDigest: packetRef.Digest, Manifest: ref(\"benchmark-manifest.json\"), Environment: ref(\"environment.json\"), Baseline: ref(\"baseline.json\"),\n\t\tCurrentImplementation: fingerprintOf(\"initial\"), NextAction: \"Optimize.\", UpdatedAt: time.Now(),\n\t}\n\tstore := NewPerformanceStore(root, sp).WithWriterFence(func(VerificationWriterToken) error { return nil })\n\trunner := \u0026qaPerformanceAccountingRunner729d{failEverySixthMeasurement: true}\n\tservice := NewService(root).WithRuntime(qaPerformanceAccountingRuntime729d{}).WithProcessRunner(runner)\n\tprepared := PerformancePrepareResult{Project: sp.Project, Sprint: sp.Slug, Packet: PerformanceTargetPacket{PacketDigest: packetRef.Digest, Targets: []PerformanceTarget{performanceTarget}}, Target: ExecuteTargetRef{Path: target}, Limits: limits}\n\tmanifest := PerformanceBenchmarkManifest{Descriptors: []PerformanceDescriptor{descriptor}, BenchmarkDigest: fingerprintOf(\"benchmark\")}\n\n\tresult, err := service.optimizePerformance(context.Background(), prepared, manifest, []PerformanceMeasurement{baseline}, store, \u0026state, token, nil)\n\tif err != nil {\n\t\tt.Fatalf(\"optimization reproduction returned unrelated error: %v\", err)\n\t}\n\tif !result.Stalled || state.Counters.OptimizationCycles != limits.OptimizationCycles {\n\t\tt.Fatalf(\"optimization did not reach the bounded-cycle control: result=%#v counters=%#v\", result, state.Counters)\n\t}\n\tif runner.calls \u003c= limits.Commands || state.Counters.Commands \u003e= runner.calls {\n\t\treturn\n\t}\n\tassertion := \"For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cum\"\n\tt.Fatalf(\"%s assertion=%s actual_calls=%d durable_commands=%d command_limit=%d output_matcher=%s\", marker, assertion, runner.calls, state.Counters.Commands, limits.Commands, marker)\n}\n\ntype qaPerformanceAccountingRunner729d struct {\n\tcalls                       int\n\tmeasurementCalls            int\n\tfailEverySixthMeasurement bool\n}\n\nfunc (r *qaPerformanceAccountingRunner729d) Run(_ context.Context, request pprocess.Request) (pprocess.Result, error) {\n\tr.calls++\n\tprofile := false\n\tfor _, arg := range request.Args {\n\t\tprofile = profile || strings.HasPrefix(arg, \"-cpuprofile=\")\n\t}\n\tif profile {\n\t\treturn pprocess.Result{Stdout: \"profile\", CleanupComplete: true}, nil\n\t}\n\tr.measurementCalls++\n\tif r.failEverySixthMeasurement \u0026\u0026 r.measurementCalls%6 == 0 {\n\t\treturn pprocess.Result{Stdout: \"invalid benchmark output\\n\", CleanupComplete: true}, nil\n\t}\n\treturn pprocess.Result{Stdout: \"BenchmarkLatency-8 100 9 ns/op\\n\", CleanupComplete: true}, nil\n}\n\ntype qaPerformanceAccountingRuntime729d struct{}\n\nfunc (qaPerformanceAccountingRuntime729d) StartRun(_ context.Context, request pruntime.Request) (pruntime.Result, error) {\n\tpath := filepath.Join(request.WorkDir, \"work.go\")\n\tif err := os.WriteFile(path, []byte(\"package performance\\n\\nconst work = 2\\n\"), 0o644); err != nil {\n\t\treturn pruntime.Result{}, err\n\t}\n\treturn pruntime.Result{Status: \"success\", RunID: \"qa-performance-accounting\"}, nil\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_729d3c90109f\n    qa_investigator_729d3c90109f_test.go:80: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f assertion=For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cum actual_calls=56 durable_commands=8 command_limit=40 output_matcher=ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f\n--- FAIL: TestQAInvestigator_729d3c90109f (0.34s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.344s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_729d3c90109f_test.go"
+          ],
+          "check_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+          "output_digest": "dec7dc246f7c5065ce023d04ea9ba4827ab6abab98ecc4553601f3edac7a93d0"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

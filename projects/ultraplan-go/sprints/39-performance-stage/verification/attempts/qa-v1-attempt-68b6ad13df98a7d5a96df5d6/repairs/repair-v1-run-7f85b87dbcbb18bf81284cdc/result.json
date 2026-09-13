@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-7f85b87dbcbb18bf81284cdc",
+  "mode": "automatic",
+  "outcome": "blocked",
+  "reason": "isolated proposal did not pass its frozen provisional checks",
+  "stop_reason": "required_check_failed",
+  "consumed": {
+    "cycles": 0,
+    "mutation_cycles": 0,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 0,
+    "changed_bytes": 0,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 0,
+    "output_bytes": 0
+  },
+  "runtime": {
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "variant": "high",
+    "session_id": "ses_f6614e3e2ffe6LXhjlxXlBp7Vb",
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 3062,
+      "output_tokens_known": true,
+      "output_tokens": 80,
+      "total_tokens_known": true,
+      "total_tokens": 139046,
+      "reasoning_tokens_known": true,
+      "reasoning_tokens": 736,
+      "cache_read_tokens_known": true,
+      "cache_read_tokens": 135168,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "estimated_cost": {
+      "amount": 0.0339576,
+      "currency": "USD",
+      "estimate": true,
+      "source": "model_priced"
+    },
+    "started_at": "2026-09-13T08:38:34.758814132Z",
+    "completed_at": "2026-09-13T08:39:31.16199872Z",
+    "duration": 56403184588,
+    "duration_ms": 56403,
+    "runtime_events": 18,
+    "retained_events": 18,
+    "observed_tool_calls": 4,
+    "provisional_checks": [
+      {
+        "gate": "exact_reproducer",
+        "status": "failed",
+        "reason": "frozen check did not pass in the isolated proposal workspace",
+        "exit_code": 1,
+        "duration": 35526738105,
+        "duration_ms": 35526,
+        "output_digest": "db36ebaae413241fe165727a1fcf48dbbaade52a78960bd5a085b6d52fd6a16e",
+        "output_bytes": 1194,
+        "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_d48db6847a74     qa_investigator_d48db6847a74_test.go:86: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74 assertion=Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4. missing_compatibility_cases=runSprintPerformance,PerformanceTargetMiss,PerformanceCancelled,ExitCancel,operational failure --- FAIL: TestQAInvestigator_d48db6847a74 (0.04s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.047s FAIL  go: downloading github.com/yuin/goldmark v1.7.13 go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db go: downloading modernc.org/sqlite v1.57.0 go: downloading gopkg.in/yaml.v3 v3.0.1 go: downloading modernc.org/libc v1.74.4 go: downloading golang.org/x/sys v0.47.0 go: downloading modernc.org/mathutil v1.7.1 go: downloading github.com/google/uuid v1.6.0 go: downloading modernc.org/memory v1.11.0 go: downloading github.com/dustin/go-humanize v1.0.1 go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec"
+      }
+    ],
+    "provisional_passed": false
+  },
+  "target": {
+    "fingerprint": "3561296e025c070d136a3e89dec04905c65a0e32db95ec8d6b43ec3d6be7a4ae",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "4cbedd37046bdb39db5e89f1b94c6c01bc17b454dcd9723082d3af16b0e5028e"
+  },
+  "cleanup_complete": true,
+  "production_applied": false,
+  "complete_ladder": false,
+  "unresolved_issues": [
+    "qa-v2-issue-377a3311d04fcdd86069f900"
+  ],
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-7f85b87dbcbb18bf81284cdc/issue-packet.json",
+      "digest": "bc0269243fadf9d440ab3b8ddafbdd3f40dc6a9a31025d92d640144910e30966"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-7f85b87dbcbb18bf81284cdc/confirmation.json",
+      "digest": "0d328858cf2acef4e0778c8052c63a571a54e255a33269d611ef4c0dceef17d0"
+    }
+  ],
+  "next_action": "Restore the named prerequisite and resume only from the latest proven boundary.",
+  "completed_at": "2026-09-13T08:40:11.695379608Z"
+}

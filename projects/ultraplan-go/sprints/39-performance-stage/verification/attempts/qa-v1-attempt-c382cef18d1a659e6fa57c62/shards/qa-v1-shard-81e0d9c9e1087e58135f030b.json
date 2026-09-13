@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-81e0d9c9e1087e58135f030b",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "kind": "primary",
+  "title": "Performance documentation and operator contract",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/configuration.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "context_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/platform/config/performance.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_state.go",
+    "internal/web/routes.go"
+  ],
+  "behavioral_concerns": [
+    "Documentation consistently states that raw samples, outputs, profiles, patches, prompts, environment values, and secrets remain private.",
+    "Examples describe only supported commands and do not grant caller authority over targets, samples, commands, parsers, environment, or limits.",
+    "Public CLI, configuration, web, schema, recovery, and release documentation agrees with implemented performance behavior.",
+    "Recovery documentation preserves conservative non-passing behavior and distinguishes resume from recovery."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "handbook"
+  ],
+  "risk_tags": [
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0341fea992e92e328c21862c",
+    "qa-v1-block-1bec30a6414976c9c25b5d55",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-34db48e1e10bbcf28cc6bf2d",
+    "qa-v1-block-511427422aa3768ace792f15",
+    "qa-v1-block-515419a1da1cb19817e9abbb",
+    "qa-v1-block-70267bd7eddd76912370199c",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-85f968d2a586b6a41a86723a",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-9a637580a721b349e21044c1",
+    "qa-v1-block-a11b800e9abfe97c390d8c4b",
+    "qa-v1-block-ea232c5c3031d0b90ef37f5a",
+    "qa-v1-block-faf2b7185f87b7b37f988de6"
+  ],
+  "prepared_prompt_bytes": 112585,
+  "prepared_prefix_bytes": 10944,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-81e0d9c9e1087e58135f030b/1",
+      "number": 1,
+      "session_id": "ses_f88defc90ffeE0Sc1UVyzZVKr2",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "8b1729df64d70ec189dd1965e163c9025fbd11625e8afcd125367aaab389442c",
+      "started_at": "2026-09-06T14:30:44.048053247Z",
+      "completed_at": "2026-09-06T14:32:57.073789237Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The public table advertises hard maxima above defaults for multiple performance settings, but validation compares configurable values against DefaultPerformance and rejects upward values (qa-v1-block-9a637580a721b349e21044c1; qa-v1-block-a42ba81ee3aabfa3bef7fe97).",
+          "paths": [
+            "docs/configuration.md",
+            "internal/platform/config/performance.go"
+          ],
+          "output_digest": "0b4dfb1dee603d47e478e3113fa4019845c07f59ef442755e4903919c9b847b6"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 34623,
+        "output_tokens_known": true,
+        "output_tokens": 1068,
+        "total_tokens_known": true,
+        "total_tokens": 69365,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 394,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 33280,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 112585,
+        "prefix_bytes": 10944,
+        "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+        "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 133025735990
+      },
+      "estimated_cost": {
+        "amount": 0.2439745,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-81e0d9c9e1087e58135f030b/1/evidence/1",
+      "number": 2,
+      "session_id": "ses_f88defc90ffeE0Sc1UVyzZVKr2",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "8b1729df64d70ec189dd1965e163c9025fbd11625e8afcd125367aaab389442c",
+      "started_at": "2026-09-07T11:30:12.650322385Z",
+      "completed_at": "2026-09-07T11:31:06.095962965Z",
+      "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1023,
+        "output_tokens_known": true,
+        "output_tokens": 41,
+        "total_tokens_known": true,
+        "total_tokens": 44974,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 134,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 43776,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 24,
+      "retained_events": 24,
+      "observed_tool_calls": 4,
+      "context_metrics": {
+        "prompt_bytes": 8572,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "glob": 1,
+          "grep": 1,
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 8218,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 53445640580
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-5aa810b32a6484259611977f",
+      "shard_id": "qa-v1-shard-81e0d9c9e1087e58135f030b",
+      "claim": "The public performance configuration table documents hard maxima above the built-in defaults even though validation rejects every value above its built-in default, causing documented supported values to fail configuration loading.",
+      "basis": "The table advertises maxima above defaults for several settings (qa-v1-block-9a637580a721b349e21044c1), while validatePerformance uses DefaultPerformance values as ceilings and rejects larger values (qa-v1-block-a42ba81ee3aabfa3bef7fe97). Public documentation must not contradict runtime behavior (qa-v1-block-34db48e1e10bbcf28cc6bf2d).",
+      "verification_surface": "Compare docs/configuration.md with DefaultPerformance and validatePerformance in internal/platform/config/performance.go.",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-documentation"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "The documented hard maxima exceed defaults while validatePerformance uses each default as the acceptance ceiling.",
+      "refutation_condition": "The effective validator accepts the documented hard maxima, or the table clearly labels them as unavailable rather than supported limits.",
+      "inconclusive_condition": "An omitted configuration layer permits the documented maxima without passing through validatePerformance.",
+      "safe_evidence_strategy": "Statically compare each documented default and hard maximum with DefaultPerformance and validatePerformance; no execution or private data access is required.",
+      "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+      "attempt_history": [
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-81e0d9c9e1087e58135f030b/1",
+          "number": 1,
+          "session_id": "ses_f88defc90ffeE0Sc1UVyzZVKr2",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8b1729df64d70ec189dd1965e163c9025fbd11625e8afcd125367aaab389442c",
+          "started_at": "2026-09-06T14:30:44.048053247Z",
+          "completed_at": "2026-09-06T14:32:57.073789237Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The public table advertises hard maxima above defaults for multiple performance settings, but validation compares configurable values against DefaultPerformance and rejects upward values (qa-v1-block-9a637580a721b349e21044c1; qa-v1-block-a42ba81ee3aabfa3bef7fe97).",
+              "paths": [
+                "docs/configuration.md",
+                "internal/platform/config/performance.go"
+              ],
+              "output_digest": "0b4dfb1dee603d47e478e3113fa4019845c07f59ef442755e4903919c9b847b6"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 34623,
+            "output_tokens_known": true,
+            "output_tokens": 1068,
+            "total_tokens_known": true,
+            "total_tokens": 69365,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 394,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 33280,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 112585,
+            "prefix_bytes": 10944,
+            "prefix_digest": "8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f",
+            "cache_cohort": "qa-investigator/8e43f9b7323f2b151f2738057a6241bf6650643087884603cce0381e91e1552f/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 133025735990
+          },
+          "estimated_cost": {
+            "amount": 0.2439745,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_woq7kyg2bjprlec2sivzez7hly/qa-v1-shard-81e0d9c9e1087e58135f030b/1/evidence/1",
+          "number": 2,
+          "session_id": "ses_f88defc90ffeE0Sc1UVyzZVKr2",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "8b1729df64d70ec189dd1965e163c9025fbd11625e8afcd125367aaab389442c",
+          "started_at": "2026-09-07T11:30:12.650322385Z",
+          "completed_at": "2026-09-07T11:31:06.095962965Z",
+          "implementation_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "implementation_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1023,
+            "output_tokens_known": true,
+            "output_tokens": 41,
+            "total_tokens_known": true,
+            "total_tokens": 44974,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 134,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 43776,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 24,
+          "retained_events": 24,
+          "observed_tool_calls": 4,
+          "context_metrics": {
+            "prompt_bytes": 8572,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "glob": 1,
+              "grep": 1,
+              "read": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 8218,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 53445640580
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The public table advertises hard maxima above defaults for multiple performance settings, but validation compares configurable values against DefaultPerformance and rejects upward values (qa-v1-block-9a637580a721b349e21044c1; qa-v1-block-a42ba81ee3aabfa3bef7fe97).",
+          "paths": [
+            "docs/configuration.md",
+            "internal/platform/config/performance.go"
+          ],
+          "output_digest": "0b4dfb1dee603d47e478e3113fa4019845c07f59ef442755e4903919c9b847b6"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-1e9703c4e2bb7f17d2859fb1: predicted_failure_reproduced\nRequired observation: Assert configuration loading rejects those documented maximum values.\nTest internal/app/qa_investigator_7f17d2859fb1_test.go:\npackage app\n\nimport (\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/platform/config\"\n)\n\nfunc TestQAInvestigator_7f17d2859fb1(t *testing.T) {\n\tloadWithCommands := func(value string) error {\n\t\t_, err := config.Load(config.LoadOptions{Env: func(key string) string {\n\t\t\tif key == \"ULTRAPLAN_PERFORMANCE_COMMANDS\" {\n\t\t\t\treturn value\n\t\t\t}\n\t\t\treturn \"\"\n\t\t}})\n\t\treturn err\n\t}\n\n\tif err := loadWithCommands(\"\"); err != nil {\n\t\tt.Fatalf(\"default performance.commands should load: %v\", err)\n\t}\n\tif err := loadWithCommands(\"64\"); err != nil {\n\t\tt.Fatalf(\"lower performance.commands value should load: %v\", err)\n\t}\n\tif err := loadWithCommands(\"256\"); err != nil {\n\t\tif !strings.Contains(err.Error(), \"performance.commands\") {\n\t\t\tt.Fatalf(\"documented maximum failed for an unrelated reason: %v\", err)\n\t\t}\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_7f17d2859fb1 assertion=Assert configuration loading rejects those documented maximum values. documented performance.commands hard maximum 256 was rejected: %v\", err)\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_7f17d2859fb1\n    qa_investigator_7f17d2859fb1_test.go:31: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_7f17d2859fb1 assertion=Assert configuration loading rejects those documented maximum values. documented performance.commands hard maximum 256 was rejected: performance.commands: must be positive and no greater than the built-in default 128\n--- FAIL: TestQAInvestigator_7f17d2859fb1 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.013s\nFAIL\n\nObserved stderr:\ngo: downloading github.com/yuin/goldmark v1.7.13\ngo: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading gopkg.in/yaml.v3 v3.0.1\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+          "paths": [
+            "internal/app/qa_investigator_7f17d2859fb1_test.go"
+          ],
+          "check_id": "qa-v2-test-1ccb50db637f7093384d4deb",
+          "output_digest": "29252acec764430e0c618b4a01fc5e9512d0371f7737dd412f31df8d59236af7"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

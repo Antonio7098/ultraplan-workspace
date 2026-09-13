@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-e8247fc13169ad1a528fab54",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+  "evidence_request_id": "qa-v2-request-a1444642403e76299fb53a2e",
+  "theory_ids": [
+    "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+  ],
+  "claim": "Failed candidate or regression-set measurements do not charge commands, warmups, or samples already executed, allowing later optimization cycles to admit work beyond the configured immutable command budget.",
+  "preconditions": [
+    "Use deterministic outputs and an otherwise identical successful-measurement control whose actual calls equal persisted accounting; do not modify source or assume a new collaborator hook."
+  ],
+  "expected_behavior": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands exceed the configured limit.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_76299fb53a2e",
+    "assertion": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands ex",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76299fb53a2e"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_76299fb53a2e_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-76299fb53a2e",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_76299fb53a2e$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "4586677bc53f6d0361fa3d79dd95608598cb576516f524918305b7a912e94b3e"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T13:08:12.717365907Z"
+}

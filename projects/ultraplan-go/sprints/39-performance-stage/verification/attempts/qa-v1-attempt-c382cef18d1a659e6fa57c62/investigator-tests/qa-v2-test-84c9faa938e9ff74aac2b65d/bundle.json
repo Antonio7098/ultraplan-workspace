@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-84c9faa938e9ff74aac2b65d",
+  "spec_id": "qa-v2-spec-c0e286def24fc5ebd5dc63ba",
+  "files": [
+    {
+      "path": "internal/sprint/qa_investigator_b652f4844a27_test.go",
+      "content": "package sprint\n\nimport (\n\t\"fmt\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_b652f4844a27(t *testing.T) {\n\tpacket := PerformanceTargetPacket{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tParserVersion: PerformanceParserVersion,\n\t\tPacketDigest:  \"qa-investigator-packet\",\n\t\tTargets: []PerformanceTarget{{\n\t\t\tID:    \"PERF-QA\",\n\t\t\tUnit:  PerformanceNSPerOp,\n\t\t\tBasis: PerformanceAbsolute,\n\t\t}},\n\t}\n\n\tdiscover := func(t *testing.T, separator string) error {\n\t\tt.Helper()\n\t\troot := t.TempDir()\n\t\tsource := \"package sample\\n\\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-QA\\n\" + separator + \"func BenchmarkQA() {}\\n\"\n\t\tif err := os.WriteFile(filepath.Join(root, \"performance_test.go\"), []byte(source), 0o600); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\t_, err := DiscoverPerformanceManifest(root, packet)\n\t\treturn err\n\t}\n\n\tif err := discover(t, \"\"); err != nil {\n\t\tt.Fatalf(\"adjacent marker control was rejected: %v\", err)\n\t}\n\tif err := discover(t, \"var intervening = true\\n\"); err == nil {\n\t\tt.Fatal(\"intervening source statement control was accepted\")\n\t}\n\n\tblankErr := discover(t, \"\\n\")\n\tcommentErr := discover(t, \"// unrelated comment\\n\")\n\tif blankErr != nil {\n\t\tt.Fatalf(\"blank-line reproduction was not accepted: %v\", blankErr)\n\t}\n\tif commentErr != nil {\n\t\tt.Fatalf(\"comment-line reproduction was not accepted: %v\", commentErr)\n\t}\n\n\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27\")\n\tt.Fatal(\"Assert DiscoverPerformanceManifest accepts both separated-marker cases.\")\n}\n",
+      "digest": "59ccdedb8b7c5382a7bc698c6cd69c92fd56458609c5c7154ea275bbfadf4cf4",
+      "bytes": 1514
+    }
+  ],
+  "content_digest": "ef159f752960efe0f02fecdc8b3b0f59c4881bd9e6ca7e962658b48f223aa127"
+}

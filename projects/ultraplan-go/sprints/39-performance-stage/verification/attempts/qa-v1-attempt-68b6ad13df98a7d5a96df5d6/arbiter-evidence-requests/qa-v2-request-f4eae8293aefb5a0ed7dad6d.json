@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "qa continue investigator for evidence: verification_unavailable: The CLI accepts a concrete sprint.Service and creates durable/runtime dependencies internally, so an approved app-package test cannot deterministically inject success, target_missed, cancelled, and partial RunPerformance outcomes without invoking the real performance workflow or modifying product source. The requested outcome branches therefore cannot all be reached with deterministic service and durable-operation fakes from the approved test path.. Required prerequisite: Provide an existing injectable performance command seam or approve a product-owned test adapter that controls PreparePerformance, RunPerformance, status projection, and durable-operation completion outcomes while retaining the real CLI envelope and exit translation.",
+      "retryable": false
+    },
+    "id": "qa-v2-request-f4eae8293aefb5a0ed7dad6d",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-44d9a1998804c860f04368c4"
+    ],
+    "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+    "gap": "The returned test only checks a dry-run JSON happy path and does not execute the required stdout/stderr or terminal outcome exit-code assertions.",
+    "requested_evidence": "Strengthen the executable Go _test.go compatibility reproducer in the approved private workspace for representative success, target_missed, cancelled, and partial performance outcomes.",
+    "required_observation": "For qa-v1-theory-44d9a1998804c860f04368c4, assert complete stable JSON envelope structure, absence of output on stderr where appropriate, and the exact semantic exit classification for each representative outcome.",
+    "control_requirement": "Use deterministic service and durable-operation fakes, inspect parsed JSON rather than substring markers, and ensure each outcome case reaches its intended branch.",
+    "priority": "medium",
+    "status": "inconclusive",
+    "evidence_round": 3,
+    "attempts": 1,
+    "evidence_fingerprint": "3ac66f9ec42efffcff4c552f46ae51dbe9e0133975b9b833378d4b1ad317084f",
+    "reason_code": "verification_unavailable",
+    "superseded_by": "qa-v2-request-71ae9de6dbec8d93317a7331",
+    "next_action": "Evidence remains unresolved: verification_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. qa continue investigator for evidence: verification_unavailable: The CLI accepts a concrete sprint.Service and creates durable/runtime dependencies internally, so an approved app-package test cannot deterministically inject success, target_missed, cancelled, and partial RunPerformance outcomes without invoking the real performance workflow or modifying product source. The requested outcome branches therefore cannot all be reached with deterministic service and durable-operation fakes from the approved test path.. Required prerequisite: Provide an existing injectable performance command seam or approve a product-owned test adapter that controls PreparePerformance, RunPerformance, status projection, and durable-operation completion outcomes while retaining the real CLI envelope and exit translation."
+  }
+}

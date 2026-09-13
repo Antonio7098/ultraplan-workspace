@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-313929ee57be11814130ecbd",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-83343899362a358a874d111b",
+  "evidence_request_id": "qa-v2-request-41db99a55622e2eec52fa86d",
+  "theory_ids": [
+    "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+    "qa-v1-theory-44d9a1998804c860f04368c4"
+  ],
+  "claim": "Performance CLI output failures are silently discarded because JSON encoding and text rendering write errors are ignored.; The new performance CLI lacks compatibility tests covering stable JSON envelopes, stdout/stderr separation, and outcome-to-exit-code behavior.",
+  "preconditions": [
+    "Use injected writers and deterministic service or durable-operation fakes; do not invoke a real performance runtime or rely on output markers alone."
+  ],
+  "expected_behavior": "Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr separation, and target_missed, cancelled, partial, and success exit mappings.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_e2eec52fa86d",
+    "assertion": "Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_e2eec52fa86d_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-e2eec52fa86d",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_e2eec52fa86d$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "4e4eacebe7065670e0a302e2c90d66bc2df9badbe1a5acdf09912e6fc09ec10e"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:28:51.236184788Z"
+}

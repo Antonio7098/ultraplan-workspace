@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-4db85fa581a58a0b5aaad223",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Application projections and interface composition",
+  "changed_paths": [
+    "internal/app/performance_fixtures_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_usecases.go",
+    "internal/app/tui_commands.go",
+    "internal/app/usecases.go",
+    "internal/app/web_usecases.go"
+  ],
+  "context_paths": [
+    "internal/app/sprint_usecases_test.go",
+    "internal/app/tui_commands_test.go",
+    "internal/app/usecases_test.go",
+    "internal/app/web_usecases_test.go"
+  ],
+  "behavioral_concerns": [
+    "CLI, TUI, and web composition receive the same effective limits and sources and delegate product behavior through application use cases.",
+    "Canonical presentation fixtures cover disabled, active, terminal, stale, resumable, historical, evidence-gap, and recovery-conflict states.",
+    "Public projections remain schema-versioned, bounded, sample-free, sanitized, and consistent across preparation, status, result, and evidence views."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-1eb113303f71d851c8c728ae",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-35e4c5fcc8d7288b70a46a1e",
+    "qa-v1-block-3af424a097d973509acf6e57",
+    "qa-v1-block-41d933d34511fa71cb08d3d6",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-6638402f8841b183d2d5285e",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-85f8ea81735d07d454d23d7e",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-9905b1b7d4d24397f5a85abc",
+    "qa-v1-block-c1bc237cbe63b9df34c97ed7",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-e419d1b4a19c773a764b15a0",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-e9d8077d15e68457fadc6be5",
+    "qa-v1-block-f1f433c9dcd2821fbf7229a1",
+    "qa-v1-block-f762c5dd3b25d606c5068cc4"
+  ],
+  "prepared_prompt_bytes": 143740,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-4db85fa581a58a0b5aaad223/1",
+      "number": 1,
+      "session_id": "ses_f697eabc1ffek91rZhHgqlSr78",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "9ab78c9ad1bf4073d8bde788b3bf92636def74e27367389ac50eb875e25ebdd2",
+      "started_at": "2026-09-12T16:44:10.682411202Z",
+      "completed_at": "2026-09-12T16:45:04.622108411Z",
+      "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "SprintSummaries ignores PerformanceEvidence errors and leaves the public evidence projection empty.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "qa-v1-block-c1bc237cbe63b9df34c97ed7"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 41028,
+        "output_tokens_known": true,
+        "output_tokens": 1114,
+        "total_tokens_known": true,
+        "total_tokens": 82299,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 221,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 39936,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 143740,
+        "prefix_bytes": 19551,
+        "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+        "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 53939697209
+      },
+      "estimated_cost": {
+        "amount": 0.1011832,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fee802dd66f95e4d140db4f7",
+      "shard_id": "qa-v1-shard-4db85fa581a58a0b5aaad223",
+      "claim": "Sprint dashboard composition silently discards performance evidence retrieval failures, causing TUI and web summaries to present an empty evidence result instead of an inspectable evidence-gap or failure state.",
+      "basis": "The dashboard populates PerformanceEvidence only when evidenceErr is nil, with no else branch or propagated signal (qa-v1-block-c1bc237cbe63b9df34c97ed7). The error contract requires that no failure disappear (qa-v1-block-307234c6bfff53948b392930). Sprint requirements require consistent evidence-gap presentation and presentation-only differences pointing to the same immutable evidence (qa-v1-block-ce45392d2ebc036986b89d13).",
+      "verification_surface": "Exercise dashboardUseCases.SprintSummaries for a sprint with a nonempty performance attempt ID while PerformanceEvidence returns an error, then inspect the returned error and performance evidence projection.",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-observability",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "SprintSummaries returns successfully with an empty PerformanceEvidence result and no evidence-gap, blocker, freshness reason, or propagated error after PerformanceEvidence fails.",
+      "refutation_condition": "The complete composition path converts the evidence error into an inspectable evidence-gap or failure projection, or a demonstrated invariant makes PerformanceEvidence infallible after a nonempty attempt ID.",
+      "inconclusive_condition": "A focused test cannot induce the evidence-query failure or omitted service behavior proves the call cannot fail in this state.",
+      "safe_evidence_strategy": "Use a bounded application-use-case test with fixture-backed state whose status has a performance attempt ID and whose evidence artifact is unavailable or invalid; inspect only returned summary fields and errors.",
+      "implementation_fingerprint": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "attempt_history": [
+        {
+          "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-4db85fa581a58a0b5aaad223/1",
+          "number": 1,
+          "session_id": "ses_f697eabc1ffek91rZhHgqlSr78",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "9ab78c9ad1bf4073d8bde788b3bf92636def74e27367389ac50eb875e25ebdd2",
+          "started_at": "2026-09-12T16:44:10.682411202Z",
+          "completed_at": "2026-09-12T16:45:04.622108411Z",
+          "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+          "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "SprintSummaries ignores PerformanceEvidence errors and leaves the public evidence projection empty.",
+              "paths": [
+                "internal/app/sprint_usecases.go"
+              ],
+              "output_digest": "qa-v1-block-c1bc237cbe63b9df34c97ed7"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 41028,
+            "output_tokens_known": true,
+            "output_tokens": 1114,
+            "total_tokens_known": true,
+            "total_tokens": 82299,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 221,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 39936,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 143740,
+            "prefix_bytes": 19551,
+            "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+            "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 53939697209
+          },
+          "estimated_cost": {
+            "amount": 0.1011832,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "SprintSummaries ignores PerformanceEvidence errors and leaves the public evidence projection empty.",
+          "paths": [
+            "internal/app/sprint_usecases.go"
+          ],
+          "output_digest": "qa-v1-block-c1bc237cbe63b9df34c97ed7"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "The cited source explicitly assigns evidence only when evidenceErr is nil and otherwise drops the error without returning or projecting it (qa-v1-block-c1bc237cbe63b9df34c97ed7). This violates the no-silent-failure criterion (qa-v1-block-307234c6bfff53948b392930) and the governed evidence-gap presentation requirement (qa-v1-block-ce45392d2ebc036986b89d13)."
+    }
+  ]
+}

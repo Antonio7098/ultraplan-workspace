@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "accounting_version": 2,
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "opencode event: runtime_exit: OpenCode reported a fatal session error; qa continue investigator for evidence: original_session_unavailable",
+      "retryable": false
+    },
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-07T16:07:56.994344795Z",
+    "recovery_reason": "evidence_round_budget_exhausted",
+    "id": "qa-v2-request-922f451b9bb54eee4affff91",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-e520dfe5bb32e35f0d545398"
+    ],
+    "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+    "gap": "The submitted CLI test failed to compile for an unrelated reason.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+    "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+    "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 3,
+    "attempts": 1,
+    "evidence_fingerprint": "9b59a6b684e91e1ecd81bca5409f68c3391c384cebda04e7912e0fc05b67ad4c",
+    "reason_code": "tests_per_theory_budget_exhausted",
+    "superseded_by": "qa-v2-request-2943a82794f42d463a0148d6",
+    "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Infrastructure-blocked work may qualify for qa retry-infrastructure; other exhausted work requires a new governed attempt."
+  }
+}

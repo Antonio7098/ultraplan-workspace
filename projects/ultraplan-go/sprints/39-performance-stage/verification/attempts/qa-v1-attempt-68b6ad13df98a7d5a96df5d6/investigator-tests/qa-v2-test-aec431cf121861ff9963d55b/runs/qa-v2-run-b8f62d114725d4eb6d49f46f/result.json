@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-b8f62d114725d4eb6d49f46f",
+  "spec_id": "qa-v2-spec-f1616232c467e818f4a3ad47",
+  "test_bundle_id": "qa-v2-test-aec431cf121861ff9963d55b",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_a02b8a23413a",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_a02b8a23413a",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a02b8a23413a",
+    "executable": "go",
+    "args_digest": "9b9c59e4fc3824fcecde3e9f4e26ef08c1587c1b2afd138eddd8628069903bf4",
+    "exit_code": 1,
+    "duration": 22999202278,
+    "stdout_digest": "af3c1f6581879b191c6d68c1b2e41b97696f7532e0419c0eb70f7b492611a377",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_a02b8a23413a\n    qa_investigator_a02b8a23413a_test.go:23: TestQAInvestigator_a02b8a23413a: The assertions must cover qa-v1-theory-35a6a9cbcf6592fb04bb7828 by proving whether another proposal or mutation step starts after cleanup failure and whether the resulting state preserves cleanup_uncertain. ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a02b8a23413a\n--- FAIL: TestQAInvestigator_a02b8a23413a (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.007s\nFAIL\n",
+    "output_bytes": 511,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_a02b8a23413a",
+    "assertion": "The assertions must cover qa-v1-theory-35a6a9cbcf6592fb04bb7828 by proving whether another proposal or mutation step starts after cleanup failure and whether the resulting state preserves cleanup_uncertain.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a02b8a23413a"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:36:31.334658339Z"
+}

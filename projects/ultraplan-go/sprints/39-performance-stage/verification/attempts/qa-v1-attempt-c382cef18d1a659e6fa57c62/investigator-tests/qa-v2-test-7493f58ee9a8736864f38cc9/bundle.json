@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-7493f58ee9a8736864f38cc9",
+  "spec_id": "qa-v2-spec-02d4fe134e9dec8a08db4159",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_6fe849fce7fe_test.go",
+      "content": "package app\n\nimport (\n\t\"context\"\n\t\"errors\"\n\t\"path/filepath\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_6fe849fce7fe(t *testing.T) {\n\t// Control: the production classifier produces the typed shape consumed by\n\t// performance-specific transport mapping.\n\tcontrol := mapPerformanceUseCaseError(\"performance.result\", errors.New(\"performance result is unavailable\"))\n\ttypedControl, ok := AsPerformanceUseCaseError(control)\n\tif !ok || typedControl.Code != \"performance.persistence_unavailable\" || typedControl.Category != \"persistence\" {\n\t\tt.Fatalf(\"control performance mapping = %#v, typed=%t\", control, ok)\n\t}\n\n\troot := initializedWorkspace(t)\n\tprojectRoot := filepath.Join(root, \"projects\", \"alpha\")\n\twriteFixtureFileContent(t, projectRoot, \"# Project Index\\n\\n## Performance Policy\\n\\n- **Mode:** disabled\\n\", \"project-index.md\")\n\twriteFixtureFileContent(t, filepath.Join(projectRoot, \"sprints\", \"01-ready\"), \"# Requirements\\n\\nNo performance targets are enabled.\\n\", \"requirements.md\")\n\n\t_, err := (dashboardUseCases{root: root, readOnly: true}).PerformanceResult(context.Background(), PerformanceRequest{Project: \"alpha\", Sprint: \"01-ready\"})\n\tif err == nil {\n\t\tt.Fatal(\"expected a nonterminal performance result to be unavailable\")\n\t}\n\tif _, ok := AsPerformanceUseCaseError(err); !ok {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6fe849fce7fe assertion=Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.\")\n\t}\n}\n",
+      "digest": "815390157f9042c5ed3e4540adbf0954b0849c150262aaf1c3100d395448c9ab",
+      "bytes": 1473
+    }
+  ],
+  "content_digest": "c7fcd302caa2b284611db96250779c9acd76e6ee4a46fbecb20ef8eb19c70348"
+}

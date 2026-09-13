@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-21836b45dff44c191617c383",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-b120687ce5ad252ba59d75ad"
+    ],
+    "origin_shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+    "gap": "Metadata exposure lacks executable serialization and rendering evidence.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go API and template reproducer using synthetic evidence metadata.",
+    "required_observation": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+    "control_requirement": "Assert raw artifact contents are absent to isolate metadata exposure.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 2,
+    "attempts": 1,
+    "evidence_fingerprint": "dc97926eff441d6867e7e27081a624f7ae43ca307f66155cb1c8087da7025ef3",
+    "reason_code": "failure_signature_mismatch",
+    "superseded_by": "qa-v2-request-a26146fe1f9e39609588ef10",
+    "test_bundle_id": "qa-v2-test-83007529d2fd5144a4f8d32d",
+    "latest_run_id": "qa-v2-run-01569b23701d64d1ed99f3e3",
+    "next_action": "Evidence remains unresolved: failure_signature_mismatch. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+  }
+}

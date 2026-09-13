@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-b44dd98667aa38cd6d4b7db8",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+  "evidence_request_id": "qa-v2-request-2dacd623de9f8de5812444c7",
+  "theory_ids": [
+    "qa-v1-theory-8777e689a2caaaafff1d1064"
+  ],
+  "claim": "The performance failure path may publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState.",
+  "preconditions": [
+    "Run the same path without revocation and verify normal flow publication succeeds."
+  ],
+  "expected_behavior": "Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_8de5812444c7",
+    "assertion": "Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8de5812444c7"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_8de5812444c7_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-8de5812444c7",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_8de5812444c7$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "0b2f1c030e681c3476bd08192744bf4bf5797c578810ad50be0b7cc65e2a7380"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T11:35:40.924211527Z"
+}

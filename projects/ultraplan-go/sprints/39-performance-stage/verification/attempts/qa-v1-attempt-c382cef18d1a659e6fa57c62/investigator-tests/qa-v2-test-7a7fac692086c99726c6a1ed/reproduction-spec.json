@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-86a75b87821538120b9d3549",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-b951f08c0478926a7e675a81",
+  "evidence_request_id": "qa-v2-request-feb09f2982cb2f5fd0db9fe4",
+  "theory_ids": [
+    "qa-v1-theory-60e255ab711c15643830dc69"
+  ],
+  "claim": "The JSON performance-output parser accepts malformed trailing content after an otherwise valid envelope because it rejects only a second decode that succeeds; any non-EOF decoding error is treated as acceptable trailing data.",
+  "preconditions": [
+    "Assert whitespace-only trailing content succeeds and a second valid JSON value is rejected."
+  ],
+  "expected_behavior": "Assert parsing succeeds and returns the canonical value despite malformed trailing content.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_2f5fd0db9fe4",
+    "assertion": "Assert parsing succeeds and returns the canonical value despite malformed trailing content.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_2f5fd0db9fe4_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-2f5fd0db9fe4",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_2f5fd0db9fe4$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "5ce9c39827dda69de6fc7a9c602df16920d3d48c9642f78bde3d810c9899e830"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T17:16:50.958936336Z"
+}

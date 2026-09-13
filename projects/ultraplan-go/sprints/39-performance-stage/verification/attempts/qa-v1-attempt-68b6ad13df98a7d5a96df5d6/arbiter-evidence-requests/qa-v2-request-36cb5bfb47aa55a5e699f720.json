@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "id": "qa-v2-request-36cb5bfb47aa55a5e699f720",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+    ],
+    "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+    "gap": "Existing tests inspect source or simulate an unrelated loop rather than executing optimizePerformance and observing cleanup classification.",
+    "requested_evidence": "Create or strengthen a package-local executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-35a6a9cbcf6592fb04bb7828 using only existing service, runner, runtime, and isolation seams.",
+    "required_observation": "Induce an actual optimization rejection followed by isolation cleanup failure, then assert for qa-v1-theory-35a6a9cbcf6592fb04bb7828 whether later proposal, profile, correctness, measurement, or mutation work starts and whether returned or persisted state is cleanup_uncertain.",
+    "control_requirement": "Include an otherwise identical successful-cleanup control that may continue according to the frozen workflow. Do not assume a new cleanup injection hook or source modification; if cleanup failure cannot be induced through an existing hook, retain that missing prerequisite as verification_unavailable.",
+    "priority": "high",
+    "status": "inconclusive",
+    "reason_code": "tests_per_theory_budget_exhausted",
+    "superseded_by": "qa-v2-request-9148ec87db83fa186204264b",
+    "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+  }
+}

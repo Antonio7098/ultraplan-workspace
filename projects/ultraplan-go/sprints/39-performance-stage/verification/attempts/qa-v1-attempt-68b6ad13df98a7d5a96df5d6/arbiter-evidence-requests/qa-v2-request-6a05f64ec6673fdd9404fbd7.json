@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "correction_granted_at": "2026-09-12T13:28:09.181900041Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T13:29:51.358365989Z",
+        "completed_at": "2026-09-12T13:30:42.697364059Z",
+        "failure": {
+          "phase": "compile",
+          "code": "compile_failure",
+          "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/app [github.com/Antonio7098/ultraplan-go/internal/app.test] ./qa_investigator_3fdd9404fbd7_test.go:51:12: continue label not defined: finder",
+          "retryable": false
+        },
+        "run_id": "qa-v2-run-bb4f75197803d2c285038788"
+      }
+    ],
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "compile",
+      "code": "compile_failure",
+      "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/app [github.com/Antonio7098/ultraplan-go/internal/app.test] ./qa_investigator_3fdd9404fbd7_test.go:51:12: continue label not defined: finder",
+      "retryable": false
+    },
+    "id": "qa-v2-request-6a05f64ec6673fdd9404fbd7",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+    ],
+    "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+    "gap": "The revised test covers output behavior and operational failure but uses source-token searches instead of executing semantic outcome mappings.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "required_observation": "Execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "control_requirement": "Retain healthy and operational-failure controls, use existing deterministic seams, and do not substitute source-token searches for behavioral assertions. Treat the static product-test evidence, not the newly authored reproducer, as proof of prior coverage absence.",
+    "priority": "medium",
+    "status": "superseded",
+    "evidence_round": 3,
+    "attempts": 1,
+    "evidence_fingerprint": "490c796516c4b7c30d0b07260c8be057b273f3abea2e755da3a90912e0655f88",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-bc9cd81c85d4d094a0cec36e",
+    "test_bundle_id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+    "latest_run_id": "qa-v2-run-bb4f75197803d2c285038788",
+    "next_action": "Inspect replacement evidence request qa-v2-request-bc9cd81c85d4d094a0cec36e."
+  }
+}

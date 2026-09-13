@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "6783f15651f88853df0811fbd013968ef8f4c778b33d6e0ef3ff5ce4024f2af8",
+  "schema_version": 2,
+  "id": "qa-v2-run-0f98e9ffdfffc417c65259cf",
+  "spec_id": "qa-v2-spec-efbe9a3d71f1adf4bad905da",
+  "test_bundle_id": "qa-v2-test-16a0129229c8391e97b6af00",
+  "target_identity": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_d48db6847a74",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_d48db6847a74",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74",
+    "executable": "go",
+    "args_digest": "abf83b96f58a8f8cc9f081cdbcf08dba4f690e9ac78db457a1cb2a705500a49b",
+    "exit_code": 1,
+    "duration": 27811457466,
+    "stdout_digest": "f0d77b6035f381b56228ed3cbedf4e761ee90a4df1ed142a9dc3f594705d70e4",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_d48db6847a74\n    qa_investigator_d48db6847a74_test.go:86: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74 assertion=Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4. missing_compatibility_cases=runSprintPerformance,PerformanceTargetMiss,PerformanceCancelled,ExitCancel,operational failure\n--- FAIL: TestQAInvestigator_d48db6847a74 (0.03s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.037s\nFAIL\n",
+    "output_bytes": 626,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_d48db6847a74",
+    "assertion": "Using existing seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text output, stream behavior, and exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d48db6847a74"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T20:34:44.015927297Z"
+}

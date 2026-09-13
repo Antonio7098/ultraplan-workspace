@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-ce42f0cfa96d8b57bcd2bab8",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+  "evidence_request_id": "qa-v2-request-29d7435d9ca56ae404229a54",
+  "theory_ids": [
+    "qa-v1-theory-1158b01023e7f48c5250faeb",
+    "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+  ],
+  "claim": "The performance status API and server-rendered workbench omit durable operational lifecycle and cancellation state because they obtain performance data through the aggregate Sprint query rather than the dedicated PerformanceStatus query that enriches those fields.; The performance evidence endpoint has a compatibility path that returns an unversioned ad hoc artifact payload instead of the schema-versioned PerformanceEvidenceResult DTO.",
+  "preconditions": [
+    "Include controls showing direct PerformanceStatus contains the durable fields and a full evidence-capability adapter returns the versioned DTO."
+  ],
+  "expected_behavior": "Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_6ae404229a54",
+    "assertion": "Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6ae404229a54"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/web/qa_investigator_6ae404229a54_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-6ae404229a54",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_6ae404229a54$",
+      "-count=1"
+    ],
+    "working_directory": "internal/web",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "a34f931a5db498c66ddd06ba68c883c5b2553ef2a6b7abf231d92da8646c5474"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T11:31:57.151765672Z"
+}

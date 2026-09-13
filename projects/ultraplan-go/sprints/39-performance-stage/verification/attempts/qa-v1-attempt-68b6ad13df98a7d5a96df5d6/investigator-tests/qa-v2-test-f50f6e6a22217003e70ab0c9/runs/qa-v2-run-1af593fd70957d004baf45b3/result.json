@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-1af593fd70957d004baf45b3",
+  "spec_id": "qa-v2-spec-313929ee57be11814130ecbd",
+  "test_bundle_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_e2eec52fa86d",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_e2eec52fa86d",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d",
+    "executable": "go",
+    "args_digest": "36cb36e71aeda831e9a99a589e1638923a1afc9c0db89ceee8631ca0fba3c85b",
+    "exit_code": 1,
+    "duration": 22768771960,
+    "stdout_digest": "233860f75ceef613c7f313856f6c3b3283f573c1e68e463e706a4277e52a317f",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_e2eec52fa86d\n    qa_investigator_e2eec52fa86d_test.go:69: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d assertion=Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se\n--- FAIL: TestQAInvestigator_e2eec52fa86d (0.03s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.041s\nFAIL\n",
+    "output_bytes": 538,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_e2eec52fa86d",
+    "assertion": "Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:32:39.692238629Z"
+}

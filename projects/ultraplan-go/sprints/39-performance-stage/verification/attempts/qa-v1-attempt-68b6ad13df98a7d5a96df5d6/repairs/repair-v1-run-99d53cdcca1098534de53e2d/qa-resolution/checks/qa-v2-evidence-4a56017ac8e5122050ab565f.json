@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-4a56017ac8e5122050ab565f",
+    "outcome": "fail",
+    "run": {
+      "observed_outcome": "fail",
+      "observed_reason_code": "predicted_failure_reproduced",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "ae25e6710e5d3dce0d4e363ab477ef9f344495c889f72c7bc8cecaf4db8bd9f0",
+      "schema_version": 2,
+      "id": "qa-v2-run-5abb4d76945b4d6e6a292a98",
+      "spec_id": "qa-v2-spec-b7390498db1e0035e096d2e0",
+      "test_bundle_id": "qa-v2-test-731bcfbd077beb53b1c37659",
+      "target_identity": "3561296e025c070d136a3e89dec04905c65a0e32db95ec8d6b43ec3d6be7a4ae",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_6b0e9329abe5",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_6b0e9329abe5",
+            "action": "fail"
+          }
+        ],
+        "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6b0e9329abe5",
+        "executable": "go",
+        "args_digest": "36849206561ec92f819e8df04267b51f00050f39648cb667f7209fabea09311c",
+        "exit_code": 1,
+        "duration": 37265944101,
+        "stdout_digest": "dfae94f2b4f3a995a7487f1ba087cd0853cf8e10fcf000fac2077f8767ca9d74",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_6b0e9329abe5\n    qa_investigator_6b0e9329abe5_test.go:75: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6b0e9329abe5 assertion=Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c i theory=qa-v1-theory-7ef7c4876857c8e4b85d4c0c missing=[PerformanceTargetMiss PerformanceCancelled ExitCancel]\n--- FAIL: TestQAInvestigator_6b0e9329abe5 (0.24s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.295s\nFAIL\n",
+        "output_bytes": 647,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_6b0e9329abe5",
+        "assertion": "Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c i",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6b0e9329abe5"
+      },
+      "outcome": "fail",
+      "reason_code": "predicted_failure_reproduced",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-12T21:11:25.480830105Z"
+    }
+  }
+}

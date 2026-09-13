@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-07T17:15:57.398836795Z",
+        "completed_at": "2026-09-07T17:16:50.398924774Z",
+        "run_id": "qa-v2-run-6ea296fdd3438731707140d8"
+      }
+    ],
+    "preparation_attempts": 1,
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+    "recovery_reason": "evidence_round_budget_exhausted",
+    "id": "qa-v2-request-c5b5b98d792e1bc58f90bf82",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-ac5be59947bfccdb558de158"
+    ],
+    "origin_shard_id": "qa-v1-shard-d4b2cd309a57f7dc8e2090a9",
+    "gap": "The submitted TUI test did not execute because the environment ran out of space.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer evaluating navItems with Enabled=false and a historical PerformanceAttemptID.",
+    "required_observation": "Assert start, resume, cancel, and recover operation kinds are present.",
+    "control_requirement": "Include disabled-without-attempt and enabled-current-attempt controls.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 3,
+    "attempts": 2,
+    "evidence_fingerprint": "7adf20b48e99f72c901a9d7d2546a1dcc98d8be57def0c06ca4265b0cfe90605",
+    "test_bundle_id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+    "latest_run_id": "qa-v2-run-6ea296fdd3438731707140d8",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

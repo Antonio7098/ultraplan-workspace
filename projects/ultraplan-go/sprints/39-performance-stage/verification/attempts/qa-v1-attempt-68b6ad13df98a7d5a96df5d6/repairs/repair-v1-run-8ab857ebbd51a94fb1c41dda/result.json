@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-8ab857ebbd51a94fb1c41dda",
+  "mode": "automatic",
+  "outcome": "blocked",
+  "reason": "isolated proposal did not pass its frozen provisional checks",
+  "stop_reason": "required_check_failed",
+  "consumed": {
+    "cycles": 0,
+    "mutation_cycles": 0,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 0,
+    "changed_bytes": 0,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 0,
+    "output_bytes": 0
+  },
+  "runtime": {
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "variant": "high",
+    "session_id": "ses_f6948ce44ffeC7TYhN7ObbUogG",
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 993,
+      "output_tokens_known": true,
+      "output_tokens": 50,
+      "total_tokens_known": true,
+      "total_tokens": 63690,
+      "reasoning_tokens_known": true,
+      "reasoning_tokens": 55,
+      "cache_read_tokens_known": true,
+      "cache_read_tokens": 62592,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "estimated_cost": {
+      "amount": 0.0150044,
+      "currency": "USD",
+      "estimate": true,
+      "source": "model_priced"
+    },
+    "started_at": "2026-09-12T17:43:00.897987893Z",
+    "completed_at": "2026-09-12T17:44:28.366389705Z",
+    "duration": 87468401812,
+    "duration_ms": 87468,
+    "runtime_events": 42,
+    "retained_events": 42,
+    "observed_tool_calls": 17,
+    "provisional_checks": [
+      {
+        "gate": "exact_reproducer",
+        "status": "failed",
+        "reason": "frozen check did not pass in the isolated proposal workspace",
+        "exit_code": 1,
+        "duration": 42333471510,
+        "duration_ms": 42333,
+        "output_digest": "693769a6a4f683d356bf96778be7e35575b648f2334ed1f950cbd6432edeb582",
+        "output_bytes": 2952,
+        "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_dae46ba55ba6     qa_investigator_dae46ba55ba6_test.go:94: omitted request did not reach PerformanceEvidence and EvidencePage with Limit=0: limits=[50] status=200 body={\"data\":{\"schema_version\":1,\"records\":[{\"attempt_id\":\"performance-v1-attempt-0123456789abcdef01234567\",\"name\":\"summary.json\",\"path\":\"projects/alpha/sprints/39-performance/verification/performance/attempts/performance-v1-attempt-0123456789abcdef01234567/summary.json\",\"digest\":\"d4321b0c7ad21e6518f7649f9001096cb41347cca097e61b272a2752d701fd84\",\"size_bytes\":21}],\"returned_count\":1},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"30552dca556860ee59cb157b6e434247\",\"generated_at\":\"2026-09-12T17:45:06.275924862Z\"}} --- FAIL: TestQAInvestigator_dae46ba55ba6 (0.01s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.039s FAIL  go: downloading github.com/charmbracelet/glamour v1.0.0 go: downloading github.com/charmbracelet/bubbletea v1.3.10 go: downloading github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834 go: downloading modernc.org/sqlite v1.57.0 go: downloading github.com/yuin/goldmark v1.7.13 go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db go: downloading gopkg.in/yaml.v3 v3.0.1 go: downloading github.com/charmbracelet/x/term v0.2.1 go: downloading github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 go: downloading github.com/charmbracelet/x/ansi v0.10.2 go: downloading github.com/muesli/cancelreader v0.2.2 go: downloading github.com/charmbracelet/x/cellbuf v0.0.13 go: downloading github.com/rivo/uniseg v0.4.7 go: downloading github.com/muesli/termenv v0.16.0 go: downloading golang.org/x/sys v0.47.0 go: downloading github.com/mattn/go-runewidth v0.0.17 go: downloading github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc go: downloading github.com/lucasb-eyer/go-colorful v1.3.0 go: downloading github.com/mattn/go-isatty v0.0.24 go: downloading github.com/aymanbagabas/go-osc52/v2 v2.0.1 go: downloading github.com/char"
+      }
+    ],
+    "provisional_passed": false
+  },
+  "target": {
+    "fingerprint": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "ab392936661e434a764e58465714d59ca78f5482f3f4b90a301d2824e6550c08"
+  },
+  "cleanup_complete": true,
+  "production_applied": false,
+  "complete_ladder": false,
+  "unresolved_issues": [
+    "qa-v2-issue-158e0278297af17b6548452a"
+  ],
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-8ab857ebbd51a94fb1c41dda/issue-packet.json",
+      "digest": "dc2a43cbd5b0d2fbc42a744bbcdf288825a655adc41e8ac2d826d5de5cc964cf"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-8ab857ebbd51a94fb1c41dda/confirmation.json",
+      "digest": "2e506fd943875a92baa909712832d30693e031047f9528113b38b35d325739dd"
+    }
+  ],
+  "next_action": "Restore the named prerequisite and resume only from the latest proven boundary.",
+  "completed_at": "2026-09-12T17:45:16.367109115Z"
+}

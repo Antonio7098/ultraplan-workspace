@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-76690bc4f2e0e194458f6b38",
+  "spec_id": "qa-v2-spec-910fb5d215bccf3fb04e486d",
+  "test_bundle_id": "qa-v2-test-3eb9bf244922555688a36248",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "7b762fbd7a733db7e434159735aa35c44747ddfb983ee7f1a05c691566701ac9",
+    "exit_code": 1,
+    "duration": 16710210850,
+    "stdout_digest": "255a2f4017b992b0b70cb276903aa97b06700c2e3bb803c6405f99cfeebac753",
+    "stderr_digest": "e54b74eb9192b48055c48d2062bffdd23469ef7d70f960ff1293a47f86c8eba2",
+    "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed]\nFAIL\n",
+    "stderr": "[REDACTED]",
+    "output_bytes": 84,
+    "truncated": false,
+    "redacted": true,
+    "redaction_count": 1,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_765e01a64feb",
+    "assertion": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_765e01a64feb"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "unrelated_compile_or_panic_failure",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T13:11:50.090296157Z"
+}

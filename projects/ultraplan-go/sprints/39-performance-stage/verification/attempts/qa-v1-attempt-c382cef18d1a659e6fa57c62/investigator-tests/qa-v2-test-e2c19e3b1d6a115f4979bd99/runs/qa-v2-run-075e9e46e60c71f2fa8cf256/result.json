@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "caaf016c0b1156e4fa468e6ddd984331a0e776f4674455cc51b8f190e4c58431",
+  "schema_version": 2,
+  "id": "qa-v2-run-075e9e46e60c71f2fa8cf256",
+  "spec_id": "qa-v2-spec-944ff8d4ce332c78e8f5dc7c",
+  "test_bundle_id": "qa-v2-test-e2c19e3b1d6a115f4979bd99",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_56bcf430b685",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_56bcf430b685",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685",
+    "executable": "go",
+    "args_digest": "40fad6881fb712b5c389036e63631fb5adf59cb98f43b11ae329cf915f9af6ac",
+    "exit_code": 1,
+    "duration": 24462461375,
+    "stdout_digest": "7faa5281fd6372f1288f121f260c140cc50dba675346be1a391bd8f97e879669",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_56bcf430b685\n    qa_investigator_56bcf430b685_test.go:48: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685 assertion=Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fi\n--- FAIL: TestQAInvestigator_56bcf430b685 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.011s\nFAIL\n",
+    "output_bytes": 538,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_56bcf430b685",
+    "assertion": "Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fi",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:08:42.244292872Z"
+}

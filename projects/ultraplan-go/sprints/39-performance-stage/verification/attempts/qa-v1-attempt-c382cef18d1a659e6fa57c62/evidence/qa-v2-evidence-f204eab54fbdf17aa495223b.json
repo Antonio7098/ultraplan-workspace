@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-f204eab54fbdf17aa495223b",
+  "plan_id": "qa-v2-plan-860623f0cd3c7a5add1789fb",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-c87368a3bbba771839680683",
+  "workspace_id": "qa-v2-test-f48cb3204fa5dd172883deaf",
+  "workspace_identity": "6d693782d17e666d51b5d3b8c53201c999bb6b8490e39c276140529bc98a8ddd",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "a5f25b120eb31e369ea6747051c1c033f751efbabc5a98404c0e36cb03c487c6",
+      "exit_code": 1,
+      "duration": 31014063567,
+      "stdout_digest": "86fa7afbbda3b8dae53afe34943d460361d8fae83c8a392d772ed2c64950402e",
+      "stderr_digest": "0869e4bad03824d55d56f2e598ceb0b93445fc71df9e050b256bc7fb99376e89",
+      "stdout": "=== RUN   TestQAInvestigator_185c6f8e76f6\n    qa_investigator_185c6f8e76f6_test.go:55: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_185c6f8e76f6 assertion=Assert false policy mismatch findings are emitted for pseudo-headings. input=fenced\n--- FAIL: TestQAInvestigator_185c6f8e76f6 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.009s\nFAIL\n",
+      "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+      "output_bytes": 848,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/project/qa_investigator_185c6f8e76f6_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T13:04:59.643095401Z"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "correction_granted_at": "2026-09-12T10:06:23.710935129Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable",
+      "retryable": false
+    },
+    "id": "qa-v2-request-2943a82794f42d463a0148d6",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-e520dfe5bb32e35f0d545398"
+    ],
+    "origin_shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+    "gap": "The submitted CLI test failed to compile before its assertions ran.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer passing timeout, process, persistence, configuration, and cancellation errors through the performance command error path.",
+    "required_observation": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+    "control_requirement": "Verify that underlying error categories are distinct before CLI wrapping.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 4,
+    "attempts": 1,
+    "evidence_fingerprint": "9b59a6b684e91e1ecd81bca5409f68c3391c384cebda04e7912e0fc05b67ad4c",
+    "reason_code": "original_session_unavailable",
+    "next_action": "Evidence remains unresolved: original_session_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable"
+  }
+}

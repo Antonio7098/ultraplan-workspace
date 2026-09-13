@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-08bd0589eafbe38eae23ed4d",
+  "plan_id": "qa-v2-plan-264356f350a691b0aee7ba58",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "workspace_id": "qa-v2-test-c418b7d27881f9b5b43f7e46",
+  "workspace_identity": "5d3dc65b5f4c0133a91f9f3043f066cff5e5db36adc696a5369c7df37d1a2254",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_d094a0cec36e",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_d094a0cec36e",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d094a0cec36e",
+      "executable": "go",
+      "args_digest": "e52aba38c57c31bbe1f85e899fda9a585d527788ede7a852141d61fd6e2830a2",
+      "exit_code": 1,
+      "duration": 26157707325,
+      "stdout_digest": "53256a08b7de9cedd1ba1c05a1e6029c7360d54d66e66d3efc616cbc90b7db3c",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_d094a0cec36e\n    qa_investigator_d094a0cec36e_test.go:21: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d094a0cec36e assertion=Using existing command or operation seams, execute target-miss, cancellation, and partial outcomes and assert stable JSON or text output, stdout/stderr behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d theory=qa-v1-theory-7ef7c4876857c8e4b85d4c0c cancellation_status=5 stdout=\"{\\\"error\\\":{\\\"code\\\":\\\"performance.persistence_unavailable\\\",\\\"message\\\":\\\"open /home/antonioborgerees/.cache/ultraplan/qa-runtime/ultraplan-qa-authored-test-3968421901/qa-v2-test-c418b7d27881f9b5b43f7e46-1316994925/.ultraplan-test-runtime/tmp/TestQAInvestigator_d094a0cec36e1645269549/001/projects/proj/sprints/01-alpha/requirements.md: no such file or directory\\\",\\\"recovery\\\":\\\"Restore the required durable evidence or storage, then recover the attempt.\\\"},\\\"operation\\\":\\\"sprint.performance.cancel\\\",\\\"result\\\":{\\\"schema_version\\\":0,\\\"project\\\":\\\"\\\",\\\"sprint\\\":\\\"\\\",\\\"policy_mode\\\":\\\"\\\",\\\"enabled\\\":false,\\\"ready\\\":false,\\\"phase\\\":\\\"\\\",\\\"fresh\\\":false,\\\"consumed\\\":{\\\"commands\\\":0,\\\"warmups\\\":0,\\\"samples\\\":0,\\\"optimization_cycles\\\":0,\\\"runtime_attempts\\\":0},\\\"limits\\\":{\\\"target_rows\\\":0,\\\"benchmark_authoring_attempts\\\":0,\\\"optimization_attempts_per_cycle\\\":0,\\\"warmups\\\":0,\\\"sample_ceiling\\\":0,\\\"cv_percent\\\":0,\\\"commands\\\":0,\\\"command_timeout\\\":0,\\\"stdout_bytes\\\":0,\\\"stderr_bytes\\\":0,\\\"profile_bytes\\\":0,\\\"proposal_bytes\\\":0,\\\"changed_files\\\":0,\\\"changed_bytes\\\":0,\\\"optimization_cycles\\\":0,\\\"wall_time\\\":0,\\\"retained_attempts\\\":0,\\\"cleanup_reserve\\\":0,\\\"evidence_page_size\\\":0},\\\"next_action\\\":\\\"\\\"},\\\"schema_version\\\":1,\\\"status\\\":\\\"failed\\\"}\\n\" stderr=\"sprint.performance: open /home/antonioborgerees/.cache/ultraplan/qa-runtime/ultraplan-qa-authored-test-3968421901/qa-v2-test-c418b7d27881f9b5b43f7e46-1316994925/.ultraplan-test-runtime/tmp/TestQAInvestigator_d094a0cec36e1645269549/001/projects/proj/sprints/01-alpha/requirements.md: no such file or directory\\n\"\n--- FAIL: TestQAInvestigator_d094a0cec36e (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.010s\nFAIL\n",
+      "output_bytes": 2190,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_d094a0cec36e_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T13:44:41.450967687Z"
+}

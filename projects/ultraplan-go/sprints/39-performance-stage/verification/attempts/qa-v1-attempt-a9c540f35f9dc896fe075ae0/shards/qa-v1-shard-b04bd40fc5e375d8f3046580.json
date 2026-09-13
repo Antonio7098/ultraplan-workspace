@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b04bd40fc5e375d8f3046580",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Project policy and requirements-owned target admission",
+  "changed_paths": [
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/project/performance_policy_test.go",
+    "internal/sprint/index.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/service.go"
+  ],
+  "behavioral_concerns": [
+    "Absolute and baseline-relative comparisons handle equality, negative thresholds, zero baselines, report-only targets, and outcome precedence deterministically.",
+    "Fenced, quoted, commented, duplicated, malformed, or override-like policy and target content cannot acquire authority.",
+    "Missing project policy defaults to disabled; only one exact policy section and Mode field can activate performance.",
+    "The exact nine-column target table enforces IDs, bounded text, comparators, values, units, gates, samples, bases, duplicate rejection, normalization, and policy agreement."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-3a600d1ab88c7df2395e78aa",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-9c5f43b294578fed6796f5b9",
+    "qa-v1-block-a2be3dc15f8fe2f32433a558",
+    "qa-v1-block-c46dffb145fa671331d12a4d",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-dfb7c7d3d3969704bb3a4eb2",
+    "qa-v1-block-e119c25baa75d6da3419c82e",
+    "qa-v1-block-e3c3c76f01e1938f7367959a",
+    "qa-v1-block-e5e9288e0d4e15abe068bed1",
+    "qa-v1-block-e9031fe55080b29279a3647a"
+  ],
+  "prepared_prompt_bytes": 144585,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "mapped"
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-8dc3d22dc9a6ccb7d6081816",
+  "plan_id": "qa-v2-plan-73533d79404c7586914360c2",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-d1e7efff65ff7d71f9163122",
+  "workspace_id": "qa-v2-test-ca19e0ea03ee34a7e85b06af",
+  "workspace_identity": "815d8137ddc72d3297ba5e9b9c03312401070350d841b9f1be2de0459c19519e",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "b8dac79a2a424fbb27b6fd842caf6063dc955bcdc3a7febccdd96a6d757b81ed",
+      "exit_code": 1,
+      "duration": 29883634170,
+      "stdout_digest": "9303f0cbff928d03f3c24b0cca10fd88f7691ad4b8f28c164b618af73ea86ac6",
+      "stderr_digest": "2babf82560ac931899554ec0813ff95548611412de2c1ee0c9c5f91bd014a844",
+      "stdout": "=== RUN   TestQAInvestigator_8de5812444c7\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_8de5812444c7\n    qa_investigator_8de5812444c7_test.go:26: Assert whether revoking ownership before SaveFlowState prevents or permits the stale flow mutation: stale writer published the performance flow summary\n--- FAIL: TestQAInvestigator_8de5812444c7 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.010s\nFAIL\n",
+      "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\ngo: downloading modernc.org/libc v1.74.4\ngo: downloading golang.org/x/sys v0.47.0\ngo: downloading modernc.org/mathutil v1.7.1\ngo: downloading github.com/google/uuid v1.6.0\ngo: downloading github.com/dustin/go-humanize v1.0.1\ngo: downloading modernc.org/memory v1.11.0\ngo: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec\n",
+      "output_bytes": 905,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_8de5812444c7_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:39:31.073747693Z"
+}

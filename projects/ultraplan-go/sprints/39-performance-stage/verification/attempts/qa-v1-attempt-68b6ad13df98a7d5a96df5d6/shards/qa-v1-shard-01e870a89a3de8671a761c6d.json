@@ -1,0 +1,537 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Verification ordering and shared writer fencing",
+  "changed_paths": [
+    "internal/sprint/qa.go",
+    "internal/sprint/qa_repair.go",
+    "internal/sprint/qa_repair_state.go",
+    "internal/sprint/qa_reproduction.go",
+    "internal/sprint/qa_types.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_repair.go",
+    "internal/sprint/performance_state.go"
+  ],
+  "boundary_reason": "Owns shared verification writer identity and performance integration before review and after repair mutation.",
+  "behavioral_concerns": [
+    "Conformance Review must be blocked unless enabled performance evidence is current and passing.",
+    "Generalized verification fencing must preserve existing QA, repair, and reproduction stale-writer protections.",
+    "Performance remains a verification phase independent of planning-stage compatibility.",
+    "Repair must validate complete digest-bound performance reverification after functional repair succeeds."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-testing",
+    "contract-workflows"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2d1c5d9e5f9bfe08d11290b4",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+    "qa-v1-block-ce45392d2ebc036986b89d13"
+  ],
+  "prepared_prompt_bytes": 137488,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-01e870a89a3de8671a761c6d/1",
+      "number": 1,
+      "session_id": "ses_f6aab8155ffefd228Ct1ynGI1m",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "089bd578ef987374ab549e993889bf36ab813461cc887c3d18d91b4823981658",
+      "started_at": "2026-09-12T11:15:34.983201681Z",
+      "completed_at": "2026-09-12T11:16:51.352651539Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Repair reverification validates baseline length but associates baselines to targets by positional index without checking embedded target identity (qa-v1-block-2acbb7e6b01c74fbf4b507e8).",
+          "paths": [
+            "internal/sprint/performance_repair.go"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "Passing persisted repair performance records require authority and cleanup fields but not complete target results (qa-v1-block-32fed93c9abfff4d8a2ce8f3, qa-v1-block-a4433213f2515f9d53c23882).",
+          "paths": [
+            "internal/sprint/qa_repair_state.go",
+            "internal/sprint/qa_types.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 40903,
+        "output_tokens_known": true,
+        "output_tokens": 2045,
+        "total_tokens_known": true,
+        "total_tokens": 82366,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 250,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 39168,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 137488,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 76369449858
+      },
+      "estimated_cost": {
+        "amount": 0.11008959999999998,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-01e870a89a3de8671a761c6d/1/evidence/qa-v2-request-b6170cb8d2c9b7efe9eb62a1/1",
+      "number": 2,
+      "session_id": "ses_f6aab8155ffefd228Ct1ynGI1m",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "089bd578ef987374ab549e993889bf36ab813461cc887c3d18d91b4823981658",
+      "started_at": "2026-09-12T11:36:41.696789945Z",
+      "completed_at": "2026-09-12T11:39:19.834503053Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 652,
+        "output_tokens_known": true,
+        "output_tokens": 32,
+        "total_tokens_known": true,
+        "total_tokens": 67500,
+        "reasoning_tokens_known": true,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 66816,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 39,
+      "retained_events": 39,
+      "observed_tool_calls": 14,
+      "context_metrics": {
+        "prompt_bytes": 15323,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 2,
+          "grep": 5,
+          "read": 7
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 40054,
+        "repeated_reads": 0,
+        "search_calls": 5,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 158137713108
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-1007492d20bbcc01841fb291",
+      "shard_id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+      "claim": "Repair performance reverification can compare a target against another target's baseline because baseline coverage is validated only by slice length and then accessed by packet index without checking target identity.",
+      "basis": "The repair path checks only `len(baseline) != len(packet.Targets)` before using `baseline[index].Qualification.Median` for each `performanceTarget`; it never verifies `baseline[index].Target.ID == performanceTarget.ID` (qa-v1-block-2acbb7e6b01c74fbf4b507e8). The governed review expectation requires tracing each target through its raw samples, qualification, and comparison with no alternate association (qa-v1-block-ce45392d2ebc036986b89d13).",
+      "verification_surface": "internal/sprint/performance_repair.go",
+      "expectation_refs": [
+        "contract-performance",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A digest-valid frozen baseline containing the same number of entries as the packet but in a different order is accepted, and repair reverification compares at least one target using a baseline whose embedded target ID differs.",
+      "refutation_condition": "A mandatory validation path proves baseline entries are canonically ordered and identity-bound to packet targets before indexed comparison, rejecting reordered or mismatched entries.",
+      "inconclusive_condition": "The supplied source does not expose a mandatory invariant enforced when the baseline artifact is created or loaded that makes reordering or identity mismatch impossible.",
+      "safe_evidence_strategy": "Statically inspect baseline publication and loading validation plus existing repair reverification tests for target-ID binding.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-01e870a89a3de8671a761c6d/1",
+          "number": 1,
+          "session_id": "ses_f6aab8155ffefd228Ct1ynGI1m",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "089bd578ef987374ab549e993889bf36ab813461cc887c3d18d91b4823981658",
+          "started_at": "2026-09-12T11:15:34.983201681Z",
+          "completed_at": "2026-09-12T11:16:51.352651539Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Repair reverification validates baseline length but associates baselines to targets by positional index without checking embedded target identity (qa-v1-block-2acbb7e6b01c74fbf4b507e8).",
+              "paths": [
+                "internal/sprint/performance_repair.go"
+              ]
+            },
+            {
+              "kind": "static_source",
+              "summary": "Passing persisted repair performance records require authority and cleanup fields but not complete target results (qa-v1-block-32fed93c9abfff4d8a2ce8f3, qa-v1-block-a4433213f2515f9d53c23882).",
+              "paths": [
+                "internal/sprint/qa_repair_state.go",
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 40903,
+            "output_tokens_known": true,
+            "output_tokens": 2045,
+            "total_tokens_known": true,
+            "total_tokens": 82366,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 250,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 39168,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 137488,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 76369449858
+          },
+          "estimated_cost": {
+            "amount": 0.11008959999999998,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-01e870a89a3de8671a761c6d/1/evidence/qa-v2-request-b6170cb8d2c9b7efe9eb62a1/1",
+          "number": 2,
+          "session_id": "ses_f6aab8155ffefd228Ct1ynGI1m",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "089bd578ef987374ab549e993889bf36ab813461cc887c3d18d91b4823981658",
+          "started_at": "2026-09-12T11:36:41.696789945Z",
+          "completed_at": "2026-09-12T11:39:19.834503053Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 652,
+            "output_tokens_known": true,
+            "output_tokens": 32,
+            "total_tokens_known": true,
+            "total_tokens": 67500,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 66816,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 39,
+          "retained_events": 39,
+          "observed_tool_calls": 14,
+          "context_metrics": {
+            "prompt_bytes": 15323,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 2,
+              "grep": 5,
+              "read": 7
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 40054,
+            "repeated_reads": 0,
+            "search_calls": 5,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 158137713108
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Repair reverification validates baseline length but associates baselines to targets by positional index without checking embedded target identity (qa-v1-block-2acbb7e6b01c74fbf4b507e8).",
+          "paths": [
+            "internal/sprint/performance_repair.go"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "Passing persisted repair performance records require authority and cleanup fields but not complete target results (qa-v1-block-32fed93c9abfff4d8a2ce8f3, qa-v1-block-a4433213f2515f9d53c23882).",
+          "paths": [
+            "internal/sprint/qa_repair_state.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-b6170cb8d2c9b7efe9eb62a1: predicted_failure_reproduced\nRequired observation: Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishable targets and reordered baseline entries to prove which baseline median each target receives.\nTest internal/sprint/qa_investigator_b7efe9eb62a1_test.go:\npackage sprint\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n\n\tpprocess \"github.com/Antonio7098/ultraplan-go/internal/platform/process\"\n)\n\nfunc TestQAInvestigator_b7efe9eb62a1(t *testing.T) {\n\tnow := time.Date(2026, 9, 12, 12, 0, 0, 0, time.UTC)\n\tgates := make([]RepairGateResult, 0, len(RepairGateOrder()))\n\tfor _, gate := range RepairGateOrder() {\n\t\tgates = append(gates, RepairGateResult{Gate: gate, Status: RepairGatePassed})\n\t}\n\tvalid := RepairReverification{\n\t\tSchemaVersion: QARepairSchemaVersion,\n\t\tRepairRunID:   \"repair-v1-run-0123456789abcdef01234567\",\n\t\tCycle:         1,\n\t\tGates:         gates,\n\t\tCompletedAt:   now,\n\t\tPerformance: \u0026RepairPerformanceReverification{\n\t\t\tSchemaVersion:          PerformanceSchemaVersion,\n\t\t\tAttemptID:              \"performance-v1-attempt-0123456789abcdef01234567\",\n\t\t\tPriorResultDigest:      fingerprintOf(\"prior-result\"),\n\t\t\tRepairedImplementation: fingerprintOf(\"repaired-implementation\"),\n\t\t\tOutcome:                PerformancePassed,\n\t\t\tCleanupComplete:        true,\n\t\t\tCompletedAt:            now,\n\t\t},\n\t}\n\tcontrol := valid\n\tcontrol.Performance = \u0026RepairPerformanceReverification{\n\t\tSchemaVersion:          PerformanceSchemaVersion,\n\t\tAttemptID:              valid.Performance.AttemptID,\n\t\tPriorResultDigest:      valid.Performance.PriorResultDigest,\n\t\tRepairedImplementation: valid.Performance.RepairedImplementation,\n\t\tOutcome:                PerformancePassed,\n\t\tCleanupComplete:        false,\n\t\tCompletedAt:            now,\n\t}\n\tif err := ValidateRepairReverification(control); err == nil {\n\t\tt.Fatal(\"control: passing performance reverification without cleanup proof was accepted\")\n\t}\n\tmissingResultsAccepted := ValidateRepairReverification(valid) == nil\n\n\troot := workspaceFixture(t)\n\tsp := sprintFixture(t, root, \"proj\", \"39-performance\")\n\ttarget := gitFixture(t)\n\tbenchmark := `package performance\n\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-A\nfunc BenchmarkA() {}\n\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-B\nfunc BenchmarkB() {}\n`\n\tif err := os.WriteFile(filepath.Join(target, \"performance_test.go\"), []byte(benchmark), 0o644); err != nil {\n\t\tt.Fatal(err)\n\t}\n\trunGitTest(t, target, \"add\", \"performance_test.go\")\n\trunGitTest(t, target, \"commit\", \"-m\", \"add performance benchmarks\")\n\twriteFileContent(t, filepath.Join(root, \"projects\", \"proj\"), projectIndexForTarget(target)+\"\\n## Performance Policy\\n\\n- **Mode:** enabled\\n\", \"project-index.md\")\n\twriteFileContent(t, sp.Path, `# Requirements\n\n## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-A | operation A | latency change | \u003c= | 10 | % | required | 5 | baseline |\n| PERF-B | operation B | latency change | \u003c= | 10 | % | required | 5 | baseline |\n`, \"requirements.md\")\n\twriteFileContent(t, sp.Path, \"# Execute\\n\\nComplete.\\n\", \"execute.md\")\n\ttask := ExecuteTaskRecord{ID: \"task-performance\", Identity: ExecuteTaskIdentity{Name: \"Performance implementation\", PlanLine: 1}, Status: ExecuteTaskComplete, CreatedAt: now, UpdatedAt: now, CompletedAt: \u0026now}\n\texecute := NewExecuteRunState(sp, ExecuteTargetRef{Path: target, Source: \"project-index.md\"}, ArtifactRelPath(sp, StagePlan), fingerprintOf(\"plan\"), []ExecuteTaskRecord{task}, now)\n\tif err := SaveExecuteRunState(root, sp, execute); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif err := SaveFlowState(root, sp, NewFlowState(sp, completeStates(sp), now)); err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\trunner := qaInvestigatorPerformanceRunner{}\n\tservice := NewService(root).WithClock(func() time.Time { return now }).WithProcessRunner(runner).WithVerificationWriterFence(func(got VerificationWriterToken) error {\n\t\tif got != token {\n\t\t\treturn context.Canceled\n\t\t}\n\t\treturn nil\n\t})\n\tprepared, err := service.PreparePerformance(\"proj\", \"39\", true)\n\tif err != nil || !prepared.Ready {\n\t\tt.Fatalf(\"prepare performance: %#v, %v\", prepared, err)\n\t}\n\tmanifest := PerformanceBenchmarkManifest{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tPacketDigest:  prepared.Packet.PacketDigest,\n\t\tRunnerVersion: PerformanceRunnerVersion,\n\t\tParserVersion: PerformanceParserVersion,\n\t\tDescriptors: []PerformanceDescriptor{\n\t\t\tperformanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkA\", PerformanceNSPerOp, \"PERF-A\"),\n\t\t\tperformanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkB\", PerformanceNSPerOp, \"PERF-B\"),\n\t\t},\n\t}\n\tif err := ValidatePerformanceManifest(prepared.Packet, \u0026manifest); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif _, err := service.RunPerformance(context.Background(), \"proj\", \"39\", PerformanceRunRequest{WriterToken: token, Manifest: manifest, Environment: allowPerformanceEnvironment(os.Environ())}); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\tif ordered.Outcome != PerformancePassed || len(ordered.TargetResults) != 2 || ordered.TargetResults[0].BaselineQualification.Median != \"100\" || ordered.TargetResults[1].BaselineQualification.Median != \"200\" {\n\t\tt.Fatalf(\"control: correctly ordered baselines were not associated by target: %#v\", ordered)\n\t}\n\tstate, err := LoadPerformanceState(root, sp)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tstore := NewPerformanceStore(root, sp).WithWriterFence(service.verificationWriterFence)\n\tvar baseline []PerformanceMeasurement\n\tif err := store.ReadJSON(*state.Baseline, \u0026baseline); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tbaseline[0], baseline[1] = baseline[1], baseline[0]\n\treorderedRef, err := store.PublishJSON(state.Baseline.Path, \"baseline\", baseline, false, token)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tstate.Baseline = \u0026reorderedRef\n\tif _, err := store.PublishState(state, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\treordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\treorderedMisassociated := reordered.Outcome == PerformanceTargetMiss \u0026\u0026 len(reordered.TargetResults) == 2 \u0026\u0026\n\t\treordered.TargetResults[0].Target.ID == \"PERF-A\" \u0026\u0026 reordered.TargetResults[0].BaselineQualification.Median == \"200\" \u0026\u0026\n\t\treordered.TargetResults[1].Target.ID == \"PERF-B\" \u0026\u0026 reordered.TargetResults[1].BaselineQualification.Median == \"100\"\n\tif missingResultsAccepted \u0026\u0026 reorderedMisassociated {\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\tt.Fatalf(\"Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab\")\n\t}\n\tif !missingResultsAccepted {\n\t\tt.Fatal(\"passing performance reverification with zero TargetResults was rejected\")\n\t}\n\tt.Fatalf(\"reordered baselines were not observably misassociated: %#v\", reordered)\n}\n\ntype qaInvestigatorPerformanceRunner struct{}\n\nfunc (qaInvestigatorPerformanceRunner) Run(_ context.Context, request pprocess.Request) (pprocess.Result, error) {\n\targs := strings.Join(request.Args, \" \")\n\tstdout := \"\"\n\tif strings.Contains(args, \"-bench=^BenchmarkA$\") {\n\t\tstdout = \"BenchmarkA-8 100 100 ns/op\\n\"\n\t}\n\tif strings.Contains(args, \"-bench=^BenchmarkB$\") {\n\t\tstdout = \"BenchmarkB-8 100 200 ns/op\\n\"\n\t}\n\treturn pprocess.Result{Stdout: stdout, CleanupComplete: true}, nil\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_b7efe9eb62a1\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\n    qa_investigator_b7efe9eb62a1_test.go:143: Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab\n--- FAIL: TestQAInvestigator_b7efe9eb62a1 (0.18s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.184s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_b7efe9eb62a1_test.go"
+          ],
+          "check_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+          "output_digest": "6496ae52855378ef01f322f94e89a30b006be525aa0e7ed1ce8bbc96d6703d76"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    },
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+      "shard_id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+      "claim": "Persisted repair reverification validation accepts a passing performance record with no target results, so it does not validate complete digest-bound performance reverification.",
+      "basis": "`ValidateRepairReverification` requires cleanup and three authority identifiers for passing outcomes but does not require any `TargetResults`, verify their count, validate each result, or bind them to the prior result or packet (qa-v1-block-32fed93c9abfff4d8a2ce8f3). The record declares `TargetResults` with `omitempty`, allowing absence in persisted JSON (qa-v1-block-a4433213f2515f9d53c23882). The governed requirements require complete target traceability (qa-v1-block-ce45392d2ebc036986b89d13).",
+      "verification_surface": "internal/sprint/qa_repair_state.go",
+      "expectation_refs": [
+        "contract-persistence-and-migrations",
+        "contract-testing",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A `RepairReverification` containing a performance outcome of passed, valid authority fields, cleanup proof, and zero or incomplete target results passes `ValidateRepairReverification`.",
+      "refutation_condition": "Another mandatory validation layer rejects passing repair performance records unless target results completely and uniquely cover the frozen packet and are digest-bound to the cited authority.",
+      "inconclusive_condition": "The supplied blocks omit a mandatory persistence admission check that independently enforces complete target-result coverage before or after `ValidateRepairReverification`.",
+      "safe_evidence_strategy": "Statically inspect repair publication and load admission plus existing validation tests for complete target-result coverage.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-01e870a89a3de8671a761c6d/1",
+          "number": 1,
+          "session_id": "ses_f6aab8155ffefd228Ct1ynGI1m",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "089bd578ef987374ab549e993889bf36ab813461cc887c3d18d91b4823981658",
+          "started_at": "2026-09-12T11:15:34.983201681Z",
+          "completed_at": "2026-09-12T11:16:51.352651539Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Repair reverification validates baseline length but associates baselines to targets by positional index without checking embedded target identity (qa-v1-block-2acbb7e6b01c74fbf4b507e8).",
+              "paths": [
+                "internal/sprint/performance_repair.go"
+              ]
+            },
+            {
+              "kind": "static_source",
+              "summary": "Passing persisted repair performance records require authority and cleanup fields but not complete target results (qa-v1-block-32fed93c9abfff4d8a2ce8f3, qa-v1-block-a4433213f2515f9d53c23882).",
+              "paths": [
+                "internal/sprint/qa_repair_state.go",
+                "internal/sprint/qa_types.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 40903,
+            "output_tokens_known": true,
+            "output_tokens": 2045,
+            "total_tokens_known": true,
+            "total_tokens": 82366,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 250,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 39168,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 137488,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 76369449858
+          },
+          "estimated_cost": {
+            "amount": 0.11008959999999998,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-01e870a89a3de8671a761c6d/1/evidence/qa-v2-request-b6170cb8d2c9b7efe9eb62a1/1",
+          "number": 2,
+          "session_id": "ses_f6aab8155ffefd228Ct1ynGI1m",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "089bd578ef987374ab549e993889bf36ab813461cc887c3d18d91b4823981658",
+          "started_at": "2026-09-12T11:36:41.696789945Z",
+          "completed_at": "2026-09-12T11:39:19.834503053Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 652,
+            "output_tokens_known": true,
+            "output_tokens": 32,
+            "total_tokens_known": true,
+            "total_tokens": 67500,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 66816,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 39,
+          "retained_events": 39,
+          "observed_tool_calls": 14,
+          "context_metrics": {
+            "prompt_bytes": 15323,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 2,
+              "grep": 5,
+              "read": 7
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 40054,
+            "repeated_reads": 0,
+            "search_calls": 5,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 158137713108
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Repair reverification validates baseline length but associates baselines to targets by positional index without checking embedded target identity (qa-v1-block-2acbb7e6b01c74fbf4b507e8).",
+          "paths": [
+            "internal/sprint/performance_repair.go"
+          ]
+        },
+        {
+          "kind": "static_source",
+          "summary": "Passing persisted repair performance records require authority and cleanup fields but not complete target results (qa-v1-block-32fed93c9abfff4d8a2ce8f3, qa-v1-block-a4433213f2515f9d53c23882).",
+          "paths": [
+            "internal/sprint/qa_repair_state.go",
+            "internal/sprint/qa_types.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-b6170cb8d2c9b7efe9eb62a1: predicted_failure_reproduced\nRequired observation: Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishable targets and reordered baseline entries to prove which baseline median each target receives.\nTest internal/sprint/qa_investigator_b7efe9eb62a1_test.go:\npackage sprint\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n\n\tpprocess \"github.com/Antonio7098/ultraplan-go/internal/platform/process\"\n)\n\nfunc TestQAInvestigator_b7efe9eb62a1(t *testing.T) {\n\tnow := time.Date(2026, 9, 12, 12, 0, 0, 0, time.UTC)\n\tgates := make([]RepairGateResult, 0, len(RepairGateOrder()))\n\tfor _, gate := range RepairGateOrder() {\n\t\tgates = append(gates, RepairGateResult{Gate: gate, Status: RepairGatePassed})\n\t}\n\tvalid := RepairReverification{\n\t\tSchemaVersion: QARepairSchemaVersion,\n\t\tRepairRunID:   \"repair-v1-run-0123456789abcdef01234567\",\n\t\tCycle:         1,\n\t\tGates:         gates,\n\t\tCompletedAt:   now,\n\t\tPerformance: \u0026RepairPerformanceReverification{\n\t\t\tSchemaVersion:          PerformanceSchemaVersion,\n\t\t\tAttemptID:              \"performance-v1-attempt-0123456789abcdef01234567\",\n\t\t\tPriorResultDigest:      fingerprintOf(\"prior-result\"),\n\t\t\tRepairedImplementation: fingerprintOf(\"repaired-implementation\"),\n\t\t\tOutcome:                PerformancePassed,\n\t\t\tCleanupComplete:        true,\n\t\t\tCompletedAt:            now,\n\t\t},\n\t}\n\tcontrol := valid\n\tcontrol.Performance = \u0026RepairPerformanceReverification{\n\t\tSchemaVersion:          PerformanceSchemaVersion,\n\t\tAttemptID:              valid.Performance.AttemptID,\n\t\tPriorResultDigest:      valid.Performance.PriorResultDigest,\n\t\tRepairedImplementation: valid.Performance.RepairedImplementation,\n\t\tOutcome:                PerformancePassed,\n\t\tCleanupComplete:        false,\n\t\tCompletedAt:            now,\n\t}\n\tif err := ValidateRepairReverification(control); err == nil {\n\t\tt.Fatal(\"control: passing performance reverification without cleanup proof was accepted\")\n\t}\n\tmissingResultsAccepted := ValidateRepairReverification(valid) == nil\n\n\troot := workspaceFixture(t)\n\tsp := sprintFixture(t, root, \"proj\", \"39-performance\")\n\ttarget := gitFixture(t)\n\tbenchmark := `package performance\n\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-A\nfunc BenchmarkA() {}\n\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-B\nfunc BenchmarkB() {}\n`\n\tif err := os.WriteFile(filepath.Join(target, \"performance_test.go\"), []byte(benchmark), 0o644); err != nil {\n\t\tt.Fatal(err)\n\t}\n\trunGitTest(t, target, \"add\", \"performance_test.go\")\n\trunGitTest(t, target, \"commit\", \"-m\", \"add performance benchmarks\")\n\twriteFileContent(t, filepath.Join(root, \"projects\", \"proj\"), projectIndexForTarget(target)+\"\\n## Performance Policy\\n\\n- **Mode:** enabled\\n\", \"project-index.md\")\n\twriteFileContent(t, sp.Path, `# Requirements\n\n## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-A | operation A | latency change | \u003c= | 10 | % | required | 5 | baseline |\n| PERF-B | operation B | latency change | \u003c= | 10 | % | required | 5 | baseline |\n`, \"requirements.md\")\n\twriteFileContent(t, sp.Path, \"# Execute\\n\\nComplete.\\n\", \"execute.md\")\n\ttask := ExecuteTaskRecord{ID: \"task-performance\", Identity: ExecuteTaskIdentity{Name: \"Performance implementation\", PlanLine: 1}, Status: ExecuteTaskComplete, CreatedAt: now, UpdatedAt: now, CompletedAt: \u0026now}\n\texecute := NewExecuteRunState(sp, ExecuteTargetRef{Path: target, Source: \"project-index.md\"}, ArtifactRelPath(sp, StagePlan), fingerprintOf(\"plan\"), []ExecuteTaskRecord{task}, now)\n\tif err := SaveExecuteRunState(root, sp, execute); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif err := SaveFlowState(root, sp, NewFlowState(sp, completeStates(sp), now)); err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\trunner := qaInvestigatorPerformanceRunner{}\n\tservice := NewService(root).WithClock(func() time.Time { return now }).WithProcessRunner(runner).WithVerificationWriterFence(func(got VerificationWriterToken) error {\n\t\tif got != token {\n\t\t\treturn context.Canceled\n\t\t}\n\t\treturn nil\n\t})\n\tprepared, err := service.PreparePerformance(\"proj\", \"39\", true)\n\tif err != nil || !prepared.Ready {\n\t\tt.Fatalf(\"prepare performance: %#v, %v\", prepared, err)\n\t}\n\tmanifest := PerformanceBenchmarkManifest{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tPacketDigest:  prepared.Packet.PacketDigest,\n\t\tRunnerVersion: PerformanceRunnerVersion,\n\t\tParserVersion: PerformanceParserVersion,\n\t\tDescriptors: []PerformanceDescriptor{\n\t\t\tperformanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkA\", PerformanceNSPerOp, \"PERF-A\"),\n\t\t\tperformanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkB\", PerformanceNSPerOp, \"PERF-B\"),\n\t\t},\n\t}\n\tif err := ValidatePerformanceManifest(prepared.Packet, \u0026manifest); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif _, err := service.RunPerformance(context.Background(), \"proj\", \"39\", PerformanceRunRequest{WriterToken: token, Manifest: manifest, Environment: allowPerformanceEnvironment(os.Environ())}); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\tif ordered.Outcome != PerformancePassed || len(ordered.TargetResults) != 2 || ordered.TargetResults[0].BaselineQualification.Median != \"100\" || ordered.TargetResults[1].BaselineQualification.Median != \"200\" {\n\t\tt.Fatalf(\"control: correctly ordered baselines were not associated by target: %#v\", ordered)\n\t}\n\tstate, err := LoadPerformanceState(root, sp)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tstore := NewPerformanceStore(root, sp).WithWriterFence(service.verificationWriterFence)\n\tvar baseline []PerformanceMeasurement\n\tif err := store.ReadJSON(*state.Baseline, \u0026baseline); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tbaseline[0], baseline[1] = baseline[1], baseline[0]\n\treorderedRef, err := store.PublishJSON(state.Baseline.Path, \"baseline\", baseline, false, token)\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tstate.Baseline = \u0026reorderedRef\n\tif _, err := store.PublishState(state, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\treordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\treorderedMisassociated := reordered.Outcome == PerformanceTargetMiss \u0026\u0026 len(reordered.TargetResults) == 2 \u0026\u0026\n\t\treordered.TargetResults[0].Target.ID == \"PERF-A\" \u0026\u0026 reordered.TargetResults[0].BaselineQualification.Median == \"200\" \u0026\u0026\n\t\treordered.TargetResults[1].Target.ID == \"PERF-B\" \u0026\u0026 reordered.TargetResults[1].BaselineQualification.Median == \"100\"\n\tif missingResultsAccepted \u0026\u0026 reorderedMisassociated {\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\tt.Fatalf(\"Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab\")\n\t}\n\tif !missingResultsAccepted {\n\t\tt.Fatal(\"passing performance reverification with zero TargetResults was rejected\")\n\t}\n\tt.Fatalf(\"reordered baselines were not observably misassociated: %#v\", reordered)\n}\n\ntype qaInvestigatorPerformanceRunner struct{}\n\nfunc (qaInvestigatorPerformanceRunner) Run(_ context.Context, request pprocess.Request) (pprocess.Result, error) {\n\targs := strings.Join(request.Args, \" \")\n\tstdout := \"\"\n\tif strings.Contains(args, \"-bench=^BenchmarkA$\") {\n\t\tstdout = \"BenchmarkA-8 100 100 ns/op\\n\"\n\t}\n\tif strings.Contains(args, \"-bench=^BenchmarkB$\") {\n\t\tstdout = \"BenchmarkB-8 100 200 ns/op\\n\"\n\t}\n\treturn pprocess.Result{Stdout: stdout, CleanupComplete: true}, nil\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_b7efe9eb62a1\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\n    qa_investigator_b7efe9eb62a1_test.go:143: Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab\n--- FAIL: TestQAInvestigator_b7efe9eb62a1 (0.18s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.184s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_b7efe9eb62a1_test.go"
+          ],
+          "check_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+          "output_digest": "6496ae52855378ef01f322f94e89a30b006be525aa0e7ed1ce8bbc96d6703d76"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

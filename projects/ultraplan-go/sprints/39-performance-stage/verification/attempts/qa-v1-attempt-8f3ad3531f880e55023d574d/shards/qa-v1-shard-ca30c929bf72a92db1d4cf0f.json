@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-ca30c929bf72a92db1d4cf0f",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "primary",
+  "title": "TUI performance status and controls",
+  "changed_paths": [
+    "internal/testdata/performance/states.json",
+    "internal/tui/model.go",
+    "internal/tui/qa_view_test.go",
+    "internal/tui/views.go"
+  ],
+  "context_paths": [
+    "internal/app/sprint_usecases.go",
+    "internal/tui/model_test.go",
+    "internal/tui/qa_view.go",
+    "internal/tui/views_test.go"
+  ],
+  "behavioral_concerns": [
+    "Canonical fixtures cover every disabled, active, terminal, stale, interrupted, historical, evidence-gap, and recovery-conflict presentation state.",
+    "Disabled projects expose no performance mutation controls; enabled and retained-attempt states expose only applicable operations.",
+    "Evidence pagination uses the server-issued cursor and effective bounded page size without rendering raw records.",
+    "Performance summaries distinguish product outcome from operational lifecycle and render bounded evidence metadata."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-23ffd3df512e9cb822d95ab8",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2fce131e71a4ce4470c83148",
+    "qa-v1-block-346546314e3525f831931e2f",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-5e1a3f9fa0a73f004d4d6232",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-9d2f0e314212dfeb60cbb135",
+    "qa-v1-block-9f50cd9470412063551dc33b",
+    "qa-v1-block-a5a99f68244402bfc8e432b8",
+    "qa-v1-block-b452bd0ab01bbeddc215ea27",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f251bcd8aecb188438875680",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 122788,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "mapped"
+}

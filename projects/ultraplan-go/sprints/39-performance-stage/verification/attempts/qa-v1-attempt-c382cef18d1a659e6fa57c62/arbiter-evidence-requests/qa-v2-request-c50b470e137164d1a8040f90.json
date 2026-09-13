@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "correction_granted_at": "2026-09-12T10:07:39.013450721Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "preparation_attempts": 3,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable",
+      "retryable": false
+    },
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-12T10:08:13.309485853Z",
+    "recovery_reason": "original_session_unavailable",
+    "id": "qa-v2-request-c50b470e137164d1a8040f90",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-3d05000070c81fe10aa3579b"
+    ],
+    "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+    "gap": "Existing tests have failure-signature mismatches and do not establish preflight continuation.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer that makes performanceSettings fail during shared operation-runner setup.",
+    "required_observation": "Assert the runner reaches preparation or execution without returning the configuration failure.",
+    "control_requirement": "Include a valid-configuration control and prove whether the operation boundary was reached.",
+    "priority": "high",
+    "status": "inconclusive",
+    "evidence_round": 5,
+    "attempts": 3,
+    "evidence_fingerprint": "647a11d36ac695c266bdb3770a2a55d3177edf66e1f0c2e638fc890381febf7f",
+    "reason_code": "original_session_unavailable",
+    "next_action": "Evidence remains unresolved: original_session_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. opencode run: runtime_exit: OpenCode exited before a successful final result; qa continue investigator for evidence: original_session_unavailable"
+  }
+}

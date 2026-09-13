@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-401c04522e0c90c5b00e0f7f",
+  "spec_id": "qa-v2-spec-703f9d2a57c78090c05dfe3f",
+  "files": [
+    {
+      "path": "internal/platform/config/qa_investigator_0c580cfa0ca8_test.go",
+      "content": "package config\n\nimport (\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_0c580cfa0ca8(t *testing.T) {\n\treadSource := func(t *testing.T, path string) string {\n\t\tt.Helper()\n\t\tcontent, err := os.ReadFile(path)\n\t\tif err != nil {\n\t\t\tt.Fatalf(\"read %s: %v\", path, err)\n\t\t}\n\t\treturn string(content)\n\t}\n\n\tt.Run(\"control_generic_config_infrastructure_is_allowed\", func(t *testing.T) {\n\t\tif !strings.Contains(readSource(t, \"config.go\"), \"func Load(\") {\n\t\t\tt.Fatal(\"control failed: generic config Load function was not found\")\n\t\t}\n\t})\n\n\tperformanceSource := readSource(t, \"performance.go\")\n\thasProductDefaults := strings.Contains(performanceSource, \"func DefaultPerformance(\")\n\thasProductValidation := strings.Contains(performanceSource, \"func validatePerformance(\")\n\tif hasProductDefaults \u0026\u0026 hasProductValidation {\n\t\tprintln(\"assertion: Assert the current source defines product-specific performance defaults and validation under internal/platform.\")\n\t\tprintln(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_0c580cfa0ca8\")\n\t\tt.Fail()\n\t}\n}\n",
+      "digest": "9062f4f6fd703fa715b9a0058ae17f3729c705e063546933bdb4b09254e6454e",
+      "bytes": 1040
+    }
+  ],
+  "content_digest": "0495495c5be54ecbd0f286776ca1999efe58cdb94e263bfca4e1f69feda8421c"
+}

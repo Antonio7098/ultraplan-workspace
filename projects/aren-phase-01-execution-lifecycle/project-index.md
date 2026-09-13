@@ -15,10 +15,10 @@
 - **Project Slug:** `aren-phase-01-execution-lifecycle`
 - **Target Repository:** `../Aren/`
 - **Expected Implementation Directory:** `/home/antonioborgerees/coding/ultraplan/Aren`
-- **Primary Goal:** Prove that Aren can define and enforce the lifecycle of one supervised in-process execution without depending on an LLM, subprocess, network call, persistent store, workflow engine, or daemon.
+- **Primary Goal:** Prove that Aren can define, enforce, measure, and visually explain the lifecycle of one supervised in-process execution without depending on an LLM, subprocess, persistent store, workflow engine, remote API, or persistent daemon.
 - **Phase Boundary:** This UltraPlan project covers Aren Phase 1 only. Later Aren phases should be represented by separate UltraPlan projects so their evidence, reasoning documents, and sprint histories remain focused.
 - **Implementation Language:** Go.
-- **Non-Goals:** Model providers, model messages, token streaming, structured model output, retries, tools, subprocesses, persistence, restart recovery, pause/resume, workflows, remote execution, daemon hosting, network APIs, multi-language SDKs, budgets, production telemetry exporters, and exactly-once work execution.
+- **Non-Goals:** Model providers, model messages, token streaming, structured model output, retries, tools, subprocesses, persistence, restart recovery, pause/resume, workflows, remote execution, persistent daemon hosting, remote or general-purpose network APIs, multi-language SDKs, budgets, production telemetry exporters, durable observability storage, multi-user operation, and exactly-once work execution.
 - **Documentation Source Of Truth:** `projects/aren-phase-01-execution-lifecycle/docs/` is the canonical planning source for the Phase 1 PRD. Stable outputs may later be promoted into the Aren repository after reasoning and implementation validate them.
 
 ## Source Documents
@@ -26,7 +26,9 @@
 | Document | Path | Summary |
 |---|---|---|
 | Product Requirements | `projects/aren-phase-01-execution-lifecycle/docs/PRD.md` | Phase objective, lifecycle semantics, cancellation truthfulness, event history, concurrency requirements, test matrix, acceptance criteria, and exit gate. |
-| Project Roadmap | `projects/aren-phase-01-execution-lifecycle/roadmap.md` | Two-sprint implementation sequence and explicit carry-forward rules from Sprint 1 into Sprint 2. |
+| Project Roadmap | `projects/aren-phase-01-execution-lifecycle/roadmap.md` | Four-sprint implementation sequence and explicit carry-forward rules across lifecycle, hardening, performance, and frontend work. |
+| Observability Mandate | `projects/aren-phase-01-execution-lifecycle/docs/observability-mandate.md` | Project-wide rules for canonical evidence, passive observation, retention, the Phase 1 browser frontend, and later observability growth. |
+| Performance Engineering | `projects/aren-phase-01-execution-lifecycle/docs/performance-engineering.md` | Benchmark layers, workloads, measurement dimensions, regression policy, profiling, and the Phase 1 baseline method. |
 | Aren Project Lineage | `projects/aren-phase-01-execution-lifecycle/docs/project-lineage.md` | Workspace snapshot of the history from Elevate through 24-Hour Testers, AgentWrap, UltraPlan, and Aren. |
 | Aren Phased Roadmap | `projects/aren-phase-01-execution-lifecycle/docs/phased-roadmap.md` | Workspace snapshot of the Aren-wide phase sequence and Phase 1 boundary. |
 | Aren Final Language Decision | `projects/aren-phase-01-execution-lifecycle/docs/final-language-decision.md` | Workspace snapshot of the accepted Go decision, prototype evidence, and mandatory engineering rules. |
@@ -39,7 +41,7 @@ The Aren-specific contracts are the authoritative project narrowing layer. Gener
 
 | Contract | Path | Applies To | Selection Notes |
 |---|---|---|---|
-| Aren Development Doctrine | `projects/aren-phase-01-execution-lifecycle/contracts/01-development-doctrine.md` | Both sprints | Select for every Aren sprint. Governs scope, earned abstractions, vertical slices, failure discipline, and real-use-before-broadening. |
+<| Aren Development Doctrine | `projects/aren-phase-01-execution-lifecycle/contracts/01-development-doctrine.md` | Both sprints | Select for every Aren sprint. Governs scope, earned abstractions, vertical slices, failure discipline, and real-use-before-broadening. |
 | Aren Runtime Architecture | `projects/aren-phase-01-execution-lifecycle/contracts/02-runtime-architecture.md` | Both sprints | Select for every runtime implementation sprint. Governs authority, ownership boundaries, public surface, thin entrypoints, and concrete-before-interface architecture. |
 | Aren Execution Lifecycle | `projects/aren-phase-01-execution-lifecycle/contracts/03-execution-lifecycle.md` | Both sprints | Governs run identity, state machine, terminal resolution, outcome validity, coherent publication, timing, and invariant visibility. |
 | Aren Cancellation And Lifetimes | `projects/aren-phase-01-execution-lifecycle/contracts/04-cancellation-and-lifetimes.md` | Sprint 2; any sprint with owned asynchronous support | Select when cancellation, parent context integration, support goroutines, or resource release are in scope. Sprint 1 may select it narrowly for owned-lifetime obligations. |
@@ -105,6 +107,10 @@ This is the authoritative catalog of study reports available to project-wide and
 | Concurrency | `studies/go-cli-study/reports/final/08-concurrency.md` | Go CLI Study | Goroutine ownership, cancellation, worker safety. |
 | Testing Strategy | `studies/go-cli-study/reports/final/11-testing-strategy.md` | Go CLI Study | Unit, command, integration, race, and fixture strategies. |
 | Philosophy | `studies/go-cli-study/reports/final/15-philosophy.md` | Go CLI Study | Scope control and deliberate complexity. |
+| Logging And Observability | `studies/go-cli-study/reports/final/10-logging-observability.md` | Go CLI Study | Structured diagnostics, correlation, verbosity, and separation of user output from diagnostic evidence. |
+| Go CLI Performance | `studies/go-cli-study/reports/final/14-performance.md` | Go CLI Study | Go measurement, profiling, startup, allocation, concurrency, and bounded performance work. |
+| Export Interoperability And Observability | `studies/agent-harness-study/reports/final/10.04-export-interoperability-observability.md` | Agent Harness Study | Separation between canonical runtime evidence and external observation representations. |
+| Cost Latency And Quality Evaluation | `studies/agent-harness-study/reports/final/18.04-cost-latency-quality-evaluation.md` | Agent Harness Study | Measurement attribution, workload definition, latency interpretation, and evaluation caveats. |
 
 ## Phase 1 dimensions awaiting usable reports
 
@@ -144,6 +150,12 @@ These are Aren-specific sprint area templates. Their output must be written unde
 | Aren Control Observation And API Authority | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-02/control-observation-and-api-authority.md` | Sprint 2 must decide the Go capability split between observation, caller control, and internal mutation. |
 | Aren Race Stress And Leak Verification | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-02/race-stress-and-leak-verification.md` | Sprint 2 must define adversarial schedules, repeated stress, leak proof, negative controls, and phase-exit evidence. |
 | Aren Sprint 2 Architecture Delta | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-02/architecture-delta.md` | Select only when realized Sprint 1 evidence requires a material package, ownership, or dependency change. |
+| Aren Benchmark Method And Workloads | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-03/benchmark-method-and-workloads.md` | Sprint 3 must define reproducible workloads, sampling, metadata, comparison, tiers, and extension rules. |
+| Aren Scale Resource And Profile Evidence | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-03/scale-resource-and-profile-evidence.md` | Sprint 3 must decide concurrency, latency, memory, runtime-task, contention, saturation, and profile measurement. |
+| Aren Performance Evidence And Regression Policy | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-03/performance-evidence-and-regression-policy.md` | Sprint 3 must define result schemas, failure semantics, baseline interpretation, variance, retention, and future gates. |
+| Aren Observation Contract And Local Service | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-04/observation-contract-and-local-service.md` | Sprint 4 must define the versioned read-only DTO, loopback service, live delivery, bounds, and runtime authority boundary. |
+| Aren Run Explorer Experience | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-04/run-explorer-experience.md` | Sprint 4 must define information hierarchy, timeline semantics, states, accessibility, responsive behaviour, and diagnostic clarity. |
+| Aren Frontend Verification And Observer Isolation | `projects/aren-phase-01-execution-lifecycle/reasoning/sprint-04/frontend-verification-and-observer-isolation.md` | Sprint 4 must prove cross-interface agreement, client isolation, schema failure, accessibility, rendering bounds, and browser behaviour. |
 
 ## Available Project Reasoning Templates
 
@@ -181,7 +193,7 @@ Potential reasoning areas include:
 
 The sprint index decides which areas are needed. Do not create every possible reasoning document automatically.
 
-Project-wide Phase 1 synthesis templates live under `projects/aren-phase-01-execution-lifecycle/reasoning/project-wide/`. They are intentionally separate from the selectable sprint area templates above. The project-reasoning flow must complete with a passing review before either sprint starts.
+Project-wide Phase 1 synthesis templates live under `projects/aren-phase-01-execution-lifecycle/reasoning/project-wide/`. They are intentionally separate from the selectable sprint area templates above. The accepted synthesis primarily governs Sprints 1 and 2. Sprints 3 and 4 must preserve its lifecycle decisions while using the amended PRD, roadmap, observability mandate, and performance document for their new scope.
 
 ## Prior Decisions
 
@@ -196,12 +208,16 @@ The Phase 1 PRD already establishes product-level constraints including:
 - lifecycle events are retained per run in memory and ordered by `(run_id, sequence)`;
 - event recording is canonical, while observer delivery may repeat through replay;
 - arbitrary work side effects are outside Aren's exactly-once and rollback guarantees.
+- performance results must identify their workload, source, environment, sampling, and comparison method;
+- the Phase 1 browser frontend consumes a versioned read-only projection and cannot own lifecycle truth;
+- measurement and browser observation must remain passive with respect to execution correctness;
+- the Phase 1 local observation service is process-scoped and distinct from persistent daemon hosting.
 
-These remain requirements to test through reasoning, implementation, and review. Detailed API and synchronization choices are not yet decided.
+These remain requirements to test through reasoning, implementation, and review. Detailed API, synchronization, measurement, transport, and frontend choices are not yet decided.
 
-## Cross-Sprint Decision Carry-Forward
+## Cross-sprint decision carry-forward
 
-Sprint 2 must treat Sprint 1 outputs as prior project decisions, not rediscover them from scratch.
+Every sprint after Sprint 1 must treat completed earlier outputs as prior project decisions, not rediscover them from scratch.
 
 Its `sprint-index.md`, technical handbook, area reasoning, and top-level reasoning must explicitly include:
 
@@ -211,7 +227,7 @@ Its `sprint-index.md`, technical handbook, area reasoning, and top-level reasoni
 - `sprints/01-core-lifecycle/reasoning.md` as the authoritative Sprint 1 decision synthesis;
 - `sprints/01-core-lifecycle/plan.md` and implementation/review evidence where needed to understand the realised design.
 
-Sprint 2 may revise a Sprint 1 decision only when new concurrency or cancellation evidence demonstrates that the earlier decision is incorrect or insufficient. Any revision must be explicit, justified, and recorded as a superseding decision.
+Sprint 3 adds completed Sprint 2 artifacts to this set. Sprint 4 adds completed Sprint 2 and Sprint 3 artifacts. A later sprint may revise an earlier decision only when new realised evidence demonstrates that it is incorrect or insufficient. Any revision must be explicit, justified, and recorded as a superseding decision.
 
 ## Review Protocols
 
@@ -225,8 +241,7 @@ Sprint 2 may revise a Sprint 1 decision only when new concurrency or cancellatio
 
 - Keep this file a catalog, not a sprint plan.
 - Phase 1 remains one UltraPlan project targeting the shared Aren repository.
-- Use two sprints unless implementation evidence demonstrates that a third closure sprint is genuinely necessary.
-- Sprint 1 establishes the coherent core lifecycle; Sprint 2 attacks it with cancellation, observation, and adversarial concurrency.
+- Use four planned sprints. Sprint 1 establishes the lifecycle, Sprint 2 attacks it with cancellation and concurrency, Sprint 3 establishes the performance method and baseline, and Sprint 4 ships the first browser observation experience.
 - Do not defer all testing to Sprint 2. Each sprint must prove its own invariants.
-- Do not create provider, tool, persistence, daemon, workflow, or generic executor designs inside this project.
+<- Do not create provider, tool, persistence, daemon, workflow, or generic executor designs inside this project.
 - Stable lifecycle semantics may be promoted into the Aren repository only after the phase exit review.

@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "caaf016c0b1156e4fa468e6ddd984331a0e776f4674455cc51b8f190e4c58431",
+  "schema_version": 2,
+  "id": "qa-v2-run-5c3db048c33318c6bd34c6d9",
+  "spec_id": "qa-v2-spec-86a75b87821538120b9d3549",
+  "test_bundle_id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_2f5fd0db9fe4",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_2f5fd0db9fe4",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4",
+    "executable": "go",
+    "args_digest": "5b51036555c4debb424a0586673bf349a9e396925706b6138a61aedfa923e50d",
+    "exit_code": 1,
+    "duration": 31028586837,
+    "stdout_digest": "a0716e391129d22f34ceb281ae32fe24107962739e7e0957b12d168b8a1c55f4",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_2f5fd0db9fe4\n    qa_investigator_2f5fd0db9fe4_test.go:26: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4: Assert parsing succeeds and returns the canonical value despite malformed trailing content.\n--- FAIL: TestQAInvestigator_2f5fd0db9fe4 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\nFAIL\n",
+    "output_bytes": 367,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_2f5fd0db9fe4",
+    "assertion": "Assert parsing succeeds and returns the canonical value despite malformed trailing content.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2f5fd0db9fe4"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:20:48.21343475Z"
+}

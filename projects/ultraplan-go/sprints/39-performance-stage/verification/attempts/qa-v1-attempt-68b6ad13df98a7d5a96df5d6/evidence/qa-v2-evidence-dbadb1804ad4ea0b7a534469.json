@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-dbadb1804ad4ea0b7a534469",
+  "plan_id": "qa-v2-plan-8205dd9e811aa0ea92521dbb",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-b78583de2ed2f9a939e03e9a",
+  "workspace_id": "qa-v2-test-d2b77ae8796965482151be3d",
+  "workspace_identity": "40ac4b87e5d745ca45a31b8cccd34c4d12bb89de1b7a875bed248b316241511c",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_f558fdc3b798",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_f558fdc3b798",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798",
+      "executable": "go",
+      "args_digest": "02aecb20b8a438ac9a403cb152c1c9715b706ed3bea474b19ec6e47f21a244f3",
+      "exit_code": 1,
+      "duration": 21348984800,
+      "stdout_digest": "24ef409f2fa607939093bb7226ca9194e442341bc198f1c37d173e6b78179402",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_f558fdc3b798\n    qa_investigator_f558fdc3b798_test.go:24: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798: parser accepted malformed trailing bytes with value=\"4.2\"\n--- FAIL: TestQAInvestigator_f558fdc3b798 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\nFAIL\n",
+      "output_bytes": 333,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_f558fdc3b798_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:34:02.293562371Z"
+}

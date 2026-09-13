@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-ec32b8262d8cca3a68e90855",
+  "spec_id": "qa-v2-spec-1df4354eda21384996ab893d",
+  "test_bundle_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_729d3c90109f",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_729d3c90109f",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f",
+    "executable": "go",
+    "args_digest": "79def7b37ee19ec22dcb4fd7eefa6c60fb9439194b6e5ab7903091c2a739e835",
+    "exit_code": 1,
+    "duration": 26914799161,
+    "stdout_digest": "dec7dc246f7c5065ce023d04ea9ba4827ab6abab98ecc4553601f3edac7a93d0",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_729d3c90109f\n    qa_investigator_729d3c90109f_test.go:80: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f assertion=For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cum actual_calls=56 durable_commands=8 command_limit=40 output_matcher=ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f\n--- FAIL: TestQAInvestigator_729d3c90109f (0.34s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.344s\nFAIL\n",
+    "output_bytes": 671,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_729d3c90109f",
+    "assertion": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, use a valid sample policy, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable counters, and assert whether a later cycle starts such that actual cum",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_729d3c90109f"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T13:17:43.177162409Z"
+}

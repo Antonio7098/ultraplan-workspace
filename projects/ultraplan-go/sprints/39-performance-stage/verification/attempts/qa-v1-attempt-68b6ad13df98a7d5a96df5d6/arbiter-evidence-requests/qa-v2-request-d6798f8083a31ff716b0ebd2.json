@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:54:22.763669043Z",
+        "completed_at": "2026-09-12T11:55:04.221571974Z",
+        "failure": {
+          "phase": "compile",
+          "code": "compile_failure",
+          "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/tui [github.com/Antonio7098/ultraplan-go/internal/tui.test] ./qa_investigator_1ff716b0ebd2_test.go:35:14: undefined: qaPerformanceEvidenceQueries",
+          "retryable": false
+        },
+        "run_id": "qa-v2-run-ef6c62a9de9233e51d9d688b"
+      }
+    ],
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "compile",
+      "code": "compile_failure",
+      "diagnostic": "process exited with code 1 FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed] FAIL  # github.com/Antonio7098/ultraplan-go/internal/tui [github.com/Antonio7098/ultraplan-go/internal/tui.test] ./qa_investigator_1ff716b0ebd2_test.go:35:14: undefined: qaPerformanceEvidenceQueries",
+      "retryable": false
+    },
+    "id": "qa-v2-request-d6798f8083a31ff716b0ebd2",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+    ],
+    "origin_shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+    "gap": "The returned HTTP test fails in its explicit-limit control before issuing the omitted-limit request, so it does not observe the claimed default path.",
+    "requested_evidence": "Strengthen the executable Go _test.go reproducer in the approved private workspace so the omitted-limit request is issued first and the control uses query parameters accepted by the actual route contract.",
+    "required_observation": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted-limit request's actual HTTP status and body and record the exact Limit received by PerformanceEvidence; then compare with a reachable bounded-success control.",
+    "control_requirement": "Do not terminate on an unrelated query-allowlist failure, and prove the omitted request reaches PerformanceEvidence and EvidencePage before attributing its response to limit validation.",
+    "priority": "high",
+    "status": "superseded",
+    "evidence_round": 2,
+    "attempts": 1,
+    "evidence_fingerprint": "ad28ffe09d53e0e30693dee5b798e0db1ec2dd2b19be73d0191689c4d632012a",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-1cefed6a599adae46ba55ba6",
+    "test_bundle_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+    "latest_run_id": "qa-v2-run-ef6c62a9de9233e51d9d688b",
+    "next_action": "Inspect replacement evidence request qa-v2-request-1cefed6a599adae46ba55ba6."
+  }
+}

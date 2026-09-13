@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "correction_granted_at": "2026-09-12T12:04:14.011726604Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T12:05:21.917026052Z",
+        "completed_at": "2026-09-12T12:06:05.289987208Z",
+        "run_id": "qa-v2-run-961b5fcafd5462cb06f87ea7"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-1cefed6a599adae46ba55ba6",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+    ],
+    "origin_shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+    "gap": "The latest behavioral reproducer did not compile because qaPerformanceEvidenceQueries was undefined; the earlier test failed before issuing the omitted-limit request.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace so it compiles independently and issues the omitted-limit request through the actual HTTP handler.",
+    "required_observation": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+    "control_requirement": "Define all required query fakes in the test, prove the omitted request reaches PerformanceEvidence and EvidencePage, and avoid an unrelated query-allowlist failure.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 3,
+    "attempts": 1,
+    "evidence_fingerprint": "ec03cf6681fa7c67370b406fb8acf02328936a1b87b75a0ef9580c61acb7e00c",
+    "test_bundle_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+    "latest_run_id": "qa-v2-run-961b5fcafd5462cb06f87ea7",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

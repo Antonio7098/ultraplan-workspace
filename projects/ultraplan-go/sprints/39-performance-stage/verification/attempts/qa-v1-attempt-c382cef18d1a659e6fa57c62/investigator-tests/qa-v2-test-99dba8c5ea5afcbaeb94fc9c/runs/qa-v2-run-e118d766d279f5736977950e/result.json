@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-e118d766d279f5736977950e",
+  "spec_id": "qa-v2-spec-3a53004598f18b6c3e860c28",
+  "test_bundle_id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "fa7596ed015482494703a50d192af3c42f91c44e600215ae83c2ad7d7eeaa059",
+    "exit_code": 1,
+    "duration": 433412567260,
+    "stdout_digest": "ea7a9d1eed500d8d97b4ff555e0a47b73df42b2261307d9536fe58bbc23e239e",
+    "stderr_digest": "5e9d3743683464c4db2259d972d600ae39119c30e1dd53fd95cc7fa1a3ed8bea",
+    "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/project [setup failed]\nFAIL\n",
+    "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n# github.com/Antonio7098/ultraplan-go/internal/project\n../productstate/store.go:16:2: modernc.org/sqlite@v1.57.0: read \"https://proxy.golang.org/modernc.org/sqlite/@v/v1.57.0.zip\": read tcp 192.168.0.34:40494-\u003e142.250.140.207:443: read: connection reset by peer\n",
+    "output_bytes": 467,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_76f9ef0d2260",
+    "assertion": "Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76f9ef0d2260"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:48:35.491892036Z"
+}

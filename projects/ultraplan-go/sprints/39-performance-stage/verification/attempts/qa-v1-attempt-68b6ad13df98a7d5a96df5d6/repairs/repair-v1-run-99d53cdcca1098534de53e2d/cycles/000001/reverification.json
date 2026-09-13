@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "repair_run_id": "repair-v1-run-99d53cdcca1098534de53e2d",
+  "cycle": 1,
+  "gates": [
+    {
+      "gate": "exact_reproducer",
+      "status": "failed",
+      "reason": "frozen check did not pass",
+      "next_action": "Inspect retained check evidence and adjudicate the remaining failure.",
+      "exit_code": 1,
+      "duration": 1658515909,
+      "duration_ms": 1658,
+      "output_digest": "cff38e4a6c0a98c70eaadaf50f31372198a7a878915c48f7601f9ef96ec736a8",
+      "output_bytes": 1130,
+      "diagnostic": "process exited with code 1"
+    },
+    {
+      "gate": "primary_shards",
+      "status": "skipped",
+      "reason": "a narrower required gate did not pass",
+      "next_action": "Resolve the first non-pass and start a newly confirmed repair."
+    },
+    {
+      "gate": "linked_theories",
+      "status": "skipped",
+      "reason": "a narrower required gate did not pass",
+      "next_action": "Resolve the first non-pass and start a newly confirmed repair."
+    },
+    {
+      "gate": "follow_up_shards",
+      "status": "skipped",
+      "reason": "a narrower required gate did not pass",
+      "next_action": "Resolve the first non-pass and start a newly confirmed repair."
+    },
+    {
+      "gate": "containing_qa",
+      "status": "skipped",
+      "reason": "a narrower required gate did not pass",
+      "next_action": "Resolve the first non-pass and start a newly confirmed repair."
+    }
+  ],
+  "issue_ids_before": [
+    "qa-v2-issue-01916e6c0e0566e8940471ab"
+  ],
+  "issue_ids_after": [
+    "qa-v2-issue-01916e6c0e0566e8940471ab"
+  ],
+  "highest_severity_before": "medium",
+  "highest_severity_after": "medium",
+  "scope_grew": false,
+  "severity_grew": false,
+  "contradiction": false,
+  "completed_at": "2026-09-12T20:48:12.527503242Z"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-02d4fe134e9dec8a08db4159",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+  "evidence_request_id": "qa-v2-request-679ebce7e6dc6fe849fce7fe",
+  "theory_ids": [
+    "qa-v1-theory-7d9af7670be55a2e29a420d8"
+  ],
+  "claim": "PerformanceResult returns an unclassified raw error when no terminal result exists, bypassing performance-specific transport error mapping.",
+  "preconditions": [
+    "Include a typed performance error that receives performance-specific status and code mapping."
+  ],
+  "expected_behavior": "Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_6fe849fce7fe",
+    "assertion": "Assert that the error is not recognized as a PerformanceUseCaseError and receives generic mapping.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6fe849fce7fe"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_6fe849fce7fe_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-6fe849fce7fe",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_6fe849fce7fe$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "84e2b3e751a80bdf87f30038a54af34e028bd490a3f26cdb28d600fba8e15529"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T13:05:00.291779754Z"
+}

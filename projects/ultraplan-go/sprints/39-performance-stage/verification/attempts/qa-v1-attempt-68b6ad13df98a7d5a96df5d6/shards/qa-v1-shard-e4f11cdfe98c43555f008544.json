@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-e4f11cdfe98c43555f008544",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Performance documentation and operator contract",
+  "changed_paths": [
+    "docs/architecture.md",
+    "docs/cli-reference.md",
+    "docs/configuration.md",
+    "docs/local-web.md",
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "docs/release-checklist.md",
+    "docs/user-guide.md"
+  ],
+  "context_paths": [
+    "internal/app/sprint_commands.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_state.go",
+    "internal/web/routes.go"
+  ],
+  "boundary_reason": "Owns public architecture, CLI, configuration, schema, recovery, release, and user documentation.",
+  "behavioral_concerns": [
+    "Documentation must agree with implemented CLI, configuration, API, schema, lifecycle, and recovery behavior.",
+    "Recovery guidance must not imply that recovery can infer a successful product outcome.",
+    "Requirements remain the sole authority for performance targets; documentation must not invent thresholds."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security"
+  ],
+  "risk_tags": [
+    "security"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-357d02b85024955b15a6cb1c",
+    "qa-v1-block-5af1a807f7edb0681de5aec4",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 157600,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-e4f11cdfe98c43555f008544/1",
+      "number": 1,
+      "session_id": "ses_f6aa4d057ffeAJ2t7T243Ab5C7",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "4cc1356d83b61a10d5a3c70e3f02454109d7ad85dcf84cfb316ca10e30dce0b0",
+      "started_at": "2026-09-12T11:22:53.751835496Z",
+      "completed_at": "2026-09-12T11:24:03.078043012Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "internal/platform/config/performance.go defines built-in defaults and rejects non-positive values and values greater than those defaults, including numeric, byte, percentage, and duration limits.",
+          "paths": [
+            "internal/platform/config/performance.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 2576,
+        "output_tokens_known": true,
+        "output_tokens": 850,
+        "total_tokens_known": true,
+        "total_tokens": 114623,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 349,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 110848,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 31,
+      "retained_events": 31,
+      "observed_tool_calls": 3,
+      "context_metrics": {
+        "prompt_bytes": 157600,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 1,
+          "read": 2
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 12324,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 69326207516
+      },
+      "estimated_cost": {
+        "amount": 0.035821599999999995,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-0012e548ef4b0f725b73b3df",
+      "shard_id": "qa-v1-shard-e4f11cdfe98c43555f008544",
+      "claim": "The performance configuration table misleadingly permits workspace or environment values up to the listed hard maxima even when those values exceed built-in defaults.",
+      "basis": "The documentation explicitly says workspace and environment values may only lower built-in defaults, while governed requirements separately distinguish safe defaults from immutable maxima [qa-v1-block-9a637580a721b349e21044c1, qa-v1-block-ce45392d2ebc036986b89d13].",
+      "verification_surface": "Compare the documented configuration semantics and limits table with typed validation in internal/platform/config/performance.go.",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-documentation",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Configuration validation accepts values above defaults up to the documented hard maxima, contradicting the lower-only requirement, or documentation states that operators may configure those larger values.",
+      "refutation_condition": "Configuration validation rejects every value above its built-in default, while larger hard maxima are only immutable product ceilings and documentation explicitly states that configuration may only lower defaults.",
+      "inconclusive_condition": "The effective configuration validator or intended meaning of the hard-maximum column cannot be inspected.",
+      "safe_evidence_strategy": "Read only typed performance configuration defaults and validation logic; do not execute commands or modify configuration.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-e4f11cdfe98c43555f008544/1",
+          "number": 1,
+          "session_id": "ses_f6aa4d057ffeAJ2t7T243Ab5C7",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "4cc1356d83b61a10d5a3c70e3f02454109d7ad85dcf84cfb316ca10e30dce0b0",
+          "started_at": "2026-09-12T11:22:53.751835496Z",
+          "completed_at": "2026-09-12T11:24:03.078043012Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "internal/platform/config/performance.go defines built-in defaults and rejects non-positive values and values greater than those defaults, including numeric, byte, percentage, and duration limits.",
+              "paths": [
+                "internal/platform/config/performance.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 2576,
+            "output_tokens_known": true,
+            "output_tokens": 850,
+            "total_tokens_known": true,
+            "total_tokens": 114623,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 349,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 110848,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 31,
+          "retained_events": 31,
+          "observed_tool_calls": 3,
+          "context_metrics": {
+            "prompt_bytes": 157600,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1,
+              "read": 2
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 12324,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 69326207516
+          },
+          "estimated_cost": {
+            "amount": 0.035821599999999995,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "internal/platform/config/performance.go defines built-in defaults and rejects non-positive values and values greater than those defaults, including numeric, byte, percentage, and duration limits.",
+          "paths": [
+            "internal/platform/config/performance.go"
+          ]
+        }
+      ],
+      "outcome": "refuted",
+      "outcome_reason": "The inspected validator enforces configurable values at or below built-in defaults. This agrees with the documentation's lower-only statement and the requirements' separate immutable-maxima rule [qa-v1-block-9a637580a721b349e21044c1, qa-v1-block-ce45392d2ebc036986b89d13]."
+    }
+  ]
+}

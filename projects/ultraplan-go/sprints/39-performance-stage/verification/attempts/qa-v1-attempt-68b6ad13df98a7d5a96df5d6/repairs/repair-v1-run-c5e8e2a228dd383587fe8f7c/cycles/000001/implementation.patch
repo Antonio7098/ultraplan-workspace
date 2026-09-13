@@ -1,0 +1,172 @@
+--- a/internal/sprint/performance_measure.go
++++ b/internal/sprint/performance_measure.go
+@@ -8,87 +8,88 @@
+ 	"encoding/hex"
+ 	"encoding/json"
+ 	"fmt"
+-	"math"
+-	"math/big"
+-	"regexp"
+-	"sort"
+-	"strconv"
+-	"strings"
+-
+-	pprocess "github.com/Antonio7098/ultraplan-go/internal/platform/process"
+-)
+-
+-const performanceJSONMarker = "ULTRAPLAN_PERFORMANCE_V1 "
+-
+-type performanceJSONEnvelope struct {
+-	SchemaVersion int             `json:"schema_version"`
+-	TargetID      string          `json:"target_id"`
+-	Scenario      string          `json:"scenario"`
+-	Metric        string          `json:"metric"`
+-	Unit          PerformanceUnit `json:"unit"`
+-	Value         string          `json:"value"`
+-}
+-
+-func ParsePerformanceOutput(descriptor PerformanceDescriptor, target PerformanceTarget, output string, truncated bool) (string, error) {
+-	if truncated {
+-		return "", fmt.Errorf("benchmark output was truncated")
+-	}
+-	if descriptor.Kind == PerformanceGoBenchmark {
+-		return parseGoBenchmarkValue(descriptor, output)
+-	}
+-	if descriptor.Kind == PerformanceJSONRunner {
+-		return parsePerformanceJSONValue(descriptor, target, output)
+-	}
+-	return "", fmt.Errorf("unsupported descriptor kind %q", descriptor.Kind)
+-}
+-
+-func parseGoBenchmarkValue(descriptor PerformanceDescriptor, output string) (string, error) {
+-	var values []string
+-	scanner := bufio.NewScanner(strings.NewReader(output))
+-	for scanner.Scan() {
+-		fields := strings.Fields(scanner.Text())
+-		if len(fields) < 3 || benchmarkBaseName(fields[0]) != descriptor.Symbol {
+-			continue
+-		}
+-		for i := 1; i < len(fields); i++ {
+-			if fields[i] == string(descriptor.RawUnit) && i > 0 {
+-				canonical, _, err := canonicalPerformanceDecimal(fields[i-1])
+-				if err != nil {
+-					return "", fmt.Errorf("parse Go benchmark value: %w", err)
+-				}
+-				values = append(values, canonical)
+-			}
+-		}
+-	}
+-	if err := scanner.Err(); err != nil {
+-		return "", err
+-	}
+-	if len(values) != 1 {
+-		return "", fmt.Errorf("expected one %s value for %s, found %d", descriptor.RawUnit, descriptor.Symbol, len(values))
+-	}
+-	return values[0], nil
+-}
+-
+-func benchmarkBaseName(value string) string {
+-	return regexp.MustCompile(`-[0-9]+$`).ReplaceAllString(value, "")
+-}
+-
+-func parsePerformanceJSONValue(descriptor PerformanceDescriptor, target PerformanceTarget, output string) (string, error) {
+-	var envelopes []performanceJSONEnvelope
+-	scanner := bufio.NewScanner(strings.NewReader(output))
+-	for scanner.Scan() {
+-		line := strings.TrimSpace(scanner.Text())
+-		at := strings.Index(line, performanceJSONMarker)
+-		if at < 0 {
+-			continue
+-		}
+-		decoder := json.NewDecoder(strings.NewReader(strings.TrimSpace(line[at+len(performanceJSONMarker):])))
+-		decoder.DisallowUnknownFields()
+-		var envelope performanceJSONEnvelope
+-		if err := decoder.Decode(&envelope); err != nil {
+-			return "", fmt.Errorf("decode performance JSON: %w", err)
+-		}
+-		if decoder.Decode(&struct{}{}) == nil {
++	"io"
++	"math"
++	"math/big"
++	"regexp"
++	"sort"
++	"strconv"
++	"strings"
++
++	pprocess "github.com/Antonio7098/ultraplan-go/internal/platform/process"
++)
++
++const performanceJSONMarker = "ULTRAPLAN_PERFORMANCE_V1 "
++
++type performanceJSONEnvelope struct {
++	SchemaVersion int             `json:"schema_version"`
++	TargetID      string          `json:"target_id"`
++	Scenario      string          `json:"scenario"`
++	Metric        string          `json:"metric"`
++	Unit          PerformanceUnit `json:"unit"`
++	Value         string          `json:"value"`
++}
++
++func ParsePerformanceOutput(descriptor PerformanceDescriptor, target PerformanceTarget, output string, truncated bool) (string, error) {
++	if truncated {
++		return "", fmt.Errorf("benchmark output was truncated")
++	}
++	if descriptor.Kind == PerformanceGoBenchmark {
++		return parseGoBenchmarkValue(descriptor, output)
++	}
++	if descriptor.Kind == PerformanceJSONRunner {
++		return parsePerformanceJSONValue(descriptor, target, output)
++	}
++	return "", fmt.Errorf("unsupported descriptor kind %q", descriptor.Kind)
++}
++
++func parseGoBenchmarkValue(descriptor PerformanceDescriptor, output string) (string, error) {
++	var values []string
++	scanner := bufio.NewScanner(strings.NewReader(output))
++	for scanner.Scan() {
++		fields := strings.Fields(scanner.Text())
++		if len(fields) < 3 || benchmarkBaseName(fields[0]) != descriptor.Symbol {
++			continue
++		}
++		for i := 1; i < len(fields); i++ {
++			if fields[i] == string(descriptor.RawUnit) && i > 0 {
++				canonical, _, err := canonicalPerformanceDecimal(fields[i-1])
++				if err != nil {
++					return "", fmt.Errorf("parse Go benchmark value: %w", err)
++				}
++				values = append(values, canonical)
++			}
++		}
++	}
++	if err := scanner.Err(); err != nil {
++		return "", err
++	}
++	if len(values) != 1 {
++		return "", fmt.Errorf("expected one %s value for %s, found %d", descriptor.RawUnit, descriptor.Symbol, len(values))
++	}
++	return values[0], nil
++}
++
++func benchmarkBaseName(value string) string {
++	return regexp.MustCompile(`-[0-9]+$`).ReplaceAllString(value, "")
++}
++
++func parsePerformanceJSONValue(descriptor PerformanceDescriptor, target PerformanceTarget, output string) (string, error) {
++	var envelopes []performanceJSONEnvelope
++	scanner := bufio.NewScanner(strings.NewReader(output))
++	for scanner.Scan() {
++		line := strings.TrimSpace(scanner.Text())
++		at := strings.Index(line, performanceJSONMarker)
++		if at < 0 {
++			continue
++		}
++		decoder := json.NewDecoder(strings.NewReader(strings.TrimSpace(line[at+len(performanceJSONMarker):])))
++		decoder.DisallowUnknownFields()
++		var envelope performanceJSONEnvelope
++		if err := decoder.Decode(&envelope); err != nil {
++			return "", fmt.Errorf("decode performance JSON: %w", err)
++		}
++		if err := decoder.Decode(&struct{}{}); err != io.EOF {
+ 			return "", fmt.Errorf("performance JSON contains trailing data")
+ 		}
+ 		envelopes = append(envelopes, envelope)

@@ -8,7 +8,9 @@ The templates are grouped by decision scope:
 reasoning/
 ├── project-wide/   # Phase 1 research synthesis, for the planned project-reasoning flow
 ├── sprint-01/      # Core lifecycle area reasoning
-└── sprint-02/      # Cancellation and concurrency area reasoning
+├── sprint-02/      # Cancellation and concurrency area reasoning
+├── sprint-03/      # Performance methodology and baseline
+└── sprint-04/      # Observability frontend
 ```
 
 The project-wide templates cannot yet run through the current sprint area-reasoning operation. They are ready for the planned UltraPlan project-reasoning feature. Do not select them as sprint area templates merely to work around that missing feature.
@@ -31,14 +33,14 @@ Every completed Aren reasoning document must do all of the following:
 8. Record negative evidence, contradictions, and missing evidence. Insufficient evidence must produce an experiment, test, or explicit deferral.
 9. Explain what would falsify or reopen each material conclusion.
 10. Map decisions to invariants and observable tests. A test name without the failure it detects is not enough.
-11. Audit Phase 1 scope. Provider, tool, subprocess, persistence, workflow, daemon, and remote-execution designs must not enter through speculative seams.
+11. Audit Phase 1 scope. Provider, tool, subprocess, persistence, workflow, persistent-daemon, and remote-execution designs must not enter through speculative seams.
 12. Name accepted costs. "Simple", "robust", "flexible", and "idiomatic" are not rationales without a mechanism.
 13. End with a self-critique that identifies the strongest objection, the most fragile assumption, and the easiest way the proposed design could lie about execution.
 
 ## Authority rules
 
 - The PRD owns required behaviour and exclusions.
-- Project-wide reasoning synthesizes evidence and records Phase 1 conclusions shared by both sprints.
+- Project-wide reasoning synthesizes lifecycle evidence that all four sprints must preserve. The amended PRD, roadmap, performance mandate, and observability mandate add the Sprint 3 and Sprint 4 scope.
 - Sprint area reasoning makes detailed decisions for one sprint concern.
 - Sprint `reasoning.md` is the authoritative sprint decision set.
 - `plan.md` implements sprint `reasoning.md` and must not promote a provisional research conclusion into architecture.
@@ -82,6 +84,22 @@ Every completed Aren reasoning document must do all of the following:
 | `sprint-02/control-observation-and-api-authority.md` | View, caller-control, and internal mutation capabilities. |
 | `sprint-02/race-stress-and-leak-verification.md` | Adversarial schedules, repeated stress, negative controls, and leak proof. |
 | `sprint-02/architecture-delta.md` | Conditional review of material changes to Sprint 1 architecture. |
+
+## Sprint 3 templates
+
+| Template | Decision boundary |
+| --- | --- |
+| `sprint-03/benchmark-method-and-workloads.md` | Canonical workloads, sampling, environment metadata, tiers, comparison, and later extension. |
+| `sprint-03/scale-resource-and-profile-evidence.md` | Scaling, latency, memory, runtime-task, contention, saturation, quiescence, and profile measurement. |
+| `sprint-03/performance-evidence-and-regression-policy.md` | Result identity, variance, failures, retention, baseline interpretation, and future regression gates. |
+
+## Sprint 4 templates
+
+| Template | Decision boundary |
+| --- | --- |
+| `sprint-04/observation-contract-and-local-service.md` | Read-only DTO, snapshot and live delivery, bounds, loopback service, privacy, and authority. |
+| `sprint-04/run-explorer-experience.md` | Run explorer hierarchy, states, timeline, language, accessibility, responsiveness, and evidence density. |
+| `sprint-04/frontend-verification-and-observer-isolation.md` | Agreement, connection schedules, failure handling, client isolation, accessibility, performance, and browser proof. |
 
 ## Selection rule
 

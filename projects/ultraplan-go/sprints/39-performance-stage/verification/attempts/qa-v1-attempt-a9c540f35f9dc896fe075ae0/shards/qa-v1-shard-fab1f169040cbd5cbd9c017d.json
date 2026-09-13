@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-fab1f169040cbd5cbd9c017d",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Isolated benchmark authoring and optimization",
+  "changed_paths": [
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_isolation_test.go",
+    "internal/sprint/performance_optimize.go",
+    "internal/sprint/performance_optimize_runtime.go",
+    "internal/sprint/performance_optimize_test.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_measure.go"
+  ],
+  "behavioral_concerns": [
+    "Canonical writes occur only after correctness-first candidate validation, with immutable preimages and an apply journal supporting exact compensation.",
+    "Cleanup uncertainty, target drift, exhausted cycles, or insufficient command budget cannot be promoted or reported as success.",
+    "Optimization uses retained bounded profiles, validates the actual production-only diff, rejects protected paths and equality, and remeasures already-met required targets.",
+    "Runtime authoring is bounded and confined to disposable copies, and promotion accepts only new measurement test files or package-local performance testdata after correctness and coverage checks."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "runtime",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-05eaed57808bf1570dba3ef6",
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-1260f19e7df1964e71a3a4b2",
+    "qa-v1-block-299ad990bfc68615c68abde3",
+    "qa-v1-block-2b1170d0855a26e01484faff",
+    "qa-v1-block-2c0f1092cbd6716e834e5861",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-7985bad832d92491b9f91289",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-af5f117594728fd0aab939e2",
+    "qa-v1-block-aface9f7fead0283d2f0519a",
+    "qa-v1-block-bbded94f1f6a431c45c9bd52",
+    "qa-v1-block-c771dfa1e6823a4da4c4b2e2",
+    "qa-v1-block-c7ea9c7c067b889ab44bcf61",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-d20c43d47f3c55e480768bbb",
+    "qa-v1-block-e5e9288e0d4e15abe068bed1"
+  ],
+  "prepared_prompt_bytes": 152849,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "mapped"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-64d2830e4d848b29ea71aad8",
+  "spec_id": "qa-v2-spec-9518d90bfd68594c8d83fffb",
+  "files": [
+    {
+      "path": "internal/tui/qa_investigator_1bc58f90bf82_test.go",
+      "content": "package tui\n\nimport (\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\nfunc TestQAInvestigator_1bc58f90bf82(t *testing.T) {\n\tdata := fixtureDashboard()\n\tsummary := \u0026data.Sprints[0]\n\tmodel := Model{Data: data, Routes: []Route{{Kind: RouteSprint, Project: summary.Project, Sprint: summary.Slug}}}\n\n\tperformanceKinds := func() map[app.OperationKind]bool {\n\t\tkinds := make(map[app.OperationKind]bool)\n\t\tfor _, item := range model.navItems() {\n\t\t\tif item.Operation != nil \u0026\u0026 strings.HasPrefix(string(item.Operation.Kind), \"performance-\") {\n\t\t\t\tkinds[item.Operation.Kind] = true\n\t\t\t}\n\t\t}\n\t\treturn kinds\n\t}\n\tmutating := []app.OperationKind{\n\t\tapp.OperationPerformanceStart,\n\t\tapp.OperationPerformanceResume,\n\t\tapp.OperationPerformanceCancel,\n\t\tapp.OperationPerformanceRecover,\n\t}\n\n\t// Control: disabled policy without history exposes no performance actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"disabled\", Enabled: false}\n\tmodel.Data = data\n\tif kinds := performanceKinds(); len(kinds) != 0 {\n\t\tt.Fatalf(\"disabled-without-attempt control exposed performance operations: %v\", kinds)\n\t}\n\n\t// Control: an enabled current attempt exposes all expected mutation actions.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"enabled\", Enabled: true, PerformanceAttemptID: \"performance-v1-attempt-current\"}\n\tmodel.Data = data\n\tcurrentKinds := performanceKinds()\n\tfor _, kind := range mutating {\n\t\tif !currentKinds[kind] {\n\t\t\tt.Fatalf(\"enabled-current-attempt control missing %s\", kind)\n\t\t}\n\t}\n\n\t// Historical data remains inspectable, but disabled policy must hide mutations.\n\tsummary.Performance = app.PerformanceStatusResult{PolicyMode: \"disabled\", Enabled: false, Phase: \"terminal\", Fresh: false, Outcome: \"passed\", PerformanceAttemptID: \"performance-v1-attempt-historical\"}\n\tmodel.Data = data\n\thistoricalKinds := performanceKinds()\n\tvar exposed []string\n\tfor _, kind := range mutating {\n\t\tif historicalKinds[kind] {\n\t\t\texposed = append(exposed, string(kind))\n\t\t}\n\t}\n\tif len(exposed) != 0 {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1bc58f90bf82 assertion=Assert start, resume, cancel, and recover operation kinds are present. exposed_disabled_historical_mutations=%s\", strings.Join(exposed, \",\"))\n\t}\n}\n",
+      "digest": "a9b0c41531ec3bc53f9130e54edd2712b168b0cef654bd70360cdf19b263f720",
+      "bytes": 2277
+    }
+  ],
+  "content_digest": "6f992da2751bf7c4f1a3014f02052bbdec0112c40ecf5ddeb87385d1465d7f1a"
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "id": "qa-v2-request-e09890ed99f95258216f09e9",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-44d9a1998804c860f04368c4"
+    ],
+    "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+    "gap": "Existing investigator evidence verifies healthy JSON output and the separate stdout-write defect but does not execute semantic success, target-miss, cancellation, and partial exit mappings for this theory.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for qa-v1-theory-44d9a1998804c860f04368c4.",
+    "required_observation": "Using existing command or operation seams, execute success, target_missed, cancelled, partial, and operational-failure cases and assert stable JSON and text fields, stdout/stderr behavior, and the corresponding exit mappings for qa-v1-theory-44d9a1998804c860f04368c4.",
+    "control_requirement": "Include a passing status or dry-run control and ensure failures arise from missing compatibility behavior rather than the separate writer-error defect. Treat frozen product-test evidence, not the investigator-authored reproducer, as proof of prior coverage absence.",
+    "priority": "medium",
+    "status": "pending",
+    "superseded_by": "qa-v2-request-5d31c259c544d48db6847a74",
+    "next_action": "Continue the original investigator session."
+  }
+}

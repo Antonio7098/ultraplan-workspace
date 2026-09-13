@@ -1,0 +1,62 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "caaf016c0b1156e4fa468e6ddd984331a0e776f4674455cc51b8f190e4c58431",
+  "schema_version": 2,
+  "id": "qa-v2-run-dd17f540588b50ae8f6c35ff",
+  "spec_id": "qa-v2-spec-703f9d2a57c78090c05dfe3f",
+  "test_bundle_id": "qa-v2-test-401c04522e0c90c5b00e0f7f",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_0c580cfa0ca8",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_0c580cfa0ca8/control_generic_config_infrastructure_is_allowed",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_0c580cfa0ca8",
+        "action": "fail"
+      },
+      {
+        "test": "TestQAInvestigator_0c580cfa0ca8/control_generic_config_infrastructure_is_allowed",
+        "action": "pass"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_0c580cfa0ca8",
+    "executable": "go",
+    "args_digest": "f4315cc70540932b3ec3fc9ee6ef4adde88ddbfe2e541b51ef05d05898628402",
+    "exit_code": 1,
+    "duration": 6652238386,
+    "stdout_digest": "66a57bf38fab3e83e9b4f02d13d908597c693489e9ef5021ca73fab6d631ead8",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_0c580cfa0ca8\n=== RUN   TestQAInvestigator_0c580cfa0ca8/control_generic_config_infrastructure_is_allowed\nassertion: Assert the current source defines product-specific performance defaults and validation under internal/platform.\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_0c580cfa0ca8\n--- FAIL: TestQAInvestigator_0c580cfa0ca8 (0.00s)\n    --- PASS: TestQAInvestigator_0c580cfa0ca8/control_generic_config_infrastructure_is_allowed (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/platform/config\t0.004s\nFAIL\n",
+    "output_bytes": 555,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_0c580cfa0ca8",
+    "assertion": "Assert the current source defines product-specific performance defaults and validation under internal/platform.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_0c580cfa0ca8"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T17:12:06.587112426Z"
+}

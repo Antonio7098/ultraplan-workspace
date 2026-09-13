@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-67e0793d19fecc71197e3a0c",
+  "plan_id": "qa-v2-plan-ed8780f317354b9c624ca980",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+  "workspace_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+  "workspace_identity": "ed020f42a778e2543e5fb7d6b51efc720450c45c5468b164a46aacc3a8b83746",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_dae46ba55ba6",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_dae46ba55ba6",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6",
+      "executable": "go",
+      "args_digest": "ea6e7e506537d0df249c7704d6e57697d5a92bccb0ae3c116d9509b907efa21c",
+      "exit_code": 1,
+      "duration": 31060005877,
+      "stdout_digest": "67d3cfcc75b51fa1992827d218eaeb8f1df5cf518a6aedb526465f86e7551723",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_dae46ba55ba6\n    qa_investigator_dae46ba55ba6_test.go:105: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\n    qa_investigator_dae46ba55ba6_test.go:106: omitted_status=500 omitted_limit=0 omitted_body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"74a4849b099fb1a5f80aacc2feec869c\"}}\n         control_status=success control_limit=1\n    qa_investigator_dae46ba55ba6_test.go:107: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6\n--- FAIL: TestQAInvestigator_dae46ba55ba6 (0.01s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.039s\nFAIL\n",
+      "output_bytes": 850,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T12:06:05.11596493Z"
+}

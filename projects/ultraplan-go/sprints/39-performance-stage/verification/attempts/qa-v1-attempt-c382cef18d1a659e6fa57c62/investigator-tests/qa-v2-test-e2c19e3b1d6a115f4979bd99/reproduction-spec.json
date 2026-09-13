@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-944ff8d4ce332c78e8f5dc7c",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-85fe99477f20d95596434ef9",
+  "evidence_request_id": "qa-v2-request-a53dc7379d6356bcf430b685",
+  "theory_ids": [
+    "qa-v1-theory-17dafaf3fd4f0f4493af69b0"
+  ],
+  "claim": "Sprint summary, TUI, and web performance projections omit operational lifecycle and cancellation state even when a durable run exists.",
+  "preconditions": [
+    "Include a passing control reaching the same entry point and assert fixture preconditions before the defect assertion."
+  ],
+  "expected_behavior": "Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fields.. Refute only if: Sprint summary composition enriches the projection from the durable run manager, or all consuming adapters call the enriched PerformanceStatus use case instead of the raw projection.. Otherwise: The durable lifecycle enrichment or Sprint query implementation differs outside the cited excerpts such that the summary is enriched before presentation.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_56bcf430b685",
+    "assertion": "Confirm only if: A state with a non-empty operation run ID and an inspectable durable lifecycle produces an empty operational_lifecycle or cancellation_state through SprintSummaries or api_sprint_performance while direct PerformanceStatus supplies those fi",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_56bcf430b685"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_56bcf430b685_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-56bcf430b685",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_56bcf430b685$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "2722c8270cfaba5a4189bc8b6066935193e643d7eafc8308638e257a66e25d75"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T17:06:12.271946433Z"
+}

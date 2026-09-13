@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-910fb5d215bccf3fb04e486d",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-f9360cf63cd8c1c3e1a2315c",
+  "evidence_request_id": "qa-v2-request-8879630e73c2765e01a64feb",
+  "theory_ids": [
+    "qa-v1-theory-e520dfe5bb32e35f0d545398"
+  ],
+  "claim": "The performance CLI collapses every classified non-cancellation performance failure into the validation exit class, so configuration, runtime, timeout, dependency, and persistence failures do not retain appropriate CLI exit behavior.",
+  "preconditions": [
+    "Verify that underlying error categories are distinct before CLI wrapping."
+  ],
+  "expected_behavior": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_765e01a64feb",
+    "assertion": "Assert every non-cancellation case resolves to ExitValidation while cancellation resolves to ExitCancel.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_765e01a64feb"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_765e01a64feb_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-765e01a64feb",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_765e01a64feb$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "29d986dfe7a6d14a0010c613a40f6e72e5885b3525a7840e85e33a974cb4c597"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T13:09:17.212122441Z"
+}

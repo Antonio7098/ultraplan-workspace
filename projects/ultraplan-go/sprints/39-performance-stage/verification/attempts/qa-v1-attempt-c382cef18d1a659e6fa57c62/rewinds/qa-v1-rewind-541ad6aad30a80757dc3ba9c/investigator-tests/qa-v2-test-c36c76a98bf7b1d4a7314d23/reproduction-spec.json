@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-c6abe79f9600d52d0df83f4d",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+  "theory_ids": [
+    "qa-v1-theory-3d05000070c81fe10aa3579b"
+  ],
+  "claim": "The prior executable reproducer produced a failure-signature mismatch and did not determine whether the discarded helper error is reachable through normal composition.",
+  "preconditions": [
+    "Assert performanceSettings fails for the exact Effective value used, exercise the production composition path, and verify no operation side effect occurs before any expected rejection."
+  ],
+  "expected_behavior": "Ask the original investigator to strengthen an executable Go _test.go reproducer in its approved private workspace so it constructs the shared operation runner through normal production composition with an Effective value for which performanceSettings demonstrably returns an error.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_5bfbf0e7c399",
+    "assertion": "Show whether the runner still executes an operation or whether composition rejects the same configuration before runner invocation.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_5bfbf0e7c399"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_5bfbf0e7c399_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-5bfbf0e7c399",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-run",
+      "^TestQAInvestigator_5bfbf0e7c399$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "49a97d44b9c252529668c187815a5d0701ca27fbc534490aef2a81dcbea840ed"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-06T15:51:01.209781327Z"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-c418b7d27881f9b5b43f7e46",
+  "spec_id": "qa-v2-spec-e1e2152c68deb3ad78d749ac",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_d094a0cec36e_test.go",
+      "content": "package app\n\nimport (\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_d094a0cec36e(t *testing.T) {\n\tconst theory = \"qa-v1-theory-7ef7c4876857c8e4b85d4c0c\"\n\tconst assertion = \"Using existing command or operation seams, execute target-miss, cancellation, and partial outcomes and assert stable JSON or text output, stdout/stderr behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d\"\n\n\tstdout, stderr, status := runForTest([]string{\"sprint\", \"--help\"})\n\tif status != ExitOK || stderr != \"\" || !strings.Contains(stdout, \"ultraplan sprint\") {\n\t\tt.Fatalf(\"%s passing control failed: status=%d stdout=%q stderr=%q\", theory, status, stdout, stderr)\n\t}\n\n\tworkspace := initializedWorkspace(t)\n\twriteCommandSprintProject(t, workspace, \"proj\", \"01-alpha\")\n\tstdout, stderr, status = runForTest([]string{\"--workspace\", workspace, \"sprint\", \"proj\", \"01\", \"performance\", \"cancel\", \"--json\"})\n\tif status != ExitCancel || stdout == \"\" {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_d094a0cec36e assertion=%s theory=%s cancellation_status=%d stdout=%q stderr=%q\", assertion, theory, status, stdout, stderr)\n\t}\n}\n",
+      "digest": "8841f1759d6263499ceff91cb4bfc093fd18fc4f098ab1ab7cfac3d6c265d325",
+      "bytes": 1163
+    }
+  ],
+  "content_digest": "5d3dc65b5f4c0133a91f9f3043f066cff5e5db36adc696a5369c7df37d1a2254"
+}

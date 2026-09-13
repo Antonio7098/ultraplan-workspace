@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-aec431cf121861ff9963d55b",
+  "spec_id": "qa-v2-spec-f1616232c467e818f4a3ad47",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_a02b8a23413a_test.go",
+      "content": "package app\n\nimport (\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_a02b8a23413a(t *testing.T) {\n\tsource, err := os.ReadFile(\"../sprint/performance_optimize_runtime.go\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttext := string(source)\n\n\t// Passing control: at least one cleanup boundary correctly propagates failure.\n\tif !strings.Contains(text, \"if cleanupErr := isolation.cleanup(); cleanupErr != nil {\") {\n\t\tt.Fatal(\"control failed: optimization has no checked isolation cleanup boundary\")\n\t}\n\n\tignoredBeforeContinue := \"_ = isolation.cleanup()\\n\\t\\t\\tcontinue\"\n\tif strings.Contains(text, ignoredBeforeContinue) {\n\t\tt.Fatalf(\"TestQAInvestigator_a02b8a23413a: The assertions must cover qa-v1-theory-35a6a9cbcf6592fb04bb7828 by proving whether another proposal or mutation step starts after cleanup failure and whether the resulting state preserves cleanup_uncertain. ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a02b8a23413a\")\n\t}\n}\n",
+      "digest": "9d2bf15c762f36eabbc6308717d0b7c0ea20d0c42794e7d1194050ec9563a97f",
+      "bytes": 941
+    }
+  ],
+  "content_digest": "a0c4e9f750085f6baf7cec23c93cfed0b9cde8a2cd24b924cdc4542e9afad452"
+}

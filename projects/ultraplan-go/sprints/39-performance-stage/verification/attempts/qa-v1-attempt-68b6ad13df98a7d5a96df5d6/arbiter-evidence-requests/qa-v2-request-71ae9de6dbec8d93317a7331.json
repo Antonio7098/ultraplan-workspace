@@ -1,0 +1,34 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "correction_granted_at": "2026-09-12T12:08:51.485111958Z",
+    "correction_attempts": 1,
+    "accounting_version": 2,
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "authoring",
+      "code": "unknown_failure",
+      "diagnostic": "qa continue investigator for evidence: verification_unavailable: The approved app test path cannot deterministically drive the concrete sprint.Service through successful, target_missed, cancelled, and partial RunPerformance branches. runSprintPerformance constructs and uses durable/runtime dependencies internally, and no injectable performance service or outcome seam exists. Reaching those branches would require the real workflow, contrary to the deterministic-fake requirement.. Required prerequisite: Provide or approve an existing test seam that injects performance preparation, durable ownership, runtime outcome, and status projection into the real CLI handler, enabling all four outcome branches without product-source changes or real runtime execution.",
+      "retryable": false
+    },
+    "id": "qa-v2-request-71ae9de6dbec8d93317a7331",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-44d9a1998804c860f04368c4"
+    ],
+    "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+    "gap": "Returned tests still do not execute representative target_missed, cancelled, partial, and successful outcome branches or verify the complete stdout and stderr contract.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the original investigator's approved private workspace for representative success, target_missed, cancelled, and partial performance outcomes.",
+    "required_observation": "For qa-v1-theory-44d9a1998804c860f04368c4, assert parsed complete JSON envelope structure, stdout and stderr separation, and exact semantic exit classification for each representative outcome.",
+    "control_requirement": "Use deterministic service and durable-operation fakes and ensure every case reaches its intended result-outcome branch rather than only dry-run preparation.",
+    "priority": "medium",
+    "status": "inconclusive",
+    "evidence_round": 4,
+    "attempts": 1,
+    "evidence_fingerprint": "3ac66f9ec42efffcff4c552f46ae51dbe9e0133975b9b833378d4b1ad317084f",
+    "reason_code": "verification_unavailable",
+    "superseded_by": "qa-v2-request-d61db1d879f08759356cb157",
+    "next_action": "Evidence remains unresolved: verification_unavailable. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance. qa continue investigator for evidence: verification_unavailable: The approved app test path cannot deterministically drive the concrete sprint.Service through successful, target_missed, cancelled, and partial RunPerformance branches. runSprintPerformance constructs and uses durable/runtime dependencies internally, and no injectable performance service or outcome seam exists. Reaching those branches would require the real workflow, contrary to the deterministic-fake requirement.. Required prerequisite: Provide or approve an existing test seam that injects performance preparation, durable ownership, runtime outcome, and status projection into the real CLI handler, enabling all four outcome branches without product-source changes or real runtime execution."
+  }
+}

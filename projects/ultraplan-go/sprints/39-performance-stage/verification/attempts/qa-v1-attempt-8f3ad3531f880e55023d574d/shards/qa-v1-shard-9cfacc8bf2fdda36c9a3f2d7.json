@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-9cfacc8bf2fdda36c9a3f2d7",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "primary",
+  "title": "Closed benchmark discovery and measurement isolation",
+  "changed_paths": [
+    "internal/sprint/performance_authoring.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_benchmark_test.go",
+    "internal/sprint/performance_discovery.go",
+    "internal/sprint/performance_isolation.go",
+    "internal/sprint/performance_isolation_test.go",
+    "internal/sprint/performance_measure.go"
+  ],
+  "context_paths": [
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_types.go"
+  ],
+  "behavioral_concerns": [
+    "Authoring is bounded to new measurement-only test files or testdata and cannot alter existing, production, governance, or repository-control files.",
+    "Discovery accepts only exact contained markers and produces complete, unique, digest-frozen descriptor coverage.",
+    "Product code constructs exact argv arrays and forwards only allowlisted environment entries.",
+    "Qualification uses exact median semantics and CV boundaries without allowing incomplete or non-finite evidence to pass.",
+    "Warmups and complete sample sets run serially in disposable copies; truncation, ambiguous output, identity drift, mutation, and cleanup uncertainty fail closed."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-1260f19e7df1964e71a3a4b2",
+    "qa-v1-block-1b60986a6ab4bfd58330b6d6",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-299ad990bfc68615c68abde3",
+    "qa-v1-block-2b1170d0855a26e01484faff",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-41c6ce16f56dfda89aa7da0e",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-7985bad832d92491b9f91289",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8f8a4ae8bd3139a59faad0d4",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-9bca81dafa402982a1abe706",
+    "qa-v1-block-c0f93dd89e2dfe1872e14355",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-d20c43d47f3c55e480768bbb",
+    "qa-v1-block-da260796c6b6d91797a634d4",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 179351,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "mapped"
+}

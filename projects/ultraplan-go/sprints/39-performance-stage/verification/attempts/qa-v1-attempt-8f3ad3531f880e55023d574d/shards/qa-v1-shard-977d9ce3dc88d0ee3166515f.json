@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-977d9ce3dc88d0ee3166515f",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "primary",
+  "title": "Durable performance operations and CLI lifecycle",
+  "changed_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/serve_commands.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations_test.go",
+    "internal/app/serve_commands_test.go",
+    "internal/app/tui_commands_test.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/service.go"
+  ],
+  "behavioral_concerns": [
+    "CLI rejects authority overrides, preserves stdout/stderr discipline, emits one stable JSON document, and maps product outcomes separately from operational failures.",
+    "Dry-run and status remain runtime-free and write-free; start and resume require explicit confirmation.",
+    "Invalid performance configuration fails before listener startup or command side effects.",
+    "Performance start, resume, recover, and cancel use durable acceptance, complete writer ownership, and explicit terminal outcomes."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-06d338fa89473c8e7c99ccff",
+    "qa-v1-block-134574fc0193fda45c84778e",
+    "qa-v1-block-23e6f8a9f919b3c799900fcf",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2c0f1092cbd6716e834e5861",
+    "qa-v1-block-2c2250d328e30394d5f679db",
+    "qa-v1-block-2d09ea9408321e39866f0ffb",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-6abd33715bf93f58603e2ab6",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-aaed09be66807f81a5a76a14",
+    "qa-v1-block-b452bd0ab01bbeddc215ea27",
+    "qa-v1-block-b6c200e050cc4b4c65bc2e9f",
+    "qa-v1-block-c1187b9b1fd6284859a3e765",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-d5844cb601400dfa0f329c46",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f3519512e9ac52dff09fe19e",
+    "qa-v1-block-f4c1ff17dbcda6f72bc16e40"
+  ],
+  "prepared_prompt_bytes": 196791,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "mapped"
+}

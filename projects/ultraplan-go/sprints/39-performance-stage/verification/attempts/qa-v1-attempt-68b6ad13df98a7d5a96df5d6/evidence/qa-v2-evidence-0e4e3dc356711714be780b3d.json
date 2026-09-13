@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-0e4e3dc356711714be780b3d",
+  "plan_id": "qa-v2-plan-3cfbb1f36876f5dfb95eb7cd",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+  "workspace_id": "qa-v2-test-b32c3bca434c97ee8b522d5a",
+  "workspace_identity": "ce7232ff7efdda9ead883da745c2725c9e8a3024204ea28aa0f8dfcd7bec9364",
+  "target_identity_before": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+  "target_identity_after": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+  "governed_input_fingerprint": "7f6b5c738a7d420477929237ebe36673a198d2d443ca28734cdb35ae79dd85dc",
+  "implementation_fingerprint": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "test_events": [
+        {
+          "test": "TestQAInvestigator_dd232b1d46ba",
+          "action": "run"
+        },
+        {
+          "test": "TestQAInvestigator_dd232b1d46ba",
+          "action": "fail"
+        }
+      ],
+      "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dd232b1d46ba",
+      "executable": "go",
+      "args_digest": "918d83c57469f4e140c002c41b39458763d922669b6ee41dbcde0a16d4e8a470",
+      "exit_code": 1,
+      "duration": 28180045826,
+      "stdout_digest": "54a922d107b681a5dadfb4a6792c3c7cfe8eb847163b6ffc380f398aec6ee6a4",
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout": "=== RUN   TestQAInvestigator_dd232b1d46ba\n    qa_investigator_dd232b1d46ba_test.go:79: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dd232b1d46ba assertion=Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828. later_work_started=true runtime_calls=2 stalled=true cleanup_uncertain=false err=\u003cnil\u003e\n--- FAIL: TestQAInvestigator_dd232b1d46ba (0.18s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.189s\nFAIL\n",
+      "output_bytes": 582,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_dd232b1d46ba_test.go"
+  ],
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "repeatable": true,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T20:30:53.428693395Z"
+}

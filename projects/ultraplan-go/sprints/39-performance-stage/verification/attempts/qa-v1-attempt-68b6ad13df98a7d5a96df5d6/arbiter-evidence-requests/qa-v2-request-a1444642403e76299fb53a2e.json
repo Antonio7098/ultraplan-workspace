@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T13:10:59.876156275Z",
+        "completed_at": "2026-09-12T13:11:40.977184641Z",
+        "failure": {
+          "phase": "assertion",
+          "code": "unknown_failure",
+          "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_76299fb53a2e     qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit --- FAIL: TestQAInvestigator_76299fb53a2e (0.04s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s FAIL",
+          "retryable": false
+        },
+        "run_id": "qa-v2-run-bf3b0196181e9ba74d785f8e"
+      }
+    ],
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "assertion",
+      "code": "unknown_failure",
+      "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_76299fb53a2e     qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit --- FAIL: TestQAInvestigator_76299fb53a2e (0.04s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s FAIL",
+      "retryable": false
+    },
+    "id": "qa-v2-request-a1444642403e76299fb53a2e",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+    ],
+    "origin_shard_id": "qa-v1-shard-ee1a98135be2ed1c442527d3",
+    "gap": "The claim has static evidence but no executable observation of actual runner calls, persisted counters, and subsequent cycle admission.",
+    "requested_evidence": "Create a package-local executable Go _test.go reproducer in the approved private workspace using the existing process-runner and runtime seams.",
+    "required_observation": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands exceed the configured limit.",
+    "control_requirement": "Use deterministic outputs and an otherwise identical successful-measurement control whose actual calls equal persisted accounting; do not modify source or assume a new collaborator hook.",
+    "priority": "high",
+    "status": "superseded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "2b149097bfe1575699efc7a80a785d55240f8a9c52c6463eebbc78cc9c450f18",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-b2ae680281cd729d3c90109f",
+    "test_bundle_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+    "latest_run_id": "qa-v2-run-bf3b0196181e9ba74d785f8e",
+    "next_action": "Inspect replacement evidence request qa-v2-request-b2ae680281cd729d3c90109f."
+  }
+}

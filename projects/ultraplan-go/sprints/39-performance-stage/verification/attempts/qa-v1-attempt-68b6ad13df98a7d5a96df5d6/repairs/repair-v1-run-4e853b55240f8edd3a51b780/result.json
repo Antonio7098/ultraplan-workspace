@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-4e853b55240f8edd3a51b780",
+  "mode": "automatic",
+  "outcome": "escalated",
+  "reason": "product-owned apply failed or compensation is uncertain: repair replacement path is not mutable production: \"internal/app/performance_test.go\"",
+  "stop_reason": "unsupported_change",
+  "consumed": {
+    "cycles": 0,
+    "mutation_cycles": 0,
+    "reopenings": 0,
+    "stagnant_cycles": 0,
+    "changed_files": 0,
+    "changed_bytes": 0,
+    "runtime_attempts": 1,
+    "model_turns": 0,
+    "commands": 2,
+    "output_bytes": 1452
+  },
+  "runtime": {
+    "provider": "openai",
+    "model": "gpt-5.6-sol",
+    "variant": "high",
+    "session_id": "ses_f66074ecdffebyQi5Y0ta8a0fx",
+    "usage": {
+      "input_tokens_known": true,
+      "input_tokens": 1117,
+      "output_tokens_known": true,
+      "output_tokens": 74,
+      "total_tokens_known": true,
+      "total_tokens": 179563,
+      "reasoning_tokens_known": true,
+      "reasoning_tokens": 196,
+      "cache_read_tokens_known": true,
+      "cache_read_tokens": 178176,
+      "cache_write_tokens_known": true,
+      "turns_known": false
+    },
+    "estimated_cost": {
+      "amount": 0.038609199999999996,
+      "currency": "USD",
+      "estimate": true,
+      "source": "model_priced"
+    },
+    "started_at": "2026-09-13T08:53:24.934453627Z",
+    "completed_at": "2026-09-13T08:57:19.285194913Z",
+    "duration": 234350741286,
+    "duration_ms": 234350,
+    "runtime_events": 50,
+    "retained_events": 50,
+    "observed_tool_calls": 14,
+    "provisional_checks": [
+      {
+        "gate": "exact_reproducer",
+        "status": "passed",
+        "reason": "frozen check passed in the isolated proposal workspace",
+        "duration": 34528317586,
+        "duration_ms": 34528,
+        "output_digest": "f799875c38f7a339d7f748d93bc499ebbfb9e5ac551a6821bb43ab51656c7a02",
+        "output_bytes": 726
+      },
+      {
+        "gate": "linked_theories",
+        "status": "passed",
+        "reason": "every immutable primary reproducer passed unchanged",
+        "duration": 37825531720,
+        "duration_ms": 37825,
+        "output_digest": "5e840331d267962dcc1bd31a9b43ce44b8589a244d4a8ef50859208f2eea83a8",
+        "output_bytes": 726
+      }
+    ],
+    "provisional_passed": true
+  },
+  "target": {
+    "fingerprint": "3561296e025c070d136a3e89dec04905c65a0e32db95ec8d6b43ec3d6be7a4ae",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "4cbedd37046bdb39db5e89f1b94c6c01bc17b454dcd9723082d3af16b0e5028e"
+  },
+  "cleanup_complete": true,
+  "production_applied": false,
+  "complete_ladder": false,
+  "unresolved_issues": [
+    "qa-v2-issue-377a3311d04fcdd86069f900"
+  ],
+  "evidence": [
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-4e853b55240f8edd3a51b780/issue-packet.json",
+      "digest": "98932b7f9826322a777129274d6c7b5d6d81136a01f8f63d64f125a389e3f766"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-4e853b55240f8edd3a51b780/confirmation.json",
+      "digest": "2c9ca8632f1663ffe72d249be6e4b3f46345f08963c3176024f5cb49b42805f2"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-4e853b55240f8edd3a51b780/cycles/000001/proposal.patch",
+      "digest": "04d0103b9ab044328082411f077b00b9e0aa755974a2cc9d25f082e57cb64351"
+    },
+    {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-4e853b55240f8edd3a51b780/cycles/000001/apply-journal.json",
+      "digest": "7defbcf89819835b3975f3b9279370631d4c9ed93c23e1acdab11bbe23760c47"
+    }
+  ],
+  "next_action": "Inspect scope, drift, cleanup, and apply evidence before any further mutation.",
+  "completed_at": "2026-09-13T08:58:38.840603711Z"
+}

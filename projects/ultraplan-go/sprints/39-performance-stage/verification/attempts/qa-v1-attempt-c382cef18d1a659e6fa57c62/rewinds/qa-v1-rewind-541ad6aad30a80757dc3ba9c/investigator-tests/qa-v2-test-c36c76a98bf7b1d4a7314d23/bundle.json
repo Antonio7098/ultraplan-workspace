@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-c36c76a98bf7b1d4a7314d23",
+  "spec_id": "qa-v2-spec-c6abe79f9600d52d0df83f4d",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_5bfbf0e7c399_test.go",
+      "content": "package app\n\nimport (\n\t\"context\"\n\t\"os\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/platform/config\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/workspace\"\n)\n\nfunc TestQAInvestigator_5bfbf0e7c399(t *testing.T) {\n\teffective, err := config.Load(config.LoadOptions{Env: func(string) string { return \"\" }})\n\tif err != nil {\n\t\tt.Fatalf(\"control: production config load failed: %v\", err)\n\t}\n\tif _, _, err := performanceSettings(effective); err != nil {\n\t\tt.Fatalf(\"control: valid effective settings failed: %v\", err)\n\t}\n\n\troot := workspace.Root{Path: t.TempDir()}\n\tdeps := dependencies{ctx: context.Background(), env: map[string]string{}}\n\tcontrolEmitted := false\n\tcontrolRunner := sharedOperationRunner(deps, root, effective, dashboardUseCases{root: root.Path})\n\t_, controlErr := controlRunner(context.Background(), OperationRequest{Kind: OperationKind(\"qa-investigator-control\")}, func(OperationEvent) {\n\t\tcontrolEmitted = true\n\t})\n\tif controlErr == nil || !strings.Contains(controlErr.Error(), \"unsupported runtime operation\") || controlEmitted {\n\t\tt.Fatalf(\"control: runner dispatch result err=%v emitted=%t\", controlErr, controlEmitted)\n\t}\n\n\teffective.Config.Performance.CommandTimeout = \"not-a-duration\"\n\tsettingsErr := func() error {\n\t\t_, _, err := performanceSettings(effective)\n\t\treturn err\n\t}()\n\tif settingsErr == nil || !strings.Contains(settingsErr.Error(), \"performance.command_timeout\") {\n\t\tt.Fatalf(\"fixture: exact effective value did not fail performanceSettings: %v\", settingsErr)\n\t}\n\n\temitted := false\n\trunner := sharedOperationRunner(deps, root, effective, dashboardUseCases{root: root.Path})\n\t_, runErr := runner(context.Background(), OperationRequest{Kind: OperationKind(\"qa-investigator-probe\")}, func(OperationEvent) {\n\t\temitted = true\n\t})\n\tif emitted {\n\t\tt.Fatal(\"operation emitted an event before configuration rejection\")\n\t}\n\tentries, err := os.ReadDir(root.Path)\n\tif err != nil || len(entries) != 0 {\n\t\tt.Fatalf(\"operation side effect check: entries=%d err=%v\", len(entries), err)\n\t}\n\tif runErr == nil || !strings.Contains(runErr.Error(), \"performance.command_timeout\") {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_5bfbf0e7c399 assertion: Show whether the runner still executes an operation or whether composition rejects the same configuration before runner invocation. runner returned %v\", runErr)\n\t}\n}\n",
+      "digest": "36f40e93c10e3c7100659220c98a96e74df126bb594b78de406b014d72822f22",
+      "bytes": 2373
+    }
+  ],
+  "content_digest": "ddb56a29ea26bb9ec42abca39f827cfaa6a019cc3bd8346852c91a1ffde3d90a"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-230281d8d953ac0d05157157",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-9a5eaeb04fc32c5820f521f3",
+  "evidence_request_id": "qa-v2-request-ef633898930720f83a1a7704",
+  "theory_ids": [
+    "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+  ],
+  "claim": "The project performance-policy parser incorrectly accepts case-variant mode values such as `ENABLED`, allowing malformed policy input to activate the performance stage instead of being rejected.",
+  "preconditions": [
+    "Exercise ParseProjectIndex directly with otherwise valid minimal project-index content and assert findings, not merely the resulting mode marker."
+  ],
+  "expected_behavior": "The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_20f83a1a7704",
+    "assertion": "The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/project/qa_investigator_20f83a1a7704_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-20f83a1a7704",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_20f83a1a7704$",
+      "-count=1"
+    ],
+    "working_directory": "internal/project",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "2d616df28eb57b61f990498a745df62b4e783c7a693ff09cd5f06512930300e5"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:42:26.694933109Z"
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-eff6d0585aadbeccacad02b3",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Verification phase and flow-state compatibility",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/state.go",
+    "internal/sprint/verification_phase.go",
+    "internal/sprint/verification_phase_test.go",
+    "internal/sprint/verify.go"
+  ],
+  "context_paths": [
+    "internal/sprint/verify_test.go"
+  ],
+  "behavioral_concerns": [
+    "Flow schema v4 preserves versions 1 through 3, retains existing review, smoke, QA, and repair state, and validates bounded digest-bound performance summaries.",
+    "Performance is a verification phase independent from planning-stage order and gates Conformance Review only when project policy enables it.",
+    "Planning refreshes do not erase the last performance projection, and stale or non-passing performance evidence cannot satisfy verification."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-299ad990bfc68615c68abde3",
+    "qa-v1-block-2fa5eb620169346ab567a9ec",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-357d02b85024955b15a6cb1c",
+    "qa-v1-block-41afbf779fc502e44998d33d",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-6391c5670acb57367d6e196a",
+    "qa-v1-block-63d6417b2120bb41218cd8e5",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-85f8ea81735d07d454d23d7e",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-cd78cb7e117fcb707e6ff489",
+    "qa-v1-block-cddc9044100638241d3eaec1",
+    "qa-v1-block-cf4a56c1eaee3e001bdc0c65",
+    "qa-v1-block-d67eac718fa4a64f22a93a4a",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f129eb795b7b08c72978a40b"
+  ],
+  "prepared_prompt_bytes": 113431,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "mapped"
+}

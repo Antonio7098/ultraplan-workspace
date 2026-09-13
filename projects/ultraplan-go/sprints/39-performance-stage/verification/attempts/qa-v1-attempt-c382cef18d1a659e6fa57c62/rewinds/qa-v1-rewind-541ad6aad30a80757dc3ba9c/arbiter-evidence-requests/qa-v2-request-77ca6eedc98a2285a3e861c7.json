@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-77ca6eedc98a2285a3e861c7",
+    "arbiter_group_id": "qa-v1-arbiter-group-c20674c2cd496b45035915c3",
+    "theory_ids": [
+      "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+    ],
+    "origin_shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+    "gap": "No executable evidence was produced for declaration handling of pseudo-headings because the original investigator session was unavailable.",
+    "requested_evidence": "Ask the original investigator to create an executable Go _test.go reproducer in its approved private workspace that calls ValidateRequirementsContentWithPolicy with disabled policy and otherwise-valid requirements containing Performance Targets headings only inside fenced, commented, quoted, and indented pseudo-sections.",
+    "required_observation": "Assert whether a performance-policy-mismatch finding is emitted for each pseudo-section while ParsePerformanceTargets returns no targets.",
+    "control_requirement": "Include a real unquoted Performance Targets heading as a positive control that must produce the disabled-policy mismatch.",
+    "priority": "medium",
+    "status": "inconclusive",
+    "next_action": "original_session_unavailable"
+  }
+}

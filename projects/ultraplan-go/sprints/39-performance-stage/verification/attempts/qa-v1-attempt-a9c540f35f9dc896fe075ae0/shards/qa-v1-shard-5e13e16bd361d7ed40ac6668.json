@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-5e13e16bd361d7ed40ac6668",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Performance CLI and durable operation lifecycle",
+  "changed_paths": [
+    "internal/app/durable_operations.go",
+    "internal/app/operation_runner.go",
+    "internal/app/operations.go",
+    "internal/app/performance_test.go",
+    "internal/app/run_control_inventory_test.go",
+    "internal/app/sprint_commands.go",
+    "internal/app/sprint_commands_test.go"
+  ],
+  "context_paths": [
+    "internal/app/durable_operations_test.go",
+    "internal/app/serve_commands_test.go"
+  ],
+  "behavioral_concerns": [
+    "CLI rejects authority overrides, preserves stable JSON and text behavior, maps product outcomes to meaningful exit codes, and keeps cancellation distinct from failure and partial outcomes.",
+    "Runtime-backed paths are accepted through durable run control before execution, preserve correlation and fencing identity, and expose terminal state.",
+    "Start, resume, recover, cancel, status, dry-run, and evidence operations enforce their distinct confirmation, mutation, runtime, and durable ownership semantics."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-05eaed57808bf1570dba3ef6",
+    "qa-v1-block-134574fc0193fda45c84778e",
+    "qa-v1-block-1567aab5096c334803a5cf3d",
+    "qa-v1-block-23736170f7feb69c07460604",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2c2250d328e30394d5f679db",
+    "qa-v1-block-357d02b85024955b15a6cb1c",
+    "qa-v1-block-4d86b870fde783303fb750cc",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-86a00fc46b393437eea59f52",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-96d405446e5593c2ca9d832d",
+    "qa-v1-block-a1c54f69a34aba9ad20c1302",
+    "qa-v1-block-a5a99f68244402bfc8e432b8",
+    "qa-v1-block-aaed09be66807f81a5a76a14",
+    "qa-v1-block-b6c200e050cc4b4c65bc2e9f",
+    "qa-v1-block-c1187b9b1fd6284859a3e765",
+    "qa-v1-block-e5e9288e0d4e15abe068bed1",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f4c1ff17dbcda6f72bc16e40"
+  ],
+  "prepared_prompt_bytes": 164465,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-5e13e16bd361d7ed40ac6668",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-5e13e16bd361d7ed40ac6668/1",
+      "number": 1,
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "30b5a76e22984b4bea76c0db0545ac3930b144af9d6bb49cc2b133989bcf5806",
+      "started_at": "2026-09-12T16:45:17.290059365Z",
+      "completed_at": "2026-09-12T16:45:41.708120838Z",
+      "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 9,
+      "retained_events": 9,
+      "observed_tool_calls": 2,
+      "context_metrics": {
+        "prompt_bytes": 164465,
+        "prefix_bytes": 19551,
+        "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+        "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 1,
+          "read": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 7969,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 24418061473
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

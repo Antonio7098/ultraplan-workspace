@@ -1,0 +1,1519 @@
+--- a/internal/tui/qa_investigator_dae46ba55ba6_test.go
++++ b/internal/tui/qa_investigator_dae46ba55ba6_test.go
+@@ -1,0 +1,127 @@
++package tui
++
++import (
++	"context"
++	"io"
++	"net/http"
++	"net/http/httptest"
++	"os"
++	"path/filepath"
++	"strings"
++	"testing"
++
++	"github.com/Antonio7098/ultraplan-go/internal/app"
++	"github.com/Antonio7098/ultraplan-go/internal/sprint"
++	"github.com/Antonio7098/ultraplan-go/internal/web"
++)
++
++type qaDAEPerformanceQueries struct {
++	store     sprint.PerformanceStore
++	attemptID string
++	limits    []int
++}
++
++func (*qaDAEPerformanceQueries) Dashboard(context.Context) (app.WebDashboardResult, error) {
++	return app.WebDashboardResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Projects(context.Context) (app.WebProjectsResult, error) {
++	return app.WebProjectsResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Project(context.Context, string) (app.WebProjectResult, error) {
++	return app.WebProjectResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Sprint(context.Context, string, string) (app.WebSprintResult, error) {
++	return app.WebSprintResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Studies(context.Context) (app.WebStudiesResult, error) {
++	return app.WebStudiesResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Study(context.Context, string) (app.WebStudyResult, error) {
++	return app.WebStudyResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Validations(context.Context, string, string) (app.WebValidationResult, error) {
++	return app.WebValidationResult{}, nil
++}
++func (*qaDAEPerformanceQueries) Artifact(context.Context, string) (app.WebArtifactPreview, error) {
++	return app.WebArtifactPreview{}, nil
++}
++func (*qaDAEPerformanceQueries) Health(context.Context) (app.WebHealthResult, error) {
++	return app.WebHealthResult{}, nil
++}
++func (q *qaDAEPerformanceQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {
++	return app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil
++}
++func (q *qaDAEPerformanceQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {
++	return app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil
++}
++func (q *qaDAEPerformanceQueries) PerformanceEvidence(_ context.Context, req app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {
++	q.limits = append(q.limits, req.Limit)
++	page, err := q.store.EvidencePage(q.attemptID, req.Cursor, req.Filter, req.Limit)
++	if err != nil {
++		return app.PerformanceEvidenceResult{}, err
++	}
++	return app.PerformanceEvidenceResult{SchemaVersion: 1, Records: page.Records, NextCursor: page.NextCursor, ReturnedCount: len(page.Records)}, nil
++}
++
++func TestQAInvestigator_dae46ba55ba6(t *testing.T) {
++	root := t.TempDir()
++	sp := sprint.Sprint{Project: "alpha", Slug: "39-performance", Path: filepath.Join(root, "projects", "alpha", "sprints", "39-performance")}
++	if err := os.MkdirAll(sp.Path, 0o755); err != nil {
++		t.Fatal(err)
++	}
++	attemptID := "performance-v1-attempt-0123456789abcdef01234567"
++	store := sprint.NewPerformanceStore(root, sp).WithWriterFence(func(sprint.VerificationWriterToken) error { return nil })
++	rel, err := sprint.PerformanceAttemptRelPath(sp, attemptID, "summary.json")
++	if err != nil {
++		t.Fatal(err)
++	}
++	token := sprint.VerificationWriterToken{RunID: "run", OperationalAttemptID: "attempt", FencingGeneration: 1}
++	if _, err := store.PublishBytes(rel, "qa-investigator", []byte(`{"status":"retained"}`), true, token); err != nil {
++		t.Fatal(err)
++	}
++
++	queries := &qaDAEPerformanceQueries{store: store, attemptID: attemptID}
++	handler, err := web.NewHandler(web.HandlerOptions{Queries: queries, Authority: "127.0.0.1:8080", Diagnostics: io.Discard})
++	if err != nil {
++		t.Fatal(err)
++	}
++
++	defaultLimit := sprint.DefaultPerformanceLimits().EvidencePageSize
++	omittedLimit := -1
++	controlLimit := -1
++
++	t.Run("omitted request", func(t *testing.T) {
++		response := httptest.NewRecorder()
++		request := httptest.NewRequest(http.MethodGet, "/api/v1/projects/alpha/sprints/39-performance/performance/evidence", nil)
++		request.Host = "127.0.0.1:8080"
++		handler.ServeHTTP(response, request)
++
++		if len(queries.limits) == 1 {
++			omittedLimit = queries.limits[0]
++		}
++		body := response.Body.String()
++		if len(queries.limits) != 1 || omittedLimit != defaultLimit || response.Code != http.StatusOK || !strings.Contains(body, `"returned_count":1`) || !strings.Contains(body, `"name":"summary.json"`) {
++			t.Fatalf("ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6 omitted request must reach PerformanceEvidence and EvidencePage with the bounded default and return its evidence: limits=%v default=%d status=%d body=%s", queries.limits, defaultLimit, response.Code, body)
++		}
++	})
++
++	t.Run("bounded success control", func(t *testing.T) {
++		before := len(queries.limits)
++		control, controlErr := queries.PerformanceEvidence(context.Background(), app.PerformanceRequest{Project: "alpha", Sprint: "39-performance", Limit: 1})
++		if len(queries.limits) == before+1 {
++			controlLimit = queries.limits[before]
++		}
++		if controlErr != nil || control.ReturnedCount != 1 || len(control.Records) != 1 || control.Records[0].Name != "summary.json" || controlLimit != 1 {
++			t.Fatalf("bounded-success control failed: result=%+v err=%v limits=%v", control, controlErr, queries.limits)
++		}
++	})
++
++	t.Run("default and bounded control comparison", func(t *testing.T) {
++		if omittedLimit != defaultLimit || controlLimit != 1 {
++			t.Fatalf("omitted and bounded invocations did not use their exact limits: omitted=%d default=%d control=%d", omittedLimit, defaultLimit, controlLimit)
++		}
++	})
++
++	t.Log("assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.")
++	t.Logf("omitted_status=success omitted_limit=%d control_status=success control_limit=%d", omittedLimit, controlLimit)
++}
+--- a/internal/web/handlers.go
++++ b/internal/web/handlers.go
+@@ -17,689 +17,703 @@
+ 	"time"
+ 
+ 	"github.com/Antonio7098/ultraplan-go/internal/app"
+-)
+-
+-var identifierPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]*$`)
+-var opaqueRefPattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
+-
+-type responseMeta struct {
+-	APIVersion    string `json:"api_version"`
+-	RequestID     string `json:"request_id"`
+-	GeneratedAt   string `json:"generated_at,omitempty"`
+-	ReturnedCount *int   `json:"returned_count,omitempty"`
+-	TotalCount    *int   `json:"total_count,omitempty"`
+-	Truncated     *bool  `json:"truncated,omitempty"`
+-}
+-
+-type successEnvelope struct {
+-	Data any          `json:"data"`
+-	Meta responseMeta `json:"meta"`
+-}
+-
+-type errorBody struct {
+-	Code      string         `json:"code"`
+-	Message   string         `json:"message"`
+-	Retryable bool           `json:"retryable,omitempty"`
+-	Details   map[string]any `json:"details,omitempty"`
+-}
+-
+-type errorEnvelope struct {
+-	Error errorBody    `json:"error"`
+-	Meta  responseMeta `json:"meta"`
+-}
+-
+-type artifactDTO struct {
+-	Ref         string `json:"ref"`
+-	Label       string `json:"label,omitempty"`
+-	DisplayPath string `json:"display_path"`
+-	MediaType   string `json:"media_type"`
+-}
+-
+-type findingDTO struct {
+-	Severity   string `json:"severity"`
+-	Section    string `json:"section,omitempty"`
+-	Problem    string `json:"problem"`
+-	Cause      string `json:"cause,omitempty"`
+-	Suggestion string `json:"suggestion,omitempty"`
+-}
+-
+-type stageDTO struct {
+-	Name              string `json:"name"`
+-	Status            string `json:"status"`
+-	Error             string `json:"error,omitempty"`
+-	ArtifactAvailable bool   `json:"artifact_available,omitempty"`
+-	ArtifactValid     bool   `json:"artifact_valid,omitempty"`
+-	LatestOutcome     string `json:"latest_outcome,omitempty"`
+-	NextAction        string `json:"next_action,omitempty"`
+-}
+-
+-type promptInputContractDTO struct {
+-	Stage     string   `json:"stage"`
+-	Required  []string `json:"required"`
+-	Optional  []string `json:"optional,omitempty"`
+-	Forbidden []string `json:"forbidden,omitempty"`
+-}
+-
+-type promptBlockDTO struct {
+-	ID        string `json:"id"`
+-	Kind      string `json:"kind"`
+-	Mode      string `json:"mode,omitempty"`
+-	Cacheable bool   `json:"cacheable"`
+-	Bytes     int    `json:"bytes"`
+-	Digest    string `json:"sha256"`
+-	Content   string `json:"content"`
+-}
+-
+-type promptBundleDTO struct {
+-	Stage                string                 `json:"stage"`
+-	Available            bool                   `json:"available"`
+-	Scope                string                 `json:"scope"`
+-	UnavailableReason    string                 `json:"unavailable_reason,omitempty"`
+-	InputContract        promptInputContractDTO `json:"input_contract"`
+-	SchemaVersion        int                    `json:"schema_version,omitempty"`
+-	TotalBytes           int                    `json:"total_bytes,omitempty"`
+-	SharedPrefixBytes    int                    `json:"shared_prefix_bytes,omitempty"`
+-	StageSuffixBytes     int                    `json:"stage_suffix_bytes,omitempty"`
+-	SharedPrefixDigest   string                 `json:"shared_prefix_sha256,omitempty"`
+-	CacheKey             string                 `json:"cache_key,omitempty"`
+-	CacheBreakpointBytes int                    `json:"cache_breakpoint_bytes,omitempty"`
+-	CacheCandidate       bool                   `json:"cache_candidate"`
+-	CacheTransport       string                 `json:"cache_transport,omitempty"`
+-	Blocks               []promptBlockDTO       `json:"blocks"`
+-}
+-
+-type projectDTO struct {
+-	Ref       string            `json:"ref"`
+-	Name      string            `json:"name"`
+-	Docs      []string          `json:"docs"`
+-	Findings  []findingDTO      `json:"findings"`
+-	Artifacts []artifactDTO     `json:"artifacts"`
+-	Sprints   []sprintDTO       `json:"sprints"`
+-	Roadmap   []roadmapPhaseDTO `json:"roadmap"`
+-}
+-
+-type roadmapPhaseDTO struct {
+-	Title   string             `json:"title"`
+-	Sprints []roadmapSprintDTO `json:"sprints"`
+-}
+-
+-type roadmapSprintDTO struct {
+-	Number          int      `json:"number"`
+-	Title           string   `json:"title"`
+-	Slug            string   `json:"slug,omitempty"`
+-	Status          string   `json:"status"`
+-	Goal            string   `json:"goal,omitempty"`
+-	GateItems       []string `json:"acceptance,omitempty"`
+-	DependsOn       []int    `json:"depends_on,omitempty"`
+-	Exists          bool     `json:"exists"`
+-	Assessment      string   `json:"assessment,omitempty"`
+-	CompletedStages int      `json:"completed_stages,omitempty"`
+-	TotalStages     int      `json:"total_stages,omitempty"`
+-	CurrentStage    string   `json:"current_stage,omitempty"`
+-}
+-
+-type collectionDTO struct {
+-	ReturnedCount int  `json:"returned_count"`
+-	TotalCount    int  `json:"total_count"`
+-	Truncated     bool `json:"truncated"`
+-}
+-
+-type sprintDTO struct {
+-	Ref         string                      `json:"ref"`
+-	Project     string                      `json:"project"`
+-	Slug        string                      `json:"slug"`
+-	Status      string                      `json:"status"`
+-	Assessment  string                      `json:"assessment,omitempty"`
+-	NextAction  string                      `json:"next_action,omitempty"`
+-	Stages      []stageDTO                  `json:"stages"`
+-	Execute     executeDTO                  `json:"execute"`
+-	Review      reviewDTO                   `json:"review"`
+-	Smoke       smokeDTO                    `json:"smoke"`
+-	QA          app.QAResult                `json:"qa"`
+-	Performance app.PerformanceStatusResult `json:"performance"`
+-	Findings    []findingDTO                `json:"findings"`
+-	Artifacts   []artifactDTO               `json:"artifacts"`
+-}
+-
+-type executeDTO struct {
+-	Available bool `json:"available"`
+-	Total     int  `json:"total,omitempty"`
+-	Pending   int  `json:"pending,omitempty"`
+-	Running   int  `json:"running,omitempty"`
+-	Complete  int  `json:"complete,omitempty"`
+-	Failed    int  `json:"failed,omitempty"`
+-	Cancelled int  `json:"cancelled,omitempty"`
+-}
+-
+-type reviewDTO struct {
+-	Available bool          `json:"available"`
+-	Status    string        `json:"status,omitempty"`
+-	Verdict   string        `json:"verdict,omitempty"`
+-	Stale     bool          `json:"stale,omitempty"`
+-	Completed int           `json:"completed,omitempty"`
+-	Total     int           `json:"total,omitempty"`
+-	Pending   int           `json:"pending,omitempty"`
+-	Running   int           `json:"running,omitempty"`
+-	Failed    int           `json:"failed,omitempty"`
+-	Reviewers []reviewerDTO `json:"reviewers"`
+-	StartedAt *time.Time    `json:"started_at,omitempty"`
+-}
+-
+-type reviewerDTO struct {
+-	ID      string `json:"id"`
+-	Name    string `json:"name,omitempty"`
+-	Kind    string `json:"kind,omitempty"`
+-	Path    string `json:"path,omitempty"`
+-	Status  string `json:"status"`
+-	Summary string `json:"summary,omitempty"`
+-}
+-
+-type smokeDTO struct {
+-	Available bool   `json:"available"`
+-	Status    string `json:"status,omitempty"`
+-	Verdict   string `json:"verdict,omitempty"`
+-	Stale     bool   `json:"stale,omitempty"`
+-	RunID     string `json:"run_id,omitempty"`
+-}
+-
+-type studyRetryDTO struct {
+-	RetriedTasks int        `json:"retried_tasks"`
+-	TotalRetries int        `json:"total_retries"`
+-	SameSession  int        `json:"same_session"`
+-	FreshSession int        `json:"fresh_session"`
+-	Waiting      int        `json:"waiting,omitempty"`
+-	NextRetryAt  *time.Time `json:"next_retry_at,omitempty"`
+-}
+-
+-type studyParallelismDTO struct {
+-	Decreased            bool `json:"decreased"`
+-	Events               int  `json:"events,omitempty"`
+-	RequestedParallelism int  `json:"requested_parallelism,omitempty"`
+-	EffectiveParallelism int  `json:"effective_parallelism,omitempty"`
+-}
+-
+-type studyTaskRetryDTO struct {
+-	ID           string `json:"id"`
+-	Kind         string `json:"kind,omitempty"`
+-	Status       string `json:"status,omitempty"`
+-	Retries      int    `json:"retries"`
+-	SessionReuse string `json:"session_reuse,omitempty"`
+-}
+-
+-type studyDTO struct {
+-	Ref          string                `json:"ref"`
+-	Name         string                `json:"name"`
+-	Sources      []string              `json:"sources"`
+-	Dimensions   []string              `json:"dimensions"`
+-	Status       string                `json:"status"`
+-	RunID        string                `json:"run_id,omitempty"`
+-	Total        int                   `json:"total"`
+-	Completed    int                   `json:"completed"`
+-	Failed       int                   `json:"failed"`
+-	RunActive    bool                  `json:"run_active"`
+-	ActiveTasks  int                   `json:"active_tasks"`
+-	Pending      int                   `json:"pending"`
+-	Cancelled    int                   `json:"cancelled"`
+-	Retries      studyRetryDTO         `json:"retries"`
+-	Parallelism  *studyParallelismDTO  `json:"parallelism,omitempty"`
+-	RetriedTasks []studyTaskRetryDTO   `json:"retried_tasks,omitempty"`
+-	Failures     []studyTaskFailureDTO `json:"failures,omitempty"`
+-	Findings     []findingDTO          `json:"findings"`
+-	Artifacts    []artifactDTO         `json:"artifacts"`
+-}
+-
+-type artifactPreviewDTO struct {
+-	Ref           string `json:"ref"`
+-	DisplayPath   string `json:"display_path"`
+-	MediaType     string `json:"media_type"`
+-	Content       string `json:"content"`
+-	SizeBytes     int64  `json:"size_bytes"`
+-	ReturnedBytes int    `json:"returned_bytes"`
+-	Truncated     bool   `json:"truncated"`
+-	JSONValid     *bool  `json:"json_valid,omitempty"`
+-}
+-
+-// dimensionCard is one expandable card on the dimensions browse page.
+-type dimensionCard struct {
+-	Study                 string
+-	Number                string
+-	Slug                  string
+-	Title                 string
+-	DisplayPath           string
+-	Bytes                 int64
+-	Truncated             bool
+-	CodeCitationsDisabled bool
+-	Body                  template.HTML
+-}
+-
+-// reportLinkView is one report file link on the study reports page.
+-type reportLinkView struct {
+-	Label       string
+-	Ref         string
+-	DisplayPath string
+-	Bytes       int64
+-}
+-
+-// reportGroupView holds one dimension's per-source report links.
+-type reportGroupView struct {
+-	Dimension string
+-	Reports   []reportLinkView
+-}
+-
+-// repoBoardEntry is one ranked row of the study repo leaderboard.
+-type repoBoardEntry struct {
+-	Rank     int
+-	Name     string
+-	Average  string
+-	BarWidth int
+-	Coverage string
+-	BestRef  string
+-	BestText string
+-}
+-
+-// repoMatrixColumn is one dimension column of the study repo score matrix.
+-type repoMatrixColumn struct {
+-	Number string
+-	Label  string
+-}
+-
+-// repoMatrixCell is one score cell of the study repo score matrix.
+-type repoMatrixCell struct {
+-	Label   string
+-	Scored  bool
+-	Leader  bool
+-	Percent int
+-	Ref     string
+-}
+-
+-// repoMatrixRow is one repo row of the study repo score matrix.
+-type repoMatrixRow struct {
+-	Name    string
+-	Average string
+-	Cells   []repoMatrixCell
+-}
+-
+-// repoLeaderView is one ranked leader inside a dimension champion list.
+-type repoLeaderView struct {
+-	Rank  int
+-	Name  string
+-	Score int
+-	Ref   string
+-}
+-
+-// repoChampion names the leading repos for one dimension.
+-type repoChampion struct {
+-	Dimension string
+-	Leaders   []repoLeaderView
+-}
+-
+-type pageModel struct {
+-	Title             string
+-	Heading           string
+-	Description       string
+-	Workspace         string
+-	Projects          []app.WebProjectResult
+-	Project           *app.WebProjectResult
+-	RoadmapPreview    *projectRoadmapPreview
+-	Sprints           []app.WebSprintResult
+-	Sprint            *app.WebSprintResult
+-	Studies           []app.WebStudyResult
+-	Study             *app.WebStudyResult
+-	StudyArtifacts    []app.WebArtifactLink
+-	Artifact          *app.WebArtifactPreview
+-	ArtifactHTML      template.HTML
+-	SmokeArtifact     bool
+-	Health            *app.WebHealthResult
+-	Status            int
+-	Error             string
+-	CSRF              string
+-	Preparation       *operationPreparationView
+-	Operation         *operationDocument
+-	Runs              []runRowView
+-	Run               *runDetailView
+-	DimensionList     []dimensionCard
+-	ReportFinals      []reportLinkView
+-	ReportGroups      []reportGroupView
+-	ReportSourceCount int
+-	RepoBoard         []repoBoardEntry
+-	RepoColumns       []repoMatrixColumn
+-	RepoMatrix        []repoMatrixRow
+-	RepoChampions     []repoChampion
+-	StudyInsights     *runStudyInsightsView
+-	SprintUsage       *runSprintUsageView
+-	SprintFlowUsage   *sprintStageUsageView
+-	SprintMetrics     *sprintRuntimeLedgerView
+-	StudyLoopUsage    *runUsageView
+-	RunEvents         []runEventView
+-	NextRunsURL       string
+-	NextEventsURL     string
+-	RunFilters        runPageFilters
+-	Page              string
+-	QAInsights        *runQAInsightsView
+-	SurfaceContract   template.HTML
+-	QA                *app.QAResult
+-	QAShard           *app.QAShardResult
+-	QATheory          *app.QATheoryResult
+-	Repair            *app.RepairStatusResult
+-}
+-
+-type projectRoadmapPreview struct {
+-	Completed int
+-	Total     int
+-	Previous  *app.WebRoadmapSprint
+-	Next      *app.WebRoadmapSprint
+-}
+-
+-func makeProjectRoadmapPreview(project app.WebProjectResult) *projectRoadmapPreview {
+-	preview := &projectRoadmapPreview{}
+-	var nextPlanned *app.WebRoadmapSprint
+-	for _, phase := range project.Roadmap {
+-		for _, sprint := range phase.Sprints {
+-			preview.Total++
+-			if sprint.Status == "delivered" {
+-				preview.Completed++
+-				if preview.Previous == nil || sprint.Number > preview.Previous.Number {
+-					copy := sprint
+-					preview.Previous = &copy
+-				}
+-				continue
+-			}
+-			if sprint.Status == "active" && (preview.Next == nil || preview.Next.Status != "active" || sprint.Number < preview.Next.Number) {
+-				copy := sprint
+-				preview.Next = &copy
+-				continue
+-			}
+-			if nextPlanned == nil || sprint.Number < nextPlanned.Number {
+-				copy := sprint
+-				nextPlanned = &copy
+-			}
+-		}
+-	}
+-	if preview.Next == nil {
+-		preview.Next = nextPlanned
+-	}
+-	return preview
+-}
+-
+-func (h *handler) dispatch(w http.ResponseWriter, r *http.Request, match routeMatch) {
+-	allowsQuery := match.name == "api_validations" || match.name == "api_runs" || match.name == "api_run_events" || match.name == "runs" || match.name == "api_timeline"
+-	if !allowsQuery && r.URL.RawQuery != "" {
+-		h.writeRouteError(w, r, match.api, http.StatusBadRequest, "invalid_request", "Unknown query parameters are not accepted.")
+-		return
+-	}
+-	for _, value := range match.params {
+-		valid := validIdentifier(value)
+-		if strings.Contains(match.name, "artifact") {
+-			valid = validOpaqueRef(value)
+-		}
+-		if !valid {
+-			h.writeRouteError(w, r, match.api, http.StatusBadRequest, "invalid_request", "The resource identifier is invalid.")
+-			return
+-		}
+-	}
+-
+-	switch match.name {
+-	case "dashboard":
+-		result, err := h.queries.Dashboard(r.Context())
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "dashboard", pageModel{Title: "Workspace dashboard", Heading: "Workspace dashboard", Workspace: result.Workspace, Projects: result.Projects.Items, Sprints: result.Sprints, Studies: result.Studies.Items})
+-	case "projects":
+-		result, err := h.queries.Projects(r.Context())
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "projects", pageModel{Title: "Projects", Heading: "Projects", Projects: result.Items})
+-	case "project":
+-		result, err := h.queries.Project(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "project", pageModel{Title: "Project " + result.Name, Heading: result.Name, Project: &result, RoadmapPreview: makeProjectRoadmapPreview(result), Page: "overview"})
+-	case "project_page":
+-		result, err := h.queries.Project(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		page := match.params[1]
+-		if page == "artifacts" {
+-			page = "documentation"
+-		}
+-		if page == "operations" || page == "validation" {
+-			page = "overview"
+-		}
+-		if page == "sprints" || page == "roadmap" {
+-			page = "roadmap"
+-			result.Sprints = newestSprintsFirst(result.Sprints)
+-		}
+-		h.render(w, r, http.StatusOK, "project", pageModel{Title: projectPageTitle(page) + " · " + result.Name, Heading: result.Name, Project: &result, Page: page})
+-	case "project_artifact":
+-		result, err := h.queries.Project(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		artifact, err := h.queries.Artifact(r.Context(), match.params[1])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "project", pageModel{Title: artifact.DisplayPath + " · " + result.Name, Heading: result.Name, Project: &result, Artifact: &artifact, ArtifactHTML: renderMarkdown(artifact), Page: "documentation"})
+-	case "sprint":
+-		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		flowUsage := h.loadSprintFlowUsage(r.Context(), result.Project, result.Slug)
+-		h.render(w, r, http.StatusOK, "sprint", pageModel{Title: "Sprint " + result.Slug, Heading: result.Slug, Sprint: &result, SprintFlowUsage: flowUsage, Page: "overview"})
+-	case "sprint_page":
+-		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		page := match.params[2]
+-		if page == "run" || page == "plan" || page == "delivery" || page == "operations" || page == "validation" {
+-			page = "workflow"
+-		}
+-		var runtimeLedger *sprintRuntimeLedgerView
+-		if page == "metrics" {
+-			runtimeLedger = h.loadSprintRuntimeLedger(r.Context(), result.Project, result.Slug)
+-		}
+-		h.render(w, r, http.StatusOK, "sprint", pageModel{Title: sprintPageTitle(page) + " · " + result.Slug, Heading: result.Slug, Sprint: &result, SprintMetrics: runtimeLedger, Page: page})
+-	case "sprint_qa":
+-		h.handleSprintQAPage(w, r, match.params[0], match.params[1], "", "")
+-	case "sprint_repair":
+-		h.handleSprintRepairPage(w, r, match.params[0], match.params[1])
+-	case "sprint_qa_shard":
+-		h.handleSprintQAPage(w, r, match.params[0], match.params[1], match.params[2], "")
+-	case "sprint_qa_theory":
+-		h.handleSprintQAPage(w, r, match.params[0], match.params[1], "", match.params[2])
+-	case "sprint_artifact":
+-		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		artifact, err := h.queries.Artifact(r.Context(), match.params[2])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "sprint", pageModel{Title: artifact.DisplayPath + " · " + result.Slug, Heading: result.Slug, Sprint: &result, Artifact: &artifact, ArtifactHTML: renderMarkdown(artifact), SmokeArtifact: artifact.DisplayPath == "smoke.md" || strings.HasSuffix(artifact.DisplayPath, "/smoke.md"), Page: "artifacts"})
+-	case "studies":
+-		result, err := h.queries.Studies(r.Context())
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "studies", pageModel{Title: "Studies", Heading: "Studies", Studies: result.Items})
+-	case "runs":
+-		h.handleRunsPage(w, r)
+-	case "run":
+-		h.handleRunPage(w, r, match.params[0])
+-	case "run_cancel":
+-		h.handleRunPageCancel(w, r, match.params[0])
+-	case "study":
+-		result, err := h.queries.Study(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		artifacts := result.Artifacts
+-		if len(artifacts) > 4 {
+-			artifacts = artifacts[:4]
+-		}
+-		loopUsage := h.loadStudyLoopUsage(result.Name, result.Tasks)
+-		h.render(w, r, http.StatusOK, "study", pageModel{Title: "Study " + result.Name, Heading: result.Name, Study: &result, StudyArtifacts: artifacts, StudyLoopUsage: loopUsage, Page: "overview"})
+-	case "study_page":
+-		result, err := h.queries.Study(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		page := match.params[1]
+-		if page == "dimensions" {
+-			page = "inputs"
+-		}
+-		if page == "operations" {
+-			page = "progress"
+-		}
+-		if page == "validation" {
+-			page = "overview"
+-		}
+-		if page == "reports" || page == "repos" {
+-			page = "results"
+-		}
+-		model := pageModel{Title: studyPageTitle(page) + " · " + result.Name, Heading: result.Name, Study: &result, Page: page}
+-		if page == "overview" || page == "progress" {
+-			model.StudyLoopUsage = h.loadStudyLoopUsage(result.Name, result.Tasks)
+-		}
+-		if page == "inputs" {
+-			cards, err := h.studyDimensionCards(r, match.params[0])
+-			if err != nil {
+-				h.handleQueryError(w, r, false, err)
+-				return
+-			}
+-			model.DimensionList = cards
+-		}
+-		if page == "results" {
+-			finals, groups, err := h.studyReportViews(r, match.params[0])
+-			if err != nil {
+-				h.handleQueryError(w, r, false, err)
+-				return
+-			}
+-			model.ReportFinals = finals
+-			model.ReportGroups = groups
+-			for _, group := range groups {
+-				model.ReportSourceCount += len(group.Reports)
+-			}
+-		}
+-		if page == "results" {
+-			if err := h.loadRepoBoard(r, match.params[0], &model); err != nil {
+-				h.handleQueryError(w, r, false, err)
+-				return
+-			}
+-		}
+-		h.render(w, r, http.StatusOK, "study", model)
+-	case "artifact":
+-		result, err := h.queries.Artifact(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		if err := validateArtifact(result); err != nil {
+-			h.handleQueryError(w, r, false, err)
+-			return
+-		}
+-		h.render(w, r, http.StatusOK, "artifact", pageModel{Title: "Artifact preview", Heading: result.DisplayPath, Artifact: &result, ArtifactHTML: renderMarkdown(result)})
+-	case "api_dashboard":
+-		result, err := h.queries.Dashboard(r.Context())
+-		if err != nil {
+-			h.handleQueryError(w, r, true, err)
+-			return
+-		}
+-		h.writeSuccess(w, r, http.StatusOK, map[string]any{
+-			"workspace": result.Workspace,
+-			"ref":       result.Ref,
+-			"projects":  mapProjects(result.Projects.Items, false),
+-			"sprints":   mapSprints(result.Sprints),
+-			"studies":   mapStudies(result.Studies.Items),
+-			"counts": map[string]any{
+-				"projects": mapCollection(result.Projects.CollectionInfo),
+-				"sprints":  mapCollection(result.SprintCounts),
+-				"studies":  mapCollection(result.Studies.CollectionInfo),
+-			},
+-		}, nil)
+-	case "api_projects":
+-		result, err := h.queries.Projects(r.Context())
+-		if err != nil {
+-			h.handleQueryError(w, r, true, err)
+-			return
+-		}
+-		h.writeSuccess(w, r, http.StatusOK, mapProjects(result.Items, false), &result.CollectionInfo)
+-	case "api_project":
+-		result, err := h.queries.Project(r.Context(), match.params[0])
+-		if err != nil {
+-			h.handleQueryError(w, r, true, err)
+-			return
+-		}
+-		h.writeSuccess(w, r, http.StatusOK, mapProject(result, true), &result.SprintCounts)
+-	case "api_sprint":
+-		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
+-		if err != nil {
+-			h.handleQueryError(w, r, true, err)
+-			return
+-		}
+-		h.writeSuccess(w, r, http.StatusOK, mapSprint(result), nil)
+-	case "api_sprint_performance":
+-		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
+-		if err != nil {
+-			h.handleQueryError(w, r, true, err)
+-			return
+-		}
+-		h.writeSuccess(w, r, http.StatusOK, result.Performance, nil)
+-	case "api_sprint_performance_result", "api_sprint_performance_evidence":
+-		queries, ok := h.queries.(app.WebPerformanceQueries)
+-		if !ok {
+-			h.handleQueryError(w, r, true, app.ErrWebUnavailable)
+-			return
+-		}
+-		request := app.PerformanceRequest{Project: match.params[0], Sprint: match.params[1]}
+-		if match.name == "api_sprint_performance_result" {
+-			result, err := queries.PerformanceResult(r.Context(), request)
+-			if err != nil {
+-				h.handleQueryError(w, r, true, err)
+-				return
+-			}
+-			h.writeSuccess(w, r, http.StatusOK, result, nil)
+-			return
+-		}
+-		evidenceQueries, ok := h.queries.(app.WebPerformanceEvidenceQueries)
+-		if !ok {
+-			// Compatibility adapters may expose only current bounded references.
+-			status, statusErr := queries.PerformanceStatus(r.Context(), request)
+-			if statusErr != nil {
+-				h.handleQueryError(w, r, true, statusErr)
+-				return
+-			}
+-			refs := make([]app.PerformanceArtifactSummary, 0, 2)
+-			if status.State != nil {
+-				refs = append(refs, *status.State)
+-			}
+-			if status.Result != nil {
+-				refs = append(refs, *status.Result)
+-			}
+-			h.writeSuccess(w, r, http.StatusOK, map[string]any{"attempt_id": status.PerformanceAttemptID, "artifacts": refs, "returned_count": len(refs)}, nil)
+-			return
+-		}
+-		limit := 0
++	"github.com/Antonio7098/ultraplan-go/internal/sprint"
++)
++
++var identifierPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]*$`)
++var opaqueRefPattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
++
++type responseMeta struct {
++	APIVersion    string `json:"api_version"`
++	RequestID     string `json:"request_id"`
++	GeneratedAt   string `json:"generated_at,omitempty"`
++	ReturnedCount *int   `json:"returned_count,omitempty"`
++	TotalCount    *int   `json:"total_count,omitempty"`
++	Truncated     *bool  `json:"truncated,omitempty"`
++}
++
++type successEnvelope struct {
++	Data any          `json:"data"`
++	Meta responseMeta `json:"meta"`
++}
++
++type errorBody struct {
++	Code      string         `json:"code"`
++	Message   string         `json:"message"`
++	Retryable bool           `json:"retryable,omitempty"`
++	Details   map[string]any `json:"details,omitempty"`
++}
++
++type errorEnvelope struct {
++	Error errorBody    `json:"error"`
++	Meta  responseMeta `json:"meta"`
++}
++
++type artifactDTO struct {
++	Ref         string `json:"ref"`
++	Label       string `json:"label,omitempty"`
++	DisplayPath string `json:"display_path"`
++	MediaType   string `json:"media_type"`
++}
++
++type findingDTO struct {
++	Severity   string `json:"severity"`
++	Section    string `json:"section,omitempty"`
++	Problem    string `json:"problem"`
++	Cause      string `json:"cause,omitempty"`
++	Suggestion string `json:"suggestion,omitempty"`
++}
++
++type stageDTO struct {
++	Name              string `json:"name"`
++	Status            string `json:"status"`
++	Error             string `json:"error,omitempty"`
++	ArtifactAvailable bool   `json:"artifact_available,omitempty"`
++	ArtifactValid     bool   `json:"artifact_valid,omitempty"`
++	LatestOutcome     string `json:"latest_outcome,omitempty"`
++	NextAction        string `json:"next_action,omitempty"`
++}
++
++type promptInputContractDTO struct {
++	Stage     string   `json:"stage"`
++	Required  []string `json:"required"`
++	Optional  []string `json:"optional,omitempty"`
++	Forbidden []string `json:"forbidden,omitempty"`
++}
++
++type promptBlockDTO struct {
++	ID        string `json:"id"`
++	Kind      string `json:"kind"`
++	Mode      string `json:"mode,omitempty"`
++	Cacheable bool   `json:"cacheable"`
++	Bytes     int    `json:"bytes"`
++	Digest    string `json:"sha256"`
++	Content   string `json:"content"`
++}
++
++type promptBundleDTO struct {
++	Stage                string                 `json:"stage"`
++	Available            bool                   `json:"available"`
++	Scope                string                 `json:"scope"`
++	UnavailableReason    string                 `json:"unavailable_reason,omitempty"`
++	InputContract        promptInputContractDTO `json:"input_contract"`
++	SchemaVersion        int                    `json:"schema_version,omitempty"`
++	TotalBytes           int                    `json:"total_bytes,omitempty"`
++	SharedPrefixBytes    int                    `json:"shared_prefix_bytes,omitempty"`
++	StageSuffixBytes     int                    `json:"stage_suffix_bytes,omitempty"`
++	SharedPrefixDigest   string                 `json:"shared_prefix_sha256,omitempty"`
++	CacheKey             string                 `json:"cache_key,omitempty"`
++	CacheBreakpointBytes int                    `json:"cache_breakpoint_bytes,omitempty"`
++	CacheCandidate       bool                   `json:"cache_candidate"`
++	CacheTransport       string                 `json:"cache_transport,omitempty"`
++	Blocks               []promptBlockDTO       `json:"blocks"`
++}
++
++type projectDTO struct {
++	Ref       string            `json:"ref"`
++	Name      string            `json:"name"`
++	Docs      []string          `json:"docs"`
++	Findings  []findingDTO      `json:"findings"`
++	Artifacts []artifactDTO     `json:"artifacts"`
++	Sprints   []sprintDTO       `json:"sprints"`
++	Roadmap   []roadmapPhaseDTO `json:"roadmap"`
++}
++
++type roadmapPhaseDTO struct {
++	Title   string             `json:"title"`
++	Sprints []roadmapSprintDTO `json:"sprints"`
++}
++
++type roadmapSprintDTO struct {
++	Number          int      `json:"number"`
++	Title           string   `json:"title"`
++	Slug            string   `json:"slug,omitempty"`
++	Status          string   `json:"status"`
++	Goal            string   `json:"goal,omitempty"`
++	GateItems       []string `json:"acceptance,omitempty"`
++	DependsOn       []int    `json:"depends_on,omitempty"`
++	Exists          bool     `json:"exists"`
++	Assessment      string   `json:"assessment,omitempty"`
++	CompletedStages int      `json:"completed_stages,omitempty"`
++	TotalStages     int      `json:"total_stages,omitempty"`
++	CurrentStage    string   `json:"current_stage,omitempty"`
++}
++
++type collectionDTO struct {
++	ReturnedCount int  `json:"returned_count"`
++	TotalCount    int  `json:"total_count"`
++	Truncated     bool `json:"truncated"`
++}
++
++type sprintDTO struct {
++	Ref         string                      `json:"ref"`
++	Project     string                      `json:"project"`
++	Slug        string                      `json:"slug"`
++	Status      string                      `json:"status"`
++	Assessment  string                      `json:"assessment,omitempty"`
++	NextAction  string                      `json:"next_action,omitempty"`
++	Stages      []stageDTO                  `json:"stages"`
++	Execute     executeDTO                  `json:"execute"`
++	Review      reviewDTO                   `json:"review"`
++	Smoke       smokeDTO                    `json:"smoke"`
++	QA          app.QAResult                `json:"qa"`
++	Performance app.PerformanceStatusResult `json:"performance"`
++	Findings    []findingDTO                `json:"findings"`
++	Artifacts   []artifactDTO               `json:"artifacts"`
++}
++
++type executeDTO struct {
++	Available bool `json:"available"`
++	Total     int  `json:"total,omitempty"`
++	Pending   int  `json:"pending,omitempty"`
++	Running   int  `json:"running,omitempty"`
++	Complete  int  `json:"complete,omitempty"`
++	Failed    int  `json:"failed,omitempty"`
++	Cancelled int  `json:"cancelled,omitempty"`
++}
++
++type reviewDTO struct {
++	Available bool          `json:"available"`
++	Status    string        `json:"status,omitempty"`
++	Verdict   string        `json:"verdict,omitempty"`
++	Stale     bool          `json:"stale,omitempty"`
++	Completed int           `json:"completed,omitempty"`
++	Total     int           `json:"total,omitempty"`
++	Pending   int           `json:"pending,omitempty"`
++	Running   int           `json:"running,omitempty"`
++	Failed    int           `json:"failed,omitempty"`
++	Reviewers []reviewerDTO `json:"reviewers"`
++	StartedAt *time.Time    `json:"started_at,omitempty"`
++}
++
++type reviewerDTO struct {
++	ID      string `json:"id"`
++	Name    string `json:"name,omitempty"`
++	Kind    string `json:"kind,omitempty"`
++	Path    string `json:"path,omitempty"`
++	Status  string `json:"status"`
++	Summary string `json:"summary,omitempty"`
++}
++
++type smokeDTO struct {
++	Available bool   `json:"available"`
++	Status    string `json:"status,omitempty"`
++	Verdict   string `json:"verdict,omitempty"`
++	Stale     bool   `json:"stale,omitempty"`
++	RunID     string `json:"run_id,omitempty"`
++}
++
++type studyRetryDTO struct {
++	RetriedTasks int        `json:"retried_tasks"`
++	TotalRetries int        `json:"total_retries"`
++	SameSession  int        `json:"same_session"`
++	FreshSession int        `json:"fresh_session"`
++	Waiting      int        `json:"waiting,omitempty"`
++	NextRetryAt  *time.Time `json:"next_retry_at,omitempty"`
++}
++
++type studyParallelismDTO struct {
++	Decreased            bool `json:"decreased"`
++	Events               int  `json:"events,omitempty"`
++	RequestedParallelism int  `json:"requested_parallelism,omitempty"`
++	EffectiveParallelism int  `json:"effective_parallelism,omitempty"`
++}
++
++type studyTaskRetryDTO struct {
++	ID           string `json:"id"`
++	Kind         string `json:"kind,omitempty"`
++	Status       string `json:"status,omitempty"`
++	Retries      int    `json:"retries"`
++	SessionReuse string `json:"session_reuse,omitempty"`
++}
++
++type studyDTO struct {
++	Ref          string                `json:"ref"`
++	Name         string                `json:"name"`
++	Sources      []string              `json:"sources"`
++	Dimensions   []string              `json:"dimensions"`
++	Status       string                `json:"status"`
++	RunID        string                `json:"run_id,omitempty"`
++	Total        int                   `json:"total"`
++	Completed    int                   `json:"completed"`
++	Failed       int                   `json:"failed"`
++	RunActive    bool                  `json:"run_active"`
++	ActiveTasks  int                   `json:"active_tasks"`
++	Pending      int                   `json:"pending"`
++	Cancelled    int                   `json:"cancelled"`
++	Retries      studyRetryDTO         `json:"retries"`
++	Parallelism  *studyParallelismDTO  `json:"parallelism,omitempty"`
++	RetriedTasks []studyTaskRetryDTO   `json:"retried_tasks,omitempty"`
++	Failures     []studyTaskFailureDTO `json:"failures,omitempty"`
++	Findings     []findingDTO          `json:"findings"`
++	Artifacts    []artifactDTO         `json:"artifacts"`
++}
++
++type artifactPreviewDTO struct {
++	Ref           string `json:"ref"`
++	DisplayPath   string `json:"display_path"`
++	MediaType     string `json:"media_type"`
++	Content       string `json:"content"`
++	SizeBytes     int64  `json:"size_bytes"`
++	ReturnedBytes int    `json:"returned_bytes"`
++	Truncated     bool   `json:"truncated"`
++	JSONValid     *bool  `json:"json_valid,omitempty"`
++}
++
++// dimensionCard is one expandable card on the dimensions browse page.
++type dimensionCard struct {
++	Study                 string
++	Number                string
++	Slug                  string
++	Title                 string
++	DisplayPath           string
++	Bytes                 int64
++	Truncated             bool
++	CodeCitationsDisabled bool
++	Body                  template.HTML
++}
++
++// reportLinkView is one report file link on the study reports page.
++type reportLinkView struct {
++	Label       string
++	Ref         string
++	DisplayPath string
++	Bytes       int64
++}
++
++// reportGroupView holds one dimension's per-source report links.
++type reportGroupView struct {
++	Dimension string
++	Reports   []reportLinkView
++}
++
++// repoBoardEntry is one ranked row of the study repo leaderboard.
++type repoBoardEntry struct {
++	Rank     int
++	Name     string
++	Average  string
++	BarWidth int
++	Coverage string
++	BestRef  string
++	BestText string
++}
++
++// repoMatrixColumn is one dimension column of the study repo score matrix.
++type repoMatrixColumn struct {
++	Number string
++	Label  string
++}
++
++// repoMatrixCell is one score cell of the study repo score matrix.
++type repoMatrixCell struct {
++	Label   string
++	Scored  bool
++	Leader  bool
++	Percent int
++	Ref     string
++}
++
++// repoMatrixRow is one repo row of the study repo score matrix.
++type repoMatrixRow struct {
++	Name    string
++	Average string
++	Cells   []repoMatrixCell
++}
++
++// repoLeaderView is one ranked leader inside a dimension champion list.
++type repoLeaderView struct {
++	Rank  int
++	Name  string
++	Score int
++	Ref   string
++}
++
++// repoChampion names the leading repos for one dimension.
++type repoChampion struct {
++	Dimension string
++	Leaders   []repoLeaderView
++}
++
++type pageModel struct {
++	Title             string
++	Heading           string
++	Description       string
++	Workspace         string
++	Projects          []app.WebProjectResult
++	Project           *app.WebProjectResult
++	RoadmapPreview    *projectRoadmapPreview
++	Sprints           []app.WebSprintResult
++	Sprint            *app.WebSprintResult
++	Studies           []app.WebStudyResult
++	Study             *app.WebStudyResult
++	StudyArtifacts    []app.WebArtifactLink
++	Artifact          *app.WebArtifactPreview
++	ArtifactHTML      template.HTML
++	SmokeArtifact     bool
++	Health            *app.WebHealthResult
++	Status            int
++	Error             string
++	CSRF              string
++	Preparation       *operationPreparationView
++	Operation         *operationDocument
++	Runs              []runRowView
++	Run               *runDetailView
++	DimensionList     []dimensionCard
++	ReportFinals      []reportLinkView
++	ReportGroups      []reportGroupView
++	ReportSourceCount int
++	RepoBoard         []repoBoardEntry
++	RepoColumns       []repoMatrixColumn
++	RepoMatrix        []repoMatrixRow
++	RepoChampions     []repoChampion
++	StudyInsights     *runStudyInsightsView
++	SprintUsage       *runSprintUsageView
++	SprintFlowUsage   *sprintStageUsageView
++	SprintMetrics     *sprintRuntimeLedgerView
++	StudyLoopUsage    *runUsageView
++	RunEvents         []runEventView
++	NextRunsURL       string
++	NextEventsURL     string
++	RunFilters        runPageFilters
++	Page              string
++	QAInsights        *runQAInsightsView
++	SurfaceContract   template.HTML
++	QA                *app.QAResult
++	QAShard           *app.QAShardResult
++	QATheory          *app.QATheoryResult
++	Repair            *app.RepairStatusResult
++}
++
++type projectRoadmapPreview struct {
++	Completed int
++	Total     int
++	Previous  *app.WebRoadmapSprint
++	Next      *app.WebRoadmapSprint
++}
++
++func makeProjectRoadmapPreview(project app.WebProjectResult) *projectRoadmapPreview {
++	preview := &projectRoadmapPreview{}
++	var nextPlanned *app.WebRoadmapSprint
++	for _, phase := range project.Roadmap {
++		for _, sprint := range phase.Sprints {
++			preview.Total++
++			if sprint.Status == "delivered" {
++				preview.Completed++
++				if preview.Previous == nil || sprint.Number > preview.Previous.Number {
++					copy := sprint
++					preview.Previous = &copy
++				}
++				continue
++			}
++			if sprint.Status == "active" && (preview.Next == nil || preview.Next.Status != "active" || sprint.Number < preview.Next.Number) {
++				copy := sprint
++				preview.Next = &copy
++				continue
++			}
++			if nextPlanned == nil || sprint.Number < nextPlanned.Number {
++				copy := sprint
++				nextPlanned = &copy
++			}
++		}
++	}
++	if preview.Next == nil {
++		preview.Next = nextPlanned
++	}
++	return preview
++}
++
++func (h *handler) dispatch(w http.ResponseWriter, r *http.Request, match routeMatch) {
++	allowsQuery := match.name == "api_validations" || match.name == "api_runs" || match.name == "api_run_events" || match.name == "runs" || match.name == "api_timeline" || match.name == "api_sprint_performance_evidence"
++	if !allowsQuery && r.URL.RawQuery != "" {
++		h.writeRouteError(w, r, match.api, http.StatusBadRequest, "invalid_request", "Unknown query parameters are not accepted.")
++		return
++	}
++	if match.name == "api_sprint_performance_evidence" {
++		values, err := url.ParseQuery(r.URL.RawQuery)
++		if err != nil {
++			h.writeRouteError(w, r, true, http.StatusBadRequest, "invalid_request", "The performance evidence query is invalid.")
++			return
++		}
++		for name, entries := range values {
++			if (name != "cursor" && name != "filter" && name != "limit") || len(entries) != 1 {
++				h.writeRouteError(w, r, true, http.StatusBadRequest, "invalid_request", "The performance evidence query is invalid.")
++				return
++			}
++		}
++	}
++	for _, value := range match.params {
++		valid := validIdentifier(value)
++		if strings.Contains(match.name, "artifact") {
++			valid = validOpaqueRef(value)
++		}
++		if !valid {
++			h.writeRouteError(w, r, match.api, http.StatusBadRequest, "invalid_request", "The resource identifier is invalid.")
++			return
++		}
++	}
++
++	switch match.name {
++	case "dashboard":
++		result, err := h.queries.Dashboard(r.Context())
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "dashboard", pageModel{Title: "Workspace dashboard", Heading: "Workspace dashboard", Workspace: result.Workspace, Projects: result.Projects.Items, Sprints: result.Sprints, Studies: result.Studies.Items})
++	case "projects":
++		result, err := h.queries.Projects(r.Context())
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "projects", pageModel{Title: "Projects", Heading: "Projects", Projects: result.Items})
++	case "project":
++		result, err := h.queries.Project(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "project", pageModel{Title: "Project " + result.Name, Heading: result.Name, Project: &result, RoadmapPreview: makeProjectRoadmapPreview(result), Page: "overview"})
++	case "project_page":
++		result, err := h.queries.Project(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		page := match.params[1]
++		if page == "artifacts" {
++			page = "documentation"
++		}
++		if page == "operations" || page == "validation" {
++			page = "overview"
++		}
++		if page == "sprints" || page == "roadmap" {
++			page = "roadmap"
++			result.Sprints = newestSprintsFirst(result.Sprints)
++		}
++		h.render(w, r, http.StatusOK, "project", pageModel{Title: projectPageTitle(page) + " · " + result.Name, Heading: result.Name, Project: &result, Page: page})
++	case "project_artifact":
++		result, err := h.queries.Project(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		artifact, err := h.queries.Artifact(r.Context(), match.params[1])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "project", pageModel{Title: artifact.DisplayPath + " · " + result.Name, Heading: result.Name, Project: &result, Artifact: &artifact, ArtifactHTML: renderMarkdown(artifact), Page: "documentation"})
++	case "sprint":
++		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		flowUsage := h.loadSprintFlowUsage(r.Context(), result.Project, result.Slug)
++		h.render(w, r, http.StatusOK, "sprint", pageModel{Title: "Sprint " + result.Slug, Heading: result.Slug, Sprint: &result, SprintFlowUsage: flowUsage, Page: "overview"})
++	case "sprint_page":
++		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		page := match.params[2]
++		if page == "run" || page == "plan" || page == "delivery" || page == "operations" || page == "validation" {
++			page = "workflow"
++		}
++		var runtimeLedger *sprintRuntimeLedgerView
++		if page == "metrics" {
++			runtimeLedger = h.loadSprintRuntimeLedger(r.Context(), result.Project, result.Slug)
++		}
++		h.render(w, r, http.StatusOK, "sprint", pageModel{Title: sprintPageTitle(page) + " · " + result.Slug, Heading: result.Slug, Sprint: &result, SprintMetrics: runtimeLedger, Page: page})
++	case "sprint_qa":
++		h.handleSprintQAPage(w, r, match.params[0], match.params[1], "", "")
++	case "sprint_repair":
++		h.handleSprintRepairPage(w, r, match.params[0], match.params[1])
++	case "sprint_qa_shard":
++		h.handleSprintQAPage(w, r, match.params[0], match.params[1], match.params[2], "")
++	case "sprint_qa_theory":
++		h.handleSprintQAPage(w, r, match.params[0], match.params[1], "", match.params[2])
++	case "sprint_artifact":
++		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		artifact, err := h.queries.Artifact(r.Context(), match.params[2])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "sprint", pageModel{Title: artifact.DisplayPath + " · " + result.Slug, Heading: result.Slug, Sprint: &result, Artifact: &artifact, ArtifactHTML: renderMarkdown(artifact), SmokeArtifact: artifact.DisplayPath == "smoke.md" || strings.HasSuffix(artifact.DisplayPath, "/smoke.md"), Page: "artifacts"})
++	case "studies":
++		result, err := h.queries.Studies(r.Context())
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "studies", pageModel{Title: "Studies", Heading: "Studies", Studies: result.Items})
++	case "runs":
++		h.handleRunsPage(w, r)
++	case "run":
++		h.handleRunPage(w, r, match.params[0])
++	case "run_cancel":
++		h.handleRunPageCancel(w, r, match.params[0])
++	case "study":
++		result, err := h.queries.Study(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		artifacts := result.Artifacts
++		if len(artifacts) > 4 {
++			artifacts = artifacts[:4]
++		}
++		loopUsage := h.loadStudyLoopUsage(result.Name, result.Tasks)
++		h.render(w, r, http.StatusOK, "study", pageModel{Title: "Study " + result.Name, Heading: result.Name, Study: &result, StudyArtifacts: artifacts, StudyLoopUsage: loopUsage, Page: "overview"})
++	case "study_page":
++		result, err := h.queries.Study(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		page := match.params[1]
++		if page == "dimensions" {
++			page = "inputs"
++		}
++		if page == "operations" {
++			page = "progress"
++		}
++		if page == "validation" {
++			page = "overview"
++		}
++		if page == "reports" || page == "repos" {
++			page = "results"
++		}
++		model := pageModel{Title: studyPageTitle(page) + " · " + result.Name, Heading: result.Name, Study: &result, Page: page}
++		if page == "overview" || page == "progress" {
++			model.StudyLoopUsage = h.loadStudyLoopUsage(result.Name, result.Tasks)
++		}
++		if page == "inputs" {
++			cards, err := h.studyDimensionCards(r, match.params[0])
++			if err != nil {
++				h.handleQueryError(w, r, false, err)
++				return
++			}
++			model.DimensionList = cards
++		}
++		if page == "results" {
++			finals, groups, err := h.studyReportViews(r, match.params[0])
++			if err != nil {
++				h.handleQueryError(w, r, false, err)
++				return
++			}
++			model.ReportFinals = finals
++			model.ReportGroups = groups
++			for _, group := range groups {
++				model.ReportSourceCount += len(group.Reports)
++			}
++		}
++		if page == "results" {
++			if err := h.loadRepoBoard(r, match.params[0], &model); err != nil {
++				h.handleQueryError(w, r, false, err)
++				return
++			}
++		}
++		h.render(w, r, http.StatusOK, "study", model)
++	case "artifact":
++		result, err := h.queries.Artifact(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		if err := validateArtifact(result); err != nil {
++			h.handleQueryError(w, r, false, err)
++			return
++		}
++		h.render(w, r, http.StatusOK, "artifact", pageModel{Title: "Artifact preview", Heading: result.DisplayPath, Artifact: &result, ArtifactHTML: renderMarkdown(result)})
++	case "api_dashboard":
++		result, err := h.queries.Dashboard(r.Context())
++		if err != nil {
++			h.handleQueryError(w, r, true, err)
++			return
++		}
++		h.writeSuccess(w, r, http.StatusOK, map[string]any{
++			"workspace": result.Workspace,
++			"ref":       result.Ref,
++			"projects":  mapProjects(result.Projects.Items, false),
++			"sprints":   mapSprints(result.Sprints),
++			"studies":   mapStudies(result.Studies.Items),
++			"counts": map[string]any{
++				"projects": mapCollection(result.Projects.CollectionInfo),
++				"sprints":  mapCollection(result.SprintCounts),
++				"studies":  mapCollection(result.Studies.CollectionInfo),
++			},
++		}, nil)
++	case "api_projects":
++		result, err := h.queries.Projects(r.Context())
++		if err != nil {
++			h.handleQueryError(w, r, true, err)
++			return
++		}
++		h.writeSuccess(w, r, http.StatusOK, mapProjects(result.Items, false), &result.CollectionInfo)
++	case "api_project":
++		result, err := h.queries.Project(r.Context(), match.params[0])
++		if err != nil {
++			h.handleQueryError(w, r, true, err)
++			return
++		}
++		h.writeSuccess(w, r, http.StatusOK, mapProject(result, true), &result.SprintCounts)
++	case "api_sprint":
++		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
++		if err != nil {
++			h.handleQueryError(w, r, true, err)
++			return
++		}
++		h.writeSuccess(w, r, http.StatusOK, mapSprint(result), nil)
++	case "api_sprint_performance":
++		result, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])
++		if err != nil {
++			h.handleQueryError(w, r, true, err)
++			return
++		}
++		h.writeSuccess(w, r, http.StatusOK, result.Performance, nil)
++	case "api_sprint_performance_result", "api_sprint_performance_evidence":
++		queries, ok := h.queries.(app.WebPerformanceQueries)
++		if !ok {
++			h.handleQueryError(w, r, true, app.ErrWebUnavailable)
++			return
++		}
++		request := app.PerformanceRequest{Project: match.params[0], Sprint: match.params[1]}
++		if match.name == "api_sprint_performance_result" {
++			result, err := queries.PerformanceResult(r.Context(), request)
++			if err != nil {
++				h.handleQueryError(w, r, true, err)
++				return
++			}
++			h.writeSuccess(w, r, http.StatusOK, result, nil)
++			return
++		}
++		evidenceQueries, ok := h.queries.(app.WebPerformanceEvidenceQueries)
++		if !ok {
++			// Compatibility adapters may expose only current bounded references.
++			status, statusErr := queries.PerformanceStatus(r.Context(), request)
++			if statusErr != nil {
++				h.handleQueryError(w, r, true, statusErr)
++				return
++			}
++			refs := make([]app.PerformanceArtifactSummary, 0, 2)
++			if status.State != nil {
++				refs = append(refs, *status.State)
++			}
++			if status.Result != nil {
++				refs = append(refs, *status.Result)
++			}
++			h.writeSuccess(w, r, http.StatusOK, map[string]any{"attempt_id": status.PerformanceAttemptID, "artifacts": refs, "returned_count": len(refs)}, nil)
++			return
++		}
++		limit := sprint.DefaultPerformanceLimits().EvidencePageSize
+ 		if raw := r.URL.Query().Get("limit"); raw != "" {
+ 			parsed, parseErr := strconv.Atoi(raw)
+ 			if parseErr != nil {

@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-9dd64f43be091f9c54b6fb1b",
+  "plan_id": "qa-v2-plan-fe13ae1ddf98c3378beb7d3b",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "workspace_id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+  "workspace_identity": "f3346d395c7b3eee0d8b32f104ed20816be5defe124f6924ec7f674cd67c148e",
+  "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "commands": [
+    {
+      "diagnostics_version": 1,
+      "executable": "go",
+      "args_digest": "879172e81a5a7cee0c4ff3590627aae6606e11424e652d1b90e09eeee7150fa9",
+      "exit_code": 1,
+      "duration": 27625677723,
+      "stdout_digest": "255a2f4017b992b0b70cb276903aa97b06700c2e3bb803c6405f99cfeebac753",
+      "stderr_digest": "548257d97c4a89e8791870c8bb621252ccc5e758a539615b732f465fcd965fa8",
+      "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app [build failed]\nFAIL\n",
+      "stderr": "# github.com/Antonio7098/ultraplan-go/internal/app [github.com/Antonio7098/ultraplan-go/internal/app.test]\n./qa_investigator_3fdd9404fbd7_test.go:51:12: continue label not defined: finder\n",
+      "output_bytes": 262,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/app/qa_investigator_3fdd9404fbd7_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "unrelated_compile_or_panic_failure",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T13:30:42.018152399Z"
+}

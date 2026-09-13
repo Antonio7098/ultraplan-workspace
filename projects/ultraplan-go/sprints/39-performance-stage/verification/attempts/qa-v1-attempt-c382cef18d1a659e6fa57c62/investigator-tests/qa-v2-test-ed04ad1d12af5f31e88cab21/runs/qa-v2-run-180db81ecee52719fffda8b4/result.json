@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-180db81ecee52719fffda8b4",
+  "spec_id": "qa-v2-spec-744bb53ccde37890a4d87d5e",
+  "test_bundle_id": "qa-v2-test-ed04ad1d12af5f31e88cab21",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "ca6149498a8cf5a3f6861c5f73445e85b69a5a97da4254e8219d0c4dd8139d51",
+    "exit_code": 1,
+    "duration": 3097219764,
+    "stdout_digest": "ebc0875bb9027c6a27a0439f5022a69ce815c289d20f9e890143516df65511cb",
+    "stderr_digest": "d5b6db4295e52db969f0f5d66646e03dbfdb6b826e5f713499249c33992bed56",
+    "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint [setup failed]\nFAIL\n",
+    "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n-\u003e unzip /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/sqlite/@v/v1.57.0.zip: write /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/lib/sqlite_g_0000000000018000.go: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/sprint\n../productstate/store.go:16:2: unzip /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/sqlite/@v/v1.57.0.zip: write /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/lib/sqlite_g_0000000000018000.go: no space left on device\n",
+    "output_bytes": 1102,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_4abdc0ca28c9",
+    "assertion": "Assert DiscoverPerformanceManifest accepts both separated marker cases.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_4abdc0ca28c9"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:56:41.878466863Z"
+}

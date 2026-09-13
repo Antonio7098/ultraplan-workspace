@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-29d7435d9ca56ae404229a54",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-1158b01023e7f48c5250faeb",
+      "qa-v1-theory-f70fbbde96aaaf96b63f5bdc"
+    ],
+    "origin_shard_id": "qa-v1-shard-62b033bcef3afb3af1bba41c",
+    "gap": "Static evidence confirms both web projection defects, but no executable surface assertions were supplied.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer covering an active and cancellation-requested durable run through the performance status API/workbench projection and an evidence request through an adapter lacking WebPerformanceEvidenceQueries.",
+    "required_observation": "Assert that lifecycle and cancellation fields are empty on aggregate surfaces despite a durable snapshot, and that the fallback evidence response succeeds without the PerformanceEvidenceResult schema fields.",
+    "control_requirement": "Include controls showing direct PerformanceStatus contains the durable fields and a full evidence-capability adapter returns the versioned DTO.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "86062503f35bc5d81f428f82a3e68ab7a0b83ae6679837f7b3dd99abe204678d",
+    "test_bundle_id": "qa-v2-test-96862b443a2bd04f15f7e7d1",
+    "latest_run_id": "qa-v2-run-75ef77b545dccdddcfaae618",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

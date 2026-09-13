@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-6bc8364d400b5d3d9ac4026b",
+  "plan_id": "qa-v2-plan-ea5f217900200f67b9f7bbb7",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-e8285353570f0550ce50e011",
+  "workspace_id": "qa-v2-test-ed04ad1d12af5f31e88cab21",
+  "workspace_identity": "220e2b4627b4fae4669a4e91b4176a55d814f976b3d75b67bc500da177f424c2",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "ca6149498a8cf5a3f6861c5f73445e85b69a5a97da4254e8219d0c4dd8139d51",
+      "exit_code": 1,
+      "duration": 3097219764,
+      "stdout_digest": "ebc0875bb9027c6a27a0439f5022a69ce815c289d20f9e890143516df65511cb",
+      "stderr_digest": "d5b6db4295e52db969f0f5d66646e03dbfdb6b826e5f713499249c33992bed56",
+      "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint [setup failed]\nFAIL\n",
+      "stderr": "go: downloading github.com/Antonio7098/agentwrap v0.0.0-20260831171040-511d34d252db\ngo: downloading modernc.org/sqlite v1.57.0\n-\u003e unzip /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/sqlite/@v/v1.57.0.zip: write /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/lib/sqlite_g_0000000000018000.go: no space left on device\n# github.com/Antonio7098/ultraplan-go/internal/sprint\n../productstate/store.go:16:2: unzip /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/cache/download/modernc.org/sqlite/@v/v1.57.0.zip: write /tmp/ultraplan-qa-authored-test-1423712910/qa-v2-test-ed04ad1d12af5f31e88cab21-3944952093/.ultraplan-test-runtime/gopath/pkg/mod/modernc.org/sqlite@v1.57.0/lib/sqlite_g_0000000000018000.go: no space left on device\n",
+      "output_bytes": 1102,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/sprint/qa_investigator_4abdc0ca28c9_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T11:56:41.878466863Z"
+}

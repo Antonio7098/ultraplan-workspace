@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "id": "qa-v2-request-d61db1d879f08759356cb157",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-44d9a1998804c860f04368c4"
+    ],
+    "origin_shard_id": "qa-v1-shard-83343899362a358a874d111b",
+    "gap": "The retained test checked only a healthy dry-run envelope while its failure marker was triggered by the separate stdout-write defect; it did not execute the claimed exit mappings or stdout/stderr contract.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go compatibility reproducer in the approved private workspace for this theory alone.",
+    "required_observation": "Assert stable JSON and text output, empty or appropriate stderr, and semantic exit mappings for success, target_missed, cancelled, partial, and operational failure. Name qa-v1-theory-44d9a1998804c860f04368c4 in the assertions.",
+    "control_requirement": "Use existing deterministic command/service seams and fixtures; include a passing status or dry-run control and do not rely on a matching marker alone.",
+    "priority": "medium",
+    "status": "inconclusive",
+    "reason_code": "tests_per_theory_budget_exhausted",
+    "superseded_by": "qa-v2-request-00798e43bc0507a39e9dd20e",
+    "next_action": "Evidence remains unresolved: tests_per_theory_budget_exhausted. Inspect the retained diagnostic and required observation. Use qa status for recovery actions with remaining allowance."
+  }
+}

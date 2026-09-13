@@ -3,7 +3,7 @@
 > Project: `aren-phase-01-execution-lifecycle`  
 > Target repository: `../Aren/`  
 > Implementation language: Go  
-> Deployment model: local, in-process library with a diagnostic CLI
+> Deployment model: local, in-process library with a diagnostic CLI and process-scoped browser observability application
 
 ## 1. Summary
 
@@ -11,15 +11,17 @@ Phase 1 establishes the smallest execution lifecycle that Aren owns.
 
 Aren must supervise one in-process occurrence of work from creation through exactly one terminal outcome. It must assign the run an identity, control every lifecycle transition, propagate cancellation, retain ordered lifecycle events, publish one immutable outcome, support concurrent waiting and observation, and remain correct under completion-cancellation races.
 
+Phase 1 also establishes how Aren measures and presents that behaviour. It includes a repeatable performance methodology, the first lifecycle performance baseline, and a dedicated browser frontend that projects live runtime evidence. These facilities must consume the realised lifecycle contract. They cannot create a second account of lifecycle truth or change execution when measurement or observation is slow, absent, or faulty.
+
 The atomic unit owned by Aren in this phase is the **lifecycle transition**. Aren does not make arbitrary work transactional. It guarantees that its own state, event, timing, cancellation metadata, and terminal-outcome bookkeeping become visible coherently.
 
-Phase 1 deliberately excludes model providers, subprocesses, tools, persistence, retries, streaming output, workflows, pause/resume, remote execution, and daemon hosting.
+Phase 1 deliberately excludes model providers, subprocesses, tools, persistence, retries, streaming output, workflows, pause/resume, remote execution, and persistent daemon hosting.
 
 ## 2. Primary Question
 
-> Can Aren define and enforce the lifecycle of one execution without depending on an LLM, subprocess, network call, or persistent store?
+> Can Aren define and enforce the lifecycle of one execution without the supervised work depending on an LLM, subprocess, network call, or persistent store?
 
-The phase is complete only when this can be answered with runnable implementation evidence, automated tests, race-detector results, and a stable written lifecycle contract.
+The phase is complete only when this can be answered with runnable implementation evidence, automated tests, race-detector results, repeatable performance evidence, a stable written lifecycle contract, and a browser frontend that presents the same canonical facts as the runtime and diagnostic CLI.
 
 ## 3. Problem
 
@@ -59,7 +61,11 @@ Without explicit answers, later providers, tools, subprocesses, agents, and work
 - multiple concurrent waiters;
 - race, stress, negative, panic, and leak tests;
 - a diagnostic development CLI;
-- a promoted lifecycle contract after validation.
+- a repeatable benchmark suite and performance experiment method;
+- a recorded Phase 1 lifecycle performance baseline;
+- a process-scoped local observation service;
+- a dedicated browser frontend for inspecting live and completed Phase 1 runs;
+- promoted lifecycle and observation contracts after validation.
 
 ### Out of scope
 
@@ -75,10 +81,12 @@ Without explicit answers, later providers, tools, subprocesses, agents, and work
 - pause/resume or human approval;
 - global event streams;
 - workflows or multiple execution types;
-- remote execution or daemon hosting;
-- network APIs or language SDKs;
+- remote execution or persistent daemon hosting;
+- remote, public, or general-purpose network APIs;
+- language SDKs;
 - budgets, iteration caps, or stuck-loop detection;
 - production telemetry exporters;
+- durable observability storage, authentication, or multi-user operation;
 - exactly-once arbitrary work execution;
 - rollback or compensation of work side effects;
 - idempotent run creation;
@@ -142,6 +150,8 @@ The ordered in-memory sequence of lifecycle events recorded for one run. Event i
 8. **Observation cannot control execution.** Slow, absent, or abandoned observers must not block the lifecycle.
 9. **Authority remains separated.** Observation, caller control, and internal transition authority are different capabilities.
 10. **The smallest honest semantics win.** Phase 1 must not create speculative provider, persistence, workflow, plugin, or executor infrastructure.
+11. **Performance claims must be reproducible.** Results must identify the scenario, source revision, toolchain, host environment, sample policy, and measurement method.
+12. **The frontend projects runtime truth.** It must consume explicit observation contracts and must not infer lifecycle facts from prose logs or maintain an independent lifecycle model.
 
 ## 7. Lifecycle
 
@@ -436,7 +446,49 @@ aren dev run ignore-cancel
 
 The CLI must exercise the real runtime, display run identity and ordered events, distinguish cancellation request from terminal cancellation, show the terminal outcome, return useful process status, and avoid implying persistence or exactly-once delivery.
 
-## 21. Required Verification
+## 21. Performance methodology and baseline
+
+Phase 1 must establish a benchmark method that later Aren phases can extend without changing the meaning of existing measurements.
+
+The method must define:
+
+- canonical synthetic workloads for immediate success, returned failure, cancellation, completed waiting, event replay, concurrent completion, and blocked active runs;
+- benchmark names, parameters, warm-up where applicable, sample counts, duration, and comparison procedure;
+- quick local, pull-request, and extended benchmark tiers;
+- capture of source revision, dirty state, Go version, operating system, architecture, CPU, benchmark configuration, and relevant runtime settings;
+- `ns/op`, `B/op`, and `allocs/op` for suitable microbenchmarks;
+- throughput and p50, p95, p99, and maximum latency for bounded concurrent scenarios;
+- peak and retained heap plus Aren-owned runtime-task counts for blocked and completed runs;
+- CPU, heap, goroutine, mutex, block, and runtime-trace capture when a result warrants investigation;
+- machine-readable results and human-readable comparison through an established statistical comparison tool;
+- variance characterization on the intended comparison environment before any numeric regression gate is adopted.
+
+The benchmark suite must separate Aren overhead from controlled work time. Each benchmark must exercise the real Phase 1 implementation rather than a duplicate model or mock lifecycle. Measurement code must not weaken lifecycle semantics or enter production critical paths solely to make a number available.
+
+Phase 1 records a baseline. It does not promise a universal throughput target. A measured correctness failure, leak, unbounded resource growth, global serialization of independent runs, or observation cost that materially controls execution blocks acceptance. Other results are recorded for comparison and investigation.
+
+## 22. Observability frontend
+
+Phase 1 includes a dedicated browser frontend from the first complete lifecycle release. Its job is to make the realised Phase 1 evidence directly inspectable during development, testing, demonstration, and performance investigation.
+
+The frontend must provide:
+
+- a run summary with identity, current state, start time, elapsed or terminal duration, and terminal outcome where available;
+- an ordered lifecycle timeline keyed by event sequence;
+- clear cancellation request, acceptance, propagation, work-return, terminal-resolution, and terminal-transition evidence when available;
+- structured presentation of returned failures, panics, cancellation, and Aren invariant diagnostics;
+- clear visual distinction between canonical semantic facts, diagnostics, and performance measurements;
+- live updates without reordering committed events;
+- complete reconstruction from retained in-memory history when the browser connects after a run has finished;
+- explicit empty, connecting, live, terminal, disconnected, malformed-evidence, and unsupported-version states;
+- keyboard operation, visible focus, semantic structure, text labels that do not rely on colour, reduced-motion support, and responsive layouts;
+- bounded rendering and transport behaviour for the maximum Phase 1 event history and benchmark result set.
+
+The frontend consumes a versioned, read-only observation contract from a process-scoped local service. The service binds locally and owns no lifecycle state. It reads the same run state, outcome, event history, diagnostics, and benchmark evidence exposed by their Aren owners.
+
+The local service is not the Aren daemon. It does not survive its development process, accept remote execution, provide a public control API, add durable storage, or establish authentication and multi-user semantics. The browser cannot transition a run or manufacture an outcome. A slow, disconnected, or faulty browser must not delay work, cancellation, terminal commitment, waiter release, or cleanup.
+
+## 23. Required verification
 
 The phase must include automated evidence for:
 
@@ -462,9 +514,19 @@ The phase must include automated evidence for:
 - illegal transition detection;
 - timing coherence;
 - broad concurrency stress under `go test -race`;
-- absence of Aren-owned observer/waiter goroutine leaks.
+- absence of Aren-owned observer/waiter goroutine leaks;
+- repeatable benchmark execution from a documented clean environment;
+- machine-readable benchmark metadata and results;
+- statistical comparison of repeated baseline samples;
+- concurrent scaling, blocked-run memory, retained-memory, and runtime-task evidence;
+- profile capture for at least one documented diagnostic run;
+- agreement between runtime, CLI, observation contract, and browser presentation;
+- browser connection before, during, and after terminal commitment;
+- browser disconnection, slow consumption, malformed evidence, and unsupported-version handling;
+- keyboard, focus, reduced-motion, responsive-layout, and automated accessibility checks;
+- bounded frontend rendering and observation-service resource use.
 
-## 22. Acceptance Criteria
+## 24. Acceptance criteria
 
 Phase 1 is accepted only when:
 
@@ -483,9 +545,17 @@ Phase 1 is accepted only when:
 - lifecycle guarantees are explicitly separated from work-side-effect guarantees;
 - all required tests pass under the Go race detector;
 - diagnostic CLI scenarios provide runnable evidence;
-- a written phase review finds no unresolved foundational semantic ambiguity.
+- benchmark workloads, environment capture, sampling, comparison, and profiling are reproducible;
+- the recorded Phase 1 baseline distinguishes Aren overhead from controlled work;
+- benchmark evidence exposes leaks, contention, allocation, memory, and scaling behaviour without inventing unsupported targets;
+- the browser frontend renders runtime-owned canonical facts without deriving truth from logs;
+- live and late browser observation agree with retained history and terminal outcome;
+- browser absence, slowness, or failure cannot control execution;
+- the local observation service remains process-scoped, read-only, and distinct from daemon hosting;
+- accessibility and responsive behaviour pass the Sprint 4 review;
+- a written phase review finds no unresolved foundational semantic, measurement, or observation ambiguity.
 
-## 23. Two-Sprint Delivery Shape
+## 25. Four-sprint delivery shape
 
 ### Sprint 1 — Core Lifecycle
 
@@ -517,23 +587,59 @@ Extend and attack the Sprint 1 lifecycle through:
 - race, stress, and leak testing;
 - diagnostic CLI;
 - lifecycle-contract promotion;
-- phase review.
+- lifecycle hardening review.
 
 Sprint 2 must consume Sprint 1 reasoning and decisions as prior project context. It may supersede them only with explicit evidence and recorded rationale.
 
-## 24. Exit Gate
+### Sprint 3: performance methodology and baseline
+
+Turn the realised lifecycle tests and early benchmarks into a durable measurement system:
+
+- canonical workload definitions;
+- microbenchmark and concurrency suites;
+- latency, allocation, memory, runtime-task, and contention measurement;
+- environment and source metadata;
+- machine-readable results;
+- statistical comparison and variance characterization;
+- profiling workflow;
+- quick, pull-request, and extended tiers;
+- the first recorded Phase 1 baseline.
+
+Sprint 3 must measure the completed Sprint 2 implementation. It may identify defects or justified optimization work, but it must not alter lifecycle semantics to improve results.
+
+### Sprint 4: observability frontend
+
+Build the first browser observation experience over the realised lifecycle and measurement evidence:
+
+- a versioned read-only observation contract;
+- a process-scoped local observation service;
+- live and completed run inspection;
+- a canonical event timeline;
+- outcome, cancellation, failure, diagnostic, and performance presentation;
+- explicit connection and evidence-error states;
+- accessibility and responsive behaviour;
+- observer-isolation and frontend performance proof;
+- final contract promotion and Phase 1 review.
+
+Sprint 4 must consume the completed Sprint 1 through Sprint 3 artifacts. It may request runtime changes only when the existing evidence is insufficient or unsafe to project, and it must record any such change explicitly.
+
+## 26. Exit gate
 
 The project is complete only when:
 
-1. both sprints have completed their own acceptance criteria;
+1. all four sprints have completed their own acceptance criteria;
 2. all lifecycle invariants are implemented and proven;
 3. race and stress testing reveal no duplicate terminal outcome, inconsistent history, deadlock, or Aren-owned leak;
 4. the diagnostic CLI demonstrates required scenarios;
-5. the final lifecycle contract reflects the realised and tested semantics;
-6. the phase review identifies no unresolved ambiguity that would undermine Phase 2;
-7. later concerns remain deferred rather than hidden inside speculative abstractions.
+5. the benchmark method and Phase 1 baseline are reproducible and attributable to their source and environment;
+6. the browser frontend and CLI agree with runtime-owned state, history, timing, cancellation facts, failures, and outcomes;
+7. measurement and browser observation remain passive with respect to runtime correctness;
+8. the local observation service has not become a persistent daemon or remote control API;
+9. the final lifecycle and observation contracts reflect the realised and tested semantics;
+10. the phase review identifies no unresolved ambiguity that would undermine Phase 2;
+11. later concerns remain deferred rather than hidden inside speculative abstractions.
 
-## 25. Deferred Questions
+## 27. Deferred questions
 
 - Should Aren eventually expose a general executor interface?
 - How should progress and partial output be represented?
@@ -543,7 +649,7 @@ The project is complete only when:
 - Which event types are shared across model, tool, and subprocess execution?
 - Which state must survive process termination?
 - How are durable events, pause, resume, and approval represented?
-- When does Aren require a daemon?
+- When does Aren require a persistent daemon beyond the process-scoped Phase 1 observation service?
 - Which Phase 1 semantics prove universal and which remain executor-specific?
 
 These questions may inform later study selection but must not expand this project.

@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-run-06768d0975b7856b43c10a3b",
+  "spec_id": "qa-v2-spec-5807f990c84a76eff8666229",
+  "test_bundle_id": "qa-v2-test-8350daaaec15bbbe50054e34",
+  "target_identity": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "result": {
+    "executable": "go",
+    "args_digest": "b26910def2e872a9fd0c92f21d31d80222ec74fb6f400746118e8989839c1cba",
+    "exit_code": 1,
+    "duration": 4389564160,
+    "stdout_digest": "81454442e52ce3bc675fcf7e309dfd870b52a7029f51bdbd151ed11f5e99a81a",
+    "stderr_digest": "55d542516e8aa3671ebbd926221568cc60e10430d7a0652efc086cf5d75140ba",
+    "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/platform/config [build failed]\nFAIL\n",
+    "stderr": "# crypto/internal/fips140deps/godebug\ncompile: writing output: write $WORK/b084/_pkg_.a: no space left on device\n# bytes\ncompile: writing output: write $WORK/b062/_pkg_.a: no space left on device\n# strings\ncompile: writing output: write $WORK/b068/_pkg_.a: no space left on device\n# math/rand\ncompile: writing output: write $WORK/b071/_pkg_.a: no space left on device\n# syscall\ncompile: writing output: write $WORK/b052/_pkg_.a: no space left on device\n# runtime\nvet: failed to export analysis facts: write $WORK/b009/vet.out: no space left on device\niter: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b048/vet.cfg: no space left on device\ninternal/reflectlite: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b004/vet.cfg: no space left on device\nsync: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b040/vet.cfg: no space left on device\nslices: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b046/vet.cfg: no space left on device\nerrors: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b003/vet.cfg: no space left on device\ninternal/bisect: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b051/vet.cfg: no space left on device\nstrconv: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b059/vet.cfg: no space left on device\ninternal/testlog: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b056/vet.cfg: no space left on device\npath: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b044/vet.cfg: no space left on device\ninternal/oserror: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b038/vet.cfg: no space left on device\nsort: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b113/vet.cfg: no space left on device\nio: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b039/vet.cfg: no space left on device\ninternal/godebug: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b050/vet.cfg: no space left on device\n# reflect\ncompile: writing output: write $WORK/b057/_pkg_.a: no space left on device\n",
+    "output_bytes": 3221,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_a4e36afcbad1",
+    "assertion": "Assert the current source defines product-specific performance defaults and validation under internal/platform.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a4e36afcbad1"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "unrelated_compile_or_panic_failure",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T13:13:46.91255752Z"
+}

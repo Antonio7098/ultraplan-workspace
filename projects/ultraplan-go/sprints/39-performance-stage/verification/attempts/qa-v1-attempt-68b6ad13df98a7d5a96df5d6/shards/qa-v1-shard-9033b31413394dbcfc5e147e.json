@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-9033b31413394dbcfc5e147e",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Performance orchestration, persistence, and recovery",
+  "changed_paths": [
+    "internal/sprint/domain.go",
+    "internal/sprint/performance.go",
+    "internal/sprint/performance_service_test.go",
+    "internal/sprint/performance_state.go",
+    "internal/sprint/qa_state.go",
+    "internal/sprint/service.go",
+    "internal/sprint/state.go"
+  ],
+  "context_paths": [
+    "docs/phase3-json-schemas.md",
+    "docs/recovery.md",
+    "internal/sprint/verify.go"
+  ],
+  "boundary_reason": "Owns admission, lifecycle orchestration, immutable private evidence, terminal publication, recovery, FlowState v4, and service composition.",
+  "behavioral_concerns": [
+    "Disabled admission must be side-effect free; enabled admission must reject invalid policy, targets, execution prerequisites, cleanliness, isolation, samples, or budgets before unsafe work.",
+    "Exactly one terminal result must win across cancellation, timeout, stale writers, cleanup uncertainty, persistence failure, drift, and restart.",
+    "Flow-state versions 1 through 3 must remain readable; v4 performance pointers must validate and survive unrelated saves.",
+    "Private records must be contained, immutable, digest-bound, strictly decoded, and writer-fenced before publication.",
+    "Recovery must start no runtime or process and may only republish already valid immutable evidence.",
+    "Resume must retain immutable identities, counters, limits, and the absolute deadline and continue only from proven boundaries."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows"
+  ],
+  "risk_tags": [
+    "persistence",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-27d2771fd1e216ea720fc578",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+    "qa-v1-block-45569de6dacab66d160b4352",
+    "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+    "qa-v1-block-c97e1078c55929fe79594127",
+    "qa-v1-block-ce45392d2ebc036986b89d13"
+  ],
+  "prepared_prompt_bytes": 146542,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9033b31413394dbcfc5e147e/1",
+      "number": 1,
+      "session_id": "ses_f6aa82dcdffedaL17aim2G3i2c",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "fc0bc0394a330c0c403212fa0bd40a459ff8932987f14c8a9e52be98be192d1b",
+      "started_at": "2026-09-12T11:19:13.233531169Z",
+      "completed_at": "2026-09-12T11:20:05.291988251Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The performance summary counts outcomes without gate filtering, while flow validation bounds those outcomes by required-target count rather than total target count [qa-v1-block-68cfca988b5aef1e551fa430, qa-v1-block-2fa5eb620169346ab567a9ec].",
+          "paths": [
+            "internal/sprint/performance.go",
+            "internal/sprint/state.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 43644,
+        "output_tokens_known": true,
+        "output_tokens": 1096,
+        "total_tokens_known": true,
+        "total_tokens": 87492,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 384,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 42368,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 146542,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 52058457082
+      },
+      "estimated_cost": {
+        "amount": 0.10672159999999999,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9033b31413394dbcfc5e147e/1/evidence/qa-v2-request-ba638561ab2878d7bc49d841/1",
+      "number": 2,
+      "session_id": "ses_f6aa82dcdffedaL17aim2G3i2c",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "fc0bc0394a330c0c403212fa0bd40a459ff8932987f14c8a9e52be98be192d1b",
+      "started_at": "2026-09-12T11:40:22.335478844Z",
+      "completed_at": "2026-09-12T11:41:30.419385892Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1123,
+        "output_tokens_known": true,
+        "output_tokens": 33,
+        "total_tokens_known": true,
+        "total_tokens": 54123,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 231,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 52736,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 27,
+      "retained_events": 27,
+      "observed_tool_calls": 8,
+      "context_metrics": {
+        "prompt_bytes": 8772,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1,
+          "grep": 3,
+          "read": 4
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 15309,
+        "repeated_reads": 0,
+        "search_calls": 3,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 68083907048
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-fa8487cda772b1748115a5c2",
+      "shard_id": "qa-v1-shard-9033b31413394dbcfc5e147e",
+      "claim": "A valid performance run containing a met report-only target can fail flow-state publication because the summary counts met and missed comparisons across all targets, while validation limits their sum to required targets only.",
+      "basis": "The summary increments Required only for required targets but increments Met and Missed for every comparison; validation rejects Met+Missed greater than Required [qa-v1-block-68cfca988b5aef1e551fa430, qa-v1-block-2fa5eb620169346ab567a9ec]. Report-only targets are valid contract inputs [qa-v1-block-ce45392d2ebc036986b89d13].",
+      "verification_surface": "internal/sprint/performance.go performanceFlowSummary and internal/sprint/state.go validatePerformanceFlowSummary",
+      "expectation_refs": [
+        "contract-performance",
+        "contract-persistence-and-migrations",
+        "contract-workflows"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A summary with zero required targets, one report target, and one met comparison has Met=1 and Required=0, causing validatePerformanceFlowSummary to return invalid performance counts.",
+      "refutation_condition": "The complete implementation excludes report-target comparisons from Met and Missed, or validation permits comparison counts up to Required+Reports before publication.",
+      "inconclusive_condition": "An omitted caller transforms the target or comparison collections so report-only comparisons cannot reach performanceFlowSummary.",
+      "safe_evidence_strategy": "Exercise performanceFlowSummary and validatePerformanceFlowSummary with one report-only target and a met comparison using an isolated unit-test fixture without starting runtime or process work.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9033b31413394dbcfc5e147e/1",
+          "number": 1,
+          "session_id": "ses_f6aa82dcdffedaL17aim2G3i2c",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "fc0bc0394a330c0c403212fa0bd40a459ff8932987f14c8a9e52be98be192d1b",
+          "started_at": "2026-09-12T11:19:13.233531169Z",
+          "completed_at": "2026-09-12T11:20:05.291988251Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The performance summary counts outcomes without gate filtering, while flow validation bounds those outcomes by required-target count rather than total target count [qa-v1-block-68cfca988b5aef1e551fa430, qa-v1-block-2fa5eb620169346ab567a9ec].",
+              "paths": [
+                "internal/sprint/performance.go",
+                "internal/sprint/state.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 43644,
+            "output_tokens_known": true,
+            "output_tokens": 1096,
+            "total_tokens_known": true,
+            "total_tokens": 87492,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 384,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 42368,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 146542,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 52058457082
+          },
+          "estimated_cost": {
+            "amount": 0.10672159999999999,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-9033b31413394dbcfc5e147e/1/evidence/qa-v2-request-ba638561ab2878d7bc49d841/1",
+          "number": 2,
+          "session_id": "ses_f6aa82dcdffedaL17aim2G3i2c",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "fc0bc0394a330c0c403212fa0bd40a459ff8932987f14c8a9e52be98be192d1b",
+          "started_at": "2026-09-12T11:40:22.335478844Z",
+          "completed_at": "2026-09-12T11:41:30.419385892Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1123,
+            "output_tokens_known": true,
+            "output_tokens": 33,
+            "total_tokens_known": true,
+            "total_tokens": 54123,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 231,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 52736,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 27,
+          "retained_events": 27,
+          "observed_tool_calls": 8,
+          "context_metrics": {
+            "prompt_bytes": 8772,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 3,
+              "read": 4
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 15309,
+            "repeated_reads": 0,
+            "search_calls": 3,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 68083907048
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The performance summary counts outcomes without gate filtering, while flow validation bounds those outcomes by required-target count rather than total target count [qa-v1-block-68cfca988b5aef1e551fa430, qa-v1-block-2fa5eb620169346ab567a9ec].",
+          "paths": [
+            "internal/sprint/performance.go",
+            "internal/sprint/state.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-ba638561ab2878d7bc49d841: predicted_failure_reproduced\nRequired observation: The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.\nTest internal/sprint/qa_investigator_78d7bc49d841_test.go:\npackage sprint\n\nimport (\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_78d7bc49d841(t *testing.T) {\n\troot := t.TempDir()\n\tsp := Sprint{Project: \"proj\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"proj\", \"sprints\", \"39-performance\")}\n\tstate := PerformanceState{Phase: PerformancePhaseTerminal, Fresh: true, Outcome: PerformancePassed, AttemptID: \"performance-v1-attempt-0123456789abcdef01234567\", NextAction: \"Run Conformance Review.\"}\n\tstateRef := PerformanceArtifactRef{Path: PerformanceStateRelPath(sp), Digest: strings.Repeat(\"a\", 64)}\n\tmet := []PerformanceComparison{{TargetID: \"PERF-ONE\", Outcome: PerformanceTargetMet}}\n\n\tcontrol := performanceFlowSummary(state, stateRef, []PerformanceTarget{{ID: \"PERF-ONE\", Gate: PerformanceRequired}}, met)\n\tif control.Required != 1 || control.Reports != 0 || control.Met != 1 || control.Missed != 0 {\n\t\tt.Fatalf(\"required-target control summary = %#v\", control)\n\t}\n\tif err := validatePerformanceFlowSummary(root, sp, *control, \"flow-state.json\"); err != nil {\n\t\tt.Fatalf(\"required-target control should validate: %v\", err)\n\t}\n\n\treproduced := performanceFlowSummary(state, stateRef, []PerformanceTarget{{ID: \"PERF-ONE\", Gate: PerformanceReport}}, met)\n\tif reproduced.Required != 0 || reproduced.Reports != 1 || reproduced.Met != 1 || reproduced.Missed != 0 {\n\t\tt.Fatalf(\"report-only reproduction summary = %#v\", reproduced)\n\t}\n\tif err := validatePerformanceFlowSummary(root, sp, *reproduced, \"flow-state.json\"); err != nil {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841 assertion=The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure. report-only summary should validate: %v\", err)\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_78d7bc49d841\n    qa_investigator_78d7bc49d841_test.go:29: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841 assertion=The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure. report-only summary should validate: flow state malformed: flow-state.json: invalid performance counts\n--- FAIL: TestQAInvestigator_78d7bc49d841 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.005s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_78d7bc49d841_test.go"
+          ],
+          "check_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+          "output_digest": "244f33444a9740c0b2d754479f23e919a5c0f4df35a924c9687444212cf77a7d"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

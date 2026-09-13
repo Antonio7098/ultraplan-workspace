@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-8ad409edf1f80c380c6d79f2",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-81e0d9c9e1087e58135f030b",
+  "evidence_request_id": "qa-v2-request-1e9703c4e2bb7f17d2859fb1",
+  "theory_ids": [
+    "qa-v1-theory-5aa810b32a6484259611977f"
+  ],
+  "claim": "The public performance configuration table documents hard maxima above the built-in defaults even though validation rejects every value above its built-in default, causing documented supported values to fail configuration loading.",
+  "preconditions": [
+    "Assert the corresponding default and a lower value load successfully."
+  ],
+  "expected_behavior": "Assert configuration loading rejects those documented maximum values.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_7f17d2859fb1",
+    "assertion": "Assert configuration loading rejects those documented maximum values.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_7f17d2859fb1"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_7f17d2859fb1_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-7f17d2859fb1",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_7f17d2859fb1$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "c1c99aa03b890767e600b24d920e448f4d900c23566f734a2da7de3e02458022"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T11:30:03.193701272Z"
+}

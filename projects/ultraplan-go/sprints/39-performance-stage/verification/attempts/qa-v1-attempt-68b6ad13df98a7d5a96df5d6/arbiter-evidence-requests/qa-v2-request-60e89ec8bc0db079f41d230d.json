@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "renewal": {
+      "granted_at": "2026-09-12T20:23:07.702682618Z",
+      "target_fingerprint": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+      "prior_reason": "",
+      "base_attempts": 0,
+      "base_preparations": 0,
+      "started_at": "2026-09-12T20:23:19.818233126Z",
+      "completed_at": "2026-09-12T20:25:38.645808293Z"
+    },
+    "correction_granted_at": "2026-09-12T13:28:09.181900041Z",
+    "correction_attempts": 3,
+    "correction_allowance": 3,
+    "accounting_version": 2,
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "fixture",
+      "code": "unknown_failure",
+      "diagnostic": "authored test contains an unconditional predicted failure",
+      "retryable": false
+    },
+    "id": "qa-v2-request-60e89ec8bc0db079f41d230d",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+    ],
+    "origin_shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+    "gap": "The latest test omitted required sprint inputs and observed an operational ExitValidation failure, not cancellation; target-miss and partial outcomes were not exercised.",
+    "requested_evidence": "Ask the original investigator to strengthen the executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "required_observation": "With a complete valid fixture and existing seams, execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "control_requirement": "Retain healthy and operational-failure controls. Do not use invented actions, source-token searches, or setup failures as semantic evidence. Frozen product tests establish prior coverage absence.",
+    "priority": "medium",
+    "status": "inconclusive",
+    "evidence_round": 6,
+    "attempts": 1,
+    "evidence_fingerprint": "3984999a1899adb8f5e6d8f7aa3c2d7923c74358be38056c39e0734be6816070",
+    "reason_code": "test_bundle_invalid",
+    "next_action": "The targeted renewal allowance is spent. Inspect the retained diagnostic and resolve the remaining verification prerequisite."
+  }
+}

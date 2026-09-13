@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b78583de2ed2f9a939e03e9a",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Target parsing, measurement, and benchmark identity",
+  "changed_paths": [
+    "internal/sprint/index.go",
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_benchmark_test.go",
+    "internal/sprint/performance_discovery.go",
+    "internal/sprint/performance_measure.go",
+    "internal/sprint/performance_targets.go",
+    "internal/sprint/performance_targets_test.go",
+    "internal/sprint/performance_types.go"
+  ],
+  "context_paths": [
+    "internal/project/domain.go",
+    "internal/project/index.go",
+    "internal/sprint/performance.go"
+  ],
+  "boundary_reason": "Owns requirements target parsing, closed descriptor discovery, command construction, output parsing, qualification, comparison, and outcome rules.",
+  "behavioral_concerns": [
+    "Commands must use fixed argument arrays and an allowlisted environment; descriptor coverage must be complete and unique.",
+    "Only complete serial sample sets may qualify, with deterministic statistics, boundary behavior, and outcome precedence.",
+    "Packet, policy, manifest, parser, command, output, and environment identities must be deterministic and drift-sensitive.",
+    "The target table must reject malformed contracts, duplicates, pseudo-sections, unsupported units, invalid samples, and policy disagreement."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-errors",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-65249f5972392b6b782b071c",
+    "qa-v1-block-80a16af2d655a61cc6762d41",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-c46dffb145fa671331d12a4d",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06"
+  ],
+  "prepared_prompt_bytes": 167249,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-b78583de2ed2f9a939e03e9a/1",
+      "number": 1,
+      "session_id": "ses_f6aa5ac81ffe48aIlxIKVZgiFG",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "f07611d4962d0052838c8517967d2c9d1c69c5f58fdfbaa278b18b829d8dedb2",
+      "started_at": "2026-09-12T11:21:56.962692864Z",
+      "completed_at": "2026-09-12T11:22:50.278348144Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "After decoding the envelope, parsePerformanceJSONValue reports trailing data only when decoder.Decode(\u0026struct{}{}) returns nil. A syntax error from malformed trailing JSON is ignored before the envelope is accepted.",
+          "paths": [
+            "internal/sprint/performance_measure.go"
+          ]
+        },
+        {
+          "kind": "test_gap",
+          "summary": "The cited parser tests cover duplicate envelopes and truncation but not a valid envelope followed by malformed trailing bytes.",
+          "paths": [
+            "internal/sprint/performance_benchmark_test.go"
+          ]
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 49450,
+        "output_tokens_known": true,
+        "output_tokens": 951,
+        "total_tokens_known": true,
+        "total_tokens": 99163,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 378,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 48384,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 22,
+      "retained_events": 22,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 167249,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 53315655280
+      },
+      "estimated_cost": {
+        "amount": 0.11808679999999999,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted",
+      "repair": {
+        "attempted": true,
+        "max_attempts": 1,
+        "attempt_count": 1,
+        "exhausted": false,
+        "permission_denied": false,
+        "unsupported_same_session": false
+      }
+    },
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-b78583de2ed2f9a939e03e9a/1/evidence/qa-v2-request-96ab4d195642f558fdc3b798/1",
+      "number": 2,
+      "session_id": "ses_f6aa5ac81ffe48aIlxIKVZgiFG",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "f07611d4962d0052838c8517967d2c9d1c69c5f58fdfbaa278b18b829d8dedb2",
+      "started_at": "2026-09-12T11:32:49.484893415Z",
+      "completed_at": "2026-09-12T11:33:21.161319838Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 692,
+        "output_tokens_known": true,
+        "output_tokens": 32,
+        "total_tokens_known": true,
+        "total_tokens": 53218,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 142,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 52352,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 15,
+      "retained_events": 15,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 8760,
+        "prefix_bytes": 0,
+        "tool_calls_by_kind": {
+          "apply_patch": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 31676426423
+      },
+      "stop_reason": "investigator-authored test snapshotted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-bd5d5990c9d330ce736e467c",
+      "shard_id": "qa-v1-shard-b78583de2ed2f9a939e03e9a",
+      "claim": "The JSON performance output parser accepts malformed trailing data after an otherwise valid envelope.",
+      "basis": "The parser's second Decode rejects trailing content only when it returns nil, while the governed requirements require product-owned strict parsing and drift-sensitive output identity (qa-v1-block-dbf7e69765ab615487ff3a15, qa-v1-block-ce45392d2ebc036986b89d13).",
+      "verification_surface": "internal/sprint/performance_measure.go and internal/sprint/performance_benchmark_test.go",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-performance",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "high",
+      "confirmation_condition": "A line containing the required marker, one valid matching JSON envelope, and malformed non-whitespace trailing bytes is parsed successfully instead of being rejected.",
+      "refutation_condition": "The parser rejects every non-whitespace token after the first JSON value, including malformed trailing bytes that cause the second Decode call to return a syntax error rather than nil.",
+      "inconclusive_condition": "The omitted implementation differs materially from the cited changed hunk or another validated layer rejects such output before it can qualify a sample.",
+      "safe_evidence_strategy": "Exercise the existing parser test surface with a valid matching envelope followed by malformed trailing text; no subprocess or repository mutation is required.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-b78583de2ed2f9a939e03e9a/1",
+          "number": 1,
+          "session_id": "ses_f6aa5ac81ffe48aIlxIKVZgiFG",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "f07611d4962d0052838c8517967d2c9d1c69c5f58fdfbaa278b18b829d8dedb2",
+          "started_at": "2026-09-12T11:21:56.962692864Z",
+          "completed_at": "2026-09-12T11:22:50.278348144Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "After decoding the envelope, parsePerformanceJSONValue reports trailing data only when decoder.Decode(\u0026struct{}{}) returns nil. A syntax error from malformed trailing JSON is ignored before the envelope is accepted.",
+              "paths": [
+                "internal/sprint/performance_measure.go"
+              ]
+            },
+            {
+              "kind": "test_gap",
+              "summary": "The cited parser tests cover duplicate envelopes and truncation but not a valid envelope followed by malformed trailing bytes.",
+              "paths": [
+                "internal/sprint/performance_benchmark_test.go"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 49450,
+            "output_tokens_known": true,
+            "output_tokens": 951,
+            "total_tokens_known": true,
+            "total_tokens": 99163,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 378,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 48384,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 167249,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 53315655280
+          },
+          "estimated_cost": {
+            "amount": 0.11808679999999999,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-b78583de2ed2f9a939e03e9a/1/evidence/qa-v2-request-96ab4d195642f558fdc3b798/1",
+          "number": 2,
+          "session_id": "ses_f6aa5ac81ffe48aIlxIKVZgiFG",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "f07611d4962d0052838c8517967d2c9d1c69c5f58fdfbaa278b18b829d8dedb2",
+          "started_at": "2026-09-12T11:32:49.484893415Z",
+          "completed_at": "2026-09-12T11:33:21.161319838Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 692,
+            "output_tokens_known": true,
+            "output_tokens": 32,
+            "total_tokens_known": true,
+            "total_tokens": 53218,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 142,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 52352,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 8760,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 31676426423
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "After decoding the envelope, parsePerformanceJSONValue reports trailing data only when decoder.Decode(\u0026struct{}{}) returns nil. A syntax error from malformed trailing JSON is ignored before the envelope is accepted.",
+          "paths": [
+            "internal/sprint/performance_measure.go"
+          ]
+        },
+        {
+          "kind": "test_gap",
+          "summary": "The cited parser tests cover duplicate envelopes and truncation but not a valid envelope followed by malformed trailing bytes.",
+          "paths": [
+            "internal/sprint/performance_benchmark_test.go"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-96ab4d195642f558fdc3b798: predicted_failure_reproduced\nRequired observation: The assertion must cover qa-v1-theory-bd5d5990c9d330ce736e467c by showing whether ParsePerformanceOutput returns the envelope value without an error for the malformed suffix.\nTest internal/sprint/qa_investigator_f558fdc3b798_test.go:\npackage sprint\n\nimport \"testing\"\n\nfunc TestQAInvestigator_f558fdc3b798(t *testing.T) {\n\ttarget := PerformanceTarget{ID: \"PERF-QA\", Scenario: \"qa scenario\", Metric: \"latency\", Unit: PerformanceMS}\n\tdescriptor := performanceDescriptor(PerformanceJSONRunner, \".\", \"TestQA\", PerformanceMS, target.ID)\n\tline := performanceOutputLine(performanceJSONEnvelope{\n\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\tTargetID:      target.ID,\n\t\tScenario:      target.Scenario,\n\t\tMetric:        target.Metric,\n\t\tUnit:          target.Unit,\n\t\tValue:         \"4.2\",\n\t})\n\n\tif value, err := ParsePerformanceOutput(descriptor, target, line+\"   \\t\", false); err != nil || value != \"4.2\" {\n\t\tt.Fatalf(\"whitespace-only suffix control failed: value=%q err=%v\", value, err)\n\t}\n\tif _, err := ParsePerformanceOutput(descriptor, target, line+\" {}\", false); err == nil {\n\t\tt.Fatal(\"second valid JSON value control failed: parser accepted trailing value\")\n\t}\n\tif value, err := ParsePerformanceOutput(descriptor, target, line+\" {\", false); err == nil {\n\t\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798: parser accepted malformed trailing bytes with value=%q\", value)\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_f558fdc3b798\n    qa_investigator_f558fdc3b798_test.go:24: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798: parser accepted malformed trailing bytes with value=\"4.2\"\n--- FAIL: TestQAInvestigator_f558fdc3b798 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/sprint/qa_investigator_f558fdc3b798_test.go"
+          ],
+          "check_id": "qa-v2-test-d2b77ae8796965482151be3d",
+          "output_digest": "24ef409f2fa607939093bb7226ca9194e442341bc198f1c37d173e6b78179402"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ]
+}

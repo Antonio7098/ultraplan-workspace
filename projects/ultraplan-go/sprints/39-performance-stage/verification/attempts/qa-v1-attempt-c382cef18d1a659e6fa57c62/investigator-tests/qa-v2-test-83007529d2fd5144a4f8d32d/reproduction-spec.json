@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-5bb1a9bdb4367857eac5f53a",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-b29b255f71007d67ac6ef323",
+  "evidence_request_id": "qa-v2-request-21836b45dff44c191617c383",
+  "theory_ids": [
+    "qa-v1-theory-b120687ce5ad252ba59d75ad"
+  ],
+  "claim": "The bounded performance-evidence API discloses retained artifact paths and digests even though public surfaces must not disclose private paths or outputs.",
+  "preconditions": [
+    "Assert raw artifact contents are absent to isolate metadata exposure."
+  ],
+  "expected_behavior": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_4c191617c383",
+    "assertion": "Assert the JSON response contains path and digest fields and rendered workbench output contains the digest.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_4c191617c383"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_4c191617c383_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-4c191617c383",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_4c191617c383$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "1f6e3d51b97e6242e4d8597641a9bba58d87afa5f255d5558480ec5d69377109"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T12:57:55.016360287Z"
+}

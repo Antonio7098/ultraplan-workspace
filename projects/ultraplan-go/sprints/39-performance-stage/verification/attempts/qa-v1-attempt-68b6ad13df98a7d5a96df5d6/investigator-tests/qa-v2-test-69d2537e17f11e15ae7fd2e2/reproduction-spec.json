@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-e2721c42c3167585652edf65",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-9033b31413394dbcfc5e147e",
+  "evidence_request_id": "qa-v2-request-ba638561ab2878d7bc49d841",
+  "theory_ids": [
+    "qa-v1-theory-fa8487cda772b1748115a5c2"
+  ],
+  "claim": "A valid performance run containing a met report-only target can fail flow-state publication because the summary counts met and missed comparisons across all targets, while validation limits their sum to required targets only.",
+  "preconditions": [
+    "Provide valid state pointers, digests, phase, and next action so only the target-count invariant determines the result."
+  ],
+  "expected_behavior": "The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_78d7bc49d841",
+    "assertion": "The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_78d7bc49d841_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-78d7bc49d841",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_78d7bc49d841$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "672015315fc42feb378a3214de4c46e67e902f30e9beffbea4fe8cda4a08ddef"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:40:12.372820061Z"
+}

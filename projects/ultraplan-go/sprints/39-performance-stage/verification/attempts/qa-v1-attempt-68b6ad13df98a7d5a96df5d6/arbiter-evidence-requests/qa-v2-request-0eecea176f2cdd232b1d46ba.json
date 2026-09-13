@@ -1,0 +1,126 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "renewal": {
+      "review_started_at": "2026-09-12T20:30:56.254881083Z",
+      "review": {
+        "evidence_digest": "f49340dbb842e4f578dd195768932c22b663a3efa036dd65547263c74953239f",
+        "group": {
+          "id": "qa-v1-arbiter-group-f49340dbb842e4f578dd1957",
+          "theory_ids": [
+            "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+          ],
+          "context_block_ids": [
+            "qa-v1-block-06f056cf8a8ebf03d29f1cc8",
+            "qa-v1-block-19e471996aa5f3432aae4add",
+            "qa-v1-block-1bec30a6414976c9c25b5d55",
+            "qa-v1-block-263b3a5636c57033d940e0e1",
+            "qa-v1-block-288742cf99fce5f4e3f007e3",
+            "qa-v1-block-2fa5eb620169346ab567a9ec",
+            "qa-v1-block-307234c6bfff53948b392930",
+            "qa-v1-block-357d02b85024955b15a6cb1c",
+            "qa-v1-block-43a7a5ddd6f87c77dae0c37f",
+            "qa-v1-block-43f6c6336f81c3ce55628909",
+            "qa-v1-block-539767426a292f490828efde",
+            "qa-v1-block-5bfa81fcf97f6db90cfa9405",
+            "qa-v1-block-67646c233a191152dd14ff15",
+            "qa-v1-block-68cfca988b5aef1e551fa430",
+            "qa-v1-block-aaed09be66807f81a5a76a14",
+            "qa-v1-block-af5f117594728fd0aab939e2",
+            "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+            "qa-v1-block-b2676a65e977fc5e398b4719",
+            "qa-v1-block-b452bd0ab01bbeddc215ea27",
+            "qa-v1-block-c0c387c762da8df5d477265c",
+            "qa-v1-block-c1187b9b1fd6284859a3e765",
+            "qa-v1-block-cddc9044100638241d3eaec1",
+            "qa-v1-block-ce45392d2ebc036986b89d13",
+            "qa-v1-block-d5844cb601400dfa0f329c46",
+            "qa-v1-block-de76b1625a760c538ab97441",
+            "qa-v1-block-e58670b0f3e1a35d74e45750",
+            "renewal-f49340dbb842e4f578dd1957"
+          ],
+          "session_id": "ses_f68af0bf0ffePp2wGS7Axcmu7E",
+          "provider": "openai",
+          "model": "openai/gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "1a54b97ca0e8956c5a59625e88ebe18c3999d19c5f52cef8bdddea2f4a6b3680",
+          "round": 1,
+          "overrides": [
+            {
+              "id": "qa-v1-override-b0aeb8bff831b98739d2537a",
+              "theory_ids": [
+                "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+              ],
+              "action": "confirm",
+              "outcome": "confirmed",
+              "replacement_claim": "Optimization paths discard isolation cleanup failures and may continue into another mutation cycle instead of publishing cleanup_uncertain and stopping new work.",
+              "reason": "The package-local executable reproducer exercised optimizePerformance with an actual rejected proposal and induced isolation cleanup failure. The failure case started a second runtime proposal, returned stalled with no error, and did not preserve cleanup uncertainty; the successful-cleanup control completed two expected cycles.",
+              "reason_refs": [
+                "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+              ],
+              "confidence": 0.99
+            }
+          ],
+          "issues": [
+            {
+              "id": "qa-v1-arbiter-issue-d0c2fb8fef3f6c378b849d1e",
+              "theory_ids": [
+                "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+              ],
+              "claim": "Optimization rejection paths ignore isolation cleanup failures, allowing later optimization work and a stalled result instead of stopping with cleanup_uncertain.",
+              "title": "Optimization continues after isolation cleanup failure",
+              "issue_class": "workflow_cleanup",
+              "severity": "medium",
+              "location": "internal/sprint/performance_optimize_runtime.go",
+              "reason": "Executable package-local evidence induced cleanup failure after an actual runtime proposal rejection. optimizePerformance invoked the runtime twice, returned stalled with nil error, and exposed no cleanup_uncertain classification, while the otherwise identical successful-cleanup control behaved as expected.",
+              "evidence_refs": [
+                "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+              ]
+            }
+          ],
+          "fallback": false
+        }
+      },
+      "granted_at": "2026-09-12T20:27:34.997056221Z",
+      "target_fingerprint": "48cf5d5804d1ac4f9a7c858395c4c48d4d7dfadf107648571a700357c588dea6",
+      "prior_reason": "",
+      "base_attempts": 0,
+      "base_preparations": 0,
+      "started_at": "2026-09-12T20:27:46.498108416Z",
+      "test_bundle_id": "qa-v2-test-b32c3bca434c97ee8b522d5a",
+      "completed_at": "2026-09-12T20:32:05.404238298Z"
+    },
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-b32c3bca434c97ee8b522d5a",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T20:29:59.238152896Z",
+        "completed_at": "2026-09-12T20:30:53.848709513Z",
+        "run_id": "qa-v2-run-96377852fae3cc8439534863"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-0eecea176f2cdd232b1d46ba",
+    "arbiter_group_id": "qa-v1-arbiter-group-246f1b69300f7315ea6b9570",
+    "theory_ids": [
+      "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+    ],
+    "origin_shard_id": "qa-v1-shard-30b3a58b7d705cab56edb54b",
+    "gap": "Existing tests inspect source or simulate another loop; neither executes optimizePerformance. No frozen cleanup-failure injection hook is demonstrated.",
+    "requested_evidence": "Ask the original investigator to create or strengthen a package-local executable Go _test.go reproducer in its approved private workspace for qa-v1-theory-35a6a9cbcf6592fb04bb7828 using only existing seams.",
+    "required_observation": "Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828.",
+    "control_requirement": "Include an otherwise identical successful-cleanup control. Do not assume source changes or a new hook; if existing seams cannot induce cleanup failure, report verification_unavailable and retain the missing cleanup-failure injection prerequisite.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 4,
+    "attempts": 1,
+    "evidence_fingerprint": "bd984b63f605a28b3d542df874bc9c0508e6cd907044f3fa23a13adba6001ff3",
+    "test_bundle_id": "qa-v2-test-b32c3bca434c97ee8b522d5a",
+    "latest_run_id": "qa-v2-run-96377852fae3cc8439534863",
+    "next_action": "The renewed assertions and execution received a conclusive semantic review."
+  }
+}

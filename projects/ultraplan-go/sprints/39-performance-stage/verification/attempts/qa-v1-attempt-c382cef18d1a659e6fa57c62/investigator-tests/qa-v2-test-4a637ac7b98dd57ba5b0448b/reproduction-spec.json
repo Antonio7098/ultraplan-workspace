@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-12849e18731e074c7681cc7d",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+  "evidence_request_id": "qa-v2-request-10876e3025aa9353fcf1007e",
+  "theory_ids": [
+    "qa-v1-theory-fc3744e6e8886693c1c4a689"
+  ],
+  "claim": "The performance failure path can publish a flow-state summary after its verification writer token becomes stale because it does not recheck the writer fence immediately before SaveFlowState.",
+  "preconditions": [
+    "Include a passing control reaching the same entry point and assert fixture preconditions before the defect assertion."
+  ],
+  "expected_behavior": "Confirm only if: Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.. Refute only if: SaveFlowState performs the complete verification writer-token check immediately before publication, or a cited ownership guarantee proves the generation cannot change during this interval.. Otherwise: The ownership lifecycle or SaveFlowState behavior differs from the cited source and available evidence cannot establish whether ownership can change across the interval.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_9353fcf1007e",
+    "assertion": "Confirm only if: Ownership can change after PublishState checks the token and before finishPerformanceFailure calls SaveFlowState, allowing the stale generation to modify durable flow state.. Refute only if: SaveFlowState performs the complete verification",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_9353fcf1007e"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_9353fcf1007e_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-9353fcf1007e",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_9353fcf1007e$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "f59291e7a47f975e7fe18712d12a6536e2ca2fc3d9fae5152797b4636e4649ac"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T12:54:03.258869526Z"
+}

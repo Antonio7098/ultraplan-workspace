@@ -1,0 +1,546 @@
+{
+  "claim_resolutions": [
+    {
+      "issue": {
+        "id": "qa-v2-issue-01916e6c0e0566e8940471ab",
+        "root_cause_group_id": "qa-v2-group-960835fd7faa52781ed530c9",
+        "title": "Optimization continues after isolation cleanup failure",
+        "issue_class": "workflow_cleanup",
+        "severity": "medium",
+        "location": "internal/sprint/performance_optimize_runtime.go",
+        "evidence_ids": [
+          "qa-v2-evidence-0e4e3dc356711714be780b3d"
+        ],
+        "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+        "repair_eligible": true,
+        "regression_candidate": true
+      },
+      "theory_ids": [
+        "qa-v1-theory-35a6a9cbcf6592fb04bb7828"
+      ],
+      "request_ids": [
+        "qa-v2-request-07d95cd845e0108c780842e4",
+        "qa-v2-request-0eecea176f2cdd232b1d46ba",
+        "qa-v2-request-17df7388a8e4c0ffb6d0e16a",
+        "qa-v2-request-36cb5bfb47aa55a5e699f720",
+        "qa-v2-request-559158551da72d320c37568b",
+        "qa-v2-request-9148ec87db83fa186204264b",
+        "qa-v2-request-b3c6e2f02bc6a02b8a23413a",
+        "qa-v2-request-b688feab2392d3e81ee473d4",
+        "qa-v2-request-d1ba5b60ee106aa1d74ac997"
+      ],
+      "disposition": "resolved_by_verified_repair",
+      "repair_result": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-99d53cdcca1098534de53e2d/recovery-result.json",
+        "digest": "fe61ed7ba5a4a7b41e87948a55a67c042a5191738686fa0dbbce733d02b49ee1"
+      },
+      "verification": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-99d53cdcca1098534de53e2d/qa-resolution/verification-5ba7d6b7921cf847e4424914499227b4fb2079abe260785f3d342fe29724177b.json",
+        "digest": "ebef9772e13910ad445fc130403940a2bbdc41c72ab7e90c25b5611b76dc02e8"
+      }
+    }
+  ],
+  "evidence_retirements": [
+    {
+      "id": "qa-v2-retirement-8fa5f90b05bdeb7def7f0a0b",
+      "request_id": "qa-v2-request-13cc278803c32eaa2dbf06b2",
+      "operator": "codex",
+      "reason": "Retained reproducer ends in an unconditional testing.T.Fatalf, so it cannot establish a repairable product defect.",
+      "diagnostic": "unconditional_predicted_failure",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-bd8fd861a8b2d54eb6480aba",
+          "test_bundle_id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+          "bundle_digest": "623afb665e298cc97eb575abe73221383ceb0e9e14e5f89d4d7ffd95b484e064",
+          "evidence_digest": "71576895f9d1b3e5a4fee8adf4f9b086f7c4c53d94dac96b5974903213b1efcc"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8fa5f90b05bdeb7def7f0a0b/adjudication.json",
+        "digest": "fbe7123d1ea0496633d8236997fc0935216858db418d7d0d730f1ad7f3752d24"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8fa5f90b05bdeb7def7f0a0b/assessment.json",
+        "digest": "f2006033552c70605005f7dbd57bbf1fb280172a5ffd246bcfe913e54faf6227"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8fa5f90b05bdeb7def7f0a0b/issue-evidence-coverage.json",
+        "digest": "a08b77d25b0a27d651808e67fab97a4ee4239742dba15ed19222ff395bf1e730"
+      },
+      "recorded_at": "2026-09-12T16:12:08.862022113Z"
+    },
+    {
+      "id": "qa-v2-retirement-3e83deaa03d33d25579dcb03",
+      "request_id": "qa-v2-request-b6170cb8d2c9b7efe9eb62a1",
+      "operator": "antonioborgerees",
+      "reason": "Frozen test asserted acceptance while the promoted issue claimed missing rejection; the current implementation correctly rejected the zero-target passing record.",
+      "diagnostic": "unconditional_predicted_failure",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-267a2f024601a2e21585e870",
+          "test_bundle_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+          "bundle_digest": "b963e357183de197d6a1a7b88bfded93c5a0fef73d8c08af6c46b92a9dd59b3e",
+          "evidence_digest": "1939e2db044c3891cdec88c57b4eb641bc721acfb17aab3e44b89772f1e8cb14"
+        },
+        {
+          "evidence_id": "qa-v2-evidence-50ac97b9100a4c15df0e01fc",
+          "test_bundle_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+          "bundle_digest": "faadf4868c0cf712b7c71a6ccf346f3ff6e9e68a81384422a602c7c083a1d149",
+          "evidence_digest": "e03901c40f4acced3cbe039e2b7dc5b8544be0f6accd856f9a1d2a889acafa00"
+        },
+        {
+          "evidence_id": "qa-v2-evidence-59eccf8b0f94fef2945ac94c",
+          "test_bundle_id": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+          "bundle_digest": "1583d849adc8a58a67d3df3b15b4284cad390bda49643fd7b5a7b9461906155a",
+          "evidence_digest": "583ddb9d0dc6d7959d8b8c2796938cc2f0fce455eabed43550fa2106b5a02179"
+        },
+        {
+          "evidence_id": "qa-v2-evidence-97ab420cdfb8e8ffbd55d4ae",
+          "test_bundle_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+          "bundle_digest": "011ed2c048d53412f533a858dbea6cf54e7c074b7a8943766089c3d1560d02dc",
+          "evidence_digest": "b3a128a159a96742a90b38722e1aeb9516384d8d0034321c4cce4e5db936dc0c"
+        },
+        {
+          "evidence_id": "qa-v2-evidence-9dd64f43be091f9c54b6fb1b",
+          "test_bundle_id": "qa-v2-test-0d0fa2ce66a25e252c2149e5",
+          "bundle_digest": "f3346d395c7b3eee0d8b32f104ed20816be5defe124f6924ec7f674cd67c148e",
+          "evidence_digest": "8efeaacfa34cf667e47eb4dd3df1a727ed09b1400ea05892022feca8c0ed1db3"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-3e83deaa03d33d25579dcb03/adjudication.json",
+        "digest": "56b2bfef5b825a63b381d460f33cdd897b781ba1668d99ec903e7498e8240afb"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-3e83deaa03d33d25579dcb03/assessment.json",
+        "digest": "5c2342032e77e861d29ef968245f6d829719b60f22c59ebf599a3abf61d4f6ac"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-3e83deaa03d33d25579dcb03/issue-evidence-coverage.json",
+        "digest": "4b668b063c89d7c2ac3875e043adb1657d8227af3157bac82fd395890d62b3a9"
+      },
+      "recorded_at": "2026-09-12T17:42:29.388857458Z"
+    },
+    {
+      "id": "qa-v2-retirement-d957eeb92a8b85e58ded6895",
+      "request_id": "qa-v2-request-1cefed6a599adae46ba55ba6",
+      "operator": "antonioborgerees",
+      "reason": "Frozen test expected the omitted evidence limit to remain zero and return HTTP 500, but current correct behavior applies limit 50 and returns HTTP 200; the test also ends in an unconditional predicted failure.",
+      "diagnostic": "unconditional_predicted_failure",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-67e0793d19fecc71197e3a0c",
+          "test_bundle_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+          "bundle_digest": "ed020f42a778e2543e5fb7d6b51efc720450c45c5468b164a46aacc3a8b83746",
+          "evidence_digest": "2e82f887e0eaabb6d6660fc4ec0d63ceea72b0cb8f4a8b5ca585300a909394ee"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-d957eeb92a8b85e58ded6895/adjudication.json",
+        "digest": "11401f98e0145459b5f17d3c8138e8d32058f941f2cdf977b15b0a42acab8334"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-d957eeb92a8b85e58ded6895/assessment.json",
+        "digest": "c87ab6c2cf53483f970d40df1d153f8d404b7617311d1f15bfcd49766618c32e"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-d957eeb92a8b85e58ded6895/issue-evidence-coverage.json",
+        "digest": "10ce03ad704a044a5ec4b40705817d31da569c259020e02ad3724c3c159e82bb"
+      },
+      "recorded_at": "2026-09-12T17:46:13.17961403Z"
+    },
+    {
+      "id": "qa-v2-retirement-e38ffc5facfe83beb1dae23c",
+      "request_id": "qa-v2-request-b2ae680281cd729d3c90109f",
+      "operator": "antonioborgerees",
+      "reason": "Governed repair repair-v1-run-ceb4a33e924baa707503fbe7 applied the fix and passed its exact reproducer and complete ladder; the pre-repair failing evidence must not keep the repaired issue in the retained queue.",
+      "diagnostic": "operator_retirement",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-8f00144753ce57cb4d91beac",
+          "test_bundle_id": "qa-v2-test-54a2569f5e519e1993d77c95",
+          "bundle_digest": "315804711f1bdc8e29bd18f112fa2efbcc1fda294c66b7de2a7b1ed4ed5cf232",
+          "evidence_digest": "ab3a83cdb6f5828ce5093616f67a733eac8db6527c6c8275df18f29769f62ac0"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-e38ffc5facfe83beb1dae23c/adjudication.json",
+        "digest": "5c3c7db7f1b1799bfb539769d2dbf37823d09d3ab7c9a06c86920e4fae41dda9"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-e38ffc5facfe83beb1dae23c/assessment.json",
+        "digest": "9e09885938a6f6d0e342e01d47e724185e217422f975b5330a5fb28be9009c95"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-e38ffc5facfe83beb1dae23c/issue-evidence-coverage.json",
+        "digest": "0ff2f539338eee6b6f1f7f3cacfe3d7645cc88c69c842e59633c4c559e6c2164"
+      },
+      "recorded_at": "2026-09-12T17:52:46.661360601Z"
+    },
+    {
+      "id": "qa-v2-retirement-8eaa6ab3f18f8c78235b2125",
+      "request_id": "qa-v2-request-07d95cd845e0108c780842e4",
+      "operator": "antonioborgerees",
+      "reason": "Frozen test runs a private two-iteration fake loop and deliberately calls its own propose method twice; it never exercises product cleanup behavior, so no governed product repair can satisfy it.",
+      "diagnostic": "operator_retirement",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-372461ad324508ca6636dcb7",
+          "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+          "bundle_digest": "727b404f304d7621468898c0f3f6d979f13fe1347b8f5e50af3bfd8d387a1f4e",
+          "evidence_digest": "5ea34616063330fd82567aafadfc3f96d951cc8951eb8c6ea92a1ba3a05faafa"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8eaa6ab3f18f8c78235b2125/adjudication.json",
+        "digest": "f1781ea4d3ead01fa2f2dd99381ddb29e2cfb54948b773446a5c0638f10cb697"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8eaa6ab3f18f8c78235b2125/assessment.json",
+        "digest": "d0d5bdc2b8ad78fa1aac0a12777d5ccd1e44a3b5c47aec1a5a3c15b4510c13f9"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-8eaa6ab3f18f8c78235b2125/issue-evidence-coverage.json",
+        "digest": "e76e0a24e35d12c160fca61e5aa8301b36997e9b9546df96ae0fad8015c59e34"
+      },
+      "recorded_at": "2026-09-12T17:56:47.242227306Z"
+    },
+    {
+      "id": "qa-v2-retirement-320113ce85f8a9ff9631a652",
+      "request_id": "qa-v2-request-ef633898930720f83a1a7704",
+      "operator": "antonioborgerees",
+      "reason": "Governed repair repair-v1-run-d00241da2c8a025836383c73 already applied exact mode parsing and passed the immutable reproducer plus complete ladder; the retained pre-repair failure must not be selected again.",
+      "diagnostic": "operator_retirement",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-408040e1837c91fedfe288e1",
+          "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+          "bundle_digest": "083202a47949f78c3d4a7c3efd069a112e6f6d73b46b34e7520afa40b204bea8",
+          "evidence_digest": "02b901d3ea8470da1b18239eecb34c1f4189659199d0859dcdd29c7bf9bb95ec"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-320113ce85f8a9ff9631a652/adjudication.json",
+        "digest": "e2e25d1843d50b949969a34265ae257349102fdfeade299ecedfa49d49f443e4"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-320113ce85f8a9ff9631a652/assessment.json",
+        "digest": "5d9de159b0e636dc9b70af2ed89ccb9074ebd878c8108fdddc10dc7966b92fa9"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-320113ce85f8a9ff9631a652/issue-evidence-coverage.json",
+        "digest": "506a6d5cc449761310e485be3251736e929a253e7b4f03f859fbfd7c72218fa3"
+      },
+      "recorded_at": "2026-09-12T17:58:17.564481091Z"
+    },
+    {
+      "id": "qa-v2-retirement-dbb55139da06e58f934fff2b",
+      "request_id": "qa-v2-request-96ab4d195642f558fdc3b798",
+      "operator": "antonioborgerees",
+      "reason": "Governed repair repair-v1-run-c5e8e2a228dd383587fe8f7c applied strict JSON suffix rejection and passed its exact reproducer and complete ladder; retire the pre-repair failure from the retained queue.",
+      "diagnostic": "operator_retirement",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-dbadb1804ad4ea0b7a534469",
+          "test_bundle_id": "qa-v2-test-d2b77ae8796965482151be3d",
+          "bundle_digest": "40ac4b87e5d745ca45a31b8cccd34c4d12bb89de1b7a875bed248b316241511c",
+          "evidence_digest": "3064b9c0b7f8f66b33772acf1bff6ec772a6aaa2ec6e1e287e58dbd046678e56"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-dbb55139da06e58f934fff2b/adjudication.json",
+        "digest": "b03ba96c868bdd05d07abcb68a20b7856be1dc85e2815d72a3dc7e276573222e"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-dbb55139da06e58f934fff2b/assessment.json",
+        "digest": "076f69eca349f44d55ab507fe3838cbc668144966d7d20e768e7d2f7230a42fd"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-dbb55139da06e58f934fff2b/issue-evidence-coverage.json",
+        "digest": "de086414cc2e56c5860a317a0dcc56efba85a07221300339fdfc9e0a4a7324ec"
+      },
+      "recorded_at": "2026-09-12T18:02:32.046802043Z"
+    },
+    {
+      "id": "qa-v2-retirement-10809cb75bc5062838a55028",
+      "request_id": "qa-v2-request-717ddd9a741f8cee749d8094",
+      "operator": "antonioborgerees",
+      "reason": "Governed repair repair-v1-run-8a952c78b856d67f5490fedd fixed stdout failure propagation and passed its exact reproducers and complete ladder; retire this pre-repair evidence from reselection.",
+      "diagnostic": "operator_retirement",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-03a7542f2f3f6cfb3f0c46f1",
+          "test_bundle_id": "qa-v2-test-30aa4e77884683ef74f1e437",
+          "bundle_digest": "b0175be9df7f656f5cac870151937964a0bd1d0183c337419aa232c522ba2aa5",
+          "evidence_digest": "d2c56a3d53c807973897d5fd134635a71e639e5d90320c2d31b60774d42d1fb1"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-10809cb75bc5062838a55028/adjudication.json",
+        "digest": "c6a3a19565bde7c5f9864db774f0a7727b91b598d209c923c466f0d1aad01118"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-10809cb75bc5062838a55028/assessment.json",
+        "digest": "5fe2868be213299acc86b817f849a4e9316594a01c3b81b01ac6b49ab3acaa83"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-10809cb75bc5062838a55028/issue-evidence-coverage.json",
+        "digest": "9fcd38be50100e6a19b432c98b15e521e598f6d7fb8e3cd543212d69eb8f8641"
+      },
+      "recorded_at": "2026-09-12T18:09:16.508470726Z"
+    },
+    {
+      "id": "qa-v2-retirement-5a88167249fcf462e92ad018",
+      "request_id": "qa-v2-request-ba638561ab2878d7bc49d841",
+      "operator": "antonioborgerees",
+      "reason": "Governed repair repair-v1-run-32cc7834f028722009a6b63a fixed report-only flow-state validity and passed its exact reproducer and complete ladder; retire the pre-repair failure from the retained queue.",
+      "diagnostic": "operator_retirement",
+      "records": [
+        {
+          "evidence_id": "qa-v2-evidence-53b03de369a9bfd58bd53512",
+          "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+          "bundle_digest": "36ed26500eaa0a12ce03f9d3422236c8becaefbf11ca88fc5f7f0d13a1a81889",
+          "evidence_digest": "488dee0733241da8b4c5b5c75b8ae6e5056ef39b9cffad4c8486268d64b8c12b"
+        }
+      ],
+      "source_adjudication": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-5a88167249fcf462e92ad018/adjudication.json",
+        "digest": "9e3555491dbf32e3f929700a905e3da9f92d045d93193d0a722da319dc60e546"
+      },
+      "source_assessment": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-5a88167249fcf462e92ad018/assessment.json",
+        "digest": "fccd2804629098d0ac163124f92c7a878b20ab3fd5a35e31a7b0a5a98ff8e3b0"
+      },
+      "source_coverage": {
+        "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/evidence-retirements/qa-v2-retirement-5a88167249fcf462e92ad018/issue-evidence-coverage.json",
+        "digest": "ef97b96caf9b3d488f030124af54462f943e9ddb0c836f1b6f9ed21d89eac810"
+      },
+      "recorded_at": "2026-09-12T18:14:29.563466984Z"
+    }
+  ],
+  "schema_version": 2,
+  "id": "qa-v2-adjudication-bae47dd5c267fe009b18d63b",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+  "accepted_evidence_ids": [
+    "qa-v2-evidence-031915bea0e9fd348e0d2dda",
+    "qa-v2-evidence-06c244731175c9105f0a0129",
+    "qa-v2-evidence-08bd0589eafbe38eae23ed4d",
+    "qa-v2-evidence-09721d5555a508f0830d8499",
+    "qa-v2-evidence-0e382bbab496e8efd1805043",
+    "qa-v2-evidence-0e4e3dc356711714be780b3d",
+    "qa-v2-evidence-1ba7d9f21d6b034d48920988",
+    "qa-v2-evidence-25d3e98f06890f16ff1e25d0",
+    "qa-v2-evidence-29f3be0bbb947759a4129dfa",
+    "qa-v2-evidence-33e46626c6f545e2ddd8da96",
+    "qa-v2-evidence-3dea7afa8584d44f529789a5",
+    "qa-v2-evidence-4a56017ac8e5122050ab565f",
+    "qa-v2-evidence-4abc65866e42d7589a32b6a0",
+    "qa-v2-evidence-4f3c506b07d69fb9942415b8",
+    "qa-v2-evidence-5b45c8ec395971b8f54919cd",
+    "qa-v2-evidence-66e2bb4d026636f6ccd349d2",
+    "qa-v2-evidence-6f0b3c6e84bd9765b5f6126d",
+    "qa-v2-evidence-a2fdc6efba894a45bb4c2875",
+    "qa-v2-evidence-b4399611906c26c9c19a3bea",
+    "qa-v2-evidence-b56056ba7b5c86c6b74cf133",
+    "qa-v2-evidence-b5b5dbdca1e3c480d8a593f9",
+    "qa-v2-evidence-be3cb76aefdeb3e0acf4dd5f",
+    "qa-v2-evidence-c055a1141b094f007c4d74fb",
+    "qa-v2-evidence-c0f42d428745dd46a6068f10",
+    "qa-v2-evidence-c4e1dc51960f4f3cf2df04ac",
+    "qa-v2-evidence-d1e543c41093b8fef36a873e",
+    "qa-v2-evidence-db7f9917320b9e4f2f6e86e1",
+    "qa-v2-evidence-dba00742a1372800e16303e9",
+    "qa-v2-evidence-de3d89be043e44015c79b173",
+    "qa-v2-evidence-f4ba74024edbf92397debb1c",
+    "qa-v2-evidence-f5bedcd64a3b884f7c029e3b",
+    "qa-v2-evidence-fbc05e34b3dc98412929c5d2"
+  ],
+  "rejected_evidence": [
+    {
+      "evidence_id": "qa-v2-evidence-f97f0fa50ec5313302f68de1",
+      "code": "evidence_blocked",
+      "detail": "the evidence attempt did not complete"
+    },
+    {
+      "evidence_id": "qa-v2-evidence-b6105f0613dd463baef8b97e",
+      "code": "evidence_blocked",
+      "detail": "the evidence attempt did not complete"
+    }
+  ],
+  "unpromoted_issue_candidates": [
+    {
+      "candidate_id": "qa-v2-candidate-0d27b48f4a9f30c0316f85c3",
+      "theory_ids": [
+        "qa-v1-theory-9a2d3dba12c4d353a09f5c53"
+      ],
+      "title": "Performance policy mode parsing is not exact",
+      "issue_class": "input_validation",
+      "severity": "high",
+      "location": "internal/project/index.go",
+      "evidence_ids": [
+        "qa-v2-evidence-408040e1837c91fedfe288e1"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-0db06fa014e7434edf33366a",
+      "theory_ids": [
+        "qa-v1-theory-1007492d20bbcc01841fb291",
+        "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+      ],
+      "title": "Passing repair records need no target coverage",
+      "issue_class": "persistence_integrity",
+      "severity": "high",
+      "location": "internal/sprint/qa_repair_state.go",
+      "evidence_ids": [
+        "qa-v2-evidence-59eccf8b0f94fef2945ac94c"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-155147642b1ff64900caf844",
+      "theory_ids": [
+        "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+        "qa-v1-theory-44d9a1998804c860f04368c4",
+        "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+      ],
+      "title": "Performance CLI compatibility coverage is incomplete",
+      "issue_class": "test_coverage",
+      "severity": "low",
+      "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+      "evidence_ids": [
+        "qa-v2-evidence-08bd0589eafbe38eae23ed4d",
+        "qa-v2-evidence-4a56017ac8e5122050ab565f",
+        "qa-v2-evidence-66e2bb4d026636f6ccd349d2",
+        "qa-v2-evidence-bd8fd861a8b2d54eb6480aba"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired an unconditional failing test; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-7dfc8a12582f2f5139e5e60e",
+      "theory_ids": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "title": "Default performance evidence URL returns an error",
+      "issue_class": "api_behavior",
+      "severity": "medium",
+      "location": "internal/web/handlers.go; internal/sprint/performance_state.go; internal/web/templates/sprint.html",
+      "evidence_ids": [
+        "qa-v2-evidence-67e0793d19fecc71197e3a0c"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-91f0627b41e985dcbcff6004",
+      "theory_ids": [
+        "qa-v1-theory-53f10905cf5035b40ecbb1e8"
+      ],
+      "title": "Failed measurements evade the command budget",
+      "issue_class": "resource_bounding",
+      "severity": "high",
+      "location": "internal/sprint/performance_optimize_runtime.go; internal/sprint/performance_measure.go",
+      "evidence_ids": [
+        "qa-v2-evidence-8f00144753ce57cb4d91beac"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-b398abfc77703b342afc389b",
+      "theory_ids": [
+        "qa-v1-theory-3ba88b4e640cc758bd4724ff",
+        "qa-v1-theory-44d9a1998804c860f04368c4"
+      ],
+      "title": "Performance CLI drops stdout failures",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_commands.go",
+      "evidence_ids": [
+        "qa-v2-evidence-03a7542f2f3f6cfb3f0c46f1",
+        "qa-v2-evidence-66e2bb4d026636f6ccd349d2"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-bb5acf7d335fa11f0ff2180b",
+      "theory_ids": [
+        "qa-v1-theory-1007492d20bbcc01841fb291",
+        "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+      ],
+      "title": "Repair reverification can use the wrong baseline",
+      "issue_class": "correctness",
+      "severity": "high",
+      "location": "internal/sprint/performance_repair.go",
+      "evidence_ids": [
+        "qa-v2-evidence-59eccf8b0f94fef2945ac94c"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-c3afaa87b0296a3b013c4eb0",
+      "theory_ids": [
+        "qa-v1-theory-bd5d5990c9d330ce736e467c"
+      ],
+      "title": "Performance JSON parser accepts malformed suffixes",
+      "issue_class": "input_validation",
+      "severity": "high",
+      "location": "internal/sprint/performance_measure.go",
+      "evidence_ids": [
+        "qa-v2-evidence-dbadb1804ad4ea0b7a534469"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    },
+    {
+      "candidate_id": "qa-v2-candidate-f15288997c338b3c76e66c2b",
+      "theory_ids": [
+        "qa-v1-theory-fa8487cda772b1748115a5c2"
+      ],
+      "title": "Report-only outcomes make flow state invalid",
+      "issue_class": "workflow_state",
+      "severity": "high",
+      "location": "internal/sprint/performance.go; internal/sprint/state.go",
+      "evidence_ids": [
+        "qa-v2-evidence-53b03de369a9bfd58bd53512"
+      ],
+      "reason_code": "promotion_evidence_retired",
+      "detail": "operator retired retained test evidence; the product claim remains unresolved"
+    }
+  ],
+  "root_cause_groups": [
+    {
+      "id": "qa-v2-group-e7da18c2acc4b103e2c8d880",
+      "claim": "The new performance CLI lacks compatibility tests covering stable JSON envelopes, stdout/stderr separation, and outcome-to-exit-code behavior.",
+      "issue_class": "test_coverage",
+      "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+      "evidence_ids": [
+        "qa-v2-evidence-be3cb76aefdeb3e0acf4dd5f",
+        "qa-v2-evidence-d1e543c41093b8fef36a873e"
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "qa-v2-issue-377a3311d04fcdd86069f900",
+      "root_cause_group_id": "qa-v2-group-e7da18c2acc4b103e2c8d880",
+      "title": "Performance CLI compatibility coverage is incomplete",
+      "issue_class": "test_coverage",
+      "severity": "low",
+      "location": "internal/app/performance_test.go; internal/app/performance_fixtures_test.go; internal/app/sprint_commands_test.go",
+      "evidence_ids": [
+        "qa-v2-evidence-be3cb76aefdeb3e0acf4dd5f"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    }
+  ],
+  "completed_at": "2026-09-12T21:19:35.342442288Z"
+}

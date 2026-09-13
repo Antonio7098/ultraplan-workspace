@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-d2b77ae8796965482151be3d",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:33:27.045398772Z",
+        "completed_at": "2026-09-12T11:34:02.424705776Z",
+        "run_id": "qa-v2-run-24817ed013d98879c0dff5ef"
+      }
+    ],
+    "preparation_attempts": 1,
+    "id": "qa-v2-request-96ab4d195642f558fdc3b798",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-bd5d5990c9d330ce736e467c"
+    ],
+    "origin_shard_id": "qa-v1-shard-b78583de2ed2f9a939e03e9a",
+    "gap": "The decoder control-flow defect is static and the existing test evidence does not cover malformed trailing bytes.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go parser reproducer in the approved private workspace using one valid matching envelope followed by malformed non-whitespace bytes.",
+    "required_observation": "The assertion must cover qa-v1-theory-bd5d5990c9d330ce736e467c by showing whether ParsePerformanceOutput returns the envelope value without an error for the malformed suffix.",
+    "control_requirement": "Include controls for whitespace-only suffix acceptance and a second valid JSON value rejection, with identical descriptor and target identities.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "19cde03e583d4d4f9255c0682df36d7710a3a0faa29065d1eeedee91d115b0b5",
+    "test_bundle_id": "qa-v2-test-d2b77ae8796965482151be3d",
+    "latest_run_id": "qa-v2-run-24817ed013d98879c0dff5ef",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

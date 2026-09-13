@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-99331ab78ce7109c93c12cea",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "evidence_request_id": "qa-v2-request-6a05f64ec6673fdd9404fbd7",
+  "theory_ids": [
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+  ],
+  "claim": "The new public performance CLI surface lacks compatibility tests for stable JSON envelopes, text output, stdout/stderr behavior, and semantic exit-code mappings.",
+  "preconditions": [
+    "Retain healthy and operational-failure controls, use existing deterministic seams, and do not substitute source-token searches for behavioral assertions. Treat the static product-test evidence, not the newly authored reproducer, as proof of prior coverage absence."
+  ],
+  "expected_behavior": "Execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_3fdd9404fbd7",
+    "assertion": "Execute target-miss, cancellation, and partial outcomes and assert stable output, stream behavior, and ExitValidation, ExitCancel, and ExitPartial mappings for qa-v1-theory-7ef7c4876857c8e4b85d4c0c.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_3fdd9404fbd7"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_3fdd9404fbd7_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-3fdd9404fbd7",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_3fdd9404fbd7$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "d2a7a8509957977b72599f516879d2ee5e27fd33a856e43908b03cc5d911b9bd"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T13:28:09.771895325Z"
+}

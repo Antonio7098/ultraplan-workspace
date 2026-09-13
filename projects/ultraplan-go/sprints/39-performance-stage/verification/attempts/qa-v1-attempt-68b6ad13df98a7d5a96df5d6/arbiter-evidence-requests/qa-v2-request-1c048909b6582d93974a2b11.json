@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-12T11:27:49.478687426Z",
+        "completed_at": "2026-09-12T11:28:51.00994023Z",
+        "failure": {
+          "phase": "assertion",
+          "code": "unknown_failure",
+          "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_2d93974a2b11     qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}} --- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s FAIL",
+          "retryable": false
+        },
+        "run_id": "qa-v2-run-67fe371d627f8de97c176e31"
+      }
+    ],
+    "preparation_attempts": 1,
+    "failure": {
+      "phase": "assertion",
+      "code": "unknown_failure",
+      "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_2d93974a2b11     qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}} --- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s FAIL",
+      "retryable": false
+    },
+    "id": "qa-v2-request-1c048909b6582d93974a2b11",
+    "arbiter_group_id": "qa-v1-arbiter-group-0bd2fc6392fc115286ad8730",
+    "theory_ids": [
+      "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+    ],
+    "origin_shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+    "gap": "The broken omitted-limit path is statically established but lacks an executable HTTP compatibility reproducer.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that requests the generated performance evidence endpoint without a limit query parameter.",
+    "required_observation": "The test must assert the actual HTTP status and response result for qa-v1-theory-f2dfc2c802889fddc3bbae5c and demonstrate that the request reaches evidence pagination with the omitted-limit value.",
+    "control_requirement": "Use a bounded retained-attempt fixture and compare against an explicit valid-limit request; do not inspect private artifact contents.",
+    "priority": "high",
+    "status": "superseded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "3ff5671b0a8591afea548a577a974dea32ae4cc126149e29ff5e4cc11ea63213",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-d6798f8083a31ff716b0ebd2",
+    "test_bundle_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+    "latest_run_id": "qa-v2-run-67fe371d627f8de97c176e31",
+    "next_action": "Inspect replacement evidence request qa-v2-request-d6798f8083a31ff716b0ebd2."
+  }
+}

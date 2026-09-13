@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "proof": {
+    "lineage_root": "qa-v2-test-dc7bd57b7dd74e4b104afda0",
+    "repair_session": "ses_f653a18b0ffeTX2pAgxihUtcxS",
+    "schema_version": 1,
+    "packet": {
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/verification/attempts/qa-v1-attempt-68b6ad13df98a7d5a96df5d6/repairs/repair-v1-run-c9eaef6a1a5bab89a14f0f56/issue-packet.json",
+      "digest": "f4c873a7dca8c764f449d9b8b37271c789c20d1dd6d159a4c809e039dd9b5426"
+    },
+    "spec": {
+      "schema_version": 2,
+      "id": "qa-v2-spec-18e8449e2e3c62ad4ac6a124",
+      "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+      "shard_id": "qa-v1-shard-01e870a89a3de8671a761c6d",
+      "evidence_request_id": "qa-v2-request-b6170cb8d2c9b7efe9eb62a1",
+      "theory_ids": [
+        "qa-v1-theory-1007492d20bbcc01841fb291",
+        "qa-v1-theory-ea7c7adacc9ea256c6314ce8"
+      ],
+      "claim": "Repair performance reverification can compare a target against another target's baseline because baseline coverage is validated only by slice length and then accessed by packet index without checking target identity.; Persisted repair reverification validation accepts a passing performance record with no target results, so it does not validate complete digest-bound performance reverification.",
+      "preconditions": [
+        "Use valid digests and authority fields so failures or acceptance cannot be attributed to unrelated schema, digest, cleanup, or environment checks."
+      ],
+      "expected_behavior": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishable targets and reordered baseline entries to prove which baseline median each target receives.",
+      "predicted_failure": {
+        "test_name": "TestQAInvestigator_b7efe9eb62a1",
+        "assertion": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1"
+      },
+      "inconclusive_conditions": [
+        "compile error",
+        "infrastructure error",
+        "mismatched assertion",
+        "timeout",
+        "truncated output",
+        "unrelated panic"
+      ],
+      "approved_test_paths": [
+        "internal/sprint/qa_investigator_b7efe9eb62a1_test.go"
+      ],
+      "command": {
+        "id": "investigator-test-b7efe9eb62a1",
+        "executable": "/usr/bin/go",
+        "args": [
+          "test",
+          ".",
+          "-v",
+          "-run",
+          "^TestQAInvestigator_b7efe9eb62a1$",
+          "-count=1"
+        ],
+        "working_directory": "internal/sprint",
+        "environment": [
+          "PATH"
+        ],
+        "timeout": 300000000000,
+        "output_limit": 262144,
+        "fingerprint": "8d4d21163f78192be7608c52d830321990c1646bc7a9a8d693d73c621fb438f0"
+      },
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "frozen_at": "2026-09-12T11:36:31.748937143Z"
+    },
+    "bundle": {
+      "schema_version": 2,
+      "id": "qa-v2-test-97201aeaf68f5a6b7df50ea0",
+      "spec_id": "qa-v2-spec-18e8449e2e3c62ad4ac6a124",
+      "files": [
+        {
+          "path": "internal/sprint/qa_investigator_b7efe9eb62a1_test.go",
+          "content": "package sprint\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"reflect\"\n\t\"strings\"\n\t\"testing\"\n\t\"time\"\n\n\tpprocess \"github.com/Antonio7098/ultraplan-go/internal/platform/process\"\n)\n\nfunc TestQAInvestigator_b7efe9eb62a1(t *testing.T) {\n\tnow := time.Date(2026, 9, 12, 12, 0, 0, 0, time.UTC)\n\tgates := make([]RepairGateResult, 0, len(RepairGateOrder()))\n\tfor _, gate := range RepairGateOrder() {\n\t\tgates = append(gates, RepairGateResult{Gate: gate, Status: RepairGatePassed})\n\t}\n\tvalid := RepairReverification{\n\t\tSchemaVersion: QARepairSchemaVersion,\n\t\tRepairRunID:   \"repair-v1-run-0123456789abcdef01234567\",\n\t\tCycle:         1,\n\t\tGates:         gates,\n\t\tCompletedAt:   now,\n\t\tPerformance: \u0026RepairPerformanceReverification{\n\t\t\tSchemaVersion:          PerformanceSchemaVersion,\n\t\t\tAttemptID:              \"performance-v1-attempt-0123456789abcdef01234567\",\n\t\t\tPriorResultDigest:      fingerprintOf(\"prior-result\"),\n\t\t\tRepairedImplementation: fingerprintOf(\"repaired-implementation\"),\n\t\t\tTargetResults: []PerformanceTargetResult{\n\t\t\t\t{\n\t\t\t\t\tTarget:     PerformanceTarget{ID: \"PERF-A\", Gate: PerformanceRequired},\n\t\t\t\t\tComparison: PerformanceComparison{TargetID: \"PERF-A\", Outcome: PerformanceTargetMet},\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\tTarget:     PerformanceTarget{ID: \"PERF-B\", Gate: PerformanceRequired},\n\t\t\t\t\tComparison: PerformanceComparison{TargetID: \"PERF-B\", Outcome: PerformanceTargetMet},\n\t\t\t\t},\n\t\t\t},\n\t\t\tOutcome:         PerformancePassed,\n\t\t\tCleanupComplete: true,\n\t\t\tCompletedAt:     now,\n\t\t},\n\t}\n\tqaSetRepairPerformanceCoverage(valid.Performance, fingerprintOf(\"target-packet\"), []string{\"PERF-A\", \"PERF-B\"})\n\n\tt.Run(\"complete target results control\", func(t *testing.T) {\n\t\tif err := ValidateRepairReverification(valid); err != nil {\n\t\t\tt.Fatalf(\"control: complete passing performance reverification was rejected: %v\", err)\n\t\t}\n\t})\n\n\tt.Run(\"cleanup proof control\", func(t *testing.T) {\n\t\tcontrol := valid\n\t\tperformance := *valid.Performance\n\t\tperformance.CleanupComplete = false\n\t\tcontrol.Performance = \u0026performance\n\t\tif err := ValidateRepairReverification(control); err == nil {\n\t\t\tt.Fatal(\"control: passing performance reverification without cleanup proof was accepted\")\n\t\t}\n\t})\n\n\tt.Run(\"rejects zero target results\", func(t *testing.T) {\n\t\tmissing := valid\n\t\tperformance := *valid.Performance\n\t\tperformance.TargetResults = nil\n\t\tmissing.Performance = \u0026performance\n\t\tif err := ValidateRepairReverification(missing); err == nil {\n\t\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\t\tt.Fatal(\"passing performance reverification with zero TargetResults was accepted\")\n\t\t}\n\t})\n\n\tt.Run(\"rejects incomplete target results\", func(t *testing.T) {\n\t\tincomplete := valid\n\t\tperformance := *valid.Performance\n\t\tperformance.TargetResults = append([]PerformanceTargetResult(nil), valid.Performance.TargetResults[:1]...)\n\t\tincomplete.Performance = \u0026performance\n\t\tif err := ValidateRepairReverification(incomplete); err == nil {\n\t\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\t\tt.Fatal(\"passing performance reverification with incomplete TargetResults was accepted\")\n\t\t}\n\t})\n\n\tt.Run(\"rejects reordered baseline target identities\", func(t *testing.T) {\n\t\troot := workspaceFixture(t)\n\t\tsp := sprintFixture(t, root, \"proj\", \"39-performance\")\n\t\ttarget := gitFixture(t)\n\t\tbenchmark := `package performance\n\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-A\nfunc BenchmarkA() {}\n\n// ultraplan:performance-v1 go-benchmark-v1 ns/op PERF-B\nfunc BenchmarkB() {}\n`\n\t\tif err := os.WriteFile(filepath.Join(target, \"performance_test.go\"), []byte(benchmark), 0o644); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\trunGitTest(t, target, \"add\", \"performance_test.go\")\n\t\trunGitTest(t, target, \"commit\", \"-m\", \"add performance benchmarks\")\n\t\twriteFileContent(t, filepath.Join(root, \"projects\", \"proj\"), projectIndexForTarget(target)+\"\\n## Performance Policy\\n\\n- **Mode:** enabled\\n\", \"project-index.md\")\n\t\twriteFileContent(t, sp.Path, `# Requirements\n\n## Performance Targets\n\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\n| PERF-A | operation A | latency change | \u003c= | 10 | % | required | 5 | baseline |\n| PERF-B | operation B | latency change | \u003c= | 10 | % | required | 5 | baseline |\n`, \"requirements.md\")\n\t\twriteFileContent(t, sp.Path, \"# Execute\\n\\nComplete.\\n\", \"execute.md\")\n\t\ttask := ExecuteTaskRecord{ID: \"task-performance\", Identity: ExecuteTaskIdentity{Name: \"Performance implementation\", PlanLine: 1}, Status: ExecuteTaskComplete, CreatedAt: now, UpdatedAt: now, CompletedAt: \u0026now}\n\t\texecute := NewExecuteRunState(sp, ExecuteTargetRef{Path: target, Source: \"project-index.md\"}, ArtifactRelPath(sp, StagePlan), fingerprintOf(\"plan\"), []ExecuteTaskRecord{task}, now)\n\t\tif err := SaveExecuteRunState(root, sp, execute); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\tif err := SaveFlowState(root, sp, NewFlowState(sp, completeStates(sp), now)); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\ttoken := VerificationWriterToken{RunID: \"run-performance\", OperationalAttemptID: \"attempt-performance\", FencingGeneration: 1}\n\t\trunner := qaInvestigatorPerformanceRunner{}\n\t\tservice := NewService(root).WithClock(func() time.Time { return now }).WithProcessRunner(runner).WithVerificationWriterFence(func(got VerificationWriterToken) error {\n\t\t\tif got != token {\n\t\t\t\treturn context.Canceled\n\t\t\t}\n\t\t\treturn nil\n\t\t})\n\t\tprepared, err := service.PreparePerformance(\"proj\", \"39\", true)\n\t\tif err != nil || !prepared.Ready {\n\t\t\tt.Fatalf(\"prepare performance: %#v, %v\", prepared, err)\n\t\t}\n\t\tmanifest := PerformanceBenchmarkManifest{\n\t\t\tSchemaVersion: PerformanceSchemaVersion,\n\t\t\tPacketDigest:  prepared.Packet.PacketDigest,\n\t\t\tRunnerVersion: PerformanceRunnerVersion,\n\t\t\tParserVersion: PerformanceParserVersion,\n\t\t\tDescriptors: []PerformanceDescriptor{\n\t\t\t\tperformanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkA\", PerformanceNSPerOp, \"PERF-A\"),\n\t\t\t\tperformanceDescriptor(PerformanceGoBenchmark, \".\", \"BenchmarkB\", PerformanceNSPerOp, \"PERF-B\"),\n\t\t\t},\n\t\t}\n\t\tif err := ValidatePerformanceManifest(prepared.Packet, \u0026manifest); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\tif _, err := service.RunPerformance(context.Background(), \"proj\", \"39\", PerformanceRunRequest{WriterToken: token, Manifest: manifest, Environment: allowPerformanceEnvironment(os.Environ())}); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\tordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\t\tif ordered.Outcome != PerformancePassed || len(ordered.TargetResults) != 2 ||\n\t\t\tordered.TargetResults[0].Target.ID != \"PERF-A\" || ordered.TargetResults[0].BaselineQualification.Median != \"100\" ||\n\t\t\tordered.TargetResults[1].Target.ID != \"PERF-B\" || ordered.TargetResults[1].BaselineQualification.Median != \"200\" {\n\t\t\tt.Fatalf(\"control: correctly ordered baselines were not associated by target: %#v\", ordered)\n\t\t}\n\t\tstate, err := LoadPerformanceState(root, sp)\n\t\tif err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\tstore := NewPerformanceStore(root, sp).WithWriterFence(service.verificationWriterFence)\n\t\tvar baseline []PerformanceMeasurement\n\t\tif err := store.ReadJSON(*state.Baseline, \u0026baseline); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\tbaseline[0], baseline[1] = baseline[1], baseline[0]\n\t\treorderedRef, err := store.PublishJSON(state.Baseline.Path, \"baseline\", baseline, false, token)\n\t\tif err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\tstate.Baseline = \u0026reorderedRef\n\t\tif _, err := store.PublishState(state, token); err != nil {\n\t\t\tt.Fatal(err)\n\t\t}\n\t\treordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\t\tif reordered.Outcome != PerformanceBlocked || len(reordered.TargetResults) != 0 || !reordered.CleanupComplete {\n\t\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\t\tt.Fatalf(\"reordered baseline entries were not rejected before target comparison: %#v\", reordered)\n\t\t}\n\t})\n}\n\n// Set repaired-schema coverage fields reflectively so this test remains\n// executable against the frozen implementation that predates those fields.\nfunc qaSetRepairPerformanceCoverage(value *RepairPerformanceReverification, packetDigest string, targetIDs []string) {\n\treflected := reflect.ValueOf(value).Elem()\n\tif field := reflected.FieldByName(\"TargetPacketDigest\"); field.IsValid() \u0026\u0026 field.CanSet() {\n\t\tfield.SetString(packetDigest)\n\t}\n\tif field := reflected.FieldByName(\"TargetIDs\"); field.IsValid() \u0026\u0026 field.CanSet() {\n\t\tfield.Set(reflect.ValueOf(append([]string(nil), targetIDs...)))\n\t}\n}\n\ntype qaInvestigatorPerformanceRunner struct{}\n\nfunc (qaInvestigatorPerformanceRunner) Run(_ context.Context, request pprocess.Request) (pprocess.Result, error) {\n\targs := strings.Join(request.Args, \" \")\n\tstdout := \"\"\n\tif strings.Contains(args, \"-bench=^BenchmarkA$\") {\n\t\tstdout = \"BenchmarkA-8 100 100 ns/op\\n\"\n\t}\n\tif strings.Contains(args, \"-bench=^BenchmarkB$\") {\n\t\tstdout = \"BenchmarkB-8 100 200 ns/op\\n\"\n\t}\n\treturn pprocess.Result{Stdout: stdout, CleanupComplete: true}, nil\n}\n",
+          "digest": "1bcc27de12bf1604358c1afc20855e27936892b02cd3ae008e00253d8c003e37",
+          "bytes": 8974
+        }
+      ],
+      "content_digest": "bcf201098fdb99c83b32f3a17059f85ed807332ffaf8517e58f105874c07b0ae",
+      "derived_from": "qa-v2-test-dc7bd57b7dd74e4b104afda0"
+    },
+    "before": {
+      "observed_outcome": "fail",
+      "observed_reason_code": "predicted_failure_reproduced",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "2d6233638f3b25ad12a9647a0f0083f98f0139321b37dde79927d68d36b5801d",
+      "schema_version": 2,
+      "id": "qa-v2-run-f6fa74505f9ec5ee84bd29c1",
+      "spec_id": "qa-v2-spec-18e8449e2e3c62ad4ac6a124",
+      "test_bundle_id": "qa-v2-test-97201aeaf68f5a6b7df50ea0",
+      "target_identity": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/complete_target_results_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1",
+            "action": "fail"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/complete_target_results_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results",
+            "action": "fail"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results",
+            "action": "fail"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities",
+            "action": "fail"
+          }
+        ],
+        "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1",
+        "executable": "go",
+        "args_digest": "edbb77841d17e790eb11cd40c157457b4af19ca83120a37a282a0661a01d7123",
+        "exit_code": 1,
+        "duration": 22167111396,
+        "stdout_digest": "daee1f261896fd42289971ee123a2f7aac5ffaba7359f5862322ca3e9df5e61a",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_b7efe9eb62a1\n=== RUN   TestQAInvestigator_b7efe9eb62a1/complete_target_results_control\n=== RUN   TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\n    qa_investigator_b7efe9eb62a1_test.go:73: passing performance reverification with zero TargetResults was accepted\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\n    qa_investigator_b7efe9eb62a1_test.go:84: passing performance reverification with incomplete TargetResults was accepted\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities\nULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\n    qa_investigator_b7efe9eb62a1_test.go:179: reordered baseline entries were not rejected before target comparison: sprint.RepairPerformanceReverification{SchemaVersion:1, AttemptID:\"performance-v1-attempt-84c0c3ca3f25477426b82011\", PriorResultDigest:\"93f1ec1e65a2ef74c46bbeb86dbbf8bd07537c0f5468cbcabf68dd8b82bb9f6e\", RepairedImplementation:\"480aab23f95b1b77ece958df734b87cb968add5fe6994637fb94b78dcac4cb30\", TargetResults:[]sprint.PerformanceTargetResult{sprint.PerformanceTargetResult{Target:sprint.PerformanceTarget{ID:\"PERF-A\", Scenario:\"operation A\", Metric:\"latency change\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"%\", Gate:\"required\", Samples:5, Basis:\"baseline\"}, BaselineQualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"200\", Mean:\"200\", StdDev:0, CVPercent:0, Samples:5, Qualified:true, Reason:\"\"}, FinalQualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"100\", Mean:\"100\", StdDev:0, CVPercent:0, Samples:5, Qualified:true, Reason:\"\"}, Comparison:sprint.PerformanceComparison{TargetID:\"PERF-A\", Baseline:\"200\", Candidate:\"100\", ComparedValue:\"-50\", Outcome:\"met\", Reason:\"\"}}, sprint.PerformanceTargetResult{Target:sprint.PerformanceTarget{ID:\"PERF-B\", Scenario:\"operation B\", Metric:\"latency change\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"%\", Gate:\"required\", Samples:5, Basis:\"baseline\"}, BaselineQualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"100\", Mean:\"100\", StdDev:0, CVPercent:0, Samples:5, Qualified:true, Reason:\"\"}, FinalQualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"200\", Mean:\"200\", StdDev:0, CVPercent:0, Samples:5, Qualified:true, Reason:\"\"}, Comparison:sprint.PerformanceComparison{TargetID:\"PERF-B\", Baseline:\"100\", Candidate:\"200\", ComparedValue:\"100\", Outcome:\"missed\", Reason:\"\"}}}, Outcome:\"target_missed\", CleanupComplete:true, Blocker:\"repaired implementation did not preserve required performance targets: PERF-B\", CompletedAt:time.Date(2026, time.September, 12, 12, 0, 0, 0, time.UTC)}\n--- FAIL: TestQAInvestigator_b7efe9eb62a1 (0.19s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/complete_target_results_control (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control (0.00s)\n    --- FAIL: TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results (0.00s)\n    --- FAIL: TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results (0.00s)\n    --- FAIL: TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities (0.19s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.194s\nFAIL\n",
+        "output_bytes": 3513,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_b7efe9eb62a1",
+        "assertion": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1"
+      },
+      "outcome": "fail",
+      "reason_code": "predicted_failure_reproduced",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T12:44:27.543222104Z"
+    },
+    "after": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "95aa4595001ceb31261d44a5c28f1177dfea4977579a7fec8e89adba08ca110d",
+      "schema_version": 2,
+      "id": "qa-v2-run-31f877138c603c9df685a7d8",
+      "spec_id": "qa-v2-spec-18e8449e2e3c62ad4ac6a124",
+      "test_bundle_id": "qa-v2-test-97201aeaf68f5a6b7df50ea0",
+      "target_identity": "d799c5ea175a15c48e1366caba7ee73ac122c801fe1245b9bdd7a709a0c9f651",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/complete_target_results_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/complete_target_results_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results",
+            "action": "pass"
+          },
+          {
+            "test": "TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "edbb77841d17e790eb11cd40c157457b4af19ca83120a37a282a0661a01d7123",
+        "exit_code": 0,
+        "duration": 23442034748,
+        "stdout_digest": "902416ecf75fa4fa277f472e0d30d9120678135144c06fd3a565cb6acc286642",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_b7efe9eb62a1\n=== RUN   TestQAInvestigator_b7efe9eb62a1/complete_target_results_control\n=== RUN   TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results\n=== RUN   TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities\n--- PASS: TestQAInvestigator_b7efe9eb62a1 (0.17s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/complete_target_results_control (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/cleanup_proof_control (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/rejects_zero_target_results (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/rejects_incomplete_target_results (0.00s)\n    --- PASS: TestQAInvestigator_b7efe9eb62a1/rejects_reordered_baseline_target_identities (0.17s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.174s\n",
+        "output_bytes": 963,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_b7efe9eb62a1",
+        "assertion": "Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T12:45:11.768397467Z"
+    },
+    "author": {
+      "call_id": "opencode-2",
+      "session_id": "ses_f6536fe3affesbeqCuRCfBej03",
+      "evidence_digest": "bcf201098fdb99c83b32f3a17059f85ed807332ffaf8517e58f105874c07b0ae",
+      "outcome": "",
+      "valid": true,
+      "reason_code": ""
+    },
+    "reviewer": {
+      "call_id": "opencode-3",
+      "session_id": "ses_f65331980ffeVkmIqvKrBDoJRs",
+      "evidence_digest": "a3dcad9072758ead9df0601154e487af8e26684bc4f43232cc78af35e776960f",
+      "outcome": "",
+      "valid": true,
+      "reason_code": ""
+    },
+    "review": {
+      "malformed": true,
+      "preserves_claim": true,
+      "reason": "The original test cannot pass after repair: it couples both defects behind one conjunction, then explicitly fails when missing TargetResults are correctly rejected and unconditionally fails unless vulnerable baseline misassociation is observed. The corrected test gives each theory independent subtests, treats rejection as success, verifies zero and incomplete coverage separately, preserves valid complete-record, cleanup, and correctly ordered-baseline controls, fails when either defect remains, and passes when both are repaired.",
+      "assertions": [
+        {
+          "theory_id": "qa-v1-theory-1007492d20bbcc01841fb291",
+          "passing_condition": "A same-length baseline whose entries are reordered across PERF-A and PERF-B is rejected before comparison, producing a blocked result with no target results and complete cleanup; correctly ordered entries remain accepted and retain medians 100 and 200 for their matching targets.",
+          "original_assertion": "reorderedMisassociated := reordered.Outcome == PerformanceTargetMiss \u0026\u0026 len(reordered.TargetResults) == 2 \u0026\u0026\n\t\treordered.TargetResults[0].Target.ID == \"PERF-A\" \u0026\u0026 reordered.TargetResults[0].BaselineQualification.Median == \"200\" \u0026\u0026\n\t\treordered.TargetResults[1].Target.ID == \"PERF-B\" \u0026\u0026 reordered.TargetResults[1].BaselineQualification.Median == \"100\"\n\tif missingResultsAccepted \u0026\u0026 reorderedMisassociated {\n\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\tt.Fatalf(\"Assertions for qa-v1-theory-ea7c7adacc9ea256c6314ce8 must show whether a passing performance reverification with zero or incomplete TargetResults is accepted. Separate assertions for qa-v1-theory-1007492d20bbcc01841fb291 must use at least two distinguishab\")\n\t}\n\tif !missingResultsAccepted {\n\t\tt.Fatal(\"passing performance reverification with zero TargetResults was rejected\")\n\t}\n\tt.Fatalf(\"reordered baselines were not observably misassociated: %#v\", reordered)",
+          "replacement_assertion": "ordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\t\tif ordered.Outcome != PerformancePassed || len(ordered.TargetResults) != 2 ||\n\t\t\tordered.TargetResults[0].Target.ID != \"PERF-A\" || ordered.TargetResults[0].BaselineQualification.Median != \"100\" ||\n\t\t\tordered.TargetResults[1].Target.ID != \"PERF-B\" || ordered.TargetResults[1].BaselineQualification.Median != \"200\" {\n\t\t\tt.Fatalf(\"control: correctly ordered baselines were not associated by target: %#v\", ordered)\n\t\t}\n\n\t\treordered := service.runRepairPerformanceReverification(context.Background(), sp, target)\n\t\tif reordered.Outcome != PerformanceBlocked || len(reordered.TargetResults) != 0 || !reordered.CleanupComplete {\n\t\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\t\tt.Fatalf(\"reordered baseline entries were not rejected before target comparison: %#v\", reordered)\n\t\t}"
+        },
+        {
+          "theory_id": "qa-v1-theory-ea7c7adacc9ea256c6314ce8",
+          "passing_condition": "A passing repair performance reverification with otherwise valid authority and cleanup fields is rejected when TargetResults are absent or incomplete, while a complete two-target record is accepted.",
+          "original_assertion": "if !missingResultsAccepted {\n\t\tt.Fatal(\"passing performance reverification with zero TargetResults was rejected\")\n\t}",
+          "replacement_assertion": "t.Run(\"rejects zero target results\", func(t *testing.T) {\n\t\tmissing := valid\n\t\tperformance := *valid.Performance\n\t\tperformance.TargetResults = nil\n\t\tmissing.Performance = \u0026performance\n\t\tif err := ValidateRepairReverification(missing); err == nil {\n\t\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\t\tt.Fatal(\"passing performance reverification with zero TargetResults was accepted\")\n\t\t}\n\t})\n\n\tt.Run(\"rejects incomplete target results\", func(t *testing.T) {\n\t\tincomplete := valid\n\t\tperformance := *valid.Performance\n\t\tperformance.TargetResults = append([]PerformanceTargetResult(nil), valid.Performance.TargetResults[:1]...)\n\t\tincomplete.Performance = \u0026performance\n\t\tif err := ValidateRepairReverification(incomplete); err == nil {\n\t\t\tfmt.Println(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b7efe9eb62a1\")\n\t\t\tt.Fatal(\"passing performance reverification with incomplete TargetResults was accepted\")\n\t\t}\n\t})"
+        }
+      ]
+    },
+    "completed_at": "2026-09-13T12:46:53.442640583Z"
+  },
+  "diagnostic": "replacement review omits a theory or cites an unavailable assertion"
+}

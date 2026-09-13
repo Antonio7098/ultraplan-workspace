@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-9254885ab5f6c96abae6d512",
+    "arbiter_group_id": "qa-v1-arbiter-group-c20674c2cd496b45035915c3",
+    "theory_ids": [
+      "qa-v1-theory-fc3744e6e8886693c1c4a689"
+    ],
+    "origin_shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+    "gap": "The updated pack still lacks executable evidence establishing whether a generation change between performance-state publication and flow-state publication permits a stale write.",
+    "requested_evidence": "Ask the original investigator to create or strengthen an executable Go _test.go reproducer in its approved private workspace that deterministically advances the verification fencing generation after PublishState and before SaveFlowState in the performance failure path.",
+    "required_observation": "Observe whether flow state changes under the stale token and distinguish rejection from successful stale publication.",
+    "control_requirement": "Use deterministic hooks rather than timing and compare immutable performance-state and flow-state bytes before and after the generation change.",
+    "priority": "high",
+    "status": "inconclusive",
+    "next_action": "original_session_unavailable"
+  }
+}

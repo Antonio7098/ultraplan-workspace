@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+  "spec_id": "qa-v2-spec-3a53004598f18b6c3e860c28",
+  "files": [
+    {
+      "path": "internal/project/qa_investigator_76f9ef0d2260_test.go",
+      "content": "package project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_76f9ef0d2260(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst table = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+\"ordinary prose\\n\", disabled); len(findings) != 0 {\n\t\tt.Fatalf(\"ordinary prose control unexpectedly produced findings: %#v\", findings)\n\t}\n\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+table, disabled); len(findings) == 0 {\n\t\tt.Fatal(\"real target section control did not produce a disabled-policy mismatch\")\n\t}\n\n\tpseudoSections := []string{\n\t\t\"```md\\n\" + table + \"```\\n\",\n\t\t\"\u003c!--\\n\" + table + \"--\u003e\\n\",\n\t}\n\tmisclassified := false\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"pseudo-section parser control failed: packet=%#v findings=%#v\", packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo, disabled); len(findings) != 0 {\n\t\t\tmisclassified = true\n\t\t}\n\t}\n\tif misclassified {\n\t\tt.Log(\"assertion: disabled-policy validation must not report a policy mismatch for fenced or HTML-commented pseudo Performance Targets headings when parsing returns no targets or findings\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76f9ef0d2260\")\n\t}\n}\n",
+      "digest": "c528c882d0ee0261b53bac86d72dedeafc93bba922ecef273ab2175937e1cd2b",
+      "bytes": 1972
+    }
+  ],
+  "content_digest": "49dce388e1554bcba98db4df735a19e7be63c041a6f9d6cf657f556564ade579"
+}

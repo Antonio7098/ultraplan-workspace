@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-33e46626c6f545e2ddd8da96",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "ae25e6710e5d3dce0d4e363ab477ef9f344495c889f72c7bc8cecaf4db8bd9f0",
+      "schema_version": 2,
+      "id": "qa-v2-run-8737350d2f4afb1374753f96",
+      "spec_id": "qa-v2-spec-ae36bfdce63a28fb202bf0a7",
+      "test_bundle_id": "qa-v2-test-b32c3bca434c97ee8b522d5a",
+      "target_identity": "3561296e025c070d136a3e89dec04905c65a0e32db95ec8d6b43ec3d6be7a4ae",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_dd232b1d46ba",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_dd232b1d46ba",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "918d83c57469f4e140c002c41b39458763d922669b6ee41dbcde0a16d4e8a470",
+        "exit_code": 0,
+        "duration": 28339203060,
+        "stdout_digest": "684d037cf89b59a3d13094c13c2b6bd6e715bfda89b6a75257ace617ebe1aa71",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_dd232b1d46ba\n--- PASS: TestQAInvestigator_dd232b1d46ba (0.16s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.166s\n",
+        "output_bytes": 161,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_dd232b1d46ba",
+        "assertion": "Induce an actual optimization rejection followed by cleanup failure, then assert whether later work starts and whether returned or persisted state is cleanup_uncertain for qa-v1-theory-35a6a9cbcf6592fb04bb7828.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dd232b1d46ba"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-12T21:09:38.458496037Z"
+    }
+  }
+}

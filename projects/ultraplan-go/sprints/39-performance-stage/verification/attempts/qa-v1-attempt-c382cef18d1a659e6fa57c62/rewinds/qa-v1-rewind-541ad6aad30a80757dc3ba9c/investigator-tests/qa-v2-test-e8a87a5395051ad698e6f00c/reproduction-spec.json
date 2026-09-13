@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-adba644b4a133b2003ff958e",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+  "theory_ids": [
+    "qa-v1-theory-3d05000070c81fe10aa3579b"
+  ],
+  "claim": "Caller-side validation may make the discarded helper error unreachable.",
+  "preconditions": [
+    "Use the production Effective construction path and assert that no operation side effect occurs before the expected failure."
+  ],
+  "expected_behavior": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that constructs the shared operation runner through normal composition with an invalid performance duration or limit.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_333605f09ff9",
+    "assertion": "Show whether the runner is created or an operation begins despite performanceSettings failing, or whether composition rejects the configuration first.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_333605f09ff9"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_333605f09ff9_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-333605f09ff9",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-run",
+      "^TestQAInvestigator_333605f09ff9$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "a4e1fbd95e7f877c3f2710d60d2179c5ddd79e169511ddab20b37204b42b9f44"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-06T15:44:58.764158198Z"
+}

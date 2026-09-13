@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-53b03de369a9bfd58bd53512",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+      "schema_version": 2,
+      "id": "qa-v2-run-7a8e6264c694b20c163b30ab",
+      "spec_id": "qa-v2-spec-e2721c42c3167585652edf65",
+      "test_bundle_id": "qa-v2-test-69d2537e17f11e15ae7fd2e2",
+      "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_78d7bc49d841",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_78d7bc49d841",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "594bcf11fc25993b09c03b11674c589c9e73a854db1987aa9a069eb184a93b62",
+        "exit_code": 0,
+        "duration": 32385813930,
+        "stdout_digest": "1a9dd81d71f031939aabc07fa66e818a1d967f0b0704248579aba0bc4d95ce78",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_78d7bc49d841\n--- PASS: TestQAInvestigator_78d7bc49d841 (0.00s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.008s\n",
+        "output_bytes": 161,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_78d7bc49d841",
+        "assertion": "The assertions must cover qa-v1-theory-fa8487cda772b1748115a5c2 by observing Required=0, Reports=1, Met=1 and the resulting invalid-performance-count failure.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_78d7bc49d841"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T15:15:37.911140099Z"
+    }
+  }
+}

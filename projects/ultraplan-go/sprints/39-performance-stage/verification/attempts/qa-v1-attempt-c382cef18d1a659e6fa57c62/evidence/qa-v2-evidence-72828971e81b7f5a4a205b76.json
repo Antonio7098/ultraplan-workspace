@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-evidence-72828971e81b7f5a4a205b76",
+  "plan_id": "qa-v2-plan-30acf7f23aface1f1f7a160a",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-c00693067b3601e16b414101",
+  "workspace_id": "qa-v2-test-8350daaaec15bbbe50054e34",
+  "workspace_identity": "f06e4bb7fc6a7dc7d55fd0d1f84d0b10446d9f271455c955538905c402185059",
+  "target_identity_before": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "target_identity_after": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "governed_input_fingerprint": "fa10644c48b9941884ca51d75057ecc62e7f85f161742d3097eb36bc270a7570",
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "map_fingerprint": "884266b97be869e0cfbc6990a37fbdb6c32b42367f43444b5ce0eacb529cb221",
+  "commands": [
+    {
+      "executable": "go",
+      "args_digest": "b26910def2e872a9fd0c92f21d31d80222ec74fb6f400746118e8989839c1cba",
+      "exit_code": 1,
+      "duration": 4389564160,
+      "stdout_digest": "81454442e52ce3bc675fcf7e309dfd870b52a7029f51bdbd151ed11f5e99a81a",
+      "stderr_digest": "55d542516e8aa3671ebbd926221568cc60e10430d7a0652efc086cf5d75140ba",
+      "stdout": "FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/platform/config [build failed]\nFAIL\n",
+      "stderr": "# crypto/internal/fips140deps/godebug\ncompile: writing output: write $WORK/b084/_pkg_.a: no space left on device\n# bytes\ncompile: writing output: write $WORK/b062/_pkg_.a: no space left on device\n# strings\ncompile: writing output: write $WORK/b068/_pkg_.a: no space left on device\n# math/rand\ncompile: writing output: write $WORK/b071/_pkg_.a: no space left on device\n# syscall\ncompile: writing output: write $WORK/b052/_pkg_.a: no space left on device\n# runtime\nvet: failed to export analysis facts: write $WORK/b009/vet.out: no space left on device\niter: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b048/vet.cfg: no space left on device\ninternal/reflectlite: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b004/vet.cfg: no space left on device\nsync: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b040/vet.cfg: no space left on device\nslices: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b046/vet.cfg: no space left on device\nerrors: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b003/vet.cfg: no space left on device\ninternal/bisect: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b051/vet.cfg: no space left on device\nstrconv: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b059/vet.cfg: no space left on device\ninternal/testlog: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b056/vet.cfg: no space left on device\npath: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b044/vet.cfg: no space left on device\ninternal/oserror: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b038/vet.cfg: no space left on device\nsort: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b113/vet.cfg: no space left on device\nio: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b039/vet.cfg: no space left on device\ninternal/godebug: write /tmp/ultraplan-qa-authored-test-2162545815/qa-v2-test-8350daaaec15bbbe50054e34-3358515838/.ultraplan-test-runtime/tmp/go-build3092266351/b050/vet.cfg: no space left on device\n# reflect\ncompile: writing output: write $WORK/b057/_pkg_.a: no space left on device\n",
+      "output_bytes": 3221,
+      "truncated": false,
+      "redacted": false,
+      "timed_out": false,
+      "cancelled": false,
+      "cleanup_attempted": false,
+      "cleanup_complete": true
+    }
+  ],
+  "changed_paths": [
+    "internal/platform/config/qa_investigator_a4e36afcbad1_test.go"
+  ],
+  "outcome": "inconclusive",
+  "reason_code": "unrelated_compile_or_panic_failure",
+  "repeatable": false,
+  "contained": true,
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-07T13:13:46.91255752Z"
+}

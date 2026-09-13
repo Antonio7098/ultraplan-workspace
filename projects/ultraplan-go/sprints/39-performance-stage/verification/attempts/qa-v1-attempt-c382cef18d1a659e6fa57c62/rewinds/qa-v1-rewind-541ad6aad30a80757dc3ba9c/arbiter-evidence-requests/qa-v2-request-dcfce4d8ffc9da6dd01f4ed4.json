@@ -1,0 +1,19 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-dcfce4d8ffc9da6dd01f4ed4",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-fc3744e6e8886693c1c4a689"
+    ],
+    "origin_shard_id": "qa-v1-shard-65c6fc03c89d778911b504e3",
+    "gap": "The supplied evidence does not executably establish that ownership can change between the final fenced state publication and flow-state publication or that the stale writer then succeeds.",
+    "requested_evidence": "Create or strengthen an executable Go _test.go reproducer in the approved private workspace that deterministically changes the verification fencing generation after the failure path's final fenced publication and before SaveFlowState.",
+    "required_observation": "The test must observe whether the stale writer changes the durable flow-state performance summary; confirmation requires the write to succeed after generation change, while rejection or unchanged bytes refutes the claim.",
+    "control_requirement": "Include a control run with unchanged ownership that reaches the same failure-publication boundary and successfully publishes the expected flow summary.",
+    "priority": "high",
+    "status": "inconclusive",
+    "next_action": "original_session_unavailable"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-ef24e5d923f7cadd264bc3ea",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-3d05000070c81fe10aa3579b"
+    ],
+    "origin_shard_id": "qa-v1-shard-ea2149220d0037fcc1b6699f",
+    "gap": "Supplied investigator tests reported failure_signature_mismatch and therefore do not reliably demonstrate the claimed preflight behavior.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go reproducer that constructs sharedOperationRunner with an Effective configuration whose performance duration or limits make performanceSettings fail.",
+    "required_observation": "Assert the runner can proceed to prepare an operation without returning the configuration failure.",
+    "control_requirement": "Use a valid configuration control and instrument the operation boundary to prove whether side-effecting preparation was reached.",
+    "priority": "high",
+    "status": "inconclusive",
+    "reason_code": "evidence_round_budget_exhausted",
+    "superseded_by": "qa-v2-request-1fa19463cf6244f4c29a9b08",
+    "next_action": "Evidence remains unresolved: evidence_round_budget_exhausted. Inspect the retained request and restore its prerequisites before resuming; exhausted budgets require a new governed attempt."
+  }
+}

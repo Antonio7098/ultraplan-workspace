@@ -1,0 +1,1622 @@
+{
+  "schema_version": 1,
+  "project": "ultraplan-go",
+  "sprint": "39-performance-stage",
+  "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "repair_run_id": "repair-v1-run-8ab857ebbd51a94fb1c41dda",
+  "issue": {
+    "id": "qa-v2-issue-158e0278297af17b6548452a",
+    "root_cause_group_id": "qa-v2-group-5ea42340c84add77d1ab0e84",
+    "title": "Default performance evidence URL returns an error",
+    "issue_class": "api_behavior",
+    "severity": "medium",
+    "location": "internal/web/handlers.go; internal/sprint/performance_state.go; internal/web/templates/sprint.html",
+    "evidence_ids": [
+      "qa-v2-evidence-67e0793d19fecc71197e3a0c"
+    ],
+    "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+    "repair_eligible": true,
+    "regression_candidate": true
+  },
+  "root_cause_group": {
+    "id": "qa-v2-group-5ea42340c84add77d1ab0e84",
+    "claim": "The advertised performance evidence API request fails when limit is omitted because zero reaches pagination and is rejected.",
+    "issue_class": "api_behavior",
+    "location": "internal/web/handlers.go; internal/sprint/performance_state.go; internal/web/templates/sprint.html",
+    "evidence_ids": [
+      "qa-v2-evidence-67e0793d19fecc71197e3a0c"
+    ]
+  },
+  "adjudication_id": "qa-v2-adjudication-5aef0c67e694af872ebd7d4b",
+  "evidence_ids": [
+    "qa-v2-evidence-67e0793d19fecc71197e3a0c"
+  ],
+  "plan_ids": [
+    "qa-v2-plan-ed8780f317354b9c624ca980"
+  ],
+  "map_id": "qa-v1-map-7be19334561f99672f5888b5",
+  "shard_ids": [
+    "qa-v1-shard-428a94deab9f1bbf8d1a3f40"
+  ],
+  "theory_ids": [
+    "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+  ],
+  "expectation_refs": [
+    "qa-v2-spec-55211a07b67f8a56c56f7e93"
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f2dfc2c802889fddc3bbae5c",
+      "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+      "claim": "The performance evidence API's advertised default request is unusable because omitting the limit query parameter sends limit 0 to a store that rejects every non-positive limit.",
+      "basis": "The handler initializes limit to 0 and changes it only when the query parameter is present (qa-v1-block-95f9f726d965e7685184fba7). EvidencePage rejects limit values less than or equal to 0 (qa-v1-block-263b3a5636c57033d940e0e1). The server-rendered evidence links omit the limit parameter (qa-v1-block-b78a61cde5b699690eb3c5f2).",
+      "verification_surface": "GET the server-rendered performance evidence URL without a limit query parameter.",
+      "expectation_refs": [
+        "contract-errors",
+        "contract-performance",
+        "contract-testing"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "The request reaches PerformanceEvidence with Limit=0 and returns the invalid performance evidence page-size error.",
+      "refutation_condition": "A boundary between the handler and EvidencePage replaces an omitted or zero limit with a valid product-owned default before EvidencePage validates it.",
+      "inconclusive_condition": "The omitted implementation between PerformanceEvidence and EvidencePage applies a valid default that is not visible in the cited blocks.",
+      "safe_evidence_strategy": "Use a bounded handler compatibility test with an enabled sprint and retained attempt, request the exact generated evidence URL without query parameters, and inspect whether it returns a bounded success response or a classified invalid-limit failure.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-428a94deab9f1bbf8d1a3f40/1",
+          "number": 1,
+          "session_id": "ses_f6aaa12d6ffeGUtJEzoITtz9hW",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "a703daf55939fba3e7ce2b0843ca25f4727e70a31ecab886d9646ed29f0089a1",
+          "started_at": "2026-09-12T11:17:07.914130092Z",
+          "completed_at": "2026-09-12T11:18:08.601344659Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "The evidence handler forwards zero when limit is omitted, EvidencePage rejects non-positive limits, and generated evidence links omit the limit parameter.",
+              "paths": [
+                "internal/web/handlers.go",
+                "internal/sprint/performance_state.go",
+                "internal/web/templates/sprint.html"
+              ]
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 55760,
+            "output_tokens_known": true,
+            "output_tokens": 983,
+            "total_tokens_known": true,
+            "total_tokens": 111596,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 325,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 54528,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 22,
+          "retained_events": 22,
+          "observed_tool_calls": 0,
+          "context_metrics": {
+            "prompt_bytes": 191270,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 60687214567
+          },
+          "estimated_cost": {
+            "amount": 0.1322556,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted",
+          "repair": {
+            "attempted": true,
+            "max_attempts": 1,
+            "attempt_count": 1,
+            "exhausted": false,
+            "permission_denied": false,
+            "unsupported_same_session": false
+          }
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-428a94deab9f1bbf8d1a3f40/1/evidence/qa-v2-request-1c048909b6582d93974a2b11/1",
+          "number": 2,
+          "session_id": "ses_f6aaa12d6ffeGUtJEzoITtz9hW",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "a703daf55939fba3e7ce2b0843ca25f4727e70a31ecab886d9646ed29f0089a1",
+          "started_at": "2026-09-12T11:26:11.772904356Z",
+          "completed_at": "2026-09-12T11:27:42.221931174Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 277,
+            "output_tokens_known": true,
+            "output_tokens": 11,
+            "total_tokens_known": true,
+            "total_tokens": 68297,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 169,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 67840,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 30,
+          "retained_events": 30,
+          "observed_tool_calls": 9,
+          "context_metrics": {
+            "prompt_bytes": 8520,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1,
+              "grep": 4,
+              "read": 4
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 16622,
+            "repeated_reads": 0,
+            "search_calls": 4,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 90449026818
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-428a94deab9f1bbf8d1a3f40/1/evidence/qa-v2-request-d6798f8083a31ff716b0ebd2/1",
+          "number": 3,
+          "session_id": "ses_f6aaa12d6ffeGUtJEzoITtz9hW",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "a703daf55939fba3e7ce2b0843ca25f4727e70a31ecab886d9646ed29f0089a1",
+          "started_at": "2026-09-12T11:52:28.93627735Z",
+          "completed_at": "2026-09-12T11:54:16.970399228Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 385,
+            "output_tokens_known": true,
+            "output_tokens": 9,
+            "total_tokens_known": true,
+            "total_tokens": 78858,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 78464,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 37,
+          "retained_events": 37,
+          "observed_tool_calls": 8,
+          "context_metrics": {
+            "prompt_bytes": 16030,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 2,
+              "grep": 2,
+              "read": 4
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 8237,
+            "repeated_reads": 0,
+            "search_calls": 2,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 108034121878
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        },
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-428a94deab9f1bbf8d1a3f40/1/evidence/qa-v2-request-1cefed6a599adae46ba55ba6/1",
+          "number": 4,
+          "session_id": "ses_f6aaa12d6ffeGUtJEzoITtz9hW",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "a703daf55939fba3e7ce2b0843ca25f4727e70a31ecab886d9646ed29f0089a1",
+          "started_at": "2026-09-12T12:04:24.860434283Z",
+          "completed_at": "2026-09-12T12:05:16.559457198Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1901,
+            "output_tokens_known": true,
+            "output_tokens": 9,
+            "total_tokens_known": true,
+            "total_tokens": 87030,
+            "reasoning_tokens_known": true,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 85120,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 15,
+          "retained_events": 15,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 21874,
+            "prefix_bytes": 0,
+            "tool_calls_by_kind": {
+              "apply_patch": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 0,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 51699022915
+          },
+          "stop_reason": "investigator-authored test snapshotted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "The evidence handler forwards zero when limit is omitted, EvidencePage rejects non-positive limits, and generated evidence links omit the limit parameter.",
+          "paths": [
+            "internal/web/handlers.go",
+            "internal/sprint/performance_state.go",
+            "internal/web/templates/sprint.html"
+          ]
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-1c048909b6582d93974a2b11: failure_signature_mismatch\nRequired observation: The test must assert the actual HTTP status and response result for qa-v1-theory-f2dfc2c802889fddc3bbae5c and demonstrate that the request reaches evidence pagination with the omitted-limit value.\nTest internal/tui/qa_investigator_2d93974a2b11_test.go:\npackage tui\n\nimport (\n\t\"context\"\n\t\"io\"\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/web\"\n)\n\ntype qaPerformanceEvidenceQueries struct {\n\tstore     sprint.PerformanceStore\n\tattemptID string\n\tlimits    []int\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Dashboard(context.Context) (app.WebDashboardResult, error) {\n\treturn app.WebDashboardResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Projects(context.Context) (app.WebProjectsResult, error) {\n\treturn app.WebProjectsResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Project(context.Context, string) (app.WebProjectResult, error) {\n\treturn app.WebProjectResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Sprint(context.Context, string, string) (app.WebSprintResult, error) {\n\treturn app.WebSprintResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Studies(context.Context) (app.WebStudiesResult, error) {\n\treturn app.WebStudiesResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Study(context.Context, string) (app.WebStudyResult, error) {\n\treturn app.WebStudyResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Validations(context.Context, string, string) (app.WebValidationResult, error) {\n\treturn app.WebValidationResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Artifact(context.Context, string) (app.WebArtifactPreview, error) {\n\treturn app.WebArtifactPreview{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) Health(context.Context) (app.WebHealthResult, error) {\n\treturn app.WebHealthResult{}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\n\nfunc (q *qaPerformanceEvidenceQueries) PerformanceEvidence(_ context.Context, req app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {\n\tq.limits = append(q.limits, req.Limit)\n\tpage, err := q.store.EvidencePage(q.attemptID, req.Cursor, req.Filter, req.Limit)\n\tif err != nil {\n\t\treturn app.PerformanceEvidenceResult{}, err\n\t}\n\treturn app.PerformanceEvidenceResult{SchemaVersion: 1, Records: page.Records, NextCursor: page.NextCursor, ReturnedCount: len(page.Records)}, nil\n}\n\nfunc TestQAInvestigator_2d93974a2b11(t *testing.T) {\n\troot := t.TempDir()\n\tsp := sprint.Sprint{Project: \"alpha\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"alpha\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\ttoken := sprint.VerificationWriterToken{RunID: \"run\", OperationalAttemptID: \"attempt\", FencingGeneration: 1}\n\tstore := sprint.NewPerformanceStore(root, sp).WithWriterFence(func(sprint.VerificationWriterToken) error { return nil })\n\trel, err := sprint.PerformanceAttemptRelPath(sp, attemptID, \"summary.json\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif _, err := store.PublishBytes(rel, \"qa-investigator\", []byte(`{\"status\":\"retained\"}`), true, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\n\tqueries := \u0026qaPerformanceEvidenceQueries{store: store, attemptID: attemptID}\n\thandler, err := web.NewHandler(web.HandlerOptions{Queries: queries, Authority: \"127.0.0.1:8080\", Diagnostics: io.Discard})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\trequest := func(path string) *httptest.ResponseRecorder {\n\t\tres := httptest.NewRecorder()\n\t\treq := httptest.NewRequest(http.MethodGet, path, nil)\n\t\treq.Host = \"127.0.0.1:8080\"\n\t\thandler.ServeHTTP(res, req)\n\t\treturn res\n\t}\n\n\tcontrol := request(\"/api/v1/projects/alpha/sprints/39-performance/performance/evidence?limit=1\")\n\tif control.Code != http.StatusOK || len(queries.limits) != 1 || queries.limits[0] != 1 {\n\t\tt.Fatalf(\"passing control failed: status=%d limits=%v body=%s\", control.Code, queries.limits, control.Body.String())\n\t}\n\n\tomitted := request(\"/api/v1/projects/alpha/sprints/39-performance/performance/evidence\")\n\tif omitted.Code != http.StatusOK {\n\t\tt.Log(\"assertion: an omitted evidence limit must use a bounded product default and return HTTP 200\")\n\t\tt.Logf(\"actual_status=%d forwarded_limit=%d response=%s\", omitted.Code, queries.limits[len(queries.limits)-1], omitted.Body.String())\n\t\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2d93974a2b11\")\n\t}\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_2d93974a2b11\n    qa_investigator_2d93974a2b11_test.go:108: passing control failed: status=400 limits=[] body={\"error\":{\"code\":\"invalid_request\",\"message\":\"Unknown query parameters are not accepted.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"6017a7e4fd937a14fed2075b001b3d34\"}}\n--- FAIL: TestQAInvestigator_2d93974a2b11 (0.01s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.036s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/tui/qa_investigator_2d93974a2b11_test.go"
+          ],
+          "check_id": "qa-v2-test-3bee0b7a9d3ae9994b9c28f4",
+          "output_digest": "9462146eeb5ccc671bd540d5683834d42b39da3f4f19f8a1645d85ec232dd067"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-d6798f8083a31ff716b0ebd2: unrelated_compile_or_panic_failure\nRequired observation: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted-limit request's actual HTTP status and body and record the exact Limit received by PerformanceEvidence; then compare with a reachable bounded-success control.\nTest internal/tui/qa_investigator_1ff716b0ebd2_test.go:\npackage tui\n\nimport (\n\t\"context\"\n\t\"io\"\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/web\"\n)\n\nfunc TestQAInvestigator_1ff716b0ebd2(t *testing.T) {\n\troot := t.TempDir()\n\tsp := sprint.Sprint{Project: \"alpha\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"alpha\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\ttoken := sprint.VerificationWriterToken{RunID: \"run\", OperationalAttemptID: \"attempt\", FencingGeneration: 1}\n\tstore := sprint.NewPerformanceStore(root, sp).WithWriterFence(func(sprint.VerificationWriterToken) error { return nil })\n\trel, err := sprint.PerformanceAttemptRelPath(sp, attemptID, \"summary.json\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tif _, err := store.PublishBytes(rel, \"qa-investigator\", []byte(`{\"status\":\"retained\"}`), true, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\n\tqueries := \u0026qaPerformanceEvidenceQueries{store: store, attemptID: attemptID}\n\thandler, err := web.NewHandler(web.HandlerOptions{Queries: queries, Authority: \"127.0.0.1:8080\", Diagnostics: io.Discard})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tresponse := httptest.NewRecorder()\n\trequest := httptest.NewRequest(http.MethodGet, \"/api/v1/projects/alpha/sprints/39-performance/performance/evidence\", nil)\n\trequest.Host = \"127.0.0.1:8080\"\n\thandler.ServeHTTP(response, request)\n\n\tif len(queries.limits) != 1 || queries.limits[0] != 0 {\n\t\tt.Fatalf(\"omitted-limit request did not reach PerformanceEvidence with Limit=0: limits=%v status=%d body=%s\", queries.limits, response.Code, response.Body.String())\n\t}\n\tif response.Code != http.StatusInternalServerError || !strings.Contains(response.Body.String(), \"The request could not be completed.\") {\n\t\tt.Fatalf(\"omitted-limit response did not expose the expected pagination failure: status=%d body=%s\", response.Code, response.Body.String())\n\t}\n\n\tcontrol, controlErr := queries.PerformanceEvidence(context.Background(), app.PerformanceRequest{Project: \"alpha\", Sprint: \"39-performance\", Limit: 1})\n\tif controlErr != nil || control.ReturnedCount != 1 || len(queries.limits) != 2 || queries.limits[1] != 1 {\n\t\tt.Fatalf(\"bounded-success control failed: result=%+v err=%v limits=%v\", control, controlErr, queries.limits)\n\t}\n\n\tt.Log(\"assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted-limit request's actual HTTP status and body and record the exact Limit received by PerformanceEvidence; then compare with a reachable bounded-success control.\")\n\tt.Logf(\"omitted_status=%d omitted_limit=%d omitted_body=%s control_status=success control_limit=%d\", response.Code, queries.limits[0], response.Body.String(), queries.limits[1])\n\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1ff716b0ebd2\")\n}\n\nObserved stdout:\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui [build failed]\nFAIL\n\nObserved stderr:\n# github.com/Antonio7098/ultraplan-go/internal/tui [github.com/Antonio7098/ultraplan-go/internal/tui.test]\n./qa_investigator_1ff716b0ebd2_test.go:35:14: undefined: qaPerformanceEvidenceQueries\n",
+          "paths": [
+            "internal/tui/qa_investigator_1ff716b0ebd2_test.go"
+          ],
+          "check_id": "qa-v2-test-82b0c1d1cd30bf494317de77",
+          "output_digest": "8b6096a45e4146a6f73459e83d77f98e534dc8d6c57291845bf193952ee6e3be"
+        },
+        {
+          "kind": "investigator_test",
+          "summary": "Request qa-v2-request-1cefed6a599adae46ba55ba6: predicted_failure_reproduced\nRequired observation: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\nTest internal/tui/qa_investigator_dae46ba55ba6_test.go:\npackage tui\n\nimport (\n\t\"context\"\n\t\"io\"\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/web\"\n)\n\ntype qaDAEPerformanceQueries struct {\n\tstore     sprint.PerformanceStore\n\tattemptID string\n\tlimits    []int\n}\n\nfunc (*qaDAEPerformanceQueries) Dashboard(context.Context) (app.WebDashboardResult, error) {\n\treturn app.WebDashboardResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Projects(context.Context) (app.WebProjectsResult, error) {\n\treturn app.WebProjectsResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Project(context.Context, string) (app.WebProjectResult, error) {\n\treturn app.WebProjectResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Sprint(context.Context, string, string) (app.WebSprintResult, error) {\n\treturn app.WebSprintResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Studies(context.Context) (app.WebStudiesResult, error) {\n\treturn app.WebStudiesResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Study(context.Context, string) (app.WebStudyResult, error) {\n\treturn app.WebStudyResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Validations(context.Context, string, string) (app.WebValidationResult, error) {\n\treturn app.WebValidationResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Artifact(context.Context, string) (app.WebArtifactPreview, error) {\n\treturn app.WebArtifactPreview{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Health(context.Context) (app.WebHealthResult, error) {\n\treturn app.WebHealthResult{}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceEvidence(_ context.Context, req app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {\n\tq.limits = append(q.limits, req.Limit)\n\tpage, err := q.store.EvidencePage(q.attemptID, req.Cursor, req.Filter, req.Limit)\n\tif err != nil {\n\t\treturn app.PerformanceEvidenceResult{}, err\n\t}\n\treturn app.PerformanceEvidenceResult{SchemaVersion: 1, Records: page.Records, NextCursor: page.NextCursor, ReturnedCount: len(page.Records)}, nil\n}\n\nfunc TestQAInvestigator_dae46ba55ba6(t *testing.T) {\n\troot := t.TempDir()\n\tsp := sprint.Sprint{Project: \"alpha\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"alpha\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\tstore := sprint.NewPerformanceStore(root, sp).WithWriterFence(func(sprint.VerificationWriterToken) error { return nil })\n\trel, err := sprint.PerformanceAttemptRelPath(sp, attemptID, \"summary.json\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := sprint.VerificationWriterToken{RunID: \"run\", OperationalAttemptID: \"attempt\", FencingGeneration: 1}\n\tif _, err := store.PublishBytes(rel, \"qa-investigator\", []byte(`{\"status\":\"retained\"}`), true, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\n\tqueries := \u0026qaDAEPerformanceQueries{store: store, attemptID: attemptID}\n\thandler, err := web.NewHandler(web.HandlerOptions{Queries: queries, Authority: \"127.0.0.1:8080\", Diagnostics: io.Discard})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tresponse := httptest.NewRecorder()\n\trequest := httptest.NewRequest(http.MethodGet, \"/api/v1/projects/alpha/sprints/39-performance/performance/evidence\", nil)\n\trequest.Host = \"127.0.0.1:8080\"\n\thandler.ServeHTTP(response, request)\n\n\tif len(queries.limits) != 1 || queries.limits[0] != 0 {\n\t\tt.Fatalf(\"omitted request did not reach PerformanceEvidence and EvidencePage with Limit=0: limits=%v status=%d body=%s\", queries.limits, response.Code, response.Body.String())\n\t}\n\tif response.Code != http.StatusInternalServerError || !strings.Contains(response.Body.String(), \"The request could not be completed.\") {\n\t\tt.Fatalf(\"unexpected omitted-limit HTTP result: status=%d body=%s\", response.Code, response.Body.String())\n\t}\n\n\tcontrol, controlErr := queries.PerformanceEvidence(context.Background(), app.PerformanceRequest{Project: \"alpha\", Sprint: \"39-performance\", Limit: 1})\n\tif controlErr != nil || control.ReturnedCount != 1 || len(queries.limits) != 2 || queries.limits[1] != 1 {\n\t\tt.Fatalf(\"bounded-success control failed: result=%+v err=%v limits=%v\", control, controlErr, queries.limits)\n\t}\n\n\tt.Log(\"assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\")\n\tt.Logf(\"omitted_status=%d omitted_limit=%d omitted_body=%s control_status=success control_limit=%d\", response.Code, queries.limits[0], response.Body.String(), queries.limits[1])\n\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6\")\n}\n\nObserved stdout:\n=== RUN   TestQAInvestigator_dae46ba55ba6\n    qa_investigator_dae46ba55ba6_test.go:105: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\n    qa_investigator_dae46ba55ba6_test.go:106: omitted_status=500 omitted_limit=0 omitted_body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"74a4849b099fb1a5f80aacc2feec869c\"}}\n         control_status=success control_limit=1\n    qa_investigator_dae46ba55ba6_test.go:107: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6\n--- FAIL: TestQAInvestigator_dae46ba55ba6 (0.01s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.039s\nFAIL\n\nObserved stderr:\n",
+          "paths": [
+            "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+          ],
+          "check_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+          "output_digest": "67d3cfcc75b51fa1992827d218eaeb8f1df5cf518a6aedb526465f86e7551723"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "retained investigator-authored test matched the frozen failure signature"
+    }
+  ],
+  "evidence": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-evidence-67e0793d19fecc71197e3a0c",
+      "plan_id": "qa-v2-plan-ed8780f317354b9c624ca980",
+      "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+      "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+      "workspace_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+      "workspace_identity": "ed020f42a778e2543e5fb7d6b51efc720450c45c5468b164a46aacc3a8b83746",
+      "target_identity_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "target_identity_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+      "commands": [
+        {
+          "diagnostics_version": 1,
+          "test_events": [
+            {
+              "test": "TestQAInvestigator_dae46ba55ba6",
+              "action": "run"
+            },
+            {
+              "test": "TestQAInvestigator_dae46ba55ba6",
+              "action": "fail"
+            }
+          ],
+          "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6",
+          "executable": "go",
+          "args_digest": "ea6e7e506537d0df249c7704d6e57697d5a92bccb0ae3c116d9509b907efa21c",
+          "exit_code": 1,
+          "duration": 31060005877,
+          "stdout_digest": "67d3cfcc75b51fa1992827d218eaeb8f1df5cf518a6aedb526465f86e7551723",
+          "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "=== RUN   TestQAInvestigator_dae46ba55ba6\n    qa_investigator_dae46ba55ba6_test.go:105: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\n    qa_investigator_dae46ba55ba6_test.go:106: omitted_status=500 omitted_limit=0 omitted_body={\"error\":{\"code\":\"internal_error\",\"message\":\"The request could not be completed.\"},\"meta\":{\"api_version\":\"v1\",\"request_id\":\"74a4849b099fb1a5f80aacc2feec869c\"}}\n         control_status=success control_limit=1\n    qa_investigator_dae46ba55ba6_test.go:107: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6\n--- FAIL: TestQAInvestigator_dae46ba55ba6 (0.01s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/tui\t0.039s\nFAIL\n",
+          "output_bytes": 850,
+          "truncated": false,
+          "redacted": false,
+          "timed_out": false,
+          "cancelled": false,
+          "cleanup_attempted": false,
+          "cleanup_complete": true
+        }
+      ],
+      "changed_paths": [
+        "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+      ],
+      "outcome": "fail",
+      "reason_code": "predicted_failure_reproduced",
+      "repeatable": true,
+      "contained": true,
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-12T12:06:05.11596493Z"
+    }
+  ],
+  "evidence_plans": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-plan-ed8780f317354b9c624ca980",
+      "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+      "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+      "theory_ids": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "expectation_refs": [
+        "qa-v2-spec-55211a07b67f8a56c56f7e93"
+      ],
+      "kind": "behavioral",
+      "confirmation_condition": "the frozen investigator-authored test matches its predicted failure signature",
+      "refutation_condition": "the frozen investigator-authored test passes on the frozen implementation",
+      "inconclusive_condition": "compile error; infrastructure error; mismatched assertion; timeout; truncated output; unrelated panic",
+      "approved_paths": [
+        "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+      ],
+      "check_id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_dae46ba55ba6$",
+        "-count=1"
+      ],
+      "working_directory": "internal/tui",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "analyzer_calls": 0,
+      "cleanup_required": true,
+      "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "map_fingerprint": "5ef8027587eb94544524f5fb9fc086375ee02b69dfe8d1ea3a4ec8b38c2a184d",
+      "frozen_at": "2026-09-12T12:04:14.286180777Z"
+    }
+  ],
+  "issue_coverage": {
+    "schema_version": 2,
+    "issue_id": "qa-v2-issue-158e0278297af17b6548452a",
+    "theory_ids": [
+      "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+    ],
+    "test_bundle_ids": [
+      "qa-v2-test-da0b697c94f4dcc046d7d411"
+    ],
+    "evidence_ids": [
+      "qa-v2-evidence-67e0793d19fecc71197e3a0c"
+    ],
+    "coverage": {
+      "qa-v1-theory-f2dfc2c802889fddc3bbae5c": [
+        "qa-v2-evidence-67e0793d19fecc71197e3a0c",
+        "qa-v2-test-da0b697c94f4dcc046d7d411"
+      ]
+    },
+    "primary_reproducers": [
+      "qa-v2-test-da0b697c94f4dcc046d7d411"
+    ]
+  },
+  "reproduction_specs": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+      "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+      "evidence_request_id": "qa-v2-request-1cefed6a599adae46ba55ba6",
+      "theory_ids": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "claim": "The performance evidence API's advertised default request is unusable because omitting the limit query parameter sends limit 0 to a store that rejects every non-positive limit.",
+      "preconditions": [
+        "Define all required query fakes in the test, prove the omitted request reaches PerformanceEvidence and EvidencePage, and avoid an unrelated query-allowlist failure."
+      ],
+      "expected_behavior": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+      "predicted_failure": {
+        "test_name": "TestQAInvestigator_dae46ba55ba6",
+        "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6"
+      },
+      "inconclusive_conditions": [
+        "compile error",
+        "infrastructure error",
+        "mismatched assertion",
+        "timeout",
+        "truncated output",
+        "unrelated panic"
+      ],
+      "approved_test_paths": [
+        "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+      ],
+      "command": {
+        "id": "investigator-test-dae46ba55ba6",
+        "executable": "/usr/bin/go",
+        "args": [
+          "test",
+          ".",
+          "-v",
+          "-run",
+          "^TestQAInvestigator_dae46ba55ba6$",
+          "-count=1"
+        ],
+        "working_directory": "internal/tui",
+        "environment": [
+          "PATH"
+        ],
+        "timeout": 300000000000,
+        "output_limit": 262144,
+        "fingerprint": "c8d8c1d5e4f96dba509599f65fa5d69d5c4a3c88ff0576c600950057ec901d8f"
+      },
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "frozen_at": "2026-09-12T12:04:14.286180777Z"
+    }
+  ],
+  "regression_tests": [
+    {
+      "schema_version": 2,
+      "id": "qa-v2-test-da0b697c94f4dcc046d7d411",
+      "spec_id": "qa-v2-spec-55211a07b67f8a56c56f7e93",
+      "files": [
+        {
+          "path": "internal/tui/qa_investigator_dae46ba55ba6_test.go",
+          "content": "package tui\n\nimport (\n\t\"context\"\n\t\"io\"\n\t\"net/http\"\n\t\"net/http/httptest\"\n\t\"os\"\n\t\"path/filepath\"\n\t\"strings\"\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/web\"\n)\n\ntype qaDAEPerformanceQueries struct {\n\tstore     sprint.PerformanceStore\n\tattemptID string\n\tlimits    []int\n}\n\nfunc (*qaDAEPerformanceQueries) Dashboard(context.Context) (app.WebDashboardResult, error) {\n\treturn app.WebDashboardResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Projects(context.Context) (app.WebProjectsResult, error) {\n\treturn app.WebProjectsResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Project(context.Context, string) (app.WebProjectResult, error) {\n\treturn app.WebProjectResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Sprint(context.Context, string, string) (app.WebSprintResult, error) {\n\treturn app.WebSprintResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Studies(context.Context) (app.WebStudiesResult, error) {\n\treturn app.WebStudiesResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Study(context.Context, string) (app.WebStudyResult, error) {\n\treturn app.WebStudyResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Validations(context.Context, string, string) (app.WebValidationResult, error) {\n\treturn app.WebValidationResult{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Artifact(context.Context, string) (app.WebArtifactPreview, error) {\n\treturn app.WebArtifactPreview{}, nil\n}\nfunc (*qaDAEPerformanceQueries) Health(context.Context) (app.WebHealthResult, error) {\n\treturn app.WebHealthResult{}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceStatus(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceResult(context.Context, app.PerformanceRequest) (app.PerformanceStatusResult, error) {\n\treturn app.PerformanceStatusResult{PerformanceAttemptID: q.attemptID}, nil\n}\nfunc (q *qaDAEPerformanceQueries) PerformanceEvidence(_ context.Context, req app.PerformanceRequest) (app.PerformanceEvidenceResult, error) {\n\tq.limits = append(q.limits, req.Limit)\n\tpage, err := q.store.EvidencePage(q.attemptID, req.Cursor, req.Filter, req.Limit)\n\tif err != nil {\n\t\treturn app.PerformanceEvidenceResult{}, err\n\t}\n\treturn app.PerformanceEvidenceResult{SchemaVersion: 1, Records: page.Records, NextCursor: page.NextCursor, ReturnedCount: len(page.Records)}, nil\n}\n\nfunc TestQAInvestigator_dae46ba55ba6(t *testing.T) {\n\troot := t.TempDir()\n\tsp := sprint.Sprint{Project: \"alpha\", Slug: \"39-performance\", Path: filepath.Join(root, \"projects\", \"alpha\", \"sprints\", \"39-performance\")}\n\tif err := os.MkdirAll(sp.Path, 0o755); err != nil {\n\t\tt.Fatal(err)\n\t}\n\tattemptID := \"performance-v1-attempt-0123456789abcdef01234567\"\n\tstore := sprint.NewPerformanceStore(root, sp).WithWriterFence(func(sprint.VerificationWriterToken) error { return nil })\n\trel, err := sprint.PerformanceAttemptRelPath(sp, attemptID, \"summary.json\")\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\ttoken := sprint.VerificationWriterToken{RunID: \"run\", OperationalAttemptID: \"attempt\", FencingGeneration: 1}\n\tif _, err := store.PublishBytes(rel, \"qa-investigator\", []byte(`{\"status\":\"retained\"}`), true, token); err != nil {\n\t\tt.Fatal(err)\n\t}\n\n\tqueries := \u0026qaDAEPerformanceQueries{store: store, attemptID: attemptID}\n\thandler, err := web.NewHandler(web.HandlerOptions{Queries: queries, Authority: \"127.0.0.1:8080\", Diagnostics: io.Discard})\n\tif err != nil {\n\t\tt.Fatal(err)\n\t}\n\tresponse := httptest.NewRecorder()\n\trequest := httptest.NewRequest(http.MethodGet, \"/api/v1/projects/alpha/sprints/39-performance/performance/evidence\", nil)\n\trequest.Host = \"127.0.0.1:8080\"\n\thandler.ServeHTTP(response, request)\n\n\tif len(queries.limits) != 1 || queries.limits[0] != 0 {\n\t\tt.Fatalf(\"omitted request did not reach PerformanceEvidence and EvidencePage with Limit=0: limits=%v status=%d body=%s\", queries.limits, response.Code, response.Body.String())\n\t}\n\tif response.Code != http.StatusInternalServerError || !strings.Contains(response.Body.String(), \"The request could not be completed.\") {\n\t\tt.Fatalf(\"unexpected omitted-limit HTTP result: status=%d body=%s\", response.Code, response.Body.String())\n\t}\n\n\tcontrol, controlErr := queries.PerformanceEvidence(context.Background(), app.PerformanceRequest{Project: \"alpha\", Sprint: \"39-performance\", Limit: 1})\n\tif controlErr != nil || control.ReturnedCount != 1 || len(queries.limits) != 2 || queries.limits[1] != 1 {\n\t\tt.Fatalf(\"bounded-success control failed: result=%+v err=%v limits=%v\", control, controlErr, queries.limits)\n\t}\n\n\tt.Log(\"assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.\")\n\tt.Logf(\"omitted_status=%d omitted_limit=%d omitted_body=%s control_status=success control_limit=%d\", response.Code, queries.limits[0], response.Body.String(), queries.limits[1])\n\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6\")\n}\n",
+          "digest": "c48895f2b6015d2738741bad9d6259dc98bb41bb6c52d51a7e0e45075c728090",
+          "bytes": 5155
+        }
+      ],
+      "content_digest": "ed020f42a778e2543e5fb7d6b51efc720450c45c5468b164a46aacc3a8b83746"
+    }
+  ],
+  "regression_test_paths": [
+    "internal/tui/qa_investigator_dae46ba55ba6_test.go"
+  ],
+  "context_blocks": [
+    {
+      "id": "qa-v1-block-09c45c74301d2ddf0c84ab93",
+      "kind": "source",
+      "path": "internal/workspace/scaffold/prompts/create-requirements.md",
+      "start_line": 1,
+      "end_line": 35,
+      "content": "# Create Sprint Requirements\n\n\u003e **Inputs:** project-index.md, roadmap.md, docs/*.md, injected requirements template, prior sprint reviews\n\n---\n\nUse this prompt to create the sprint requirements document for a new sprint.\n\n## Required Inputs\n\nRead these files first:\n\n1. Project index: `.ultra/projects/{project}/project-index.md`\n2. Project roadmap: `.ultra/projects/{project}/roadmap.md`\n3. Project docs: all markdown files in `.ultra/projects/{project}/docs/*.md`\n4. Injected requirements templa\n\n[... bounded excerpt ...]\n\nne; never invent a threshold.\n\n## Quality Bar\n\n- The sprint goal must be achievable in one sprint.\n- All required outputs must be specific (file paths, not vague descriptions).\n- Acceptance criteria must be objectively verifiable.\n- Non-goals must be specific enough to prevent scope creep.\n- Constraints must be binding (not aspirational).\n\n## Skip Criteria\n\nSkip creating requirements if:\n\n- `requirements.md` already exists and is complete\n- Required inputs (roadmap, project-index) are missing",
+      "content_sha256": "9107680f8d81b0adced39591d350c1b9ee4bffbbb74c4f07a2cc790662b83794",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ],
+      "omitted_bytes": 1229
+    },
+    {
+      "id": "qa-v1-block-19e471996aa5f3432aae4add",
+      "kind": "evidence",
+      "start_line": 1,
+      "end_line": 1,
+      "content": "[{\"id\":\"go-format-diff\",\"fingerprint\":\"950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012\"},{\"id\":\"go-source-integrity\",\"fingerprint\":\"0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e\"}]",
+      "content_sha256": "592645a4ea67c56197466bc776c90b3ee2159441a1dc5bd187481eaf75c8f9c8",
+      "provenance": "approved product-owned check catalog",
+      "related_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/configuration.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md",
+        "internal/app/durable_operations.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/performance_fixtures_test.go",
+        "internal/app/performance_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/tui_commands.go",
+        "internal/app/usecases.go",
+        "internal/app/web_usecases.go",
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/performance.go",
+        "internal/platform/config/performance_test.go",
+        "internal/platform/config/redaction.go",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/domain.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_authoring.go",
+        "internal/sprint/performance_benchmark.go",
+        "internal/sprint/performance_benchmark_test.go",
+        "internal/sprint/performance_discovery.go",
+        "internal/sprint/performance_isolation.go",
+        "internal/sprint/performance_isolation_test.go",
+        "internal/sprint/performance_measure.go",
+        "internal/sprint/performance_optimize.go",
+        "internal/sprint/performance_optimize_runtime.go",
+        "internal/sprint/performance_optimize_test.go",
+        "internal/sprint/performance_repair.go",
+        "internal/sprint/performance_service_test.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/testdata/performance/states.json",
+        "internal/tui/model.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views.go",
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/routes.go",
+        "internal/web/routes_test.go",
+        "internal/web/templates/sprint.html",
+        "internal/web/test_fakes_test.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ]
+    },
+    {
+      "id": "qa-v1-block-23ffd3df512e9cb822d95ab8",
+      "kind": "change",
+      "path": "internal/tui/views.go",
+      "start_line": 1,
+      "end_line": 20,
+      "content": "diff --git a/internal/tui/views.go b/internal/tui/views.go\nindex 4fe682324b4437f39f791b79e8fc1abc1f64bf80..c5df1557bcb7e809936355b1438e2eab3386f622 100644\n--- a/internal/tui/views.go\n+++ b/internal/tui/views.go\n@@ -354,6 +354,15 @@ func renderRouteSummary(b *strings.Builder, m Model) {\n \t\t\treturn\n \t\t}\n \t\tfmt.Fprintln(b, \"Verification summary\")\n+\t\tif sprint.Performance.Enabled || sprint.Performance.PerformanceAttemptID != \"\" {\n+\t\t\tfmt.Fprintf(b, \"  Performance: phase=%s outcome=%s fresh=%t targets=%d lifecycle=%s next=%s\\n\", sprint.Performance.Phase, sprint.Performance.Outcome, sprint.Performance.Fresh, len(sprint.Performance.Targets), sprint.Performance.OperationalLifecycle, sprint.Performance.NextAction)\n+\t\t\tfor _, evidence := range sprint.PerformanceEvidence.Records {\n+\t\t\t\tfmt.Fprintf(b, \"    Evidence: %s (%d bytes)\\n\", evidence.Name, evidence.Size)\n+\t\t\t}\n+\t\t\tif sprint.PerformanceEvidence.NextCursor != \"\" {\n+\t\t\t\tfmt.Fprintln(b, \"    More evidence is available through the next-page action.\")\n+\t\t\t}\n+\t\t}\n \t\tfmt.Fprintf(b, \"  Conformance Review: %s verdict=%s stale=%t evidence=%s\\n\", sprint.Review.Status, sprint.Review.Verdict, sprint.Review.Stale, sprint.Review.Artifact)\n \t\tfor _, reason := range sprint.Review.FreshnessReasons {\n \t\t\tfmt.Fprintf(b, \"    Reason: %s\\n\", reason)",
+      "content_sha256": "2642d5e3a31bced3be36d61f01a877cbd2dedf2757b3de3bb23c513dcbab42a9",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/tui/views.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-2fce131e71a4ce4470c83148",
+      "kind": "change",
+      "path": "internal/tui/model.go",
+      "start_line": 1,
+      "end_line": 23,
+      "content": "diff --git a/internal/tui/model.go b/internal/tui/model.go\nindex a8aea491055f27c6879e802ab6c400f76a23a199..9682a6e63a1acd1d66e0a937be0eb32dee83ecc9 100644\n--- a/internal/tui/model.go\n+++ b/internal/tui/model.go\n@@ -465,6 +465,18 @@ func (m Model) navItems() []navItem {\n \t\t\t\t{Label: \"QA\", Route: \u0026Route{Kind: RouteSprintQA, Project: route.Project, Sprint: route.Sprint}},\n \t\t\t\t{Label: \"Bounded repair\", Route: \u0026Route{Kind: RouteSprintRepair, Project: route.Project, Sprint: route.Sprint}},\n \t\t\t}\n+\t\t\tif s.Performance.Enabled || s.Performance.PerformanceAttemptID != \"\" {\n+\t\t\t\titems = append(items,\n+\t\t\t\t\tnavItem{Label: \"Performance Status\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceStatus, Project: route.Project, Sprint: route.Sprint}},\n+\t\t\t\t\tnavItem{Label: \"Performance Dry Run\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceDryRun, Project: route.Project, Sprint: route.Sprint}},\n+\t\t\t\t\tnavItem{Label: \"Start Performance [COMMANDS + MUTATION]\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceStart, Project: route.Project, Sprint: route.Sprint}})\n+\t\t\t\tif s.Performance.PerformanceAttemptID != \"\" {\n+\t\t\t\t\titems = append(items, navItem{Label: \"Performance Evidence\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceEvidence, Project: route.Project, Sprint: route.Sprint, Limit: s.Performance.Limits.EvidencePageSize}}, navItem{Label: \"Resume Performance [COMMANDS + MUTATION]\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceResume, Project: route.Project, Sprint: route.Sprint}}, navItem{Label: \"Cancel Performance\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceCancel, Project: route.Project, Sprint: route.Sprint}}, navItem{Label: \"Recover Performance\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceRecover, Project: route.Project, Sprint: route.Sprint}})\n+\t\t\t\t\tif s.PerformanceEvidence.NextCursor != \"\" {\n+\t\t\t\t\t\titems = append(items, navItem{Label: \"Next Performance Evidence Page\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceEvidence, Project: route.Project, Sprint: route.Sprint, Cursor: s.PerformanceEvidence.NextCursor, Limit: s.Performance.Limits.EvidencePageSize}})\n+\t\t\t\t\t}\n+\t\t\t\t}\n+\t\t\t}\n \t\t\tstages := []string{\"requirements\", \"sprint-index\", \"technical-handbook\", \"area-reasoning\", \"reasoning\", \"plan\", \"execute\", \"review\"}\n \t\t\titems = append(items, navItem{Label: \"Sprint Status\", Operation: \u0026app.OperationRequest{Kind: app.OperationSprintStatus, Project: route.Project, Sprint: route.Sprint}})\n \t\t\tfor _, stage := range stages {",
+      "content_sha256": "45ce308420c7d399b62cf1c21eb8fa51efac77cfc29dca0c4e59d3ef94fe2253",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/tui/model.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-534f010a2a673b1ea3264f40",
+      "kind": "source",
+      "path": "internal/web/templates/sprint.html",
+      "start_line": 1,
+      "end_line": 7,
+      "content": "{{define \"page/sprint\"}}{{template \"layout/top\" .}}\n\u003cnav class=\"breadcrumb\" aria-label=\"Breadcrumb\"\u003e\u003ca href=\"/projects\"\u003eProjects\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}\"\u003e{{.Sprint.Project}}\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/roadmap\"\u003eRoadmap\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}\"{{if eq .Page \"overview\"}} aria-current=\"page\"{{end}}\u003e{{.Sprint.Slug}}\u003c/a\u003e{{if n\n\n[... bounded excerpt ...]\n\nrement-dialog role=\"dialog\" aria-label=\"Coverage requirement\" hidden\u003e\u003cdiv class=\"top-nav-flyout-heading\"\u003e\u003cstrong data-coverage-dialog-id\u003eRequirement\u003c/strong\u003e\u003cbutton type=\"button\" data-coverage-dialog-close aria-label=\"Close requirement details\"\u003e×\u003c/button\u003e\u003c/div\u003e\u003cp\u003e\u003cspan class=\"status\" data-coverage-dialog-status\u003e\u003c/span\u003e\u003c/p\u003e\u003cp data-coverage-dialog-description\u003e\u003c/p\u003e\u003cp class=\"coverage-mapped-tests\"\u003e\u003cstrong\u003eMapped tests:\u003c/strong\u003e \u003cspan data-coverage-dialog-tests\u003e\u003c/span\u003e\u003c/p\u003e\u003c/div\u003e\n\u003c/section\u003e{{end}}",
+      "content_sha256": "ca8b505a6c6d23e3b1450a6ab085d6200ee9cbe918cabdbf0e3471c398025577",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "internal/web/templates/sprint.html"
+      ],
+      "omitted_bytes": 59182
+    },
+    {
+      "id": "qa-v1-block-5915b359f0187966290c73a4",
+      "kind": "change",
+      "path": "internal/web/templates/sprint.html",
+      "start_line": 1,
+      "end_line": 11,
+      "content": "diff --git a/internal/web/templates/sprint.html b/internal/web/templates/sprint.html\nindex 7207f0fddd0f66c0b019d114ceed323a27d40e9f..2cd01a443c249d4034feef546f19c62a3226417d 100644\n--- a/internal/web/templates/sprint.html\n+++ b/internal/web/templates/sprint.html\n@@ -1,5 +1,5 @@\n {{define \"page/sprint\"}}{{template \"layout/top\" .}}\n-\u003cnav class=\"breadcrumb\" aria-label=\"Breadcrumb\"\u003e\u003ca href=\"/projects\"\u003eProjects\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}\"\u003e{{.Sprint.Project}}\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/roadmap\"\u003eRoadmap\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}\"{{if eq .Page \"overview\"}} aria-current=\"page\"{{end}}\u003e{{.Sprint.Slug}}\u003c/a\u003e{{if ne .Page \"overview\"}}\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/{{.Page}}\" aria-current=\"page\"\u003e{{if eq .Page \"workflow\"}}Workflow{{else if eq .Page \"repair\"}}Repair{{else if eq .Page \"qa\"}}QA{{else if eq .Page \"metrics\"}}Runtime metrics{{else}}Artifacts{{end}}\u003c/a\u003e{{end}}\u003c/nav\u003e\n+\u003cnav class=\"breadcrumb\" aria-label=\"Breadcrumb\"\u003e\u003ca href=\"/projects\"\u003eProjects\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}\"\u003e{{.Sprint.Project}}\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/roadmap\"\u003eRoadmap\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}\"{{if eq .Page \"overview\"}} aria-current=\"page\"{{end}}\u003e{{.Sprint.Slug}}\u003c/a\u003e{{if ne .Page \"overview\"}}\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/{{.Page}}\" aria-current=\"page\"\u003e{{if eq .Page \"workflow\"}}Workflow{{else if eq .Page \"performance\"}}Performance{{else if eq .Page \"repair\"}}Repair{{else if eq .Page \"qa\"}}QA{{else if eq .Page \"metrics\"}}Runtime metrics{{else}}Artifacts{{end}}\u003c/a\u003e{{end}}\u003c/nav\u003e\n {{if eq .Page \"overview\"}}\n \u003cdiv class=\"entity-dashboard sprint-overview-grid\"\u003e\n \u003ca class=\"dashboard-component\" href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/artifacts\"\u003e\u003csection class=\"sprint-intro\" aria-labelledby=\"sprint-overview-heading\"\u003e",
+      "content_sha256": "77b87c50e320c834f20f470f30fc135cb183ed5c386abf05602724adaf40bbbe",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/templates/sprint.html"
+      ]
+    },
+    {
+      "id": "qa-v1-block-60d9d4670700f4fa65726e0a",
+      "kind": "change",
+      "path": "internal/web/routes.go",
+      "start_line": 1,
+      "end_line": 15,
+      "content": "diff --git a/internal/web/routes.go b/internal/web/routes.go\nindex af1902262c675301880fc761ea8e1c58f6314d66..3dce985cb4107e7d050dc910393922d626062f53 100644\n--- a/internal/web/routes.go\n+++ b/internal/web/routes.go\n@@ -375,6 +375,10 @@ func matchRoute(path string) routeMatch {\n \t\treturn routeMatch{name: \"api_project\", params: parts[3:], known: true, api: true}\n \tcase len(parts) == 6 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\":\n \t\treturn routeMatch{name: \"api_sprint\", params: []string{parts[3], parts[5]}, known: true, api: true}\n+\tcase len(parts) == 7 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"performance\":\n+\t\treturn routeMatch{name: \"api_sprint_performance\", params: []string{parts[3], parts[5]}, known: true, api: true}\n+\tcase len(parts) == 8 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"performance\" \u0026\u0026 (parts[7] == \"result\" || parts[7] == \"evidence\"):\n+\t\treturn routeMatch{name: \"api_sprint_performance_\" + parts[7], params: []string{parts[3], parts[5]}, known: true, api: true}\n \tcase len(parts) == 7 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"qa\":\n \t\treturn routeMatch{name: \"api_sprint_qa\", params: []string{parts[3], parts[5]}, known: true, api: true}\n \tcase len(parts) == 7 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"repair\":",
+      "content_sha256": "4324663b277444e91903c46c0d62be6918330c79b1dba9b915e0594cfb78531b",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/routes.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-6cecdbcdc6bcb6f4298ec62e",
+      "kind": "change",
+      "path": "internal/web/handlers.go",
+      "start_line": 1,
+      "end_line": 38,
+      "content": "diff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -145,19 +145,20 @@ type collectionDTO struct {\n }\n \n type sprintDTO struct {\n-\tRef        string        `json:\"ref\"`\n-\tProject    string        `json:\"project\"`\n-\tSlug       string        `json:\"slug\"`\n-\tStatus     string        `json:\"status\"`\n-\tAssessment string        `json:\"assessment,omitempty\"`\n-\tNextAction string        `json:\"next_action,omitempty\"`\n-\tStages     []stageDTO    `json:\"stages\"`\n-\tExecute    executeDTO    `json:\"execute\"`\n-\tReview     reviewDTO     `json:\"review\"`\n-\tSmoke      smokeDTO      `json:\"smoke\"`\n-\tQA         app.QAResult  `json:\"qa\"`\n-\tFindings   []findingDTO  `json:\"findings\"`\n-\tArtifacts  []artifactDTO `json:\"artifacts\"`\n+\tRef         string                      `json:\"ref\"`\n+\tProject     string                      `json:\"project\"`\n+\tSlug        string                      `json:\"slug\"`\n+\tStatus      string                      `json:\"status\"`\n+\tAssessment  string                      `json:\"assessment,omitempty\"`\n+\tNextAction  string                      `json:\"next_action,omitempty\"`\n+\tStages      []stageDTO                  `json:\"stages\"`\n+\tExecute     executeDTO                  `json:\"execute\"`\n+\tReview      reviewDTO                   `json:\"review\"`\n+\tSmoke       smokeDTO                    `json:\"smoke\"`\n+\tQA          app.QAResult                `json:\"qa\"`\n+\tPerformance app.PerformanceStatusResult `json:\"performance\"`\n+\tFindings    []findingDTO                `json:\"findings\"`\n+\tArtifacts   []artifactDTO               `json:\"artifacts\"`\n }\n \n type executeDTO struct {",
+      "content_sha256": "90fa3cb7347ebe28af08680c7bbf3897c300281ac2f8c770d044acce810c34ec",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/handlers.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-6fa1ac5555890a0fa404e61e",
+      "kind": "change",
+      "path": "internal/web/operation_handlers.go",
+      "start_line": 1,
+      "end_line": 23,
+      "content": "diff --git a/internal/web/operation_handlers.go b/internal/web/operation_handlers.go\nindex 926fc0e56f34f77924ce6645bbb89f242ced063e..5080940ac78944fb4a6703c211d018547ebe20bc 100644\n--- a/internal/web/operation_handlers.go\n+++ b/internal/web/operation_handlers.go\n@@ -708,6 +708,18 @@ func mapOperationRequest(spec operationSpecRequest) (app.OperationRequest, error\n \t\t}\n \tcase \"verify-dry-run\":\n \t\treq.Kind = app.OperationVerifyDryRun\n+\tcase \"performance-status\":\n+\t\treq.Kind = app.OperationPerformanceStatus\n+\tcase \"performance-dry-run\":\n+\t\treq.Kind = app.OperationPerformanceDryRun\n+\tcase \"performance-start\":\n+\t\treq.Kind = app.OperationPerformanceStart\n+\tcase \"performance-resume\":\n+\t\treq.Kind = app.OperationPerformanceResume\n+\tcase \"performance-recover\":\n+\t\treq.Kind = app.OperationPerformanceRecover\n+\tcase \"performance-cancel\":\n+\t\treq.Kind = app.OperationPerformanceCancel\n \tcase \"qa-status\":\n \t\treq.Kind = app.OperationQAStatus\n \tcase \"qa-dry-run\":",
+      "content_sha256": "e46121587c49505e177820c5f8f5424588c653e8c10f66de026c62627c0b67c8",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/operation_handlers.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-88233abe9fdd214bea48c441",
+      "kind": "change",
+      "path": "internal/workspace/scaffold/prompts/create-requirements.md",
+      "start_line": 1,
+      "end_line": 13,
+      "content": "diff --git a/internal/workspace/scaffold/prompts/create-requirements.md b/internal/workspace/scaffold/prompts/create-requirements.md\nindex 6b35b7da1d78a4d4fee5dfca9e965b71de2e469c..c1df613e700a446c24a624bc4597305a4902f8af 100644\n--- a/internal/workspace/scaffold/prompts/create-requirements.md\n+++ b/internal/workspace/scaffold/prompts/create-requirements.md\n@@ -33,6 +33,9 @@ Write to: `.ultra/projects/{project}/sprints/{sprint-slug}/requirements.md`\n    - **Constraints**: architectural, technical, or process constraints.\n    - **Dependencies**: prior sprints or external inputs this sprint needs.\n    - **Review Expectations**: what will be checked at review and how.\n+   - **Performance Targets**: include the exact governed nine-column table only\n+     when the project `Performance Policy` is enabled. Derive each value from a\n+     product requirement or measured baseline; never invent a threshold.\n \n ## Quality Bar",
+      "content_sha256": "19338fe011ee44a265d7a01540d8043689097a094b18e4c6a675af29b5407a78",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ]
+    },
+    {
+      "id": "qa-v1-block-95f9f726d965e7685184fba7",
+      "kind": "change",
+      "path": "internal/web/handlers.go",
+      "start_line": 1,
+      "end_line": 67,
+      "content": "diff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -657,6 +658,62 @@ func (h *handler) dispatch(w http.ResponseWriter, r *http.Request, match routeMa\n \t\t\treturn\n \t\t}\n \t\th.writeSuccess(w, r, http.StatusOK, mapSprint(result), nil)\n+\tcase \"api_sprint_performance\":\n+\t\tresult, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])\n+\t\tif err != nil {\n+\t\t\th.handleQueryError(w, r, true, err)\n+\t\t\treturn\n+\t\t}\n+\t\th.writeSuccess(w, r, http.StatusOK, result.Performance, nil)\n+\tcase \"api_sprint_performance_result\", \"api_sprint_performance_evidence\":\n+\t\tqueries, ok := h.queries.(app.WebPerformanceQueries)\n+\t\tif !ok {\n+\t\t\th.handleQueryError(w, r, true, app.ErrWebUnavailable)\n+\t\t\treturn\n+\t\t}\n+\t\trequest := app.PerformanceRequest{Project: match.params[0], Sprint: match.params[1]}\n+\t\tif match.name == \"api_sprint_performance_result\" {\n+\t\t\tresult, err := queries.PerformanceResult(r.Context(), request)\n+\t\t\tif err != nil {\n+\t\t\t\th.handleQueryError(w, r, true, err)\n+\t\t\t\treturn\n+\t\t\t}\n+\t\t\th.writeSuccess(w, r, http.StatusOK, result, nil)\n+\t\t\treturn\n+\t\t}\n+\t\tevidenceQueries, ok := h.queries.(app.WebPerformanceEvidenceQueries)\n+\t\tif !ok {\n+\t\t\t// Compatibility adapters may expose only current bounded references.\n+\t\t\tstatus, statusErr := queries.PerformanceStatus(r.Context(), request)\n+\t\t\tif statusErr != nil {\n+\t\t\t\th.handleQueryError(w, r, true, statusErr)\n+\t\t\t\treturn\n+\t\t\t}\n+\t\t\trefs := make([]app.PerformanceArtifactSummary, 0, 2)\n+\t\t\tif status.State != nil {\n+\t\t\t\trefs = append(refs, *status.State)\n+\t\t\t}\n+\t\t\tif status.Result != nil {\n+\t\t\t\trefs = append(refs, *status.Result)\n+\t\t\t}\n+\t\t\th.writeSuccess(w, r, http.StatusOK, map[string]any{\"attempt_id\": status.PerformanceAttemptID, \"artifacts\": refs, \"returned_count\": len(refs)}, nil)\n+\t\t\treturn\n+\t\t}\n+\t\tlimit := 0\n+\t\tif raw := r.URL.Query().Get(\"limit\"); raw != \"\" {\n+\t\t\tparsed, parseErr := strconv.Atoi(raw)\n+\t\t\tif parseErr != nil {\n+\t\t\t\th.handleQueryError(w, r, true, fmt.Errorf(\"invalid performance evidence limit\"))\n+\t\t\t\treturn\n+\t\t\t}\n+\t\t\tlimit = parsed\n+\t\t}\n+\t\tevidence, err := evidenceQueries.PerformanceEvidence(r.Context(), app.PerformanceRequest{Project: request.Project, Sprint: request.Sprint, Cursor: r.URL.Query().Get(\"cursor\"), Filter: r.URL.Query().Get(\"filter\"), Limit: limit})\n+\t\tif err != nil {\n+\t\t\th.handleQueryError(w, r, true, err)\n+\t\t\treturn\n+\t\t}\n+\t\th.writeSuccess(w, r, http.StatusOK, evidence, nil)\n \tcase \"api_sprint_qa\":\n \t\th.handleSprintQA(w, r, match.params[0], match.params[1])\n \tcase \"api_sprint_qa_map\":",
+      "content_sha256": "ecb073ad08ddc279c27998c18ab3e314d0473402d5d193d1a5f0aaf1df868fb1",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/handlers.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-af0ed2872e44a29a408c3231",
+      "kind": "source",
+      "path": "internal/web/operation_handlers.go",
+      "start_line": 1,
+      "end_line": 44,
+      "content": "package web\n\nimport (\n\t\"context\"\n\t\"encoding/json\"\n\t\"errors\"\n\t\"fmt\"\n\t\"io\"\n\t\"net/http\"\n\t\"strconv\"\n\t\"strings\"\n\t\"time\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\ntype operationScopeRequest struct {\n\tProject string `json:\"project,omitempty\"`\n\tSprint  string `json:\"sprint,omitempty\"`\n\tStudy   string `json:\"study,omitempty\"`\n}\n\ntype operationOptionsRequest struct {\n\tStage             string   `json:\"stage,omitempty\"`\n\tToStage           string   `json:\"to_stage,omitempty\"`\n\tTask         \n\n[... bounded excerpt ...]\n\n(value string) string {\n\tif value == \"\" {\n\t\treturn \"0\"\n\t}\n\tif _, err := strconv.ParseUint(value, 10, 64); err != nil {\n\t\treturn \"0\"\n\t}\n\treturn value\n}\n\nfunc (h *handler) logOperation(r *http.Request, event, operationID, kind, state, reason string) {\n\tfmt.Fprintf(h.diagnostics,\n\t\t\"event=%s request_id=%s operation_id=%s kind=%s state=%s reason=%s\\n\",\n\t\tsafeWebText(event), safeWebText(requestID(r.Context())), safeWebText(operationID), safeWebText(kind), safeWebText(state), safeWebText(reason))\n}",
+      "content_sha256": "00b7c5bb0a94d71f788adb040845339f5564e78c7005f5be1e1a71372b46a10e",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "encoding/json",
+        "github.com/Antonio7098/ultraplan-go/internal/app",
+        "internal/web/operation_handlers.go",
+        "net/http"
+      ],
+      "symbols": [
+        "decodeStrictJSON",
+        "durableActiveOperation",
+        "durableOperationDocument",
+        "durableOperationEvent",
+        "durableOperationStatus",
+        "eventIDHeader",
+        "firstString",
+        "followDurableOperationEvents",
+        "handleActiveOperations",
+        "handleHTMLOperationCancel",
+        "handleHTMLOperationPrepare",
+        "handleHTMLOperationStart",
+        "handleHTMLOperationStatus",
+        "handleOperationCancel",
+        "handleOperationEvents",
+        "handleOperationPrepare",
+        "handleOperationStart",
+        "handleOperationStatus",
+        "htmlOperationFailure",
+        "isClientOperationError",
+        "legacyOperationID",
+        "logOperation",
+        "mapOperationRequest",
+        "mapOperationSpec",
+        "newSprintRef",
+        "operationFailureGuidance",
+        "operationOptionsRequest",
+        "operationPreparationView",
+        "operationScopeRequest",
+        "operationSpecFromForm",
+        "operationSpecRequest",
+        "preparationDTO",
+        "prepareRequest",
+        "runtimeConfirmationDTO",
+        "safeOperationCause",
+        "startRequest",
+        "validOptionalIdentifier",
+        "writeErrorDetails",
+        "writeOperationError",
+        "writeSSEEvent"
+      ],
+      "omitted_bytes": 38472
+    },
+    {
+      "id": "qa-v1-block-afc7f1a02ec78c68dd9233f4",
+      "kind": "prior",
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/review.md",
+      "start_line": 1,
+      "end_line": 77,
+      "content": "# Sprint Review\n\nReview status: `completed`\nVerdict: `pass_with_findings`\nInput fingerprint: `5a1318314307929406ebca976a8369ae4927f395a7ffd3e73d50a653d71a6e87`\nModel: `opencode/muse-spark-1.2-contributor-free`\nModel source: `planning.review_model`\nTarget: `/home/antonioborgerees/coding/ultraplan/.ultraplan-go-ultraplan-worktrees/ultraplan-go/39-performance-stage`\n\n## Review Context\n\nProject `ultraplan-go`, sprint `39-performance-stage`; automated product-owned review.\n\n## Input Fingerprint And Scope\n\n- `projects/ultraplan-go/docs/ARCHITECTURE.md` `17eb2a8e42443674705b4346f4283579b2ebb305c0d0fc27eeff790b3dd1544f`\n- `projects/ultraplan-go/docs/PRD.md` `2013e32655de5a7238f309b739da8845eadf4eeaf5453517784e6f4e3f5b5913`\n- `projects/ultraplan-go/docs/TRD.md` `1df411bcb44e78a7e04a7124bade807bfe1f8087b9a61f1373f58c16946328a0`\n- `projects/ultraplan-go/project-index.md` `44c9393b3614b6f86f207ed17cd30b9de7d80bfa616c0c83d85119194688adc6`\n- `projects/ultraplan-go/roadmap.md` `bc60caef502998a7584becbdf12774d207f58dd8093252222f33173a62f508fb`\n- `projects/ultraplan-go/sprints/39-performance-stage/.execution-handoff.json` `1e1d0174bb049dda66f44144e30e6730b73d72a6c775c4a6337673f14142a541`\n- `projects/ultraplan-go/sprints/39-performance-stage/code-context.md` `bd9a1dc98be0130890ad7376becdb5c960594da632f3c112fed1f9d4a91840a7`\n- `projects/ultraplan-go/sprints/39-performance-stage/execute.md` `973b514fe4a9d08422f6737d7876292fcc624d7fbd80383d6849e47a065bdcf0`\n- `projects/ultraplan-go/sprints/39-performance-stage/plan.md` `5227e3490dbd710ac3e01562a06666be1570350fd37eeb9a57bbeaaf765108f5`\n- `projects/ultraplan-go/sprints/39-performance-stage/reasoning.md` `997fb99090afee9693ff6d00bd0e7b02e89eabd480dbcde7a66756b65c8f39f0`\n- `projects/ultraplan-go/sprints/39-performance-stage/reasoning/api-design.md` `e495a5846062812a98db14f39efac561c6674ae2a3254fc744edf7e7245678a6`\n- `projects/ultraplan-go/sprints/39-performance-stage/reasoning/architecture.md` `f8504a16c9d4b72607f72d57e20ee9b8503d53a8a41c327acce00a29f3dfef9b`\n- `projects/ultraplan-go/sprints/39-performance-stage/reasoning/frontend.md` `78872f68bffc75353befe111187c84b5fd3f9018765c129110feb2795c2999bf`\n- `projects/ultraplan-go/sprints/39-performance-stage/requirements.md` `067e2fc23acef2ac8acb27a97aaa2407cf94d8e60effa7afcc7112762f529091`\n- `projects/ultraplan-go/sprints/39-performance-stage/sprint-index.md` `24f386adf4703f1f8674068bc0e5652173b8c958916711e7b47966d2bd3dfe39`\n- `projects/ultraplan-go/sprints/39-performance-stage/technical-handbook.md` `70060d54fed5f2c11c8c980fd9317d4ec617d8bba6823975036d590ee73b5e77`\n- `prompts/review.md` `66e497732d43b3dbeaaf55b0d972972c46cdec9c81139869e890b8a0eb9584aa`\n- `system/contracts/core/architecture.md` `275e80f72b0127ef1ee92c1f76b02c0e6f2084adaaf97315bdb61ae42c8a7556`\n- `system/contracts/core/configuration.md` `40451fce9c8d33ec214aec8c70d524d2b3c0524a2f23655fa81b49263c634d66`\n- `system/contracts/core/documentation.md` `4624a2876d574313a816d018c68300eae180cda6c526ade0ee5811dbdeeb767d`\n- `system/contracts/core/errors.md` `d802fe296d19932c6e0115625a4df0e5caa987a8b96ccd32fcd5849ced9af9e2`\n- `system/contracts/core/observability.md` `9a48650b90f273955751ef7e833e80436be64e36d6803a6cadc2cf76d6d962fb`\n- `system/contracts/core/security.md` `5af338526c1f0898631c06ca76d651aaa59b391fa5b5d341c899086ff3d3d328`\n- `system/contracts/core/testing.md` `25905e8c5826e9068e4c752cd9ea80997e85cb7a6c53ae1ba72f9a8b78eb42fd`\n- `system/contracts/runtime/llm-evaluation-cost-safety.md` `fd95c7a87d4d244f5f73fa2a69ff948863373d95e783d986644945ca5c203f3d`\n- `system/contracts/runtime/llm.md` `1d81f5a844f9088ac4c1b43305300449bad6b01e83e131ff5964de4f844ccce2`\n- `system/contracts/runtime/performance.md` `c200a47aab06e3b3dfcee59e91f5aa5b9bafdfb6a47bc3d15aed6db51f2a386d`\n- `system/contracts/runtime/persistence-and-migrations.md` `249990b954b05e2274bd9c04febf92184d69f4380386626582adeaaee54974a3`\n- `system/contracts/runtime/workflows.md` `5d0200141beb53f8330a508ec35b90571b546ed56d2419e77b9e1b4d96048b01`\n- `system/contracts/surfaces/cli.md` `1d9023f483e128960de402e4402b6a1eb116cb542f46\n\n[... bounded excerpt ...]\n\nno context service locator, dry-run remains runtime-free). Trust-boundary tests present in performance_benchmark_test.go, performance_isolation_test.go, performance_targets_test.go.\n\n## Findings\n\n- [low] `TEST-CONTRACT-001-cli-json-golden` Public CLI/API contract compatibility lacks golden output regression for performance commands — TEST-CONTRACT-001 requires compatibility tests for stable request/response shapes, exit codes, and public CLI output when public surfaces change. New surface ultraplan sprint \u003cproject\u003e \u003csprint\u003e performance (dry-run/status/resume/cancel/recover) adds JSON envelopes (schema_version 1) and text modes with distinct exit mapping (target_missed-\u003eExitValidation, cancelled-\u003eExitCancel, etc.). Current coverage validates argument rejection and DTO field presence/absence but provides no golden/compatibility fixture asserting stable JSON envelope, stdout/stderr separation, and exit-code contract that would catch breaking changes.\n  - action: Add CLI compatibility fixtures for performance status/dry-run JSON (schema_version, operation, status, result shape, no raw_samples/command_output/profile leak) and text exit-code mapping, using the canonical fixture family already in internal/testdata/performance/states.json.\n  - citation: `target/internal/app/performance_test.go:11-24`\n  - citation: `target/internal/app/performance_fixtures_test.go:10-42`\n  - citation: `target/docs/cli-reference.md:612-627`\n- [low] `TEST-MIGRATION-001-flow-v4-coverage` FlowState v4 (performance projection) migration lacks dedicated forward-compatibility verification — FlowState schema was bumped to version 4 to add optional performance projection. Persistence contract requires forward/compatibility verification with realistic seed data. Migration code exists (migrateFlowStateV2 handling Previous/Older -\u003e Current) but no dedicated test exercises loading a v3/v2/v1 file containing review/smoke/QA/repair and asserting performance=nil, fresh, and digest-bound pointer validation. PerformanceState itself is v1-only with no downgrade/compatibility case.\n  - action: Add a migration fixture test loading real v3/v2 flow-state.json seed, decode via LoadFlowState, assert SchemaVersion==4, performance nil, validation passes, and round-trip save/load preserves pointer safety; add PerformanceState unknown-field/trailing-JSON and digest-mismatch fixtures beyond happy path.\n  - citation: `target/internal/sprint/state.go:10-13`\n  - citation: `target/internal/sprint/state.go:28-31`\n  - citation: `target/internal/sprint/state.go:168-174`\n  - citation: `target/internal/sprint/performance_state.go:282-310`\n- [medium] `TEST-SMOKE-002-deferred-real-runtime` Real-dependency smoke for performance runtime deferred — only fake-runtime coverage executed — Performance introduces critical runtime/provider-backed paths (bounded benchmark authoring and optimization proposals via Agentwrap/OpenCode). TEST-SMOKE-002 requires at least one real-dependency smoke verifying lifecycle/persistence beyond cosmetic output, or an explicit justified deferral. Implementation tests use only fake process/runtime doubles and execution explicitly defers the gated dogfood. Deferral is documented but leaves the required real-runtime contract unverified for this sprint.\n  - action: Run the gated real-runtime dogfood required by requirements AC-11/Technical Requirements (one required absolute target, one required baseline-relative target, one report/baseline target, rejected functional regression, contained accepted improvement or truthful non-acceptance) and link the run; or keep the explicit blocked deferral and prevent promotion until Sprint 40 dogfood.\n  - citation: `target/internal/sprint/performance_service_test.go:82-89`\n  - citation: `target/internal/sprint/performance_benchmark_test.go:233-251`\n  - citation: `projects/ultraplan-go/sprints/39-performance-stage/execute.md:51-56`\n  - citation: `projects/ultraplan-go/sprints/39-performance-stage/requirements.md:227-229`\n\n## Deviations\n\nNone.\n\n## Final Assessment\n\nDeterministic verdict: `pass_with_findings`.",
+      "content_sha256": "38626f3268cf840aef239c1a302e48ec5d5dbbfc6c001c4d83a8ddb68abc28ce",
+      "provenance": "current conformance review",
+      "related_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/configuration.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md",
+        "internal/app/durable_operations.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/performance_fixtures_test.go",
+        "internal/app/performance_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/tui_commands.go",
+        "internal/app/usecases.go",
+        "internal/app/web_usecases.go",
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/performance.go",
+        "internal/platform/config/performance_test.go",
+        "internal/platform/config/redaction.go",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/domain.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_authoring.go",
+        "internal/sprint/performance_benchmark.go",
+        "internal/sprint/performance_benchmark_test.go",
+        "internal/sprint/performance_discovery.go",
+        "internal/sprint/performance_isolation.go",
+        "internal/sprint/performance_isolation_test.go",
+        "internal/sprint/performance_measure.go",
+        "internal/sprint/performance_optimize.go",
+        "internal/sprint/performance_optimize_runtime.go",
+        "internal/sprint/performance_optimize_test.go",
+        "internal/sprint/performance_repair.go",
+        "internal/sprint/performance_service_test.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/testdata/performance/states.json",
+        "internal/tui/model.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views.go",
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/routes.go",
+        "internal/web/routes_test.go",
+        "internal/web/templates/sprint.html",
+        "internal/web/test_fakes_test.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ],
+      "omitted_bytes": 64482
+    },
+    {
+      "id": "qa-v1-block-b2676a65e977fc5e398b4719",
+      "kind": "authority",
+      "start_line": 1,
+      "end_line": 1,
+      "content": "{\"readable_paths\":[\"docs/architecture.md\",\"docs/cli-reference.md\",\"docs/configuration.md\",\"docs/local-web.md\",\"docs/phase3-json-schemas.md\",\"docs/recovery.md\",\"docs/release-checklist.md\",\"docs/user-guide.md\",\"internal/app/durable_operations.go\",\"internal/app/operation_runner.go\",\"internal/app/operations.go\",\"internal/app/performance_fixtures_test.go\",\"internal/app/performance_test.go\",\"internal/app/run_control_inventory_test.go\",\"internal/app/serve_commands.go\",\"internal/app/sprint_commands.go\",\"internal/app/sprint_commands_test.go\",\"internal/app/sprint_usecases.go\",\"internal/app/tui_commands.go\",\"internal/app/usecases.go\",\"internal/app/web_usecases.go\",\"internal/platform/config/config.go\",\"internal/platform/config/config_test.go\",\"internal/platform/config/performance.go\",\"internal/platform/config/performance_test.go\",\"internal/platform/config/redaction.go\",\"internal/project/domain.go\",\"internal/project/index.go\",\"internal/project/performance_policy_test.go\",\"internal/sprint/domain.go\",\"internal/sprint/index.go\",\"internal/sprint/performance.go\",\"internal/sprint/performance_authoring.go\",\"internal/sprint/performance_benchmark.go\",\"internal/sprint/performance_benchmark_test.go\",\"internal/sprint/performance_discovery.go\",\"internal/sprint/performance_isolation.go\",\"internal/sprint/performance_isolation_test.go\",\"internal/sprint/performance_measure.go\",\"internal/sprint/performance_optimize.go\",\"internal/sprint/performance_optimize_runtime.go\",\"internal/sprint/performance_optimize_test.go\",\"internal/sprint/performance_repair.go\",\"internal/sprint/performance_service_test.go\",\"internal/sprint/performance_state.go\",\"internal/sprint/performance_targets.go\",\"internal/sprint/performance_targets_test.go\",\"internal/sprint/performance_types.go\",\"internal/sprint/qa.go\",\"internal/sprint/qa_repair.go\",\"internal/sprint/qa_repair_state.go\",\"internal/sprint/qa_reproduction.go\",\"internal/sprint/qa_state.go\",\"internal/sprint/qa_types.go\",\"internal/sprint/service.go\",\"internal/sprint/state.go\",\"internal/sprint/verification_phase.go\",\"internal/sprint/verification_phase_test.go\",\"internal/sprint/verify.go\",\"internal/testdata/performance/states.json\",\"internal/tui/model.go\",\"internal/tui/qa_view_test.go\",\"internal/tui/views.go\",\"internal/web/handlers.go\",\"internal/web/operation_handlers.go\",\"internal/web/operations_contract_test.go\",\"internal/web/routes.go\",\"internal/web/routes_test.go\",\"internal/web/templates/sprint.html\",\"internal/web/test_fakes_test.go\",\"internal/workspace/scaffold/prompts/create-requirements.md\"],\"writable_paths\":null,\"live_read_policy\":\"frozen blocks first; bounded live reads only for declared omissions\",\"prompt_bytes\":1048576}",
+      "content_sha256": "b04789ebcabd607ff4d55e46c49d0c16596f8f951e75d3b5d3ab366fedef2577",
+      "provenance": "product QA policy",
+      "related_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/configuration.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md",
+        "internal/app/durable_operations.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/performance_fixtures_test.go",
+        "internal/app/performance_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/tui_commands.go",
+        "internal/app/usecases.go",
+        "internal/app/web_usecases.go",
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/performance.go",
+        "internal/platform/config/performance_test.go",
+        "internal/platform/config/redaction.go",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/domain.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_authoring.go",
+        "internal/sprint/performance_benchmark.go",
+        "internal/sprint/performance_benchmark_test.go",
+        "internal/sprint/performance_discovery.go",
+        "internal/sprint/performance_isolation.go",
+        "internal/sprint/performance_isolation_test.go",
+        "internal/sprint/performance_measure.go",
+        "internal/sprint/performance_optimize.go",
+        "internal/sprint/performance_optimize_runtime.go",
+        "internal/sprint/performance_optimize_test.go",
+        "internal/sprint/performance_repair.go",
+        "internal/sprint/performance_service_test.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/testdata/performance/states.json",
+        "internal/tui/model.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views.go",
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/routes.go",
+        "internal/web/routes_test.go",
+        "internal/web/templates/sprint.html",
+        "internal/web/test_fakes_test.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ]
+    },
+    {
+      "id": "qa-v1-block-b78a61cde5b699690eb3c5f2",
+      "kind": "change",
+      "path": "internal/web/templates/sprint.html",
+      "start_line": 1,
+      "end_line": 26,
+      "content": "diff --git a/internal/web/templates/sprint.html b/internal/web/templates/sprint.html\nindex 7207f0fddd0f66c0b019d114ceed323a27d40e9f..2cd01a443c249d4034feef546f19c62a3226417d 100644\n--- a/internal/web/templates/sprint.html\n+++ b/internal/web/templates/sprint.html\n@@ -39,6 +39,21 @@\n \u003c/section\u003e\n {{if .Sprint.Findings}}\u003csection class=\"sprint-overview-wide attention-strip\"\u003e\u003cdiv class=\"dashboard-component-heading\"\u003e\u003ch2\u003eAttention\u003c/h2\u003e\u003cstrong\u003e{{len .Sprint.Findings}} findings\u003c/strong\u003e\u003c/div\u003e{{template \"component/findings\" .Sprint.AttentionFindings}}\u003c/section\u003e{{end}}\n \u003c/div\u003e\n+{{else if eq .Page \"performance\"}}\n+\u003cmain class=\"performance-workbench\" aria-labelledby=\"performance-heading\"\u003e\n+{{with .Sprint.Performance}}\n+\u003cheader\u003e\u003cp class=\"eyebrow\"\u003eVerification\u003c/p\u003e\u003ch2 id=\"performance-heading\"\u003ePerformance\u003c/h2\u003e\u003cp\u003eRequirements-owned targets measured with frozen product runners.\u003c/p\u003e\u003c/header\u003e\n+\u003csection aria-labelledby=\"performance-authority\"\u003e\u003ch3 id=\"performance-authority\"\u003eCurrent authority\u003c/h3\u003e\u003cdl class=\"metadata\"\u003e\u003cdiv\u003e\u003cdt\u003ePolicy\u003c/dt\u003e\u003cdd\u003e{{.PolicyMode}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eProduct phase\u003c/dt\u003e\u003cdd\u003e{{.Phase}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eOperational lifecycle\u003c/dt\u003e\u003cdd\u003e{{if .OperationalLifecycle}}{{.OperationalLifecycle}}{{else}}not running{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eCancellation\u003c/dt\u003e\u003cdd\u003e{{if .CancellationState}}{{.CancellationState}}{{else}}not requested{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eFresh\u003c/dt\u003e\u003cdd\u003e{{if .Fresh}}yes{{else}}no{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eProduct outcome\u003c/dt\u003e\u003cdd\u003e{{if .Outcome}}{{.Outcome}}{{else}}not terminal{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003ePerformance attempt\u003c/dt\u003e\u003cdd\u003e{{if .PerformanceAttemptID}}\u003ccode\u003e{{.PerformanceAttemptID}}\u003c/code\u003e{{else}}not accepted{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eDurable run\u003c/dt\u003e\u003cdd\u003e{{if .OperationRunID}}\u003ccode\u003e{{.OperationRunID}}\u003c/code\u003e{{else}}not accepted{{end}}\u003c/dd\u003e\u003c/div\u003e\u003c/dl\u003e\n+{{range .FreshnessReasons}}\u003cp class=\"notice\" role=\"status\"\u003e{{.}}\u003c/p\u003e{{end}}{{if .Blocker}}\u003cp class=\"notice\" role=\"alert\"\u003e\u003cstrong\u003eBlocked:\u003c/strong\u003e {{.Blocker}}\u003c/p\u003e{{end}}\u003cp\u003e\u003cstrong\u003eNext:\u003c/strong\u003e {{.NextAction}}\u003c/p\u003e\u003c/section\u003e\n+\u003csection aria-labelledby=\"performance-path\"\u003e\u003ch3 id=\"performance-path\"\u003eOrdered path\u003c/h3\u003e\u003col\u003e\u003cli\u003eAdmission\u003c/li\u003e\u003cli\u003eBenchmark coverage and freeze\u003c/li\u003e\u003cli\u003eBaseline\u003c/li\u003e\u003cli\u003eBounded target-linked optimization\u003c/li\u003e\u003cli\u003eFinal measurement\u003c/li\u003e\u003cli\u003eCorrectness\u003c/li\u003e\u003cli\u003ePublication\u003c/li\u003e\u003c/ol\u003e\u003c/section\u003e\n+\u003csection aria-labelledby=\"performance-targets\"\u003e\u003ch3 id=\"performance-targets\"\u003eTargets\u003c/h3\u003e\u003cp\u003e{{len .Targets}} requirements-owned targets.\u003c/p\u003e{{range .Targets}}\u003cdetails\u003e\u003csummary\u003e\u003ccode\u003e{{.ID}}\u003c/code\u003e · {{.Metric}} · {{if .Outcome}}{{.Outcome}}{{else}}pending{{end}}\u003c/summary\u003e\u003cdl class=\"metadata\"\u003e\u003cdiv\u003e\u003cdt\u003eScenario\u003c/dt\u003e\u003cdd\u003e{{.Scenario}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eMetric\u003c/dt\u003e\u003cdd\u003e{{.Metric}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eComparator\u003c/dt\u003e\u003cdd\u003e{{.Comparator}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eValue\u003c/dt\u003e\u003cdd\u003e{{.Value}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eUnit\u003c/dt\u003e\u003cdd\u003e{{.Unit}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eGate\u003c/dt\u003e\u003cdd\u003e{{.Gate}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eSamples\u003c/dt\u003e\u003cdd\u003e{{.Samples}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eBasis\u003c/dt\u003e\u003cdd\u003e{{.Basis}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eComparison\u003c/dt\u003e\u003cdd\u003e{{if .Comparison}}{{.Comparison}}{{else}}not measured{{end}}\u003c/dd\u003e\u003c/div\u003e\u003c/dl\u003e{{with .FinalQualification}}\u003cp\u003eFinal median {{.Median}} · mean {{.Mean}} · CV {{.CVPercent}}% · qualified={{.Qualified}}\u003c/p\u003e{{end}}\u003c/details\u003e{{else}}\u003cp class=\"empty\"\u003eNo performance targets are active.\u003c/p\u003e{{end}}\u003c/section\u003e\n+\u003csection aria-labelledby=\"performance-limits\"\u003e\u003ch3 id=\"performance-limits\"\u003eEffective limits\u003c/h3\u003e\u003cdl class=\"metadata\"\u003e\u003cdiv\u003e\u003cdt\u003eCommands\u003c/dt\u003e\u003cdd\u003e{{.Limits.Commands}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eWarmups\u003c/dt\u003e\u003cdd\u003e{{.Limits.Warmups}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eSample ceiling\u003c/dt\u003e\u003cdd\u003e{{.Limits.SampleCeiling}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eOptimization cycles\u003c/dt\u003e\u003cdd\u003e{{.Limits.OptimizationCycles}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eChanged files\u003c/dt\u003e\u003cdd\u003e{{.Limits.ChangedFiles}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eChanged bytes\u003c/dt\u003e\u003cdd\u003e{{.Limits.ChangedBytes}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eEvidence page size\u003c/dt\u003e\u003cdd\u003e{{.Limits.EvidencePageSize}}\u003c/dd\u003e\u003c/div\u003e\u003c/dl\u003e{{if .LimitSources}}\u003cdetails\u003e\u003csummary\u003eLimit sources\u003c/summary\u003e\u003cdl class=\"metadata\"\u003e{{range $field, $source := .LimitSources}}\u003cdiv\u003e\u003cdt\u003e{{$field}}\u003c/dt\u003e\u003cdd\u003e{{$source}}\u003c/dd\u003e\u003c/div\u003e{{end}}\u003c/dl\u003e\u003c/details\u003e{{end}}\u003c/section\u003e\n+{{if .Enabled}}\u003csection class=\"operation-actions\" aria-labelledby=\"performance-actions\"\u003e\u003ch3 id=\"performance-actions\"\u003eActions\u003c/h3\u003e\u003cform class=\"operation-form\" method=\"post\" action=\"/operations/prepare\" data-project=\"{{.Project}}\" data-sprint=\"{{.Sprint}}\"\u003e\u003cinput type=\"hidden\" name=\"_csrf\" value=\"{{$.CSRF}}\"\u003e\u003cinput type=\"hidden\" name=\"project\" value=\"{{.Project}}\"\u003e\u003cinput type=\"hidden\" name=\"sprint\" value=\"{{.Sprint}}\"\u003e\u003cbutton name=\"kind\" value=\"performance-dry-run\" data-operation-kind=\"performance-dry-run\"\u003eDry run\u003c/button\u003e\u003c/form\u003e\u003cform class=\"operation-form\" method=\"post\" action=\"/operations/prepare\" data-project=\"{{.Project}}\" data-sprint=\"{{.Sprint}}\"\u003e\u003cinput type=\"hidden\" name=\"_csrf\" value=\"{{$.CSRF}}\"\u003e\u003cinput type=\"hidden\" name=\"project\" value=\"{{.Project}}\"\u003e\u003cinput type=\"hidden\" name=\"sprint\" value=\"{{.Sprint}}\"\u003e\u003cbutton name=\"kind\" value=\"performance-start\" data-operation-kind=\"performance-start\"\u003eStart performance\u003c/button\u003e\u003c/form\u003e{{if .PerformanceAttemptID}}\u003cform class=\"operation-form\" method=\"post\" action=\"/operations/prepare\" data-project=\"{{.Project}}\" data-sprint=\"{{.Sprint}}\"\u003e\u003cinput type=\"hidden\" name=\"_csrf\" value=\"{{$.CSRF}}\"\u003e\u003cinput type=\"hidden\" name=\"project\" value=\"{{.Project}}\"\u003e\u003cinput type=\"hidden\" name=\"sprint\" value=\"{{.Sprint}}\"\u003e\u003cbutton name=\"kind\" value=\"performance-resume\" data-operation-kind=\"performance-resume\"\u003eResume\u003c/button\u003e\u003cbutton name=\"kind\" value=\"performance-cancel\" data-operation-kind=\"performance-cancel\"\u003eCancel\u003c/button\u003e\u003cbutton name=\"kind\" value=\"performance-recover\" data-operation-kind=\"performance-recover\"\u003eRecover\u003c/button\u003e\u003c/form\u003e{{end}}\u003c/section\u003e{{end}}\n+\u003cp\u003e\u003ca href=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance\"\u003eOpen bounded performance JSON\u003c/a\u003e{{if .Result}} · \u003ca href=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance/result\"\u003eOpen result\u003c/a\u003e{{end}}{{if .PerformanceAttemptID}} · \u003ca href=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance/evidence\"\u003eBrowse evidence metadata\u003c/a\u003e{{end}}\u003c/p\u003e\n+{{if .PerformanceAttemptID}}\u003cform method=\"get\" action=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance/evidence\"\u003e\u003clabel\u003eEvidence filter \u003cinput name=\"filter\" maxlength=\"64\"\u003e\u003c/label\u003e\u003clabel\u003ePage size \u003cinput name=\"limit\" type=\"number\" min=\"1\" max=\"200\" value=\"50\"\u003e\u003c/label\u003e\u003cbutton type=\"submit\"\u003eFilter evidence\u003c/button\u003e\u003c/form\u003e{{end}}\n+{{if .PerformanceAttemptID}}{{with $.Sprint.PerformanceEvidence}}\u003csection aria-labelledby=\"performance-evidence\"\u003e\u003ch3 id=\"performance-evidence\"\u003eEvidence metadata\u003c/h3\u003e\u003cp\u003e{{.ReturnedCount}} bounded records on this page.\u003c/p\u003e\u003cul\u003e{{range .Records}}\u003cli\u003e\u003ccode\u003e{{.Name}}\u003c/code\u003e · {{.Size}} bytes · \u003ccode\u003e{{.Digest}}\u003c/code\u003e\u003c/li\u003e{{else}}\u003cli\u003eNo retained records are available.\u003c/li\u003e{{end}}\u003c/ul\u003e{{if .NextCursor}}\u003cp\u003e\u003ca href=\"/api/v1/projects/{{$.Sprint.Project}}/sprints/{{$.Sprint.Slug}}/performance/evidence?cursor={{.NextCursor}}\"\u003eNext evidence page\u003c/a\u003e\u003c/p\u003e{{end}}\u003c/section\u003e{{end}}{{end}}\n+\u003cnoscript\u003e\u003cp class=\"notice\"\u003eAll performance facts and controls are server rendered. Refresh after a durable operation completes.\u003c/p\u003e\u003c/noscript\u003e\n+{{end}}\u003c/main\u003e\n {{else if eq .Page \"metrics\"}}\n \u003csection class=\"runtime-ledger\" aria-labelledby=\"runtime-ledger-heading\"\u003e\n \u003cheader class=\"runtime-ledger-heading\"\u003e\u003cdiv\u003e\u003ch2 id=\"runtime-ledger-heading\"\u003eRuntime call ledger\u003c/h2\u003e\u003cp\u003eEvery retained model call for this sprint, including QA continuations and repair proposals. Unknown provider values remain visibly unknown.\u003c/p\u003e\u003c/div\u003e\u003ca class=\"refresh-link\" href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/metrics\"\u003eRefresh\u003c/a\u003e\u003c/header\u003e",
+      "content_sha256": "fd6ccb4399b1b9a2ced3dfa4d984568097e5661d674a06258f43dec5d2324377",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/templates/sprint.html"
+      ]
+    },
+    {
+      "id": "qa-v1-block-c8ad28a657192f4855a5a0e6",
+      "kind": "source",
+      "path": "internal/tui/views.go",
+      "start_line": 1,
+      "end_line": 43,
+      "content": "package tui\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"time\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\nfunc Render(m Model, width int) string {\n\treturn RenderWithSize(m, width, 40)\n}\n\nfunc RenderWithSize(m Model, width, height int) string {\n\tvar header strings.Builder\n\tfmt.Fprintf(\u0026header, \"%s\\n\", fullWidth(tuiStyles.title, \"UltraPlan  ·  operational dashboard\", width))\n\tfmt.Fprintf(\u0026header, \"%s\\n\", renderTabs(m, width))\n\tfmt.Fprintf(\u0026header, \"%s\\n\", fullWidth(tuiStyles.breadcrumb, m.breadc\n\n[... bounded excerpt ...]\n\nfmt.Fprintln(\u0026out, fullWidth(tuiStyles.scroll, fmt.Sprintf(\"scroll %d/%d\", vp.offset+1, vp.MaxOffset()+1), width))\n\t} else {\n\t\tfmt.Fprintln(\u0026out, fullWidth(tuiStyles.body, \"\", width))\n\t}\n\tfor _, line := range footerLines {\n\t\tfmt.Fprintln(\u0026out, line)\n\t}\n\treturn out.String()\n}\n\nfunc splitLines(value string) []string {\n\tvalue = strings.TrimRight(value, \"\\n\")\n\tif value == \"\" {\n\t\treturn nil\n\t}\n\treturn strings.Split(value, \"\\n\")\n}\n\nfunc lineCount(value string) int {\n\treturn len(splitLines(value))\n}",
+      "content_sha256": "ed8265f213eef65a1d37232596838d3e3f76032729c3118de0825a317086cc60",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "github.com/Antonio7098/ultraplan-go/internal/app",
+        "internal/tui/views.go"
+      ],
+      "symbols": [
+        "Render",
+        "RenderWithSize",
+        "activeRunTask",
+        "lineCount",
+        "renderConfirmation",
+        "renderForegroundRun",
+        "renderFrame",
+        "renderItemSummary",
+        "renderNavItems",
+        "renderOperation",
+        "renderOperationTask",
+        "renderParallelForm",
+        "renderPreview",
+        "renderRouteSummary",
+        "renderRunTask",
+        "renderRunView",
+        "renderTabs",
+        "renderValidation",
+        "splitLines",
+        "truncateForDisplay",
+        "viewportMode"
+      ],
+      "omitted_bytes": 21083
+    },
+    {
+      "id": "qa-v1-block-d06dacc27138596b0f63468b",
+      "kind": "source",
+      "path": "internal/web/handlers.go",
+      "start_line": 1,
+      "end_line": 43,
+      "content": "package web\n\nimport (\n\t\"bytes\"\n\t\"context\"\n\t\"encoding/json\"\n\t\"errors\"\n\t\"fmt\"\n\t\"html/template\"\n\t\"math\"\n\t\"net/http\"\n\t\"net/url\"\n\t\"regexp\"\n\t\"sort\"\n\t\"strconv\"\n\t\"strings\"\n\t\"time\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\nvar identifierPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]*$`)\nvar opaqueRefPattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)\n\ntype responseMeta struct {\n\tAPIVersion    string `json:\"api_version\"`\n\tRequestID     string `json:\"request_id\"`\n\tGeneratedAt   stri\n\n[... bounded excerpt ...]\n\nt a single safe path segment.\")\n\t\treturn\n\t}\n\tif err := mutation.CreateSprintWorkspace(r.Context(), projectName, slug); err != nil {\n\t\th.renderError(w, r, http.StatusUnprocessableEntity, \"Creation failed\", htmlOperationFailure(\"The sprint workspace could not be created from the roadmap slug.\", err))\n\t\treturn\n\t}\n\thttp.Redirect(w, r, \"/projects/\"+projectName+\"/sprints/\"+slug, http.StatusSeeOther)\n}\n\nfunc intPtr(value int) *int    { return \u0026value }\nfunc boolPtr(value bool) *bool { return \u0026value }",
+      "content_sha256": "0c977fdbfdb79f28c2e8238d0a099c739ccca4d282bf48357735509f40ca8ff7",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "encoding/json",
+        "github.com/Antonio7098/ultraplan-go/internal/app",
+        "html/template",
+        "internal/web/handlers.go",
+        "net/http",
+        "net/url"
+      ],
+      "symbols": [
+        "artifactDTO",
+        "artifactPreviewDTO",
+        "boolPtr",
+        "collectionDTO",
+        "dimensionCard",
+        "dispatch",
+        "errorBody",
+        "errorEnvelope",
+        "executeDTO",
+        "findingDTO",
+        "handleQueryError",
+        "handleSprintCreate",
+        "handleValidations",
+        "intPtr",
+        "loadRepoBoard",
+        "loadSprintFlowUsage",
+        "loadSprintRuntimeLedger",
+        "loadStudyLoopUsage",
+        "makeProjectRoadmapPreview",
+        "mapArtifactPreview",
+        "mapArtifacts",
+        "mapCollection",
+        "mapFindings",
+        "mapProject",
+        "mapProjects",
+        "mapPromptBundle",
+        "mapSprint",
+        "mapSprints",
+        "mapStudies",
+        "mapStudy",
+        "mapStudyParallelism",
+        "newestSprintsFirst",
+        "nonNilSlice",
+        "pageModel",
+        "projectDTO",
+        "projectPageTitle",
+        "projectRoadmapPreview",
+        "promptBlockDTO",
+        "promptBundleDTO",
+        "promptInputContractDTO",
+        "render",
+        "renderError",
+        "renderMarkdown",
+        "repoBoardEntry",
+        "repoChampion",
+        "repoLeaderView",
+        "repoMatrixCell",
+        "repoMatrixColumn",
+        "repoMatrixRow",
+        "reportGroupView",
+        "reportLinkView",
+        "responseMeta",
+        "reviewDTO",
+        "reviewerDTO",
+        "roadmapPhaseDTO",
+        "roadmapSprintDTO",
+        "safeMarkdown",
+        "smokeDTO",
+        "sprintDTO",
+        "sprintPageTitle",
+        "stageDTO",
+        "studyDTO",
+        "studyDimensionCards",
+        "studyPageTitle",
+        "studyParallelismDTO",
+        "studyReportViews",
+        "studyRetryDTO",
+        "studyTaskRetryDTO",
+        "successEnvelope",
+        "templateText",
+        "validIdentifier",
+        "validOpaqueRef",
+        "writeError",
+        "writeJSON",
+        "writeJSONErrorResponse",
+        "writePolicyError",
+        "writeQAError",
+        "writeRouteError",
+        "writeSuccess"
+      ],
+      "omitted_bytes": 52403
+    },
+    {
+      "id": "qa-v1-block-d16d7f7b34fef6ef0b67aee4",
+      "kind": "change",
+      "path": "internal/web/routes.go",
+      "start_line": 1,
+      "end_line": 13,
+      "content": "diff --git a/internal/web/routes.go b/internal/web/routes.go\nindex af1902262c675301880fc761ea8e1c58f6314d66..3dce985cb4107e7d050dc910393922d626062f53 100644\n--- a/internal/web/routes.go\n+++ b/internal/web/routes.go\n@@ -427,7 +431,7 @@ func validProjectPage(page string) bool {\n \n func validSprintPage(page string) bool {\n \tswitch page {\n-\tcase \"workflow\", \"run\", \"artifacts\", \"plan\", \"delivery\", \"operations\", \"validation\", \"metrics\":\n+\tcase \"workflow\", \"run\", \"artifacts\", \"plan\", \"delivery\", \"operations\", \"validation\", \"metrics\", \"performance\":\n \t\treturn true\n \tdefault:\n \t\treturn false",
+      "content_sha256": "4f6d81e3bfe457b4f07d0fbf749be1d365eb1f27288c38ff66ad8d4ecc38b6e1",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/routes.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-d426fe03f263ee22b548d2fe",
+      "kind": "change",
+      "path": "internal/web/handlers.go",
+      "start_line": 1,
+      "end_line": 13,
+      "content": "diff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -843,6 +900,8 @@ func sprintPageTitle(page string) string {\n \t\treturn \"Repair\"\n \tcase \"metrics\":\n \t\treturn \"Runtime metrics\"\n+\tcase \"performance\":\n+\t\treturn \"Performance\"\n \tdefault:\n \t\treturn \"Artifact Navigator\"\n \t}",
+      "content_sha256": "f963e344aa1a6550689f28062fd6bf801b487adf843ef436730aff543864adf0",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/handlers.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-d5844cb601400dfa0f329c46",
+      "kind": "prior",
+      "path": "projects/ultraplan-go/sprints/39-performance-stage/.execution-handoff.json",
+      "start_line": 1,
+      "end_line": 242,
+      "content": "{\n  \"schemaVersion\": 1,\n  \"planFingerprint\": \"sha256:5227e3490dbd710ac3e01562a06666be1570350fd37eeb9a57bbeaaf765108f5\",\n  \"changedPaths\": [\n    \"docs/architecture.md\",\n    \"docs/cli-reference.md\",\n    \"docs/configuration.md\",\n    \"docs/local-web.md\",\n    \"docs/phase3-json-schemas.md\",\n    \"docs/recovery.md\",\n    \"docs/release-checklist.md\",\n    \"docs/user-guide.md\",\n    \"internal/app/durable_operations.go\",\n    \"internal/app/operation_runner.go\",\n    \"internal/app/operations.go\",\n    \"internal/app/performance_fixtures_test.go\",\n    \"internal/app/performance_test.go\",\n    \"internal/app/run_control_inventory_test.go\",\n    \"internal/app/serve_commands.go\",\n    \"internal/app/sprint_commands.go\",\n    \"internal/app/sprint_commands_test.go\",\n    \"internal/app/sprint_usecases.go\",\n    \"internal/app/tui_commands.go\",\n    \"internal/app/usecases.go\",\n    \"internal/app/web_usecases.go\",\n    \"internal/platform/config/config.go\",\n    \"internal/platform/config/config_test.go\",\n    \"internal/platform/config/performance.go\",\n    \"internal/platform/config/performance_test.go\",\n    \"internal/platform/config/redaction.go\",\n    \"internal/project/domain.go\",\n    \"internal/project/index.go\",\n    \"internal/project/performance_policy_test.go\",\n    \"internal/sprint/domain.go\",\n    \"internal/sprint/index.go\",\n    \"internal/sprint/performance.go\",\n    \"internal/sprint/performance_authoring.go\",\n    \"internal/sprint/performance_benchmark.go\",\n    \"internal/sprint/performance_benchmark_test.go\",\n    \"internal/sprint/performance_discovery.go\",\n    \"internal/sprint/performance_isolation.go\",\n    \"internal/sprint/performance_isolation_test.go\",\n    \"internal/sprint/performance_measure.go\",\n    \"internal/sprint/performance_optimize.go\",\n    \"internal/sprint/performance_optimize_runtime.go\",\n    \"internal/sprint/performance_optimize_test.go\",\n    \"internal/sprint/performance_repair.go\",\n    \"internal/sprint/performance_service_test.go\",\n    \"internal/sprint/performance_state.go\",\n    \"internal/sprint/performance_targets.go\",\n    \"internal/sprint/performance_targets_test.go\",\n    \"internal/sprint/performance_types.go\",\n    \"internal/sprint/qa.go\",\n    \"internal/sprint/qa_repair.go\",\n    \"internal/sprint/qa_repair_state.go\",\n    \"internal/sprint/qa_reproduction.go\",\n    \"internal/sprint/qa_state.go\",\n    \"internal/sprint/qa_types.go\",\n    \"internal/sprint/service.go\",\n    \"internal/sprint/state.go\",\n    \"internal/sprint/verification_phase.go\",\n    \"internal/sprint/verification_phase_test.go\",\n    \"internal/sprint/verify.go\",\n    \"internal/testdata/performance/states.json\",\n    \"internal/tui/model.go\",\n    \"internal/tui/qa_view_test.go\",\n    \"internal/tui/views.go\",\n    \"internal/web/handlers.go\",\n    \"internal/web/operation_handlers.go\",\n    \"internal/web/operations_contract_test.go\",\n    \"internal/web/routes.go\",\n    \"internal/web/routes_test.go\",\n    \"internal/web/templates/sprint.html\",\n    \"internal/web/test_fakes_test.go\",\n    \"internal/workspace/scaffold/prompts/create-requirements.md\"\n  ],\n  \"tasks\": [\n    {\n      \"id\": \"task-d904e6a0b733\",\n      \"name\": \"Task 1: Verify dependency gates and generalize writer ownership narrowly\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/sprint/qa_state.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-18e02b367e3b\",\n      \"name\": \"Task 2: Implement project activation and strict requirements-owned targets\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/project/index.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-4b4240e93801\",\n      \"name\": \"Task 3: Add performance domain types, limits, configuration, and pure verdict rules\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \n\n[... bounded excerpt ...]\n\n \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/sprint/performance_state.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-5fda729710b5\",\n      \"name\": \"Task 6: Implement closed benchmark discovery, authoring, coverage, and freezing\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/sprint/performance_authoring.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-2b92d035f4ee\",\n      \"name\": \"Task 7: Implement bounded measurement, parsing, qualification, and comparison\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/sprint/performance_measure.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-505c41fbc9a1\",\n      \"name\": \"Task 8: Implement bounded isolated optimization and product-owned promotion\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/sprint/performance_optimize_runtime.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-a4eaf6051e0b\",\n      \"name\": \"Task 9: Complete service orchestration, freshness, publication, and cancellation\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/sprint/performance.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-856d45129afe\",\n      \"name\": \"Task 10: Add shared application operations and CLI\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/app/sprint_commands.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-8e8948555266\",\n      \"name\": \"Task 11: Add the TUI performance workbench\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/tui/model.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-85a0be0c39f6\",\n      \"name\": \"Task 12: Add the server-rendered browser performance workbench\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"internal/web/handlers.go\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-84dfd7dc5492\",\n      \"name\": \"Task 13: Add canonical fixtures, documentation, and compatibility evidence\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"verification\",\n          \"summary\": \"Implementation and direct evidence are complete and traced in review.md.\",\n          \"path\": \"docs/architecture.md\"\n        }\n      ]\n    },\n    {\n      \"id\": \"task-6fb77a7b5f09\",\n      \"name\": \"Task 14: Run the release gate, required reviews, and gated dogfood\",\n      \"status\": \"complete\",\n      \"attempts\": 1,\n      \"evidence\": [\n        {\n          \"kind\": \"review\",\n          \"summary\": \"Deterministic release checks, Architecture Review, Sprint Review, and independent numeric recalculation passed; Deep Smoke and real-runtime dogfood were excluded by user direction.\",\n          \"path\": \"internal/sprint/performance_service_test.go\"\n        }\n      ]\n    }\n  ]\n}",
+      "content_sha256": "0187a80d0a06a8e809ef6ac0d4f83d5c3b5089bef0407998e693178e4c908708",
+      "provenance": "frozen execution handoff",
+      "related_paths": [
+        "docs/architecture.md",
+        "docs/cli-reference.md",
+        "docs/configuration.md",
+        "docs/local-web.md",
+        "docs/phase3-json-schemas.md",
+        "docs/recovery.md",
+        "docs/release-checklist.md",
+        "docs/user-guide.md",
+        "internal/app/durable_operations.go",
+        "internal/app/operation_runner.go",
+        "internal/app/operations.go",
+        "internal/app/performance_fixtures_test.go",
+        "internal/app/performance_test.go",
+        "internal/app/run_control_inventory_test.go",
+        "internal/app/serve_commands.go",
+        "internal/app/sprint_commands.go",
+        "internal/app/sprint_commands_test.go",
+        "internal/app/sprint_usecases.go",
+        "internal/app/tui_commands.go",
+        "internal/app/usecases.go",
+        "internal/app/web_usecases.go",
+        "internal/platform/config/config.go",
+        "internal/platform/config/config_test.go",
+        "internal/platform/config/performance.go",
+        "internal/platform/config/performance_test.go",
+        "internal/platform/config/redaction.go",
+        "internal/project/domain.go",
+        "internal/project/index.go",
+        "internal/project/performance_policy_test.go",
+        "internal/sprint/domain.go",
+        "internal/sprint/index.go",
+        "internal/sprint/performance.go",
+        "internal/sprint/performance_authoring.go",
+        "internal/sprint/performance_benchmark.go",
+        "internal/sprint/performance_benchmark_test.go",
+        "internal/sprint/performance_discovery.go",
+        "internal/sprint/performance_isolation.go",
+        "internal/sprint/performance_isolation_test.go",
+        "internal/sprint/performance_measure.go",
+        "internal/sprint/performance_optimize.go",
+        "internal/sprint/performance_optimize_runtime.go",
+        "internal/sprint/performance_optimize_test.go",
+        "internal/sprint/performance_repair.go",
+        "internal/sprint/performance_service_test.go",
+        "internal/sprint/performance_state.go",
+        "internal/sprint/performance_targets.go",
+        "internal/sprint/performance_targets_test.go",
+        "internal/sprint/performance_types.go",
+        "internal/sprint/qa.go",
+        "internal/sprint/qa_repair.go",
+        "internal/sprint/qa_repair_state.go",
+        "internal/sprint/qa_reproduction.go",
+        "internal/sprint/qa_state.go",
+        "internal/sprint/qa_types.go",
+        "internal/sprint/service.go",
+        "internal/sprint/state.go",
+        "internal/sprint/verification_phase.go",
+        "internal/sprint/verification_phase_test.go",
+        "internal/sprint/verify.go",
+        "internal/testdata/performance/states.json",
+        "internal/tui/model.go",
+        "internal/tui/qa_view_test.go",
+        "internal/tui/views.go",
+        "internal/web/handlers.go",
+        "internal/web/operation_handlers.go",
+        "internal/web/operations_contract_test.go",
+        "internal/web/routes.go",
+        "internal/web/routes_test.go",
+        "internal/web/templates/sprint.html",
+        "internal/web/test_fakes_test.go",
+        "internal/workspace/scaffold/prompts/create-requirements.md"
+      ],
+      "omitted_bytes": 770
+    },
+    {
+      "id": "qa-v1-block-d5ce194480a423a58e7143af",
+      "kind": "change",
+      "path": "internal/web/handlers.go",
+      "start_line": 1,
+      "end_line": 22,
+      "content": "diff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -1100,6 +1159,17 @@ func (h *handler) handleQueryError(w http.ResponseWriter, r *http.Request, apiRo\n \t\t}\n \t\treturn\n \t}\n+\tif performanceErr, ok := app.AsPerformanceUseCaseError(err); ok {\n+\t\tstatus = http.StatusUnprocessableEntity\n+\t\tswitch performanceErr.Category {\n+\t\tcase \"concurrency\", \"conflict\":\n+\t\t\tstatus = http.StatusConflict\n+\t\tcase \"persistence\", \"process\", \"timeout\", \"cleanup\":\n+\t\t\tstatus = http.StatusServiceUnavailable\n+\t\t}\n+\t\th.writeRouteError(w, r, apiRoute, status, performanceErr.Code, \"The performance request could not be completed.\")\n+\t\treturn\n+\t}\n \tswitch {\n \tcase errors.Is(err, app.ErrWebNotFound):\n \t\tstatus, code, message = http.StatusNotFound, \"not_found\", \"The requested resource was not found.\"",
+      "content_sha256": "0c3673a07eaa29e6b505405e317d2e122ffcbcf7ec03fce5cfbe55208d9737ff",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/handlers.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-dc3881baa1bfdb96e944256e",
+      "kind": "source",
+      "path": "internal/tui/model.go",
+      "start_line": 1,
+      "end_line": 59,
+      "content": "package tui\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"path/filepath\"\n\t\"strings\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\ntype Tab string\n\nconst (\n\tTabProjects Tab = \"projects\"\n\tTabStudies  Tab = \"studies\"\n\tTabRuns     Tab = \"runs\"\n)\n\ntype FocusArea string\n\nconst (\n\tFocusTabs    FocusArea = \"tabs\"\n\tFocusContent FocusArea = \"content\"\n)\n\ntype RouteKind string\n\nconst (\n\tRouteProjects       RouteKind = \"projects\"\n\tRouteProject        RouteKind = \"project\"\n\tRouteProjectSprints RouteKind = \"proje\n\n[... bounded excerpt ...]\n\name {\n\t\t\treturn p, true\n\t\t}\n\t}\n\treturn app.ProjectSummary{}, false\n}\n\nfunc findSprint(sprints []app.SprintSummary, project, slug string) (app.SprintSummary, bool) {\n\tfor _, s := range sprints {\n\t\tif s.Project == project \u0026\u0026 s.Slug == slug {\n\t\t\treturn s, true\n\t\t}\n\t}\n\treturn app.SprintSummary{}, false\n}\n\nfunc findStudy(studies []app.StudySummary, name string) (app.StudySummary, bool) {\n\tfor _, s := range studies {\n\t\tif s.Name == name {\n\t\t\treturn s, true\n\t\t}\n\t}\n\treturn app.StudySummary{}, false\n}",
+      "content_sha256": "64a497b83febbe8b9171f141a8b8f92cc8ccbd91b0754c5c352612eb7e791cdc",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "github.com/Antonio7098/ultraplan-go/internal/app",
+        "internal/tui/model.go",
+        "path/filepath"
+      ],
+      "symbols": [
+        "ConfirmationMsg",
+        "FocusArea",
+        "KeyMsg",
+        "Load",
+        "LoadMsg",
+        "Message",
+        "Model",
+        "NewModel",
+        "OperationEventMsg",
+        "OperationMsg",
+        "PreviewMsg",
+        "PreviewSelected",
+        "Refresh",
+        "RefreshMsg",
+        "Route",
+        "RouteKind",
+        "Tab",
+        "Update",
+        "ValidationMsg",
+        "artifactByLabel",
+        "artifactItemsByLabel",
+        "breadcrumb",
+        "clampSelection",
+        "currentRoute",
+        "dedupeDurableEvents",
+        "findProject",
+        "findSprint",
+        "findStudy",
+        "navItem",
+        "navItems",
+        "projectArtifactPath",
+        "selectedItem",
+        "setTab",
+        "studyArtifactPath"
+      ],
+      "omitted_bytes": 25882
+    },
+    {
+      "id": "qa-v1-block-defc85998115158f67bf051d",
+      "kind": "change",
+      "path": "internal/web/handlers.go",
+      "start_line": 1,
+      "end_line": 21,
+      "content": "diff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -1230,11 +1300,12 @@ func mapSprint(item app.WebSprintResult) sprintDTO {\n \treturn sprintDTO{\n \t\tRef: item.Ref, Project: item.Project, Slug: item.Slug, Status: item.Status,\n \t\tAssessment: item.Assessment, NextAction: item.NextAction, Stages: stages,\n-\t\tExecute:  executeDTO{Available: item.Execute.Available, Total: item.Execute.Total, Pending: item.Execute.Pending, Running: item.Execute.Running, Complete: item.Execute.Complete, Failed: item.Execute.Failed, Cancelled: item.Execute.Cancelled},\n-\t\tReview:   reviewDTO{Available: item.Review.Available, Status: item.Review.Status, Verdict: item.Review.Verdict, Stale: item.Review.Stale, Completed: item.Review.Completed, Total: item.Review.Total, Pending: item.Review.Pending, Running: item.Review.Running, Failed: item.Review.Failed, Reviewers: reviewers, StartedAt: item.Review.StartedAt},\n-\t\tSmoke:    smokeDTO{Available: item.Smoke.Available, Status: item.Smoke.Status, Verdict: item.Smoke.Verdict, Stale: item.Smoke.Stale, RunID: item.Smoke.RunID},\n-\t\tQA:       item.QA,\n-\t\tFindings: mapFindings(item.Findings), Artifacts: mapArtifacts(item.Artifacts),\n+\t\tExecute:     executeDTO{Available: item.Execute.Available, Total: item.Execute.Total, Pending: item.Execute.Pending, Running: item.Execute.Running, Complete: item.Execute.Complete, Failed: item.Execute.Failed, Cancelled: item.Execute.Cancelled},\n+\t\tReview:      reviewDTO{Available: item.Review.Available, Status: item.Review.Status, Verdict: item.Review.Verdict, Stale: item.Review.Stale, Completed: item.Review.Completed, Total: item.Review.Total, Pending: item.Review.Pending, Running: item.Review.Running, Failed: item.Review.Failed, Reviewers: reviewers, StartedAt: item.Review.StartedAt},\n+\t\tSmoke:       smokeDTO{Available: item.Smoke.Available, Status: item.Smoke.Status, Verdict: item.Smoke.Verdict, Stale: item.Smoke.Stale, RunID: item.Smoke.RunID},\n+\t\tQA:          item.QA,\n+\t\tPerformance: item.Performance,\n+\t\tFindings:    mapFindings(item.Findings), Artifacts: mapArtifacts(item.Artifacts),\n \t}\n }",
+      "content_sha256": "495392998d9b7bfe23bd414f2355dfb0d59fb2aa3c62d59cfc599c2854c309a6",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/handlers.go"
+      ]
+    },
+    {
+      "id": "qa-v1-block-e7535fc2615f66a9683ca253",
+      "kind": "source",
+      "path": "internal/web/routes.go",
+      "start_line": 1,
+      "end_line": 44,
+      "content": "package web\n\nimport (\n\t\"context\"\n\t\"embed\"\n\t\"errors\"\n\t\"fmt\"\n\t\"html/template\"\n\t\"io\"\n\t\"io/fs\"\n\t\"net/http\"\n\t\"strconv\"\n\t\"strings\"\n\t\"text/template/parse\"\n\t\"time\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/app\"\n)\n\n//go:embed templates/*.html templates/*/*.html static/*\nvar assets embed.FS\n\nvar staticAssetNames = map[string]struct{}{\n\t\"app.css\": {}, \"app.js\": {}, \"resource-monitor.css\": {}, \"resource-monitor.js\": {},\n\t\"run-timeline.css\": {}, \"run-timeline.js\": {},\n\t\"css/tokens.css\": {}, \"css/bas\n\n[... bounded excerpt ...]\n\nets.ReadFile(\"static/\" + name)\n\tif err != nil {\n\t\thttp.Error(w, \"static asset unavailable\", http.StatusInternalServerError)\n\t\treturn\n\t}\n\tif strings.HasSuffix(name, \".css\") {\n\t\tw.Header().Set(\"Content-Type\", \"text/css; charset=utf-8\")\n\t} else {\n\t\tw.Header().Set(\"Content-Type\", \"text/javascript; charset=utf-8\")\n\t}\n\tw.Header().Set(\"Cache-Control\", \"public, max-age=0, must-revalidate\")\n\tw.Header().Set(\"Content-Length\", strconv.Itoa(len(data)))\n\tw.WriteHeader(http.StatusOK)\n\t_, _ = w.Write(data)\n}",
+      "content_sha256": "0e3e5f548c4a9f985d11046cc6126482c674d029e5191797ebae935b6c6445f9",
+      "provenance": "frozen implementation target",
+      "related_paths": [
+        "github.com/Antonio7098/ultraplan-go/internal/app",
+        "html/template",
+        "internal/web/routes.go",
+        "io/fs",
+        "net/http",
+        "text/template/parse"
+      ],
+      "symbols": [
+        "HandlerOptions",
+        "NewHandler",
+        "ServeHTTP",
+        "Write",
+        "allowedMethods",
+        "handler",
+        "headResponseWriter",
+        "matchRoute",
+        "methodAllowed",
+        "parseTemplateTree",
+        "rejectDuplicateTemplateDefinitions",
+        "routeMatch",
+        "serveStatic",
+        "splitPath",
+        "templateDependencies",
+        "validProjectPage",
+        "validSprintPage",
+        "validStudyPage",
+        "validateTemplateHierarchy"
+      ],
+      "omitted_bytes": 18351
+    },
+    {
+      "id": "qa-v1-block-fc8f8aa155d13c00e77a839c",
+      "kind": "change",
+      "path": "internal/web/operation_handlers.go",
+      "start_line": 1,
+      "end_line": 15,
+      "content": "diff --git a/internal/web/operation_handlers.go b/internal/web/operation_handlers.go\nindex 926fc0e56f34f77924ce6645bbb89f242ced063e..5080940ac78944fb4a6703c211d018547ebe20bc 100644\n--- a/internal/web/operation_handlers.go\n+++ b/internal/web/operation_handlers.go\n@@ -791,6 +803,11 @@ func mapOperationRequest(spec operationSpecRequest) (app.OperationRequest, error\n \t\t\treturn app.OperationRequest{}, fmt.Errorf(\"repair campaign accepts only a confirmer\")\n \t\t}\n \t}\n+\tif strings.HasPrefix(string(req.Kind), \"performance-\") {\n+\t\tif options.Task != \"\" || options.Shard != \"\" || options.Model != \"\" || options.Stage != \"\" || options.ToStage != \"\" || options.Action != \"\" || options.DryRun || options.Resume || options.Level != \"\" || options.Suite != \"\" || options.Test != \"\" || options.Timeout != \"\" || options.ForceReview || options.RestartReview || options.OverrideRationale != \"\" || len(options.ReviewFocus) \u003e 0 || len(options.Sources) \u003e 0 || len(options.Dimensions) \u003e 0 || options.Parallelism != 0 || options.RepairRunID != \"\" || options.RepairIssueID != \"\" || options.RepairConfirmer != \"\" {\n+\t\t\treturn app.OperationRequest{}, fmt.Errorf(\"performance operations accept no caller-selected authority or execution options\")\n+\t\t}\n+\t}\n \treturn req, nil\n }",
+      "content_sha256": "b4d9ad5509c09c823b9e5758b72d20e943080fff709f3ded99d2cd3de3b91168",
+      "provenance": "baseline-to-sprint diff hunk",
+      "related_paths": [
+        "internal/web/operation_handlers.go"
+      ]
+    }
+  ],
+  "arbiter_overrides": [
+    {
+      "id": "qa-v1-override-76c5dcadf5980c121b3635b8",
+      "theory_ids": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "action": "confirm",
+      "outcome": "confirmed",
+      "replacement_claim": "The advertised performance evidence API request fails when limit is omitted because zero reaches pagination and is rejected.",
+      "reason": "Executable HTTP evidence observed Limit=0 and HTTP 500 when omitted, while Limit=1 succeeded.",
+      "reason_refs": [
+        "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+      ],
+      "confidence": 1
+    }
+  ],
+  "target_delta": "diff --git a/internal/tui/model.go b/internal/tui/model.go\nindex a8aea491055f27c6879e802ab6c400f76a23a199..9682a6e63a1acd1d66e0a937be0eb32dee83ecc9 100644\n--- a/internal/tui/model.go\n+++ b/internal/tui/model.go\n@@ -465,6 +465,18 @@ func (m Model) navItems() []navItem {\n \t\t\t\t{Label: \"QA\", Route: \u0026Route{Kind: RouteSprintQA, Project: route.Project, Sprint: route.Sprint}},\n \t\t\t\t{Label: \"Bounded repair\", Route: \u0026Route{Kind: RouteSprintRepair, Project: route.Project, Sprint: route.Sprint}},\n \t\t\t}\n+\t\t\tif s.Performance.Enabled || s.Performance.PerformanceAttemptID != \"\" {\n+\t\t\t\titems = append(items,\n+\t\t\t\t\tnavItem{Label: \"Performance Status\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceStatus, Project: route.Project, Sprint: route.Sprint}},\n+\t\t\t\t\tnavItem{Label: \"Performance Dry Run\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceDryRun, Project: route.Project, Sprint: route.Sprint}},\n+\t\t\t\t\tnavItem{Label: \"Start Performance [COMMANDS + MUTATION]\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceStart, Project: route.Project, Sprint: route.Sprint}})\n+\t\t\t\tif s.Performance.PerformanceAttemptID != \"\" {\n+\t\t\t\t\titems = append(items, navItem{Label: \"Performance Evidence\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceEvidence, Project: route.Project, Sprint: route.Sprint, Limit: s.Performance.Limits.EvidencePageSize}}, navItem{Label: \"Resume Performance [COMMANDS + MUTATION]\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceResume, Project: route.Project, Sprint: route.Sprint}}, navItem{Label: \"Cancel Performance\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceCancel, Project: route.Project, Sprint: route.Sprint}}, navItem{Label: \"Recover Performance\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceRecover, Project: route.Project, Sprint: route.Sprint}})\n+\t\t\t\t\tif s.PerformanceEvidence.NextCursor != \"\" {\n+\t\t\t\t\t\titems = append(items, navItem{Label: \"Next Performance Evidence Page\", Operation: \u0026app.OperationRequest{Kind: app.OperationPerformanceEvidence, Project: route.Project, Sprint: route.Sprint, Cursor: s.PerformanceEvidence.NextCursor, Limit: s.Performance.Limits.EvidencePageSize}})\n+\t\t\t\t\t}\n+\t\t\t\t}\n+\t\t\t}\n \t\t\tstages := []string{\"requirements\", \"sprint-index\", \"technical-handbook\", \"area-reasoning\", \"reasoning\", \"plan\", \"execute\", \"review\"}\n \t\t\titems = append(items, navItem{Label: \"Sprint Status\", Operation: \u0026app.OperationRequest{Kind: app.OperationSprintStatus, Project: route.Project, Sprint: route.Sprint}})\n \t\t\tfor _, stage := range stages {\ndiff --git a/internal/tui/views.go b/internal/tui/views.go\nindex 4fe682324b4437f39f791b79e8fc1abc1f64bf80..c5df1557bcb7e809936355b1438e2eab3386f622 100644\n--- a/internal/tui/views.go\n+++ b/internal/tui/views.go\n@@ -354,6 +354,15 @@ func renderRouteSummary(b *strings.Builder, m Model) {\n \t\t\treturn\n \t\t}\n \t\tfmt.Fprintln(b, \"Verification summary\")\n+\t\tif sprint.Performance.Enabled || sprint.Performance.PerformanceAttemptID != \"\" {\n+\t\t\tfmt.Fprintf(b, \"  Performance: phase=%s outcome=%s fresh=%t targets=%d lifecycle=%s next=%s\\n\", sprint.Performance.Phase, sprint.Performance.Outcome, sprint.Performance.Fresh, len(sprint.Performance.Targets), sprint.Performance.OperationalLifecycle, sprint.Performance.NextAction)\n+\t\t\tfor _, evidence := range sprint.PerformanceEvidence.Records {\n+\t\t\t\tfmt.Fprintf(b, \"    Evidence: %s (%d bytes)\\n\", evidence.Name, evidence.Size)\n+\t\t\t}\n+\t\t\tif sprint.PerformanceEvidence.NextCursor != \"\" {\n+\t\t\t\tfmt.Fprintln(b, \"    More evidence is available through the next-page action.\")\n+\t\t\t}\n+\t\t}\n \t\tfmt.Fprintf(b, \"  Conformance Review: %s verdict=%s stale=%t evidence=%s\\n\", sprint.Review.Status, sprint.Review.Verdict, sprint.Review.Stale, sprint.Review.Artifact)\n \t\tfor _, reason := range sprint.Review.FreshnessReasons {\n \t\t\tfmt.Fprintf(b, \"    Reason: %s\\n\", reason)\ndiff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -145,19 +145,20 @@ type collectionDTO struct {\n }\n \n type sprintDTO struct {\n-\tRef        string        `json:\"ref\"`\n-\tProject    string        `json:\"project\"`\n-\tSlug       string        `json:\"slug\"`\n-\tStatus     string        `json:\"status\"`\n-\tAssessment string        `json:\"assessment,omitempty\"`\n-\tNextAction string        `json:\"next_action,omitempty\"`\n-\tStages     []stageDTO    `json:\"stages\"`\n-\tExecute    executeDTO    `json:\"execute\"`\n-\tReview     reviewDTO     `json:\"review\"`\n-\tSmoke      smokeDTO      `json:\"smoke\"`\n-\tQA         app.QAResult  `json:\"qa\"`\n-\tFindings   []findingDTO  `json:\"findings\"`\n-\tArtifacts  []artifactDTO `json:\"artifacts\"`\n+\tRef         string                      `json:\"ref\"`\n+\tProject     string                      `json:\"project\"`\n+\tSlug        string                      `json:\"slug\"`\n+\tStatus      string                      `json:\"status\"`\n+\tAssessment  string                      `json:\"assessment,omitempty\"`\n+\tNextAction  string                      `json:\"next_action,omitempty\"`\n+\tStages      []stageDTO                  `json:\"stages\"`\n+\tExecute     executeDTO                  `json:\"execute\"`\n+\tReview      reviewDTO                   `json:\"review\"`\n+\tSmoke       smokeDTO                    `json:\"smoke\"`\n+\tQA          app.QAResult                `json:\"qa\"`\n+\tPerformance app.PerformanceStatusResult `json:\"performance\"`\n+\tFindings    []findingDTO                `json:\"findings\"`\n+\tArtifacts   []artifactDTO               `json:\"artifacts\"`\n }\n \n type executeDTO struct {\ndiff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -657,6 +658,62 @@ func (h *handler) dispatch(w http.ResponseWriter, r *http.Request, match routeMa\n \t\t\treturn\n \t\t}\n \t\th.writeSuccess(w, r, http.StatusOK, mapSprint(result), nil)\n+\tcase \"api_sprint_performance\":\n+\t\tresult, err := h.queries.Sprint(r.Context(), match.params[0], match.params[1])\n+\t\tif err != nil {\n+\t\t\th.handleQueryError(w, r, true, err)\n+\t\t\treturn\n+\t\t}\n+\t\th.writeSuccess(w, r, http.StatusOK, result.Performance, nil)\n+\tcase \"api_sprint_performance_result\", \"api_sprint_performance_evidence\":\n+\t\tqueries, ok := h.queries.(app.WebPerformanceQueries)\n+\t\tif !ok {\n+\t\t\th.handleQueryError(w, r, true, app.ErrWebUnavailable)\n+\t\t\treturn\n+\t\t}\n+\t\trequest := app.PerformanceRequest{Project: match.params[0], Sprint: match.params[1]}\n+\t\tif match.name == \"api_sprint_performance_result\" {\n+\t\t\tresult, err := queries.PerformanceResult(r.Context(), request)\n+\t\t\tif err != nil {\n+\t\t\t\th.handleQueryError(w, r, true, err)\n+\t\t\t\treturn\n+\t\t\t}\n+\t\t\th.writeSuccess(w, r, http.StatusOK, result, nil)\n+\t\t\treturn\n+\t\t}\n+\t\tevidenceQueries, ok := h.queries.(app.WebPerformanceEvidenceQueries)\n+\t\tif !ok {\n+\t\t\t// Compatibility adapters may expose only current bounded references.\n+\t\t\tstatus, statusErr := queries.PerformanceStatus(r.Context(), request)\n+\t\t\tif statusErr != nil {\n+\t\t\t\th.handleQueryError(w, r, true, statusErr)\n+\t\t\t\treturn\n+\t\t\t}\n+\t\t\trefs := make([]app.PerformanceArtifactSummary, 0, 2)\n+\t\t\tif status.State != nil {\n+\t\t\t\trefs = append(refs, *status.State)\n+\t\t\t}\n+\t\t\tif status.Result != nil {\n+\t\t\t\trefs = append(refs, *status.Result)\n+\t\t\t}\n+\t\t\th.writeSuccess(w, r, http.StatusOK, map[string]any{\"attempt_id\": status.PerformanceAttemptID, \"artifacts\": refs, \"returned_count\": len(refs)}, nil)\n+\t\t\treturn\n+\t\t}\n+\t\tlimit := 0\n+\t\tif raw := r.URL.Query().Get(\"limit\"); raw != \"\" {\n+\t\t\tparsed, parseErr := strconv.Atoi(raw)\n+\t\t\tif parseErr != nil {\n+\t\t\t\th.handleQueryError(w, r, true, fmt.Errorf(\"invalid performance evidence limit\"))\n+\t\t\t\treturn\n+\t\t\t}\n+\t\t\tlimit = parsed\n+\t\t}\n+\t\tevidence, err := evidenceQueries.PerformanceEvidence(r.Context(), app.PerformanceRequest{Project: request.Project, Sprint: request.Sprint, Cursor: r.URL.Query().Get(\"cursor\"), Filter: r.URL.Query().Get(\"filter\"), Limit: limit})\n+\t\tif err != nil {\n+\t\t\th.handleQueryError(w, r, true, err)\n+\t\t\treturn\n+\t\t}\n+\t\th.writeSuccess(w, r, http.StatusOK, evidence, nil)\n \tcase \"api_sprint_qa\":\n \t\th.handleSprintQA(w, r, match.params[0], match.params[1])\n \tcase \"api_sprint_qa_map\":\ndiff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -843,6 +900,8 @@ func sprintPageTitle(page string) string {\n \t\treturn \"Repair\"\n \tcase \"metrics\":\n \t\treturn \"Runtime metrics\"\n+\tcase \"performance\":\n+\t\treturn \"Performance\"\n \tdefault:\n \t\treturn \"Artifact Navigator\"\n \t}\ndiff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -1100,6 +1159,17 @@ func (h *handler) handleQueryError(w http.ResponseWriter, r *http.Request, apiRo\n \t\t}\n \t\treturn\n \t}\n+\tif performanceErr, ok := app.AsPerformanceUseCaseError(err); ok {\n+\t\tstatus = http.StatusUnprocessableEntity\n+\t\tswitch performanceErr.Category {\n+\t\tcase \"concurrency\", \"conflict\":\n+\t\t\tstatus = http.StatusConflict\n+\t\tcase \"persistence\", \"process\", \"timeout\", \"cleanup\":\n+\t\t\tstatus = http.StatusServiceUnavailable\n+\t\t}\n+\t\th.writeRouteError(w, r, apiRoute, status, performanceErr.Code, \"The performance request could not be completed.\")\n+\t\treturn\n+\t}\n \tswitch {\n \tcase errors.Is(err, app.ErrWebNotFound):\n \t\tstatus, code, message = http.StatusNotFound, \"not_found\", \"The requested resource was not found.\"\ndiff --git a/internal/web/handlers.go b/internal/web/handlers.go\nindex 44c80c6c78dfec7fb88f1579eb0f560308cb1ea4..356560721fc0ba9c2de64c98ae7d5a0023405065 100644\n--- a/internal/web/handlers.go\n+++ b/internal/web/handlers.go\n@@ -1230,11 +1300,12 @@ func mapSprint(item app.WebSprintResult) sprintDTO {\n \treturn sprintDTO{\n \t\tRef: item.Ref, Project: item.Project, Slug: item.Slug, Status: item.Status,\n \t\tAssessment: item.Assessment, NextAction: item.NextAction, Stages: stages,\n-\t\tExecute:  executeDTO{Available: item.Execute.Available, Total: item.Execute.Total, Pending: item.Execute.Pending, Running: item.Execute.Running, Complete: item.Execute.Complete, Failed: item.Execute.Failed, Cancelled: item.Execute.Cancelled},\n-\t\tReview:   reviewDTO{Available: item.Review.Available, Status: item.Review.Status, Verdict: item.Review.Verdict, Stale: item.Review.Stale, Completed: item.Review.Completed, Total: item.Review.Total, Pending: item.Review.Pending, Running: item.Review.Running, Failed: item.Review.Failed, Reviewers: reviewers, StartedAt: item.Review.StartedAt},\n-\t\tSmoke:    smokeDTO{Available: item.Smoke.Available, Status: item.Smoke.Status, Verdict: item.Smoke.Verdict, Stale: item.Smoke.Stale, RunID: item.Smoke.RunID},\n-\t\tQA:       item.QA,\n-\t\tFindings: mapFindings(item.Findings), Artifacts: mapArtifacts(item.Artifacts),\n+\t\tExecute:     executeDTO{Available: item.Execute.Available, Total: item.Execute.Total, Pending: item.Execute.Pending, Running: item.Execute.Running, Complete: item.Execute.Complete, Failed: item.Execute.Failed, Cancelled: item.Execute.Cancelled},\n+\t\tReview:      reviewDTO{Available: item.Review.Available, Status: item.Review.Status, Verdict: item.Review.Verdict, Stale: item.Review.Stale, Completed: item.Review.Completed, Total: item.Review.Total, Pending: item.Review.Pending, Running: item.Review.Running, Failed: item.Review.Failed, Reviewers: reviewers, StartedAt: item.Review.StartedAt},\n+\t\tSmoke:       smokeDTO{Available: item.Smoke.Available, Status: item.Smoke.Status, Verdict: item.Smoke.Verdict, Stale: item.Smoke.Stale, RunID: item.Smoke.RunID},\n+\t\tQA:          item.QA,\n+\t\tPerformance: item.Performance,\n+\t\tFindings:    mapFindings(item.Findings), Artifacts: mapArtifacts(item.Artifacts),\n \t}\n }\ndiff --git a/internal/web/operation_handlers.go b/internal/web/operation_handlers.go\nindex 926fc0e56f34f77924ce6645bbb89f242ced063e..5080940ac78944fb4a6703c211d018547ebe20bc 100644\n--- a/internal/web/operation_handlers.go\n+++ b/internal/web/operation_handlers.go\n@@ -708,6 +708,18 @@ func mapOperationRequest(spec operationSpecRequest) (app.OperationRequest, error\n \t\t}\n \tcase \"verify-dry-run\":\n \t\treq.Kind = app.OperationVerifyDryRun\n+\tcase \"performance-status\":\n+\t\treq.Kind = app.OperationPerformanceStatus\n+\tcase \"performance-dry-run\":\n+\t\treq.Kind = app.OperationPerformanceDryRun\n+\tcase \"performance-start\":\n+\t\treq.Kind = app.OperationPerformanceStart\n+\tcase \"performance-resume\":\n+\t\treq.Kind = app.OperationPerformanceResume\n+\tcase \"performance-recover\":\n+\t\treq.Kind = app.OperationPerformanceRecover\n+\tcase \"performance-cancel\":\n+\t\treq.Kind = app.OperationPerformanceCancel\n \tcase \"qa-status\":\n \t\treq.Kind = app.OperationQAStatus\n \tcase \"qa-dry-run\":\ndiff --git a/internal/web/operation_handlers.go b/internal/web/operation_handlers.go\nindex 926fc0e56f34f77924ce6645bbb89f242ced063e..5080940ac78944fb4a6703c211d018547ebe20bc 100644\n--- a/internal/web/operation_handlers.go\n+++ b/internal/web/operation_handlers.go\n@@ -791,6 +803,11 @@ func mapOperationRequest(spec operationSpecRequest) (app.OperationRequest, error\n \t\t\treturn app.OperationRequest{}, fmt.Errorf(\"repair campaign accepts only a confirmer\")\n \t\t}\n \t}\n+\tif strings.HasPrefix(string(req.Kind), \"performance-\") {\n+\t\tif options.Task != \"\" || options.Shard != \"\" || options.Model != \"\" || options.Stage != \"\" || options.ToStage != \"\" || options.Action != \"\" || options.DryRun || options.Resume || options.Level != \"\" || options.Suite != \"\" || options.Test != \"\" || options.Timeout != \"\" || options.ForceReview || options.RestartReview || options.OverrideRationale != \"\" || len(options.ReviewFocus) \u003e 0 || len(options.Sources) \u003e 0 || len(options.Dimensions) \u003e 0 || options.Parallelism != 0 || options.RepairRunID != \"\" || options.RepairIssueID != \"\" || options.RepairConfirmer != \"\" {\n+\t\t\treturn app.OperationRequest{}, fmt.Errorf(\"performance operations accept no caller-selected authority or execution options\")\n+\t\t}\n+\t}\n \treturn req, nil\n }\ndiff --git a/internal/web/routes.go b/internal/web/routes.go\nindex af1902262c675301880fc761ea8e1c58f6314d66..3dce985cb4107e7d050dc910393922d626062f53 100644\n--- a/internal/web/routes.go\n+++ b/internal/web/routes.go\n@@ -375,6 +375,10 @@ func matchRoute(path string) routeMatch {\n \t\treturn routeMatch{name: \"api_project\", params: parts[3:], known: true, api: true}\n \tcase len(parts) == 6 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\":\n \t\treturn routeMatch{name: \"api_sprint\", params: []string{parts[3], parts[5]}, known: true, api: true}\n+\tcase len(parts) == 7 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"performance\":\n+\t\treturn routeMatch{name: \"api_sprint_performance\", params: []string{parts[3], parts[5]}, known: true, api: true}\n+\tcase len(parts) == 8 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"performance\" \u0026\u0026 (parts[7] == \"result\" || parts[7] == \"evidence\"):\n+\t\treturn routeMatch{name: \"api_sprint_performance_\" + parts[7], params: []string{parts[3], parts[5]}, known: true, api: true}\n \tcase len(parts) == 7 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"qa\":\n \t\treturn routeMatch{name: \"api_sprint_qa\", params: []string{parts[3], parts[5]}, known: true, api: true}\n \tcase len(parts) == 7 \u0026\u0026 parts[0] == \"api\" \u0026\u0026 parts[1] == \"v1\" \u0026\u0026 parts[2] == \"projects\" \u0026\u0026 parts[4] == \"sprints\" \u0026\u0026 parts[6] == \"repair\":\ndiff --git a/internal/web/routes.go b/internal/web/routes.go\nindex af1902262c675301880fc761ea8e1c58f6314d66..3dce985cb4107e7d050dc910393922d626062f53 100644\n--- a/internal/web/routes.go\n+++ b/internal/web/routes.go\n@@ -427,7 +431,7 @@ func validProjectPage(page string) bool {\n \n func validSprintPage(page string) bool {\n \tswitch page {\n-\tcase \"workflow\", \"run\", \"artifacts\", \"plan\", \"delivery\", \"operations\", \"validation\", \"metrics\":\n+\tcase \"workflow\", \"run\", \"artifacts\", \"plan\", \"delivery\", \"operations\", \"validation\", \"metrics\", \"performance\":\n \t\treturn true\n \tdefault:\n \t\treturn false\ndiff --git a/internal/web/templates/sprint.html b/internal/web/templates/sprint.html\nindex 7207f0fddd0f66c0b019d114ceed323a27d40e9f..2cd01a443c249d4034feef546f19c62a3226417d 100644\n--- a/internal/web/templates/sprint.html\n+++ b/internal/web/templates/sprint.html\n@@ -1,5 +1,5 @@\n {{define \"page/sprint\"}}{{template \"layout/top\" .}}\n-\u003cnav class=\"breadcrumb\" aria-label=\"Breadcrumb\"\u003e\u003ca href=\"/projects\"\u003eProjects\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}\"\u003e{{.Sprint.Project}}\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/roadmap\"\u003eRoadmap\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}\"{{if eq .Page \"overview\"}} aria-current=\"page\"{{end}}\u003e{{.Sprint.Slug}}\u003c/a\u003e{{if ne .Page \"overview\"}}\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/{{.Page}}\" aria-current=\"page\"\u003e{{if eq .Page \"workflow\"}}Workflow{{else if eq .Page \"repair\"}}Repair{{else if eq .Page \"qa\"}}QA{{else if eq .Page \"metrics\"}}Runtime metrics{{else}}Artifacts{{end}}\u003c/a\u003e{{end}}\u003c/nav\u003e\n+\u003cnav class=\"breadcrumb\" aria-label=\"Breadcrumb\"\u003e\u003ca href=\"/projects\"\u003eProjects\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}\"\u003e{{.Sprint.Project}}\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/roadmap\"\u003eRoadmap\u003c/a\u003e\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}\"{{if eq .Page \"overview\"}} aria-current=\"page\"{{end}}\u003e{{.Sprint.Slug}}\u003c/a\u003e{{if ne .Page \"overview\"}}\u003cspan aria-hidden=\"true\"\u003e/\u003c/span\u003e\u003ca href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/{{.Page}}\" aria-current=\"page\"\u003e{{if eq .Page \"workflow\"}}Workflow{{else if eq .Page \"performance\"}}Performance{{else if eq .Page \"repair\"}}Repair{{else if eq .Page \"qa\"}}QA{{else if eq .Page \"metrics\"}}Runtime metrics{{else}}Artifacts{{end}}\u003c/a\u003e{{end}}\u003c/nav\u003e\n {{if eq .Page \"overview\"}}\n \u003cdiv class=\"entity-dashboard sprint-overview-grid\"\u003e\n \u003ca class=\"dashboard-component\" href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/artifacts\"\u003e\u003csection class=\"sprint-intro\" aria-labelledby=\"sprint-overview-heading\"\u003e\ndiff --git a/internal/web/templates/sprint.html b/internal/web/templates/sprint.html\nindex 7207f0fddd0f66c0b019d114ceed323a27d40e9f..2cd01a443c249d4034feef546f19c62a3226417d 100644\n--- a/internal/web/templates/sprint.html\n+++ b/internal/web/templates/sprint.html\n@@ -39,6 +39,21 @@\n \u003c/section\u003e\n {{if .Sprint.Findings}}\u003csection class=\"sprint-overview-wide attention-strip\"\u003e\u003cdiv class=\"dashboard-component-heading\"\u003e\u003ch2\u003eAttention\u003c/h2\u003e\u003cstrong\u003e{{len .Sprint.Findings}} findings\u003c/strong\u003e\u003c/div\u003e{{template \"component/findings\" .Sprint.AttentionFindings}}\u003c/section\u003e{{end}}\n \u003c/div\u003e\n+{{else if eq .Page \"performance\"}}\n+\u003cmain class=\"performance-workbench\" aria-labelledby=\"performance-heading\"\u003e\n+{{with .Sprint.Performance}}\n+\u003cheader\u003e\u003cp class=\"eyebrow\"\u003eVerification\u003c/p\u003e\u003ch2 id=\"performance-heading\"\u003ePerformance\u003c/h2\u003e\u003cp\u003eRequirements-owned targets measured with frozen product runners.\u003c/p\u003e\u003c/header\u003e\n+\u003csection aria-labelledby=\"performance-authority\"\u003e\u003ch3 id=\"performance-authority\"\u003eCurrent authority\u003c/h3\u003e\u003cdl class=\"metadata\"\u003e\u003cdiv\u003e\u003cdt\u003ePolicy\u003c/dt\u003e\u003cdd\u003e{{.PolicyMode}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eProduct phase\u003c/dt\u003e\u003cdd\u003e{{.Phase}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eOperational lifecycle\u003c/dt\u003e\u003cdd\u003e{{if .OperationalLifecycle}}{{.OperationalLifecycle}}{{else}}not running{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eCancellation\u003c/dt\u003e\u003cdd\u003e{{if .CancellationState}}{{.CancellationState}}{{else}}not requested{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eFresh\u003c/dt\u003e\u003cdd\u003e{{if .Fresh}}yes{{else}}no{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eProduct outcome\u003c/dt\u003e\u003cdd\u003e{{if .Outcome}}{{.Outcome}}{{else}}not terminal{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003ePerformance attempt\u003c/dt\u003e\u003cdd\u003e{{if .PerformanceAttemptID}}\u003ccode\u003e{{.PerformanceAttemptID}}\u003c/code\u003e{{else}}not accepted{{end}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eDurable run\u003c/dt\u003e\u003cdd\u003e{{if .OperationRunID}}\u003ccode\u003e{{.OperationRunID}}\u003c/code\u003e{{else}}not accepted{{end}}\u003c/dd\u003e\u003c/div\u003e\u003c/dl\u003e\n+{{range .FreshnessReasons}}\u003cp class=\"notice\" role=\"status\"\u003e{{.}}\u003c/p\u003e{{end}}{{if .Blocker}}\u003cp class=\"notice\" role=\"alert\"\u003e\u003cstrong\u003eBlocked:\u003c/strong\u003e {{.Blocker}}\u003c/p\u003e{{end}}\u003cp\u003e\u003cstrong\u003eNext:\u003c/strong\u003e {{.NextAction}}\u003c/p\u003e\u003c/section\u003e\n+\u003csection aria-labelledby=\"performance-path\"\u003e\u003ch3 id=\"performance-path\"\u003eOrdered path\u003c/h3\u003e\u003col\u003e\u003cli\u003eAdmission\u003c/li\u003e\u003cli\u003eBenchmark coverage and freeze\u003c/li\u003e\u003cli\u003eBaseline\u003c/li\u003e\u003cli\u003eBounded target-linked optimization\u003c/li\u003e\u003cli\u003eFinal measurement\u003c/li\u003e\u003cli\u003eCorrectness\u003c/li\u003e\u003cli\u003ePublication\u003c/li\u003e\u003c/ol\u003e\u003c/section\u003e\n+\u003csection aria-labelledby=\"performance-targets\"\u003e\u003ch3 id=\"performance-targets\"\u003eTargets\u003c/h3\u003e\u003cp\u003e{{len .Targets}} requirements-owned targets.\u003c/p\u003e{{range .Targets}}\u003cdetails\u003e\u003csummary\u003e\u003ccode\u003e{{.ID}}\u003c/code\u003e · {{.Metric}} · {{if .Outcome}}{{.Outcome}}{{else}}pending{{end}}\u003c/summary\u003e\u003cdl class=\"metadata\"\u003e\u003cdiv\u003e\u003cdt\u003eScenario\u003c/dt\u003e\u003cdd\u003e{{.Scenario}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eMetric\u003c/dt\u003e\u003cdd\u003e{{.Metric}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eComparator\u003c/dt\u003e\u003cdd\u003e{{.Comparator}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eValue\u003c/dt\u003e\u003cdd\u003e{{.Value}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eUnit\u003c/dt\u003e\u003cdd\u003e{{.Unit}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eGate\u003c/dt\u003e\u003cdd\u003e{{.Gate}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eSamples\u003c/dt\u003e\u003cdd\u003e{{.Samples}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eBasis\u003c/dt\u003e\u003cdd\u003e{{.Basis}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eComparison\u003c/dt\u003e\u003cdd\u003e{{if .Comparison}}{{.Comparison}}{{else}}not measured{{end}}\u003c/dd\u003e\u003c/div\u003e\u003c/dl\u003e{{with .FinalQualification}}\u003cp\u003eFinal median {{.Median}} · mean {{.Mean}} · CV {{.CVPercent}}% · qualified={{.Qualified}}\u003c/p\u003e{{end}}\u003c/details\u003e{{else}}\u003cp class=\"empty\"\u003eNo performance targets are active.\u003c/p\u003e{{end}}\u003c/section\u003e\n+\u003csection aria-labelledby=\"performance-limits\"\u003e\u003ch3 id=\"performance-limits\"\u003eEffective limits\u003c/h3\u003e\u003cdl class=\"metadata\"\u003e\u003cdiv\u003e\u003cdt\u003eCommands\u003c/dt\u003e\u003cdd\u003e{{.Limits.Commands}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eWarmups\u003c/dt\u003e\u003cdd\u003e{{.Limits.Warmups}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eSample ceiling\u003c/dt\u003e\u003cdd\u003e{{.Limits.SampleCeiling}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eOptimization cycles\u003c/dt\u003e\u003cdd\u003e{{.Limits.OptimizationCycles}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eChanged files\u003c/dt\u003e\u003cdd\u003e{{.Limits.ChangedFiles}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eChanged bytes\u003c/dt\u003e\u003cdd\u003e{{.Limits.ChangedBytes}}\u003c/dd\u003e\u003c/div\u003e\u003cdiv\u003e\u003cdt\u003eEvidence page size\u003c/dt\u003e\u003cdd\u003e{{.Limits.EvidencePageSize}}\u003c/dd\u003e\u003c/div\u003e\u003c/dl\u003e{{if .LimitSources}}\u003cdetails\u003e\u003csummary\u003eLimit sources\u003c/summary\u003e\u003cdl class=\"metadata\"\u003e{{range $field, $source := .LimitSources}}\u003cdiv\u003e\u003cdt\u003e{{$field}}\u003c/dt\u003e\u003cdd\u003e{{$source}}\u003c/dd\u003e\u003c/div\u003e{{end}}\u003c/dl\u003e\u003c/details\u003e{{end}}\u003c/section\u003e\n+{{if .Enabled}}\u003csection class=\"operation-actions\" aria-labelledby=\"performance-actions\"\u003e\u003ch3 id=\"performance-actions\"\u003eActions\u003c/h3\u003e\u003cform class=\"operation-form\" method=\"post\" action=\"/operations/prepare\" data-project=\"{{.Project}}\" data-sprint=\"{{.Sprint}}\"\u003e\u003cinput type=\"hidden\" name=\"_csrf\" value=\"{{$.CSRF}}\"\u003e\u003cinput type=\"hidden\" name=\"project\" value=\"{{.Project}}\"\u003e\u003cinput type=\"hidden\" name=\"sprint\" value=\"{{.Sprint}}\"\u003e\u003cbutton name=\"kind\" value=\"performance-dry-run\" data-operation-kind=\"performance-dry-run\"\u003eDry run\u003c/button\u003e\u003c/form\u003e\u003cform class=\"operation-form\" method=\"post\" action=\"/operations/prepare\" data-project=\"{{.Project}}\" data-sprint=\"{{.Sprint}}\"\u003e\u003cinput type=\"hidden\" name=\"_csrf\" value=\"{{$.CSRF}}\"\u003e\u003cinput type=\"hidden\" name=\"project\" value=\"{{.Project}}\"\u003e\u003cinput type=\"hidden\" name=\"sprint\" value=\"{{.Sprint}}\"\u003e\u003cbutton name=\"kind\" value=\"performance-start\" data-operation-kind=\"performance-start\"\u003eStart performance\u003c/button\u003e\u003c/form\u003e{{if .PerformanceAttemptID}}\u003cform class=\"operation-form\" method=\"post\" action=\"/operations/prepare\" data-project=\"{{.Project}}\" data-sprint=\"{{.Sprint}}\"\u003e\u003cinput type=\"hidden\" name=\"_csrf\" value=\"{{$.CSRF}}\"\u003e\u003cinput type=\"hidden\" name=\"project\" value=\"{{.Project}}\"\u003e\u003cinput type=\"hidden\" name=\"sprint\" value=\"{{.Sprint}}\"\u003e\u003cbutton name=\"kind\" value=\"performance-resume\" data-operation-kind=\"performance-resume\"\u003eResume\u003c/button\u003e\u003cbutton name=\"kind\" value=\"performance-cancel\" data-operation-kind=\"performance-cancel\"\u003eCancel\u003c/button\u003e\u003cbutton name=\"kind\" value=\"performance-recover\" data-operation-kind=\"performance-recover\"\u003eRecover\u003c/button\u003e\u003c/form\u003e{{end}}\u003c/section\u003e{{end}}\n+\u003cp\u003e\u003ca href=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance\"\u003eOpen bounded performance JSON\u003c/a\u003e{{if .Result}} · \u003ca href=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance/result\"\u003eOpen result\u003c/a\u003e{{end}}{{if .PerformanceAttemptID}} · \u003ca href=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance/evidence\"\u003eBrowse evidence metadata\u003c/a\u003e{{end}}\u003c/p\u003e\n+{{if .PerformanceAttemptID}}\u003cform method=\"get\" action=\"/api/v1/projects/{{.Project}}/sprints/{{.Sprint}}/performance/evidence\"\u003e\u003clabel\u003eEvidence filter \u003cinput name=\"filter\" maxlength=\"64\"\u003e\u003c/label\u003e\u003clabel\u003ePage size \u003cinput name=\"limit\" type=\"number\" min=\"1\" max=\"200\" value=\"50\"\u003e\u003c/label\u003e\u003cbutton type=\"submit\"\u003eFilter evidence\u003c/button\u003e\u003c/form\u003e{{end}}\n+{{if .PerformanceAttemptID}}{{with $.Sprint.PerformanceEvidence}}\u003csection aria-labelledby=\"performance-evidence\"\u003e\u003ch3 id=\"performance-evidence\"\u003eEvidence metadata\u003c/h3\u003e\u003cp\u003e{{.ReturnedCount}} bounded records on this page.\u003c/p\u003e\u003cul\u003e{{range .Records}}\u003cli\u003e\u003ccode\u003e{{.Name}}\u003c/code\u003e · {{.Size}} bytes · \u003ccode\u003e{{.Digest}}\u003c/code\u003e\u003c/li\u003e{{else}}\u003cli\u003eNo retained records are available.\u003c/li\u003e{{end}}\u003c/ul\u003e{{if .NextCursor}}\u003cp\u003e\u003ca href=\"/api/v1/projects/{{$.Sprint.Project}}/sprints/{{$.Sprint.Slug}}/performance/evidence?cursor={{.NextCursor}}\"\u003eNext evidence page\u003c/a\u003e\u003c/p\u003e{{end}}\u003c/section\u003e{{end}}{{end}}\n+\u003cnoscript\u003e\u003cp class=\"notice\"\u003eAll performance facts and controls are server rendered. Refresh after a durable operation completes.\u003c/p\u003e\u003c/noscript\u003e\n+{{end}}\u003c/main\u003e\n {{else if eq .Page \"metrics\"}}\n \u003csection class=\"runtime-ledger\" aria-labelledby=\"runtime-ledger-heading\"\u003e\n \u003cheader class=\"runtime-ledger-heading\"\u003e\u003cdiv\u003e\u003ch2 id=\"runtime-ledger-heading\"\u003eRuntime call ledger\u003c/h2\u003e\u003cp\u003eEvery retained model call for this sprint, including QA continuations and repair proposals. Unknown provider values remain visibly unknown.\u003c/p\u003e\u003c/div\u003e\u003ca class=\"refresh-link\" href=\"/projects/{{.Sprint.Project}}/sprints/{{.Sprint.Slug}}/metrics\"\u003eRefresh\u003c/a\u003e\u003c/header\u003e\ndiff --git a/internal/workspace/scaffold/prompts/create-requirements.md b/internal/workspace/scaffold/prompts/create-requirements.md\nindex 6b35b7da1d78a4d4fee5dfca9e965b71de2e469c..c1df613e700a446c24a624bc4597305a4902f8af 100644\n--- a/internal/workspace/scaffold/prompts/create-requirements.md\n+++ b/internal/workspace/scaffold/prompts/create-requirements.md\n@@ -33,6 +33,9 @@ Write to: `.ultra/projects/{project}/sprints/{sprint-slug}/requirements.md`\n    - **Constraints**: architectural, technical, or process constraints.\n    - **Dependencies**: prior sprints or external inputs this sprint needs.\n    - **Review Expectations**: what will be checked at review and how.\n+   - **Performance Targets**: include the exact governed nine-column table only\n+     when the project `Performance Policy` is enabled. Derive each value from a\n+     product requirement or measured baseline; never invent a threshold.\n \n ## Quality Bar",
+  "exact_reproducer": {
+    "id": "repair-v1-check-5020f352d4190d00fbab5b97",
+    "gate": "exact_reproducer",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_dae46ba55ba6$",
+      "-count=1"
+    ],
+    "workdir": "internal/tui",
+    "environment_names": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "expected": "the frozen investigator-authored test passes on the frozen implementation",
+    "source_plan_id": "qa-v2-plan-ed8780f317354b9c624ca980"
+  },
+  "checks": [
+    {
+      "id": "repair-v1-check-5020f352d4190d00fbab5b97",
+      "gate": "exact_reproducer",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_dae46ba55ba6$",
+        "-count=1"
+      ],
+      "workdir": "internal/tui",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "the frozen investigator-authored test passes on the frozen implementation",
+      "source_plan_id": "qa-v2-plan-ed8780f317354b9c624ca980"
+    },
+    {
+      "id": "repair-v1-check-37625a78d5200ab15ba2686a",
+      "gate": "primary_shards",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_dae46ba55ba6$",
+        "-count=1"
+      ],
+      "workdir": "internal/tui",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen primary_shards conditions pass",
+      "source_plan_id": "qa-v2-plan-ed8780f317354b9c624ca980"
+    },
+    {
+      "id": "repair-v1-check-76afe7983807bb079880adfc",
+      "gate": "linked_theories",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_dae46ba55ba6$",
+        "-count=1"
+      ],
+      "workdir": "internal/tui",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen linked_theories conditions pass",
+      "source_plan_id": "qa-v2-plan-ed8780f317354b9c624ca980"
+    },
+    {
+      "id": "repair-v1-check-a6630b3bf975bbb390d38a93",
+      "gate": "follow_up_shards",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_dae46ba55ba6$",
+        "-count=1"
+      ],
+      "workdir": "internal/tui",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen follow_up_shards conditions pass",
+      "source_plan_id": "qa-v2-plan-ed8780f317354b9c624ca980"
+    },
+    {
+      "id": "repair-v1-check-fad78064528d4aaa0acd3659",
+      "gate": "containing_qa",
+      "executable": "/usr/bin/go",
+      "args": [
+        "test",
+        ".",
+        "-v",
+        "-run",
+        "^TestQAInvestigator_dae46ba55ba6$",
+        "-count=1"
+      ],
+      "workdir": "internal/tui",
+      "environment_names": [
+        "PATH"
+      ],
+      "timeout": 300000000000,
+      "output_limit": 262144,
+      "expected": "all frozen containing_qa conditions pass",
+      "source_plan_id": "qa-v2-plan-ed8780f317354b9c624ca980"
+    }
+  ],
+  "allowed_paths": [
+    "internal/tui/model.go",
+    "internal/tui/qa_investigator_dae46ba55ba6_test.go",
+    "internal/tui/views.go",
+    "internal/web/handlers.go",
+    "internal/web/handlers.go; internal/sprint/performance_state.go; internal/web/templates/sprint.html",
+    "internal/web/operation_handlers.go",
+    "internal/web/routes.go",
+    "internal/web/templates/sprint.html",
+    "internal/workspace/scaffold/prompts/create-requirements.md"
+  ],
+  "forbidden_paths": [
+    ".gitattributes",
+    ".gitignore",
+    ".gitmodules",
+    "go.mod",
+    "go.sum",
+    "ultraplan.yml"
+  ],
+  "acceptance_criteria": [
+    "the frozen investigator-authored test passes on the frozen implementation"
+  ],
+  "mode": "automatic",
+  "budgets": {
+    "max_cycles": 1,
+    "max_mutation_cycles": 1,
+    "max_reopenings": 1,
+    "stagnation_limit": 1,
+    "max_files_per_cycle": 8,
+    "max_files_per_run": 16,
+    "max_bytes_per_cycle": 262144,
+    "max_bytes_per_run": 524288,
+    "max_patch_bytes": 524288,
+    "wall_time": 2700000000000,
+    "runtime_attempts": 3,
+    "model_turns": 12,
+    "command_count": 32,
+    "command_timeout": 600000000000,
+    "output_bytes": 1048576,
+    "retained_cycles": 8,
+    "cleanup_timeout": 30000000000
+  },
+  "budget_sources": [
+    {
+      "field": "qa.repair.max_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_mutation_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_reopenings",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.stagnation_limit",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_files_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_cycle",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_bytes_per_run",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.max_patch_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.wall_time",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.runtime_attempts",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.model_turns",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_count",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.command_timeout",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.output_bytes",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.retained_cycles",
+      "source": "default"
+    },
+    {
+      "field": "qa.repair.cleanup_timeout",
+      "source": "default"
+    }
+  ],
+  "target": {
+    "fingerprint": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+    "git_head": "37ac236ac14a730c3b228991492546f84062fc0f",
+    "git_index": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "git_worktree": "ab392936661e434a764e58465714d59ca78f5482f3f4b90a301d2824e6550c08"
+  },
+  "governed_input_fingerprint": "c0af02ba07d3924beeeebdecfecb684cde538f290672be7f05a5e423164f6d21",
+  "implementation_fingerprint": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+  "review_fingerprint": "5a1318314307929406ebca976a8369ae4927f395a7ffd3e73d50a653d71a6e87",
+  "policy_fingerprint": "4e743ce82adceb289e1cc9b701028b46dec390bb45219e3d0223ae945820b72b",
+  "isolation_fingerprint": "d94d107f6e8692ebbcbd62f079a0626dca229edd3cea7c06eff0265e241e3d9c",
+  "prepared_at": "2026-09-12T17:42:52.554703497Z",
+  "packet_digest": "f5b351076bdb310c558dc78669a58460c0af050de74566387f472d692fb50aa4"
+}

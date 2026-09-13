@@ -1,0 +1,150 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "issues": [
+    {
+      "id": "qa-v2-issue-ddc69af5ba4581d855926d14",
+      "root_cause_group_id": "qa-v2-group-03ac36b9dfd152e3f9a13f52",
+      "title": "Pseudo headings cause false policy mismatches",
+      "issue_class": "validation_false_positive",
+      "severity": "medium",
+      "location": "internal/sprint/index.go; internal/sprint/performance_targets.go",
+      "evidence_ids": [
+        "qa-v2-evidence-422e088a80c954d3484c5b31",
+        "qa-v2-evidence-f204eab54fbdf17aa495223b"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-bcc37ba3e52da63d368af175",
+      "root_cause_group_id": "qa-v2-group-20b64f10400bab136c41c2ca",
+      "title": "Performance policy is embedded in platform config",
+      "issue_class": "architecture",
+      "severity": "high",
+      "location": "internal/platform/config/performance.go",
+      "evidence_ids": [
+        "qa-v2-evidence-c036437f55f22370dffdf31d"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-cc0bb9ba9b74503358e9308a",
+      "root_cause_group_id": "qa-v2-group-2bcd4e1b1e4913e9fcf7c07c",
+      "title": "Performance parser accepts malformed trailing data",
+      "issue_class": "parser_validation",
+      "severity": "high",
+      "location": "internal/sprint/performance_measure.go",
+      "evidence_ids": [
+        "qa-v2-evidence-b218ca12c6f821356edb5c7b"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-0dea4237b52c4cea6b0f5eef",
+      "root_cause_group_id": "qa-v2-group-3e0ce44b37ae66c92141ab21",
+      "title": "Descriptor markers need not immediately precede functions",
+      "issue_class": "contract_validation",
+      "severity": "medium",
+      "location": "internal/sprint/performance_discovery.go",
+      "evidence_ids": [
+        "qa-v2-evidence-aae82deb65b6a6d1138d124a"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-15daae90ebcc8c131b0b37c6",
+      "root_cause_group_id": "qa-v2-group-652b11df5c711a7420e24def",
+      "title": "Unavailable results lose error classification",
+      "issue_class": "error_handling",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web/handlers.go",
+      "evidence_ids": [
+        "qa-v2-evidence-6c5afae17f1449d3dc0b8845",
+        "qa-v2-evidence-b33d8901229d9700f4d235bf"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-b13bf599c7b069572f73a32e",
+      "root_cause_group_id": "qa-v2-group-685f749ab20e78224021f6e2",
+      "title": "Repair validation accepts malformed target results",
+      "issue_class": "data_validation",
+      "severity": "high",
+      "location": "internal/sprint/qa_repair_state.go",
+      "evidence_ids": [
+        "qa-v2-evidence-0b6c6da3deca08f8660db208"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-57b9be5bc2d5c796b8e2fc88",
+      "root_cause_group_id": "qa-v2-group-80155d4490638c50ac8d594a",
+      "title": "Evidence API fallback violates its versioned schema",
+      "issue_class": "api_contract",
+      "severity": "medium",
+      "location": "internal/web/handlers.go; internal/app/web_usecases.go",
+      "evidence_ids": [
+        "qa-v2-evidence-c179f20ff5053be0838e2aa0"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-e771abd99dfd289ae553c3d3",
+      "root_cause_group_id": "qa-v2-group-aebf3313b07ae9a407844b91",
+      "title": "Documented performance maxima are unusable",
+      "issue_class": "documentation_runtime_mismatch",
+      "severity": "high",
+      "location": "docs/configuration.md; internal/platform/config/performance.go",
+      "evidence_ids": [
+        "qa-v2-evidence-3e23c8f36d5d5188e434a6db"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-bd469b30552c637dd00b475c",
+      "root_cause_group_id": "qa-v2-group-c6ede63153368ab0388600a4",
+      "title": "Performance surfaces omit durable lifecycle state",
+      "issue_class": "behavioral_regression",
+      "severity": "high",
+      "location": "internal/app/sprint_usecases.go; internal/web; internal/tui",
+      "evidence_ids": [
+        "qa-v2-evidence-861b1407fe84791ac643e79b",
+        "qa-v2-evidence-b33d8901229d9700f4d235bf",
+        "qa-v2-evidence-c179f20ff5053be0838e2aa0"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    },
+    {
+      "id": "qa-v2-issue-349050081df820e0bde7e7b0",
+      "root_cause_group_id": "qa-v2-group-d611e21225f60bb8c0133101",
+      "title": "TUI exposes mutations while policy is disabled",
+      "issue_class": "authorization_ui",
+      "severity": "high",
+      "location": "internal/tui/model.go",
+      "evidence_ids": [
+        "qa-v2-evidence-41a4c9496cd428a9dfe4081b"
+      ],
+      "promotion_reason": "current contained failing evidence is repeatable or deterministically sufficient and satisfies the frozen plan",
+      "repair_eligible": true,
+      "regression_candidate": true
+    }
+  ]
+}

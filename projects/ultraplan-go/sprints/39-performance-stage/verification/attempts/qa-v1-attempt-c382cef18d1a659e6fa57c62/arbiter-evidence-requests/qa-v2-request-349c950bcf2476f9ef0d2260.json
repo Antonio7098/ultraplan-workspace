@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "id": "qa-v2-request-349c950bcf2476f9ef0d2260",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-e054a3dd0f5a05e2b8dc43fe"
+    ],
+    "origin_shard_id": "qa-v1-shard-55c75ed35ae9a28675ef8779",
+    "gap": "The parser behavior is tested, but the disabled-policy validation path for pseudo-headings is not.",
+    "requested_evidence": "In the approved private workspace, create or strengthen a Go _test.go table reproducer calling ValidateRequirementsContentWithPolicy with disabled policy and fenced and HTML-commented pseudo target sections.",
+    "required_observation": "Assert each input produces a performance policy mismatch while ParsePerformanceTargets returns no targets or findings.",
+    "control_requirement": "Include ordinary prose without the heading and a real target section as negative and positive declaration controls.",
+    "priority": "medium",
+    "status": "superseded",
+    "evidence_round": 1,
+    "attempts": 1,
+    "evidence_fingerprint": "254fad353e7f304cd31e49347dfe7f123047a25152087bda4b1d2dc6d0dad71f",
+    "reason_code": "replaced_by_answered_evidence_request",
+    "superseded_by": "qa-v2-request-2d5e3f9d9571a0300a83f89e",
+    "test_bundle_id": "qa-v2-test-99dba8c5ea5afcbaeb94fc9c",
+    "latest_run_id": "qa-v2-run-e118d766d279f5736977950e",
+    "next_action": "Inspect replacement evidence request qa-v2-request-2d5e3f9d9571a0300a83f89e."
+  }
+}

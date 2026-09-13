@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-03d557c2068f466cd567c3ea",
+  "spec_id": "qa-v2-spec-e1d32b7b4136830a22081535",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_108c780842e4_test.go",
+      "content": "package app\n\nimport (\n\t\"errors\"\n\t\"testing\"\n)\n\ntype qaCleanupRuntime struct {\n\tcalls int\n}\n\nfunc (runtime *qaCleanupRuntime) propose() error {\n\truntime.calls++\n\treturn errors.New(\"proposal rejected\")\n}\n\ntype qaCleanupProcess struct {\n\tcalls int\n}\n\nfunc (process *qaCleanupProcess) cleanup() error {\n\tprocess.calls++\n\treturn errors.New(\"performance cleanup is uncertain\")\n}\n\nfunc TestQAInvestigator_108c780842e4(t *testing.T) {\n\tcontrolProcess := \u0026qaCleanupProcess{}\n\tif err := controlProcess.cleanup(); err == nil || controlProcess.calls != 1 {\n\t\tt.Fatal(\"control failed: injected cleanup failure was not observable\")\n\t}\n\n\truntime := \u0026qaCleanupRuntime{}\n\tprocess := \u0026qaCleanupProcess{}\n\tfor cycle := 0; cycle \u003c 2; cycle++ {\n\t\t_ = runtime.propose()\n\t\t_ = process.cleanup()\n\t}\n\n\tif runtime.calls \u003e 1 {\n\t\tt.Fatalf(\"TestQAInvestigator_108c780842e4: For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification. ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4\")\n\t}\n}\n",
+      "digest": "9ea908ee72105ded6956312a4c1b6107c9e45325cc837b2040f27704c996728e",
+      "bytes": 1142
+    }
+  ],
+  "content_digest": "727b404f304d7621468898c0f3f6d979f13fe1347b8f5e50af3bfd8d387a1f4e"
+}

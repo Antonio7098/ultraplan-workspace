@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "project": "ultraplan-go",
   "sprint": "39-performance-stage",
-  "updatedAt": "2026-09-06T12:29:13.409433964Z",
+  "updatedAt": "2026-09-13T15:28:13.919286784Z",
   "stages": [
     {
       "stage": "requirements",
@@ -258,5 +258,38 @@
         }
       ]
     }
+  },
+  "qa": {
+    "phase": "completed",
+    "fresh": true,
+    "completed_shards": 12,
+    "total_shards": 12,
+    "confirmed": 11,
+    "blocked": 0,
+    "cancellation": {
+      "requested": false
+    },
+    "state_path": "projects/ultraplan-go/sprints/39-performance-stage/verification/state.json",
+    "state_digest": "696ad46ddecf49e56c8838b2c158b58e79f5b9ce9a87f2086e237c4a36b8d38f",
+    "current_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+    "next_action": "All retained QA obligations are resolved and verified on the current target.",
+    "assessment": "pass_with_findings",
+    "evidence_count": 47,
+    "rejected_count": 2,
+    "report_path": "projects/ultraplan-go/sprints/39-performance-stage/qa.md",
+    "report_digest": "a807e2926b8e2c577a878b8c9d54ddd6f04bda15e65523a804054c85226680aa"
+  },
+  "repair": {
+    "phase": "terminal",
+    "fresh": true,
+    "mode": "automatic",
+    "repair_run_id": "repair-v1-run-0b63617fc2789ddd585fe477",
+    "qa_attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+    "current_cycle": 1,
+    "outcome": "verified_with_findings",
+    "stop_reason": "verified",
+    "state_path": "projects/ultraplan-go/sprints/39-performance-stage/verification/repair-state.json",
+    "state_digest": "af07b6f3f206c2eca7001ca0b7a82afca83c64b100bc3adafba18e937a3cddf0",
+    "next_action": "Inspect the retained result and repaired-target QA evidence."
   }
 }

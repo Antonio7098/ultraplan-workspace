@@ -1,0 +1,9 @@
+=== RUN   TestQAInvestigator_dae46ba55ba6
+    qa_investigator_dae46ba55ba6_test.go:105: assertion: For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted request's HTTP status and response body, record the exact Limit received by PerformanceEvidence, and compare it with a reachable bounded-success invocation.
+    qa_investigator_dae46ba55ba6_test.go:106: omitted_status=500 omitted_limit=0 omitted_body={"error":{"code":"internal_error","message":"The request could not be completed."},"meta":{"api_version":"v1","request_id":"65678fe62ea12d2e4d5cb6025162d99b"}}
+         control_status=success control_limit=1
+    qa_investigator_dae46ba55ba6_test.go:107: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_dae46ba55ba6
+--- FAIL: TestQAInvestigator_dae46ba55ba6 (0.03s)
+FAIL
+FAIL	github.com/Antonio7098/ultraplan-go/internal/tui	0.079s
+FAIL

@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-f4ba74024edbf92397debb1c",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "57c4ceff0d1a6e3fa67d8e9a7ea0814b463640fe9f9fd3dac762b2fd1f139a96",
+      "schema_version": 2,
+      "id": "qa-v2-run-cb1a2d2e85796702db65e4bd",
+      "spec_id": "qa-v2-spec-f1616232c467e818f4a3ad47",
+      "test_bundle_id": "qa-v2-test-aec431cf121861ff9963d55b",
+      "target_identity": "05e33a044427a2b0c04db907ba491e13a9f56ad84f883311eb2328972a3be7cb",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_a02b8a23413a",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_a02b8a23413a",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "9b9c59e4fc3824fcecde3e9f4e26ef08c1587c1b2afd138eddd8628069903bf4",
+        "exit_code": 0,
+        "duration": 40485563116,
+        "stdout_digest": "896316bf3e43b8d3aa45241f770ac03f8d6d7c652e6a5c78609fe7a26cdc88ee",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_a02b8a23413a\n--- PASS: TestQAInvestigator_a02b8a23413a (0.00s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.011s\n",
+        "output_bytes": 158,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_a02b8a23413a",
+        "assertion": "The assertions must cover qa-v1-theory-35a6a9cbcf6592fb04bb7828 by proving whether another proposal or mutation step starts after cleanup failure and whether the resulting state preserves cleanup_uncertain.",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a02b8a23413a"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T13:56:41.847897174Z"
+    }
+  }
+}

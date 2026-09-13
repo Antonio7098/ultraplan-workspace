@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-6804357e300d8a63df4f1abc",
+  "attempt_id": "qa-v1-attempt-8f3ad3531f880e55023d574d",
+  "kind": "boundary",
+  "title": "Cross-surface performance fact consistency",
+  "context_paths": [
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "internal/app/performance_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/testdata/performance/states.json",
+    "internal/tui/views.go",
+    "internal/web/handlers.go",
+    "internal/web/templates/sprint.html"
+  ],
+  "overlap_paths": [
+    "docs/cli-reference.md",
+    "docs/local-web.md",
+    "internal/app/performance_test.go",
+    "internal/app/sprint_usecases.go",
+    "internal/testdata/performance/states.json",
+    "internal/tui/views.go",
+    "internal/web/handlers.go",
+    "internal/web/templates/sprint.html"
+  ],
+  "boundary_reason": "The same product status, lifecycle, outcome, target, limit, blocker, next-action, and sample-free evidence facts are projected through CLI, JSON, TUI, browser, Markdown, result, and flow surfaces.",
+  "behavioral_concerns": [
+    "All surfaces agree for disabled, ready, active, cancelling, passing, missed, blocked, cancelled, stalled, cleanup-uncertain, stale, interrupted, historical, and recovery-conflict states.",
+    "No public surface leaks private evidence or secret-bearing environment data.",
+    "Presentation differences do not alter product outcome or durable lifecycle semantics."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "persistence",
+    "public-api",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-23ffd3df512e9cb822d95ab8",
+    "qa-v1-block-24b47be1b06361e8dd9c2c4f",
+    "qa-v1-block-288742cf99fce5f4e3f007e3",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-34db48e1e10bbcf28cc6bf2d",
+    "qa-v1-block-35e4c5fcc8d7288b70a46a1e",
+    "qa-v1-block-6e438db701bf329aafd5e483",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-7985bad832d92491b9f91289",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-8af63023a02416b710685bbe",
+    "qa-v1-block-95f9f726d965e7685184fba7",
+    "qa-v1-block-9f50cd9470412063551dc33b",
+    "qa-v1-block-b78a61cde5b699690eb3c5f2",
+    "qa-v1-block-c0f93dd89e2dfe1872e14355",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 153835,
+  "prepared_prefix_bytes": 19809,
+  "pack_complete": false,
+  "phase": "mapped"
+}

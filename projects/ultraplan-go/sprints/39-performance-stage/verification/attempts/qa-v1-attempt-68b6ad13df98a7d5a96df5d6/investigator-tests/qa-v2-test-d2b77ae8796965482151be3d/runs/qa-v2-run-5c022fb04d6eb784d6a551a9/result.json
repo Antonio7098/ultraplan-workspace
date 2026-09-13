@@ -1,0 +1,53 @@
+{
+  "observed_outcome": "pass",
+  "observed_reason_code": "expected_behavior_observed",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+  "schema_version": 2,
+  "id": "qa-v2-run-5c022fb04d6eb784d6a551a9",
+  "spec_id": "qa-v2-spec-a373c4886b2db377dbf4cd82",
+  "test_bundle_id": "qa-v2-test-d2b77ae8796965482151be3d",
+  "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_f558fdc3b798",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_f558fdc3b798",
+        "action": "pass"
+      }
+    ],
+    "executable": "go",
+    "args_digest": "02aecb20b8a438ac9a403cb152c1c9715b706ed3bea474b19ec6e47f21a244f3",
+    "exit_code": 0,
+    "duration": 31101920146,
+    "stdout_digest": "66cfeba3d9bfdc6903686f09d97b11e7d4d24f6f4a9b07d6f0f2c1feb7d3dd83",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_f558fdc3b798\n--- PASS: TestQAInvestigator_f558fdc3b798 (0.00s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.006s\n",
+    "output_bytes": 161,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_f558fdc3b798",
+    "assertion": "The assertion must cover qa-v1-theory-bd5d5990c9d330ce736e467c by showing whether ParsePerformanceOutput returns the envelope value without an error for the malformed suffix.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_f558fdc3b798"
+  },
+  "outcome": "pass",
+  "reason_code": "expected_behavior_observed",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-13T15:07:02.156232868Z"
+}

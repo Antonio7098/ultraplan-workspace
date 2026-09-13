@@ -1,0 +1,53 @@
+{
+  "observed_outcome": "pass",
+  "observed_reason_code": "expected_behavior_observed",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "baa120c28a82bc522890b399c7a9d77a0b7e056c2a98c24207f6a7d2a1dfc2a2",
+  "schema_version": 2,
+  "id": "qa-v2-run-f22ded8e34f4ee7ea88c7c40",
+  "spec_id": "qa-v2-spec-230281d8d953ac0d05157157",
+  "test_bundle_id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+  "target_identity": "5bbced1c013cfe6f32bbb7b209448a1f65660c09e6b5f493771bd255d4e822b8",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_20f83a1a7704",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_20f83a1a7704",
+        "action": "pass"
+      }
+    ],
+    "executable": "go",
+    "args_digest": "92be879965726b4022211246444d642970af7aedc6d7b630e2b24f51041a7975",
+    "exit_code": 0,
+    "duration": 29707571287,
+    "stdout_digest": "ee9605cf2837e37eb49ffab554792be13fb380beb280d954fbf736246db7a6ca",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_20f83a1a7704\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"ENABLED\": mode=\"disabled\" findings=[]project.ValidationFinding{project.ValidationFinding{Severity:\"error\", Section:\"Performance Policy\", EntryName:\"\", Path:\"\", Problem:\"invalid performance policy mode\", Cause:\"line 3: expected disabled or enabled\", Suggestion:\"Set Mode to disabled or enabled.\", Err:error(nil)}}\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Enabled\": mode=\"disabled\" findings=[]project.ValidationFinding{project.ValidationFinding{Severity:\"error\", Section:\"Performance Policy\", EntryName:\"\", Path:\"\", Problem:\"invalid performance policy mode\", Cause:\"line 3: expected disabled or enabled\", Suggestion:\"Set Mode to disabled or enabled.\", Err:error(nil)}}\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"DISABLED\": mode=\"disabled\" findings=[]project.ValidationFinding{project.ValidationFinding{Severity:\"error\", Section:\"Performance Policy\", EntryName:\"\", Path:\"\", Problem:\"invalid performance policy mode\", Cause:\"line 3: expected disabled or enabled\", Suggestion:\"Set Mode to disabled or enabled.\", Err:error(nil)}}\n    qa_investigator_20f83a1a7704_test.go:24: case variant \"Disabled\": mode=\"disabled\" findings=[]project.ValidationFinding{project.ValidationFinding{Severity:\"error\", Section:\"Performance Policy\", EntryName:\"\", Path:\"\", Problem:\"invalid performance policy mode\", Cause:\"line 3: expected disabled or enabled\", Suggestion:\"Set Mode to disabled or enabled.\", Err:error(nil)}}\n--- PASS: TestQAInvestigator_20f83a1a7704 (0.00s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/project\t0.005s\n",
+    "output_bytes": 1652,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_20f83a1a7704",
+    "assertion": "The assertions must cover qa-v1-theory-9a2d3dba12c4d353a09f5c53 by recording the parsed mode and validation findings for each case variant against lowercase enabled and disabled controls.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704"
+  },
+  "outcome": "pass",
+  "reason_code": "expected_behavior_observed",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-13T15:04:37.578398921Z"
+}

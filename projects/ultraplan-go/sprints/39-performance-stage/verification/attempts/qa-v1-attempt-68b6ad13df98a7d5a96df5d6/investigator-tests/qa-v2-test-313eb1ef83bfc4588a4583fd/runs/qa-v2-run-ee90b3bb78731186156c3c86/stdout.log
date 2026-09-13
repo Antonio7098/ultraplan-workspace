@@ -1,0 +1,11 @@
+=== RUN   TestQAInvestigator_20f83a1a7704
+    qa_investigator_20f83a1a7704_test.go:24: case variant "ENABLED": mode="enabled" findings=[]project.ValidationFinding(nil)
+    qa_investigator_20f83a1a7704_test.go:24: case variant "Enabled": mode="enabled" findings=[]project.ValidationFinding(nil)
+    qa_investigator_20f83a1a7704_test.go:24: case variant "DISABLED": mode="disabled" findings=[]project.ValidationFinding(nil)
+    qa_investigator_20f83a1a7704_test.go:24: case variant "Disabled": mode="disabled" findings=[]project.ValidationFinding(nil)
+    qa_investigator_20f83a1a7704_test.go:30: assertion: case-variant Mode values must produce validation findings while lowercase enabled and disabled controls remain valid
+    qa_investigator_20f83a1a7704_test.go:31: ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704
+--- FAIL: TestQAInvestigator_20f83a1a7704 (0.00s)
+FAIL
+FAIL	github.com/Antonio7098/ultraplan-go/internal/project	0.004s
+FAIL

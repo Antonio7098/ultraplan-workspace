@@ -1,0 +1,59 @@
+{
+  "observed_outcome": "inconclusive",
+  "observed_reason_code": "failure_signature_mismatch",
+  "failure": {
+    "phase": "assertion",
+    "code": "unknown_failure",
+    "diagnostic": "process exited with code 1 === RUN   TestQAInvestigator_76299fb53a2e     qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit --- FAIL: TestQAInvestigator_76299fb53a2e (0.04s) FAIL FAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s FAIL",
+    "retryable": false
+  },
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-bf3b0196181e9ba74d785f8e",
+  "spec_id": "qa-v2-spec-e8247fc13169ad1a528fab54",
+  "test_bundle_id": "qa-v2-test-ed61cdd33b508f5e21f741b0",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_76299fb53a2e",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_76299fb53a2e",
+        "action": "fail"
+      }
+    ],
+    "executable": "go",
+    "args_digest": "4a605c75551ac56e37c6ef929217702858c780131ea3c5d656cf5118e03fd0eb",
+    "exit_code": 1,
+    "duration": 25753160868,
+    "stdout_digest": "513b62bb168520cedb061c8ef6c703c94d82b966b8c0e0c50deac2b4a3ffd8f8",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_76299fb53a2e\n    qa_investigator_76299fb53a2e_test.go:35: passing control measurement = sprint.PerformanceMeasurement{Target:sprint.PerformanceTarget{ID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Comparator:\"\u003c=\", Value:\"10\", Unit:\"ns/op\", Gate:\"required\", Samples:2, Basis:\"absolute\"}, Warmups:1, Samples:[]sprint.PerformanceSample{sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}, sprint.PerformanceSample{TargetID:\"PERF-LATENCY\", Scenario:\"package operation\", Metric:\"latency\", Unit:\"ns/op\", Value:\"9\", CommandIdentity:\"go-benchmark-v1:.:BenchmarkLatency:ns/op\", BenchmarkDigest:\"0e89820860c342f2c7ec694d144023b10301c2accdd078cb5167a06d0c3d5bcc\", PacketDigest:\"7426afc489d0eef99a0b438def226ad139f752350c25cf2c04900281afbb79e0\", EnvironmentID:\"ba5285161ba6eed0085fb13784ce5c92f70ebc268b94fd66aa1d68a32884204d\", OutputDigest:\"a55e87575dae24f8792ff42e05dec5b4aa7e1b6559d696218725e77bfd3ce695\", OutputBytes:31, CleanupComplete:true}}, Qualification:sprint.PerformanceQualification{Aggregation:\"median-v1\", Dispersion:\"cv-v1\", Median:\"\", Mean:\"\", StdDev:0, CVPercent:0, Samples:2, Qualified:false, Reason:\"\"}}, invalid sample count or CV limit\n--- FAIL: TestQAInvestigator_76299fb53a2e (0.04s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/sprint\t0.050s\nFAIL\n",
+    "output_bytes": 1815,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_76299fb53a2e",
+    "assertion": "For qa-v1-theory-53f10905cf5035b40ecbb1e8, make candidate or regression measurement fail after one or more runner calls, record actual invocations and durable command counters, and assert whether a later cycle starts such that actual cumulative commands ex",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_76299fb53a2e"
+  },
+  "outcome": "inconclusive",
+  "reason_code": "failure_signature_mismatch",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T13:11:40.715732086Z"
+}

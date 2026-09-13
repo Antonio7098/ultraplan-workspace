@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-c42411801c177cc5f8f73c71",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+  "evidence_request_id": "qa-v2-request-1c048909b6582d93974a2b11",
+  "theory_ids": [
+    "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+  ],
+  "claim": "The performance evidence API's advertised default request is unusable because omitting the limit query parameter sends limit 0 to a store that rejects every non-positive limit.",
+  "preconditions": [
+    "Use a bounded retained-attempt fixture and compare against an explicit valid-limit request; do not inspect private artifact contents."
+  ],
+  "expected_behavior": "The test must assert the actual HTTP status and response result for qa-v1-theory-f2dfc2c802889fddc3bbae5c and demonstrate that the request reaches evidence pagination with the omitted-limit value.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_2d93974a2b11",
+    "assertion": "The test must assert the actual HTTP status and response result for qa-v1-theory-f2dfc2c802889fddc3bbae5c and demonstrate that the request reaches evidence pagination with the omitted-limit value.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2d93974a2b11"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/tui/qa_investigator_2d93974a2b11_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-2d93974a2b11",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_2d93974a2b11$",
+      "-count=1"
+    ],
+    "working_directory": "internal/tui",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "19869df470dfe760ece54d32503cf92f0720cdae6d24233c568dd56090201701"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:26:04.977186672Z"
+}

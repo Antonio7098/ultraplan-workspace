@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-b7390498db1e0035e096d2e0",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-46bd08ec3cf267e74eecc6a6",
+  "evidence_request_id": "qa-v2-request-21ae0de596606b0e9329abe5",
+  "theory_ids": [
+    "qa-v1-theory-7ef7c4876857c8e4b85d4c0c"
+  ],
+  "claim": "The new public performance CLI surface lacks compatibility tests for stable JSON envelopes, text output, stdout/stderr behavior, and semantic exit-code mappings.",
+  "preconditions": [
+    "Include healthy success controls and at least one non-performance command compatibility control using only existing command and service seams; do not fail unconditionally or rely on a marker."
+  ],
+  "expected_behavior": "Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c in the assertions. This supports promotion readiness and must not be presented as proof that coverage was previously absent.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_6b0e9329abe5",
+    "assertion": "Exercise representative performance commands and assert stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. Name qa-v1-theory-7ef7c4876857c8e4b85d4c0c i",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_6b0e9329abe5"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/app/qa_investigator_6b0e9329abe5_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-6b0e9329abe5",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_6b0e9329abe5$",
+      "-count=1"
+    ],
+    "working_directory": "internal/app",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "68bf7a503b9ad56e3e38a8b6221faee832b3d0101b59447dbaf64fbbe148db5c"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T13:13:32.6272453Z"
+}

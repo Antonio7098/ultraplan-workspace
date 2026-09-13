@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-67d46aa887025191de4cafaa",
+  "spec_id": "qa-v2-spec-138ad4c26d4c06e9132d0428",
+  "files": [
+    {
+      "path": "internal/project/qa_investigator_a0300a83f89e_test.go",
+      "content": "package project_test\n\nimport (\n\t\"testing\"\n\n\t\"github.com/Antonio7098/ultraplan-go/internal/project\"\n\t\"github.com/Antonio7098/ultraplan-go/internal/sprint\"\n)\n\nfunc TestQAInvestigator_a0300a83f89e(t *testing.T) {\n\tconst requirements = \"## Sprint Goal\\nx\\n## Required Outputs\\nx\\n## Acceptance Criteria\\nx\\n## Non-Goals\\nx\\n## Constraints\\nx\\n## Dependencies\\nx\\n## Review Expectations\\nx\\n\"\n\tconst targets = \"## Performance Targets\\n\\n| ID | Scenario | Metric | Comparator | Value | Unit | Gate | Samples | Basis |\\n| --- | --- | --- | --- | ---: | --- | --- | ---: | --- |\\n| PERF-A | package benchmark | latency | \u003c= | 10 | ns/op | required | 5 | absolute |\\n\"\n\tdisabled := project.PerformancePolicy{Mode: project.PerformanceDisabled}\n\n\tcontrols := []struct {\n\t\tname         string\n\t\tcontent      string\n\t\twantFindings bool\n\t}{\n\t\t{name: \"ordinary prose is not a declaration\", content: requirements + \"ordinary prose\\n\"},\n\t\t{name: \"real section is a declaration\", content: requirements + targets, wantFindings: true},\n\t}\n\tfor _, control := range controls {\n\t\tfindings := sprint.ValidateRequirementsContentWithPolicy(control.content, disabled)\n\t\tif (len(findings) != 0) != control.wantFindings {\n\t\t\tt.Fatalf(\"control %q findings = %#v\", control.name, findings)\n\t\t}\n\t}\n\n\tpseudoSections := []struct {\n\t\tname    string\n\t\tcontent string\n\t}{\n\t\t{name: \"fenced\", content: \"```md\\n\" + targets + \"```\\n\"},\n\t\t{name: \"HTML commented\", content: \"\u003c!--\\n\" + targets + \"--\u003e\\n\"},\n\t}\n\tobservedMismatch := 0\n\tfor _, pseudo := range pseudoSections {\n\t\tpacket, parseFindings := sprint.ParsePerformanceTargets(pseudo.content)\n\t\tif len(packet.Targets) != 0 || len(parseFindings) != 0 {\n\t\t\tt.Fatalf(\"%s parser observation failed: packet=%#v findings=%#v\", pseudo.name, packet, parseFindings)\n\t\t}\n\t\tif findings := sprint.ValidateRequirementsContentWithPolicy(requirements+pseudo.content, disabled); len(findings) != 0 {\n\t\t\tobservedMismatch++\n\t\t}\n\t}\n\tif observedMismatch == len(pseudoSections) {\n\t\tt.Log(\"Assert each input produces a policy mismatch while target parsing returns no targets or findings.\")\n\t\tt.Error(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_a0300a83f89e\")\n\t}\n}\n",
+      "digest": "e6a7d5ea3d180c9fe0ed6615a0378dec9dccfceadf175a6941ee733f33a855cb",
+      "bytes": 2158
+    }
+  ],
+  "content_digest": "a77ba617e30477c9e36898e8554d9cfadcb738c4b07b22c44603665e2c1d27de"
+}

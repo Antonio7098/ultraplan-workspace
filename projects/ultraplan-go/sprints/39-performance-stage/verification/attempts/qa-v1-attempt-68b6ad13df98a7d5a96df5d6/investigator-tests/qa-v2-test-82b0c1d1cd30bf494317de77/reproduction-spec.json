@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-63ebf8106d0c19b7bb71498a",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "shard_id": "qa-v1-shard-428a94deab9f1bbf8d1a3f40",
+  "evidence_request_id": "qa-v2-request-d6798f8083a31ff716b0ebd2",
+  "theory_ids": [
+    "qa-v1-theory-f2dfc2c802889fddc3bbae5c"
+  ],
+  "claim": "The performance evidence API's advertised default request is unusable because omitting the limit query parameter sends limit 0 to a store that rejects every non-positive limit.",
+  "preconditions": [
+    "Do not terminate on an unrelated query-allowlist failure, and prove the omitted request reaches PerformanceEvidence and EvidencePage before attributing its response to limit validation."
+  ],
+  "expected_behavior": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted-limit request's actual HTTP status and body and record the exact Limit received by PerformanceEvidence; then compare with a reachable bounded-success control.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_1ff716b0ebd2",
+    "assertion": "For qa-v1-theory-f2dfc2c802889fddc3bbae5c, assert the omitted-limit request's actual HTTP status and body and record the exact Limit received by PerformanceEvidence; then compare with a reachable bounded-success control.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_1ff716b0ebd2"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/tui/qa_investigator_1ff716b0ebd2_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-1ff716b0ebd2",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_1ff716b0ebd2$",
+      "-count=1"
+    ],
+    "working_directory": "internal/tui",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "5254e06c1e9918e43e69a429ef09eff311233bdf8a7e533771e45af999177e0e"
+  },
+  "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "frozen_at": "2026-09-12T11:52:14.945649824Z"
+}

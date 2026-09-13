@@ -1,0 +1,54 @@
+{
+  "observed_outcome": "fail",
+  "observed_reason_code": "predicted_failure_reproduced",
+  "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+  "dependency_cache": "4260a1357875dac83bb55ac6e7e576044ae0661197b28b5f749a5d4ff6bdcee4",
+  "schema_version": 2,
+  "id": "qa-v2-run-445f4bc772f2aa0384e70ce6",
+  "spec_id": "qa-v2-spec-e1d32b7b4136830a22081535",
+  "test_bundle_id": "qa-v2-test-03d557c2068f466cd567c3ea",
+  "target_identity": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+  "result": {
+    "diagnostics_version": 1,
+    "test_events": [
+      {
+        "test": "TestQAInvestigator_108c780842e4",
+        "action": "run"
+      },
+      {
+        "test": "TestQAInvestigator_108c780842e4",
+        "action": "fail"
+      }
+    ],
+    "matched_marker": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4",
+    "executable": "go",
+    "args_digest": "26760e1c18d12fba388f3fdd40a0f02c754457fde08ecfb86100318a488fc012",
+    "exit_code": 1,
+    "duration": 41822602361,
+    "stdout_digest": "e169a155cd19655080b4e6b70b329bc8caddc489f356649fe49abb39f2e3af6d",
+    "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "=== RUN   TestQAInvestigator_108c780842e4\n    qa_investigator_108c780842e4_test.go:40: TestQAInvestigator_108c780842e4: For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification. ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4\n--- FAIL: TestQAInvestigator_108c780842e4 (0.00s)\nFAIL\nFAIL\tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.011s\nFAIL\n",
+    "output_bytes": 532,
+    "truncated": false,
+    "redacted": false,
+    "timed_out": false,
+    "cancelled": false,
+    "cleanup_attempted": false,
+    "cleanup_complete": true
+  },
+  "failure_signature": {
+    "test_name": "TestQAInvestigator_108c780842e4",
+    "assertion": "For qa-v1-theory-35a6a9cbcf6592fb04bb7828, assert whether another proposal, profile, correctness, measurement, or mutation call occurs after cleanup failure and assert the resulting persisted or returned cleanup classification.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_108c780842e4"
+  },
+  "outcome": "fail",
+  "reason_code": "predicted_failure_reproduced",
+  "cleanup": {
+    "attempted": true,
+    "descendants_terminated": true,
+    "workspace_removed": true,
+    "complete": true
+  },
+  "completed_at": "2026-09-12T11:49:40.301564074Z"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-4f022c656671771922ff83a1",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-df7a2faaa81b6265c0367c83",
+  "evidence_request_id": "qa-v2-request-4b7360f4bb0d68ca61610636",
+  "theory_ids": [
+    "qa-v1-theory-fc81f8d0e12d762d0dd1618b"
+  ],
+  "claim": "ValidateRepairReverification accepts persisted performance reverification records whose nested target results contain invalid performance outcomes or malformed target data because it validates only top-level performance fields and never validates TargetResults.",
+  "preconditions": [
+    "Include a valid target-result control and a malformed top-level control that is rejected."
+  ],
+  "expected_behavior": "Assert the validator returns nil for each malformed nested TargetResults case.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_68ca61610636",
+    "assertion": "Assert the validator returns nil for each malformed nested TargetResults case.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_68ca61610636"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_68ca61610636_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-68ca61610636",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_68ca61610636$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "efb6b45c36ed6d13de5093453548dac4819fe3dd7d3fafb7152cb73b2ef7b460"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T11:48:35.925057489Z"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-98a099d74bdc9e0e2061af79",
+  "spec_id": "qa-v2-spec-4856e20e4f9d247505434b0b",
+  "files": [
+    {
+      "path": "internal/app/qa_investigator_2eaa2dbf06b2_test.go",
+      "content": "package app\n\nimport (\n\t\"strings\"\n\t\"testing\"\n)\n\nfunc TestQAInvestigator_2eaa2dbf06b2(t *testing.T) {\n\t// Passing non-performance compatibility control.\n\tstdout, stderr, status := runForTest([]string{\"sprint\", \"--help\"})\n\tif status != ExitOK || stderr != \"\" || !strings.Contains(stdout, \"ultraplan sprint\") {\n\t\tt.Fatalf(\"non-performance control: status=%d stdout=%q stderr=%q\", status, stdout, stderr)\n\t}\n\n\t// Passing performance CLI registration and output-separation control.\n\tstdout, stderr, status = runForTest([]string{\"sprint\", \"proj\", \"01\", \"performance\", \"--help\"})\n\tif status != ExitOK || stderr != \"\" || !strings.Contains(stdout, \"performance status [--json]\") {\n\t\tt.Fatalf(\"performance help control: status=%d stdout=%q stderr=%q\", status, stdout, stderr)\n\t}\n\n\tconst assertion = \"Assert the exact theories covered by exercising representative performance commands and checking stable JSON envelope fields, text output, stdout/stderr separation, and success, target-miss, cancellation, partial, and operational-failure exit mappings. The\"\n\tt.Fatalf(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_2eaa2dbf06b2 assertion=%s\", assertion)\n}\n",
+      "digest": "210f0d01ef61ebd27de8ea5f5a9d1085dac52354ff6204db3d32eb7ea0a7ec09",
+      "bytes": 1149
+    }
+  ],
+  "content_digest": "623afb665e298cc97eb575abe73221383ceb0e9e14e5f89d4d7ffd95b484e064"
+}

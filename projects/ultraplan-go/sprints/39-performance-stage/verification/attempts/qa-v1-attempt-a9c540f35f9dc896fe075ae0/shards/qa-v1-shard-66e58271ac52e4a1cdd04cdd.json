@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-66e58271ac52e4a1cdd04cdd",
+  "attempt_id": "qa-v1-attempt-a9c540f35f9dc896fe075ae0",
+  "kind": "primary",
+  "title": "Closed benchmark discovery and measurement",
+  "changed_paths": [
+    "internal/sprint/performance_benchmark.go",
+    "internal/sprint/performance_benchmark_test.go",
+    "internal/sprint/performance_discovery.go",
+    "internal/sprint/performance_measure.go",
+    "internal/sprint/performance_types.go"
+  ],
+  "behavioral_concerns": [
+    "Only closed versioned Go benchmark and JSON descriptors with exact package, symbol, target coverage, raw unit, output identity, parser identity, and manifest digest are accepted.",
+    "Product code constructs argv arrays, filters environment variables, bounds command duration and output, rejects ambiguous or truncated output, and runs samples serially.",
+    "Qualification uses complete sample sets, exact median semantics, finite dispersion, and inclusive CV and target thresholds; model prose never determines outcomes."
+  ],
+  "expectation_refs": [
+    "contract-architecture",
+    "contract-cli-surface",
+    "contract-configuration",
+    "contract-documentation",
+    "contract-errors",
+    "contract-llm-evaluation-cost-safety",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-persistence-and-migrations",
+    "contract-security",
+    "contract-testing",
+    "contract-workflows",
+    "handbook"
+  ],
+  "risk_tags": [
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-0ce3581b3c7e6aaaaba8f58a",
+    "qa-v1-block-18a26cd00a25dde194f23d59",
+    "qa-v1-block-1b60986a6ab4bfd58330b6d6",
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-65249f5972392b6b782b071c",
+    "qa-v1-block-6f350ed25520275c4b37fc3d",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-7985bad832d92491b9f91289",
+    "qa-v1-block-81ecc6aa5bda08644552abb4",
+    "qa-v1-block-893a62e81780679e0845739e",
+    "qa-v1-block-93319d60c8f44378e2d09a2c",
+    "qa-v1-block-9bca81dafa402982a1abe706",
+    "qa-v1-block-c46dffb145fa671331d12a4d",
+    "qa-v1-block-cd1988b71fec72095e20320d",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-da260796c6b6d91797a634d4",
+    "qa-v1-block-dbf7e69765ab615487ff3a15",
+    "qa-v1-block-e8f8d9a28d7be2d1fb220b0a"
+  ],
+  "prepared_prompt_bytes": 137346,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "blocked",
+  "blocker": {
+    "category": "permission_denied",
+    "scope": "qa-v1-shard-66e58271ac52e4a1cdd04cdd",
+    "summary": "runtime did not enforce restricted default-deny permissions",
+    "next_action": "Use a runtime that enforces the required read-only permission policy."
+  },
+  "attempts": [
+    {
+      "id": "att_v5a6smgfv25b5ttidgjhid5yba/qa-v1-shard-66e58271ac52e4a1cdd04cdd/1",
+      "number": 1,
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "581e2c0f56cc29a791298f2504771ca991cfc91d018eb13dd8beadce06d99c1b",
+      "started_at": "2026-09-12T16:45:20.523828668Z",
+      "completed_at": "2026-09-12T16:45:41.732158573Z",
+      "implementation_before": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "implementation_after": "e0ad79dc2984c113cf5ddf2820f7bdf5762a97c4c189c34f23a66783743933f8",
+      "usage": {
+        "input_tokens_known": false,
+        "output_tokens_known": false,
+        "total_tokens_known": false,
+        "reasoning_tokens_known": false,
+        "cache_read_tokens_known": false,
+        "cache_write_tokens_known": false,
+        "turns_known": false
+      },
+      "runtime_events": 4,
+      "retained_events": 4,
+      "observed_tool_calls": 0,
+      "context_metrics": {
+        "prompt_bytes": 137346,
+        "prefix_bytes": 19551,
+        "prefix_digest": "9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e",
+        "cache_cohort": "qa-investigator/9b6e9495646ce80899ba8caba8a03f16ab2dbbdc4ad8c0849d80e2c161a3906e/openai/gpt-5.6-sol/low",
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 0,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 21208329905
+      },
+      "stop_reason": "permission enforcement unavailable"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-test-313eb1ef83bfc4588a4583fd",
+  "spec_id": "qa-v2-spec-230281d8d953ac0d05157157",
+  "files": [
+    {
+      "path": "internal/project/qa_investigator_20f83a1a7704_test.go",
+      "content": "package project\n\nimport \"testing\"\n\nfunc TestQAInvestigator_20f83a1a7704(t *testing.T) {\n\tcontrols := []struct {\n\t\tvalue string\n\t\tmode  PerformanceMode\n\t}{\n\t\t{value: \"enabled\", mode: PerformanceEnabled},\n\t\t{value: \"disabled\", mode: PerformanceDisabled},\n\t}\n\tfor _, control := range controls {\n\t\tindex, findings := ParseProjectIndex(\"## Performance Policy\\n\\n- **Mode:** \" + control.value + \"\\n\")\n\t\tif index.PerformancePolicy.Mode != control.mode || len(findings) != 0 {\n\t\t\tt.Fatalf(\"lowercase control %q: mode=%q findings=%#v\", control.value, index.PerformancePolicy.Mode, findings)\n\t\t}\n\t}\n\n\tvariants := []string{\"ENABLED\", \"Enabled\", \"DISABLED\", \"Disabled\"}\n\taccepted := false\n\tfor _, value := range variants {\n\t\tindex, findings := ParseProjectIndex(\"## Performance Policy\\n\\n- **Mode:** \" + value + \"\\n\")\n\t\tt.Logf(\"case variant %q: mode=%q findings=%#v\", value, index.PerformancePolicy.Mode, findings)\n\t\tif len(findings) == 0 {\n\t\t\taccepted = true\n\t\t}\n\t}\n\tif accepted {\n\t\tt.Log(\"assertion: case-variant Mode values must produce validation findings while lowercase enabled and disabled controls remain valid\")\n\t\tt.Fatal(\"ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_20f83a1a7704\")\n\t}\n}\n",
+      "digest": "23c03c7b502502615c201eb2b5a41efbc57b3cba1a01d9c8d16be6ab47b1f2cb",
+      "bytes": 1190
+    }
+  ],
+  "content_digest": "083202a47949f78c3d4a7c3efd069a112e6f6d73b46b34e7520afa40b204bea8"
+}

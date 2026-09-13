@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "id": "qa-v2-spec-c0e286def24fc5ebd5dc63ba",
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "shard_id": "qa-v1-shard-e8285353570f0550ce50e011",
+  "evidence_request_id": "qa-v2-request-4fd8a79cac34b652f4844a27",
+  "theory_ids": [
+    "qa-v1-theory-8f427e11c59f76989883dc31"
+  ],
+  "claim": "Performance manifest discovery accepts descriptor markers separated from a function declaration by blank lines or additional comments, despite requiring the marker to immediately precede the function.",
+  "preconditions": [
+    "Include an adjacent-marker control and an intervening source statement that is rejected."
+  ],
+  "expected_behavior": "Assert DiscoverPerformanceManifest accepts both separated-marker cases.",
+  "predicted_failure": {
+    "test_name": "TestQAInvestigator_b652f4844a27",
+    "assertion": "Assert DiscoverPerformanceManifest accepts both separated-marker cases.",
+    "exit_class": "nonzero",
+    "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_b652f4844a27"
+  },
+  "inconclusive_conditions": [
+    "compile error",
+    "infrastructure error",
+    "mismatched assertion",
+    "timeout",
+    "truncated output",
+    "unrelated panic"
+  ],
+  "approved_test_paths": [
+    "internal/sprint/qa_investigator_b652f4844a27_test.go"
+  ],
+  "command": {
+    "id": "investigator-test-b652f4844a27",
+    "executable": "/usr/bin/go",
+    "args": [
+      "test",
+      ".",
+      "-v",
+      "-run",
+      "^TestQAInvestigator_b652f4844a27$",
+      "-count=1"
+    ],
+    "working_directory": "internal/sprint",
+    "environment": [
+      "PATH"
+    ],
+    "timeout": 300000000000,
+    "output_limit": 262144,
+    "fingerprint": "440ad84182afca8f2e14b926fd95be8187609d2bba7d13aef24fdf4ca95d474a"
+  },
+  "implementation_fingerprint": "85c789d072b5b609513aebbcf6d395d23f9b20b7634a4f08d637ad5ac0a03386",
+  "frozen_at": "2026-09-07T17:08:42.955195715Z"
+}

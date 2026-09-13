@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "id": "qa-v1-shard-b5cbffe80bbe81a8ed6c15f5",
+  "attempt_id": "qa-v1-attempt-68b6ad13df98a7d5a96df5d6",
+  "kind": "primary",
+  "title": "Performance configuration and redaction",
+  "changed_paths": [
+    "internal/platform/config/config.go",
+    "internal/platform/config/config_test.go",
+    "internal/platform/config/performance.go",
+    "internal/platform/config/performance_test.go",
+    "internal/platform/config/redaction.go"
+  ],
+  "context_paths": [
+    "docs/configuration.md",
+    "internal/app/sprint_commands.go"
+  ],
+  "boundary_reason": "Owns typed defaults, source precedence, lower-only limits, runtime selection, and diagnostic redaction.",
+  "behavioral_concerns": [
+    "Effective source attribution must remain accurate across defaults, workspace configuration, and environment overrides.",
+    "Model identities and secret-bearing values must be redacted while safe effective limits remain inspectable.",
+    "Workspace and environment values may only lower built-in operational limits; malformed, non-finite, non-positive, overflowed, and upward values must fail loading."
+  ],
+  "expectation_refs": [
+    "contract-configuration",
+    "contract-errors",
+    "contract-llm-runtime",
+    "contract-observability",
+    "contract-performance",
+    "contract-security",
+    "contract-testing"
+  ],
+  "risk_tags": [
+    "security",
+    "test"
+  ],
+  "approved_checks": [
+    {
+      "id": "go-format-diff",
+      "fingerprint": "950487ee42f6a668523ef9e792ab4a7a40474a44de7570d7db5c5e8e76fe3012"
+    },
+    {
+      "id": "go-source-integrity",
+      "fingerprint": "0b76b02a16e11fd15a65155c077393e35a508148865fef89ca5c204b3db38c2e"
+    }
+  ],
+  "context_block_ids": [
+    "qa-v1-block-2e111e2cd1a503ad2ff9dbb8",
+    "qa-v1-block-307234c6bfff53948b392930",
+    "qa-v1-block-76be07ab5d25adb0b9e502d6",
+    "qa-v1-block-80a16af2d655a61cc6762d41",
+    "qa-v1-block-ce45392d2ebc036986b89d13",
+    "qa-v1-block-d19e106aa8552aa77a4f6b06",
+    "qa-v1-block-e75593e3e4ad8b0e060f3bdd",
+    "qa-v1-block-f3519512e9ac52dff09fe19e"
+  ],
+  "prepared_prompt_bytes": 145619,
+  "prepared_prefix_bytes": 19551,
+  "pack_complete": false,
+  "phase": "completed",
+  "attempts": [
+    {
+      "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-b5cbffe80bbe81a8ed6c15f5/1",
+      "number": 1,
+      "session_id": "ses_f6aa5c84effe0hu5NxnVM86ez9",
+      "provider": "openai",
+      "model": "gpt-5.6-sol",
+      "variant": "low",
+      "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+      "workspace_id": "dc58fe55b887a1caea60bdee7eb2582017c9a0e9eccf8a67817101f351e7d64c",
+      "started_at": "2026-09-12T11:21:50.234869605Z",
+      "completed_at": "2026-09-12T11:22:33.362002552Z",
+      "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Documentation lists performance hard maxima above defaults, while validation rejects values greater than defaults.",
+          "paths": [
+            "docs/configuration.md",
+            "internal/platform/config/performance.go"
+          ],
+          "output_digest": "0b4dfb1dee603d47e478e3113fa4019845c07f59ef442755e4903919c9b847b6:5b00765fd780ae077377ce042e3f4b7d469402d2599293eeb01861ee43ce597e"
+        }
+      ],
+      "usage": {
+        "input_tokens_known": true,
+        "input_tokens": 1843,
+        "output_tokens_known": true,
+        "output_tokens": 590,
+        "total_tokens_known": true,
+        "total_tokens": 45033,
+        "reasoning_tokens_known": true,
+        "reasoning_tokens": 232,
+        "cache_read_tokens_known": true,
+        "cache_read_tokens": 42368,
+        "cache_write_tokens_known": true,
+        "turns_known": false
+      },
+      "runtime_events": 14,
+      "retained_events": 14,
+      "observed_tool_calls": 1,
+      "context_metrics": {
+        "prompt_bytes": 145619,
+        "prefix_bytes": 19551,
+        "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+        "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+        "tool_calls_by_kind": {
+          "grep": 1
+        },
+        "distinct_files_read": 0,
+        "read_bytes": 0,
+        "repeated_reads": 0,
+        "search_calls": 1,
+        "expansions": 0,
+        "continuation_bytes": 0,
+        "duration": 43127132947
+      },
+      "estimated_cost": {
+        "amount": 0.018059600000000002,
+        "currency": "USD",
+        "estimate": true,
+        "source": "model_priced"
+      },
+      "stop_reason": "terminal investigator output accepted"
+    }
+  ],
+  "theories": [
+    {
+      "schema_version": 1,
+      "id": "qa-v1-theory-f1929f318a162a99b30f7803",
+      "shard_id": "qa-v1-shard-b5cbffe80bbe81a8ed6c15f5",
+      "claim": "The performance configuration documentation presents hard maxima above several built-in defaults even though the loader rejects every workspace or environment value above the corresponding default, making the documented effective range contradictory and misleading.",
+      "basis": "The documentation says workspace and environment values may only lower built-in defaults, but its table lists higher hard maxima such as 4 authoring attempts versus default 2 and 256 commands versus default 128 (qa-v1-block-9a637580a721b349e21044c1). Validation uses each built-in default as the effective ceiling for integer, byte, float, and duration settings (qa-v1-block-a42ba81ee3aabfa3bef7fe97). Safe and obvious defaults and inspectable effective configuration are required by the configuration contract (qa-v1-block-76be07ab5d25adb0b9e502d6).",
+      "verification_surface": "Compare every default and hard-maximum row in docs/configuration.md with DefaultPerformance and validatePerformance in internal/platform/config/performance.go.",
+      "expectation_refs": [
+        "contract-configuration",
+        "contract-errors",
+        "contract-performance"
+      ],
+      "severity_if_confirmed": "medium",
+      "confirmation_condition": "Confirmed if a documented hard-maximum value above its listed default is rejected by validatePerformance solely because it exceeds the built-in default.",
+      "refutation_condition": "Refuted if the documentation explicitly defines hard maximum as a non-configurable internal bound, or validation permits documented values above defaults through a governed source not shown in the cited implementation.",
+      "inconclusive_condition": "Inconclusive if omitted documentation or configuration code defines a distinct governed mechanism for selecting values between defaults and hard maxima.",
+      "safe_evidence_strategy": "Use static comparison of the frozen documentation table, DefaultPerformance values, and validatePerformance ceilings; no execution or mutation is required.",
+      "implementation_fingerprint": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+      "attempt_history": [
+        {
+          "id": "att_5zia5jkgb2m2pjm3n4wthm2s5e/qa-v1-shard-b5cbffe80bbe81a8ed6c15f5/1",
+          "number": 1,
+          "session_id": "ses_f6aa5c84effe0hu5NxnVM86ez9",
+          "provider": "openai",
+          "model": "gpt-5.6-sol",
+          "variant": "low",
+          "runtime_store_ref": "/home/antonioborgerees/coding/ultraplan/ultraplan-go-workspace/projects/ultraplan-go/sprints/39-performance-stage/.ultraplan/runtime/opencode/987a83951a41c47ac9beea54985738fd/opencode.db",
+          "workspace_id": "dc58fe55b887a1caea60bdee7eb2582017c9a0e9eccf8a67817101f351e7d64c",
+          "started_at": "2026-09-12T11:21:50.234869605Z",
+          "completed_at": "2026-09-12T11:22:33.362002552Z",
+          "implementation_before": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "implementation_after": "14c7cf690c31fb12f283b6e0f3ae21bc3cfae08b1c430f9deba87cc1c4af79de",
+          "evidence": [
+            {
+              "kind": "static_source",
+              "summary": "Documentation lists performance hard maxima above defaults, while validation rejects values greater than defaults.",
+              "paths": [
+                "docs/configuration.md",
+                "internal/platform/config/performance.go"
+              ],
+              "output_digest": "0b4dfb1dee603d47e478e3113fa4019845c07f59ef442755e4903919c9b847b6:5b00765fd780ae077377ce042e3f4b7d469402d2599293eeb01861ee43ce597e"
+            }
+          ],
+          "usage": {
+            "input_tokens_known": true,
+            "input_tokens": 1843,
+            "output_tokens_known": true,
+            "output_tokens": 590,
+            "total_tokens_known": true,
+            "total_tokens": 45033,
+            "reasoning_tokens_known": true,
+            "reasoning_tokens": 232,
+            "cache_read_tokens_known": true,
+            "cache_read_tokens": 42368,
+            "cache_write_tokens_known": true,
+            "turns_known": false
+          },
+          "runtime_events": 14,
+          "retained_events": 14,
+          "observed_tool_calls": 1,
+          "context_metrics": {
+            "prompt_bytes": 145619,
+            "prefix_bytes": 19551,
+            "prefix_digest": "652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b",
+            "cache_cohort": "qa-investigator/652545870b32759585a66dd92e54bf5f4250a89e197ed2dbaa681d5e4b9ec32b/openai/gpt-5.6-sol/low",
+            "tool_calls_by_kind": {
+              "grep": 1
+            },
+            "distinct_files_read": 0,
+            "read_bytes": 0,
+            "repeated_reads": 0,
+            "search_calls": 1,
+            "expansions": 0,
+            "continuation_bytes": 0,
+            "duration": 43127132947
+          },
+          "estimated_cost": {
+            "amount": 0.018059600000000002,
+            "currency": "USD",
+            "estimate": true,
+            "source": "model_priced"
+          },
+          "stop_reason": "terminal investigator output accepted"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "static_source",
+          "summary": "Documentation lists performance hard maxima above defaults, while validation rejects values greater than defaults.",
+          "paths": [
+            "docs/configuration.md",
+            "internal/platform/config/performance.go"
+          ],
+          "output_digest": "0b4dfb1dee603d47e478e3113fa4019845c07f59ef442755e4903919c9b847b6:5b00765fd780ae077377ce042e3f4b7d469402d2599293eeb01861ee43ce597e"
+        }
+      ],
+      "outcome": "confirmed",
+      "outcome_reason": "The cited table explicitly labels values above defaults as hard maxima while the cited validator sets the default itself as the maximum accepted configuration value, so those larger documented values are unreachable through the described workspace and environment surfaces (qa-v1-block-9a637580a721b349e21044c1, qa-v1-block-a42ba81ee3aabfa3bef7fe97)."
+    }
+  ]
+}

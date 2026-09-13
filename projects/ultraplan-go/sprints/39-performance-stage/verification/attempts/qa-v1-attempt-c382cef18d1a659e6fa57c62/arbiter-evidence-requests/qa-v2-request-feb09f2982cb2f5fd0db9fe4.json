@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "attempt_id": "qa-v1-attempt-c382cef18d1a659e6fa57c62",
+  "request": {
+    "accounting_version": 2,
+    "execution_attempts": [
+      {
+        "test_bundle_id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+        "number": 1,
+        "phase": "execution",
+        "started_at": "2026-09-07T17:19:54.118003722Z",
+        "completed_at": "2026-09-07T17:20:48.214732479Z",
+        "run_id": "qa-v2-run-5c3db048c33318c6bd34c6d9"
+      }
+    ],
+    "preparation_attempts": 1,
+    "recovery_allowance": 1,
+    "recovery_granted_at": "2026-09-07T17:06:11.656060323Z",
+    "recovery_reason": "evidence_round_budget_exhausted",
+    "id": "qa-v2-request-feb09f2982cb2f5fd0db9fe4",
+    "arbiter_group_id": "qa-v1-arbiter-group-00db5492c285c4e23e1bbf42",
+    "theory_ids": [
+      "qa-v1-theory-60e255ab711c15643830dc69"
+    ],
+    "origin_shard_id": "qa-v1-shard-b951f08c0478926a7e675a81",
+    "gap": "No executable parser reproducer was supplied.",
+    "requested_evidence": "In the original investigator's approved private workspace, create or strengthen an executable Go _test.go reproducer using a valid matching envelope followed by malformed non-whitespace JSON.",
+    "required_observation": "Assert parsing succeeds and returns the canonical value despite malformed trailing content.",
+    "control_requirement": "Assert whitespace-only trailing content succeeds and a second valid JSON value is rejected.",
+    "priority": "high",
+    "status": "evidence_recorded",
+    "evidence_round": 3,
+    "attempts": 2,
+    "evidence_fingerprint": "f2242a8d8cd754c20f1ac908cd0e040d92461856f742cad07a4b078f54e2c1bc",
+    "test_bundle_id": "qa-v2-test-7a7fac692086c99726c6a1ed",
+    "latest_run_id": "qa-v2-run-5c3db048c33318c6bd34c6d9",
+    "next_action": "Inspect the retained reproduction run and arbitration outcome."
+  }
+}

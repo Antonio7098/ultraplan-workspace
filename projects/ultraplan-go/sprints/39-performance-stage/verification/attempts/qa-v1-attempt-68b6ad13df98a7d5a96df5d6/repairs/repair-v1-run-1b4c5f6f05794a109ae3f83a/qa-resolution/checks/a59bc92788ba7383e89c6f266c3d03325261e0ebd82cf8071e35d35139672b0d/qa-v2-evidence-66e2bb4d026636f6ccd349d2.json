@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "check": {
+    "evidence_id": "qa-v2-evidence-66e2bb4d026636f6ccd349d2",
+    "outcome": "pass",
+    "run": {
+      "observed_outcome": "pass",
+      "observed_reason_code": "expected_behavior_observed",
+      "toolchain": "go version go1.26.6-X:nodwarf5 linux/amd64",
+      "dependency_cache": "2d6233638f3b25ad12a9647a0f0083f98f0139321b37dde79927d68d36b5801d",
+      "schema_version": 2,
+      "id": "qa-v2-run-ff85bb5d7c6fa85009422f90",
+      "spec_id": "qa-v2-spec-313929ee57be11814130ecbd",
+      "test_bundle_id": "qa-v2-test-f50f6e6a22217003e70ab0c9",
+      "target_identity": "a59bc92788ba7383e89c6f266c3d03325261e0ebd82cf8071e35d35139672b0d",
+      "result": {
+        "diagnostics_version": 1,
+        "test_events": [
+          {
+            "test": "TestQAInvestigator_e2eec52fa86d",
+            "action": "run"
+          },
+          {
+            "test": "TestQAInvestigator_e2eec52fa86d",
+            "action": "pass"
+          }
+        ],
+        "executable": "go",
+        "args_digest": "36cb36e71aeda831e9a99a589e1638923a1afc9c0db89ceee8631ca0fba3c85b",
+        "exit_code": 0,
+        "duration": 29541456140,
+        "stdout_digest": "4a9e3a7c7952772e2d55c851e664a1b67defb5878ca585c43c410312644969f1",
+        "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout": "=== RUN   TestQAInvestigator_e2eec52fa86d\n--- PASS: TestQAInvestigator_e2eec52fa86d (0.03s)\nPASS\nok  \tgithub.com/Antonio7098/ultraplan-go/internal/app\t0.040s\n",
+        "output_bytes": 158,
+        "truncated": false,
+        "redacted": false,
+        "timed_out": false,
+        "cancelled": false,
+        "cleanup_attempted": false,
+        "cleanup_complete": true
+      },
+      "failure_signature": {
+        "test_name": "TestQAInvestigator_e2eec52fa86d",
+        "assertion": "Assertions for qa-v1-theory-3ba88b4e640cc758bd4724ff must prove JSON Encode and text rendering write failures affect the returned error. Separate assertions for qa-v1-theory-44d9a1998804c860f04368c4 must verify stable JSON envelope fields, stdout/stderr se",
+        "exit_class": "nonzero",
+        "output_matcher": "ULTRAPLAN_QA_PREDICTED_FAILURE:TestQAInvestigator_e2eec52fa86d"
+      },
+      "outcome": "pass",
+      "reason_code": "expected_behavior_observed",
+      "cleanup": {
+        "attempted": true,
+        "descendants_terminated": true,
+        "workspace_removed": true,
+        "complete": true
+      },
+      "completed_at": "2026-09-13T09:28:40.373293641Z"
+    }
+  }
+}
