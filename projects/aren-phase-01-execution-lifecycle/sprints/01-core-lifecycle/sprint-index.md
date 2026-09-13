@@ -23,12 +23,13 @@ This index is ready for use after project reasoning receives a passing review. I
 
 | Contract | Why Selected |
 |---|---|
-| Architecture | Defines package ownership, dependency direction, lifecycle authority placement, and the threshold for adding abstractions. |
-| Errors | Governs returned failures, panic classification, cause preservation, and Aren invariant visibility. |
-| Observability | Governs truthful lifecycle events, sequence ordering, correlation, and diagnostic facts. |
-| Testing | Requires contract, negative, deterministic, race, and evidence-producing tests for lifecycle invariants. |
-| Documentation | Requires stable lifecycle behavior and decisions to remain inspectable and promotable. |
-| Workflows | Applies only the local lifecycle, cancellation-boundary, terminal-state, and concurrency clauses relevant to one in-process run. Durable workflow clauses remain excluded. |
+| Aren Development Doctrine | Keeps Sprint 1 focused on one runnable lifecycle slice, earned abstractions, strict exclusions, and real behaviour before framework machinery. |
+| Aren Runtime Architecture | Governs per-run authority, package/public boundaries, thin entrypoints, one mutation owner, and concrete-before-interface design. |
+| Aren Execution Lifecycle | Governs identity, legal transitions, success/error/panic resolution, one terminal commitment, timing, coherent publication, and invariant visibility. |
+| Aren Cancellation And Lifetimes | Selected narrowly for invocation-carrier ownership, context/resource lifetime, release paths, and truthful boundaries; caller cancellation semantics remain Sprint 2. |
+| Aren Events Observation And Waiting | Applies the Sprint 1 subset for canonical retained history, sequence identity, defensive event publication, and reusable multi-waiter outcome observation. Live cursors and abandonment remain deferred. |
+| Aren Verification | Governs independent transition/outcome oracles, controlled schedules, negative controls, race execution, mutation attacks, release evidence, and real runtime proof. |
+| Documentation | Requires stable lifecycle behavior and realized decisions to remain inspectable and promotable after review. |
 
 ## Selected Evidence Reports
 
@@ -65,19 +66,19 @@ This index is ready for use after project reasoning receives a passing review. I
 | Document | Path | Why Selected |
 |---|---|---|
 | Project synthesis | `projects/aren-phase-01-execution-lifecycle/project-reasoning/reasoning.md` | Supplies the accepted Phase 1 constraints and conclusions that all sprint decisions must obey. |
-| Evidence assessment | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/evidence-assessment.md` | Preserves evidence quality, applicability limits, contradictions, and negative-transfer warnings used by the handbook. |
-| Lifecycle authority | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/lifecycle-authority-and-atomic-publication.md` | Directly governs Sprint 1 transition ownership and coherent publication. |
-| Outcomes and terminal resolution | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/outcomes-failures-and-terminal-resolution.md` | Directly governs success, returned failure, panic, and terminal outcome construction. |
-| Cancellation and cleanup | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/cancellation-goroutine-ownership-and-cleanup.md` | Supplies the goroutine ownership and cleanup constraints Sprint 1 must preserve even though caller cancellation is deferred. |
-| Events and observation | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/events-observation-waiting-and-replay.md` | Governs canonical history and the Sprint 1 seams that must remain safe for Sprint 2 extension. |
-| Verification and Go correctness | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/verification-and-go-correctness.md` | Governs invariant, schedule, race, negative-control, and evidence obligations. |
+| Evidence assessment | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/00-evidence-map.md` | Preserves evidence quality, applicability limits, contradictions, and negative-transfer warnings used by the handbook. |
+| Lifecycle authority | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/01-lifecycle-authority-and-atomic-publication.md` | Directly governs Sprint 1 transition ownership and coherent publication. |
+| Outcomes and terminal resolution | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/02-outcomes-failures-and-terminal-resolution.md` | Directly governs success, returned failure, panic, and terminal outcome construction. |
+| Cancellation and cleanup | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/03-cancellation-goroutine-ownership-and-cleanup.md` | Supplies the goroutine ownership and cleanup constraints Sprint 1 must preserve even though caller cancellation is deferred. |
+| Events and observation | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/04-events-observation-waiting-and-replay.md` | Governs canonical history and the Sprint 1 seams that must remain safe for Sprint 2 extension. |
+| Verification and Go correctness | `projects/aren-phase-01-execution-lifecycle/project-reasoning/areas/05-verification-and-go-correctness.md` | Governs invariant, schedule, race, negative-control, and evidence obligations. |
 
 ## Prior Decisions To Carry Forward
 
 | Decision | Path | Constraint For This Sprint |
 |---|---|---|
 | Phase 1 product contract | `projects/aren-phase-01-execution-lifecycle/docs/PRD.md` | Product behavior and exclusions are fixed; detailed Go design remains open to sprint reasoning. |
-| Go language decision | `projects/aren-phase-01-execution-lifecycle/docs/aren-source/final-language-decision.md` | Implementation, tests, concurrency reasoning, and public contracts must follow the accepted Go rules. |
+| Go language decision | `projects/aren-phase-01-execution-lifecycle/docs/final-language-decision.md` | Implementation, tests, concurrency reasoning, and public contracts must follow the accepted Go rules. |
 | Accepted project reasoning | `projects/aren-phase-01-execution-lifecycle/project-reasoning/reasoning.md` | Sprint reasoning may narrow implementation choices but cannot silently contradict an accepted project conclusion. |
 
 ## Required Review Protocols
